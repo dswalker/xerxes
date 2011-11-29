@@ -1,5 +1,9 @@
 <?php
 
+namespace Xerxes\Marc;
+
+use Xerxes\Utility\Parser;
+
 /**
  * Parse single MARC-XML record
  * 
@@ -11,7 +15,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Marc_Record
+class Record
 {
 	private $leader;
 	private $namespace = "http://www.loc.gov/MARC21/slim";
@@ -24,7 +28,7 @@ class Xerxes_Marc_Record
 	
 	public function __construct()
 	{
-		$this->leader = new Xerxes_Marc_Leader();
+		$this->leader = new Leader();
 	}
 	
 	/**
@@ -37,23 +41,23 @@ class Xerxes_Marc_Record
 	{
 		if ( $node != null )
 		{
-			$objNode = Xerxes_Framework_Parser::convertToDOMDocument($node);
+			$objNode = Parser::convertToDOMDocument($node);
 			
 			$objLeader = $objNode->getElementsByTagName("leader");
 			$objControlFields = $objNode->getElementsByTagName("controlfield");
 			$objDataFields = $objNode->getElementsByTagName("datafield");
 			
-			$this->leader = new Xerxes_Marc_Leader($objLeader->item(0));
+			$this->leader = new Leader($objLeader->item(0));
 			
 			foreach ( $objControlFields as $objControlField )
 			{
-				$controlfield = new Xerxes_Marc_ControlField($objControlField);
+				$controlfield = new ControlField($objControlField);
 				array_push($this->_controlfields, $controlfield);
 			}
 			
 			foreach ( $objDataFields as $objDataField )
 			{
-				$datafield = new Xerxes_Marc_DataField($objDataField);
+				$datafield = new DataField($objDataField);
 				array_push($this->_datafields, $datafield);
 			}
 			
@@ -66,7 +70,7 @@ class Xerxes_Marc_Record
 			// so we can query based on this node, not the wrapper parent
 			// see the xpath() function below
 			
-			$this->xpath = new DOMXPath($this->document);
+			$this->xpath = new \DOMXPath($this->document);
 			$this->xpath->registerNamespace("marc", $this->namespace);
 		}
 	}
@@ -74,7 +78,7 @@ class Xerxes_Marc_Record
 	/**
 	 * Leader
 	 * 
-	 * @return Xerxes_Marc_Leader
+	 * @return Leader
 	 */
 	
 	public function leader()
@@ -86,7 +90,7 @@ class Xerxes_Marc_Record
 	 * Control field
 	 *
 	 * @param string $tag			the marc tag number
-	 * @return Xerxes_Marc_ControlField object
+	 * @return ControlField object
 	 */
 	
 	public function controlfield($tag)
@@ -101,19 +105,19 @@ class Xerxes_Marc_Record
 		
 		// didn't find it, so return empty one
 		
-		return new Xerxes_Marc_ControlField();
+		return new ControlField();
 	}
 
 	/**
 	 * Return a list of control fields, essentially for 007
 	 *
 	 * @param string $tag			the marc tag number
-	 * @return Xerxes_Marc_FieldList object
+	 * @return FieldList object
 	 */	
 	
 	public function controlfields($tag)
 	{
-		$list = new Xerxes_Marc_FieldList();
+		$list = new FieldList();
 		
 		foreach ( $this->_controlfields as $controlfield )
 		{
@@ -132,14 +136,14 @@ class Xerxes_Marc_Record
 	 * @param string $tag			the marc tag number
 	 * @param string $ind1			[optional] first indicator
 	 * @param string $ind2			[optional] second indicator
-	 * @return Xerxes_Marc_DataFieldList
+	 * @return DataFieldList
 	 */
 	
 	public function datafield($tag, $ind1 = null, $ind2 = null)
 	{
 		$regex = str_replace("X", "[0-9]{1}", $tag);
 		
-		$list = new Xerxes_Marc_DataFieldList();
+		$list = new DataFieldList();
 		
 		foreach ( $this->_datafields as $datafield )
 		{
@@ -203,12 +207,12 @@ class Xerxes_Marc_Record
 		return $this->document->saveXML();
 	}
 	
-	public function addControlField(Xerxes_Marc_ControlField $field)
+	public function addControlField(ControlField $field)
 	{
 		array_push($this->_controlfields, $field);
 	}
 	
-	public function addDataField(Xerxes_Marc_DataField $field)
+	public function addDataField(DataField $field)
 	{
 		array_push($this->_datafields, $field);
 	}

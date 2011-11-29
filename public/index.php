@@ -1,5 +1,5 @@
 <?php
-require_once dirname(__DIR__) . '/vendor/ZendFramework/library/Zend/Loader/AutoloaderFactory.php';
+require_once dirname(__DIR__) . '/vendor/Zend/Loader/AutoloaderFactory.php';
 Zend\Loader\AutoloaderFactory::factory(array('Zend\Loader\StandardAutoloader' => array()));
 
 $appConfig = include dirname(__DIR__) . '/config/application.config.php';

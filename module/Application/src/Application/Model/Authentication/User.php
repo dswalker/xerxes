@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Model\Authentication;
+
+use Xerxes\Utility\DataValue;
+
 /**
  * Authentication User
  *
@@ -11,7 +15,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Authentication_User extends Xerxes_Framework_DataValue
+class User extends DataValue
 {
 	public $username;
 	public $last_login;

@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Model\Search;
+
+use Xerxes\Utility\Parser;
+
 /**
  * Search Facet Group
  *
@@ -11,7 +15,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Search_FacetGroup
+class FacetGroup
 {
 	public $name; // internal name
 	public $public; // public facing name
@@ -20,12 +24,12 @@ class Xerxes_Model_Search_FacetGroup
 	/**
 	 * Add a facet
 	 * 
-	 * @param Xerxes_Model_Search_Facet $facets
+	 * @param Facet $facets
 	 */
 	
-	public function addFacet(Xerxes_Model_Search_Facet $facet)
+	public function addFacet(Facet $facet)
 	{
-		$facet->count = Xerxes_Framework_Parser::number_format($facet->count);
+		$facet->count = Parser::number_format($facet->count);
 		
 		array_push($this->facets, $facet);
 	}
@@ -33,7 +37,7 @@ class Xerxes_Model_Search_FacetGroup
 	/**
 	 * Get the facets
 	 * 
-	 * @return array of Xerxes_Model_Search_Facet's
+	 * @return array of Facet's
 	 */	
 	
 	public function getFacets()
@@ -70,7 +74,7 @@ class Xerxes_Model_Search_FacetGroup
 		}
 		else
 		{
-			throw new Exception("sort order must be 'desc' or 'asc'");
+			throw new \Exception("sort order must be 'desc' or 'asc'");
 		}
 		
 		// now unset and re-add the facets based on those keys

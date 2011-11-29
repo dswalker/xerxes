@@ -134,6 +134,9 @@ class Listener implements ListenerAggregate
     public function renderLayout(MvcEvent $e)
     {
         $response = $e->getResponse();
+        
+        print_r($response); exit;
+        
         if (!$response) {
             $response = new Response();
             $e->setResponse($response);

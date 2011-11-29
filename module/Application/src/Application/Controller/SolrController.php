@@ -1,11 +1,15 @@
 <?php
 
-class Xerxes_Controller_Solr extends Xerxes_Controller_Search
+namespace Application\Controller;
+
+use Application\Model\Solr\Engine;
+
+class SolrController extends SearchController
 {
 	protected $id = "solr";
 	
 	protected function getEngine()
 	{
-		return new Xerxes_Model_Solr_Engine();
+		return new Engine();
 	}
 }

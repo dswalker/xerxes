@@ -1,5 +1,11 @@
 <?php
 
+namespace Application\Model\Worldcat;
+
+use Application\Model\Search,
+	Xerxes\WorldCat,
+	Xerxes\Marc;
+
 /**
  * Worldcat Search Engine
  * 
@@ -11,7 +17,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Worldcat_Engine extends Xerxes_Model_Search_Engine 
+class Engine extends Search\Engine 
 {
 	protected $client;
 	
@@ -28,7 +34,7 @@ class Xerxes_Model_Worldcat_Engine extends Xerxes_Model_Search_Engine
 		
 		// worldcat search object
 		
-		$this->client = new Xerxes_WorldCat($config_key);
+		$this->client = new WorldCat($config_key);
 		
 		// if user is a guest, make it open, and return it pronto, since we
 		// can't use the limiters below
@@ -85,7 +91,7 @@ class Xerxes_Model_Worldcat_Engine extends Xerxes_Model_Search_Engine
 	 * @return int
 	 */	
 	
-	public function getHits( Xerxes_Model_Search_Query $search )
+	public function getHits( Query $search )
 	{
 		// get the results
 		
@@ -99,15 +105,15 @@ class Xerxes_Model_Worldcat_Engine extends Xerxes_Model_Search_Engine
 	/**
 	 * Search and return results
 	 * 
-	 * @param Xerxes_Model_Search_Query $search		search object
+	 * @param Query $search		search object
 	 * @param int $start							[optional] starting record number
 	 * @param int $max								[optional] max records
 	 * @param string $sort							[optional] sort order
 	 * 
-	 * @return Xerxes_Model_Search_Results
+	 * @return Results
 	 */	
 	
-	public function searchRetrieve( Xerxes_Model_Search_Query $search, $start = 1, $max = 10, $sort = "")
+	public function searchRetrieve( Query $search, $start = 1, $max = 10, $sort = "")
 	{
 		return $this->doSearch( $search, $start, $max, $sort);
 	}	
@@ -116,7 +122,7 @@ class Xerxes_Model_Worldcat_Engine extends Xerxes_Model_Search_Engine
 	 * Return an individual record
 	 * 
 	 * @param string	record identifier
-	 * @return Xerxes_Model_Solr_Results
+	 * @return Results
 	 */
 	
 	public function getRecord( $id )
@@ -139,19 +145,19 @@ class Xerxes_Model_Worldcat_Engine extends Xerxes_Model_Search_Engine
 	/**
 	 * Return the search engine config
 	 * 
-	 * @return Xerxes_Model_Worldcat_Config
+	 * @return Config
 	 */		
 	
 	public function getConfig()
 	{
-		return Xerxes_Model_Worldcat_Config::getInstance();
+		return Config::getInstance();
 	}
 	
 	/**
 	 * Do the actual fetch of an individual record
 	 * 
 	 * @param string	record identifier
-	 * @return Xerxes_Model_Solr_Results
+	 * @return Results
 	 */	
 	
 	protected function doGetRecord( $id )
@@ -163,15 +169,15 @@ class Xerxes_Model_Worldcat_Engine extends Xerxes_Model_Search_Engine
 	/**
 	 * Do the actual search
 	 * 
-	 * @param Xerxes_Model_Search_Query $search		search object
+	 * @param Query $search		search object
 	 * @param int $start							[optional] starting record number
 	 * @param int $max								[optional] max records
 	 * @param string $sort							[optional] sort order
 	 * 
-	 * @return Xerxes_Model_Search_Results
+	 * @return Results
 	 */		
 	
-	protected function doSearch( Xerxes_Model_Search_Query $search, $start = 1, $max = 10, $sort = "")
+	protected function doSearch( Query $search, $start = 1, $max = 10, $sort = "")
 	{ 	
 		// convert query
 		
@@ -188,7 +194,7 @@ class Xerxes_Model_Worldcat_Engine extends Xerxes_Model_Search_Engine
 	{
 		// create results
 		
-		$results = new Xerxes_Model_Search_ResultSet($this->config);
+		$results = new Search\ResultSet($this->config);
 		
 		// extract total
 		
@@ -204,7 +210,7 @@ class Xerxes_Model_Worldcat_Engine extends Xerxes_Model_Search_Engine
 		return $results;		
 	}
 	
-	protected function convertQuery( Xerxes_Model_Search_Query $search )
+	protected function convertQuery( Query $search )
 	{
 		$query = "";
 		
@@ -298,19 +304,19 @@ class Xerxes_Model_Worldcat_Engine extends Xerxes_Model_Search_Engine
 	 *
 	 * @param DOMDocument $xml
 	 * 
-	 * @return array of Xerxes_Model_Worldcat_Record's
+	 * @return array of Record's
 	 */
 	
 	protected function extractRecords(DOMDocument $xml)
 	{
 		$records = array();
 		
-		$document = new Xerxes_Marc_Document();
+		$document = new Marc\Document();
 		$document->loadXML($xml);
 		
 		foreach ( $document->records() as $marc_record )
 		{
-			$xerxes_record = new Xerxes_Model_Worldcat_Record();
+			$xerxes_record = new Record();
 			$xerxes_record->loadMarc($marc_record);
 			array_push($records, $xerxes_record);
 		}
@@ -324,13 +330,13 @@ class Xerxes_Model_Worldcat_Engine extends Xerxes_Model_Search_Engine
 	 * Create an SRU boolean/key/value expression in the query, such as:
 	 * AND srw.su="xslt"
 	 *
-	 * @param Xerxes_Model_Search_QueryTerm $term		
+	 * @param QueryTerm $term		
 	 * @param bool $neg				(optional) whether the presence of '-' in $value should indicate a negative expression
 	 * 								in which case $boolean gets changed to 'NOT'
 	 * @return string				the resulting SRU expresion
 	 */
 	
-	private function keyValue(Xerxes_Model_Search_QueryTerm $term, $neg = false)
+	private function keyValue(QueryTerm $term, $neg = false)
 	{
 		if ( $term->phrase == "" )
 		{

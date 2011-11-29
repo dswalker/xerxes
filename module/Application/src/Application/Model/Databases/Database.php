@@ -1,7 +1,12 @@
 <?php
 
+namespace Application\Model\Databases;
+
+use Xerxes\Utility\DataValue,
+	Xerxes\Utiltity\Restrict;
+
 /**
- * Metalib Database
+ * Database
  *
  * @author David Walker
  * @copyright 2011 California State University
@@ -11,17 +16,17 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Metalib_Database extends Xerxes_Framework_DataValue  
+class Database extends DataValue  
 {
 	public $xml;
 	
-	public $metalib_id; // metalib id
+	public $database_id; // database id
 	public $title_display; // database title
 	public $type; 
 	public $data;
 	
 	private $searchable_by_user; // is resource searchable by user
-	private $config; // metalib config
+	private $config; // database config
 	
 	/**
 	 * Constructor
@@ -29,14 +34,14 @@ class Xerxes_Model_Metalib_Database extends Xerxes_Framework_DataValue
 	
 	public function __construct()
 	{
-		$this->config = Xerxes_Model_Metalib_Config::getInstance();
+		$this->config = Config::getInstance();
 	}
 	
 	/**
 	 * Load data from database resutls array
 	 *
 	 * @param array $arrResult
-	 * @param Xerxes_Model_Metalib_User $user
+	 * @param User $user
 	 */
 	
 	public function load($arrResult, $user = null)
@@ -56,7 +61,7 @@ class Xerxes_Model_Metalib_Database extends Xerxes_Framework_DataValue
 	
 	public function __get($name)
 	{
-		if ( $this->xml instanceof SimpleXMLElement )
+		if ( $this->xml instanceof \SimpleXMLElement )
 		{
 			return (string) $this->xml->$name;
 		}
@@ -77,7 +82,7 @@ class Xerxes_Model_Metalib_Database extends Xerxes_Framework_DataValue
 	{
 		$values = array();
 		
-		if ( $this->xml instanceof SimpleXMLElement )
+		if ( $this->xml instanceof \SimpleXMLElement )
 		{
 			foreach ($this->xml->$field as $value)
 			{
@@ -189,13 +194,13 @@ class Xerxes_Model_Metalib_Database extends Xerxes_Framework_DataValue
 		
 		// convert to DOMDocument
 		
-		$objDom = new DOMDocument();
+		$objDom = new \DOMDocument();
 		$objDom->loadXML($this->xml->asXML());
 		
-		// add metalib id
+		// add database id
 		
 		$objDatabase = $objDom->documentElement;
-		$objDatabase->setAttribute("metalib_id", $this->metalib_id);
+		$objDatabase->setAttribute("database_id", $this->database_id);
 		
 		// is the particular user allowed to search this?
 		
@@ -211,7 +216,7 @@ class Xerxes_Model_Metalib_Database extends Xerxes_Framework_DataValue
 	 * @return boolean
 	 */
 	
-	private function isSearchableByUser(Xerxes_Model_Metalib_User $user)
+	private function isSearchableByUser(User $user)
 	{
 		$allowed = "";
 		
@@ -244,7 +249,7 @@ class Xerxes_Model_Metalib_Database extends Xerxes_Framework_DataValue
 					$ranges[] = $this->config->getGroupLocalIpRanges($group);
 				}
 				
-				$allowed = Xerxes_Framework_Restrict::isIpAddrInRanges($user->getIpAddress(),implode(",", $ranges));
+				$allowed = Restrict::isIpAddrInRanges($user->getIpAddress(),implode(",", $ranges));
 			}
 		}
 		else

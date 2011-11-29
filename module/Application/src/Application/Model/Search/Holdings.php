@@ -1,5 +1,7 @@
 <?php
 
+namespace Application\Model\Search;
+
 /**
  * Result Holdings
  *
@@ -11,7 +13,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Search_Holdings
+class Holdings
 {
 	public $none;
 	public $items = array();
@@ -20,10 +22,10 @@ class Xerxes_Model_Search_Holdings
 	/**
 	 * Add an item to this group of items
 	 * 
-	 * @param Xerxes_Model_Search_Item $item
+	 * @param Item $item
 	 */
 	
-	public function addItem(Xerxes_Model_Search_Item $item)
+	public function addItem(Item $item)
 	{
 		array_push($this->items, $item);
 	}
@@ -31,10 +33,10 @@ class Xerxes_Model_Search_Holdings
 	/**
 	 * Add (journal) holdings record to this group of items
 	 * 
-	 * @param Xerxes_Model_Search_Holding $holdings
+	 * @param Holding $holdings
 	 */
 	
-	public function addHolding(Xerxes_Model_Search_Holding $holdings)
+	public function addHolding(Holding $holdings)
 	{
 		array_push($this->holdings, $holdings);
 	}

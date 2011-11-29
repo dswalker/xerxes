@@ -1,5 +1,7 @@
 <?php
 
+namespace Xerxes\Utility;
+
 /**
  * Labels class
  * 
@@ -11,7 +13,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Framework_Labels
+class Labels
 {
 	private $xml;
 	private $labels = array();
@@ -25,7 +27,7 @@ class Xerxes_Framework_Labels
 	{
 		if ( empty( self::$instance ) )
 		{
-			self::$instance = new Xerxes_Framework_Labels();
+			self::$instance = new Labels();
 			$object = self::$instance;
 			$object->init($language);
 		}
@@ -35,12 +37,12 @@ class Xerxes_Framework_Labels
 		
 	public function init($language)
 	{
-		$this->xml = new DOMDocument();
+		$this->xml = new \DOMDocument();
 		$this->xml->load( XERXES_APPLICATION_PATH . "views/xsl/labels/eng.xsl");
 		
 		if ( file_exists("xsl/labels/eng.xsl") )
 		{
-			$local_xml = new DOMDocument();
+			$local_xml = new \DOMDocument();
 			$local_xml->load("xsl/labels/eng.xsl");
 			$import = $this->xml->importNode($local_xml->documentElement, true);
 			$this->xml->documentElement->appendChild($import);			
@@ -51,7 +53,7 @@ class Xerxes_Framework_Labels
 
 		if ( $language != "" )
 		{
-			$language_xml = new DOMDocument();
+			$language_xml = new \DOMDocument();
 			$language_xml->load( XERXES_APPLICATION_PATH . "views/xsl/labels/$language.xsl");
 			
 			$import = $this->xml->importNode($language_xml->documentElement, true);
@@ -59,7 +61,7 @@ class Xerxes_Framework_Labels
 
 			if ( file_exists("xsl/labels/$language.xsl") )
 			{
-				$local_xml = new DOMDocument();
+				$local_xml = new \DOMDocument();
 				$local_xml->load("xsl/labels/$language.xsl");
 				$import = $this->xml->importNode($local_xml->documentElement, true);
 				$this->xml->documentElement->appendChild($import);			

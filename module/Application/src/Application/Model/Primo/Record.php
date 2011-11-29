@@ -1,5 +1,10 @@
 <?php
 
+namespace Application\Model\Primo;
+
+use Xerxes,
+	Xerxes\Utility\Parser;
+
 /**
  * Primo Record
  * 
@@ -11,7 +16,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Primo_Record extends Xerxes_Record
+class Record extends Xerxes\Record
 {
 	protected $source = "primo";
 	
@@ -83,7 +88,7 @@ class Xerxes_Model_Primo_Record extends Xerxes_Record
 			
 			foreach ( $authors as $author )
 			{
-				array_push($this->authors, new Xerxes_Record_Author($author, null, "personal"));
+				array_push($this->authors, new Xerxes\Record\Author($author, null, "personal"));
 			}
 		}		
 		
@@ -116,7 +121,7 @@ class Xerxes_Model_Primo_Record extends Xerxes_Record
 			{
 				if ( strpos($this->abstract, 'the full-text of this article') !== false )
 				{
-					$this->abstract = Xerxes_Framework_Parser::removeLeft($this->abstract, 'Abstract:');
+					$this->abstract = Parser::removeLeft($this->abstract, 'Abstract:');
 				}
 			}
 		}
@@ -129,7 +134,7 @@ class Xerxes_Model_Primo_Record extends Xerxes_Record
 			
 			foreach ( $topics as $topic )
 			{
-				$subject_object = new Xerxes_Record_Subject();
+				$subject_object = new Xerxes\Record\Subject();
 				$subject_object->value = $topic;
 				$subject_object->display = $topic;
 				

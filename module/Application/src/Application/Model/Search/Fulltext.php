@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Model\Search;
+
+use Xerxes\Utility\DataValue;
+
 /**
  * Database Value Full Text
  *
@@ -12,7 +16,7 @@
  */
 
 
-class Xerxes_Model_Search_Fulltext extends Xerxes_Framework_DataValue
+class Fulltext extends DataValue
 {
 	public $issn;
 	public $title;

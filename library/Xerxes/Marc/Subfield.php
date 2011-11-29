@@ -1,5 +1,7 @@
 <?php
 
+namespace Xerxes\Marc;
+
 /**
  * MARC Subfield
  * 
@@ -11,7 +13,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Marc_SubField extends Xerxes_Marc_Field 
+class SubField extends Field 
 {
 	public $code;
 	public $value;

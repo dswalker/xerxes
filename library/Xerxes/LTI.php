@@ -1,5 +1,9 @@
 <?php
 
+namespace Xerxes;
+
+use Xerxes\Utility\Parser;
+
 /**
  * Convenience class for verifying and accessing properties of basic lti launch request
  *
@@ -11,15 +15,13 @@
  * @license http://www.gnu.org/licenses/
  */
 
-require_once dirname(__FILE__) . '/../OAuth.php';
-
-class Xerxes_LTI 
+class LTI 
 {
 	protected $request;
 	
 	public function __construct( $key, $secret )
 	{
-		$request = OAuthRequest::from_request();
+		$request = \OAuthRequest::from_request();
 	
 		$oauth_consumer_key = $request->get_parameter("oauth_consumer_key");
 	
@@ -27,20 +29,20 @@ class Xerxes_LTI
 	
 		if ( $oauth_consumer_key == null)
 		{
-			throw new Exception("Missing oauth_consumer_key in request");
+			throw new \Exception("Missing oauth_consumer_key in request");
 		}
 		
 		if ( $oauth_consumer_key != $key )
 		{
-			throw new Exception("oauth_consumer_key doesn't match supplied key");
+			throw new \Exception("oauth_consumer_key doesn't match supplied key");
 		}
 		
 		// verify the message signature
 		
 		$store = new TrivialOAuthDataStore( $oauth_consumer_key, $secret );
-		$server = new OAuthServer( $store );
+		$server = new \OAuthServer( $store );
 		
-		$method = new OAuthSignatureMethod_HMAC_SHA1();
+		$method = new \OAuthSignatureMethod_HMAC_SHA1();
 		$server->add_signature_method( $method );
 
 		$server->verify_request( $request );
@@ -76,7 +78,7 @@ class Xerxes_LTI
 	
 	public function toXML()
 	{
-		$xml = new DOMDocument();
+		$xml = new \DOMDocument();
 		$xml->loadXML("<lti />");
 		
 		$this->appendElement($xml, "id", $this->getID());
@@ -92,7 +94,7 @@ class Xerxes_LTI
 	
 	private function appendElement(&$xml, $id, $value)
 	{
-		$new = $xml->createElement($id, Xerxes_Framework_Parser::escapeXml($value));
+		$new = $xml->createElement($id, Parser::escapeXml($value));
 		$xml->documentElement->appendChild($new);
 	}
 }
@@ -101,7 +103,7 @@ class Xerxes_LTI
  * A Trivial memory-based store - no support for tokens
  */
 
-class TrivialOAuthDataStore extends OAuthDataStore
+class TrivialOAuthDataStore extends \OAuthDataStore
 {
     private $consumers = array();
 
@@ -114,13 +116,13 @@ class TrivialOAuthDataStore extends OAuthDataStore
     {
         if ( strpos($consumer_key, "http://" ) === 0 )
         {
-            $consumer = new OAuthConsumer($consumer_key,"secret", NULL);
+            $consumer = new \OAuthConsumer($consumer_key,"secret", NULL);
             return $consumer;
         }
         
         if ( $this->consumers[$consumer_key] )
         {
-            $consumer = new OAuthConsumer($consumer_key,$this->consumers[$consumer_key], NULL);
+            $consumer = new \OAuthConsumer($consumer_key,$this->consumers[$consumer_key], NULL);
             return $consumer;
         }
         return NULL;
@@ -128,7 +130,7 @@ class TrivialOAuthDataStore extends OAuthDataStore
 
     public function lookup_token($consumer, $token_type, $token) 
     {
-        return new OAuthToken($consumer, "");
+        return new \OAuthToken($consumer, "");
     }
 
     public function lookup_nonce($consumer, $token, $nonce, $timestamp) 

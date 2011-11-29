@@ -1,5 +1,9 @@
 <?php
 
+namespace Xerxes;
+
+use Zend\Http\Client;
+
 /**
  * Search and retrieve records from worldcat api
  *
@@ -11,7 +15,7 @@
  * @package Xerxes
  */
 
-class Xerxes_WorldCat
+class WorldCat
 {
 	private $client;
 	private $base = "http://www.worldcat.org/webservices/catalog/search/sru";
@@ -24,7 +28,7 @@ class Xerxes_WorldCat
 	private $key ;	// api access key
 	private $frbr = true; // whether workset groupings should be on
 
-	public function __construct($key, Zend_Http_Client $client = null)
+	public function __construct($key, Client $client = null)
 	{
 		$this->key = $key;
 
@@ -34,7 +38,7 @@ class Xerxes_WorldCat
 		}
 		else
 		{
-			$this->client = new Zend_Http_Client();
+			$this->client = new Client();
 		}	
 	}
 
@@ -108,7 +112,7 @@ class Xerxes_WorldCat
 	{
 		if ( $id == "" )
 		{
-			throw new Exception( "no number supplied" );
+			throw new \Exception( "no number supplied" );
 		}
 		
 		$strQuery = "srw.no=\"$id\"";
@@ -128,7 +132,7 @@ class Xerxes_WorldCat
 	
 	public function holdings( $id, $strLibraries, $iStart = 1, $iMax = 10 )
 	{
-		if ( $id == "" ) throw new Exception( "no oclc number supplied" );
+		if ( $id == "" ) throw new \Exception( "no oclc number supplied" );
 		if ( $iStart == null ) $iStart = 1;
 		
 		$this->url = "http://worldcat.org/webservices/catalog/content/libraries/" . $id;
@@ -143,12 +147,12 @@ class Xerxes_WorldCat
 		}
 		else
 		{
-			throw new Exception("holdings lookup requires a list of libraries");
+			throw new \Exception("holdings lookup requires a list of libraries");
 		}
 		
 		$results = $this->fetchResults($this->url);
 		
-		$objXml = new DOMDocument();
+		$objXml = new \DOMDocument();
 		$objXml->loadXML( $results );
 		
 		return $objXml;
@@ -207,10 +211,10 @@ class Xerxes_WorldCat
 		
 		$results = $this->fetchResults($this->url);
 		
-		$objXml = new DOMDocument();
+		$objXml = new \DOMDocument();
 		$objXml->loadXML( $results );
 
-		$objXPath = new DOMXPath( $objXml );
+		$objXPath = new \DOMXPath( $objXml );
 		$objXPath->registerNameSpace( "zs", "http://www.loc.gov/zing/srw/" );
 		
 		// check for diagnostic errors
@@ -232,7 +236,7 @@ class Xerxes_WorldCat
 				}
 			}
 			
-			throw new Exception( $strError );
+			throw new \Exception( $strError );
 		}
 		
 		// extract total hits
@@ -250,7 +254,7 @@ class Xerxes_WorldCat
 		
 		if ( $response->isError() || $response->getBody() == "")
 		{
-			throw new Exception( "Could not connect to WorldCat database." );
+			throw new \Exception( "Could not connect to WorldCat database." );
 		}
 		else
 		{

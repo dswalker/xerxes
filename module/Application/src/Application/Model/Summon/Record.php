@@ -1,5 +1,10 @@
 <?php
 
+namespace Application\Model\Summon;
+
+use Xerxes,
+	Xerxes\Utility\Parser;
+
 /**
  * Extract properties for books, articles, and dissertations from Summon
  * 
@@ -11,7 +16,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Summon_Record extends Xerxes_Record
+class Record extends Xerxes\Record
 {
 	private $original_array;
 
@@ -96,7 +101,7 @@ class Xerxes_Model_Summon_Record extends Xerxes_Record
 		
 		if ( 100 + strlen($openurl) - strlen($direct_link) > 0 )
 		{
-			$this->links[] = new Xerxes_Record_Link($direct_link, Xerxes_Record_Link::ONLINE);
+			$this->links[] = new Xerxes\Record\Link($direct_link, Xerxes\Record\Link::ONLINE);
 		}
 		
 		// peer reviewed
@@ -112,9 +117,9 @@ class Xerxes_Model_Summon_Record extends Xerxes_Record
 		{
 			foreach ( $document['SubjectTerms'] as $subject)
 			{
-				$subject = Xerxes_Framework_Parser::toSentenceCase($subject);
+				$subject = Parser::toSentenceCase($subject);
 				
-				$subject_object = new Xerxes_Record_Subject();
+				$subject_object = new Xerxes\Record\Subject();
 				$subject_object->display = $subject;
 				$subject_object->value = $subject;
 				array_push($this->subjects, $subject_object);
@@ -152,7 +157,7 @@ class Xerxes_Model_Summon_Record extends Xerxes_Record
 		{
 			foreach ( $document['Author_xml'] as $author )
 			{
-				$author_object = new Xerxes_Record_Author();
+				$author_object = new Xerxes\Record\Author();
 				
 				if ( array_key_exists('givenname', $author) )
 				{
@@ -163,7 +168,7 @@ class Xerxes_Model_Summon_Record extends Xerxes_Record
 				elseif ( array_key_exists('fullname', $author) )
 				{
 					
-					$author_object = new Xerxes_Record_Author($author['fullname'], null, 'personal');
+					$author_object = new Xerxes\Record\Author($author['fullname'], null, 'personal');
 				}
 				
 				array_push($this->authors, $author_object);

@@ -1,5 +1,7 @@
 <?php
 
+namespace Xerxes\Record;
+
 /**
  * Record Author
  * 
@@ -11,7 +13,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Record_Author
+class Author
 {
 	public $first_name;
 	public $last_name;

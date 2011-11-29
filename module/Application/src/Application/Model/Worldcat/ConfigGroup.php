@@ -1,5 +1,7 @@
 <?php
 
+namespace Application\Model\Worldcat;
+
 /**
  * Worldcat group config
  *
@@ -11,7 +13,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Worldcat_ConfigGroup
+class ConfigGroup
 {
 	public $source;
 	public $type;

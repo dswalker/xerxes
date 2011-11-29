@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Model\Saved;
+
+use Xerxes\Utility\DataValue;
+
 /**
  * Saved Record
  *
@@ -12,7 +16,7 @@
  */
 
 
-class Xerxes_Model_Saved_Record extends Xerxes_Framework_DataValue
+class Record extends DataValue
 {
 	public $id;
 	public $source;

@@ -1,5 +1,10 @@
 <?php
 
+namespace Application\Model\DataMap;
+
+use Xerxes\Utility\DataMap,
+	Application\Model\Search\Fulltext;
+
 /**
  * Database access mapper for sfx institutioanl holdings (google scholar) full-text cache
  *
@@ -11,7 +16,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_DataMap_Availability extends Xerxes_Framework_DataMap
+class Availability extends DataMap
 {
 	/**
 	 * Delete all records from the sfx table
@@ -26,7 +31,7 @@ class Xerxes_Model_DataMap_Availability extends Xerxes_Framework_DataMap
 	 * Get a list of journals from the sfx table by issn
 	 *
 	 * @param mixed $issn		[string or array] ISSN or multiple ISSNs
-	 * @return array			array of Xerxes_Model_Search_Fulltext objects
+	 * @return array			array of Fulltext objects
 	 */
 	
 	public function getFullText($issn)
@@ -37,7 +42,7 @@ class Xerxes_Model_DataMap_Availability extends Xerxes_Framework_DataMap
 		
 		if ( is_array( $issn ) )
 		{
-			if ( count( $issn ) == 0 ) throw new Exception( "issn query with no values" );
+			if ( count( $issn ) == 0 ) throw new \Exception( "issn query with no values" );
 			
 			$x = 1;
 			$arrParams = array ( );
@@ -71,7 +76,7 @@ class Xerxes_Model_DataMap_Availability extends Xerxes_Framework_DataMap
 		
 		foreach ( $arrResults as $arrResult )
 		{
-			$objFull = new Xerxes_Model_Search_Fulltext( );
+			$objFull = new Fulltext();
 			$objFull->load( $arrResult );
 			
 			array_push( $arrFull, $objFull );
@@ -81,13 +86,13 @@ class Xerxes_Model_DataMap_Availability extends Xerxes_Framework_DataMap
 	}
 	
 	/**
-	 * Add a Xerxes_Model_Search_Fulltext object to the database
+	 * Add a Fulltext object to the database
 	 *
-	 * @param Xerxes_Model_Search_Fulltext $objValueObject
+	 * @param Fulltext $objValueObject
 	 * @return int status
 	 */
 	
-	public function addFulltext(Xerxes_Model_Search_Fulltext $objValueObject)
+	public function addFulltext(Fulltext $objValueObject)
 	{
 		return $this->doSimpleInsert( "xerxes_sfx", $objValueObject );
 	}

@@ -1,13 +1,17 @@
 <?php
 
-class Xerxes_View_Helper_Navigation
+namespace Application\View;
+
+use Xerxes\Utility\Registry;
+
+class Navigation
 {
 	protected $request;
 	
-	public function __construct()
+	public function __construct(Request $request)
 	{
-		$this->request = Xerxes_Framework_Request::getInstance();
-		$this->registry = Xerxes_Framework_Registry::getInstance();
+		$this->request = $request;
+		$this->registry = Registry::getInstance();
 	}
 	
 	public function myAccountLink()

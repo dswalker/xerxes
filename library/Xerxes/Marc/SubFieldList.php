@@ -1,5 +1,7 @@
 <?php
 
+namespace Xerxes\Marc;
+
 /**
  * MARC Datafield
  * 
@@ -11,6 +13,6 @@
  * @package Xerxes
  */
 
-class Xerxes_Marc_SubFieldList extends Xerxes_Marc_FieldList 
+class SubFieldList extends FieldList 
 {
 }

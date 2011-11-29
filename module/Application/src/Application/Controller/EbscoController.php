@@ -1,11 +1,15 @@
 <?php
 
-class Xerxes_Controller_Ebsco extends Xerxes_Controller_Search
+namespace Application\Controller;
+
+use Application\Model\Ebsco\Engine;
+
+class EbscoController extends SearchController
 {
 	protected $id = "ebsco";
 	
 	protected function getEngine()
 	{
-		return new Xerxes_Model_Ebsco_Engine();
+		return new Engine();
 	}
 }

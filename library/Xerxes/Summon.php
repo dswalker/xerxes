@@ -1,6 +1,10 @@
 <?php
 
-class Xerxes_Summon
+namespace Xerxes;
+
+use Zend\Http\Client;
+
+class Summon
 {
 	protected $client;
 	protected $host;
@@ -25,13 +29,13 @@ class Xerxes_Summon
 		}
 		else 
 		{
-			$this->client = new Zend_Http_Client();
+			$this->client = new Client();
 		}
 	}
 	
 	public function setDebugging($value)
 	{
-		$this->debug = (bool) $vaue;
+		$this->debug = (bool) $value;
 	}
 	
 	/**

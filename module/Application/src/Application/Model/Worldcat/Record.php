@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Model\Worldcat;
+
+use Xerxes\Record\Bibliographic;
+
 /**
  * Extract bibliographic properties from Worldcat
  * 
@@ -11,7 +15,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Worldcat_Record extends Xerxes_Record_Bibliographic
+class Record extends Bibliographic
 {
 	protected $source = "worldcat";
 	

@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Model\Databases;
+
+use Application\Model\DataMap\Databases;
+
 /**
  * Metalib KB
  *
@@ -11,7 +15,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Metalib_KnowledgeBase
+class KnowledgeBase
 {
 	private $user;
 	private $lang;
@@ -24,13 +28,13 @@ class Xerxes_Model_Metalib_KnowledgeBase
 	
 	public function getCategories()
 	{
-		$databases = new Xerxes_Model_DataMap_Databases();
+		$databases = new Databases();
 		return $databases->getCategories($this->lang);
 	}
 	
 	public function getSubject($subject)
 	{
-		$databases = new Xerxes_Model_DataMap_Databases();
+		$databases = new Databases();
 		return $databases->getSubject($subject, $this->lang);		
 	}
 	

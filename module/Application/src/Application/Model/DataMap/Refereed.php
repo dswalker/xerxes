@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Model\DataMap;
+
+use Xerxes\Utility\DataMap;
+
 /**
  * Database access mapper for peer-reviewed data
  *
@@ -11,7 +15,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_DataMap_Refereed extends Xerxes_Framework_DataMap
+class Refereed extends DataMap
 {
 	/**
 	 * Delete all records for refereed journals
@@ -25,10 +29,10 @@ class Xerxes_Model_DataMap_Refereed extends Xerxes_Framework_DataMap
 	/**
 	 * Add a refereed title
 	 * 
-	 * @param Xerxes_Model_Search_Refereed $objTitle peer reviewed journal object
+	 * @param Refereed $objTitle peer reviewed journal object
 	 */
 	
-	public function addRefereed(Xerxes_Model_Search_Refereed $objTitle)
+	public function addRefereed(Refereed $objTitle)
 	{
 		$objTitle->issn = str_replace("-", "", $objTitle->issn);
 		$this->doSimpleInsert("xerxes_refereed", $objTitle);
@@ -37,7 +41,7 @@ class Xerxes_Model_DataMap_Refereed extends Xerxes_Framework_DataMap
 	/**
 	 * Get all refereed data
 	 * 
-	 * @return array of Xerxes_Model_Search_Refereed objects
+	 * @return array of Refereed objects
 	 */
 	
 	public function getAllRefereed()
@@ -47,7 +51,7 @@ class Xerxes_Model_DataMap_Refereed extends Xerxes_Framework_DataMap
 		
 		foreach ( $arrResults as $arrResult )
 		{
-			$objPeer = new Xerxes_Model_Search_Refereed();
+			$objPeer = new Refereed();
 			$objPeer->load( $arrResult );
 			
 			array_push( $arrPeer, $objPeer );
@@ -60,7 +64,7 @@ class Xerxes_Model_DataMap_Refereed extends Xerxes_Framework_DataMap
 	 * Get a list of journals from the refereed table
 	 *
 	 * @param mixed $issn		[string or array] ISSN or multiple ISSNs
-	 * @return array			array of Xerxes_Model_Search_Refereed objects
+	 * @return array			array of Refereed objects
 	 */
 	
 	public function getRefereed($issn)
@@ -71,7 +75,7 @@ class Xerxes_Model_DataMap_Refereed extends Xerxes_Framework_DataMap
 		
 		if ( is_array( $issn ) )
 		{
-			if ( count( $issn ) == 0 )	throw new Exception( "issn query with no values" );
+			if ( count( $issn ) == 0 )	throw new \Exception( "issn query with no values" );
 			
 			$x = 1;
 			$arrParams = array ( );
@@ -105,7 +109,7 @@ class Xerxes_Model_DataMap_Refereed extends Xerxes_Framework_DataMap
 		
 		foreach ( $arrResults as $arrResult )
 		{
-			$objPeer = new Xerxes_Model_Search_Refereed( );
+			$objPeer = new Refereed( );
 			$objPeer->load( $arrResult );
 			
 			array_push( $arrPeer, $objPeer );

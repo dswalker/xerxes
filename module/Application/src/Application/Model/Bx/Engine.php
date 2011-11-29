@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Model\Bx;
+
+use Xerxes\Utility\Parser;
+
 /**
  * Search Engine
  *
@@ -11,7 +15,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Bx_Engine
+class Engine
 {
 	protected $token;
 	
@@ -46,14 +50,14 @@ class Xerxes_Model_Bx_Engine
 		
 		try 
 		{
-			$xml = Xerxes_Framework_Parser::request($url, 4);
+			$xml = Parser::request($url, 4);
 			
 			if ( $xml == "" )
 			{
-				throw new Exception("No response from bx service");
+				throw new \Exception("No response from bx service");
 			}
 		}
-		catch ( Exception $e )
+		catch ( \Exception $e )
 		{
 			// just issue the exception as a warning
 			
@@ -63,18 +67,18 @@ class Xerxes_Model_Bx_Engine
 		
 		// header("Content-type: text/xml"); echo $xml; exit;
 		
-		$doc = new DOMDocument();
+		$doc = new \DOMDocument();
 		$doc->recover = true;
 		$doc->loadXML($xml);
 		
-		$xpath = new DOMXPath($doc);
+		$xpath = new \DOMXPath($doc);
 		$xpath->registerNamespace("ctx", "info:ofi/fmt:xml:xsd:ctx");
 		
 		$records = $xpath->query("//ctx:context-object");
 		
 		foreach ( $records as $record )
 		{
-			$bx_record = new Xerxes_Model_Bx_Record();
+			$bx_record = new Record();
 			$bx_record->loadXML($record);
 			array_push($bx_records, $bx_record);
 		}

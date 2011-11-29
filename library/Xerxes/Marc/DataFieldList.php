@@ -1,5 +1,7 @@
 <?php
 
+namespace Xerxes\Marc;
+
 /**
  * MARC DatafieldList
  * 
@@ -11,13 +13,13 @@
  * @package Xerxes
  */
 
-class Xerxes_Marc_DataFieldList extends Xerxes_Marc_FieldList 
+class DataFieldList extends FieldList 
 {
 	public function subfield($code, $specified_order = false) // convenience method
 	{
 		if ( count($this->list) == 0 )
 		{
-			return new Xerxes_Marc_SubField(); // return empty subfield object
+			return new SubField(); // return empty subfield object
 		}
 		else
 		{
@@ -31,7 +33,7 @@ class Xerxes_Marc_DataFieldList extends Xerxes_Marc_FieldList
 				
 				if ( $subfield == null )
 				{
-					return new Xerxes_Marc_SubField(); // return empty subfield object
+					return new SubField(); // return empty subfield object
 				}
 				else
 				{

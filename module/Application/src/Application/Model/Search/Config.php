@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Model\Search;
+
+use Xerxes\Utility\Registry;
+
 /**
  * Search Config
  *
@@ -11,7 +15,7 @@
  * @package Xerxes
  */
 
-abstract class Xerxes_Model_Search_Config extends Xerxes_Framework_Registry
+abstract class Config extends Registry
 {
 	private $facets = array();
 	private $fields = array();

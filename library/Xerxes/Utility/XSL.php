@@ -1,5 +1,7 @@
 <?php
 
+namespace Xerxes\Utility;
+
 /**
  * Utility class for XSLT to allow distro/local overriding
  * 
@@ -12,7 +14,7 @@
  * @package  Xerxes_Framework
  */ 
 
-class Xerxes_Framework_XSL
+class XSL
 {
 	private $distro_xsl_dir;
 	private $local_xsl_dir;
@@ -47,18 +49,18 @@ class Xerxes_Framework_XSL
 				
 	protected function transform ( $xml, $path_to_xsl, $params = null, $import_array = array(), $to_string = true )
 	{
-		if ( $path_to_xsl == "") throw new Exception("no stylesheet supplied");
+		if ( $path_to_xsl == "") throw new \Exception("no stylesheet supplied");
 		
 		// make sure we have a domdocument
 		
 		if ( is_string($xml) )
 		{
-			$xml = Xerxes_Framework_Parser::convertToDOMDocument($xml);
+			$xml = Parser::convertToDOMDocument($xml);
 		}
 		
 		// create xslt processor
 		
-		$processor = new XsltProcessor();
+		$processor = new \XsltProcessor();
 		$processor->registerPhpFunctions();
 
 		// add parameters
@@ -120,14 +122,14 @@ class Xerxes_Framework_XSL
 		if (! ( $local_exists || $distro_exists) )
 		{
 			// throw new Exception("No xsl stylesheet found: $local_path || $distro_path");
-			throw new Exception("No xsl stylesheet found: $path_to_file");
+			throw new \Exception("No xsl stylesheet found: $path_to_file");
 		}			
 		
 		
 		### now create the skeleton XSLT file that will hold references to both
 		### the distro and the local files
 		
-		$generated_xsl = new DOMDocument();
+		$generated_xsl = new \DOMDocument();
 		$generated_xsl->load( dirname(__FILE__) . "/xsl/dynamic_skeleton.xsl");
 		
 		// prepend imports to this, to put them at the top of the file. 

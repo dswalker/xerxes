@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Model\Authentication;
+
+use Xerxes\Utility\Parser;
+
 /**
  * CAS authentication
  * 
@@ -11,7 +15,7 @@
  * @license http://www.gnu.org/licenses/
  */
 
-class Xerxes_Model_Authentication_CAS extends Xerxes_Model_Authentication_Abstract 
+class CAS extends AbstractAuthentication 
 {
 	/**
 	 * Redirect to the cas login service
@@ -35,7 +39,7 @@ class Xerxes_Model_Authentication_CAS extends Xerxes_Model_Authentication_Abstra
 		
 		if ($strUsername === false )
 		{
-			throw new Exception("Could not validate user against CAS server");
+			throw new \Exception("Could not validate user against CAS server");
 		}
 		else
 		{
@@ -71,7 +75,7 @@ class Xerxes_Model_Authentication_CAS extends Xerxes_Model_Authentication_Abstra
 			
 		$strUrl = $configCasValidate . "?ticket=" . $strTicket . "&service=" . urlencode($this->validate_url);
 		
-		$strResults = Xerxes_Framework_Parser::request( $strUrl );		
+		$strResults = Parser::request( $strUrl );		
 		
 		// validate is plain text
 		
@@ -88,14 +92,14 @@ class Xerxes_Model_Authentication_CAS extends Xerxes_Model_Authentication_Abstra
 			}
 			else
 			{
-				throw new Exception("Could not parse CAS validation response.");
+				throw new \Exception("Could not parse CAS validation response.");
 			}
 		}	
 		elseif ( $service == "serviceValidate" || $service == "proxyValidate")
 		{
 			// these are XML based
 			
-			$objXml = new DOMDocument();
+			$objXml = new \DOMDocument();
 			$objXml->loadXML($strResults);
 			
 			$strCasNamespace = "http://www.yale.edu/tp/cas";
@@ -111,7 +115,7 @@ class Xerxes_Model_Authentication_CAS extends Xerxes_Model_Authentication_Abstra
 				}
 				else
 				{
-					throw new Exception("CAS validation response missing username value");
+					throw new \Exception("CAS validation response missing username value");
 				}
 			}
 			elseif ( $objFailure != null )
@@ -120,17 +124,17 @@ class Xerxes_Model_Authentication_CAS extends Xerxes_Model_Authentication_Abstra
 				
 				if ( $objFailure->getAttribute("code") == "INVALID_REQUEST")
 				{
-					throw new Exception("Invalid request to CAS server: " . $objFailure->nodeValue);
+					throw new \Exception("Invalid request to CAS server: " . $objFailure->nodeValue);
 				}
 			}
 			else
 			{
-				throw new Exception("Could not parse CAS validation response.");
+				throw new \Exception("Could not parse CAS validation response.");
 			}
 		}
 		else
 		{
-			throw new Exception("Unsupported CAS version.");
+			throw new \Exception("Unsupported CAS version.");
 		}
 		
 		// if we got this far, the request was invalid

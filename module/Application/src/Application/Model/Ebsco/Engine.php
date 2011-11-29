@@ -1,5 +1,10 @@
 <?php
 
+namespace Application\Model\Ebsco;
+
+use Application\Model\Search,
+	Xerxes\Utility\Parser;
+
 /**
  * Ebsco Search Engine
  * 
@@ -11,7 +16,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Ebsco_Engine extends Xerxes_Model_Search_Engine 
+class Engine extends Search\Engine 
 {
 	protected $username; // ebsco username
 	protected $password; // ebsco password
@@ -36,7 +41,7 @@ class Xerxes_Model_Ebsco_Engine extends Xerxes_Model_Search_Engine
 	 * @return int
 	 */	
 	
-	public function getHits( Xerxes_Model_Search_Query $search )
+	public function getHits( Query $search )
 	{
 		// get the results
 		
@@ -50,15 +55,15 @@ class Xerxes_Model_Ebsco_Engine extends Xerxes_Model_Search_Engine
 	/**
 	 * Search and return results
 	 * 
-	 * @param Xerxes_Model_Search_Query $search		search object
+	 * @param Query $search		search object
 	 * @param int $start							[optional] starting record number
 	 * @param int $max								[optional] max records
 	 * @param string $sort							[optional] sort order
 	 * 
-	 * @return Xerxes_Model_Search_Results
+	 * @return Results
 	 */	
 	
-	public function searchRetrieve( Xerxes_Model_Search_Query $search, $start = 1, $max = 10, $sort = "")
+	public function searchRetrieve( Query $search, $start = 1, $max = 10, $sort = "")
 	{
 		// get the results
 		
@@ -76,7 +81,7 @@ class Xerxes_Model_Ebsco_Engine extends Xerxes_Model_Search_Engine
 	 * Return an individual record
 	 * 
 	 * @param string	record identifier
-	 * @return Xerxes_Model_Solr_Results
+	 * @return Results
 	 */
 	
 	public function getRecord( $id )
@@ -107,32 +112,32 @@ class Xerxes_Model_Ebsco_Engine extends Xerxes_Model_Search_Engine
 	/**
 	 * Return the search engine config
 	 * 
-	 * @return Xerxes_Model_Ebsco_Config
+	 * @return Config
 	 */		
 	
 	public function getConfig()
 	{
-		return Xerxes_Model_Ebsco_Config::getInstance();
+		return Config::getInstance();
 	}		
 	
 	/**
 	 * Do the actual fetch of an individual record
 	 * 
 	 * @param string	record identifier
-	 * @return Xerxes_Model_Solr_Results
+	 * @return Results
 	 */	
 	
 	protected function doGetRecord($id)
 	{
 		if ( ! strstr($id, "-") )
 		{
-			throw new Exception("could not find record");
+			throw new \Exception("could not find record");
 		}
 		
 		// database and id come in on same value, so split 'em
 		
-		$database = Xerxes_Framework_Parser::removeRight($id,"-");
-		$id = Xerxes_Framework_Parser::removeLeft($id,"-");
+		$database = Parser::removeRight($id,"-");
+		$id = Parser::removeLeft($id,"-");
 		
 		// get results
 		
@@ -150,7 +155,7 @@ class Xerxes_Model_Ebsco_Engine extends Xerxes_Model_Search_Engine
 	 * @param int $max								[optional] max records
 	 * @param string $sort							[optional] sort order
 	 * 
-	 * @return Xerxes_Model_Search_Results
+	 * @return Results
 	 */		
 	
 	protected function doSearch( $search, $database, $start, $max, $sort = "relevance")
@@ -166,7 +171,7 @@ class Xerxes_Model_Ebsco_Engine extends Xerxes_Model_Search_Engine
 		
 		$query = "";
 		
-		if ( $search instanceof Xerxes_Model_Search_Query )
+		if ( $search instanceof Search\Query )
 		{
 			// just one term for now
 			
@@ -215,7 +220,7 @@ class Xerxes_Model_Ebsco_Engine extends Xerxes_Model_Search_Engine
 				
 				if ( $databases_xml == "" )
 				{
-					throw new Exception("No databases defined");
+					throw new \Exception("No databases defined");
 				}
 				
 				foreach ( $databases_xml->database as $database )
@@ -245,25 +250,25 @@ class Xerxes_Model_Ebsco_Engine extends Xerxes_Model_Search_Engine
 				
 		// get the xml from ebsco
 		
-		$response = Xerxes_Framework_Parser::request($this->url);
+		$response = Parser::request($this->url);
 		
 		// testing
 		// echo "<pre>$this->url<hr>$response</pre>"; exit;
 		
 		if ( $response == null )
 		{
-			throw new Exception("Could not connect to Ebsco search server");
+			throw new \Exception("Could not connect to Ebsco search server");
 		}
 		
 		// load it in
 		
-		$xml = new DOMDocument();
+		$xml = new \DOMDocument();
 		$xml->recover = true;
 		$xml->loadXML($response);
 		
 		// result set
 		
-		$results = new Xerxes_Model_Search_ResultSet($this->config);
+		$results = new Search\ResultSet($this->config);
 		
 		// get total
 		
@@ -342,20 +347,20 @@ class Xerxes_Model_Ebsco_Engine extends Xerxes_Model_Search_Engine
 	 * Parse records out of the response
 	 *
 	 * @param DOMDocument $xml
-	 * @return array of Xerxes_Model_Ebsco_Record's
+	 * @return array of Record's
 	 */
 	
 	protected function extractRecords(DOMDocument $xml)
 	{
 		$records = array();
 
-		$xpath = new DOMXPath($xml);
+		$xpath = new \DOMXPath($xml);
 		
 		$records_object = $xpath->query("//rec");
 		
 		foreach ( $records_object as $record )
 		{
-			$xerxes_record = new Xerxes_Model_Ebsco_Record();
+			$xerxes_record = new Record();
 			$xerxes_record->loadXML($record);
 			array_push($records, $xerxes_record);
 		}
@@ -367,12 +372,12 @@ class Xerxes_Model_Ebsco_Engine extends Xerxes_Model_Search_Engine
 	 * Parse facets out of the response
 	 *
 	 * @param DOMDocument $dom
-	 * @return Xerxes_Model_Search_Facets
+	 * @return Facets
 	 */
 	
 	protected function extractFacets(DOMDocument $dom)
 	{
-		$facets = new Xerxes_Model_Search_Facets();
+		$facets = new Search\Facets();
 
 		$xml = simplexml_import_dom($dom->documentElement);
 		
@@ -384,7 +389,7 @@ class Xerxes_Model_Ebsco_Engine extends Xerxes_Model_Search_Engine
 		{
 			$databases_facet_name = $this->config->getConfig("DATABASES_FACET_NAME", false, "Databases");
 				
-			$group = new Xerxes_Model_Search_FacetGroup("databases");
+			$group = new Search\FacetGroup("databases");
 			$group->name = "databases";
 			$group->public = $databases_facet_name;
 			
@@ -411,9 +416,9 @@ class Xerxes_Model_Ebsco_Engine extends Xerxes_Model_Search_Engine
 			
 			foreach ( $databases_array as $database_id => $database_hits)
 			{
-				$facet = new Xerxes_Model_Search_Facet();
+				$facet = new Search\Facet();
 				$facet->name = $this->config->getDatabaseName($database_id);
-				$facet->count = Xerxes_Framework_Parser::number_format( $database_hits );
+				$facet->count = Parser::number_format( $database_hits );
 				$facet->key = $database_id;
 					
 				$group->addFacet($facet);

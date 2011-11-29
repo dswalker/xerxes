@@ -1,5 +1,7 @@
 <?php
 
+namespace Xerxes\Record;
+
 /**
  * Record Subject
  * 
@@ -11,7 +13,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Record_Subject
+class Subject
 {
 	public $value;
 	public $display;

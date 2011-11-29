@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Model\Search;
+
+use Xerxes\Utility\DataValue;
+
 /**
  * Database Value Refereed
  *
@@ -11,7 +15,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Search_Refereed extends Xerxes_Framework_DataValue
+class Refereed extends DataValue
 {
 	public $issn;
 	public $title;

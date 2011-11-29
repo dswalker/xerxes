@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Model\Saved\Record;
+
+use Xerxes\Utility\DataValue;
+
 /**
  * Database Value Record Format
  *
@@ -12,7 +16,7 @@
  */
 
 
-class Xerxes_Model_Saved_Record_Format extends Xerxes_Framework_DataValue
+class Format extends DataValue
 {
 	public $format;
 	public $total;

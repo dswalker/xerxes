@@ -1,5 +1,10 @@
 <?php
 
+namespace Application\Model\Saved;
+
+use Application\Model\Search,
+	Application\Model\DataMap\SavedRecords;
+
 /**
  * Saved Records
  * 
@@ -11,7 +16,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Saved_Engine extends Xerxes_Model_Search_Engine 
+class Engine extends Search\Engine 
 {
 	private $datamap; // data map
 	
@@ -23,7 +28,7 @@ class Xerxes_Model_Saved_Engine extends Xerxes_Model_Search_Engine
 	{
 		parent::__construct();
 		
-		$this->datamap = new Xerxes_Model_DataMap_SavedRecords();
+		$this->datamap = new SavedRecords();
 	}
 
 	/**
@@ -32,22 +37,22 @@ class Xerxes_Model_Saved_Engine extends Xerxes_Model_Search_Engine
 	 * @return int
 	 */		
 	
-	public function getHits( Xerxes_Model_Search_Query $search )
+	public function getHits( Query $search )
 	{
 	}
 
 	/**
 	 * Search and return results
 	 * 
-	 * @param Xerxes_Model_Search_Query $search		search object
+	 * @param Query $search		search object
 	 * @param int $start							[optional] starting record number
 	 * @param int $max								[optional] max records
 	 * @param string $sort							[optional] sort order
 	 * 
-	 * @return Xerxes_Model_Search_Results
+	 * @return Results
 	 */	
 	
-	public function searchRetrieve( Xerxes_Model_Search_Query $search, $start = 1, $max = 10, $sort = "")
+	public function searchRetrieve( Query $search, $start = 1, $max = 10, $sort = "")
 	{
 		return $this->doSearch( $search, $start, $max, $sort);
 	}	
@@ -56,7 +61,7 @@ class Xerxes_Model_Saved_Engine extends Xerxes_Model_Search_Engine
 	 * Return an individual record
 	 * 
 	 * @param string	record identifier
-	 * @return Xerxes_Model_Search_Results
+	 * @return Results
 	 */
 	
 	public function getRecord( $id )
@@ -76,16 +81,16 @@ class Xerxes_Model_Saved_Engine extends Xerxes_Model_Search_Engine
 	
 	public function getConfig()
 	{
-		return Xerxes_Model_Saved_Config::getInstance();
+		return Config::getInstance();
 	}
 	
-	protected function doSearch(Xerxes_Model_Search_Query $search, $start = 1, $max = 10, $sort = "")
+	protected function doSearch(Query $search, $start = 1, $max = 10, $sort = "")
 	{
 		$username = $search->getQueryTerm(0)->phrase;
 		$label = $search->getLimit("label");
 		$format = $search->getLimit("format");
 		
-		$results = new Xerxes_Model_Search_ResultSet($this->config);
+		$results = new Search\ResultSet($this->config);
 		$results->total = $this->datamap->totalRecords($username, $label, $format);
 		
 		// just the hit count please
@@ -118,7 +123,7 @@ class Xerxes_Model_Saved_Engine extends Xerxes_Model_Search_Engine
 			
 			$record->xerxes_record->setRecordID($record->id);
 			
-			$result = new Xerxes_Model_Search_Result($record->xerxes_record, $this->config);
+			$result = new Search\Result($record->xerxes_record, $this->config);
 			
 			$results->addResult($result);
 		}

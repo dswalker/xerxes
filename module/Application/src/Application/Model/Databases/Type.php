@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Model\Databases;
+
+use Xerxes\Utility\DataValue;
+
 /**
  * Database Value Type
  *
@@ -12,7 +16,7 @@
  */
 
 
-class Xerxes_Model_Metalib_Type extends Xerxes_Framework_DataValue
+class Type extends DataValue
 {
 	public $id;
 	public $name;

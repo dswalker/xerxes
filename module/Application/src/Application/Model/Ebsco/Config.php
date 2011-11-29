@@ -1,7 +1,11 @@
 <?php
 
+namespace Application\Model\Ebsco;
+
+use Application\Model\Search;
+
 /**
- * Summon Config
+ * Ebsco Config
  *
  * @author David Walker
  * @copyright 2011 California State University
@@ -11,7 +15,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Ebsco_Config extends Xerxes_Model_Search_Config
+class Config extends Search\Config
 {
 	protected $config_file = "config/ebsco";
 	private static $instance; // singleton pattern
@@ -20,7 +24,7 @@ class Xerxes_Model_Ebsco_Config extends Xerxes_Model_Search_Config
 	{
 		if ( empty( self::$instance ) )
 		{
-			self::$instance = new Xerxes_Model_Ebsco_Config();
+			self::$instance = new Config();
 			$object = self::$instance;
 			$object->init();			
 		}

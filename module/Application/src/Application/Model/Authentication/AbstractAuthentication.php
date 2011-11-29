@@ -1,5 +1,10 @@
 <?php
 
+namespace Application\Model\Authentication;
+
+use Application\Model\DataMap\Users, 
+	Application\Model\DataMap\SavedRecords;
+
 /**
  * An event-based authentication framework
  *
@@ -11,7 +16,7 @@
  * @package Xerxes
  */
 
-abstract class Xerxes_Model_Authentication_Abstract
+abstract class AbstractAuthentication
 {
 	protected $user; // user object
 	public $id; // the id of this auth scheme, set by the factory method invoking it
@@ -23,13 +28,13 @@ abstract class Xerxes_Model_Authentication_Abstract
 	protected $request; // request object
 	protected $response; // response object	
 	
-	public function __construct(Xerxes_Framework_Request $request, Xerxes_Framework_Registry $registry, Xerxes_Framework_Response $response)
+	public function __construct(Request $request, Registry $registry, Response $response)
 	{
 		$this->request = $request;
 		$this->registry = $registry;
 		$this->response = $response;
 		
-		$this->user = new Xerxes_Model_Authentication_User();
+		$this->user = new User();
 		$this->return = $this->request->getProperty("return");
 		
 		$base = $this->registry->getConfig("BASE_URL", true);
@@ -120,8 +125,8 @@ abstract class Xerxes_Model_Authentication_Abstract
 	{
 		// data map
 		
-		$datamap_users = new Xerxes_Model_DataMap_Users();
-		$datamap_records = new Xerxes_Model_DataMap_SavedRecords();
+		$datamap_users = new Users();
+		$datamap_records = new SavedRecords();
 		
 		// if the user was previously active under a local username 
 		// then reassign any saved records to the new username

@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Model\Bx;
+
+use Xerxes\Record\ContextObject;
+
 /**
  * Bx Record
  * 
@@ -11,7 +15,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Bx_Record extends Xerxes_Record_ContextObject 
+class Record extends ContextObject
 {
 	protected $database_name = "bX";
 	

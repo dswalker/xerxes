@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Model\Search;
+
+use Xerxes\Utility\Parser;
+
 /**
  * Search Query Term
  *
@@ -11,7 +15,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Search_QueryTerm
+class QueryTerm
 {
 	public $id;
 	public $boolean;
@@ -90,7 +94,7 @@ class Xerxes_Model_Search_QueryTerm
 	
 	public function toLower()
 	{
-		$this->phrase = Xerxes_Framework_Parser::strtolower($this->phrase);
+		$this->phrase = Parser::strtolower($this->phrase);
 		return $this;
 	}
 	
@@ -185,7 +189,7 @@ class Xerxes_Model_Search_QueryTerm
 			{
 				// the current word is a boolean operator
 				
-				array_push($arrFinal, Xerxes_Framework_Parser::strtoupper($arrWords[$x]));
+				array_push($arrFinal, Parser::strtoupper($arrWords[$x]));
 			}
 			else
 			{

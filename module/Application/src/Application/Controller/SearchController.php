@@ -1,6 +1,15 @@
 <?php
 
-abstract class Xerxes_Controller_Search extends Xerxes_Framework_Controller
+namespace Application\Controller;
+
+use Application\View\Search as SearchHelper,
+	Application\Model\Search\Result,
+	Application\Model\DataMap\SavedRecords,
+	Xerxes\Record,
+	Xerxes\Utility\Parser,
+	Zend\Mvc\Controller\ActionController;
+
+abstract class SearchController extends ActionController
 {
 	protected $id = "search";
 	
@@ -23,7 +32,7 @@ abstract class Xerxes_Controller_Search extends Xerxes_Framework_Controller
 		
 		$this->query = $this->engine->getQuery($this->request);
 		
-		$this->helper = new Xerxes_View_Helper_Search($this->id, $this->engine);
+		$this->helper = new SearchHelper($this->id, $this->engine);
 	}
 	
 	abstract protected function getEngine();
@@ -78,7 +87,7 @@ abstract class Xerxes_Controller_Search extends Xerxes_Framework_Controller
 			// and cache the hit total
 			
 			$total = $this->engine->getHits($this->query);
-			$total = Xerxes_Framework_Parser::number_format($total);
+			$total = Parser::number_format($total);
 			$this->request->setSession($id, (string) $total);
 		}
 		
@@ -180,11 +189,11 @@ abstract class Xerxes_Controller_Search extends Xerxes_Framework_Controller
 		
 		// we essentially create a mock object and add holdings
 		
-		$xerxes_record = new Xerxes_Record();
+		$xerxes_record = new Record();
 		$xerxes_record->setRecordID($id);
 		$xerxes_record->setSource($this->id);
 		
-		$result = new Xerxes_Model_Search_Result($xerxes_record, $this->config);
+		$result = new Result($xerxes_record, $this->config);
 		$result->fetchHoldings();
 		
 		// add to response
@@ -198,7 +207,7 @@ abstract class Xerxes_Controller_Search extends Xerxes_Framework_Controller
 
 	public function save()
 	{
-		$datamap = new Xerxes_Model_DataMap_SavedRecords();
+		$datamap = new SavedRecords();
 		
 		$username = "testing"; // $this->request->getSession("username"); // TODO: with authentication framework
 		$original_id = $this->request->getParam("id");

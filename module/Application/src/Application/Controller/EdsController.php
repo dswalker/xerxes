@@ -1,6 +1,11 @@
 <?php
 
-class Xerxes_Model_EDS_Config extends Xerxes_Model_Ebsco_Config
+namespace Application\Controller;
+
+use Application\Model\Ebsco,
+	Application\Model\Search;
+
+class EDS_Config extends Search\Config
 {
 	protected $config_file = "config/eds";
 	private static $instance; // singleton pattern
@@ -9,7 +14,7 @@ class Xerxes_Model_EDS_Config extends Xerxes_Model_Ebsco_Config
 	{
 		if ( empty( self::$instance ) )
 		{
-			self::$instance = new Xerxes_Model_EDS_Config();
+			self::$instance = new EDS_Config();
 			$object = self::$instance;
 			$object->init();
 		}
@@ -18,21 +23,21 @@ class Xerxes_Model_EDS_Config extends Xerxes_Model_Ebsco_Config
 	}
 }
 
-class Xerxes_Model_EDS_Engine extends Xerxes_Model_Ebsco_Engine 
+class EDS_Engine extends Ebsco\Engine 
 {
 	public function getConfig()
 	{
-		return Xerxes_Model_EDS_Config::getInstance();
+		return EDS_Engine::getInstance();
 	}
 }
 
-class Xerxes_Controller_Eds extends Xerxes_Controller_Search
+class EdsController extends SearchController
 {
 	protected $id = "eds";
 	
 	protected function getEngine()
 	{
-		return new Xerxes_Model_EDS_Engine();
+		return new EDS_Engine();
 	}
 
 	public function results()

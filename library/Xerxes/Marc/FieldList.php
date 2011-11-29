@@ -1,5 +1,7 @@
 <?php
 
+namespace Xerxes\Marc;
+
 /**
  * A generic class for MARC fields, implemented by datafield and subfield list objects
  * 
@@ -11,7 +13,7 @@
  * @package Xerxes
  */
 
-abstract class Xerxes_Marc_FieldList implements Iterator 
+abstract class FieldList implements \Iterator 
 {
 	protected $list = array();
 	protected $position = 0;

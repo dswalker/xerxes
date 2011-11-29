@@ -1,7 +1,11 @@
 <?php
 
+namespace Application\Model\Databases;
+
+use Xerxes\Utility\Parser;
+
 /**
- * Metalib Config
+ * Databases Config
  *
  * @author David Walker
  * @copyright 2011 California State University
@@ -11,23 +15,23 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Metalib_Config extends Xerxes_Model_Search_Config
+class Config extends Config
 {
-	protected $config_file = "config/metalib";
-	private $usergroups = array ( ); // user groups
+	protected $config_file = "config/databases";
+	private $usergroups = array(); // user groups
 	private static $instance; // singleton pattern
 	
 	/**
 	 * Get an instance of the file; Singleton to ensure correct data
 	 *
-	 * @return Xerxes_Model_Metalib_Config
+	 * @return Config
 	 */	
 	
 	public static function getInstance()
 	{
 		if ( empty( self::$instance ) )
 		{
-			self::$instance = new Xerxes_Model_Metalib_Config();
+			self::$instance = new Config();
 		}
 		
 		return self::$instance;
@@ -54,7 +58,7 @@ class Xerxes_Model_Metalib_Config extends Xerxes_Model_Search_Config
 			foreach ( $groups as $group )
 			{
 				$id = ( string ) $group["id"];
-				$this->usergroups[Xerxes_Framework_Parser::strtoupper($id)] = $group; //case insensitive
+				$this->usergroups[Parser::strtoupper($id)] = $group; //case insensitive
 			}
 		}		
 	}
@@ -86,7 +90,7 @@ class Xerxes_Model_Metalib_Config extends Xerxes_Model_Search_Config
 	
 	public function getGroupDisplayName($id)
 	{	  
-		$id = Xerxes_Framework_Parser::strtoupper($id); //case insensitive
+		$id = Parser::strtoupper($id); //case insensitive
 		
 		if ( array_key_exists( $id, $this->usergroups ) )
 		{

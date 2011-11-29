@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Model\Saved;
+
+use Application\Model\Search;
+
 /**
  * Primo Config
  * 
@@ -11,7 +15,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Saved_Config extends Xerxes_Model_Search_Config
+class Config extends Search\Config
 {
 	protected $config_file = "config/folder";
 	private static $instance; // singleton pattern
@@ -20,7 +24,7 @@ class Xerxes_Model_Saved_Config extends Xerxes_Model_Search_Config
 	{
 		if ( empty( self::$instance ) )
 		{
-			self::$instance = new Xerxes_Model_Saved_Config();
+			self::$instance = new Config();
 			$object = self::$instance;
 			$object->init();			
 		}

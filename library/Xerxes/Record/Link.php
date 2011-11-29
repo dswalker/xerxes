@@ -1,5 +1,7 @@
 <?php
 
+namespace Xerxes\Record;
+
 /**
  * Record Subject
  * 
@@ -11,7 +13,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Record_Link
+class Link
 {
 	protected $type;
 	protected $display;
@@ -38,15 +40,15 @@ class Xerxes_Record_Link
 		}
 		elseif ( stristr( $data, "PDF" ) )
 		{
-			return Xerxes_Record_Link::PDF;
+			return self::PDF;
 		} 
 		elseif ( stristr( $data, "HTML" ) )
 		{
-			return Xerxes_Record_Link::HTML;
+			return self::HTML;
 		}
 		else
 		{
-			return Xerxes_Record_Link::ONLINE;
+			return self::ONLINE;
 		}
 	}
 	
@@ -91,7 +93,7 @@ class Xerxes_Record_Link
 				{
 					foreach ( $arrLink[1] as $strField => $strValue )
 					{
-						$objParam = $objXml->createElement("param", Xerxes_Framework_Parser::escapeXml($strValue));
+						$objParam = $objXml->createElement("param", Parser::escapeXml($strValue));
 						$objParam->setAttribute("field", $strField);
 						$objLink->appendChild($objParam);
 					}

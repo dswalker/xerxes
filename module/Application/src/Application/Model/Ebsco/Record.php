@@ -1,6 +1,10 @@
 <?php
 
-class Xerxes_Model_Ebsco_Record extends Xerxes_Record
+namespace Application\Model\Ebsco;
+
+use Xerxes;
+
+class Record extends Xerxes\Record
 {
 	protected $source = "ebsco";
 	
@@ -27,7 +31,7 @@ class Xerxes_Model_Ebsco_Record extends Xerxes_Record
 				{
 					foreach ( $book->aug->au as $auth )
 					{
-						$author = new Xerxes_Record_Author((string) $auth, "", "personal");
+						$author = new Xerxes\Record\Author((string) $auth, "", "personal");
 						
 						if ( (string) $auth["type"] == "editor" )
 						{
@@ -102,7 +106,7 @@ class Xerxes_Model_Ebsco_Record extends Xerxes_Record
 				{
 					if ( (string) $fmt["type"] == "T" )
 					{
-						$this->links[] = new Xerxes_Record_Link($xml->plink, Xerxes_Record_Link::HTML);
+						$this->links[] = new Xerxes\Record\Link($xml->plink, Xerxes\Record\Link::HTML);
 					}
 					if ( (string) $fmt["type"] == "P" )
 					{
@@ -115,7 +119,7 @@ class Xerxes_Model_Ebsco_Record extends Xerxes_Record
 							$pdf_link = $xml->plink;
 						}
 						
-						$this->links[] = new Xerxes_Record_Link($xml->plink, Xerxes_Record_Link::PDF);
+						$this->links[] = new Xerxes\Record\Link($xml->plink, Xerxes\Record\Link::PDF);
 					}
 				}
 			}
@@ -141,7 +145,7 @@ class Xerxes_Model_Ebsco_Record extends Xerxes_Record
 			{
 				foreach ( $article->aug->au as $auth )
 				{
-					$author = new Xerxes_Record_Author((string) $auth, "", "personal");
+					$author = new Xerxes\Record\Author((string) $auth, "", "personal");
 					array_push($this->authors, $author);
 				}
 			}
@@ -150,7 +154,7 @@ class Xerxes_Model_Ebsco_Record extends Xerxes_Record
 			
 			foreach ( $article->su as $subject )
 			{
-				$subject_object = new Xerxes_Record_Subject();
+				$subject_object = new Xerxes\Record\Subject();
 				$subject_object->value = (string) $subject;
 				$subject_object->display = (string) $subject;
 				

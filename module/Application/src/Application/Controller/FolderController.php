@@ -1,6 +1,11 @@
 <?php
 
-class Xerxes_Controller_Folder extends Xerxes_Controller_Search
+namespace Application\Controller;
+
+use Application\Model\Saved\Engine,
+	Zend\Http\Client;
+
+class FolderController extends SearchController
 {
 	protected $id = "folder";
 	
@@ -13,7 +18,7 @@ class Xerxes_Controller_Folder extends Xerxes_Controller_Search
 	
 	protected function getEngine()
 	{
-		return new Xerxes_Model_Saved_Engine();
+		return new Engine();
 	}
 	
 	public function index()
@@ -79,7 +84,7 @@ class Xerxes_Controller_Folder extends Xerxes_Controller_Search
 		
 		$url = "http://127.0.0.1:8085?responseformat=html&style=$style";
 		
-		$client = new Zend_Http_Client();
+		$client = new Client();
 		$client->setUri($url);
 		$client->setHeaders("Content-type: application/json");
 		$client->setHeaders("Expect: nothing");

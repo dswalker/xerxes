@@ -1,5 +1,7 @@
 <?php
 
+namespace Application\Model\Search;
+
 /**
  * Search Facet
  *
@@ -11,7 +13,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Search_Facet
+class Facet
 {
 	public $name;
 	public $count;

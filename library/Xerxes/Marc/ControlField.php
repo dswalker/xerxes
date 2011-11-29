@@ -1,5 +1,7 @@
 <?php
 
+namespace Xerxes\Marc;
+
 /**
  * MARC ControlField
  * 
@@ -11,7 +13,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Marc_ControlField extends Xerxes_Marc_Field 
+class ControlField extends Field 
 {
 	public $tag;
 	public $value;

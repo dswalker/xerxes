@@ -1,5 +1,7 @@
 <?php
 
+namespace Xerxes\Marc;
+
 /**
  * MARC Datafield
  * 
@@ -11,7 +13,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Marc_DataField
+class DataField
 {
 	public $tag;
 	public $ind1;
@@ -29,7 +31,7 @@ class Xerxes_Marc_DataField
 	
 			foreach ( $objNode->getElementsByTagName("subfield") as $objSubfield )
 			{
-				$objMarcSubField = new Xerxes_Marc_SubField($objSubfield);
+				$objMarcSubField = new SubField($objSubfield);
 				array_push($this->_subfields, $objMarcSubField);
 			}
 		}
@@ -41,14 +43,14 @@ class Xerxes_Marc_DataField
 	 * @param string $code		[optional] single subfield code, or multiple subfield codes listed together,
 	 * 							empty value returns all subfields
 	 * @param bool 				[optional] return fields in the order specified in $code
-	 * @return Xerxes_Marc_SubFieldList
+	 * @return SubFieldList
 	 */
 	
 	public function subfield($code = "", $specified_order = false)
 	{
 		$codes = str_split($code);
 		
-		$list = new Xerxes_Marc_SubFieldList();
+		$list = new SubFieldList();
 		
 		if ( $code == "" )
 		{
@@ -112,7 +114,7 @@ class Xerxes_Marc_DataField
 		return trim($content);
 	}
 	
-	public function addSubField(Xerxes_Marc_SubField $field)
+	public function addSubField(SubField $field)
 	{
 		array_push($this->_subfields, $field);
 	}

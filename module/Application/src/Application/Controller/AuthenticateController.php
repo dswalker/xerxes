@@ -1,17 +1,11 @@
 <?php
 
-/**
- * Authentication controller
- *
- * @author David Walker
- * @copyright 2011 California State University
- * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
- * @version $Id$
- * @package Xerxes
- */
+namespace Application\Controller;
 
-class Xerxes_Controller_Authenticate extends Xerxes_Framework_Controller
+use Zend\Mvc\Controller\ActionController,
+	Application\Model\Authentication\AuthenticationFactory;
+
+class AuthenticateController extends ActionController
 {
 	protected $authentication = null;
 	
@@ -40,7 +34,7 @@ class Xerxes_Controller_Authenticate extends Xerxes_Framework_Controller
 		// we set this so we can keep track of the authentication type
 		// through various requests
 		
-		$factory = new Xerxes_Model_Authentication_Factory();
+		$factory = new AuthenticationFactory();
 		
 		$this->authentication = $factory->getAuthenticationObject($configAuth, $this->request, $this->registry, $this->response);
 		$this->authentication->id = $configAuth;

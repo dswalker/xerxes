@@ -1,6 +1,10 @@
 <?php
 
-class Xerxes_Controller_Worldcat extends Xerxes_Controller_Search
+namespace Application\Controller;
+
+use Application\Model\Worldcat\Engine;
+
+class WorldcatController extends SearchController
 {
 	protected $id = "worldcat";
 	
@@ -9,6 +13,6 @@ class Xerxes_Controller_Worldcat extends Xerxes_Controller_Search
 		$role = $this->request->getSession("role");
 		$source = $this->request->getParam("source");
 		
-		return new Xerxes_Model_Worldcat_Engine($role, $source);
+		return new Engine($role, $source);
 	}
 }

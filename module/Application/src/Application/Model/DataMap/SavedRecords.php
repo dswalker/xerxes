@@ -1,5 +1,12 @@
 <?php
 
+namespace Application\Model\DataMap;
+
+use Xerxes\Utility\DataMap,
+	Xerxes\Record,
+	Application\Model\Saved\Record\Format,
+	Application\Model\Saved\Record\Tag;
+
 /**
  * Database access mapper for saved records
  *
@@ -11,7 +18,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_DataMap_SavedRecords extends Xerxes_Framework_DataMap
+class SavedRecords extends DataMap
 {
 	/**
 	 * Get the total number of saved records for the user
@@ -81,7 +88,7 @@ class Xerxes_Model_DataMap_SavedRecords extends Xerxes_Framework_DataMap
 	 * @param int $iStart				[optional] offset to start from, defaults to 1, unless $arrID specified
 	 * @param int $iCount				[optional] number of records to return, defaults to all, unless $arrID specified
 	 * 
-	 * @return array					array of Xerxes_Model_Saved_Record objects
+	 * @return array					array of Record objects
 	 */	
 	
 	public function getRecords($strUsername, $strView = null, $strOrder = null, $iStart = 1, $iCount = 20)
@@ -98,7 +105,7 @@ class Xerxes_Model_DataMap_SavedRecords extends Xerxes_Framework_DataMap
 	 * @param int $iStart				[optional] offset to start from, defaults to 1, unless $arrID specified
 	 * @param int $iCount				[optional] number of records to return, defaults to all, unless $arrID specified
 	 * 
-	 * @return array					array of Xerxes_Model_Saved_Record objects
+	 * @return array					array of Record objects
 	 */		
 	
 	public function getRecordsByLabel($strUsername = null, $strLabel, $strOrder = null, $iStart = 1, $iCount = null)
@@ -115,7 +122,7 @@ class Xerxes_Model_DataMap_SavedRecords extends Xerxes_Framework_DataMap
 	 * @param int $iStart				[optional] offset to start from, defaults to 1, unless $arrID specified
 	 * @param int $iCount				[optional] number of records to return, defaults to all, unless $arrID specified
 	 * 
-	 * @return array					array of Xerxes_Model_Saved_Record objects
+	 * @return array					array of Record objects
 	 */			
 	
 	public function getRecordsByFormat($strUsername = null, $strFormat, $strOrder = null, $iStart = 1, $iCount = null)
@@ -128,7 +135,7 @@ class Xerxes_Model_DataMap_SavedRecords extends Xerxes_Framework_DataMap
 	 *
 	 * @param string $strID				Internal ID
 	 * 
-	 * @return Xerxes_Model_Saved_Record
+	 * @return Record
 	 */		
 	
 	public function getRecordByID($strID)
@@ -145,7 +152,7 @@ class Xerxes_Model_DataMap_SavedRecords extends Xerxes_Framework_DataMap
 		} 
 		else
 		{
-			throw new Exception( "More than one saved record found for id $strID !" );
+			throw new \Exception( "More than one saved record found for id $strID !" );
 		}
 	}
 
@@ -155,7 +162,7 @@ class Xerxes_Model_DataMap_SavedRecords extends Xerxes_Framework_DataMap
 	 * @param array $arrID				array of ID's
 	 * @param string $strOrder			[optional] sort order of the results" 'year', 'author' or 'title', defaults to date added (desc)
 	 * 
-	 * @return array					array of Xerxes_Model_Saved_Record objects
+	 * @return array					array of Record objects
 	 */		
 	
 	public function getRecordsByID($arrID, $strOrder = null)
@@ -174,7 +181,7 @@ class Xerxes_Model_DataMap_SavedRecords extends Xerxes_Framework_DataMap
 	 * @param int $iCount				[optional] number of records to return, defaults to all, unless $arrID specified
 	 * @param string $strFormat			[optional] limit records to specific format
 	 * @param string $strLabel			[optiional] limit record to specific tag
-	 * @return array					array of Xerxes_Model_Saved_Record objects
+	 * @return array					array of Record objects
 	 */
 	
 	private function returnRecords($strUsername = null, $strView = "full", $arrID = null, 
@@ -184,7 +191,7 @@ class Xerxes_Model_DataMap_SavedRecords extends Xerxes_Framework_DataMap
 
 		if ( $arrID == null && $strUsername == null && $iCount == null )
 		{
-			throw new Exception( "query must be limited by username, id(s), or record count limit" );
+			throw new \Exception( "query must be limited by username, id(s), or record count limit" );
 		}
 		
 		#### construct the query
@@ -362,7 +369,7 @@ class Xerxes_Model_DataMap_SavedRecords extends Xerxes_Framework_DataMap
 		
 		if ( $arrResults != null )
 		{
-			$objRecord = new Xerxes_Model_Saved_Record();
+			$objRecord = new Record();
 			
 			foreach ( $arrResults as $arrResult )
 			{
@@ -376,7 +383,7 @@ class Xerxes_Model_DataMap_SavedRecords extends Xerxes_Framework_DataMap
 						array_push( $arrRecords, $objRecord );
 					}
 					
-					$objRecord = new Xerxes_Model_Saved_Record( );
+					$objRecord = new Record( );
 					$objRecord->load( $arrResult );
 					
 					// only full display will include marc records
@@ -429,7 +436,7 @@ class Xerxes_Model_DataMap_SavedRecords extends Xerxes_Framework_DataMap
 	 * Retrive format-based record counts for saved records
 	 *
 	 * @param string $strUsername		username under which the records are saved
-	 * @return array					array of Xerxes_Model_Saved_Record_Facet objects
+	 * @return array					array of Record_Facet objects
 	 */
 	
 	public function getRecordFormats($strUsername)
@@ -441,7 +448,7 @@ class Xerxes_Model_DataMap_SavedRecords extends Xerxes_Framework_DataMap
 		
 		foreach ( $arrResults as $arrResult )
 		{
-			$objRecord = new Xerxes_Model_Saved_Record_Format( );
+			$objRecord = new Format();
 			$objRecord->load( $arrResult );
 			array_push( $arrFacets, $objRecord );
 		}
@@ -465,7 +472,7 @@ class Xerxes_Model_DataMap_SavedRecords extends Xerxes_Framework_DataMap
 		
 		foreach ( $arrResults as $arrResult )
 		{
-			$objRecord = new Xerxes_Model_Saved_Record_Tag( );
+			$objRecord = new Tag();
 			$objRecord->load( $arrResult );
 			array_push( $arrFacets, $objRecord );
 		}
@@ -485,9 +492,9 @@ class Xerxes_Model_DataMap_SavedRecords extends Xerxes_Framework_DataMap
 	{
 		// data check
 
-		if ( $strUsername == "" ) throw new Exception( "param 1 'username' must not be null" );
-		if ( ! is_array( $arrTags ) ) throw new Exception( "param 2 'tags' must be of type array" );
-		if ( $iRecord == "" ) throw new Exception( "param 3 'record' must not be null" );
+		if ( $strUsername == "" ) throw new \Exception( "param 1 'username' must not be null" );
+		if ( ! is_array( $arrTags ) ) throw new \Exception( "param 2 'tags' must be of type array" );
+		if ( $iRecord == "" ) throw new \Exception( "param 3 'record' must not be null" );
 			
 		// wrap it in a transaction, yo!
 

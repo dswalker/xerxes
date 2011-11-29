@@ -1,6 +1,10 @@
 <?php
 
-class Xerxes_Controller_Databases extends Xerxes_Framework_Controller
+namespace Application\Controller;
+
+use Zend\Mvc\Controller\ActionController;
+
+class DatabasesController extends ActionController
 {
 	private $lang;
 	
@@ -12,13 +16,10 @@ class Xerxes_Controller_Databases extends Xerxes_Framework_Controller
 	
 	public function index()
 	{
-		$this->response->add("categories", $categories);
 	}
 	
 	public function subject()
 	{
 		$subject = $this->request->getParam("subject");
-		
-		$this->response->add("subject", $category);
 	}	
 }

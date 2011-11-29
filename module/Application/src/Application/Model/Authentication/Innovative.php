@@ -1,5 +1,10 @@
 <?php
 
+namespace Application\Model\Authentication;
+
+use Xerxes\Utility\Parser,
+	Application\Model\Authentication\AccessDeniedException;
+
 /**
  * Authenticates users and downloads data from the Innovative Patron API;
  * based on the functions originally developed by John Blyberg
@@ -12,7 +17,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Authentication_Innovative extends Xerxes_Framework_Authenticate 
+class Innovative extends AbstractAuthentication 
 {
 	protected $server;
 	protected $user_data;
@@ -54,7 +59,7 @@ class Xerxes_Model_Authentication_Innovative extends Xerxes_Framework_Authentica
 
 				if ( ! in_array( (int) $this->user_data["P TYPE"], $arrTypes) )
 				{
-					throw new Xerxes_Exception_AccessDenied("text_authentication_error_not_authorized");
+					throw new AccessDeniedException("text_authentication_error_not_authorized");
 				}
 			}
 			
@@ -107,7 +112,7 @@ class Xerxes_Model_Authentication_Innovative extends Xerxes_Framework_Authentica
 		
 		if ( array_key_exists("ERRMSG", $arrData ) )
 		{
-			throw new Exception($arrData["ERRMSG"]);	
+			throw new \Exception($arrData["ERRMSG"]);	
 		}
 
 		return $arrData;
@@ -161,12 +166,12 @@ class Xerxes_Model_Authentication_Innovative extends Xerxes_Framework_Authentica
 		
 		// get the data and strip out html tags
 		
-		$strResponse = Xerxes_Framework_Parser::request($url);
+		$strResponse = Parser::request($url);
 		$strResponse = trim(strip_tags($strResponse));
 		
 		if ( $strResponse == "" )
 		{
-			throw new Exception("Could not connect to Innovative Patron API");			
+			throw new \Exception("Could not connect to Innovative Patron API");			
 		}
 		else
 		{
@@ -181,7 +186,7 @@ class Xerxes_Model_Authentication_Innovative extends Xerxes_Framework_Authentica
 				
 				// strip out the code, leaving just the attribute name
 				
-				$arrLine[0] = preg_replace("/\[[^\]]{1,}\]/", "", $arrLine[0]);
+				$arrLine[0] = preg_replace('/\[[^\]]{1,}\]/'', "", $arrLine[0]);
 				$arrData[trim($arrLine[0])] = trim( $arrLine[1] );
 			}
 		}

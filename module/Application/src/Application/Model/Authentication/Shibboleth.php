@@ -1,5 +1,7 @@
 <?php
 
+namespace Application\Model\Authentication;
+
 /**
  * Sibboleth Authentication
  * 
@@ -11,7 +13,7 @@
  * @license http://www.gnu.org/licenses/
  */
 
-class Xerxes_Model_Authentication_Shibboleth extends Xerxes_Model_Authentication_Abstract 
+class Shibboleth extends AbstractAuthentication 
 {
 	/**
 	 *  HTTP header that the username will be found in. Subclass can over-ride
@@ -70,7 +72,7 @@ class Xerxes_Model_Authentication_Shibboleth extends Xerxes_Model_Authentication
 		}
 		else 
 		{
-			throw new Exception("Couldn't find Shibboleth supplied username in header");	
+			throw new \Exception("Couldn't find Shibboleth supplied username in header");	
 		}
 	}
 	

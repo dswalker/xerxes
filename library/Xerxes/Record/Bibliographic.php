@@ -1,5 +1,14 @@
 <?php
 
+namespace Xerxes\Record;
+
+use Xerxes\Record,
+	Xerxes\Record\Author,
+	Xerxes\Marc\ControlField,
+	Xerxes\Marc\DataField,
+	Xerxes\Marc\DataFieldList,
+	Xerxes\Utility\Parser;
+
 /**
  * Extract properties for books, articles, and dissertations from MARC-XML
  * 
@@ -11,7 +20,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Record_Bibliographic extends Xerxes_Record
+class Bibliographic extends Record
 {
 	protected $alt_scripts = array(); // alternate character-scripts like cjk or hebrew, taken from 880s
 	protected $alt_script_name; // the name of the alternate character-script; we'll just assume one for now, I guess
@@ -27,13 +36,13 @@ class Xerxes_Record_Bibliographic extends Xerxes_Record
 	
 	public function loadXML($xml)
 	{
-		$this->marc = new Xerxes_Marc_Record();
+		$this->marc = new Record();
 		$this->marc->loadXML($xml);
 
 		parent::loadXML($xml);
 	}
 	
-	public function loadMarc( Xerxes_Marc_Record $marc )
+	public function loadMarc( Record $marc )
 	{
 		$this->marc = $marc;
 		
@@ -387,7 +396,7 @@ class Xerxes_Record_Bibliographic extends Xerxes_Record
 		
 		// author can be string or data field
 		
-		if ($author instanceof Xerxes_Marc_DataField || $author instanceof Xerxes_Marc_DataFieldList)
+		if ($author instanceof DataField || $author instanceof DataFieldList)
 		{
 			$author_string = (string) $author->subfield($subfields);
 			$author_display = (string) $author;
@@ -397,7 +406,7 @@ class Xerxes_Record_Bibliographic extends Xerxes_Record
 			$author_string = $author;
 		}
 		
-		return new Xerxes_Record_Author($author_string, $author_display, $strType, $bolAdditional);
+		return new Author($author_string, $author_display, $strType, $bolAdditional);
 	}
 
 	protected function parseTitle()
@@ -597,15 +606,15 @@ class Xerxes_Record_Bibliographic extends Xerxes_Record
 		
 		if ( (string) $this->marc->datafield("502") != "" || (string) $this->marc->controlfield("002") == "DS" )
 		{
-			return  Xerxes_Record_Format::Thesis;
+			return Format::Thesis;
 		}
 		elseif ( $this->marc->datafield("111")->length() > 0 || $this->marc->datafield("711")->length() > 0 )
 		{
-			return Xerxes_Record_Format::ConferencePaper;
+			return Format::ConferencePaper;
 		}
 		elseif ( $this->journal != "" )
 		{
-			return  Xerxes_Record_Format::Article; 
+			return Format::Article; 
 		}
 		else
 		{
@@ -621,29 +630,29 @@ class Xerxes_Record_Bibliographic extends Xerxes_Record
 				$chrLeader7 = substr( (string) $this->marc->leader(), 7, 1 );
 			}		
 			
-			if ( $chrLeader6 == 'a' && $chrLeader7 == 'm' ) return Xerxes_Record_Format::Book;
-			if ( $chrLeader6 == 'a' && $chrLeader7 == 's' && $obj008->position("21") == 'n' ) return Xerxes_Record_Format::Newspaper;
-			if ( $chrLeader6 == 'a' && $chrLeader7 == 's' ) return Xerxes_Record_Format::Serial; 
-			if ( $chrLeader6 == 'a' && $chrLeader7 == 'i' ) return Xerxes_Record_Format::Website; 
-			if ( $chrLeader6 == 'c' || $chrLeader6 == 'd' ) return Xerxes_Record_Format::MusicalScore; 
-			if ( $chrLeader6 == 'e' || $chrLeader6 == 'f' ) return Xerxes_Record_Format::Map;
-			if ( $chrLeader6 == 'g' ) return Xerxes_Record_Format::Video; 
-			if ( $chrLeader6 == 'i' || $chrLeader6 == 'j' ) return Xerxes_Record_Format::SoundRecording; 
-			if ( $chrLeader6 == 'k' ) return Xerxes_Record_Format::Image; 
-			if ( $chrLeader6 == 'm' && $chrLeader7 == 'i' ) return Xerxes_Record_Format::Website; 
-			if ( $chrLeader6 == 'm' ) return Xerxes_Record_Format::Unknown; 
-			if ( $chrLeader6 == 'o' ) return Xerxes_Record_Format::Kit; 
-			if ( $chrLeader6 == 'p' ) return Xerxes_Record_Format::MixedMaterial; 
-			if ( $chrLeader6 == 'r' ) return Xerxes_Record_Format::PhysicalObject;
-			if ( $chrLeader6 == 't' ) return Xerxes_Record_Format::Manuscript;
+			if ( $chrLeader6 == 'a' && $chrLeader7 == 'm' ) return Format::Book;
+			if ( $chrLeader6 == 'a' && $chrLeader7 == 's' && $obj008->position("21") == 'n' ) return Format::Newspaper;
+			if ( $chrLeader6 == 'a' && $chrLeader7 == 's' ) return Format::Serial; 
+			if ( $chrLeader6 == 'a' && $chrLeader7 == 'i' ) return Format::Website; 
+			if ( $chrLeader6 == 'c' || $chrLeader6 == 'd' ) return Format::MusicalScore; 
+			if ( $chrLeader6 == 'e' || $chrLeader6 == 'f' ) return Format::Map;
+			if ( $chrLeader6 == 'g' ) return Format::Video; 
+			if ( $chrLeader6 == 'i' || $chrLeader6 == 'j' ) return Format::SoundRecording; 
+			if ( $chrLeader6 == 'k' ) return Format::Image; 
+			if ( $chrLeader6 == 'm' && $chrLeader7 == 'i' ) return Format::Website; 
+			if ( $chrLeader6 == 'm' ) return Format::Unknown; 
+			if ( $chrLeader6 == 'o' ) return Format::Kit; 
+			if ( $chrLeader6 == 'p' ) return Format::MixedMaterial; 
+			if ( $chrLeader6 == 'r' ) return Format::PhysicalObject;
+			if ( $chrLeader6 == 't' ) return Format::Manuscript;
 	
-			if ( count( $this->isbns ) > 0 ) return Xerxes_Record_Format::Book; 
-			if ( count( $this->issns ) > 0 ) return Xerxes_Record_Format::Article;
+			if ( count( $this->isbns ) > 0 ) return Format::Book; 
+			if ( count( $this->issns ) > 0 ) return Format::Article;
 		}
 
 		// if we got this far, just return unknown
 		
-		return Xerxes_Record_Format::Unknown;	
+		return Format::Unknown;	
 	}	
 	
 	protected function parseSubjects()
@@ -661,7 +670,7 @@ class Xerxes_Record_Bibliographic extends Xerxes_Record
 				array_push($subfields_array, (string) $subfield);
 			}
 			
-			$subject_object = new Xerxes_Record_Subject();
+			$subject_object = new Subject();
 			
 			$subject_object->display = implode(" -- ", $subfields_array );
 			$subject_object->value = (string) $subfields;
@@ -782,7 +791,7 @@ class Xerxes_Record_Bibliographic extends Xerxes_Record
 		// we'll drop the whole thing to lower case and padd it
 		// with spaces to make parsing easier
 		
-		$strJournalInfo = " " . Xerxes_Framework_Parser::strtolower( $strJournalInfo ) . " ";
+		$strJournalInfo = " " . Parser::strtolower( $strJournalInfo ) . " ";
 		
 		// volume
 
@@ -832,7 +841,7 @@ class Xerxes_Record_Bibliographic extends Xerxes_Record
 			// we create a new marc record from the 880, using subfield 6 as the 
 			// name of each new tag
 			
-			$marc = new Xerxes_Marc_Record();
+			$marc = new Record();
 			
 			foreach ( $this->marc->datafield("880") as $datafield )
 			{
@@ -840,7 +849,7 @@ class Xerxes_Record_Bibliographic extends Xerxes_Record
 				$marc->addDataField($datafield);
 			}
 			
-			$bibliogaphic = new Xerxes_Record_Bibliographic();
+			$bibliogaphic = new Bibliographic();
 			$bibliogaphic->loadMarc($marc);
 			
 			array_push($this->alt_scripts, $bibliogaphic);
@@ -896,7 +905,7 @@ class Xerxes_Record_Bibliographic extends Xerxes_Record
 			
 			$language_object = (string) $this->marc->controlfield("008");
 			
-			if ( $language_object instanceof Xerxes_Marc_ControlField )
+			if ( $language_object instanceof ControlField )
 			{
 				$lang_code = $language_object->position("35-37");
 
@@ -953,11 +962,11 @@ class Xerxes_Record_Bibliographic extends Xerxes_Record
 			
 			if ( stristr($url, "catdir") || $resource_type == 2 )
 			{
-				$this->links[] = new Xerxes_Record_Link($url, Xerxes_Record_Link::INFORMATIONAL);
+				$this->links[] = new Link($url, Link::INFORMATIONAL);
 			}
 			else
 			{
-				$link_object = new Xerxes_Record_Link($url, null, $display);
+				$link_object = new Link($url, null, $display);
 				
 				// we check these a bit differently, since we don't want the presence of .html in the 
 				// URL alone to determine if the format is html, only if other subfields say so
@@ -966,13 +975,13 @@ class Xerxes_Record_Bibliographic extends Xerxes_Record
 				$link_html_check = $display . "" . $link_format_type . " " . $link_text;
 				$link_pdf_check = $link_html_check . " " . $url;
 				
-				if ( $link_object->extractType($link_pdf_check) == Xerxes_Record_Link::PDF )
+				if ( $link_object->extractType($link_pdf_check) == Link::PDF )
 				{
-					$link_object->setType(Xerxes_Record_Link::PDF);
+					$link_object->setType(Link::PDF);
 				}
-				elseif ( $link_object->extractType($link_html_check) == Xerxes_Record_Link::HTML )
+				elseif ( $link_object->extractType($link_html_check) == Link::HTML )
 				{
-					$link_object->setType(Xerxes_Record_Link::HTML);
+					$link_object->setType(Link::HTML);
 				}
 				
 				$this->links[] = $link_object;

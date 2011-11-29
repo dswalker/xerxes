@@ -1,5 +1,10 @@
 <?php
 
+namespace Application\Model\Summon;
+
+use Application\Model\Search,
+	Xerxes\Summon;
+
 /**
  * Summon Search Engine
  * 
@@ -11,7 +16,7 @@
  * @package Solr
  */
 
-class Xerxes_Model_Summon_Engine extends Xerxes_Model_Search_Engine 
+class Engine extends Search\Engine 
 {
 	protected $client; // summon client, for now
 
@@ -26,7 +31,7 @@ class Xerxes_Model_Summon_Engine extends Xerxes_Model_Search_Engine
 		$id = $this->config->getConfig("SUMMON_ID", true);
 		$key = $this->config->getConfig("SUMMON_KEY", true);		
 				
-		$this->client = new Xerxes_Summon($id, $key);
+		$this->client = new Summon($id, $key);
 	}
 	
 	/**
@@ -35,7 +40,7 @@ class Xerxes_Model_Summon_Engine extends Xerxes_Model_Search_Engine
 	 * @return int
 	 */	
 	
-	public function getHits( Xerxes_Model_Search_Query $search )
+	public function getHits( Query $search )
 	{
 		// get the results
 		
@@ -49,15 +54,15 @@ class Xerxes_Model_Summon_Engine extends Xerxes_Model_Search_Engine
 	/**
 	 * Search and return results
 	 * 
-	 * @param Xerxes_Model_Search_Query $search		search object
+	 * @param Query $search		search object
 	 * @param int $start							[optional] starting record number
 	 * @param int $max								[optional] max records
 	 * @param string $sort							[optional] sort order
 	 * 
-	 * @return Xerxes_Model_Search_Results
+	 * @return Results
 	 */	
 	
-	public function searchRetrieve( Xerxes_Model_Search_Query $search, $start = 1, $max = 10, $sort = "")
+	public function searchRetrieve( Query $search, $start = 1, $max = 10, $sort = "")
 	{
 		$results = $this->doSearch( $search, $start, $max, $sort);
 		
@@ -70,7 +75,7 @@ class Xerxes_Model_Summon_Engine extends Xerxes_Model_Search_Engine
 	 * Return an individual record
 	 * 
 	 * @param string	record identifier
-	 * @return Xerxes_Model_Solr_Results
+	 * @return Results
 	 */
 	
 	public function getRecord( $id )
@@ -101,19 +106,19 @@ class Xerxes_Model_Summon_Engine extends Xerxes_Model_Search_Engine
 	/**
 	 * Return the search engine config
 	 * 
-	 * @return Xerxes_Model_Summon_Config
+	 * @return Config
 	 */		
 	
 	public function getConfig()
 	{
-		return Xerxes_Model_Summon_Config::getInstance();
+		return Config::getInstance();
 	}
 	
 	/**
 	 * Do the actual fetch of an individual record
 	 * 
 	 * @param string	record identifier
-	 * @return Xerxes_Model_Solr_Results
+	 * @return Results
 	 */	
 	
 	protected function doGetRecord( $id )
@@ -129,15 +134,15 @@ class Xerxes_Model_Summon_Engine extends Xerxes_Model_Search_Engine
 	/**
 	 * Do the actual search
 	 * 
-	 * @param Xerxes_Model_Search_Query $search		search object
+	 * @param Query $search		search object
 	 * @param int $start							[optional] starting record number
 	 * @param int $max								[optional] max records
 	 * @param string $sort							[optional] sort order
 	 * 
-	 * @return Xerxes_Model_Search_Results
+	 * @return Results
 	 */		
 	
-	protected function doSearch( Xerxes_Model_Search_Query $search, $start = 1, $max = 10, $sort = "")
+	protected function doSearch( Query $search, $start = 1, $max = 10, $sort = "")
 	{ 	
 		// prepare the query
 		
@@ -186,7 +191,7 @@ class Xerxes_Model_Summon_Engine extends Xerxes_Model_Search_Engine
 	 * Parse the summon response
 	 *
 	 * @param array $summon_results		summon results array from client
-	 * @return Xerxes_Model_Search_ResultSet
+	 * @return ResultSet
 	 */
 	
 	protected function parseResponse($summon_results)
@@ -198,10 +203,10 @@ class Xerxes_Model_Summon_Engine extends Xerxes_Model_Search_Engine
 		
 		if ( ! is_array($summon_results) )
 		{
-			throw new Exception("Cannot connect to Summon server");
+			throw new \Exception("Cannot connect to Summon server");
 		}		
 		
-		$result_set = new Xerxes_Model_Search_ResultSet($this->config);
+		$result_set = new Search\ResultSet($this->config);
 
 		// total
 		
@@ -227,7 +232,7 @@ class Xerxes_Model_Summon_Engine extends Xerxes_Model_Search_Engine
 	 * Parse records out of the response
 	 *
 	 * @param array $summon_results
-	 * @return array of Xerxes_Model_Summon_Record's
+	 * @return array of Record's
 	 */
 	
 	protected function extractRecords($summon_results)
@@ -238,7 +243,7 @@ class Xerxes_Model_Summon_Engine extends Xerxes_Model_Search_Engine
 		{
 			foreach ( $summon_results["documents"] as $document )
 			{
-				$xerxes_record = new Xerxes_Model_Summon_Record();
+				$xerxes_record = new Record();
 				$xerxes_record->load($document);
 				array_push($records, $xerxes_record);
 			}
@@ -251,12 +256,12 @@ class Xerxes_Model_Summon_Engine extends Xerxes_Model_Search_Engine
 	 * Parse facets out of the response
 	 *
 	 * @param array $summon_results
-	 * @return Xerxes_Model_Search_Facets
+	 * @return Facets
 	 */	
 	
 	protected function extractFacets($summon_results, $total)
 	{
-		$facets = new Xerxes_Model_Search_Facets();
+		$facets = new Search\Facets();
 		
 		if ( array_key_exists("facetFields", $summon_results) )
 		{		
@@ -268,7 +273,7 @@ class Xerxes_Model_Summon_Engine extends Xerxes_Model_Search_Engine
 				{
 					if ( $facetFields["displayName"] == $group_internal_name)
 					{
-						$group = new Xerxes_Model_Search_FacetGroup();
+						$group = new Search\FacetGroup();
 						$group->name = $facetFields["displayName"];
 						$group->public = $this->config->getFacetPublicName($facetFields["displayName"]);
 							
@@ -283,7 +288,7 @@ class Xerxes_Model_Summon_Engine extends Xerxes_Model_Search_Engine
 								continue;
 							}
 							
-							$facet = new Xerxes_Model_Search_Facet();
+							$facet = new Search\Facet();
 							$facet->name = $counts["value"];
 							$facet->count = $counts["count"];
 								

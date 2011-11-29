@@ -1,5 +1,9 @@
 <?php
 
+namespace Xerxes\Record;
+
+use Xerxes\Utility\Parser;
+
 /**
  * Record Format
  * 
@@ -11,7 +15,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Record_Format
+class Format
 {
 	protected $internal = "";
 	protected $normalized = "";
@@ -144,69 +148,69 @@ class Xerxes_Record_Format
 	{
 		switch ( $this->internal )
 		{
-			case Xerxes_Record_Format::Newspaper :
-			case Xerxes_Record_Format::Periodical:	
-			case Xerxes_Record_Format::Serial :
+			case self::Newspaper :
+			case self::Periodical:	
+			case self::Serial :
 				
 				return "journal";
 				break;
 			
-			case Xerxes_Record_Format::Article :
-			case Xerxes_Record_Format::BookReview :
-			case Xerxes_Record_Format::Review :
-			case Xerxes_Record_Format::SerialComponentPart :
-			case Xerxes_Record_Format::TestMeasure :
+			case self::Article :
+			case self::BookReview :
+			case self::Review :
+			case self::SerialComponentPart :
+			case self::TestMeasure :
 				
 				return "article";
 				break;
 			
-			case Xerxes_Record_Format::ConferenceProceeding :
+			case self::ConferenceProceeding :
 				
 				return "proceeding";
 				break;
 
-			case Xerxes_Record_Format::ConferencePaper :
+			case self::ConferencePaper :
 				
 				return "conference";
 				break;				
 				
-			case Xerxes_Record_Format::PrePrint :
+			case self::PrePrint :
 				
 				return "preprint";
 				break;
 			
-			case Xerxes_Record_Format::Atlas :
-			case Xerxes_Record_Format::Book :
+			case self::Atlas :
+			case self::Book :
 
 				return "book";
 				break;
 
-			case Xerxes_Record_Format::BookChapter :
-			case Xerxes_Record_Format::BookComponentPart :
+			case self::BookChapter :
+			case self::BookComponentPart :
 
 				return "bookitem";
 				break;
 			
-			case Xerxes_Record_Format::Report :
+			case self::Report :
 				
 				return "report";
 				break;
 			
-			case Xerxes_Record_Format::Dissertation :
-			case Xerxes_Record_Format::Thesis :
+			case self::Dissertation :
+			case self::Thesis :
 				
 				// not an actual openurl genre
 				return "dissertation";
 				break;
 
-			case Xerxes_Record_Format::BookCollection :
-			case Xerxes_Record_Format::BookSeries :
-			case Xerxes_Record_Format::BookSubunit :
-			case Xerxes_Record_Format::Hearing :
-			case Xerxes_Record_Format::Manuscript :
-			case Xerxes_Record_Format::Patent :
-			case Xerxes_Record_Format::Pamphlet :
-			case Xerxes_Record_Format::SpecialInstructionalMaterial :
+			case self::BookCollection :
+			case self::BookSeries :
+			case self::BookSubunit :
+			case self::Hearing :
+			case self::Manuscript :
+			case self::Patent :
+			case self::Pamphlet :
+			case self::SpecialInstructionalMaterial :
 
 				return "document";
 				break;				
@@ -226,27 +230,27 @@ class Xerxes_Record_Format
 			$data_fields = implode(" ", $data_fields);
 		}
 		
-		$data_fields = Xerxes_Framework_Parser::strtolower( $data_fields );
+		$data_fields = Parser::strtolower( $data_fields );
 		
-		if ( strstr( $data_fields, 'dissertation' ) ) return  Xerxes_Record_Format::Dissertation; 
-		if ( strstr( $data_fields, 'proceeding' ) ) return  Xerxes_Record_Format::ConferenceProceeding; 
-		if ( strstr( $data_fields, 'conference' ) ) return  Xerxes_Record_Format::ConferencePaper; 
-		if ( strstr( $data_fields, 'hearing' ) ) return  Xerxes_Record_Format::Hearing; 
-		if ( strstr( $data_fields, 'working' ) ) return  Xerxes_Record_Format::WorkingPaper; 
-		if ( strstr( $data_fields, 'book review' ) || strstr( $data_fields, 'review-book' ) ) return  Xerxes_Record_Format::BookReview; 
-		if ( strstr( $data_fields, 'film review' ) || strstr( $data_fields, 'film-book' ) ) return  Xerxes_Record_Format::Review;
-		if ( strstr( "$data_fields ", 'review ' ) ) return  Xerxes_Record_Format::Review;
-		if ( strstr( $data_fields, 'book art' ) || strstr( $data_fields, 'book ch' ) || strstr( $data_fields, 'chapter' ) ) return  Xerxes_Record_Format::BookChapter; 
-		if ( strstr( $data_fields, 'journal' ) ) return  Xerxes_Record_Format::Article; 
-		if ( strstr( $data_fields, 'periodical' ) || strstr( $data_fields, 'serial' ) ) return  Xerxes_Record_Format::Article; 
-		if ( strstr( $data_fields, 'book' ) ) return  Xerxes_Record_Format::Book;
-        if ( strstr( $data_fields, 'pamphlet' ) ) return  Xerxes_Record_Format::Pamphlet;  
-        if ( strstr( $data_fields, 'essay' ) ) return  Xerxes_Record_Format::Article;
-		if ( strstr( $data_fields, 'article' ) ) return  Xerxes_Record_Format::Article;
+		if ( strstr( $data_fields, 'dissertation' ) ) return  self::Dissertation; 
+		if ( strstr( $data_fields, 'proceeding' ) ) return  self::ConferenceProceeding; 
+		if ( strstr( $data_fields, 'conference' ) ) return  self::ConferencePaper; 
+		if ( strstr( $data_fields, 'hearing' ) ) return  self::Hearing; 
+		if ( strstr( $data_fields, 'working' ) ) return  self::WorkingPaper; 
+		if ( strstr( $data_fields, 'book review' ) || strstr( $data_fields, 'review-book' ) ) return  self::BookReview; 
+		if ( strstr( $data_fields, 'film review' ) || strstr( $data_fields, 'film-book' ) ) return  self::Review;
+		if ( strstr( "$data_fields ", 'review ' ) ) return  self::Review;
+		if ( strstr( $data_fields, 'book art' ) || strstr( $data_fields, 'book ch' ) || strstr( $data_fields, 'chapter' ) ) return  self::BookChapter; 
+		if ( strstr( $data_fields, 'journal' ) ) return  self::Article; 
+		if ( strstr( $data_fields, 'periodical' ) || strstr( $data_fields, 'serial' ) ) return  self::Article; 
+		if ( strstr( $data_fields, 'book' ) ) return  self::Book;
+        if ( strstr( $data_fields, 'pamphlet' ) ) return  self::Pamphlet;  
+        if ( strstr( $data_fields, 'essay' ) ) return  self::Article;
+		if ( strstr( $data_fields, 'article' ) ) return  self::Article;
 
 		// if we got this far, just return unknown
 		
-		return Xerxes_Record_Format::Unknown;		
+		return self::Unknown;		
 	}
 	
 	public function __toString()

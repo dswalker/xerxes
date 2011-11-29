@@ -1,5 +1,7 @@
 <?php
 
+namespace Xerxes\Utility;
+
 /**
  * Parses and holds basic configuration information from the config file
  *
@@ -11,7 +13,7 @@
  * @package  Xerxes_Framework
  */
 
-class Xerxes_Framework_Registry
+class Registry
 {
 	protected $xml = ""; // simple xml object copy
 	protected $config_file = "config/config";
@@ -35,7 +37,7 @@ class Xerxes_Framework_Registry
 	{
 		if ( empty( self::$instance ) )
 		{
-			self::$instance = new Xerxes_Framework_Registry();
+			self::$instance = new Registry();
 			$object = self::$instance;
 			$object->init();
 		}
@@ -69,7 +71,7 @@ class Xerxes_Framework_Registry
 			}
 			else
 			{
-				throw new Exception( "could not find configuration file" );
+				throw new \Exception( "could not find configuration file" );
 			}
 			
 			$this->authentication_sources["guest"] = "guest";
@@ -81,7 +83,7 @@ class Xerxes_Framework_Registry
 			
 			foreach ( $xml->configuration->config as $config )
 			{
-				$name = Xerxes_Framework_Parser::strtoupper( $config["name"] );
+				$name = Parser::strtoupper( $config["name"] );
 				$lang = (string) $config["lang"];
 				
 				if ( $lang != "" && $lang != $this->initDefaultLanguage() )
@@ -134,7 +136,7 @@ class Xerxes_Framework_Registry
 					
 					if ( ( string ) $config["pass"] == "true" )
 					{
-						$this->arrPass[Xerxes_Framework_Parser::strtolower( $name )] = $value;
+						$this->arrPass[Parser::strtolower( $name )] = $value;
 					}
 				}
 			}
@@ -153,7 +155,7 @@ class Xerxes_Framework_Registry
 	
 	public function getConfig($name, $bolRequired = false, $default = null, $lang = "")
 	{
-		$name = Xerxes_Framework_Parser::strtoupper( $name );
+		$name = Parser::strtoupper( $name );
 		
 		if ( $lang != "" && $lang != $this->defaultLanguage() )
 		{
@@ -187,7 +189,7 @@ class Xerxes_Framework_Registry
 
 		if ( $bolRequired == true )
 		{
-			throw new Exception( "required configuration entry $name missing" );
+			throw new \Exception( "required configuration entry $name missing" );
 		}
 			
 		if ( $default != null )
@@ -232,11 +234,11 @@ class Xerxes_Framework_Registry
 	
 	public function setConfig($key, $value, $bolPass = false)
 	{
-		$this->arrConfig[Xerxes_Framework_Parser::strtoupper( $key )] = $value;
+		$this->arrConfig[Parser::strtoupper( $key )] = $value;
 		
 		if ( $bolPass == true )
 		{
-			$this->arrPass[Xerxes_Framework_Parser::strtolower( $key )] = $value;
+			$this->arrPass[Parser::strtolower( $key )] = $value;
 		}
 	}
 
@@ -365,12 +367,12 @@ class Xerxes_Framework_Registry
 		$source = explode('/', $this->config_file);
 		$source = array_pop($source);
 
-		$objConfigXml = new DOMDocument( );
+		$objConfigXml = new \DOMDocument( );
 		$objConfigXml->loadXML( "<config source=\"$source\" />" );
 			
 		foreach ( $this->getPass() as $key => $value )
 		{
-			if ($value instanceof SimpleXMLElement) 
+			if ($value instanceof \SimpleXMLElement) 
 			{
 				// just spit it back out again as XML
 									
@@ -389,7 +391,7 @@ class Xerxes_Framework_Registry
 			{
 				// simple string value
 				
-				$objElement = $objConfigXml->createElement( $key, Xerxes_Framework_Parser::escapeXml($value) );
+				$objElement = $objConfigXml->createElement( $key, Parser::escapeXml($value) );
 				$objConfigXml->documentElement->appendChild( $objElement );
 			}
 		}

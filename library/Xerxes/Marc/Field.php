@@ -1,5 +1,7 @@
 <?php
 
+namespace Xerxes\Marc;
+
 /**
  *  Abstract field object
  * 
@@ -11,7 +13,7 @@
  * @package Xerxes
  */
 
-abstract class Xerxes_Marc_Field
+abstract class Field
 {
 	protected $value;
 	

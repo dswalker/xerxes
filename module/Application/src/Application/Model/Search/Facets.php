@@ -1,5 +1,7 @@
 <?php
 
+namespace Application\Model\Search;
+
 /**
  * Search Facets
  *
@@ -15,17 +17,17 @@
  * Data structure for facets
  */
 
-class Xerxes_Model_Search_Facets
+class Facets
 {
 	public $groups = array();
 	
 	/**
 	 * Add a facet grouping
 	 * 
-	 * @param Xerxes_Model_Search_FacetGroup $group
+	 * @param FacetGroup $group
 	 */
 	
-	public function addGroup(Xerxes_Model_Search_FacetGroup $group)
+	public function addGroup(FacetGroup $group)
 	{
 		array_push($this->groups, $group);
 	}
@@ -33,7 +35,7 @@ class Xerxes_Model_Search_Facets
 	/**
 	 * Return facet groups
 	 * 
-	 * @return array of Xerxes_Model_Search_FacetGroup's
+	 * @return array of FacetGroup's
 	 */	
 	
 	public function getGroups()

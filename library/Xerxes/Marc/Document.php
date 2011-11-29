@@ -1,5 +1,7 @@
 <?php
 
+namespace Xerxes\Marc;
+
 /**
  * MARC Document
  * 
@@ -11,12 +13,12 @@
  * @package Xerxes
  */
 
-class Xerxes_Marc_Document
+class Document
 {
 	protected $namespace = "http://www.loc.gov/MARC21/slim";
 	protected $_length = 0;
 	protected $_records = array();
-	protected $record_type = "Xerxes_Marc_Record";
+	protected $record_type = "Record";
 	
 	/**
 	 * Load a MARC-XML document from string or object
@@ -26,19 +28,19 @@ class Xerxes_Marc_Document
 	
 	public function loadXML($xml)
 	{
-		$objDocument = new DOMDocument();
+		$objDocument = new \DOMDocument();
 		
 		if ( is_string($xml) )
 		{
 			$objDocument->loadXML($xml);
 		}
-		elseif ( $xml instanceof DOMDocument )
+		elseif ( $xml instanceof \DOMDocument )
 		{
 			$objDocument = $xml;
 		}
 		else
 		{
-			throw new Exception("param 1 must be XML of type DOMDocument or string");
+			throw new \Exception("param 1 must be XML of type DOMDocument or string");
 		}
 		
 		$this->parse($objDocument);
@@ -52,7 +54,7 @@ class Xerxes_Marc_Document
 	
 	public function load($file)
 	{
-		$objDocument = new DOMDocument();
+		$objDocument = new \DOMDocument();
 		$objDocument->load($file);
 		
 		$this->loadXML($objDocument);
@@ -66,7 +68,7 @@ class Xerxes_Marc_Document
 
 	protected function parse(DOMDocument $objDocument)
 	{
-		$objXPath = new DOMXPath($objDocument);
+		$objXPath = new \DOMXPath($objDocument);
 		$objXPath->registerNamespace("marc", $this->namespace);
 		
 		$objRecords = $objXPath->query("//marc:record");
@@ -84,7 +86,7 @@ class Xerxes_Marc_Document
 	 * Get the record at the specific position
 	 *
 	 * @param int $position		[optional] position of the record (index starts at 1), default is 1
-	 * @return Xerxes_Marc_Record
+	 * @return Record
 	 */
 	
 	public function record($position = 1)
@@ -96,7 +98,7 @@ class Xerxes_Marc_Document
 	/**
 	 * List of MARC-XML records from the Document
 	 *
-	 * @return array of Xerxes_Marc_Record objects
+	 * @return array of Record objects
 	 */
 	
 	public function records()

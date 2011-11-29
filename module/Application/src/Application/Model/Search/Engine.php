@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Model\Search;
+
+use Xerxes\Utility\Registry;
+
 /**
  * Search Engine
  *
@@ -11,7 +15,7 @@
  * @package Xerxes
  */
 
-abstract class Xerxes_Model_Search_Engine
+abstract class Engine
 {
 	public $id; // identifier of this search engine
 	
@@ -29,7 +33,7 @@ abstract class Xerxes_Model_Search_Engine
 	{
 		// application config
 		
-		$this->registry = Xerxes_Framework_Registry::getInstance();
+		$this->registry = Registry::getInstance();
 		
 		// local config
 		
@@ -43,26 +47,26 @@ abstract class Xerxes_Model_Search_Engine
 	 * @return int
 	 */	
 	
-	abstract public function getHits( Xerxes_Model_Search_Query $search );
+	abstract public function getHits( Query $search );
 	
 	/**
 	 * Search and return results
 	 * 
-	 * @param Xerxes_Model_Search_Query $search		search object
+	 * @param Query $search		search object
 	 * @param int $start							[optional] starting record number
 	 * @param int $max								[optional] max records
 	 * @param string $sort							[optional] sort order
 	 * 
-	 * @return Xerxes_Model_Search_Results
+	 * @return Results
 	 */	
 	
-	abstract public function searchRetrieve( Xerxes_Model_Search_Query $search, $start = 1, $max = 10, $sort = "" );
+	abstract public function searchRetrieve( Query $search, $start = 1, $max = 10, $sort = "" );
 	
 	/**
 	 * Return an individual record
 	 * 
 	 * @param string	record identifier
-	 * @return Xerxes_Model_Search_Results
+	 * @return Results
 	 */
 	
 	abstract public function getRecord( $id );
@@ -79,7 +83,7 @@ abstract class Xerxes_Model_Search_Engine
 	/**
 	 * Return the search engine config
 	 * 
-	 * @return Xerxes_Model_Search_Config
+	 * @return Config
 	 */
 	
 	abstract public function getConfig();
@@ -98,18 +102,18 @@ abstract class Xerxes_Model_Search_Engine
 	/**
 	 * Return a search query object
 	 * 
-	 * @return Xerxes_Model_Search_Query
+	 * @return Query
 	 */	
 	
-	public function getQuery(Xerxes_Framework_Request $request )
+	public function getQuery(Request $request )
 	{
-		if ( $this->query instanceof Xerxes_Model_Search_Query )
+		if ( $this->query instanceof Query )
 		{
 			return $this->query;
 		}
 		else
 		{
-			return new Xerxes_Model_Search_Query($request, $this->getConfig());
+			return new Query($request, $this->getConfig());
 		}
 	}
 }

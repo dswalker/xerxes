@@ -1,5 +1,7 @@
 <?php
 
+namespace Application\Model\Search;
+
 /**
  * Search Query
  *
@@ -11,7 +13,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Search_Query
+class Query
 {
 	public $terms = array(); // search terms
 	public $limits = array(); // limits
@@ -26,10 +28,10 @@ class Xerxes_Model_Search_Query
 	/**
 	 * Constructor
 	 * 
-	 * @param Xerxes_Framework_Request $request
+	 * @param Request $request
 	 */
 	
-	public function __construct(Xerxes_Framework_Request $request = null, Xerxes_Model_Search_Config $config = null )
+	public function __construct(Request $request = null, Config $config = null )
 	{
 		$this->config = $config;
 		
@@ -64,14 +66,14 @@ class Xerxes_Model_Search_Query
 	 * Get a specific qury term
 	 *
 	 * @param int $id		the position of the term in the list of terms
-	 * @return Xerxes_Model_Search_QueryTerm
+	 * @return QueryTerm
 	 */
 	
 	public function getQueryTerm($id)
 	{
 		if ( ! array_key_exists($id, $this->terms) )
 		{
-			throw new Exception("No query term with id '$id'");
+			throw new \Exception("No query term with id '$id'");
 		}
 		
 		return $this->terms[$id];
@@ -92,7 +94,7 @@ class Xerxes_Model_Search_Query
 	 * Get a specific limit
 	 *
 	 * @param string $id		the limit name
-	 * @return Xerxes_Model_Search_LimitTerm
+	 * @return LimitTerm
 	 */
 	
 	public function getLimit($id)
@@ -191,7 +193,7 @@ class Xerxes_Model_Search_Query
 			$phrase = $this->alterQuery( $phrase, $field );
 		}		
 		
-		$term = new Xerxes_Model_Search_QueryTerm($id, $boolean, $field, $field_internal, $relation, $phrase);
+		$term = new QueryTerm($id, $boolean, $field, $field_internal, $relation, $phrase);
 		array_push($this->terms , $term);
 	}
 	
@@ -212,7 +214,7 @@ class Xerxes_Model_Search_Query
 		
 		foreach ( $phrase as $value )
 		{
-			$term = new Xerxes_Model_Search_LimitTerm($field, $relation, $value);
+			$term = new LimitTerm($field, $relation, $value);
 			array_push($this->limits , $term);
 		}
 	}

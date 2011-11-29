@@ -1,5 +1,7 @@
 <?php
 
+namespace Xerxes\Marc;
+
 /**
  * MARC Leader
  * 
@@ -11,7 +13,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Marc_Leader extends Xerxes_Marc_ControlField 
+class Leader extends ControlField 
 {
 	public $value;					// the entire leader
 	

@@ -1,7 +1,12 @@
 <?php
 
+namespace Application\Model\Databases;
+
+use Xerxes\Utility\DataValue,
+	Xerxes\Utility\Parser;
+
 /**
- * Metalib Category
+ * Category
  *
  * @author David Walker
  * @copyright 2011 California State University
@@ -11,7 +16,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Metalib_Category extends Xerxes_Framework_DataValue
+class Category extends DataValue
 {
 	public $id;
 	public $name;
@@ -33,14 +38,14 @@ class Xerxes_Model_Metalib_Category extends Xerxes_Framework_DataValue
 		// this is influenced by the setlocale() call with category LC_CTYPE; see PopulateDatabases.php
 		
 		$normalized = iconv( 'UTF-8', 'ASCII//TRANSLIT', $subject ); 
-		$normalized = Xerxes_Framework_Parser::strtolower( $normalized );
+		$normalized = Parser::strtolower( $normalized );
 		
 		$normalized = str_replace( "&amp;", "", $normalized );
 		$normalized = str_replace( "'", "", $normalized );
 		$normalized = str_replace( "+", "-", $normalized );
 		$normalized = str_replace( " ", "-", $normalized );
 		
-		$normalized = Xerxes_Framework_Parser::preg_replace( '/\W/', "-", $normalized );
+		$normalized = Parser::preg_replace( '/\W/', "-", $normalized );
 		
 		while ( strstr( $normalized, "--" ) )
 		{
@@ -52,7 +57,7 @@ class Xerxes_Model_Metalib_Category extends Xerxes_Framework_DataValue
 
 	public function toXML()
 	{
-		$xml = new DOMDocument();
+		$xml = new \DOMDocument();
 		$xml->loadXML("<category />");
 		$xml->documentElement->setAttribute("name", $this->name);
 		$xml->documentElement->setAttribute("normalized", $this->normalized);

@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Model\Databases;
+
+use Xerxes\Utility\DataValue;
+
 /**
  * Metalib SubCategory
  *
@@ -11,9 +15,9 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Metalib_Subcategory extends Xerxes_Framework_DataValue
+class Subcategory extends DataValue
 {
-	public $metalib_id;
+	public $databases_id;
 	public $name;
 	public $sequence;
 	public $category_id;
@@ -21,11 +25,11 @@ class Xerxes_Model_Metalib_Subcategory extends Xerxes_Framework_DataValue
 	
 	public function toXML()
 	{
-		$xml = new DOMDocument();
+		$xml = new \DOMDocument();
 		$xml->loadXML("<subcategory />");
 		$xml->documentElement->setAttribute("name", $this->name);
 		$xml->documentElement->setAttribute("sequence", $this->sequence);
-		$xml->documentElement->setAttribute("id", $this->metalib_id);
+		$xml->documentElement->setAttribute("id", $this->databases_id);
 		
 		foreach ( $this->databases as $database )
 		{

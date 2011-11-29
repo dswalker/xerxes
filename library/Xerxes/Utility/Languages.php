@@ -1,5 +1,7 @@
 <?php
 
+namespace Xerxes\Utility;
+
 /**
  * Parses and holds information about language codes and names
  *
@@ -11,7 +13,7 @@
  * @package  Xerxes_Framework
  */
 
-class Xerxes_Framework_Languages
+class Languages
 {
 	protected $xpath = "";		// language data we can query
 	protected $gettext = false; // whether gettext is installed
@@ -37,7 +39,7 @@ class Xerxes_Framework_Languages
 	{
 		if ( empty( self::$instance ) )
 		{
-			self::$instance = new Xerxes_Framework_Languages();
+			self::$instance = new Languages();
 			$object = self::$instance;
 			$object->init($lang);			
 		}
@@ -67,7 +69,7 @@ class Xerxes_Framework_Languages
 		
 		// if the iso-codes is not installed, use our copy
 		
-		$xml = new DOMDocument();
+		$xml = new \DOMDocument();
 
 		// load the languages file
 		
@@ -80,11 +82,11 @@ class Xerxes_Framework_Languages
 			$xml->load( $this->languages_file_xerxes );
 		}
 		
-		$this->xpath = new DOMXPath( $xml );
+		$this->xpath = new \DOMXPath( $xml );
 		
 		// which language shall we display?
 		
-		$objRegistry = Xerxes_Framework_Registry::getInstance();		
+		$objRegistry = Registry::getInstance();		
 		
 		if ( $lang == null ) 
 		{
@@ -128,7 +130,7 @@ class Xerxes_Framework_Languages
 	{
 		if ($type != 'name')
 		{
-			$code = Xerxes_Framework_Parser::strtolower( $code );
+			$code = Parser::strtolower( $code );
 		}
 		
 		$elements = $this->xpath->query( "//iso_639_entry[@$type='$code']" ); 

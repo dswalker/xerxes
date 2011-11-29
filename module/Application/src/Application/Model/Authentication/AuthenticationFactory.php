@@ -1,5 +1,7 @@
 <?php
 
+namespace Application\Model\Authentication;
+
 /**
  * Authentication factory
  *
@@ -11,9 +13,9 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Authentication_Factory
+class AuthenticationFactory
 {
-	public function getAuthenticationObject($name, Xerxes_Framework_Request $request, Xerxes_Framework_Registry $registry, Xerxes_Framework_Response $response)
+	public function getAuthenticationObject($name, Request $request, Registry $registry, Response $response)
 	{
 		// sanitize
 		
@@ -21,7 +23,7 @@ class Xerxes_Model_Authentication_Factory
 		
 		// main class
 		
-		$class_name = "Xerxes_Model_Authentication_" . ucfirst($name);
+		$class_name = ucfirst($name);
 		
 		// local custom version
 		
@@ -35,7 +37,7 @@ class Xerxes_Model_Authentication_Factory
 			
 			if ( ! class_exists($class_name) )
 			{
-				throw new Exception("the custom authentication scheme '$name' should have a class called '$class_name'");
+				throw new \Exception("the custom authentication scheme '$name' should have a class called '$class_name'");
 			}
 		}
 
@@ -43,9 +45,9 @@ class Xerxes_Model_Authentication_Factory
 
 		$authentication = new $class_name($request, $registry, $response);
 		
-		if ( ! $authentication instanceof Xerxes_Model_Authentication_Abstract)
+		if ( ! $authentication instanceof AbstractAuthentication)
 		{
-			throw new Exception("class '$class_name' for the '$name' authentication scheme must extend Xerxes_Model_Authentication_Abstract");
+			throw new \Exception("class '$class_name' for the '$name' authentication scheme must extend AbstractAuthentication");
 		}
 		
 		return $authentication;

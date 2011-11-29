@@ -1,5 +1,7 @@
 <?php
 
+namespace Application\Model\Authentication;
+
 /**
  * Authenticate users against an LDAP-enabled directory server
  * 
@@ -12,7 +14,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Authentication_LDAP extends Xerxes_Model_Authentication_Abstract 
+class LDAP extends AbstractAuthentication 
 {
 	/**
 	* Authenticates the user against the directory server

@@ -1,12 +1,19 @@
 <?php
 
-class Xerxes_Controller_Navigation extends Xerxes_Framework_Controller
+namespace Application\Controller;
+
+use Xerxes\Utility\Labels;
+
+use Zend\Mvc\Controller\ActionController,
+	Application\View\Navigation;
+
+class NavigationController extends ActionController
 {
 	public function labels()
 	{
 		$lang = $this->request->getParam("lang");
 		
-		$labels = Xerxes_Framework_Labels::getInstance($lang);
+		$labels = Labels::getInstance($lang);
 		$this->response->add("labels", $labels);
 		
 		$this->response->setView("scripts/helper/labels.phtml");
@@ -14,7 +21,7 @@ class Xerxes_Controller_Navigation extends Xerxes_Framework_Controller
 	
 	public function navbar()
 	{
-		$helper = new Xerxes_View_Helper_Navigation();
+		$helper = new Navigation();
 		
 		$navbar = array(
 			'accessible_link' => $helper->accessibleLink(),

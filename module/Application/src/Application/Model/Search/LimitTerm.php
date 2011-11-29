@@ -1,5 +1,7 @@
 <?php
 
+namespace Application\Model\Search;
+
 /**
  * Search Limit Term
  *
@@ -11,7 +13,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Search_LimitTerm
+class LimitTerm
 {
 	public $field;
 	public $relation;

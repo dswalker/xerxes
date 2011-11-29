@@ -1,5 +1,7 @@
 <?php
 
+namespace Application\Model\Authentication;
+
 /**
  * Authenticate users against the 'demo_users' list in configuration file
  * 
@@ -11,7 +13,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Authentication_Demo extends Xerxes_Model_Authentication_Abstract 
+class Demo extends AbstractAuthentication 
 {
 	/**
 	* Authenticates the user against the directory server

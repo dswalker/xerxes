@@ -1,5 +1,7 @@
 <?php
 
+namespace Xerxes\Utility;
+
 /**
  * Provides basic helper function for instatiated Value Objects
  *
@@ -12,7 +14,7 @@
  * @license http://www.gnu.org/licenses/
  */
 
-abstract class Xerxes_Framework_DataValue
+abstract class DataValue
 {
 	/**
 	 * Return all properties from the object as an array; excludes

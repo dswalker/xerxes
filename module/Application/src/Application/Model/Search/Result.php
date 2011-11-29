@@ -1,5 +1,10 @@
 <?php
 
+namespace Application\Model\Search;
+
+use Xerxes\Utility\Parser,
+	Xerxes\Utility\Registry;
+
 /**
  * Search Record
  *
@@ -11,7 +16,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Search_Result
+class Result
 {
 	public $url_open; // open url
 	public $openurl_kev_co;	 // just the key-encoded-values of the openurl
@@ -29,13 +34,13 @@ class Xerxes_Model_Search_Result
 	 * Constructor
 	 * 
 	 * @param Xerxes_Record $record						record
-	 * @param Xerxes_Model_Search_Config $config		local config
+	 * @param Config $config		local config
 	 */
 	
-	public function __construct(Xerxes_Record $record, Xerxes_Model_Search_Config $config)
+	public function __construct(Xerxes_Record $record, Config $config)
 	{
 		$this->xerxes_record = $record;
-		$this->registry = Xerxes_Framework_Registry::getInstance();
+		$this->registry = Registry::getInstance();
 		$this->config = $config;
 		
 		// link resolver stuff
@@ -48,7 +53,7 @@ class Xerxes_Model_Search_Result
 		
 		// holdings
 		
-		$this->holdings = new Xerxes_Model_Search_Holdings();
+		$this->holdings = new Holdings();
 		
 		if ( $record->hasPhysicalHoldings() == false )
 		{
@@ -70,14 +75,14 @@ class Xerxes_Model_Search_Result
 			$configMinRelevance	= (int) $this->registry->getConfig("BX_MIN_RELEVANCE", false, 0);
 			$configMaxRecords = (int) $this->registry->getConfig("BX_MAX_RECORDS", false, 10);
 			
-			$bx_engine = new Xerxes_Model_Bx_Engine($configToken, $this->sid, $configBX);
+			$bx_engine = new Engine($configToken, $this->sid, $configBX);
 			$bx_records = $bx_engine->getRecommendations($this->xerxes_record, $configMinRelevance, $configMaxRecords);
 
 			if ( count($bx_records) > 0 ) // only if there are any records
 			{
 				foreach ( $bx_records as $bx_record )
 				{
-					$result = new Xerxes_Model_Search_Result($bx_record, $this->config);
+					$result = new Result($bx_record, $this->config);
 					array_push($this->recommendations, $result);
 				}
 			}			
@@ -88,7 +93,7 @@ class Xerxes_Model_Search_Result
 	 * Add holdings to this result
 	 */
 	
-	public function setHoldings( Xerxes_Model_Search_Holdings $holdings )
+	public function setHoldings( Holdings $holdings )
 	{
 		$this->holdings = $holdings;
 	}
@@ -96,7 +101,7 @@ class Xerxes_Model_Search_Result
 	/**
 	 * Return item records
 	 * 
-	 * @return array of Xerxes_Model_Search_Item
+	 * @return array of Item
 	 */
 	
 	public function getHoldings()
@@ -130,7 +135,7 @@ class Xerxes_Model_Search_Result
 		// get the data
 		
 		$url .= "?action=status&id=" . urlencode($id);
-		$data = Xerxes_Framework_Parser::request($url, 5);
+		$data = Parser::request($url, 5);
 		
 		// echo $url; exit;
 		
@@ -138,7 +143,7 @@ class Xerxes_Model_Search_Result
 		
 		if ( $data == "" )
 		{
-			throw new Exception("could not connect to availability server");
+			throw new \Exception("could not connect to availability server");
 		}		
 		
 		
@@ -160,12 +165,12 @@ class Xerxes_Model_Search_Result
 										
 					if ( $is_holding == true )
 					{
-						$item = new Xerxes_Model_Search_Holding();
+						$item = new Holding();
 						$this->holdings->addHolding($item);
 					}
 					else
 					{
-						$item = new Xerxes_Model_Search_Item();
+						$item = new Item();
 						$this->holdings->addItem($item);
 					}
 					
@@ -179,7 +184,7 @@ class Xerxes_Model_Search_Result
 		
 		// cache it for the future
 		
-		$cache = new Xerxes_Framework_Cache();
+		$cache = new Cache();
 		
 		$expiry = $this->config->getConfig("HOLDINGS_CACHE_EXPIRY", false, 2 * 60 * 60); // expiry set for two hours
 		$expiry += time(); 
@@ -204,11 +209,11 @@ class Xerxes_Model_Search_Result
 		{
 			$url = "http://www.goodreads.com/book/isbn?isbn=$isbn&key=$key";
 			
-			$data = Xerxes_Framework_Parser::request($url, 5);
+			$data = Parser::request($url, 5);
 			
 			if ( $data != "" )
 			{
-				$xml = new DOMDocument();
+				$xml = new \DOMDocument();
 				$xml->recover = true;
 				$xml->loadXML($data);
 				

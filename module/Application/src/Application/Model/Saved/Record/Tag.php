@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Model\Saved\Record;
+
+use Xerxes\Utility\DataValue;
+
 /**
  * Database Value Record Tag
  *
@@ -11,7 +15,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Saved_Record_Tag extends Xerxes_Framework_DataValue
+class Tag extends DataValue
 {
 	public $label;
 	public $total;

@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Model\Search;
+
+use Xerxes\Utility\Parser;
+
 /**
  * Search Item
  *
@@ -11,7 +15,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Search_Item
+class Item
 {
 	protected $bib_id; 		// the bibliographic record ID
     protected $availability; // boolean: is this item available for checkout?
@@ -54,7 +58,7 @@ class Xerxes_Model_Search_Item
 		}
 		else
 		{
-			throw new Exception("trying to access propety '$name', which does not exist");
+			throw new \Exception("trying to access propety '$name', which does not exist");
 		}
 	}
 	
@@ -66,7 +70,7 @@ class Xerxes_Model_Search_Item
 	
 	public function toXML()
 	{
-		$xml = new DOMDocument();
+		$xml = new \DOMDocument();
 		$xml->loadXML("<item />");
 		
 		foreach ( $this as $key => $value )
@@ -78,7 +82,7 @@ class Xerxes_Model_Search_Item
 			
 			$key = preg_replace('/\W|\s/', '', $key);
 			
-			$element = $xml->createElement($key, Xerxes_Framework_Parser::escapeXml($value));
+			$element = $xml->createElement($key, Parser::escapeXml($value));
 			$xml->documentElement->appendChild($element);
 		}
 		

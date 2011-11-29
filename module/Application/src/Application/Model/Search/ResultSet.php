@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Model\Search;
+
+use Application\Model\DataMap\Availability;
+
 /**
  * Search Results
  *
@@ -11,7 +15,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Search_ResultSet
+class ResultSet
 {
 	public $total = 0; // total number of hits
 	public $records = array(); // result objects
@@ -22,10 +26,10 @@ class Xerxes_Model_Search_ResultSet
 	/**
 	 * Constructor
 	 * 
-	 * @param Xerxes_Model_Search_Config $config
+	 * @param Config $config
 	 */
 	
-	public function __construct( Xerxes_Model_Search_Config $config )
+	public function __construct( Config $config )
 	{
 		$this->config = $config;	
 	}
@@ -34,7 +38,7 @@ class Xerxes_Model_Search_ResultSet
 	 * Return an individual search result by position
 	 * 
 	 * @param int $id		array position
-	 * @return Xerxes_Model_Search_Result
+	 * @return Result
 	 */	
 	
 	public function getRecord( $id )
@@ -52,7 +56,7 @@ class Xerxes_Model_Search_ResultSet
 	/**
 	 * Return all search results
 	 * 
-	 * @return array of Xerxes_Model_Search_Result objects
+	 * @return array of Result objects
 	 */
 
 	public function getRecords()
@@ -68,17 +72,17 @@ class Xerxes_Model_Search_ResultSet
 
 	public function addRecord( Xerxes_Record $record )
 	{
-		$result = new Xerxes_Model_Search_Result($record, $this->config);
+		$result = new Result($record, $this->config);
 		array_push($this->records, $result);
 	}
 
 	/**
 	 * Add a Xerxes Search Result to this result set
 	 * 
-	 * @param Xerxes_Model_Search_Result $result
+	 * @param Result $result
 	 */	
 	
-	public function addResult( Xerxes_Model_Search_Result $result )
+	public function addResult( Result $result )
 	{
 		array_push($this->records, $result);
 	}
@@ -86,7 +90,7 @@ class Xerxes_Model_Search_ResultSet
 	/**
 	 * Get the facets
 	 * 
-	 * @return Xerxes_Model_Search_Facets
+	 * @return Facets
 	 */
 	
 	public function getFacets()
@@ -97,10 +101,10 @@ class Xerxes_Model_Search_ResultSet
 	/**
 	 * Add facets to the result set
 	 * 
-	 * @param Xerxes_Model_Search_Facets $facets
+	 * @param Facets $facets
 	 */
 	
-	public function setFacets( Xerxes_Model_Search_Facets $facets )
+	public function setFacets( Facets $facets )
 	{
 		$this->facets = $facets;
 	}
@@ -129,7 +133,7 @@ class Xerxes_Model_Search_ResultSet
 		{
 			// get all from our peer-reviewed list
 			
-			$data_map = new Xerxes_Model_DataMap_Refereed();
+			$data_map = new Refereed();
 			
 			$refereed_list = $data_map->getRefereed($issns);
 			
@@ -170,7 +174,7 @@ class Xerxes_Model_Search_ResultSet
 			
 		if ( count($issns) > 0 )
 		{
-			$data_map = new Xerxes_Model_DataMap_Availability();
+			$data_map = new Availability();
 			
 			// execute this in a single query							
 			// reduce to just the unique ISSNs
@@ -374,7 +378,7 @@ class Xerxes_Model_Search_ResultSet
 			
 			// look for any of our items
 			
-			$cache = new Xerxes_Framework_Cache();
+			$cache = new Cache();
 			
 			$cache_array = $cache->get($ids);
 			
@@ -382,9 +386,9 @@ class Xerxes_Model_Search_ResultSet
 			{
 				$holdings = unserialize($data);
 				
-				if ( ! $holdings instanceof Xerxes_Model_Search_Holdings   )
+				if ( ! $holdings instanceof Holdings   )
 				{
-					throw new Exception("cached item ($id) is not an instance of Xerxes_Model_Search_Holdings");
+					throw new \Exception("cached item ($id) is not an instance of Holdings");
 				}
 				
 				// now associate this item with its corresponding result

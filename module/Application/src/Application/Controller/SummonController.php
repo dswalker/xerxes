@@ -1,11 +1,15 @@
 <?php
 
-class Xerxes_Controller_Summon extends Xerxes_Controller_Search
+namespace Application\Controller;
+
+use Application\Model\Summon\Engine;
+
+class SummonController extends SearchController
 {
 	protected $id = "summon";
 	
 	protected function getEngine()
 	{
-		return new Xerxes_Model_Summon_Engine();
+		return new Engine();
 	}
 }

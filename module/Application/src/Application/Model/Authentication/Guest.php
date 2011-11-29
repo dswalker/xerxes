@@ -1,5 +1,7 @@
 <?php
 
+namespace Application\Model\Authentication;
+
 /**
  * Guest Authentication
  * 
@@ -11,7 +13,7 @@
  * @license http://www.gnu.org/licenses/
  */
 
-class Xerxes_Model_Authentication_Guest extends Xerxes_Model_Authentication_Abstract 
+class Guest extends AbstractAuthentication 
 {
 	/**
 	 * Just register the user with a role of guest

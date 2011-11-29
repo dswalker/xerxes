@@ -1,11 +1,15 @@
 <?php
 
-class Xerxes_Controller_Primo extends Xerxes_Controller_Search
+namespace Application\Controller;
+
+use Application\Model\Primo\Engine;
+
+class PrimoController extends SearchController
 {
 	protected $id = "primo";
 	
 	protected function getEngine()
 	{
-		return new Xerxes_Model_Primo_Engine();
+		return new Engine();
 	}
 }

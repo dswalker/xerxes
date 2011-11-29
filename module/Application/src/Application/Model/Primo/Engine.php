@@ -1,5 +1,10 @@
 <?php
 
+namespace Application\Model\Primo;
+
+use Application\Model\Search,
+	Xerxes\Utility\Parser;
+
 /**
  * Primo Search Engine
  * 
@@ -11,7 +16,7 @@
  * @package Primo
  */
 
-class Xerxes_Model_Primo_Engine extends Xerxes_Model_Search_Engine 
+class Engine extends Search\Engine 
 {
 	protected $server; // primo server address
 	protected $institution; // primo institution id
@@ -62,7 +67,7 @@ class Xerxes_Model_Primo_Engine extends Xerxes_Model_Search_Engine
 	 * @return int
 	 */	
 	
-	public function getHits( Xerxes_Model_Search_Query $search )
+	public function getHits( Query $search )
 	{
 		// get the results, just the hit count
 		
@@ -76,15 +81,15 @@ class Xerxes_Model_Primo_Engine extends Xerxes_Model_Search_Engine
 	/**
 	 * Search and return results
 	 * 
-	 * @param Xerxes_Model_Search_Query $search		search object
+	 * @param Query $search		search object
 	 * @param int $start							[optional] starting record number
 	 * @param int $max								[optional] max records
 	 * @param string $sort							[optional] sort order
 	 * 
-	 * @return Xerxes_Model_Search_Results
+	 * @return Results
 	 */	
 	
-	public function searchRetrieve( Xerxes_Model_Search_Query $search, $start = 1, $max = 10, $sort = "")
+	public function searchRetrieve( Query $search, $start = 1, $max = 10, $sort = "")
 	{
 		// get the results
 		
@@ -102,7 +107,7 @@ class Xerxes_Model_Primo_Engine extends Xerxes_Model_Search_Engine
 	 * Return an individual record
 	 * 
 	 * @param string	record identifier
-	 * @return Xerxes_Model_Search_Results
+	 * @return Results
 	 */
 	
 	public function getRecord( $id )
@@ -133,19 +138,19 @@ class Xerxes_Model_Primo_Engine extends Xerxes_Model_Search_Engine
 	/**
 	 * Return the search engine config
 	 * 
-	 * @return Xerxes_Model_Primo_Config
+	 * @return Config
 	 */			
 	
 	public function getConfig()
 	{
-		return Xerxes_Model_Primo_Config::getInstance();
+		return Config::getInstance();
 	}	
 
 	/**
 	 * Do the actual fetch of an individual record
 	 * 
 	 * @param string	record identifier
-	 * @return Xerxes_Model_Search_Results
+	 * @return Results
 	 */		
 	
 	protected function doGetRecord( $id )
@@ -157,12 +162,12 @@ class Xerxes_Model_Primo_Engine extends Xerxes_Model_Search_Engine
 	/**
 	 * Do the actual search
 	 * 
-	 * @param mixed $search							string or Xerxes_Model_Search_Query, the search query
+	 * @param mixed $search							string or Query, the search query
 	 * @param int $start							[optional] starting record number
 	 * @param int $max								[optional] max records
 	 * @param string $sort							[optional] sort order
 	 * 
-	 * @return Xerxes_Model_Search_Results
+	 * @return Results
 	 */
 
 	protected function doSearch( $search, $start = 1, $max = 10, $sort = "" )
@@ -171,7 +176,7 @@ class Xerxes_Model_Primo_Engine extends Xerxes_Model_Search_Engine
 		
 		$query = "";
 		
-		if ( $search instanceof Xerxes_Model_Search_Query )
+		if ( $search instanceof Search\Query )
 		{
 			foreach ( $search->getQueryTerms() as $term )
 			{
@@ -223,18 +228,18 @@ class Xerxes_Model_Primo_Engine extends Xerxes_Model_Search_Engine
 		
 		// get the response
 		
-		$response = Xerxes_Framework_Parser::request($this->url);
+		$response = Parser::request($this->url);
 		
 		// echo $response;
 		
 		if ( $response == "" )
 		{
-			throw new Exception("Could not connect to Primo server");
+			throw new \Exception("Could not connect to Primo server");
 		}
 		
 		// load it
 
-		$xml = new DOMDocument();
+		$xml = new \DOMDocument();
 		$xml->loadXML($response);
 		
 		// parse it
@@ -246,7 +251,7 @@ class Xerxes_Model_Primo_Engine extends Xerxes_Model_Search_Engine
 	 * Parse the primo response
 	 *
 	 * @param DOMDocument $xml	primo results
-	 * @return Xerxes_Model_Search_ResultSet
+	 * @return ResultSet
 	 */	
 	
 	protected function parseResponse(DOMDocument $xml)
@@ -257,12 +262,12 @@ class Xerxes_Model_Primo_Engine extends Xerxes_Model_Search_Engine
 		
 		if ( $error != "" )
 		{
-			throw new Exception($error->getAttribute("MESSAGE"));
+			throw new \Exception($error->getAttribute("MESSAGE"));
 		}
 		
 		// set-up the result set
 		
-		$result_set = new Xerxes_Model_Search_ResultSet($this->config);		
+		$result_set = new Search\ResultSet($this->config);		
 		
 		// total
 		
@@ -270,7 +275,7 @@ class Xerxes_Model_Primo_Engine extends Xerxes_Model_Search_Engine
 		
 		if ( $docset == null )
 		{
-			throw new Exception("Could not determine total number of records");
+			throw new \Exception("Could not determine total number of records");
 		}
 		
 		$total = $docset->getAttribute("TOTALHITS");
@@ -296,21 +301,21 @@ class Xerxes_Model_Primo_Engine extends Xerxes_Model_Search_Engine
 	 * Parse records out of the response
 	 *
 	 * @param DOMDocument $dom 	Primo XML
-	 * @return array of Xerxes_Model_Primo_Record's
+	 * @return array of Record's
 	 */	
 	
 	protected function extractRecords(DOMDocument $dom)
 	{
 		$final = array();
 		
-		$xpath = new DOMXPath($dom);
+		$xpath = new \DOMXPath($dom);
 		$xpath->registerNamespace("sear", "http://www.exlibrisgroup.com/xsd/jaguar/search");
 		
 		$records = $xpath->query("//sear:DOC");
 		
 		foreach ( $records as $record )
 		{
-			$xerxes_record = new Xerxes_Model_Primo_Record();
+			$xerxes_record = new Record();
 			$xerxes_record->loadXML($record);
 			array_push($final, $xerxes_record);
 		}
@@ -322,12 +327,12 @@ class Xerxes_Model_Primo_Engine extends Xerxes_Model_Search_Engine
 	 * Parse facets out of the response
 	 *
 	 * @param DOMDocument $dom 	Primo XML
-	 * @return Xerxes_Model_Search_Facets
+	 * @return Facets
 	 */	
 		
 	protected function extractFacets(DOMDocument $dom)
 	{
-		$facets = new Xerxes_Model_Search_Facets();
+		$facets = new Search\Facets();
 		
 		// echo $dom->saveXML();
 		
@@ -368,7 +373,7 @@ class Xerxes_Model_Primo_Engine extends Xerxes_Model_Search_Engine
 					continue;
 				}
 				
-				$group = new Xerxes_Model_Search_FacetGroup();
+				$group = new Search\FacetGroup();
 				$group->name = $group_internal_name;
 				$group->public = $this->config->getFacetPublicName($group_internal_name);
 				
@@ -412,7 +417,7 @@ class Xerxes_Model_Primo_Engine extends Xerxes_Model_Search_Engine
 				{
 					$public_value = $this->config->getValuePublicName($group_internal_name, $key);
 					
-					$facet = new Xerxes_Model_Search_Facet();
+					$facet = new Search\Facet();
 					$facet->name = $public_value;
 					$facet->count = $value;
 					

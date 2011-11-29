@@ -1,5 +1,7 @@
 <?php
 
+namespace Xerxes\Utility;
+
 /**
  * Restict access to a portion of an application
  * 
@@ -11,7 +13,7 @@
  * @license http://www.gnu.org/licenses/
  */
 
-class Xerxes_Framework_Restrict
+class Restrict
 {
 	private $ip_range; // set of local ip ranges
 	private $request; // request object
@@ -23,10 +25,11 @@ class Xerxes_Framework_Restrict
 	 * @param $objRequest request object
 	 */
 	
-	public function __construct()
+	public function __construct(Request $request)
 	{
-		$registry = Xerxes_Framework_Registry::getInstance();
-		$this->request = Xerxes_Framework_Request::getInstance();
+		$registry = Registry::getInstance();
+		
+		$this->request = $request;
 		
 		$authentication_page = $this->request->url_for( array ("base" => "authenticate", "action" => "login" ) );
 		

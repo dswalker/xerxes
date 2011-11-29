@@ -1,5 +1,7 @@
 <?php
 
+namespace Xerxes\Utility;
+
 /**
  * One PDO connection to rule them all
  */
@@ -19,7 +21,7 @@ global $xerxes_pdo;
  * @license http://www.gnu.org/licenses/
  */
 
-abstract class Xerxes_Framework_DataMap
+abstract class DataMap
 {
 	private $pdo; // pdo data object
 	
@@ -43,7 +45,7 @@ abstract class Xerxes_Framework_DataMap
 	
 	public function __construct($connection = null, $username = null, $password = null)
 	{
-		$this->registry = Xerxes_Framework_Registry::getInstance();
+		$this->registry = Registry::getInstance();
 		
 		// pdo can't tell us which rdbms we're using exactly, especially for 
 		// ms sql server, since we'll be using odbc driver, so we make this
@@ -76,7 +78,7 @@ abstract class Xerxes_Framework_DataMap
 	{
 		global $xerxes_pdo;
 		
-		if ( ! $xerxes_pdo instanceof PDO )
+		if ( ! $xerxes_pdo instanceof \PDO )
 		{
 			// options to ensure utf-8
 			
@@ -92,7 +94,7 @@ abstract class Xerxes_Framework_DataMap
 				}
 				else
 				{
-					$init_command = PDO::MYSQL_ATTR_INIT_COMMAND;
+					$init_command = \PDO::MYSQL_ATTR_INIT_COMMAND;
 				}
 				
 				$arrDriverOptions[$init_command] = "SET NAMES 'utf8'";
@@ -100,16 +102,16 @@ abstract class Xerxes_Framework_DataMap
 			
 			// data access object
 			
-			$xerxes_pdo = new PDO($this->connection, $this->username, $this->password, $arrDriverOptions);
+			$xerxes_pdo = new \PDO($this->connection, $this->username, $this->password, $arrDriverOptions);
 			
 			// will force PDO to throw exceptions on error
 			
-			$xerxes_pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
+			$xerxes_pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 			
 			$this->pdo = $xerxes_pdo;
 		}
 		
-		if ( ! $this->pdo instanceof PDO )
+		if ( ! $this->pdo instanceof \PDO )
 		{
 			$this->pdo = $xerxes_pdo;
 		}
@@ -287,7 +289,7 @@ abstract class Xerxes_Framework_DataMap
 	 * A utility method for adding single-value data to a table
 	 *
 	 * @param string $table_name		table name
-	 * @param mixed $value_object		object derived from Xerxes_Framework_DataValue
+	 * @param mixed $value_object		object derived from DataValue
 	 * @param boolean $boolReturnPk  	default false, return the inserted pk value?
 	 * @return false if failure. on success, true or inserted pk based on $boolReturnPk
 	 */

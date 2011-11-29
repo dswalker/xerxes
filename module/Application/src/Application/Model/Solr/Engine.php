@@ -1,5 +1,10 @@
 <?php
 
+namespace Application\Model\Solr;
+
+use Application\Model\Search,
+	Xerxes\Utility\Parser;
+
 /**
  * Solr Search Engine
  * 
@@ -11,7 +16,7 @@
  * @package Solr
  */
 
-class Xerxes_Model_Solr_Engine extends Xerxes_Model_Search_Engine 
+class Engine extends Search\Engine 
 {
 	protected $server; // solr server address
 	protected $url; // track the url
@@ -42,7 +47,7 @@ class Xerxes_Model_Solr_Engine extends Xerxes_Model_Search_Engine
 	 * @return int
 	 */	
 	
-	public function getHits( Xerxes_Model_Search_Query $search )
+	public function getHits( Query $search )
 	{
 		// get the results, just the hit count, no facets
 		
@@ -56,15 +61,15 @@ class Xerxes_Model_Solr_Engine extends Xerxes_Model_Search_Engine
 	/**
 	 * Search and return results
 	 * 
-	 * @param Xerxes_Model_Search_Query $search		search object
+	 * @param Query $search		search object
 	 * @param int $start							[optional] starting record number
 	 * @param int $max								[optional] max records
 	 * @param string $sort							[optional] sort order
 	 * 
-	 * @return Xerxes_Model_Search_Results
+	 * @return Results
 	 */	
 	
-	public function searchRetrieve( Xerxes_Model_Search_Query $search, $start = 1, $max = 10, $sort = "")
+	public function searchRetrieve( Query $search, $start = 1, $max = 10, $sort = "")
 	{
 		// get the results
 		
@@ -81,7 +86,7 @@ class Xerxes_Model_Solr_Engine extends Xerxes_Model_Search_Engine
 	 * Return an individual record
 	 * 
 	 * @param string	record identifier
-	 * @return Xerxes_Model_Search_Results
+	 * @return Results
 	 */
 	
 	public function getRecord( $id )
@@ -116,19 +121,19 @@ class Xerxes_Model_Solr_Engine extends Xerxes_Model_Search_Engine
 	/**
 	 * Return the search engine config
 	 * 
-	 * @return Xerxes_Model_Solr_Config
+	 * @return Config
 	 */	
 	
 	public function getConfig()
 	{
-		return Xerxes_Model_Solr_Config::getInstance();
+		return Config::getInstance();
 	}	
 
 	/**
 	 * Do the actual fetch of an individual record
 	 * 
 	 * @param string	record identifier
-	 * @return Xerxes_Model_Search_Results
+	 * @return Results
 	 */		
 	
 	protected function doGetRecord($id)
@@ -166,7 +171,7 @@ class Xerxes_Model_Solr_Engine extends Xerxes_Model_Search_Engine
 		
 		// passed in a query object, so handle this
 		
-		if ( $search instanceof Xerxes_Model_Search_Query )
+		if ( $search instanceof Search\Query )
 		{
 			$terms = $search->getQueryTerms();
 			
@@ -174,7 +179,7 @@ class Xerxes_Model_Solr_Engine extends Xerxes_Model_Search_Engine
 			
 			if ( count($terms) == 0 )
 			{
-				throw new Exception("No search terms supplied");
+				throw new \Exception("No search terms supplied");
 			}
 			
 			// get just the first term for now
@@ -360,17 +365,17 @@ class Xerxes_Model_Solr_Engine extends Xerxes_Model_Search_Engine
 
 		// get the data
 		
-		$response = Xerxes_Framework_Parser::request($this->url, 10);
+		$response = Parser::request($this->url, 10);
 		$xml = simplexml_load_string($response);
 		
 		if ( $response == null || $xml === false )
 		{
-			throw new Exception("Could not connect to search engine.");
+			throw new \Exception("Could not connect to search engine.");
 		}
 		
 		// parse the results
 		
-		$results = new Xerxes_Model_Search_ResultSet($this->config);
+		$results = new Search\ResultSet($this->config);
 		
 		// extract total
 		
@@ -394,7 +399,7 @@ class Xerxes_Model_Solr_Engine extends Xerxes_Model_Search_Engine
 	 * Extract records from the Solr response
 	 * 
 	 * @param simplexml	$xml	solr response
-	 * @return array of Xerxes_Model_Search_Record's
+	 * @return array of Record's
 	 */	
 	
 	protected function extractRecords($xml)
@@ -432,7 +437,7 @@ class Xerxes_Model_Solr_Engine extends Xerxes_Model_Search_Engine
 					        
 					        require_once 'File/MARC.php'; // from pear
 					        
-					        $marc_file = new File_MARC($marc, File_MARC::SOURCE_STRING);
+					        $marc_file = new \File_MARC($marc, File_MARC::SOURCE_STRING);
 					        $marc_record = $marc_file->next();
 					        $xml_data = $marc_record->toXML();
 						}
@@ -467,7 +472,7 @@ class Xerxes_Model_Solr_Engine extends Xerxes_Model_Search_Engine
 				}
 				
 				
-				$record = new Xerxes_Model_Solr_Record();
+				$record = new Record();
 				$record->loadXML($xml_data);
 				
 				$record->setRecordID($id);
@@ -485,12 +490,12 @@ class Xerxes_Model_Solr_Engine extends Xerxes_Model_Search_Engine
 	 * Extract facets from the Solr response
 	 * 
 	 * @param simplexml	$xml	solr response
-	 * @return Xerxes_Model_Search_Facets, null if none
+	 * @return Facets, null if none
 	 */
 	
 	protected function extractFacets($xml)
 	{
-		$facets = new Xerxes_Model_Search_Facets();
+		$facets = new Search\Facets();
 		
 		$groups = $xml->xpath("//lst[@name='facet_fields']/lst");
 		
@@ -510,7 +515,7 @@ class Xerxes_Model_Solr_Engine extends Xerxes_Model_Search_Engine
 				
 				$group_internal_name = (string) $facet_group["name"];
 				
-				$group = new Xerxes_Model_Search_FacetGroup();
+				$group = new Search\FacetGroup();
 				$group->name = $group_internal_name;
 				$group->public = $this->config->getFacetPublicName($group_internal_name);
 				
@@ -538,7 +543,7 @@ class Xerxes_Model_Solr_Engine extends Xerxes_Model_Search_Engine
 				
 				foreach ( $facet_array as $key => $value )
 				{
-					$facet = new Xerxes_Model_Search_Facet();
+					$facet = new Search\Facet();
 					$facet->name = $key;
 					$facet->count = $value;
 					

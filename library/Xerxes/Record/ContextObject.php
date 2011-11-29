@@ -1,5 +1,10 @@
 <?php
 
+namespace Xerxes\Record;
+
+use Xerxes\Record,
+	Xerxes\Utility\Parser;
+
 /**
  * Extract properties from OpenURL context object
  * 
@@ -11,7 +16,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Record_ContextObject extends Xerxes_Record
+class ContextObject extends Record
 {
 	protected $xpath;
 	
@@ -23,8 +28,8 @@ class Xerxes_Record_ContextObject extends Xerxes_Record
 
 	public function loadXML($xml)
 	{
-		$this->document = Xerxes_Framework_Parser::convertToDOMDocument($xml);
-		$this->xpath = new DOMXPath($this->document);
+		$this->document = Parser::convertToDOMDocument($xml);
+		$this->xpath = new \DOMXPath($this->document);
 		
 		// test to see what profile the context object is using
 		// set namespace accordingly
@@ -95,7 +100,7 @@ class Xerxes_Record_ContextObject extends Xerxes_Record
 		
 		foreach ( $authors as $objAuthor )
 		{
-			$author_object = new Xerxes_Record_Author();
+			$author_object = new Author();
 			
 			foreach ( $objAuthor->childNodes as $objAuthAttr )
 			{					

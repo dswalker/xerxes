@@ -1,6 +1,12 @@
 <?php
 
-class Xerxes_View_Helper_Search
+namespace Application\View;
+
+use Application\Model\Search\Engine,
+	Xerxes\Utility\Parser,	
+	Xerxes\Utility\Registry;
+
+class Search
 {
 	protected $id;
 	protected $request;
@@ -8,10 +14,10 @@ class Xerxes_View_Helper_Search
 	protected $config;
 	protected $registry;
 	
-	public function __construct($id, Xerxes_Model_Search_Engine $engine)
+	public function __construct($id, Request $request, Engine $engine)
 	{
-		$this->request = Xerxes_Framework_Request::getInstance();
-		$this->registry = Xerxes_Framework_Registry::getInstance();		
+		$this->request = $request;
+		$this->registry = Registry::getInstance();		
 		
 		$this->id = $id;
 		$this->query = $engine->getQuery($this->request);
@@ -54,7 +60,7 @@ class Xerxes_View_Helper_Search
 		
 		return array ( 
 			"range" => "$start-$stop",
-			"total" => Xerxes_Framework_Parser::number_format( $total )
+			"total" => Parser::number_format( $total )
 		);
 	}
 	
@@ -75,7 +81,7 @@ class Xerxes_View_Helper_Search
 			return null;
 		}
 		
-		$objXml = new DOMDocument( );
+		$objXml = new \DOMDocument( );
 		$objXml->loadXML( "<pager />" );
 		
 		$base_record = 1; // starting record in any result set
@@ -131,7 +137,7 @@ class Xerxes_View_Helper_Search
 				
 				$link = $this->request->url_for( $params );
 				
-				$objPage->setAttribute( "link", Xerxes_Framework_Parser::escapeXml( $link ) );
+				$objPage->setAttribute( "link", Parser::escapeXml( $link ) );
 				$objPage->setAttribute( "type", "first" );
 				$objXml->documentElement->appendChild( $objPage );
 			}
@@ -157,7 +163,7 @@ class Xerxes_View_Helper_Search
 						
 						$link = $this->request->url_for( $params );
 						
-						$objPage->setAttribute( "link", Xerxes_Framework_Parser::escapeXml( $link ) );
+						$objPage->setAttribute( "link", Parser::escapeXml( $link ) );
 						$objXml->documentElement->appendChild( $objPage );
 					
 					}
@@ -178,7 +184,7 @@ class Xerxes_View_Helper_Search
 				
 				$link = $this->request->url_for( $params );
 				
-				$objPage->setAttribute( "link", Xerxes_Framework_Parser::escapeXml( $link ) );
+				$objPage->setAttribute( "link", Parser::escapeXml( $link ) );
 				$objPage->setAttribute( "type", "next" );
 				$objXml->documentElement->appendChild( $objPage );
 			}
@@ -204,7 +210,7 @@ class Xerxes_View_Helper_Search
 			return null;
 		}
 		
-		$xml = new DOMDocument();
+		$xml = new \DOMDocument();
 		$xml->loadXML( "<sort_display />" );
 		
 		$x = 1;
@@ -347,7 +353,7 @@ class Xerxes_View_Helper_Search
 		
 		$search = $this->registry->getConfig('search');
 		
-		if ( $search instanceof SimpleXMLElement )
+		if ( $search instanceof \SimpleXMLElement )
 		{
 			foreach ( $search->xpath("//option") as $option )
 			{
@@ -386,7 +392,7 @@ class Xerxes_View_Helper_Search
 					{
 						// yup, so add it
 						
-						$option->addAttribute('hits', Xerxes_Framework_Parser::number_format($session_value));
+						$option->addAttribute('hits', Parser::number_format($session_value));
 					}
 				}
 			}

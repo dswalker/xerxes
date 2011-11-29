@@ -1,5 +1,7 @@
 <?php
 
+namespace Xerxes\Utility;
+
 /**
  * Utility class for basic parsing functions
  * 
@@ -11,7 +13,7 @@
  * @package  Xerxes_Framework
  */ 
 
-class Xerxes_Framework_Parser
+class Parser
 {
 	public static function toSentenceCase($strInput)
 	{						
@@ -19,11 +21,11 @@ class Xerxes_Framework_Parser
 		{
 			// drop everything
 			
-			$strInput = Xerxes_Framework_Parser::strtolower($strInput);
+			$strInput = self::strtolower($strInput);
 			
 			// capitalize the first letter
 			
-			$strInput = Xerxes_Framework_Parser::strtoupper(substr($strInput, 0, 1)) . substr($strInput, 1);
+			$strInput = self::strtoupper(substr($strInput, 0, 1)) . substr($strInput, 1);
 			
 			// and the start of a subtitle
 			
@@ -254,48 +256,31 @@ class Xerxes_Framework_Parser
 		return number_format($number, $decimals, $localeconv['decimal_point'], $localeconv['thousands_sep']);
 	}
 	
-	
-	/**
-	 * Send a request as either GET or POST
-	 *
-	 * @param string $url			url you want to send the request to
-	 * @param int $timeout			[optional] seconds to wait before timing out
-	 * @param string $data			[optional] data to POST to the above url
-	 * @param string $headers		[optional] http headers
-	 * @param bool $bolEncode		[optional] whether to encode the posted data, true by default
-	 * @return string				the response from the server
-	 */
-	
-	public static function request($url, $timeout = null, $data = null, $headers = null, $bolEncode = true)
-	{
-		return Xerxes_Framework_HTTP::request($url, $timeout, $data, $headers, $bolEncode);
-	}
-	
 	/**
 	 * Convert string, DOMNode to DOMDocument
 	 */
 	
 	public static function convertToDOMDocument($xml)
 	{
-		if ( $xml instanceof DOMDocument )
+		if ( $xml instanceof \DOMDocument )
 		{
 			return $xml;
 		}
 		elseif ( is_string($xml) )
 		{
-			$document = new DOMDocument();
+			$document = new \DOMDocument();
 			$document->loadXML($xml);
 			
 			return $document;
 		}
-		elseif ( $xml instanceof DOMNode )
+		elseif ( $xml instanceof \DOMNode )
 		{
 			// we'll convert this node to a DOMDocument
 				
 			// first import it into an intermediate doc, 
 			// so we can also import namespace definitions as well as nodes
 				
-			$intermediate = new DOMDocument();
+			$intermediate = new \DOMDocument();
 			$intermediate->loadXML("<wrapper />");
 				
 			$import = $intermediate->importNode($xml, true);
@@ -303,71 +288,14 @@ class Xerxes_Framework_Parser
 				
 			// now get just our xml, minus the wrapper
 				
-			$document = new DOMDocument();
+			$document = new \DOMDocument();
 			$document->loadXML($intermediate->saveXML($our_node));
 			
 			return $document;
 		}	
 		else
 		{
-			throw new Exception("param 1 must be of type string, DOMNode, or DOMDocument");
+			throw new \Exception("param 1 must be of type string, DOMNode, or DOMDocument");
 		}
 	}
-}
-
-/**
- * Utility class for parsing some XML
- */
-
-class Xerxes_Framework_Parser_XML extends DOMElement 
-{
-	private $node;
-	
-	public function __construct(DOMElement $node)
-	{
-		$this->node = $node;
-	}
-	
-	protected function getElement($name)
-	{
-		$elements = $this->node->getElementsByTagName($name);
-		
-		if ( count($elements) > 0 )
-		{
-			$node = $elements->item(0);
-			return new Xerxes_Framework_Parser_XML($node);
-		}
-		else
-		{
-			return null;
-		}
-	}
-	
-	protected function getValue($name)
-	{
-		$element = $this->getElement($name);
-		
-		if ( $element != null )
-		{
-			return $element->nodeValue;
-		}
-		else
-		{
-			return null;
-		}
-	}
-	
-	protected function getValues($name)
-	{
-		$values = array();
-		
-		$elements = $this->node->getElementsByTagName($name);
-		
-		foreach ( $elements as $node )
-		{
-			array_push($values, $node->nodeValue);
-		}
-		
-		return $values;
-	}		
 }

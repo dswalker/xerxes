@@ -1,5 +1,9 @@
 <?php
 
+namespace Application\Model\Solr;
+
+use Xerxes\Record\Bibliographic;
+
 /**
  * Extract properties for books, articles, and dissertations from SolrMarc implementation
  * 
@@ -11,7 +15,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Solr_Record extends Xerxes_Record_Bibliographic
+class Record extends Bibliographic
 {
 	protected $source = "solr";
 	protected $record_id;
@@ -26,7 +30,7 @@ class Xerxes_Model_Solr_Record extends Xerxes_Record_Bibliographic
 		// here we've defined marc fields that contain the physical holdings
 		// if the record doesn't have these, then it doesn't have items
 		
-		$config = Xerxes_Model_Solr_Config::getInstance();
+		$config = Config::getInstance();
 		
 		$item_field = $config->getConfig("ITEM_FIELD", false);
 		$item_query = $config->getConfig("ITEM_FIELD_QUERY", false);
@@ -87,7 +91,7 @@ class Xerxes_Model_Solr_Record extends Xerxes_Record_Bibliographic
 		}
 		else
 		{
-			$xml = new DOMDocument();
+			$xml = new \DOMDocument();
 			$xml->loadXML($string);
 			return $xml;
 		}		

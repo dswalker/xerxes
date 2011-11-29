@@ -1,5 +1,7 @@
 <?php
 
+namespace Application\Model\Search;
+
 /**
  * Search Holding
  *
@@ -11,7 +13,7 @@
  * @package Xerxes
  */
 
-class Xerxes_Model_Search_Holding
+class Holding
 {
 	private $data = array();
 	
@@ -38,7 +40,7 @@ class Xerxes_Model_Search_Holding
 	
 	public function toXML()
 	{
-		$xml = new DOMDocument();
+		$xml = new \DOMDocument();
 		$xml->loadXML("<holding />");
 		
 		foreach ( $this->data as $key => $value )
