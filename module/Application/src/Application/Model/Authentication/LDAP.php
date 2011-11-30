@@ -25,8 +25,8 @@ class LDAP extends AbstractAuthentication
 		define("LDAP_OPT_ON",   1);
 		define("LDAP_OPT_OFF",  0);
 		
-		$strUsername		= $this->request->getProperty( "username" );
-		$strPassword		= $this->request->getProperty( "password" );
+		$strUsername		= $this->request->getParam( "username" );
+		$strPassword		= $this->request->getParam( "password" );
 		
 		$strController		= $this->registry->getConfig( "DIRECTORY_SERVER", true );
 		$strDomain		= $this->registry->getConfig( "DOMAIN", false );

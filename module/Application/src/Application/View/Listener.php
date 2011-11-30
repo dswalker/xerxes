@@ -3,6 +3,7 @@
 namespace Application\View;
 
 use ArrayAccess,
+    Xerxes\Utility\ViewRenderer,
     Zend\Di\Locator,
     Zend\EventManager\EventCollection,
     Zend\EventManager\ListenerAggregate,
@@ -14,16 +15,14 @@ use ArrayAccess,
 
 class Listener implements ListenerAggregate
 {
-    protected $layout;
     protected $listeners = array();
     protected $staticListeners = array();
     protected $view;
     protected $displayExceptions = false;
-
-    public function __construct(Renderer $renderer, $layout = 'layout.phtml')
+    
+    public function __construct(ViewRenderer $view)
     {
-        $this->view   = $renderer;
-        $this->layout = $layout;
+    	$this->view = $view;
     }
 
     public function setDisplayExceptionsFlag($flag)
@@ -41,12 +40,12 @@ class Listener implements ListenerAggregate
     {
         $this->listeners[] = $events->attach('dispatch.error', array($this, 'renderError'));
         $this->listeners[] = $events->attach('dispatch', array($this, 'render404'), -80);
-        $this->listeners[] = $events->attach('dispatch', array($this, 'renderLayout'), -1000);
     }
 
     public function detach(EventCollection $events)
     {
-        foreach ($this->listeners as $key => $listener) {
+        foreach ($this->listeners as $key => $listener)
+        {
             $events->detach($listener);
             unset($this->listeners[$key]);
             unset($listener);
@@ -76,20 +75,27 @@ class Listener implements ListenerAggregate
     public function renderPageController(MvcEvent $e)
     {
         $page = $e->getResult();
-        if ($page instanceof Response) {
+        
+        if ($page instanceof Response) 
+        {
             return;
         }
 
         $response = $e->getResponse();
-        if ($response->isNotFound()) {
+        
+        if ($response->isNotFound()) 
+        {
             return;
         } 
 
         $routeMatch = $e->getRouteMatch();
 
-        if (!$routeMatch) {
+        if (!$routeMatch) 
+        {
             $page = '404';
-        } else {
+        } 
+        else 
+        {
             $page = $routeMatch->getParam('action', '404');
         }
 
@@ -100,6 +106,7 @@ class Listener implements ListenerAggregate
         $script     = 'error/' . $page . '.phtml';
 
         // Action content
+        
         $content    = $this->view->render($script);
         $e->setResult($content);
 
@@ -109,53 +116,41 @@ class Listener implements ListenerAggregate
     public function renderView(MvcEvent $e)
     {
         $response = $e->getResponse();
-        if (!$response->isSuccess()) {
+        
+        // header("Content-type: text/plain"); print_r($response); exit;
+        
+        if ( ! $response->isSuccess() )
+        {
             return;
         }
 
         $routeMatch = $e->getRouteMatch();
         $controller = $routeMatch->getParam('controller', 'index');
-        $action     = $routeMatch->getParam('action', 'index');
-        $script     = $controller . '/' . $action . '.phtml';
+        $action = $routeMatch->getParam('action', 'index');
+        
+        
+        ##### HACK 
+        if ( $action == "index") $controller = "search";
+        ##### END HACK
+        
+        $script = $controller . '/' . $action . '.xsl';
 
-        $vars       = $e->getResult();
-        if (is_scalar($vars)) {
+        $vars = $e->getResult();
+        
+        if (is_scalar($vars)) 
+        {
             $vars = array('content' => $vars);
-        } elseif (is_object($vars) && !$vars instanceof ArrayAccess) {
+        } 
+        elseif (is_object($vars) && !$vars instanceof ArrayAccess) 
+        {
             $vars = (array) $vars;
         }
 
-        $content    = $this->view->render($script, $vars);
+        $content = $this->view->render($script, $vars);
 
         $e->setResult($content);
-        return $content;
-    }
-
-    public function renderLayout(MvcEvent $e)
-    {
-        $response = $e->getResponse();
+        $response->setContent($content);
         
-        print_r($response); exit;
-        
-        if (!$response) {
-            $response = new Response();
-            $e->setResponse($response);
-        }
-        if ($response->isRedirect()) {
-            return $response;
-        }
-
-        $footer   = $e->getParam('footer', false);
-        $vars     = array('footer' => $footer);
-
-        if (false !== ($contentParam = $e->getParam('content', false))) {
-            $vars['content'] = $contentParam;
-        } else {
-            $vars['content'] = $e->getResult();
-        }
-
-        $layout   = $this->view->render($this->layout, $vars);
-        $response->setContent($layout);
         return $response;
     }
 
@@ -182,7 +177,7 @@ class Listener implements ListenerAggregate
 
         $e->setResult($content);
 
-        return $this->renderLayout($e);
+        return $this->renderView($e);
     }
 
     public function renderError(MvcEvent $e)
@@ -222,6 +217,6 @@ class Listener implements ListenerAggregate
 
         $e->setResult($content);
 
-        return $this->renderLayout($e);
+        return $this->renderView($e);
     }
 }

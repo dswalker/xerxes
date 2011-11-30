@@ -35,7 +35,7 @@ abstract class AbstractAuthentication
 		$this->response = $response;
 		
 		$this->user = new User();
-		$this->return = $this->request->getProperty("return");
+		$this->return = $this->request->getParam("return");
 		
 		$base = $this->registry->getConfig("BASE_URL", true);
 		$server = $this->registry->getConfig("SERVER_URL", true);

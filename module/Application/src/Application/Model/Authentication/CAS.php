@@ -60,7 +60,7 @@ class CAS extends AbstractAuthentication
 	{
 		// values from the request
 		
-		$strTicket = $this->request->getProperty("ticket");
+		$strTicket = $this->request->getParam("ticket");
 					
 		// configuration settings
 

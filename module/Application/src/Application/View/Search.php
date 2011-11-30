@@ -2,6 +2,8 @@
 
 namespace Application\View;
 
+use Zend\Mvc\MvcEvent;
+
 use Application\Model\Search\Engine,
 	Xerxes\Utility\Parser,	
 	Xerxes\Utility\Registry;
@@ -14,9 +16,9 @@ class Search
 	protected $config;
 	protected $registry;
 	
-	public function __construct($id, Request $request, Engine $engine)
+	public function __construct($id, MvcEvent $event, Engine $engine)
 	{
-		$this->request = $request;
+		$this->request = $event->getRequest();
 		$this->registry = Registry::getInstance();		
 		
 		$this->id = $id;
@@ -417,7 +419,7 @@ class Search
 	public function linkSpelling()
 	{
 		$params = $this->currentParams();
-		$params["query"] = $this->request->getProperty("spelling_query");
+		$params["query"] = $this->request->getParam("spelling_query");
 		
 		return $this->request->url_for($params);
 	}
@@ -432,7 +434,7 @@ class Search
 	public function linkFullRecord( Xerxes_Record $result )
 	{
 		$arrParams = array(
-			"base" => $this->request->getProperty("base"),
+			"base" => $this->request->getParam("base"),
 			"action" => "record",
 			"id" => $result->getRecordID()
 		);
@@ -450,7 +452,7 @@ class Search
 	public function linkSaveRecord( Xerxes_Record $result )
 	{
 		$arrParams = array(
-			"base" => $this->request->getProperty("base"),
+			"base" => $this->request->getParam("base"),
 			"action" => "save",
 			"id" => $result->getRecordID()
 		);
@@ -468,7 +470,7 @@ class Search
 	public function linkSMS(  Xerxes_Record $result )
 	{
 		$arrParams = array(
-			"base" => $this->request->getProperty("base"),
+			"base" => $this->request->getParam("base"),
 			"action" => "sms",
 			"id" => $result->getRecordID()
 		);
@@ -502,9 +504,9 @@ class Search
 	public function currentParams()
 	{
 		$params = $this->query->getAllSearchParams();
-		$params["base"] = $this->request->getProperty("base");
-		$params["action"] = $this->request->getProperty("action");
-		$params["sort"] = $this->request->getProperty("sort");
+		$params["base"] = $this->request->getParam("base");
+		$params["action"] = $this->request->getParam("action");
+		$params["sort"] = $this->request->getParam("sort");
 		
 		return $params;
 	}	

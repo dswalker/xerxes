@@ -26,6 +26,7 @@ class Module implements AutoloaderProvider
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
+                	'Xerxes' => __DIR__ . '/../../library/Xerxes',
                 ),
             ),
         );
@@ -41,41 +42,28 @@ class Module implements AutoloaderProvider
         $app          = $e->getParam('application');
         $locator      = $app->getLocator();
         $config       = $e->getParam('config');
-        $view         = $this->getView($app);
+        $view         = $locator->get('view');
         $viewListener = $this->getViewListener($view, $config);
+        
         $app->events()->attachAggregate($viewListener);
-        $events       = StaticEventManager::getInstance();
+        
+        $events = StaticEventManager::getInstance();
         $viewListener->registerStaticListeners($events, $locator);
     }
 
     protected function getViewListener($view, $config)
     {
-        if ($this->viewListener instanceof View\Listener) {
+        if ($this->viewListener instanceof View\Listener) 
+        {
             return $this->viewListener;
         }
 
-        $viewListener       = new View\Listener($view, $config->layout);
+        $viewListener = new View\Listener($view);
+        
         $viewListener->setDisplayExceptionsFlag($config->display_exceptions);
 
         $this->viewListener = $viewListener;
+        
         return $viewListener;
-    }
-
-    protected function getView($app)
-    {
-        if ($this->view) {
-            return $this->view;
-        }
-
-        $di     = $app->getLocator();
-        $view   = $di->get('view');
-        $url    = $view->plugin('url');
-        $url->setRouter($app->getRouter());
-
-        $view->plugin('headTitle')->setSeparator(' - ')
-                                  ->setAutoEscape(false)
-                                  ->append('Application');
-        $this->view = $view;
-        return $view;
     }
 }

@@ -31,8 +31,8 @@ class Innovative extends AbstractAuthentication
 	
 	public function onCallBack()
 	{
-		$strUsername = $this->request->getProperty( "username" );	// barcode
-		$strPassword = $this->request->getProperty( "password" );	// pin
+		$strUsername = $this->request->getParam( "username" );	// barcode
+		$strPassword = $this->request->getParam( "password" );	// pin
 		
 		$bolAuth = $this->authenticate( $strUsername, $strPassword );
 		

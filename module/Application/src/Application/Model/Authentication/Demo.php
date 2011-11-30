@@ -21,8 +21,8 @@ class Demo extends AbstractAuthentication
 	
 	public function onCallBack()
 	{
-		$strUsername = $this->request->getProperty( "username" );
-		$strPassword = $this->request->getProperty( "password" );
+		$strUsername = $this->request->getParam( "username" );
+		$strPassword = $this->request->getParam( "password" );
 		
 		$configDemoUsers = $this->registry->getConfig( "DEMO_USERS", false );
 

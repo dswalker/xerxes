@@ -2,6 +2,8 @@
 
 namespace Application\Model\Search;
 
+use Xerxes\Utility\Request;
+
 /**
  * Search Query
  *
@@ -336,7 +338,7 @@ class Query
 				$arrTerm["relation"] = "=";
 				$arrTerm["value"] = $value;
 				
-				$relation = $this->request->getProperty($key . "_relation");
+				$relation = $this->request->getParam($key . "_relation");
 				
 				if ( $relation != null )
 				{
@@ -361,7 +363,7 @@ class Query
 	{
 		$arrFinal = array();
 		
-		foreach ( $this->request->getAllProperties() as $key => $value )
+		foreach ( $this->request->query()->toArray() as $key => $value )
 		{
 			$key = urldecode($key);
 			
@@ -390,13 +392,13 @@ class Query
 				}
 				
 				$arrTerm["query"] = $value;
-				$arrTerm["field"] = $this->request->getProperty("field$id");
+				$arrTerm["field"] = $this->request->getParam("field$id");
 				
 				// boolean only counts if this is not the first query term
 				
 				if ( count($arrFinal) > 0 )
 				{
-					$arrTerm["boolean"] = $this->request->getProperty("boolean" . ( $boolean_id ) );
+					$arrTerm["boolean"] = $this->request->getParam("boolean" . ( $boolean_id ) );
 				}
 				else
 				{

@@ -2,7 +2,8 @@
 
 namespace Application\Model\Search;
 
-use Xerxes\Utility\Registry;
+use Xerxes\Utility\Registry,
+	Zend\Stdlib\RequestDescription as Request;
 
 /**
  * Search Engine

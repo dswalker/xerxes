@@ -13,7 +13,7 @@ class AuthenticateController extends ActionController
 	{
 		// if the authentication_source is set in the request, then it takes precedence
 		
-		$override = $this->request->getProperty("authentication_source");
+		$override = $this->request->getParam("authentication_source");
 		
 		if ( $override == null )
 		{
@@ -49,7 +49,7 @@ class AuthenticateController extends ActionController
 	{
 		// values from the request and configuration
 	
-		$post_back = $this->request->getProperty( "postback" );
+		$post_back = $this->request->getParam( "postback" );
 		$config_https = $this->registry->getConfig( "SECURE_LOGIN", false, false );
 	
 		// if secure login is required, then force the user back thru https
@@ -93,7 +93,7 @@ class AuthenticateController extends ActionController
 	{
 		// values from the request
 	
-		$post_back = $this->request->getProperty("postback");
+		$post_back = $this->request->getParam("postback");
 	
 		// if this is not a 'postback', then the user has not
 		// submitted the form, thus confirming logout

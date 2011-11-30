@@ -1,24 +1,20 @@
 <?php
 return array(
     'layout'                => 'layouts/layout.phtml',
-    'display_exceptions'    => false,
+    'display_exceptions'    => true,
     'di'                    => array(
         'instance' => array(
             'alias' => array(
-                'index' => 'Application\Controller\IndexController',
-                'error' => 'Application\Controller\ErrorController',
-                'view'  => 'Zend\View\PhpRenderer',
+                'index'  => 'Application\Controller\IndexController',
+                'error'  => 'Application\Controller\ErrorController',
+            	'summon' => 'Application\Controller\SummonController',
+                'view'   => 'Xerxes\Utility\ViewRenderer',
             ),
-            'Zend\View\PhpRenderer' => array(
-                'parameters' => array(
-                    'resolver' => 'Zend\View\TemplatePathStack',
-                    'options'  => array(
-                        'script_paths' => array(
-                            'application' => __DIR__ . '/../views',
-                        ),
-                    ),
-                ),
-            ),
+        	'Xerxes\Utility\ViewRenderer' => array(
+        		'parameters' => array(
+					'script_path' => __DIR__ . '/../views'
+       			),
+        	),        		
         ),
     ),
     'routes' => array(

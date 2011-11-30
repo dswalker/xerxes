@@ -7,7 +7,8 @@ use Application\View\Search as SearchHelper,
 	Application\Model\DataMap\SavedRecords,
 	Xerxes\Record,
 	Xerxes\Utility\Parser,
-	Zend\Mvc\Controller\ActionController;
+	Zend\Mvc\Controller\ActionController,
+	Zend\Mvc\MvcEvent;
 
 abstract class SearchController extends ActionController
 {
@@ -19,30 +20,32 @@ abstract class SearchController extends ActionController
 	protected $max; // default records per page
 	protected $max_allowed; // upper-limit per page
 	protected $sort; // default sort
-	
 	protected $helper; // search display helper
 	
-	protected function init()
+	public function execute(MvcEvent $e)
 	{
+		$this->init($e);
+		parent::execute($e);
+	}
+	
+	protected function init(MvcEvent $e)
+	{
+		// header("Content-type: text/plain"); print_r($this->request); exit;
+		
 		$this->engine = $this->getEngine();
 		
 		$this->config = $this->engine->getConfig();
 		
-		$this->response->add("config_local", $this->config->toXML());
+		$this->response->setMetadata("config_local", $this->config->toXML());
 		
 		$this->query = $this->engine->getQuery($this->request);
 		
-		$this->helper = new SearchHelper($this->id, $this->engine);
+		$this->helper = new SearchHelper($this->id, $e, $this->engine);
 	}
 	
 	abstract protected function getEngine();
 	
-	public function index()
-	{
-		$this->response->setView("xsl/search/index.xsl");
-	}
-	
-	public function search()
+	public function searchAction()
 	{
 		// set the url params for where we are gong to redirect,
 		// usually to the results action, but can be overriden
@@ -69,7 +72,7 @@ abstract class SearchController extends ActionController
 		$this->response->setRedirect($url);
 	}
 	
-	public function hits()
+	public function hitsAction()
 	{
 		// create an identifier for this search
 		
@@ -97,7 +100,7 @@ abstract class SearchController extends ActionController
 		$this->response->setView("xsl/search/hits.xsl");
 	}
 	
-	public function results()
+	public function resultsAction()
 	{
 		// defaults
 		
@@ -162,7 +165,7 @@ abstract class SearchController extends ActionController
 		$this->response->setView("xsl/" . $this->id . "/results.xsl");
 	}
 	
-	public function record()
+	public function recordAction()
 	{
 		$id = $this->request->getParam('id');
 
@@ -183,7 +186,7 @@ abstract class SearchController extends ActionController
 		$this->response->setView("xsl/" . $this->id . "/record.xsl");	
 	}
 	
-	public function lookup()
+	public function lookupAction()
 	{
 		$id = $this->request->getParam("id");
 		
@@ -205,7 +208,7 @@ abstract class SearchController extends ActionController
 		$this->response->setView('xsl/search/lookup.xsl');
 	}	
 
-	public function save()
+	public function saveAction()
 	{
 		$datamap = new SavedRecords();
 		

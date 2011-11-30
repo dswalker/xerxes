@@ -40,7 +40,7 @@ class Engine extends Search\Engine
 	 * @return int
 	 */	
 	
-	public function getHits( Query $search )
+	public function getHits( Search\Query $search )
 	{
 		// get the results
 		
@@ -62,7 +62,7 @@ class Engine extends Search\Engine
 	 * @return Results
 	 */	
 	
-	public function searchRetrieve( Query $search, $start = 1, $max = 10, $sort = "")
+	public function searchRetrieve( Search\Query $search, $start = 1, $max = 10, $sort = "")
 	{
 		$results = $this->doSearch( $search, $start, $max, $sort);
 		
@@ -142,7 +142,7 @@ class Engine extends Search\Engine
 	 * @return Results
 	 */		
 	
-	protected function doSearch( Query $search, $start = 1, $max = 10, $sort = "")
+	protected function doSearch( Search\Query $search, $start = 1, $max = 10, $sort = "")
 	{ 	
 		// prepare the query
 		
