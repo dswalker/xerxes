@@ -3,7 +3,8 @@
 namespace Application\Model\Bx;
 
 use Xerxes\Utility\Parser,
-	Xerxes\Record;
+	Xerxes\Record,
+	Zend\Http\Client;
 
 /**
  * Search Engine
@@ -19,6 +20,7 @@ use Xerxes\Utility\Parser,
 class Engine
 {
 	protected $token;
+	protected $client;
 	
 	public function __construct($token, $sid, $url = null)
 	{
@@ -34,6 +36,23 @@ class Engine
 			$this->url = $url;
 		}
 	}
+	
+	public function setClient(Client $client)
+	{
+		$this->client = $client;
+	}
+	
+	
+	public function getClient()
+	{
+		if ( ! $this->client instanceof Client )
+		{
+			$this->client = new Client();
+		}
+	
+		return $this->client;
+	}	
+	
 	
 	public function getRecommendations(Record $xerxes_record, $min_relevance = 0, $max_records = 10)
 	{
@@ -51,7 +70,11 @@ class Engine
 		
 		try 
 		{
-			$xml = Parser::request($url, 4);
+			$client = $this->getClient();
+			$client->setUri($url);
+			$client->setConfig(array('timeout' => 4));
+			
+			$xml = $client->send()->getBody();
 			
 			if ( $xml == "" )
 			{

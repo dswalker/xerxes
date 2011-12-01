@@ -18,7 +18,7 @@ use Application\Model\Search,
 
 class Engine extends Search\Engine 
 {
-	protected $client; // summon client, for now
+	protected $summon_client; // summon client
 
 	/**
 	 * Constructor
@@ -31,7 +31,7 @@ class Engine extends Search\Engine
 		$id = $this->config->getConfig("SUMMON_ID", true);
 		$key = $this->config->getConfig("SUMMON_KEY", true);		
 				
-		$this->client = new Summon($id, $key);
+		$this->summon_client = new Summon($id, $key, $this->getClient());
 	}
 	
 	/**
@@ -125,7 +125,7 @@ class Engine extends Search\Engine
 	{
 		// get result
 		
-		$summon_results = $this->client->getRecord($id);
+		$summon_results = $this->summon_client->getRecord($id);
 		$results = $this->parseResponse($summon_results);
 		
 		return $results;
@@ -182,7 +182,7 @@ class Engine extends Search\Engine
 		
 		// get the results
 		
-		$summon_results = $this->client->query($term->phrase, $facets, $page, $max, $sort);
+		$summon_results = $this->summon_client->query($term->phrase, $facets, $page, $max, $sort);
 		
 		return $this->parseResponse($summon_results);
 	}

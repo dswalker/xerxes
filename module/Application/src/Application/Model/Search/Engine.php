@@ -3,7 +3,8 @@
 namespace Application\Model\Search;
 
 use Xerxes\Utility\Registry,
-	Zend\Stdlib\RequestDescription as Request;
+	Xerxes\Utility\Request,
+	Zend\Http\Client;
 
 /**
  * Search Engine
@@ -23,6 +24,7 @@ abstract class Engine
 	protected $url; // url to the search service
 	protected $registry; // xerxes application config
 	protected $config; // local search engine config
+	protected $client; // http client
 	
 	protected $query; // search query
 	
@@ -39,7 +41,23 @@ abstract class Engine
 		// local config
 		
 		$this->config = $this->getConfig();
+	}
+	
+	
+	public function setClient(Client $client)
+	{
+		$this->client = $client;
+	}
+	
+	
+	public function getClient()
+	{
+		if ( ! $this->client instanceof Client )
+		{
+			$this->client = new Client();
+		}
 		
+		return $this->client;
 	}
 	
 	/**
