@@ -212,13 +212,13 @@ class Request extends ZendRequest
 	 * Retrieve a value from the request parameters
 	 *
 	 * @param string $key		key that identify the value
-	 * @param bool $bolArray	[optional] whether value should be returned as an array, even if only one value
 	 * @param string $default	[optional] a default value to return if no param supplied
+	 * @param bool $bolArray	[optional] whether value should be returned as an array, even if only one value
 	 * 
 	 * @return mixed 			[string or array] value if available, otherwise default
 	 */
 	
-	public function getParam( $key, $bolArray = false, $default = null )
+	public function getParam( $key, $default = null, $bolArray = false )
 	{
 		if ( array_key_exists( $key, $this->params ) )
 		{
@@ -399,7 +399,14 @@ class Request extends ZendRequest
 		
 		foreach ( $params as $id => $param )
 		{
-			// nope, so add it to the query string
+			// skip empty ones
+			
+			if ( $param == "" )
+			{
+				continue;
+			}
+			
+			// not in the route, so add it to the query string
 			
 			if ( $this->route_match->getParam($id) == "" )
 			{

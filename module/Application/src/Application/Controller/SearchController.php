@@ -120,9 +120,9 @@ abstract class SearchController extends ActionController
 		
 		// params
 		
-		$start = $this->request->getParam('start', false, 1);
-		$max = $this->request->getParam('max', false, $this->max);
-		$sort = $this->request->getParam('sort', false, $this->sort);
+		$start = $this->request->getParam('start', 1);
+		$max = $this->request->getParam('max', $this->max);
+		$sort = $this->request->getParam('sort', $this->sort);
 		
 		// swap for internal
 		
