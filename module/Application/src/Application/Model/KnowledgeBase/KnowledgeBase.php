@@ -5,7 +5,7 @@ namespace Application\Model\KnowledgeBase;
 use Application\Model\DataMap\Databases;
 
 /**
- * Metalib KB
+ * Knowledgebase
  *
  * @author David Walker
  * @copyright 2011 California State University

@@ -145,8 +145,16 @@ class Listener implements ListenerAggregate
         {
             $vars = (array) $vars;
         }
-
-        $content = $this->view->render($script, $vars);
+        
+        if ( $e->getRequest()->getParam('format') == 'xerxes' )
+        {
+        	$response->headers()->addHeaderLine("Content-type", "text/xml");
+        	$content = $this->view->toXML($vars)->saveXML();
+        }
+        else
+        {	
+	        $content = $this->view->render($script, $vars);
+        }
 
         $e->setResult($content);
         $response->setContent($content);

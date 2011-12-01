@@ -17,7 +17,5 @@ $moduleManager->loadModules();
 $bootstrap   = new Zend\Mvc\Bootstrap($moduleManager->getMergedConfig());
 
 $application = new Zend\Mvc\Application;
-$application->setRequest(new Xerxes\Utility\Request());
-
 $bootstrap->bootstrap($application);
 $application->run()->send();

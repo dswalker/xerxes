@@ -2,9 +2,11 @@
 
 namespace Application;
 
-use Zend\Module\Manager,
-    Zend\EventManager\StaticEventManager,
-    Zend\Module\Consumer\AutoloaderProvider;
+use Xerxes\Utility\Request,
+	Zend\EventManager\StaticEventManager,
+    Zend\Module\Consumer\AutoloaderProvider,
+	Zend\Module\Manager,
+	Zend\Mvc\MvcEvent;
 
 class Module implements AutoloaderProvider
 {
@@ -45,6 +47,7 @@ class Module implements AutoloaderProvider
         $view         = $locator->get('view');
         $viewListener = $this->getViewListener($view, $config);
         
+        $app->events()->attach('route', array($this, 'setRequest'), 1000);
         $app->events()->attachAggregate($viewListener);
         
         $events = StaticEventManager::getInstance();
@@ -66,4 +69,11 @@ class Module implements AutoloaderProvider
         
         return $viewListener;
     }
+    
+    public function setRequest(MvcEvent $e)
+    {
+    	$request = new Request();
+    	$request->setRoute($e->getRouteMatch());
+    	$e->setRequest($request);
+    }    
 }

@@ -2,7 +2,9 @@
 
 namespace Application\Controller;
 
-use Application\View\Search as SearchHelper,
+use Xerxes\Utility\Registry;
+
+use Application\View\Helper\Search as SearchHelper,
 	Application\Model\Search\Result,
 	Application\Model\DataMap\SavedRecords,
 	Xerxes\Record,
@@ -36,6 +38,8 @@ abstract class SearchController extends ActionController
 		
 		$this->config = $this->engine->getConfig();
 		
+		$this->registry = Registry::getInstance();
+		
 		$this->response->setMetadata("config_local", $this->config->toXML());
 		
 		$this->query = $this->engine->getQuery($this->request);
@@ -68,7 +72,7 @@ abstract class SearchController extends ActionController
 		
 		// construct the actual url and redirect
 
-		$url = $this->request->url_for($params);
+		$url = $this->helper->url_for($params);
 		$this->response->setRedirect($url);
 	}
 	
@@ -157,12 +161,12 @@ abstract class SearchController extends ActionController
 		
 		// response
 		
-		$this->response->add("query", $this->query);
-		$this->response->add("results", $results);
+		$response = array();
 		
-		// set view
+		$response["query"] = $this->query;
+		$response["results"] = $results;
 		
-		$this->response->setView("xsl/" . $this->id . "/results.xsl");
+		return $response;
 	}
 	
 	public function recordAction()

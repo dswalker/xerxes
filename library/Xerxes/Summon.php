@@ -17,7 +17,7 @@ class Summon
 	 * Constructor
 	 */
 	
-	function __construct($app_id, $api_key, Zend_Http_Client $client = null)
+	function __construct($app_id, $api_key, Client $client = null)
 	{
 		$this->host = 'http://api.summon.serialssolutions.com';
 		$this->app_id = $app_id;
@@ -197,12 +197,9 @@ class Summon
 		$data = implode($headers, "\n") . "\n/$service\n" . urldecode($queryString) . "\n";
 		$hmacHash = $this->hmacsha1($this->api_key, $data);
 		
-		foreach ( $headers as $key => $value )
-		{
-			$this->client->setHeaders($key, $value);
-		}
-
-		$this->client->setHeaders("Authorization: Summon $this->app_id;$hmacHash");
+		$headers["Authorization"] = "Summon " . $this->app_id . ";" . $hmacHash;
+		
+		$this->client->setHeaders($headers);
 		
 		if ( $this->session_id )
 		{
@@ -211,8 +208,8 @@ class Summon
 		
 		// Send Request
 		
-		$response = $this->client->request()->getBody();
-		return json_decode($response, true);
+		$response = $this->client->send();
+		return json_decode($response->getBody(), true);
 	}
 	
 	private function hmacsha1($key, $data)
