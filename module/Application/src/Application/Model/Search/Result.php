@@ -2,7 +2,8 @@
 
 namespace Application\Model\Search;
 
-use Xerxes\Utility\Parser,
+use Xerxes\Record,
+	Xerxes\Utility\Parser,
 	Xerxes\Utility\Registry;
 
 /**
@@ -37,7 +38,7 @@ class Result
 	 * @param Config $config		local config
 	 */
 	
-	public function __construct(Xerxes_Record $record, Config $config)
+	public function __construct(Record $record, Config $config)
 	{
 		$this->xerxes_record = $record;
 		$this->registry = Registry::getInstance();
@@ -184,12 +185,16 @@ class Result
 		
 		// cache it for the future
 		
+		/* @todo: zend\cache
+		
 		$cache = new Cache();
 		
 		$expiry = $this->config->getConfig("HOLDINGS_CACHE_EXPIRY", false, 2 * 60 * 60); // expiry set for two hours
 		$expiry += time(); 
 		
 		$cache->set($cache_id, serialize($this->holdings), $expiry);
+		
+		*/
 		
 		return null;
 	}

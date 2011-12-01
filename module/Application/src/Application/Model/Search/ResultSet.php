@@ -2,7 +2,8 @@
 
 namespace Application\Model\Search;
 
-use Application\Model\DataMap\Availability;
+use Application\Model\DataMap\Availability,
+	Xerxes\Record;
 
 /**
  * Search Results
@@ -70,7 +71,7 @@ class ResultSet
 	 * @param Xerxes_Record $record
 	 */
 
-	public function addRecord( Xerxes_Record $record )
+	public function addRecord( Record $record )
 	{
 		$result = new Result($record, $this->config);
 		array_push($this->records, $result);

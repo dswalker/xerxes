@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\View;
+namespace Application\View\Helper;
 
 use Xerxes\Utility\Registry;
 

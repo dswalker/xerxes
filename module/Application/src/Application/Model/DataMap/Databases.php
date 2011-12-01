@@ -3,10 +3,10 @@
 namespace Application\Model\DataMap;
 
 use Xerxes\Utility\DataMap,
-	Application\Model\Metalib\Category,
-	Application\Model\Metalib\Database,
-	Application\Model\Metalib\Subcategory,
-	Application\Model\Metalib\Type;
+	Application\Model\KnowledgeBase\Category,
+	Application\Model\KnowledgeBase\Database,
+	Application\Model\KnowledgeBase\Subcategory,
+	Application\Model\KnowledgeBase\Type;
 
 /**
  * Database access mapper for Metalib KB

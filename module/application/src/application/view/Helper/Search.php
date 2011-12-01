@@ -1,26 +1,25 @@
 <?php
 
-namespace Application\View;
-
-use Zend\Mvc\MvcEvent;
+namespace Application\View\Helper;
 
 use Application\Model\Search\Engine,
-	Xerxes\Utility\Parser,	
-	Xerxes\Utility\Registry;
+	Application\Model\Search\Result,
+	Application\Model\Search\ResultSet,
+	Application\Model\Search\Query,
+	Application\View\Helper,
+	Xerxes\Record,
+	Xerxes\Utility\Parser,
+	Xerxes\Utility\Request,
+	Zend\Mvc\MvcEvent;
 
 class Search
 {
 	protected $id;
-	protected $request;
 	protected $query;
 	protected $config;
-	protected $registry;
 	
-	public function __construct($id, MvcEvent $event, Engine $engine)
+	public function __construct($id, MvcEvent $e, Engine $engine)
 	{
-		$this->request = $event->getRequest();
-		$this->registry = Registry::getInstance();		
-		
 		$this->id = $id;
 		$this->query = $engine->getQuery($this->request);
 		$this->config = $engine->getConfig();
@@ -137,7 +136,7 @@ class Search
 				$params = $this->currentParams();
 				$params["start"] = 1;
 				
-				$link = $this->request->url_for( $params );
+				$link = $this->url_for( $params );
 				
 				$objPage->setAttribute( "link", Parser::escapeXml( $link ) );
 				$objPage->setAttribute( "type", "first" );
@@ -163,7 +162,7 @@ class Search
 						$params = $this->currentParams();
 						$params["start"] = $base_record;
 						
-						$link = $this->request->url_for( $params );
+						$link = $this->url_for( $params );
 						
 						$objPage->setAttribute( "link", Parser::escapeXml( $link ) );
 						$objXml->documentElement->appendChild( $objPage );
@@ -184,7 +183,7 @@ class Search
 				$params = $this->currentParams();
 				$params["start"] =  $next;
 				
-				$link = $this->request->url_for( $params );
+				$link = $this->url_for( $params );
 				
 				$objPage->setAttribute( "link", Parser::escapeXml( $link ) );
 				$objPage->setAttribute( "type", "next" );
@@ -232,7 +231,7 @@ class Search
 				
 				$here = $xml->createElement( "option", $value );
 				$here->setAttribute( "active", "false" );
-				$here->setAttribute( "link", $this->request->url_for($params) );
+				$here->setAttribute( "link", $this->url_for($params) );
 				$xml->documentElement->appendChild( $here );
 			}
 			
@@ -251,10 +250,10 @@ class Search
 	/**
 	 * Add links to search results
 	 * 
-	 * @param Xerxes_Model_Search_Results $results
+	 * @param ResultSet $results
 	 */
 
-	public function addRecordLinks( Xerxes_Model_Search_ResultSet &$results )
+	public function addRecordLinks( ResultSet &$results )
 	{	
 		// results
 				
@@ -285,10 +284,10 @@ class Search
 	/**
 	 * Add links to facets
 	 * 
-	 * @param Xerxes_Model_Search_Results $results
+	 * @param ResultSet $results
 	 */	
 	
-	public function addFacetLinks( Xerxes_Model_Search_ResultSet &$results )
+	public function addFacetLinks( ResultSet &$results )
 	{	
 		// facets
 
@@ -319,7 +318,7 @@ class Search
 						$url["facet." . $group->name] = $facet->name;									
 					}
 							
-					$facet->url = $this->request->url_for($url);
+					$facet->url = $this->url_for($url);
 				}
 			}
 		}
@@ -328,10 +327,10 @@ class Search
 	/**
 	 * Add links to the query object limits
 	 * 
-	 * @param Xerxes_Model_Search_Query $query
+	 * @param Query $query
 	 */
 	
-	public function addQueryLinks(Xerxes_Model_Search_Query $query)
+	public function addQueryLinks(Query $query)
 	{
 		// we have to pass in the query object here rather than take
 		// the property above because adding the links doesn't seem
@@ -363,7 +362,7 @@ class Search
 				
 				// is this the current tab?
 
-				if ( $this->request->getParam('base') == (string) $option["id"] 
+				if ( $this->request->getParam('controller') == (string) $option["id"] 
 				     && ( $this->request->getParam('source') == (string) $option["source"] 
 				     	|| (string) $option["source"] == '') )
 				    {
@@ -374,11 +373,11 @@ class Search
 				
 				$params = $query->extractSearchParams();
 				
-				$params['base'] = (string) $option["id"];
+				$params['controller'] = (string) $option["id"];
 				$params['action'] = "results";
 				$params['source'] = (string) $option["source"];
 				
-				$url = $this->request->url_for($params);
+				$url = $this->url_for($params);
 				
 				$option->addAttribute('url', $url);
 				
@@ -406,9 +405,9 @@ class Search
 		
 		foreach ( $query->getLimits() as $limit )
 		{
-			$url = new Xerxes_Framework_URL($this->currentParams());
+			$url = Request::fromString($this->currentParams());
 			$url->removeParam($limit->field, $limit->value);
-			$limit->remove_url = $this->request->url_for($url);
+			$limit->remove_url = $this->url_for($url);
 		}
 	}
 	
@@ -421,61 +420,61 @@ class Search
 		$params = $this->currentParams();
 		$params["query"] = $this->request->getParam("spelling_query");
 		
-		return $this->request->url_for($params);
+		return $this->url_for($params);
 	}
 	
 	/**
 	 * URL for the full record display
 	 * 
-	 * @param $result Xerxes_Record object
+	 * @param $result Record object
 	 * @return string url
 	 */
 	
-	public function linkFullRecord( Xerxes_Record $result )
+	public function linkFullRecord( Record $result )
 	{
 		$arrParams = array(
-			"base" => $this->request->getParam("base"),
+			'controller' => $this->request->getParam('controller'),
 			"action" => "record",
 			"id" => $result->getRecordID()
 		);
 		
-		return $this->request->url_for($arrParams);
+		return $this->url_for($arrParams);
 	}
 	
 	/**
 	 * URL for the full record display
 	 * 
-	 * @param Xerxes_Record $result
+	 * @param Record $result
 	 * @return string url
 	 */
 	
-	public function linkSaveRecord( Xerxes_Record $result )
+	public function linkSaveRecord( Record $result )
 	{
 		$arrParams = array(
-			"base" => $this->request->getParam("base"),
+			'controller' => $this->request->getParam('controller'),
 			"action" => "save",
 			"id" => $result->getRecordID()
 		);
 		
-		return $this->request->url_for($arrParams);
+		return $this->url_for($arrParams);
 	}
 	
 	/**
 	 * URL for the sms feature
 	 * 
-	 * @param Xerxes_Record $result
+	 * @param Record $result
 	 * @return string url
 	 */	
 	
-	public function linkSMS(  Xerxes_Record $result )
+	public function linkSMS( Record $result )
 	{
 		$arrParams = array(
-			"base" => $this->request->getParam("base"),
+			'controller' => $this->request->getParam('controller'),
 			"action" => "sms",
 			"id" => $result->getRecordID()
 		);
 		
-		return $this->request->url_for($arrParams);	
+		return $this->url_for($arrParams);	
 	}
 
 	/**
@@ -485,7 +484,7 @@ class Search
 	 * @param Xerxes_Model_Search_Result $result 
 	 */	
 	
-	public function linkOther( Xerxes_Model_Search_Result $result )
+	public function linkOther( Result $result )
 	{
 		return $result;
 	}
@@ -504,7 +503,7 @@ class Search
 	public function currentParams()
 	{
 		$params = $this->query->getAllSearchParams();
-		$params["base"] = $this->request->getParam("base");
+		$params['controller'] = $this->request->getParam('controller');
 		$params["action"] = $this->request->getParam("action");
 		$params["sort"] = $this->request->getParam("sort");
 		

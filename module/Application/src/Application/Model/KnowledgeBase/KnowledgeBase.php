@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Model\Databases;
+namespace Application\Model\KnowledgeBase;
 
 use Application\Model\DataMap\Databases;
 
