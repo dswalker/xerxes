@@ -2,6 +2,8 @@
 
 namespace Application\View;
 
+use Xerxes\Utility\Registry;
+
 use ArrayAccess,
     Xerxes\Utility\ViewRenderer,
     Zend\Di\Locator,
@@ -123,34 +125,49 @@ class Listener implements ListenerAggregate
         {
             return;
         }
-
+        
+        // set the view
+        
         $routeMatch = $e->getRouteMatch();
         $controller = $routeMatch->getParam('controller', 'index');
         $action = $routeMatch->getParam('action', 'index');
         
         
-        ##### HACK 
+        ##### @todo: HACK 
         if ( $action == "index") $controller = "search";
         ##### END HACK
         
+        
+        
         $script = $controller . '/' . $action . '.xsl';
+        
+        // get the results
 
         $vars = $e->getResult();
         
-        if (is_scalar($vars)) 
+        if ( is_scalar($vars) ) 
         {
             $vars = array('content' => $vars);
         } 
-        elseif (is_object($vars) && !$vars instanceof ArrayAccess) 
+        elseif ( is_object($vars) && ! $vars instanceof ArrayAccess ) 
         {
             $vars = (array) $vars;
         }
+        
+        $vars["request"] = $e->getRequest()->toXML();
+        $vars["config"] = Registry::getInstance()->toXML();
+        $vars["base_url"] = $e->getRequest()->getBaseUrl();
+        
+        // show internal xml
         
         if ( $e->getRequest()->getParam('format') == 'xerxes' )
         {
         	$response->headers()->addHeaderLine("Content-type", "text/xml");
         	$content = $this->view->toXML($vars)->saveXML();
         }
+        
+        // render as html
+        
         else
         {	
 	        $content = $this->view->render($script, $vars);

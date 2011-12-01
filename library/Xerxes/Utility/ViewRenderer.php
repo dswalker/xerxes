@@ -196,7 +196,7 @@ class ViewRenderer
 		// the xsl lives here
 
 		$distro_xsl_dir = $this->_script_path . "/";
-		$local_xsl_dir = "views/";
+		$local_xsl_dir = realpath(getcwd()) . "/views/";
 		
 		### language file
 		

@@ -21,7 +21,8 @@ class Request extends ZendRequest
 {
 	private $commandline = false;
 	private $params = array(); // request paramaters
-	private $router; // route stack
+	private $router; // router
+	private $route_match; // route stack match
 	private $registry; // registry
 	
 	public function __construct()
@@ -39,9 +40,9 @@ class Request extends ZendRequest
         
         // now extract the route elements and set them as params
         
-        $match = $router->match($this);
+        $this->route_match = $router->match($this);
         
-        foreach ($match->getParams() as $name => $value )
+        foreach ($this->route_match->getParams() as $name => $value )
         {
         	$this->setParam($name, $value);
         }
@@ -366,15 +367,19 @@ class Request extends ZendRequest
 	
 	public function url_for($params = array(), $options = array())
 	{
+		// use the default route if no option supplied
+		
 		if ( count($options) == 0 )
 		{
 			$options["name"] = "default";
 		}
 		
-		if (null === $this->router)
+		if ( null === $this->router )
 		{
 			return '';
 		}
+		
+		// this only returns the route, no querystring
 		
 		$url = $this->router->assemble($params, $options);
 		
@@ -385,21 +390,24 @@ class Request extends ZendRequest
 			$url = substr($url, 0, strlen($url) - 6);
 		}
 		
-		// @todo: figure out why this is necessary
-		
-		// now append query string
-		
-		$url_parts = explode('/', str_replace($this->baseUrl, '', $url)); // take url minus baseurl
+		// append query string
 		
 		$query_string = array();
 		
+		// insepect each supplied params to see if was matched
+		// in the route
+		
 		foreach ( $params as $id => $param )
 		{
-			if ( ! in_array($param, $url_parts) )
+			// nope, so add it to the query string
+			
+			if ( $this->route_match->getParam($id) == "" )
 			{
 				$query_string[$id] = $param;
 			}
 		}
+		
+		// if we have a query string
 		
 		if ( count($query_string) > 0 )
 		{
@@ -409,7 +417,7 @@ class Request extends ZendRequest
 
 			 foreach ( $query_string as $name => $value )
 			 {
-			 	if ( $x > 0 )
+			 	if ( $x > 0 ) // first param doesn't need & prefix
 			 	{
 			 		$url .= '&amp;';
 			 	}

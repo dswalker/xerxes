@@ -23,6 +23,7 @@ abstract class SearchController extends ActionController
 	protected $max_allowed; // upper-limit per page
 	protected $sort; // default sort
 	protected $helper; // search display helper
+	protected $response_array = array(); // response data
 	
 	public function execute(MvcEvent $e)
 	{
@@ -40,7 +41,7 @@ abstract class SearchController extends ActionController
 		
 		$this->registry = Registry::getInstance();
 		
-		$this->response->setMetadata("config_local", $this->config->toXML());
+		$this->data["config_local"] = $this->config->toXML();
 		
 		$this->query = $this->engine->getQuery($this->request);
 		
@@ -100,8 +101,8 @@ abstract class SearchController extends ActionController
 		
 		// and tell the browser too
 		
-		$this->response->add("hits", $total);
-		$this->response->setView("xsl/search/hits.xsl");
+		$this->data["hits"] = $total;
+		return $this->data;
 	}
 	
 	public function resultsAction()
@@ -161,12 +162,10 @@ abstract class SearchController extends ActionController
 		
 		// response
 		
-		$response = array();
+		$this->data["query"] = $this->query;
+		$this->data["results"] = $results;
 		
-		$response["query"] = $this->query;
-		$response["results"] = $results;
-		
-		return $response;
+		return $this->data;
 	}
 	
 	public function recordAction()
@@ -183,9 +182,9 @@ abstract class SearchController extends ActionController
 		
 		// add to response
 		
-		$response = array();
-		$response["results"] = $results;
-		return $response;
+		$this->data["results"] = $results;
+		
+		return $this->data;
 	}
 	
 	public function lookupAction()
@@ -203,11 +202,9 @@ abstract class SearchController extends ActionController
 		
 		// add to response
 		
-		$this->response->add("results", $result);
+		$this->data["results"] = $result;
 		
-		// set view
-		
-		$this->response->setView('xsl/search/lookup.xsl');
+		return $this->data;
 	}	
 
 	public function saveAction()
@@ -225,7 +222,7 @@ abstract class SearchController extends ActionController
 		{
 			$datamap->deleteRecordBySource( $username, $this->id, $original_id );
 			$this->unmarkSaved( $original_id );
-			$this->response->add("delete", "1");
+			$this->data["delete"] = "1";
 		}
 
 		// add command
@@ -244,13 +241,10 @@ abstract class SearchController extends ActionController
 				
 			$this->markSaved( $original_id, $inserted_id );
 			
-			$this->response->add("savedRecordID", $inserted_id);
+			$this->data["savedRecordID"] = $inserted_id;
 		} 
 		
-		// view
-		
-		$this->response->setView('xsl/search/save.xsl');
-		$this->response->setView('xsl/search/save-ajax.xsl', 'json');
+		return $this->data;
 	}	
 	
 	

@@ -130,7 +130,7 @@ class Xsl
 		### the distro and the local files
 		
 		$generated_xsl = new \DOMDocument();
-		$generated_xsl->load( dirname(__FILE__) . "/xsl/dynamic_skeleton.xsl");
+		$generated_xsl->load( __DIR__ . "/xsl/dynamic_skeleton.xsl");
 		
 		// prepend imports to this, to put them at the top of the file. 
 	

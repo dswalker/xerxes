@@ -64,8 +64,8 @@ class Languages
 			
 		// set full path to local copy
 		
-		$this->languages_file_xerxes = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . $this->languages_file_xerxes);
-		$this->gettext_domain_xerxes = realpath(dirname(__FILE__) . DIRECTORY_SEPARATOR . $this->gettext_domain_xerxes);
+		$this->languages_file_xerxes = realpath(__DIR__ . DIRECTORY_SEPARATOR . $this->languages_file_xerxes);
+		$this->gettext_domain_xerxes = realpath(__DIR__ . DIRECTORY_SEPARATOR . $this->gettext_domain_xerxes);
 		
 		// if the iso-codes is not installed, use our copy
 		
