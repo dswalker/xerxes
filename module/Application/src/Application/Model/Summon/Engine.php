@@ -27,7 +27,7 @@ class Engine extends Search\Engine
 	public function __construct()
 	{
 		parent::__construct();
-
+		
 		$id = $this->config->getConfig("SUMMON_ID", true);
 		$key = $this->config->getConfig("SUMMON_KEY", true);		
 				

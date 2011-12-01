@@ -2,7 +2,8 @@
 
 namespace Application\Model\Bx;
 
-use Xerxes\Utility\Parser;
+use Xerxes\Utility\Parser,
+	Xerxes\Record;
 
 /**
  * Search Engine
@@ -34,7 +35,7 @@ class Engine
 		}
 	}
 	
-	public function getRecommendations(Xerxes_Record $xerxes_record, $min_relevance = 0, $max_records = 10)
+	public function getRecommendations(Record $xerxes_record, $min_relevance = 0, $max_records = 10)
 	{
 		$bx_records = array();
 		

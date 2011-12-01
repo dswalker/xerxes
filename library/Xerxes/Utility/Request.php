@@ -2,7 +2,9 @@
 
 namespace Xerxes\Utility;
 
-use Zend\Http\PhpEnvironment\Request as ZendRequest;
+use Zend\Http\PhpEnvironment\Request as ZendRequest,
+	Zend\Mvc\Router\RouteStack,
+	Zend\Mvc\Router\RouteMatch;
 
 /**
  * Process parameter in the request, either from HTTP or CLI, as well as session
@@ -19,7 +21,8 @@ class Request extends ZendRequest
 {
 	private $commandline = false;
 	private $params = array(); // request paramaters
-	private $registry; // registry object
+	private $router; // route stack
+	private $registry; // registry
 	
 	public function __construct()
 	{
@@ -29,6 +32,20 @@ class Request extends ZendRequest
 		
 		$this->extractQueryParams();
 	}
+	
+    public function setRouter(RouteStack $router)
+    {
+        $this->router = $router;
+        
+        // now extract the route elements and set them as params
+        
+        $match = $router->match($this);
+        
+        foreach ($match->getParams() as $name => $value )
+        {
+        	$this->setParam($name, $value);
+        }
+    }
 	
 	/**
 	 * Process the incoming request paramaters
@@ -65,14 +82,12 @@ class Request extends ZendRequest
 				}
 			}
 			
-			/*
 			// set mobile
 				
 			if ( $this->getSession('is_mobile') == null )
 			{
 				$this->setSession('is_mobile', (string) $this->isMobileDevice());
 			}
-			*/
 				
 			// troubleshooting mobile
 				
@@ -141,7 +156,7 @@ class Request extends ZendRequest
 	
 	public function isMobileDevice()
 	{
-		require_once( __DIR__ . '/../../../vendor/mobile/mobile_device_detect.php');		
+		require_once( __DIR__ . '/mobile/mobile_device_detect.php');		
 		$is_mobile = @mobile_device_detect(true, false); // supress errors because this library is goofy
 		return $is_mobile[0];
 	}
@@ -347,7 +362,66 @@ class Request extends ZendRequest
 				unset($this->params[$key]);
 			}
 		}
-	}	
+	}
+	
+	public function url_for($params = array(), $options = array())
+	{
+		if ( count($options) == 0 )
+		{
+			$options["name"] = "default";
+		}
+		
+		if (null === $this->router)
+		{
+			return '';
+		}
+		
+		$url = $this->router->assemble($params, $options);
+		
+		// remove trailing '/index' from generated URLs.
+		
+		if ((6 <= strlen($url)) && '/index' == substr($url, -6)) 
+		{
+			$url = substr($url, 0, strlen($url) - 6);
+		}
+		
+		// @todo: figure out why this is necessary
+		
+		// now append query string
+		
+		$url_parts = explode('/', str_replace($this->baseUrl, '', $url)); // take url minus baseurl
+		
+		$query_string = array();
+		
+		foreach ( $params as $id => $param )
+		{
+			if ( ! in_array($param, $url_parts) )
+			{
+				$query_string[$id] = $param;
+			}
+		}
+		
+		if ( count($query_string) > 0 )
+		{
+			$url .= "?";
+			
+			$x = 0;
+
+			 foreach ( $query_string as $name => $value )
+			 {
+			 	if ( $x > 0 )
+			 	{
+			 		$url .= '&amp;';
+			 	}
+			 	
+			 	$url .= $name . '=' . urlencode($value);
+			 	
+			 	$x++;
+			 }
+		}
+		
+		return $url;
+	}
 	
 	/**
 	 * serialize to xml

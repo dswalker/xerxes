@@ -10,6 +10,7 @@ use Application\Model\Search\Engine,
 	Xerxes\Record,
 	Xerxes\Utility\Parser,
 	Xerxes\Utility\Request,
+	Xerxes\Utility\Registry,
 	Zend\Mvc\MvcEvent;
 
 class Search
@@ -21,6 +22,10 @@ class Search
 	public function __construct($id, MvcEvent $e, Engine $engine)
 	{
 		$this->id = $id;
+		
+		$this->request = $e->getRequest();
+		$this->registry = Registry::getInstance();
+		
 		$this->query = $engine->getQuery($this->request);
 		$this->config = $engine->getConfig();
 	}
@@ -136,7 +141,7 @@ class Search
 				$params = $this->currentParams();
 				$params["start"] = 1;
 				
-				$link = $this->url_for( $params );
+				$link = $this->request->url_for( $params );
 				
 				$objPage->setAttribute( "link", Parser::escapeXml( $link ) );
 				$objPage->setAttribute( "type", "first" );
@@ -162,7 +167,7 @@ class Search
 						$params = $this->currentParams();
 						$params["start"] = $base_record;
 						
-						$link = $this->url_for( $params );
+						$link = $this->request->url_for( $params );
 						
 						$objPage->setAttribute( "link", Parser::escapeXml( $link ) );
 						$objXml->documentElement->appendChild( $objPage );
@@ -183,7 +188,7 @@ class Search
 				$params = $this->currentParams();
 				$params["start"] =  $next;
 				
-				$link = $this->url_for( $params );
+				$link = $this->request->url_for( $params );
 				
 				$objPage->setAttribute( "link", Parser::escapeXml( $link ) );
 				$objPage->setAttribute( "type", "next" );
@@ -231,7 +236,7 @@ class Search
 				
 				$here = $xml->createElement( "option", $value );
 				$here->setAttribute( "active", "false" );
-				$here->setAttribute( "link", $this->url_for($params) );
+				$here->setAttribute( "link", $this->request->url_for($params) );
 				$xml->documentElement->appendChild( $here );
 			}
 			
@@ -318,7 +323,7 @@ class Search
 						$url["facet." . $group->name] = $facet->name;									
 					}
 							
-					$facet->url = $this->url_for($url);
+					$facet->url = $this->request->url_for($url);
 				}
 			}
 		}
@@ -377,7 +382,7 @@ class Search
 				$params['action'] = "results";
 				$params['source'] = (string) $option["source"];
 				
-				$url = $this->url_for($params);
+				$url = $this->request->url_for($params);
 				
 				$option->addAttribute('url', $url);
 				
@@ -407,7 +412,7 @@ class Search
 		{
 			$url = Request::fromString($this->currentParams());
 			$url->removeParam($limit->field, $limit->value);
-			$limit->remove_url = $this->url_for($url);
+			$limit->remove_url = $this->request->url_for($url);
 		}
 	}
 	
@@ -420,7 +425,7 @@ class Search
 		$params = $this->currentParams();
 		$params["query"] = $this->request->getParam("spelling_query");
 		
-		return $this->url_for($params);
+		return $this->request->url_for($params);
 	}
 	
 	/**
@@ -438,7 +443,7 @@ class Search
 			"id" => $result->getRecordID()
 		);
 		
-		return $this->url_for($arrParams);
+		return $this->request->url_for($arrParams);
 	}
 	
 	/**
@@ -456,7 +461,7 @@ class Search
 			"id" => $result->getRecordID()
 		);
 		
-		return $this->url_for($arrParams);
+		return $this->request->url_for($arrParams);
 	}
 	
 	/**
@@ -474,7 +479,7 @@ class Search
 			"id" => $result->getRecordID()
 		);
 		
-		return $this->url_for($arrParams);	
+		return $this->request->url_for($arrParams);	
 	}
 
 	/**

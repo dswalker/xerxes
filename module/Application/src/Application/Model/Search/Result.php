@@ -2,7 +2,8 @@
 
 namespace Application\Model\Search;
 
-use Xerxes\Record,
+use Application\Model\Bx\Engine as BxEngine,
+	Xerxes\Record,
 	Xerxes\Utility\Parser,
 	Xerxes\Utility\Registry;
 
@@ -76,7 +77,7 @@ class Result
 			$configMinRelevance	= (int) $this->registry->getConfig("BX_MIN_RELEVANCE", false, 0);
 			$configMaxRecords = (int) $this->registry->getConfig("BX_MAX_RECORDS", false, 10);
 			
-			$bx_engine = new Engine($configToken, $this->sid, $configBX);
+			$bx_engine = new BxEngine($configToken, $this->sid, $configBX);
 			$bx_records = $bx_engine->getRecommendations($this->xerxes_record, $configMinRelevance, $configMaxRecords);
 
 			if ( count($bx_records) > 0 ) // only if there are any records
