@@ -210,19 +210,19 @@ class ViewRenderer
 		
 		// english file is included by default (as a fallback)
 		
-		array_push($import_array, "xsl/labels/eng.xsl");
+		array_push($import_array, "labels/eng.xsl");
 		
 		// if language is set to something other than english
 		// then include that file to override the english labels
 		
 		if ( $language != "eng" ) 
 		{
-			array_push($import_array, "xsl/labels/$language.xsl");
+			array_push($import_array, "labels/$language.xsl");
 		}		
 		
 		### make sure we've got a reference to the local includes too
 		
-		array_push($import_array, $local_xsl_dir . "xsl/includes.xsl");
+		array_push($import_array, $local_xsl_dir . "includes.xsl");
 		
 		$xsl = new Xsl($distro_xsl_dir, $local_xsl_dir);
 		

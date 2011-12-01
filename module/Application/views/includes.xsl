@@ -39,7 +39,7 @@
 		Configuration values used throughout the application
 	-->
 	
-	<xsl:variable name="base_url" select="//config/base_url" />
+	<xsl:variable name="base_url" select="//base_url" />
 	
 	<xsl:variable name="xerxes_version" select="//config/xerxes_version" />
 
@@ -481,7 +481,7 @@
 	
 		<script src="javascript/jquery/jquery-1.6.2.min.js" language="javascript" type="text/javascript"></script>
 		
-		<script src="javascript/results.js" language="javascript" type="text/javascript"></script>
+		<!-- <script src="javascript/results.js" language="javascript" type="text/javascript"></script> -->
 
 	</xsl:template>
 		
