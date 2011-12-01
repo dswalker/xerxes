@@ -47,7 +47,7 @@ class Module implements AutoloaderProvider
         $view         = $locator->get('view');
         $viewListener = $this->getViewListener($view, $config);
         
-        $app->events()->attach('route', array($this, 'setRequest'), 1000);
+        $app->events()->attach('dispatch', array($this, 'setRequest'), 1000);
         $app->events()->attachAggregate($viewListener);
         
         $events = StaticEventManager::getInstance();
@@ -73,7 +73,7 @@ class Module implements AutoloaderProvider
     public function setRequest(MvcEvent $e)
     {
     	$request = new Request();
-    	$request->setRoute($e->getRouteMatch());
+    	$request->setRouter($e->getRouter());
     	$e->setRequest($request);
     }    
 }
