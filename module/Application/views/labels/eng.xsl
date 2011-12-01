@@ -374,7 +374,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_snippet_show_title">Show title?</xsl:variable>
   
 	<xsl:template name="text_recommendation_header">
-		People who read this <xsl:value-of select="php:function('Xerxes_Framework_Parser::strtolower', string(format))"/> also read	
+		People who read this <xsl:value-of select="php:function('Xerxes\Utility\Parser::strtolower', string(format))"/> also read	
 	</xsl:template>
 
 	<xsl:template name="text_number_to_words">
