@@ -2,7 +2,8 @@
 
 namespace Application\Model\DataMap;
 
-use Xerxes\Utility\DataMap;
+use Application\Model\Search\Refereed as RefereedValue,
+	Xerxes\Utility\DataMap;
 
 /**
  * Database access mapper for peer-reviewed data
@@ -32,10 +33,10 @@ class Refereed extends DataMap
 	 * @param Refereed $objTitle peer reviewed journal object
 	 */
 	
-	public function addRefereed(Refereed $objTitle)
+	public function addRefereed(RefereedValue $title)
 	{
-		$objTitle->issn = str_replace("-", "", $objTitle->issn);
-		$this->doSimpleInsert("xerxes_refereed", $objTitle);
+		$title->issn = str_replace("-", "", $title->issn);
+		$this->doSimpleInsert("xerxes_refereed", $title);
 	}
 	
 	/**
@@ -109,7 +110,7 @@ class Refereed extends DataMap
 		
 		foreach ( $arrResults as $arrResult )
 		{
-			$objPeer = new Refereed( );
+			$objPeer = new RefereedValue();
 			$objPeer->load( $arrResult );
 			
 			array_push( $arrPeer, $objPeer );

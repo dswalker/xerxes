@@ -3,6 +3,7 @@
 namespace Application\Model\Search;
 
 use Application\Model\DataMap\Availability,
+	Application\Model\DataMap\Refereed as DataMapRefereed,
 	Xerxes\Record;
 
 /**
@@ -134,7 +135,7 @@ class ResultSet
 		{
 			// get all from our peer-reviewed list
 			
-			$data_map = new Refereed();
+			$data_map = new DataMapRefereed();
 			
 			$refereed_list = $data_map->getRefereed($issns);
 			

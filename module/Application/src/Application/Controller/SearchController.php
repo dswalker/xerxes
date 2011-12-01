@@ -183,11 +183,9 @@ abstract class SearchController extends ActionController
 		
 		// add to response
 		
-		$this->response->add("results", $results);
-
-		// set view
-		
-		$this->response->setView("xsl/" . $this->id . "/record.xsl");	
+		$response = array();
+		$response["results"] = $results;
+		return $response;
 	}
 	
 	public function lookupAction()

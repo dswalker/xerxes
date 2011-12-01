@@ -3,7 +3,7 @@
 namespace Application\Model\Bx;
 
 use Xerxes\Utility\Parser,
-	Xerxes\Record,
+	Xerxes,
 	Zend\Http\Client;
 
 /**
@@ -54,7 +54,7 @@ class Engine
 	}	
 	
 	
-	public function getRecommendations(Record $xerxes_record, $min_relevance = 0, $max_records = 10)
+	public function getRecommendations(Xerxes\Record $xerxes_record, $min_relevance = 0, $max_records = 10)
 	{
 		$bx_records = array();
 		

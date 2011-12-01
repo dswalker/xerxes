@@ -79,7 +79,7 @@ class Result
 			
 			$bx_engine = new BxEngine($configToken, $this->sid, $configBX);
 			$bx_records = $bx_engine->getRecommendations($this->xerxes_record, $configMinRelevance, $configMaxRecords);
-
+			
 			if ( count($bx_records) > 0 ) // only if there are any records
 			{
 				foreach ( $bx_records as $bx_record )
@@ -87,7 +87,7 @@ class Result
 					$result = new Result($bx_record, $this->config);
 					array_push($this->recommendations, $result);
 				}
-			}			
+			}
 		}
 	}
 	
