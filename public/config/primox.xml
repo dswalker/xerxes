@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xerxes>
+
+	<configuration>
+	
+		<config name="primo_address"></config>
+		<config name="institution"></config>
+
+		<config name="facet_fields" xml="true" pass="true">
+			<facet public="Suggested topics" internal="topic" />
+		</config>
+
+		<config name="sort_options" xml="true" pass="true">
+			<option id="relevance" public="relevance" internal="" />
+			<option id="date" public="date" internal="scdate" type="year"/>
+		</config>
+
+		<config name="basic_search_fields" xml="true" pass="true">
+			<field id="keyword" public="all fields" internal="" />
+			<field id="title" public="title" internal="title" />
+			<field id="author" public="author" internal="creator" />
+			<field id="subject"  public="subject" internal="sub" />
+		</config>
+		
+	</configuration>
+	
+</xerxes>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xerxes>
+	 
+	<configuration>
+		
+	<!-- worldcat CONFIGURATION -->
+		
+		<!-- you'll need to get the worldcat api key from oclc -->
+		
+		<config name="worldcat_api_key"></config>
+		
+		<!-- have availability link go directly to you ILL system (e.g., illiad) instead of your link resolver
+		     include the path to your ILL system's OpenURL service -->
+		
+		<config name="interlibrary_loan"></config>
+		
+		<!-- records per page -->
+		
+		<config name="worldcat_max_records">10</config>
+		
+		<!-- relevancy type, 
+		     enter one of the following :
+		     'Score,,0' = pure term-frequency style relevance algorithm
+		     'LibraryCount,,0' = number of libraries that hold the item
+		     'relevance' = a combination of the above 
+		     -->
+
+		<config name="sort_options" xml="true" pass="true">
+			<option id="relevance" public="relevance" internal="Score,,0" />
+			<option id="date" public="date" internal="Date,,0" />
+			<option id="author" public="author" internal="Author" />
+			<option id="title" public="title" internal="Title" />
+		</config>
+
+		<config name="basic_search_fields" xml="true" pass="true">
+			<field id="keyword" public="keyword" internal="kw" />
+			<field id="author" public="author" internal="au" />
+			<field id="title" public="title" internal="ti" />
+			<field id="subject" public="subject" internal="su" />		
+		</config>
+
+		<worldcat_groups>
+			<group id="local" label="Xerxes Library">
+				<libraries>CFI</libraries>
+				<exclude></exclude>
+				<!-- only include results with these material types, enter three letter material type designation, 
+				     separate multiple entries by comma -->
+		
+				<config name="limit_material_types"></config>
+		
+				<!-- only include results with these material types, enter three letter material type designation -->
+		
+				<config name="exclude_material_types">per,new</config>
+				<frbr>false</frbr>
+			</group>
+			<group id="regional" label="Other Cal State campuses">
+				<libraries>CBA,CCH,CDH,CFI,CFS,CLA,CLO,CNO,CS1,CSA,CSB,CSH,CTU,U$C,CSJ,CSO,CHU,CDS,CPO,CPS,CVM,MB@,CSF,MFL</libraries>
+				<exclude>local</exclude>
+				<exclude_material_types>per,new</exclude_material_types>
+				<show_holdings>true</show_holdings>
+				<lookup>
+					<ill_text>We'll get a copy for you in 3-5 days</ill_text>
+				</lookup>
+			</group>
+			<group id="world" label="Libraries worldwide">
+				<libraries></libraries>
+				<exclude>local,regional</exclude>
+				<exclude_material_types>per,new</exclude_material_types>
+				<lookup>
+					<ill_text>We'll get a copy for you in 5-10 days</ill_text>
+				</lookup>
+				
+				<!-- this is a hidden query added to the search, allows you to craft specialized
+				     searches; this one says only show results where at least five libraries own the item -->
+				
+				<query_limit>srw.cg = "05"</query_limit>
+			</group>
+		</worldcat_groups>
+		
+	</configuration>
+	
+</xerxes>

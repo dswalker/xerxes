@@ -1,0 +1,229 @@
+/** RESULTS **/
+
+.bookCover {
+	width: 80px;
+	float: left; 
+	text-align: right;
+}
+
+.bookResult {
+  border-left: 2px solid #CCCCCC;
+  margin-left: 79px;
+  padding-left: 20px;
+}
+
+.bookAbstractData {
+	margin-bottom: 10px;
+}
+
+.resultsType {
+	margin-top: 5px;
+}
+
+.resultsInfo {
+	padding-left: 0px;
+	border-left: 0px;
+}
+
+/** RECORD **/
+
+#bookRecordBookCover {
+	width: 120px;
+	float: left; 
+}
+
+.recordFullText {
+	clear: both;
+	margin-top: 20px;
+}
+
+#bd dt {
+	clear: none;
+}
+
+.summaryOnlineHolding {
+	margin: 1em;
+	margin-bottom: 1.2em;
+}
+
+#record .bookHoldings li {
+	margin-left: 30px;
+}
+
+.bookAvailableRecord {
+	max-height: 400px; 
+	overflow-y: scroll; 
+	margin-bottom: 20px;
+}
+
+.google_preview {
+	margin: 1em;
+}
+
+/** HOLDINGS **/
+
+.holdingsTable {
+	border-collapse:collapse;
+	border-spacing:0;
+	border: 1px solid #ccc;
+	margin: 15px;
+}
+
+.holdingsTable th, .holdingsTable td {
+	text-align: left;
+	margin: 0px;
+	padding: 5px;
+	padding-right: 10px;
+	border-bottom: 1px solid #eee;
+}
+
+.holdingsTable th {
+	background-color: #efefef;
+}
+
+ul.holdingsSummaryStatement {
+	margin-bottom: 1em;
+	padding-left: 1em;
+}
+
+#record ul.holdingsSummaryStatement li {
+	list-style-type: none;
+	padding-bottom: .5em;
+}
+
+#bookAdvancedMore {
+	margin-top: 20px;
+}
+
+/** ADVANCED SEARCH FORM **/
+	
+#bookAdvancedSearch fieldset {
+	margin: 10px;
+	padding: 20px;
+	border: 2px solid #CCCCCC;
+	margin-bottom: 20px;
+	clear: left;
+}
+
+#bookAdvancedSearch legend {
+	background-color: #FFFFFF;
+	margin-top: -10px;
+	font-weight: bold;
+	padding: 10px;
+}
+
+#bookAdvancedSearch p { 
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+#bookAdvancedSearch .explain {
+	font-size: 90%;
+	color: #666;
+	margin: 10px;
+}
+
+#bookAdvancedSearch td {
+	vertical-align: top;
+}
+	
+#searchTerms li {
+	margin-top: 10px;
+	margin-bottom: 10px;
+	background: none;
+}
+
+#searchYear {
+	margin-top: 30px;
+}
+
+#bookAdvancedSearch input {
+	padding: 2px;
+}
+
+#bookAdvancedSearch option { 
+	padding: 2px;
+	padding-right: 4px;
+}
+
+option.basicOption {
+	background-color: #FFFFCC;	
+}
+
+.limit li {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.limit li input {
+	margin-right: 10px;
+}
+
+.left {
+	display: block;
+	float: left;
+	width: 300px;
+}
+
+#lang-hand {
+	margin-left: 20px;
+}
+
+#basicLimits td {
+	padding: 5px;
+}
+
+#searchSubmit {
+	margin-top: 30px;
+	margin-left: 30px;
+}
+
+#searchSubmit input {
+	padding: 10px;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+/** SMS **/
+
+#sms {
+	margin: 2em;
+	margin-left: 0;
+	border: 1px solid #ccc; 
+	padding: 1.5em;
+	padding-top: .5em;
+	padding-bottom: .5em;
+	background-color: #efefef;
+}
+
+.smsProperty {
+	float: left;
+	height: 150%;
+	font-weight: bold;
+}
+
+.smsProperty {
+	clear: left;
+	float: left;
+	font-weight: bold;
+	width: 13em;
+	margin-bottom: 1em;
+	text-align: right;
+}
+
+.smsValue {
+	margin-left: 15em;
+	margin-bottom: 1em;
+}
+
+.smsCopy {
+	margin-left: 2em;
+	margin-top: 1em;
+	display: block;
+}
+
+.smsNote {
+	margin: 1em;
+	font-size: 90%;
+	font-style: italic;
+}

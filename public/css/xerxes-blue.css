@@ -1,0 +1,693 @@
+
+/**
+ * Base css for main interface
+ *
+ * @author David Walker
+ * @copyright 2009 California State University
+ * @link http://xerxes.calstate.edu
+ * @license http://www.gnu.org/licenses/
+ * @version $Id: xerxes-blue.css 2031 2011-11-23 15:07:21Z dwalker.calstate@gmail.com $
+ * @package Xerxes
+ */
+
+@charset "utf-8";
+
+/** BASIC ELEMENTS **/
+
+body {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+h1, h2, h3, h4 {
+	font-family: Arial, Helvetica, sans-serif;
+	color: #003366;
+	margin-bottom: 1em;
+}
+
+h1 { 
+	font-size: 200%;
+}
+
+h2 { 
+	font-size: 140%;
+}
+
+h3 { 
+	font-size: 110%;
+	font-weight: bold;
+}
+
+h4 {
+	font-weight: bold;
+}
+
+strong {
+	font-weight: bold;
+}
+
+em {
+	font-style: italic;
+}
+
+a:link, a:visited {
+	text-decoration: none;
+	color: #003399;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+/** header **/
+#hd-banner {
+	background-color: #336699;
+	padding: 20px;
+	padding-bottom: 2px;
+}
+
+#hd-banner-link {
+	color: #fff;
+	font-weight: bold;
+	font-size: 150%;
+	font-family: Arial, Helvetica, sans-serif;
+	text-decoration: none;
+}
+
+/** BASIC ELEMENTS ( but not for header, footer )**/
+
+#bd dt, #bd dd {
+	margin-bottom: .5em;
+	display: block;
+}
+
+#bd dt { 
+	clear: both;
+	float: left;
+	font-weight: bold;
+	width: 10em;
+	text-align: right;
+}
+
+#bd dd {
+	margin-left: 11em;
+}
+
+#bd p {
+	margin-bottom: 1em;
+}
+
+#bd button, #bd option, #bd input[type="text"], #bd input[type="textarea"], #bd input[type="checkbox"], #bd input[type="radio"], 
+#bd input[type="reset"], #bd input[type="submit"] {
+	padding: 1px;
+}
+
+/** YUI TEMAPLTE ADDITIONS **/
+
+
+#doc3 #bd {
+	margin-left: 1em;
+	margin-right: 1em;
+}
+
+.xer-t5 {
+	margin:auto;
+	text-align:left;
+	width:57.69em;
+	*width:56.25em;
+}
+
+.xer-t5 #yui-main {
+	float:right;
+	margin-left:-25em;
+}
+
+.xer-t5 .yui-b{
+	float:left;
+	width:18.4615em;
+	*width:18.00em;
+}
+.xer-t5 #yui-main .yui-b{
+	margin-left:19.4615em;
+	*margin-left:19.125em;
+}
+
+/** SIDEBAR **/
+
+.sidebar {
+	background-color: #efefef;
+	padding: 1.3em;
+	color: #333;
+}
+
+.sidebar .box {
+	margin-left: 1em;
+	margin-bottom: 2em;
+}
+
+.sidebar .box li {
+	list-style: square;
+	margin-left: 1.5em;
+}
+
+.sidebar h2, .sidebar .umlaut_section h3 {
+	padding-top: 0;
+	margin-left: -1em;
+	font-size: 120%;
+	font-weight: 600;
+}
+
+.sidebar li {
+	padding-bottom: .5em;
+}
+
+.sidebar .box li {
+	margin-left: 1.5em;
+}
+
+.sidebar .box li.sidebarFolder {
+	list-style: none;
+	margin-left: 0;
+}
+
+/** GLOBAL STYLES **/
+
+.ada, #skipnav {
+	position: absolute; 
+	top: -1000px; 
+}
+
+#languages {
+	float: right;
+	color: #fff;
+}
+
+#languages a, #languages a:visited {
+	color: #fff;
+}
+
+#message_display {
+	padding: .8em;
+	margin: 2em;
+	background-color: #FFDADA;
+	display: table;
+	max-width: 300px;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 2px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #CCCCCC;
+	border-right-color: #CCCCCC;
+	border-bottom-color: #999999;
+	border-left-color: #CCCCCC;
+}
+
+.error {
+	color: #CC0000;
+}
+
+.nonBreaking {
+	white-space: nowrap;
+}
+
+.raisedBox {
+	padding: 1.8em;
+	background-image: url(../images/bg.gif);
+	background-repeat: repeat-x;
+	background-position: bottom;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 2px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #CCCCCC;
+	border-right-color: #CCCCCC;
+	border-bottom-color: #999999;
+	border-left-color: #CCCCCC;
+}
+
+.miniIcon {
+  vertical-align:middle; 
+}
+
+.iconCommand, a.iconCommand, a.iconCommand:visited, a:hover.iconCommand {
+	padding: 0px 0px 0px 24px;  
+	position: relative;   
+	text-decoration: none;
+	white-space: nowrap;  
+	background-repeat: no-repeat;
+	*-background-image: none;  
+}
+
+.iconCommand.rename {
+	background-image: url(../images/famfamfam/tag_blue_edit.png);
+}
+
+.iconCommand.delete {
+	background-image: url(../images/delete.gif);
+}
+
+.iconCommand.add {
+	background-image: url(../images/famfamfam/add.png);
+}
+
+.iconCommand.reorder {
+	background-image: url(../images/reorder.gif);
+}
+
+.iconCommand.edit {
+	background-image: url(../images/famfamfam/wrench.png);
+}
+
+.iconCommand.public {
+	background-image: url(../images/famfamfam/lock.png);
+	*-background-image: none;  
+}
+
+/** BREADCRUMBS **/
+
+#breadcrumb {
+	padding: .7em;
+	color: #666;
+	margin-bottom: 1.5em;
+}
+
+/** SEARCH BOX **/
+
+.searchBox {
+	display: table;
+	margin-bottom: 3em;
+	padding-bottom: 1em;
+	padding-right: 2.2em;
+}
+
+.spellSuggest {
+	margin: 1em;
+}
+
+.searchLabel {
+	float:left; 
+	padding-top: .3em;
+}
+
+.searchInputs {
+	margin-left: 4.3em;
+}
+
+.metasearch_input_toggle {
+	margin-top: 1em;
+}
+
+.searchBox_advanced_newline {
+	margin-top: .2em;
+}
+
+/** AUTHENTICATION **/
+
+#authentication .box {
+	margin: 3em;
+	border: 1px solid #ccc;
+	background-color: #efefef;
+	width: 25em;
+	padding: 2em;
+}
+
+#authentication p {
+	padding-bottom: 1em;
+}
+
+#authentication .submit { 
+	margin-left: 8em;
+}
+
+#authentication label {
+	float: left;
+	width: 7em;
+	font-weight: bold;
+	text-align: right;
+	margin-right: 1em;
+}
+
+/** RESULTS **/
+
+#sort {
+	padding: 1em;
+	border-top: 1px solid #ccc;
+	background-color: #efefef;
+	margin-bottom: 2.6em;
+}
+
+
+#sortOptions {
+	text-align: right;
+}	
+
+.result {
+	margin-bottom: 3em;
+	line-height: 130%;
+}
+
+.resultsTitle a {
+	font-weight: bold;
+}
+
+.resultsInfo {
+	border-left: 2px solid #ddd; 
+	margin-left: .3em;
+	padding-left: 1em;		
+	margin-top: .7em;
+	color: #333;
+}
+
+.resultsInfo a:link, .resultsInfo a:visited, #recordFullText a:link, #recordFullText a:visited {
+	color: green;
+}
+
+.resultsType {
+	font-weight: bold;
+}
+
+.resultsLanguage {
+	color: #CC0000;
+}
+
+.resultsAbstract {
+	margin-top: .7em;
+	margin-bottom: .7em;
+}
+
+.resultsAuthor, .resultsYear, .resultsPublishing {
+	display: block;
+	margin-bottom: 0.35em;
+}
+
+.recordActions {
+	margin-top: .7em;
+}
+
+.recordAction {
+	margin-bottom: 0.35em;
+}
+
+a.recordAction {
+	display: table;
+}
+
+.folderLabels {
+	margin: .4em;
+}
+
+/* pager */
+
+.resultsPager {
+	margin-top: 7em;
+	margin-bottom: 7em;
+	text-align: center;
+}
+.resultsPagerList {
+	display: inline;
+	padding: .8em;
+	border: 1px solid #A2C9EF;
+	background-color: #E4F1FD;
+}
+.resultsPager li {
+	display: inline;
+	padding: .3em;
+	background-image: none;
+}
+.resultsPagerNext {
+	padding-left: 2em;
+}
+
+/** RECORD FULL VIEW **/
+
+#record h2 {
+	margin-top: 1em;
+}
+
+#record li {
+	list-style: square;
+	margin-left: 3em;
+}
+
+#recordFullText {
+	margin-top: 2em; 
+	margin-bottom: 2em;
+}
+
+#recordFullText li {
+	margin-left: 0;
+}
+
+#citationNote {
+	border: 1px solid #ccc;
+	padding: .4em;
+	font-size: 80%;
+	color: #666;
+}
+
+#recommendations {
+	margin-top: 2em;
+}
+
+#recommendations .result {
+	margin-bottom: 2em;
+}
+
+#recommendations li {
+	list-style: none;
+	margin-left: 1.5em;
+}
+
+/** MY SAVED RECORDS **/
+
+.folderReturn {
+	display: inline;
+	margin-left: 3em;
+}
+
+#folder_output_results thead td {
+	background-color: #efefef;
+	font-weight: bold;
+}
+
+#folder_output_results td {
+	padding: .7em;
+	border: 1px solid #ccc;
+}
+
+.folderEmailSuccess {
+	display: table;
+	padding: 10px;
+	background-color: #FFFFCC;
+	border: 1px solid #FFCC00;
+	color: #009900;
+	font-weight: bold;
+}
+
+#export legend {
+	font-family: Arial, Helvetica, sans-serif;
+	color: #003366;
+	padding-top: 2em;
+	padding-bottom: 2em;
+	font-size: 140%;
+}
+
+.exportOptions div {
+	display: block;
+	margin-bottom: 1em;
+	clear: left;
+}
+	
+#export_email_options label {
+	display: block;
+	float: left;
+	width: 15em;
+	font-weight: bold;
+	text-align: right;
+}
+
+#export_email_options input, #export_email_options textarea {
+	display: block;
+	margin-left: 17em;
+}
+
+#export_single {
+	margin: 2em;
+}
+
+#export_single {
+	font-size: 130%;
+	padding: 1em;
+}
+
+#export_options_endnote div {
+	margin: 1em;
+}
+
+#export_options_endnote input {
+	margin-right: 1em;
+	margin-left: 1em;
+}
+
+/** AUTO-COMPLETE **/
+
+div.autocomplete {
+	margin: 0;
+	padding: 0;
+	width: 25em;
+	background: #fff;
+	border: 1px solid #888;
+	position: absolute;
+}
+
+div.autocomplete ul {
+  list-style-type: none;
+}
+
+div.autocomplete ul li.selected {
+	margin: 0;
+	padding: 0;
+	background-color: #B0E0E6;
+}
+
+div.autocomplete ul {
+	margin: 0;
+	padding: 0;
+}
+
+#tag_suggestions li {
+	margin: 0px;
+}
+
+div.autocomplete ul li {
+	padding: .2em;
+	height: 1.2em;
+	display: block;
+	list-style-type: none;
+	cursor: pointer;
+	background: none;
+}
+
+/** TABS **/
+
+.tabs #sort {
+	background-color: transparent;
+	border: none;
+}
+
+.tabs p.error {
+	margin: 3em;
+}
+
+#tabnav .tabsHit {
+	font-size: 85%;
+	padding-left: .5em;
+}
+
+#tabnav {
+	float: left;
+	width: 99%;
+	line-height: normal;
+ 	background: #fff url("../images/tabs/bg.png") repeat-x bottom;
+	padding-left: 10px;
+	margin-right: 10px;
+}
+
+#tabnav ul {
+	margin: 0;
+	padding: 10px 10px 0;
+	list-style: none;
+}
+
+#tabnav li {
+	float: left;
+	background: url("../images/tabs/left.png") no-repeat left top;
+	margin: 0;
+	padding: 0 0 0 9px;
+}
+
+#tabnav a {
+	display:block;
+	background: url("../images/tabs/right.png") no-repeat right top;
+	padding: 5px 15px 4px 6px;
+	padding: 10px 18px 9px 7px;
+	text-decoration: none;
+	font-weight: bold;
+	color: #444;
+}
+
+#tabnav a:hover {
+	color: #333;
+}
+
+#tabnav .here {
+	background-image: url("../images/tabs/left_on.png");
+}
+
+#tabnav .here a {
+	background-image: url("../images/tabs/right_on.png");
+	color: #333;
+	padding-bottom: 10px;
+}
+
+.sidebar #subtab {
+	margin-left: 0;
+	border: 1px solid #ccc;
+	padding: .5em;
+}
+
+#subtab h2 {
+	margin-left: 0;
+	background-color: #efefef;
+	padding: .5em;
+}
+
+#subtab .tabsHit {
+	color: #000;
+	padding-left: .5em;
+}
+
+/* facet limit */
+
+.resultsFacetsApplied {
+	margin-top: 1em;
+}
+
+.resultsFacetsApplied li {
+	position: relative; 
+	padding: 10px; 
+	padding-left: 30px; 
+	margin: 2px;
+	background-image: url(../images/facet-bg.png);
+	background-repeat:repeat-x;
+	background-color: #efefef; 
+	border: 1px solid #cbcbcb;
+}
+
+.embedInfo {
+	border: 0px none;
+}
+
+
+/* search sidebar */
+
+#search-sidebar {
+	font-size: 90%;
+	background-color: inherit;
+}
+
+
+
+
+
+
+
+
+

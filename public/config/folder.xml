@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xerxes>
+	 
+	<configuration>
+		
+		<!-- maximum number of records to show  -->
+		
+		<config name="records_per_page">30</config>
+		
+		<!-- maximum number of records that can be exported -->
+		
+		<config name="max_records_per_page">1000</config>
+		
+	</configuration>
+	
+</xerxes>

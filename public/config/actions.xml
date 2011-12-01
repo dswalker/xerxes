@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xerxes>
+		 
+	<!-- 
+		use this file to override the directives in lib/config/actions.xml, including:
+		 
+		  * setting a new default action
+		  * overriding section attributes
+		  * redefining actions
+		  
+		please consult the wiki and the listserv before editing this file
+	-->
+	
+	<commands>
+	
+		<!-- 
+		<section name="databases">	
+			
+			<action name="example">
+				<command>ExampleCommand</command>
+				<view>xsl/example.xsl</view>
+			</action>
+
+		</section>
+		-->
+
+	</commands>
+</xerxes>

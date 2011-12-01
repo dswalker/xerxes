@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xerxes>
+
+	<configuration>
+	
+		<config name="primo_address"></config>
+		<config name="institution"></config>
+		<config name="vid"></config>
+		<config name="loc">local;adaptor,primo_central_multiple_fe</config>
+
+		<config name="facet_fields" xml="true" pass="true">
+			<facet public="Show Only" internal="tlevel">
+				<value internal="online_resources" public="Full-text online" />
+				<value internal="peer_reviewed" public="Peer reviewed journals" />
+				<value internal="cited_articles" public="Cited articles" />
+			</facet>
+			<facet public="Format" internal="pfilter">
+				<value internal="newspaper_articles" public="Newspaper Articles" />
+				<value internal="articles" public="Articles" />
+				<value internal="books" public="Books" />
+				<value internal="audio_video" public="Audio/Video" />
+				<value internal="reviews" public="Reviews" />
+				<value internal="journals" public="Journals" />
+				<value internal="websites" public="Websites" />
+				<value internal="legal_documents" public="Legal Documents" />
+				<value internal="dissertations" public="Dissertations" />
+				
+			</facet>
+			<facet public="Topic" internal="topic" />
+			<facet public="Year" internal="creationdate" type="date" />
+			<facet public="Database" internal="domain" />
+			<facet public="Journal Title" internal="jtitle" />
+		</config>
+		
+		<config name="sort_options" xml="true" pass="true">
+			<option id="relevance" public="relevance" internal="" />
+			<option id="date" public="date" internal="scdate" type="year"/>
+		</config>
+
+		<config name="basic_search_fields" xml="true" pass="true">
+			<field id="keyword" public="all fields" internal="any" />
+			<field id="title" public="title" internal="title" />
+			<field id="author" public="author" internal="creator" />
+			<field id="subject"  public="subject" internal="sub" />
+		</config>
+		
+	</configuration>
+	
+</xerxes>

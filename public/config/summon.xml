@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xerxes>
+
+	<configuration>
+	
+		<config name="summon_id"></config>
+		<config name="summon_key"></config>
+
+		<config name="facet_fields" xml="true" pass="true">
+			<facet public="Scholarly" internal="IsScholarly" />
+			<facet public="Format" internal="ContentType" />
+			<facet public="Topics" internal="SubjectTerms" />
+		</config>
+		
+		<config name="sort_options" xml="true" pass="true">
+			<option id="relevance" public="relevance" internal="" />
+			<option id="date" public="date" internal="PublicationDate:desc" type="year"/>
+		</config>
+
+		<config name="basic_search_fields" xml="true" pass="true">
+			<field id="keyword" public="all fields" internal="any" />
+			<field id="title" public="title" internal="title" />
+		</config>
+		
+	</configuration>
+	
+</xerxes>

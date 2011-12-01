@@ -1,0 +1,99 @@
+/** 
+ * This stylesheet is used for embeddable snippets, when the snippet is configured to embed a 
+ * stylesheet. It is written with selectors that will only apply to embedded snippet, not other 
+ * content on hosting page. 
+ *  
+ * @author Jonathan Rochkind
+ * @copyright 2009 Johns Hopkins University
+ * @link http://xerxes.calstate.edu
+ * @license http://www.gnu.org/licenses/
+ * @version $Id: xerxes-blue-embeddable.css 1859 2011-03-21 15:39:09Z dwalker@calstate.edu $
+ * @package Xerxes
+ */
+
+.xerxes_outer_wrapper {
+ font-size: 13px;
+}
+.xerxes_outer_wrapper a { text-decoration: none; }
+.xerxes_outer_wrapper a:visited {  text-decoration: none; }
+.xerxes_outer_wrapper a:active {  text-decoration: none; }
+.xerxes_outer_wrapper a:hover { text-decoration: underline; }
+.xerxes_outer_wrapper img, .xerxes_outer_wrapper fieldset {  
+  border: 0 none; 
+}
+
+.xerxes_outer_wrapper .searchBox { 
+  display:table;
+  margin-bottom:1em;
+  padding-bottom:1em;
+  padding-right:2.2em;
+}
+
+.xerxes_outer_wrapper .searchLabel {
+	float:left; 
+	padding-top: .3em;
+}
+
+.xerxes_outer_wrapper .searchInputs {
+	margin-left: 4.3em;
+}
+
+.xerxes_outer_wrapper .metasearch_input_toggle {
+	margin-top: 1em;
+}
+
+.xerxes_outer_wrapper .searchBox_advanced_newline {
+	margin-top: .2em;
+}
+
+.xerxes_outer_wrapper .raisedBox {
+	padding: 1.8em;
+	background-image: url(../images/bg.png);
+	background-repeat: repeat-x;
+	background-position: bottom;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 2px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #CCCCCC;
+	border-right-color: #CCCCCC;
+	border-bottom-color: #999999;
+	border-left-color: #CCCCCC;
+}
+  
+
+
+.xerxes_outer_wrapper .subjectSubcategory legend {
+  font-size:110%;
+  font-weight:bold;
+  padding:1em;
+  margin: 0;
+}
+
+.xerxes_outer_wrapper ul.databaseSectionList li {
+  margin-bottom:0.3em;
+}
+
+.xerxes_outer_wrapper .subjectSubCategory input {
+  margin:0;
+  padding:0; 
+}
+
+.xerxes_outer_wrapper ul.databaseSectionList {
+	margin: .7em .7em .7em 1.25em;
+	border-left: 2px solid #ccc;
+	padding: 0 0 0 1em;
+  list-style-image:none;
+  list-style-position:outside;
+  list-style-type:none;
+}
+
+.xerxes_outer_wrapper .ada, .xerxes_outer_wrapper #skipnav {
+	position: absolute; 
+	top: -1000px; 
+}
+

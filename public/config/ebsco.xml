@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xerxes>
+	<configuration>
+	
+		<config name="ebsco_databases" xml="true" pass="true" />	
+		<config name="ebsco_username"></config>
+		<config name="ebsco_password"></config>
+
+		<config name="sort_options" xml="true" pass="true">
+			<option id="relevance" public="relevance" internal="relevance" />
+			<option id="date" public="date" internal="date" />
+			<option id="author" public="author" internal="author" />
+			<option id="title" public="title" internal="title" />
+		</config>
+		
+		<config name="basic_search_fields" xml="true" pass="true">
+			<field id="keyword" public="keyword" internal="" />
+			<field id="title" public="title" internal="TI" />
+			<field id="author" public="author" internal="AU" />
+			<field id="subject"  public="subject" internal="SU" />
+		</config>
+		
+	</configuration>
+	
+</xerxes>

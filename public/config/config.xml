@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xerxes>
+
+	<!-- 
+	
+	BEFORE YOU GET STARTED
+	
+	Consult the Xerxes wiki, which contains more information about each config below
+	http://code.google.com/p/xerxes-portal/w/list
+	
+	 -->
+	 
+	<configuration>
+		
+	<!-- BASIC CONFIGURATION -->
+	
+		<!-- the base web server path for your xerxes installation. 
+			NO trailing slash. If you have installed at web root, empty string. -->
+		
+		<config name="base_web_path">/demo</config>
+		
+		<!-- what is your application called? Will be used in parts of the system. -->
+			 
+		<config name="application_name" pass="true">Xerxes Demo</config>
+		
+		<!-- turns the display of php errors and warnings on in a production system; value = true | false -->
+		
+		<config name="display_errors">false</config>
+		
+		<!-- include here the range of local ip addresses that should not be challenged for a login.
+		 	enter as either 144.37.*.*, with * as wildcard, or as 144.37.0.0-144.37.255.255,
+		 	separate multiple entries by comma -->
+			 
+		<config name="local_ip_range"></config>
+		
+		<!-- http proxy tunnel. do not confuse this with proxy_server (e.g., ezproxy) below. if all 
+			outgoing http requests from the server need to be sent through an http proxy, set server address 
+			(including port) and optionally a username and password here. -->
+		
+		<config name="http_proxy_server"></config>
+		<config name="http_proxy_username"></config>
+		<config name="http_proxy_password"></config>
+		
+		<!-- use curl. set this to 'true' if you have php.ini set to prevent 'remote file access', but have 
+		curl libraries installed -->
+		
+		<config name="http_use_curl"></config>
+		
+		<!-- if you are running xerxes behind a reverse proxy server set this to 'true' -->
+		
+		<config name="reverse_proxy"></config>
+		
+		
+	<!-- LANGUAGES -->
+		
+		<config name="languages" xml="true" pass="true">
+		
+			<!-- 
+			
+			List of languages Xerxes and Metalib interface is available in.
+			
+			* during 'populate databases', Xerxes will try to pull category names in these languages from
+			  Metalib X-Server. Code is ISO 936 bibliographic code, Metalib uses the same code for languages.
+			
+			* Don't leave the list empty, leave at least one language here.
+			
+			  @code = language code
+			  @locale = used for:
+				
+				* defines which languages are available as the Xerxes interface language.
+				This is controled per-session by the "lang" variable (i.e. '?lang=eng' in URL)
+				
+				* displays localized language names;
+				i.e. if you set this to 'de_DE.UTF-8', document language names will be displayed in German
+				if left empty, default POSIX locale 'C' will be used
+				
+				* controls transliteration of category names during the 'populate databases' action;
+				This controls how non-ASCII characters in Metalib category names are converted to ASCII
+				in their Xerxes normalized titles (e.g. in URL).
+				See details here: http://www.php.net/manual/en/function.iconv.php
+			-->
+			
+			
+			<language code="eng" locale="" />
+			<!-- <language code="cze" locale="cs_CZ.utf8" /> -->
+		</config>
+		
+		
+	<!-- LOCAL DATABASE -->
+	
+		<!-- Connection string, username, and password for local database: Xerxes uses PDO for database access, 
+		     so connection strings should be in that format -->
+		
+		<config name="database_connection">mysql:host=localhost;dbname=xerxes</config>
+		<config name="database_username"></config>
+		<config name="database_password"></config>
+		
+		
+	<!-- PROXY, LINK RESOLVER, AND EXTERNAL APIS -->
+		
+		<!-- base url of link resolver -->
+		
+		<config name="link_resolver_address"></config>
+		
+		<!--  If you want to do the SFX 'populate' action from another link resolver, perhaps because 
+			your main one is not SFX, configure this -->
+		
+		<config name="alternate_fulltext_harvest_address"></config>
+		
+		<!-- if you have an umlaut resolver, and you want to enable Umlaut functionalities in Xerxes, 
+		fill this out with the Umlaut 'true' base, without the /resolve, no trailing slash. 
+		eg http://findit.library.jhu.edu -->
+		
+		<config name="umlaut_base" pass="true"></config>
+    		
+		<!-- the sid that will be passed to the link resolver, xerxes will also append the name 
+			of the database to the sid -->
+		
+		<config name="application_sid">calstate.edu:xerxes</config>
+		
+		<!-- for spell check api, doesn't hurt to leave this as 'calstate', since the usage limits are 
+			based on ip address, but better to get your own key from Yahoo -->
+		
+		<config name="yahoo_id">calstate</config>
+
+		<!-- location of an alternate relay script for the yahoo api. -->
+			
+		<config name="alternate_yahoo_location"></config>
+				
+		<!-- base url of proxy server 
+		
+			EZProxy: include the entire proxy url prefix, e.g., 'http: ezproxy.library.edu/login?qurl='
+			xerxes will url-encode the full-text link, so it is preferable to use qurl param 
+			
+			WAM Proxy: enter in your catalog information with '{WAM}' as the domain/port wildcard 
+			e.g.,	http://{WAM}.catalog.library.edu
+		-->
+		
+		<config name="proxy_server"></config>
+		
+		<!-- Google analytics -->
+		
+		<config name="google_analytics" pass="true"></config>
+		
+		
+	<!-- AUTHENTICATION + AUTHORIZATION -->
+	
+		<!-- the source against which you will authenticate users; valid values include:
+		
+			* 'ldap' for a simple bind (or bind and search) to an ldap-enabled directory server, including Active Directory
+			* 'innovative' for authentication against the Innovative patron api
+			* 'cas' for authentication against a central authentication source server
+			* 'demo' for a simple demo set-up when you don't want to configure a directory
+			* 'shibboleth' for Shibboleth authentication using a local configured shibd.
+			* 'custom' to use the script in demo/config/authentication/custom.php, where you can write
+			  you own authentication code
+		 -->
+		
+		<config name="authentication_source">demo</config>
+		
+		<!-- additional authentication_sources. 
+			Will be used from a base=authenticate action=login request with a URL parameter "authentication_source" 
+			set to an 'id' mentioned here. -->
+		
+		<!-- <config name="authentication_source" id="other">something_else</config> -->
+		
+		<!-- setting this to 'true' will cause xerxes to force all logins thru https:// -->
+		
+		<config name="secure_login">false</config>
+		
+		<!-- LDAP -->
+		
+			<!-- required: directory server
+			Use IP, hostname or URI (ldap://hostname:port/ or ldaps://hostname:port/). -->
+			
+			<config name="directory_server"></config>
+			
+			<!-- deprecated, use ldap_dn_format instead -->
+			<!-- <config name="domain"></config> -->
+			
+			<!-- required: format of user DN we want to authenticate, %s will be replaced by username from the login form -->
+			<!-- another example, for Novell eDir: cn=%s,ou=department,o=organization -->
+			
+			<config name="ldap_dn_format">%s@domain</config>
+			
+			<!-- required: Perform initial bind & search for user DN? 
+				 If this is false, the rest of LDAP options will be ignored. -->
+			
+			<config name="ldap_do_init_bind">false</config>
+			
+			<!-- required if ldap_do_init_bind=true but may be empty for anonymous bind -->
+			<!-- DN for the initial bind. If do_init_bind is true and both ldap_init_bind_dn and 
+				 ldap_init_bind_password are empty, perform an anonymous bind. -->
+				 
+			<config name="ldap_init_bind_dn">cn=dir_admin,o=organization</config>
+			
+			<!-- required if ldap_do_init_bind=true but may be empty for anonymous bind -->
+			<!-- password for the initial bind -->
+			
+			<config name="ldap_init_bind_password">dir_admin_password</config>
+			
+			<!-- optional: part of tree to search for user DN (used to restrict search to a particular context) -->
+			
+			<config name="ldap_search_base">o=organization</config>
+			
+			<!-- required if do_init_bind=true -->
+			<!-- find only users matching this criteria (e.g. restrict only to users with a mail attribute or 
+			     within a certain ou) -->
+			
+			<config name="ldap_search_filter">(cn=%s)</config>
+			
+			<!-- required if ldap_do_init_bind=true -->
+			<!-- attribute containing the username -->
+			
+			<config name="ldap_search_uid">cn</config>
+			
+			<!-- if the following options are not empty and the directory contains attributes with these names, 
+				 their values will be imported to Xerxes users table on first login -->
+			<!-- optional: attribute containing user's given name -->
+			
+			<config name="ldap_search_name">givenName</config>
+			
+			<!-- optional: attribute containing user's surname -->
+			
+			<config name="ldap_search_surname">sn</config>
+			
+			<!-- optional: attribute containing user's email address -->
+			
+			<config name="ldap_search_mail">mail</config>
+			
+			<!-- LDAP options; see details in http://tools.ietf.org/html/draft-ietf-ldapext-ldap-c-api-05#section-11.2 -->
+			
+			<!-- optional: LDAP protocol version -->
+			
+			<config name="ldap_opt_protocol_version">2</config>
+			
+			<!-- optional: Determines how aliases are handled during search 
+			(LDAP_DEREF_NEVER, LDAP_DEREF_SEARCHING, LDAP_DEREF_FINDING, LDAP_DEREF_ALWAYS) -->
+			
+			<config name="ldap_opt_deref">LDAP_DEREF_NEVER</config>
+			
+			<!-- optional: Determines whether the LDAP library automatically follows referrals 
+			returned by LDAP servers or not (LDAP_OPT_ON, LDAP_OPT_OFF) -->
+			
+			<config name="ldap_opt_referrals">LDAP_OPT_OFF</config>
+			
+			<!-- optional: Use TLS with LDAP connection (StartTLS)?
+			This is not LDAPS (default port 636). This is LDAP+TLS (default port 389). LDAPS is now deprecated over LDAP+TLS. -->
+			
+			<config name="ldap_opt_tls">false</config>
+			
+			<!-- optional: Assign user a group based on part of his DN. Makes sense only if ldap_do_init_bind=true.
+				
+				preg_match($ldap_group_filter, $DN, $matches)
+				$group = $matches[$ldap_group_filter_match]
+				
+				Example:
+				If $DN = "cn=username,ou=department,o=organization",
+				$ldap_group_filter = "/(ou=)+?([^,]+)/i" and
+				$ldap_group_filter_match = "2",
+				preg_match() will return array ( 0 => 'ou=department', 1 => 'ou=', 2 => 'department', )
+				user will be assigned group "department" ($matches[2])
+			-->
+			<config name="ldap_group_filter"></config>
+			
+			<config name="ldap_group_filter_match"></config>
+		
+		
+		<!-- INNOVATIVE PATRON API -->
+		
+			<!-- enter the server address, include 'http://', :port number, and trailing slash '/' at the end of the url -->
+			
+			<config name="innovative_patron_api" />
+			
+			<!-- patron types allowed to use this system remotely: separate multiple entries by comma; 
+			leave blank if all users are allowed -->
+			
+			<config name="innovative_patron_types" />
+		
+		
+		<!-- CAS -->
+		
+			<!--
+				cas_login = full url to the login service, typically with https://
+				cas_validate = the full url to the validate service, typically with https:// 
+			 -->
+			
+			<config name="cas_login" />
+			<config name="cas_validate" />
+		
+		
+		<!-- DEMO -->
+		
+			<!-- list of users who can access the system without being in the local directory server 
+				 enter as username:password and separate entries by comma -->
+			
+			<config name="demo_users"></config>
+			
+		
+	<!-- DISPLAY AND BEHAVIOR -->
+	
+		<!-- mod_rewrite scheme
+		
+			create simpler urls using Apache mod_rewrite or IIS rewrite modules, see wiki for details.
+			see the demo/.htaccess file for specification. -->
+		
+		<config name="rewrite" pass="true">false</config>
+		
+		<!-- bx recommendations -->
+		
+		<config name="bx_token"></config>
+		
+		<!-- ask bX for at most bx_max_records results per item -->
+		
+		<config name="bx_max_records">10</config>	
+		
+		<!-- return only recommendations above this relevance treshold (0-100) -->
+		
+		<config name="bx_min_relevance">0</config>
+		
+		<!-- the overall width of the page design, see wiki for details! -->
+		
+		<config name="document" pass="true">doc3</config>
+		
+		<!-- overall template for page design, see wiki for details! -->
+		
+		<config name="template" pass="true">yui-t6</config>
+		
+		<!-- open window for full text and sfx links.
+		
+			You can change this value to any valid HTML anchor target attribute value to affect the 
+			behavior of sfx and full-text links in the search results and saved record pages.
+			'_self' causes the browser to open the links in the same window
+			'_blank' causes the browser to open the links in a new window. -->
+		
+		<config name="link_target" pass="true">_blank</config>
+		
+		<!-- specify here an explicit 'from' address when user emails records, otherwise the from will be
+		from the server name, or some other default if relaying thru an SMTP server -->
+		
+		<config name="email_from"></config>
+		
+		<!-- the url to send users when they logout, 
+			if left blank, then the base url of the application will be used -->
+		
+		<config name="logout_url" />
+		
+	</configuration>
+	
+</xerxes>

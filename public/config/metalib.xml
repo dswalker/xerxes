@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xerxes>
+
+	<!-- 
+	
+	BEFORE YOU GET STARTED
+	
+	Consult the Xerxes wiki, which contains more information about each config below
+	http://code.google.com/p/xerxes-portal/w/list
+	
+	 -->
+	 
+	<configuration>
+			
+	<!-- METALIB CONFIGURATION -->
+		
+		<!-- location, username, password, institute, & portal for Metalib X-Server:
+		
+			* do *NOT* include the /X in the metalib address.
+			* username and password must correspond to a valid /M interface user.
+			* institute and portal are usually the same as username. -->
+			
+		<config name="metalib_address"></config>
+		<config name="metalib_username"></config>
+		<config name="metalib_password"></config>
+		<config name="metalib_institute"></config>
+		<config name="metalib_portal"></config>
+		
+		<!-- Metalib user groups (aka 'secondary affiliations'). -->
+		
+		<!-- Extra info for display and use.
+		
+			<group id="metalib_code"> : group code id used in Metalib, ordinarily in all caps.
+			<display_name> : What to call this group of users       
+			<local_ip_range>: IP range(s) associated with this group.  Users coming from this ip range will be able 
+			to search this group's resources without first having to login. Enter as either 144.37.*.*, with * as 
+			wildcard, or as 144.37.0.0-144.37.255.255, separate mutliple entries by comma
+			<ezp_exp_group> For use with EZProxy export function, ezproxy config group to output for this Metalib 
+			secondary affiliation. See: http://code.google.com/p/xerxes-portal/wiki/EzProxyExport? -->
+		
+		<!-- example:
+		
+		<groups>
+		<group id="SCIENCE">
+		<display_name>Science Library</display_name>
+		<local_ip_range>201.2.4.*</local_ip_range>
+		</group>
+		</groups> 
+	
+		-->
+		
+		
+	<!-- EZPROXY EXPORT -->
+	
+		<!-- See http://code.google.com/p/xerxes-portal/wiki/EzProxyExport -->
+		
+		<!-- domains that should not excluded as "Domain" config in the EZProxy export, 
+			even if ordinary rules would include them -->
+		
+		<config name="ezp_exp_domain_avoid">youruniv.edu</config>
+		
+		<!-- Particular databases that should be excluded from the EZProxy
+		export, even if ordinary rules would include them. -->
+		
+		<config name="ezp_exp_resourceid_omit"></config>
+		
+		<!-- "Group" statement to output for ordinary default KB resources. -->
+		
+		<config name="ezp_exp_default_group">EzP_Group</config>
+		
+		
+	<!-- DATABASES DISPLAY -->
+		
+		<config name="categories_quicksearch" pass="true">quick-search</config>
+		<!-- <config name="categories_quicksearch" pass="true" lang="cze">rychle-vyhledavani</config> -->
+		
+		<!-- number of columns for subjects on categories page; 
+			enter '2' or '3', if you want more columns, you'll need to customize the page itself -->
+			
+		<config name="categories_num_columns" pass="true">3</config>
+		
+		<!-- only include the following subcategories in the subject page, 
+			separate multiple enties by comma, will look for the presence 
+			of the words, not an exact match -->
+		
+		<config name="subcategories_include"></config>
+		
+		<!-- subcategories that should be taken out of the 'main' part of the subject page
+		     and made part of the sidebar -->
+		
+		<config name="subcategories_sidebar"></config>
+		
+		<!-- database types to exclude from the A-Z listing -->
+		
+		<config name="databases_type_exclude_az"></config>
+		
+		<!-- strip out HTML tags in database description. Possible values:
+		
+			escape: Escape all HTML so it shows up as source.
+			allow: Allow all HTML through as code. NOT recommended. Suggest you use strip with some 
+			       tags in db_description_allow_tags instead. 
+			strip: Strip out all HTML tags. May be used in combination with db_description_allow_tags below. -->
+			
+		<config name="db_description_html">escape</config>
+		
+		<!-- use multilingual database descriptions
+			
+			For this to work, database descriptions in your Metalib IRD must have multiple paragraphs
+			separated by three newlines, one per language, in order of languages specified by this option.
+			Three newlines (exported as ###### by Metalib X-Server, replaced back to newlines in Xerxes)
+			will be recognized by XSLT as language separator.
+			
+			If this option is left empty, Xerxes will display description as it is regardless of Xerxes language -->
+			
+		<config name="db_description_multilingual" xml="true" pass="true">
+			<!-- Example:
+			<language code="eng" />
+			<language code="cze" />
+			-->
+		</config>
+		
+		<!-- tags NOT to strip in database descriptions.
+		
+			Only used with db_description_html=strip. Tags listed here (comma separated) will NOT be stripped, but
+			will be allowed - they are a whitelist. All other tags will be stripped. -->
+		
+		<config name="db_description_allow_tags">b,i,strong,em,a</config>
+		
+		<!-- whether the alphabetical database list should include a search box, allowing users to search for
+			databases by name or other information -->
+		
+		<config name="database_list_searchable" pass="true">false</config>
+		
+		<!-- whether to show a search box in the database detail page -->
+		
+		<config name="show_db_detail_search" pass="true">true</config>
+			
+		<!-- open window for links to databases (for values see above), by default no new window -->
+		
+		<config name="link_target_databases" pass="true"></config>
+		
+		
+	<!-- METASEARCH DISPLAY -->		
+
+		<!-- limit context urls to specified domains; left blank means allow all -->
+		
+		<config name="limit_context_url"></config>
+		
+		<!-- suppress full-text links in the specified databases. -->
+		
+		<config name="fulltext_ignore_sources"></config> 
+		
+		<!-- show link to catalog for holdings when present -->
+		
+		<config name="show_all_holdings_links" pass="true">true</config>
+		
+		<!-- show holdings links only for specific catalogs
+			enter as xml inside this config, like <database metalib_id="JHU0001" /> -->
+		
+		<config name="holdings_links" pass="true" xml="true">
+		</config>
+		
+		<!-- include link back to database's native interface, when present and no full text is availble 
+			enter as xml inside this config, like <database metalib_id="JHU0001" /> -->
+			
+		<config name="original_record_links" pass="true" xml="true">
+		</config>
+		
+		<!-- this should correspond to the search limit in metalib -->
+		
+		<config name="search_limit" pass="true">10</config>
+		
+		<!-- normalize query; this is experimental, only set this to true after reading the wiki! -->
+		
+		<config name="normalize_query">false</config>
+		
+		<!-- number of seconds before xerxes stops the search and merges available records. 
+			Note that this will not automatically change the animated search progress image, setting this higher 
+			will require a change in that display -->
+		
+		<config name="search_progress_cap">34</config>
+		
+		<!-- whether to immediately show the merged results from a search (true) or show the user the search hits
+		results with links to the merged set and individual databases -->
+		
+		<config name="immediately_show_merged_results">true</config>
+		
+		<!-- whether to create and show facets -->
+		
+		<config name="facets">false</config>
+		
+		<!-- initial and secondary sort orders for merged results, this will be the default sort order when the user 
+		is first dropped into the merged results; valid values for both include:
+			 
+		 	* 'rank'
+			* 'title'
+			* 'author'
+			* 'year'
+			* 'database'
+		 -->
+		
+		<config name="sort_order_primary">rank</config>
+		<config name="sort_order_secondary">title</config>
+		
+		<!-- maximum number of records to return per page: setting this above 10 will slow down page load times -->
+		
+		<config name="records_per_page" pass="true">10</config>
+		
+		<!-- add 9XX marc fields to the brief results; adding fields will incur a slight performance hit; 
+		enter marc fields as a five character string consisting of 3 digit field code and 2 characters for ind1 and ind2;
+		use # as a wildcard, e.g., 948## will fetch the 948, 9#### will fetch all 9XX fields -->		
+		
+		<config name="marc_fields_brief" />
+		
+		<!-- whether to include the original marc record in the xml response, can be used to get at fields not currently
+		processed by xerxes in order to display them in the interface -->
+		
+		<config name="xerxes_brief_include_marc">false</config>
+		<config name="xerxes_full_include_marc">false</config>
+		
+
+	<!-- MY SAVED DATABASES DISPLAY -->	
+		
+		<!-- default name for new (my databases) collection and section.
+			see wiki for making changes _after_ this has been deployed
+		-->
+		<config name="default_collection_name" pass="true">My Saved Databases</config>
+		<config name="default_collection_section_name" pass="true">Databases</config>
+		
+	</configuration>
+	
+</xerxes>
