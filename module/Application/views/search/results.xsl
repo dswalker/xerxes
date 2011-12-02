@@ -315,13 +315,13 @@
 	
 	<xsl:template name="subtabs">
 	
-		<xsl:if test="config/tabs/sub[@parent = //request/base]">
+		<xsl:if test="config/tabs/sub[@parent = //request/controller]">
 		
 			<div id="subtab" class="box">
 			
 				<h2>Expand your search</h2>
 				
-				<xsl:for-each select="config/tabs/sub[@parent = //request/base]">
+				<xsl:for-each select="config/tabs/sub[@parent = //request/controller]">
 						
 					<ul>
 						<xsl:call-template name="tab_options" />

@@ -16,7 +16,7 @@ use Application\Model\Bx\Engine as BxEngine,
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
  * @license http://www.gnu.org/licenses/
- * @version $Id: Result.php 2023 2011-11-21 19:01:02Z dwalker.calstate@gmail.com $
+ * @version
  * @package Xerxes
  */
 

@@ -15,7 +15,7 @@ use Xerxes\Utility\DataMap,
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
  * @license http://www.gnu.org/licenses/
- * @version $Id: Databases.php 1993 2011-11-10 17:06:42Z dwalker.calstate@gmail.com $
+ * @version
  * @package Xerxes
  */
 

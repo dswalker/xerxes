@@ -48,6 +48,11 @@ abstract class SearchController extends ActionController
 	
 	abstract protected function getEngine();
 	
+	public function indexAction()
+	{
+		return $this->data;
+	}
+	
 	public function searchAction()
 	{
 		// set the url params for where we are gong to redirect,
@@ -210,7 +215,7 @@ abstract class SearchController extends ActionController
 	{
 		$datamap = new SavedRecords();
 		
-		$username = "testing"; // $this->request->getSession("username"); // TODO: with authentication framework
+		$username = "testing"; // $this->request->getSession("username"); // @todo: with authentication framework
 		$original_id = $this->request->getParam("id");
 
 		$inserted_id = ""; // internal database id

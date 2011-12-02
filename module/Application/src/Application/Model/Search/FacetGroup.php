@@ -11,7 +11,7 @@ use Xerxes\Utility\Parser;
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
  * @license http://www.gnu.org/licenses/
- * @version $Id: FacetGroup.php 1804 2011-03-09 20:56:43Z dwalker@calstate.edu $
+ * @version
  * @package Xerxes
  */
 

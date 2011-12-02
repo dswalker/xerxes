@@ -12,7 +12,7 @@ use Application\Model\Search\Refereed as RefereedValue,
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
  * @license http://www.gnu.org/licenses/
- * @version $Id: Refereed.php 1993 2011-11-10 17:06:42Z dwalker.calstate@gmail.com $
+ * @version
  * @package Xerxes
  */
 

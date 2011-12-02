@@ -9,7 +9,7 @@ namespace Application\Model\Authentication;
  * @author John Blyberg
  * @link http://xerxes.calstate.edu
  * @license http://www.gnu.org/licenses/
- * @version $Id$
+ * @version
  * @package Xerxes
  */
 

@@ -9,7 +9,7 @@ namespace Xerxes\Utility;
  * @copyright 2010 Ivan Masar
  * @link http://xerxes.calstate.edu
  * @license http://www.gnu.org/licenses/
- * @version $Id: Languages.php 2045 2011-11-28 14:17:37Z dwalker.calstate@gmail.com $
+ * @version
  * @package  Xerxes_Framework
  */
 

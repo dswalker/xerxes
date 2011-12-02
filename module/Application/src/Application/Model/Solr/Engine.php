@@ -12,7 +12,7 @@ use Application\Model\Search,
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
  * @license http://www.gnu.org/licenses/
- * @version $Id: Engine.php 2020 2011-11-17 14:39:51Z dwalker.calstate@gmail.com $
+ * @version
  * @package Solr
  */
 

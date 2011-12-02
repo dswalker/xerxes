@@ -5,7 +5,7 @@
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
  * @license http://www.gnu.org/licenses/
- * @version $Id: results.js 2045 2011-11-28 14:17:37Z dwalker.calstate@gmail.com $
+ * @version
  * @package Xerxes
  */
  
@@ -72,10 +72,10 @@ function showHitCounts()
 				hitID = links[i].id;
 								
 				arrElements = links[i].id.split("_");
-				base = arrElements[1];
+				controller = arrElements[1];
 				source = arrElements[2];
 									
-				var url = ".?base=" + base + "&action=hits&query=" + query + "&field=" + field;
+				var url = controller + "/hits?&query=" + query + "&field=" + field;
 				
 				if ( source != '' )
 				{
@@ -103,15 +103,12 @@ function fillAvailability()
 		
 			var url = "";		// final url to send to server
 			
-			arrElements = divs[i].id.split(":");
-			requester = arrElements[0];
+			arrElements = divs[i].id.split("_");
+			controller = arrElements[0];
 			id = arrElements[1];
-			isbn = arrElements[2];
-			oclc = arrElements[3];
-			view = arrElements[4];
-			base = arrElements[5];
+			view = arrElements[2];
 			
-			url = ".?base=" + base + "&action=lookup&id=" + id + "&isbn=" + isbn + "&oclc=" + oclc + "&source=" + requester + "&display=" + view;			
+			url = controller + "/lookup?id=" + id + "&display=" + view;			
 			updateElement(url, divs[i])
 		}
 	}

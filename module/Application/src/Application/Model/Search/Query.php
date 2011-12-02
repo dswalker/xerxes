@@ -11,7 +11,7 @@ use Xerxes\Utility\Request;
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
  * @license http://www.gnu.org/licenses/
- * @version $Id: Query.php 1970 2011-11-09 15:47:06Z dwalker.calstate@gmail.com $
+ * @version
  * @package Xerxes
  */
 

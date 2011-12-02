@@ -11,7 +11,7 @@ use Application\Model\Search;
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
  * @license http://www.gnu.org/licenses/
- * @version $Id: Config.php 1715 2011-02-25 18:43:47Z dwalker@calstate.edu $
+ * @version
  * @package Xerxes
  */
 

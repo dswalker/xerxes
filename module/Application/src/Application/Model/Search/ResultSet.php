@@ -14,7 +14,7 @@ use Application\Model\DataMap\Availability,
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
  * @license http://www.gnu.org/licenses/
- * @version $Id: ResultSet.php 1886 2011-04-12 18:29:48Z dwalker@calstate.edu $
+ * @version
  * @package Xerxes
  */
 

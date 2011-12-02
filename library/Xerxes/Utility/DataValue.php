@@ -8,7 +8,7 @@ namespace Xerxes\Utility;
  * @abstract
  * @author David Walker
  * @copyright 2008 California State University
- * @version $Id: DataValue.php 2045 2011-11-28 14:17:37Z dwalker.calstate@gmail.com $
+ * @version
  * @package  Xerxes_Framework
  * @link http://xerxes.calstate.edu
  * @license http://www.gnu.org/licenses/

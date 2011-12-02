@@ -328,7 +328,7 @@
 			
 					<xsl:otherwise>
 								
-						<div id="{$source}:{$record_id}:{$isbn}:{$oclc}:{$type}:{//request/base}" class="availabilityLoad"></div>
+						<div id="{//request/controller}_{$record_id}_{$type}" class="availabilityLoad"></div>
 			
 					</xsl:otherwise>				
 				</xsl:choose>

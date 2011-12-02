@@ -11,7 +11,7 @@ use Application\Model\DataMap\Databases;
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
  * @license http://www.gnu.org/licenses/
- * @version $Id$
+ * @version
  * @package Xerxes
  */
 

@@ -11,7 +11,7 @@ use Xerxes\Utility\Parser;
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
  * @license http://www.gnu.org/licenses/
- * @version $Id: QueryTerm.php 2037 2011-11-23 22:54:55Z dwalker.calstate@gmail.com $
+ * @version
  * @package Xerxes
  */
 

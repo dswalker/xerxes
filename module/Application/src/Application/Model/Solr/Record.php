@@ -11,7 +11,7 @@ use Xerxes\Record\Bibliographic;
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
  * @license http://www.gnu.org/licenses/
- * @version $Id: Record.php 1961 2011-10-28 17:42:57Z dwalker.calstate@gmail.com $
+ * @version
  * @package Xerxes
  */
 

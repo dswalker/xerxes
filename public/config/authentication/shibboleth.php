@@ -7,7 +7,7 @@
  * @copyright 2008 California State University
  * @link http://xerxes.calstate.edu
  * @license http://www.gnu.org/licenses/
- * @version $Id: shibboleth.php 2018 2011-11-16 00:06:07Z dwalker.calstate@gmail.com $
+ * @version
  * @package Xerxes
  */
 

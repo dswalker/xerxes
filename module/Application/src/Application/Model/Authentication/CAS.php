@@ -9,7 +9,7 @@ use Xerxes\Utility\Parser;
  * 
  * @author David Walker
  * @copyright 2008 California State University
- * @version $Id: CAS.php 1145 2010-04-30 22:22:23Z dwalker@calstate.edu $
+ * @version
  * @package Xerxes
  * @link http://xerxes.calstate.edu
  * @license http://www.gnu.org/licenses/
