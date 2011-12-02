@@ -337,54 +337,6 @@ class Request extends ZendRequest
 	}
 	
 	/**
-	 * Remove a URL parameter
-	 *
-	 * @param string $key		the name of the param
-	 * @param string $value		[optional] only if the param has this value
-	 */
-	
-	public function removeParam($key, $value = "")
-	{
-		if ( array_key_exists( $key, $this->params ) )
-		{
-			// delete by key
-			
-			if ( $value == "" )
-			{
-				unset($this->params[$key]);
-			}
-			
-			// delete only if value also matches
-			
-			else
-			{
-				$stored = $this->params[$key];
-		
-				// if this is an array, we need to find the right one
-		
-				if ( is_array( $stored ) )
-				{
-					for ( $x = 0; $x < count($stored); $x++ )
-					{
-						if ( $stored[$x] == $value )
-						{
-							unset($this->params[$key][$x]);
-						}
-					}
-		
-					// reset the keys
-		
-					$this->params[$key] = array_values($this->params[$key]);
-				}
-				elseif ( $stored == $value )
-				{
-					unset($this->params[$key]);
-				}
-			}
-		}
-	}
-	
-	/**
 	 * serialize to xml
 	 * 
 	 * @param bool $bolHideServer	[optional]	true will exclude the server variables from the response, default false

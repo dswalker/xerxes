@@ -414,13 +414,9 @@ class Search extends View\Helper
 		
 		foreach ( $query->getLimits() as $limit )
 		{
-			$url = clone $this->request;
-			
-			print_r($url); exit;
-			
-			$url->setParams($this->currentParams());
-			$url->removeParam($limit->field, $limit->value);
-			$limit->remove_url = $url->toUrl();
+			$params = $this->currentParams();
+			$params = Parser::removeFromArray($params, $limit->field, $limit->value);
+			$limit->remove_url = $this->url_for($params);
 		}
 	}
 	

@@ -298,4 +298,55 @@ class Parser
 			throw new \Exception("param 1 must be of type string, DOMNode, or DOMDocument");
 		}
 	}
+	
+	/**
+	 * Remove from array based on key or key/value
+	 *
+	 * @param array $params		array
+	 * @param string $key		the name of the param to remove
+	 * @param string $value		[optional] only if the param has this value
+	 */
+	
+	public static function removeFromArray(array $array, $key, $value = "")
+	{
+		if ( array_key_exists( $key, $array ) )
+		{
+			// delete by key
+	
+			if ( $value == "" )
+			{
+				unset($array[$key]);
+			}
+	
+			// delete only if value also matches
+	
+			else
+			{
+				$stored = $array[$key];
+	
+				// if this is an array, we need to find the right one
+	
+				if ( is_array( $stored ) )
+				{
+					for ( $x = 0; $x < count($stored); $x++ )
+					{
+						if ( $stored[$x] == $value )
+						{
+							unset($array[$key][$x]);
+						}
+					}
+	
+					// reset the keys
+	
+					$array[$key] = array_values($array[$key]);
+				}
+				elseif ( $stored == $value )
+				{
+					unset($array[$key]);
+				}
+			}
+		}
+	
+		return $array;
+	}	
 }
