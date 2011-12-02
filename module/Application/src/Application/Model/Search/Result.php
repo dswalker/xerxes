@@ -4,8 +4,10 @@ namespace Application\Model\Search;
 
 use Application\Model\Bx\Engine as BxEngine,
 	Xerxes\Record,
+	Xerxes\Utility\Cache,
 	Xerxes\Utility\Parser,
-	Xerxes\Utility\Registry;
+	Xerxes\Utility\Registry,
+	Zend\Http\Client;
 
 /**
  * Search Record
@@ -137,7 +139,14 @@ class Result
 		// get the data
 		
 		$url .= "?action=status&id=" . urlencode($id);
-		$data = Parser::request($url, 5);
+		
+		// @todo this needs to be gotten from a factory or something
+		
+		$client = new Client();
+		$client->setUri($url);
+		$client->setConfig(array('timeout' => 5));
+		
+		$data = $client->send()->getBody();
 		
 		// echo $url; exit;
 		
@@ -186,7 +195,7 @@ class Result
 		
 		// cache it for the future
 		
-		/* @todo: zend\cache
+		// @todo: zend\cache
 		
 		$cache = new Cache();
 		
@@ -194,8 +203,6 @@ class Result
 		$expiry += time(); 
 		
 		$cache->set($cache_id, serialize($this->holdings), $expiry);
-		
-		*/
 		
 		return null;
 	}

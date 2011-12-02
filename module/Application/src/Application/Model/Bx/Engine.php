@@ -70,6 +70,8 @@ class Engine
 		
 		try 
 		{
+			// @todo this needs to be gotten from a factory or something
+			
 			$client = $this->getClient();
 			$client->setUri($url);
 			$client->setConfig(array('timeout' => 4));

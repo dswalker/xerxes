@@ -19,7 +19,7 @@ use Application\Model\Search,
 
 class Engine extends Search\Engine 
 {
-	protected $client;
+	protected $worldcat_client;
 	
 	/**
 	 * Constructor
@@ -34,14 +34,14 @@ class Engine extends Search\Engine
 		
 		// worldcat search object
 		
-		$this->client = new WorldCat($config_key);
+		$this->worldcat_client = new WorldCat($config_key);
 		
 		// if user is a guest, make it open, and return it pronto, since we
 		// can't use the limiters below
 		
 		if ( $role == "guest" || $config_always_guest != null )
 		{
-			$this->client->setServiceLevel("default");
+			$this->worldcat_client->setServiceLevel("default");
 		}
 		
 		// extract and set search options that have been configured for this group
@@ -54,21 +54,21 @@ class Engine extends Search\Engine
 		
 			if ( $group->frbr == "false" )
 			{
-				$this->client->setWorksetGroupings(false);
+				$this->worldcat_client->setWorksetGroupings(false);
 			}
 
 			// limit to certain libraries
 		
 			if ( $group->libraries_include != null )
 			{
-				$this->client->limitToLibraries($group->libraries_include);
+				$this->worldcat_client->limitToLibraries($group->libraries_include);
 			}
 		
 			// exclude certain libraries
 		
 			if ( $group->libraries_exclude != null )
 			{
-				$this->client->excludeLibraries($group->libraries_exclude);
+				$this->worldcat_client->excludeLibraries($group->libraries_exclude);
 			}
 		
 			// limit results to specific document types; a limit entry will
@@ -76,11 +76,11 @@ class Engine extends Search\Engine
 		
 			if ( $group->limit_material_types != null )
 			{
-				$this->client->limitToMaterialType($group->limit_material_types);
+				$this->worldcat_client->limitToMaterialType($group->limit_material_types);
 			}
 			elseif ( $group->exclude_material_types != null )
 			{
-				$this->client->excludeMaterialType($group->exclude_material_types);
+				$this->worldcat_client->excludeMaterialType($group->exclude_material_types);
 			}
 		}
 	}
@@ -91,7 +91,7 @@ class Engine extends Search\Engine
 	 * @return int
 	 */	
 	
-	public function getHits( Query $search )
+	public function getHits( Search\Query $search )
 	{
 		// get the results
 		
@@ -113,7 +113,7 @@ class Engine extends Search\Engine
 	 * @return Results
 	 */	
 	
-	public function searchRetrieve( Query $search, $start = 1, $max = 10, $sort = "")
+	public function searchRetrieve( Search\Query $search, $start = 1, $max = 10, $sort = "")
 	{
 		return $this->doSearch( $search, $start, $max, $sort);
 	}	
@@ -162,7 +162,7 @@ class Engine extends Search\Engine
 	
 	protected function doGetRecord( $id )
 	{
-		$xml = $this->client->record($id);
+		$xml = $this->worldcat_client->record($id);
 		return $this->parseResponse($xml);
 	}		
 	
@@ -177,7 +177,7 @@ class Engine extends Search\Engine
 	 * @return Results
 	 */		
 	
-	protected function doSearch( Query $search, $start = 1, $max = 10, $sort = "")
+	protected function doSearch( Search\Query $search, $start = 1, $max = 10, $sort = "")
 	{ 	
 		// convert query
 		
@@ -185,7 +185,7 @@ class Engine extends Search\Engine
 		
 		// get results from Worldcat
 		
-		$xml = $this->client->searchRetrieve($query, $start, $max, $sort);
+		$xml = $this->worldcat_client->searchRetrieve($query, $start, $max, $sort);
 		
 		return $this->parseResponse($xml);
 	}
@@ -198,7 +198,7 @@ class Engine extends Search\Engine
 		
 		// extract total
 		
-		$results->total = $this->client->getTotal();		
+		$results->total = $this->worldcat_client->getTotal();		
 		
 		// extract records
 		
@@ -210,7 +210,7 @@ class Engine extends Search\Engine
 		return $results;		
 	}
 	
-	protected function convertQuery( Query $search )
+	protected function convertQuery( Search\Query $search )
 	{
 		$query = "";
 		
@@ -307,7 +307,7 @@ class Engine extends Search\Engine
 	 * @return array of Record's
 	 */
 	
-	protected function extractRecords(DOMDocument $xml)
+	protected function extractRecords(\DOMDocument $xml)
 	{
 		$records = array();
 		
@@ -336,7 +336,7 @@ class Engine extends Search\Engine
 	 * @return string				the resulting SRU expresion
 	 */
 	
-	private function keyValue(QueryTerm $term, $neg = false)
+	private function keyValue(Search\QueryTerm $term, $neg = false)
 	{
 		if ( $term->phrase == "" )
 		{

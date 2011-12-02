@@ -250,9 +250,9 @@ class WorldCat
 	protected function fetchResults($url)
 	{
 		$this->client->setUri($url);
-		$response = $this->client->request();
+		$response = $this->client->send();
 		
-		if ( $response->isError() || $response->getBody() == "")
+		if ( $response->isClientError() || $response->getBody() == "")
 		{
 			throw new \Exception( "Could not connect to WorldCat database." );
 		}

@@ -18,7 +18,6 @@ class Document
 	protected $namespace = "http://www.loc.gov/MARC21/slim";
 	protected $_length = 0;
 	protected $_records = array();
-	protected $record_type = "Record";
 	
 	/**
 	 * Load a MARC-XML document from string or object
@@ -76,7 +75,7 @@ class Document
 		
 		foreach ( $objRecords as $objRecord )
 		{
-			$record = new $this->record_type();
+			$record = new Record;
 			$record->loadXML($objRecord);
 			array_push($this->_records, $record);
 		}

@@ -4,7 +4,8 @@ namespace Application\Model\Search;
 
 use Application\Model\DataMap\Availability,
 	Application\Model\DataMap\Refereed as DataMapRefereed,
-	Xerxes\Record;
+	Xerxes\Record,
+	Xerxes\Utility\Cache;
 
 /**
  * Search Results

@@ -41,7 +41,7 @@ class Engine extends Search\Engine
 	 * @return int
 	 */	
 	
-	public function getHits( Query $search )
+	public function getHits( Search\Query $search )
 	{
 		// get the results
 		
@@ -63,7 +63,7 @@ class Engine extends Search\Engine
 	 * @return Results
 	 */	
 	
-	public function searchRetrieve( Query $search, $start = 1, $max = 10, $sort = "")
+	public function searchRetrieve( Search\Query $search, $start = 1, $max = 10, $sort = "")
 	{
 		// get the results
 		
@@ -250,7 +250,9 @@ class Engine extends Search\Engine
 				
 		// get the xml from ebsco
 		
-		$response = Parser::request($this->url);
+		$client = $this->getClient();
+		$client->setUri($this->url);
+		$response = $client->send()->getBody();		
 		
 		// testing
 		// echo "<pre>$this->url<hr>$response</pre>"; exit;
@@ -350,7 +352,7 @@ class Engine extends Search\Engine
 	 * @return array of Record's
 	 */
 	
-	protected function extractRecords(DOMDocument $xml)
+	protected function extractRecords(\DOMDocument $xml)
 	{
 		$records = array();
 
@@ -375,7 +377,7 @@ class Engine extends Search\Engine
 	 * @return Facets
 	 */
 	
-	protected function extractFacets(DOMDocument $dom)
+	protected function extractFacets(\DOMDocument $dom)
 	{
 		$facets = new Search\Facets();
 
