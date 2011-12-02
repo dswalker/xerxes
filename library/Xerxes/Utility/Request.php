@@ -22,7 +22,6 @@ class Request extends ZendRequest
 	private $commandline = false;
 	private $params = array(); // request paramaters
 	private $router; // router
-	private $route_match; // route stack match
 	private $registry; // registry
 	
 	public function __construct()
@@ -36,15 +35,18 @@ class Request extends ZendRequest
 	
     public function setRouter(RouteStack $router)
     {
-        $this->router = $router;
-        
+    	$this->router = $router;
+    	
         // now extract the route elements and set them as params
         
-        $this->route_match = $router->match($this);
+        $route_match = $router->match($this);
         
-        foreach ($this->route_match->getParams() as $name => $value )
+        if ( $route_match instanceof RouteMatch )
         {
-        	$this->setParam($name, $value);
+	        foreach ($route_match->getParams() as $name => $value )
+	        {
+	        	$this->setParam($name, $value);
+	        }
         }
     }
 	
@@ -208,6 +210,11 @@ class Request extends ZendRequest
 		}
 	}
 	
+	public function setParams(array $params)
+	{
+		$this->params = $params;
+	}
+	
 	/**
 	 * Retrieve a value from the request parameters
 	 *
@@ -340,102 +347,41 @@ class Request extends ZendRequest
 	{
 		if ( array_key_exists( $key, $this->params ) )
 		{
-			$stored = $this->params[$key];
-	
-			// if this is an array, we need to find the right one
-	
-			if ( is_array( $stored ) )
-			{
-				for ( $x = 0; $x < count($stored); $x++ )
-				{
-					if ( $stored[$x] == $value )
-					{
-						unset($this->params[$key][$x]);
-					}
-				}
-	
-				// reset the keys
-	
-				$this->params[$key] = array_values($this->params[$key]);
-			}
-			else
+			// delete by key
+			
+			if ( $value == "" )
 			{
 				unset($this->params[$key]);
 			}
-		}
-	}
-	
-	public function url_for($params = array(), $options = array())
-	{
-		// use the default route if no option supplied
-		
-		if ( count($options) == 0 )
-		{
-			$options["name"] = "default";
-		}
-		
-		if ( null === $this->router )
-		{
-			return '';
-		}
-		
-		// this only returns the route, no querystring
-		
-		$url = $this->router->assemble($params, $options);
-		
-		// remove trailing '/index' from generated URLs.
-		
-		if ((6 <= strlen($url)) && '/index' == substr($url, -6)) 
-		{
-			$url = substr($url, 0, strlen($url) - 6);
-		}
-		
-		// append query string
-		
-		$query_string = array();
-		
-		// insepect each supplied params to see if was matched
-		// in the route
-		
-		foreach ( $params as $id => $param )
-		{
-			// skip empty ones
 			
-			if ( $param == "" )
+			// delete only if value also matches
+			
+			else
 			{
-				continue;
-			}
-			
-			// not in the route, so add it to the query string
-			
-			if ( $this->route_match->getParam($id) == "" )
-			{
-				$query_string[$id] = $param;
+				$stored = $this->params[$key];
+		
+				// if this is an array, we need to find the right one
+		
+				if ( is_array( $stored ) )
+				{
+					for ( $x = 0; $x < count($stored); $x++ )
+					{
+						if ( $stored[$x] == $value )
+						{
+							unset($this->params[$key][$x]);
+						}
+					}
+		
+					// reset the keys
+		
+					$this->params[$key] = array_values($this->params[$key]);
+				}
+				elseif ( $stored == $value )
+				{
+					unset($this->params[$key]);
+				}
 			}
 		}
-		
-		// if we have a query string
-		
-		if ( count($query_string) > 0 )
-		{
-			$url .= "?";
-			
-			$x = 0;
-
-			 foreach ( $query_string as $name => $value )
-			 {
-			 	if ( $x > 0 ) // first param doesn't need & prefix
-			 	{
-			 		$url .= '&amp;';
-			 	}
-			 	
-			 	$url .= $name . '=' . urlencode($value);
-			 	
-			 	$x++;
-			 }
-		}
-		
-		return $url;
 	}
 	
 	/**

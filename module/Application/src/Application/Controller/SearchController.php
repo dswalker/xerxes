@@ -33,8 +33,6 @@ abstract class SearchController extends ActionController
 	
 	protected function init(MvcEvent $e)
 	{
-		// header("Content-type: text/plain"); print_r($this->request); exit;
-		
 		$this->engine = $this->getEngine();
 		
 		$this->config = $this->engine->getConfig();
@@ -45,7 +43,7 @@ abstract class SearchController extends ActionController
 		
 		$this->query = $this->engine->getQuery($this->request);
 		
-		$this->helper = new SearchHelper($this->id, $e, $this->engine);
+		$this->helper = new SearchHelper($e, $this->id, $this->engine);
 	}
 	
 	abstract protected function getEngine();
