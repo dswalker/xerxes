@@ -39,7 +39,7 @@ class Document
 		}
 		else
 		{
-			throw new \Exception("param 1 must be XML of type \DOMDocument or string");
+			throw new \Exception("param 1 must be XML of type DOMDocument or string");
 		}
 		
 		$this->parse($objDocument);
