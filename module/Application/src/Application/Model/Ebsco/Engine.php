@@ -3,6 +3,7 @@
 namespace Application\Model\Ebsco;
 
 use Application\Model\Search,
+	Xerxes\Utility\Factory,
 	Xerxes\Utility\Parser;
 
 /**
@@ -250,7 +251,7 @@ class Engine extends Search\Engine
 				
 		// get the xml from ebsco
 		
-		$client = $this->getClient();
+		$client = Factory::getHttpClient();
 		$client->setUri($this->url);
 		$response = $client->send()->getBody();		
 		

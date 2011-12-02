@@ -2,7 +2,7 @@
 
 namespace Application\Model\Bx;
 
-use Xerxes\Utility\Parser,
+use Xerxes\Utility\Factory,
 	Xerxes,
 	Zend\Http\Client;
 
@@ -37,23 +37,6 @@ class Engine
 		}
 	}
 	
-	public function setClient(Client $client)
-	{
-		$this->client = $client;
-	}
-	
-	
-	public function getClient()
-	{
-		if ( ! $this->client instanceof Client )
-		{
-			$this->client = new Client();
-		}
-	
-		return $this->client;
-	}	
-	
-	
 	public function getRecommendations(Xerxes\Record $xerxes_record, $min_relevance = 0, $max_records = 10)
 	{
 		$bx_records = array();
@@ -72,7 +55,7 @@ class Engine
 		{
 			// @todo this needs to be gotten from a factory or something
 			
-			$client = $this->getClient();
+			$client = Factory::getHttpClient();
 			$client->setUri($url);
 			$client->setConfig(array('timeout' => 4));
 			

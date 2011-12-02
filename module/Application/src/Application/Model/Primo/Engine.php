@@ -3,7 +3,7 @@
 namespace Application\Model\Primo;
 
 use Application\Model\Search,
-	Xerxes\Utility\Parser;
+	Xerxes\Utility\Factory;
 
 /**
  * Primo Search Engine
@@ -228,7 +228,7 @@ class Engine extends Search\Engine
 		
 		// get the response
 		
-		$client = $this->getClient();
+		$client = Factory::getHttpClient();
 		$client->setUri($this->url);
 		
 		$response = $client->send()->getBody();

@@ -531,7 +531,7 @@ class SavedRecords extends DataMap
 	 * @return int  inserted id
 	 */
 	
-	public function addRecord($username, $source, $id, Xerxes_Record $objXerxesRecord)
+	public function addRecord($username, $source, $id, Record $objXerxesRecord)
 	{
 		$arrValues = array ( );
 		

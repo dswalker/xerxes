@@ -3,7 +3,7 @@
 namespace Application\Model\Solr;
 
 use Application\Model\Search,
-	Xerxes\Utility\Parser;
+	Xerxes\Utility\Factory;
 
 /**
  * Solr Search Engine
@@ -365,7 +365,7 @@ class Engine extends Search\Engine
 
 		// get the data
 		
-		$client = $this->getClient();
+		$client = Factory::getHttpClient();
 		$client->setUri($this->url);
 		$response = $client->send()->getBody();
 		

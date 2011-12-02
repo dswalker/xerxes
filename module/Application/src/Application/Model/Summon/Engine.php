@@ -3,7 +3,8 @@
 namespace Application\Model\Summon;
 
 use Application\Model\Search,
-	Xerxes\Summon;
+	Xerxes\Summon,
+	Xerxes\Utility\Factory;
 
 /**
  * Summon Search Engine
@@ -31,7 +32,7 @@ class Engine extends Search\Engine
 		$id = $this->config->getConfig("SUMMON_ID", true);
 		$key = $this->config->getConfig("SUMMON_KEY", true);		
 				
-		$this->summon_client = new Summon($id, $key, $this->getClient());
+		$this->summon_client = new Summon($id, $key, Factory::getHttpClient());
 	}
 	
 	/**

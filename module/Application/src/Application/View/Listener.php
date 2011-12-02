@@ -134,7 +134,7 @@ class Listener implements ListenerAggregate
         
         
         ##### @todo: HACK 
-        if ( $action == "index") $controller = "search";
+        if ( $action != "results" && $action != "record") $controller = "search";
         ##### END HACK
         
         
