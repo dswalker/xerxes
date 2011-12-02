@@ -363,7 +363,7 @@ class Query
 	{
 		$arrFinal = array();
 		
-		foreach ( $this->request->query()->toArray() as $key => $value )
+		foreach ( $this->request->getParams() as $key => $value )
 		{
 			$key = urldecode($key);
 			
