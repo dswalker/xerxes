@@ -141,22 +141,29 @@ class Listener implements ListenerAggregate
         
         $script = $controller . '/' . $action . '.xsl';
         
-        // get the results
-
-        $vars = $e->getResult();
+        // set up the response
         
-        if ( is_scalar($vars) ) 
-        {
-            $vars = array('content' => $vars);
-        } 
-        elseif ( is_object($vars) && ! $vars instanceof ArrayAccess ) 
-        {
-            $vars = (array) $vars;
-        }
+        $vars = array();
         
+        $vars["base_url"] = $e->getRequest()->getBaseUrl();
         $vars["request"] = $e->getRequest()->toXML();
         $vars["config"] = Registry::getInstance()->toXML();
-        $vars["base_url"] = $e->getRequest()->getBaseUrl();
+        
+        
+        // get results from controller(s)
+
+        $result = $e->getResult();
+        
+        if ( is_scalar($result) ) 
+        {
+            $result = array('content' => $vars);
+        } 
+        elseif ( is_object($result) && ! $vars instanceof ArrayAccess ) 
+        {
+            $result = (array) $result;
+        }
+        
+		$vars = array_merge($vars,$result);
         
         // show internal xml
         
