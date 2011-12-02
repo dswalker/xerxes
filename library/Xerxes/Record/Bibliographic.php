@@ -7,6 +7,7 @@ use Xerxes\Record,
 	Xerxes\Marc\ControlField,
 	Xerxes\Marc\DataField,
 	Xerxes\Marc\DataFieldList,
+	Xerxes\Marc\Record as MarcRecord,
 	Xerxes\Utility\Parser;
 
 /**
@@ -36,13 +37,13 @@ class Bibliographic extends Record
 	
 	public function loadXML($xml)
 	{
-		$this->marc = new Record();
+		$this->marc = new MarcRecord();
 		$this->marc->loadXML($xml);
 
 		parent::loadXML($xml);
 	}
 	
-	public function loadMarc( Record $marc )
+	public function loadMarc( MarcRecord $marc )
 	{
 		$this->marc = $marc;
 		

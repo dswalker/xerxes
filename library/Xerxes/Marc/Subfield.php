@@ -18,7 +18,7 @@ class SubField extends Field
 	public $code;
 	public $value;
 	
-	public function __construct(DOMNode $objNode = null )
+	public function __construct(\DOMNode $objNode = null )
 	{
 		if ( $objNode != null )
 		{

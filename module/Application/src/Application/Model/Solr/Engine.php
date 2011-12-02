@@ -47,7 +47,7 @@ class Engine extends Search\Engine
 	 * @return int
 	 */	
 	
-	public function getHits( Query $search )
+	public function getHits( Search\Query $search )
 	{
 		// get the results, just the hit count, no facets
 		
@@ -69,7 +69,7 @@ class Engine extends Search\Engine
 	 * @return Results
 	 */	
 	
-	public function searchRetrieve( Query $search, $start = 1, $max = 10, $sort = "")
+	public function searchRetrieve( Search\Query $search, $start = 1, $max = 10, $sort = "")
 	{
 		// get the results
 		
@@ -365,7 +365,10 @@ class Engine extends Search\Engine
 
 		// get the data
 		
-		$response = Parser::request($this->url, 10);
+		$client = $this->getClient();
+		$client->setUri($this->url);
+		$response = $client->send()->getBody();
+		
 		$xml = simplexml_load_string($response);
 		
 		if ( $response == null || $xml === false )
@@ -435,9 +438,7 @@ class Engine extends Search\Engine
 					        $marc = preg_replace('/#31;/', "\x1F", $marc);
 					        $marc = preg_replace('/#30;/', "\x1E", $marc);
 					        
-					        require_once 'File/MARC.php'; // from pear
-					        
-					        $marc_file = new \File_MARC($marc, File_MARC::SOURCE_STRING);
+					        $marc_file = new \File_MARC($marc, \File_MARC::SOURCE_STRING);
 					        $marc_record = $marc_file->next();
 					        $xml_data = $marc_record->toXML();
 						}

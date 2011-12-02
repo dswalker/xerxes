@@ -21,7 +21,7 @@ class DataField
 	
 	private $_subfields = array();
 	
-	public function __construct(DOMNode $objNode = null )
+	public function __construct(\DOMNode $objNode = null )
 	{
 		if ( $objNode != null )
 		{

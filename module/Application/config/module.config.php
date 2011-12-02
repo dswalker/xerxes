@@ -5,9 +5,17 @@ return array(
     'di'                    => array(
         'instance' => array(
             'alias' => array(
-                'index'  => 'Application\Controller\IndexController',
-                'error'  => 'Application\Controller\ErrorController',
+            	'authenticate'  => 'Application\Controller\AuthenticateController',
+            	'databases'  => 'Application\Controller\DatabasesController',
+            	'ebsco' => 'Application\Controller\EbscoController',
+            	'error'  => 'Application\Controller\ErrorController',
+            	'folder'  => 'Application\Controller\FolderController',
+            	'index'  => 'Application\Controller\IndexController',
+           		'navigation'  => 'Application\Controller\NavigationController',
+            	'primo' => 'Application\Controller\PrimoController',
+            	'solr' => 'Application\Controller\SolrController',
             	'summon' => 'Application\Controller\SummonController',
+            	'worldcat' => 'Application\Controller\WorldcatController',
                 'view'   => 'Xerxes\Utility\ViewRenderer',
             ),
         	'Xerxes\Utility\ViewRenderer' => array(

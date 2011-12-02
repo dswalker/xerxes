@@ -17,7 +17,7 @@ class Leader extends ControlField
 {
 	public $value;					// the entire leader
 	
-	public function __construct(DOMNode $objNode = null)
+	public function __construct(\DOMNode $objNode = null)
 	{
 		if ( $objNode != null )
 		{

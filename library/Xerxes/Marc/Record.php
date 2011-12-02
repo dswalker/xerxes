@@ -34,7 +34,7 @@ class Record
 	/**
 	 * Create an object for a MARC-XML Record
 	 *
-	 * @param DOMNode $objNode
+	 * @param \DOMNode $objNode
 	 */
 	
 	public function loadXML($node = null)
@@ -164,7 +164,7 @@ class Record
 	 * Run an xpath query against this MARC-XML record
 	 *
 	 * @param string $query		xpath
-	 * @return DOMNodeLIst
+	 * @return \DOMNodeLIst
 	 */
 	
 	public function xpath($query)

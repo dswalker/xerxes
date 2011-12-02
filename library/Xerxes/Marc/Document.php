@@ -23,7 +23,7 @@ class Document
 	/**
 	 * Load a MARC-XML document from string or object
 	 *
-	 * @param mixed $xml	XML as string or DOMDocument
+	 * @param mixed $xml	XML as string or \DOMDocument
 	 */
 	
 	public function loadXML($xml)
@@ -40,7 +40,7 @@ class Document
 		}
 		else
 		{
-			throw new \Exception("param 1 must be XML of type DOMDocument or string");
+			throw new \Exception("param 1 must be XML of type \DOMDocument or string");
 		}
 		
 		$this->parse($objDocument);
@@ -63,10 +63,10 @@ class Document
 	/**
 	 * Parse the XML into objects
 	 *
-	 * @param DOMDocument $objDocument
+	 * @param \DOMDocument $objDocument
 	 */
 
-	protected function parse(DOMDocument $objDocument)
+	protected function parse(\DOMDocument $objDocument)
 	{
 		$objXPath = new \DOMXPath($objDocument);
 		$objXPath->registerNamespace("marc", $this->namespace);

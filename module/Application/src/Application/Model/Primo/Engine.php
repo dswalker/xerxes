@@ -67,7 +67,7 @@ class Engine extends Search\Engine
 	 * @return int
 	 */	
 	
-	public function getHits( Query $search )
+	public function getHits( Search\Query $search )
 	{
 		// get the results, just the hit count
 		
@@ -89,7 +89,7 @@ class Engine extends Search\Engine
 	 * @return Results
 	 */	
 	
-	public function searchRetrieve( Query $search, $start = 1, $max = 10, $sort = "")
+	public function searchRetrieve( Search\Query $search, $start = 1, $max = 10, $sort = "")
 	{
 		// get the results
 		
@@ -228,7 +228,10 @@ class Engine extends Search\Engine
 		
 		// get the response
 		
-		$response = Parser::request($this->url);
+		$client = $this->getClient();
+		$client->setUri($this->url);
+		
+		$response = $client->send()->getBody();
 		
 		// echo $response;
 		
@@ -254,7 +257,7 @@ class Engine extends Search\Engine
 	 * @return ResultSet
 	 */	
 	
-	protected function parseResponse(DOMDocument $xml)
+	protected function parseResponse(\DOMDocument $xml)
 	{
 		// check for errors
 		
@@ -304,7 +307,7 @@ class Engine extends Search\Engine
 	 * @return array of Record's
 	 */	
 	
-	protected function extractRecords(DOMDocument $dom)
+	protected function extractRecords(\DOMDocument $dom)
 	{
 		$final = array();
 		
@@ -330,7 +333,7 @@ class Engine extends Search\Engine
 	 * @return Facets
 	 */	
 		
-	protected function extractFacets(DOMDocument $dom)
+	protected function extractFacets(\DOMDocument $dom)
 	{
 		$facets = new Search\Facets();
 		
