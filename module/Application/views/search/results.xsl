@@ -173,11 +173,9 @@
 	
 	<xsl:template name="searchbox">
 	
-		<form action="./" method="get">
+		<form action="{//request/controller}/search" method="get">
 	
 			<input type="hidden" name="lang" value="{//request/lang}" />
-			<input type="hidden" name="base" value="{//request/base}" />
-			<input type="hidden" name="action" value="search" />
 			
 			<xsl:call-template name="searchbox_hidden_fields_local" />
 	
@@ -897,15 +895,13 @@
 		<xsl:param name="context">the saved records page</xsl:param>
 	
 		<div class="folderLabels recordAction" id="tag_input_div-{$id}">
-			<form action="./" method="get" class="tags">
+			<form action="folder/tags_edit" method="get" class="tags">
 			
 				<!-- note that if this event is fired with ajax, the javascript changes
 				the action element here to 'tags_edit_ajax' so the server knows to display a 
 				different view, which the javascript captures and uses to updates the totals above. -->
 				
-				<input type="hidden" name="base" value="folder" />
 				<input type="hidden" name="lang" value="{//request/lang}" />
-				<input type="hidden" name="action" value="tags_edit" />
 				<input type="hidden" name="record" value="{$id}" />
 				<input type="hidden" name="context" value="{$context}" />
 				

@@ -72,7 +72,8 @@ abstract class SearchController extends ActionController
 		// construct the actual url and redirect
 
 		$url = $this->helper->url_for($params);
-		$this->response->setRedirect($url);
+		
+		$this->redirect()->toUrl($url);
 	}
 	
 	public function hitsAction()

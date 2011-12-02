@@ -51,10 +51,8 @@
 		
 		<div class="box">
 				
-			<form name="login" method="post" action="./">
+			<form name="login" method="post" action="authenticate/login">
 				<input name="lang" type="hidden" value="{//request/lang}" />
-				<input name="base" type="hidden" value="authenticate" />
-				<input name="action" type="hidden" value="login" />
 				<input name="return" type="hidden" value="{$return}" />
 				<input name="local" type="hidden" value="{$local}" />
 				<input name="authentication_source" type="hidden" value="{$authentication_source}"/>

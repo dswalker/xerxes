@@ -32,16 +32,14 @@
 
 	<xsl:variable name="return"		select="request/return" />
 	
-	<form name="form1" method="post" action="./">
-	<input name="lang" type="hidden" value="{//request/lang}" />
-	<input name="base" type="hidden" value="authenticate" />
-	<input name="action" type="hidden" value="logout" />
-	<input name="return" type="hidden" value="{$return}" />
-	<input name="postback" type="hidden" value="true" />
-	
-	<h1><xsl:call-template name="page_name" /></h1>
-	<p><xsl:copy-of select="$text_authentication_logout_confirm" /></p>
-	<p><input type="submit" class="submit_logout{$language_suffix}" name="Submit" value="{$text_authentication_logout_pagename}" /></p>
+	<form name="form1" method="post" action="authenticate/logout">
+		<input name="lang" type="hidden" value="{//request/lang}" />
+		<input name="return" type="hidden" value="{$return}" />
+		<input name="postback" type="hidden" value="true" />
+		
+		<h1><xsl:call-template name="page_name" /></h1>
+		<p><xsl:copy-of select="$text_authentication_logout_confirm" /></p>
+		<p><input type="submit" class="submit_logout{$language_suffix}" name="Submit" value="{$text_authentication_logout_pagename}" /></p>
 	</form>
 	
 </xsl:template>

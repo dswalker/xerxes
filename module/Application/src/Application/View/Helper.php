@@ -85,7 +85,7 @@ class Helper
 				
 				if ( $x > 0 ) // first param doesn't need & prefix
 				{
-					$url .= '&amp;';
+					$url .= '&';
 				}
 	
 				$url .= $name . '=' . urlencode($value);

@@ -610,11 +610,9 @@
 			Send title and location to your mobile phone
 		</xsl:element>
 	
-		<form name="smsForm" action="./" method="get">
+		<form name="smsForm" action="folder/sms" method="get">
 		
 			<input type="hidden" name="lang" value="{//request/lang}" />
-			<input type="hidden" name="base" value="folder" />
-			<input type="hidden" name="action" value="sms" />
 			<input type="hidden" name="title" value="{title_normalized}" />
 			
 			<div class="smsProperty">
