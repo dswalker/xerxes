@@ -13,7 +13,7 @@ namespace Xerxes\Marc;
  * @package Xerxes
  */
 
-class DataField
+class DataField extends Field
 {
 	public $tag;
 	public $ind1;

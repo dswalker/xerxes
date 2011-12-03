@@ -36,7 +36,7 @@ class Record
 	}
 	
 	/**
-	 * Load from XML source
+	 * Load from MARC-XML source
 	 *
 	 * @param string|DOMNode|DOMDocument $node
 	 */
@@ -47,13 +47,13 @@ class Record
 		{
 			// make sure we have a DOMDocument
 			
-			$node = Parser::convertToDOMDocument($node);
+			$this->document = Parser::convertToDOMDocument($node);
 			
 			// extract the three data types
 			
-			$leader = $node->getElementsByTagName("leader");
-			$control_fields = $node->getElementsByTagName("controlfield");
-			$data_fields = $node->getElementsByTagName("datafield");
+			$leader = $this->document->getElementsByTagName("leader");
+			$control_fields = $this->document->getElementsByTagName("controlfield");
+			$data_fields = $this->document->getElementsByTagName("datafield");
 			
 			// leader
 			
@@ -74,18 +74,6 @@ class Record
 				$datafield = new DataField($data_field);
 				array_push($this->_datafields, $datafield);
 			}
-			
-			// register xml objects for later use
-			
-			$this->document = $node;
-			$this->node = $this->document->documentElement;
-				
-			// now create an xpath object and the current node as properties
-			// so we can query based on this node, not the wrapper parent
-			// see the xpath() function below
-			
-			$this->xpath = new \DOMXPath($this->document);
-			$this->xpath->registerNamespace("marc", $this->namespace);
 		}
 	}
 	
@@ -128,18 +116,18 @@ class Record
 	 * 
 	 * Essentially for the 007, the only control field (in theory) that is repeatable
 	 *
-	 * @param string $tag			the marc tag number
+	 * @param string $tag			[optional] the marc tag number
 	 * 
 	 * @return FieldList object
 	 */	
 	
-	public function controlfields($tag)
+	public function controlfields($tag = "")
 	{
 		$list = new FieldList();
 		
 		foreach ( $this->_controlfields as $controlfield )
 		{
-			if ( $controlfield->tag == $tag )
+			if ( $controlfield->tag == $tag || $tag == "")
 			{
 				$list->addField($controlfield);
 			}
@@ -151,14 +139,14 @@ class Record
 	/**
 	 * Retrieve a list of Data Fields
 	 *
-	 * @param string $tag			the marc tag number
+	 * @param string $tag			[optional] the marc tag number
 	 * @param string $ind1			[optional] first indicator
 	 * @param string $ind2			[optional] second indicator
 	 * 
 	 * @return DataFieldList
 	 */
 	
-	public function datafield($tag, $ind1 = null, $ind2 = null)
+	public function datafield($tag = "", $ind1 = null, $ind2 = null)
 	{
 		$regex = str_replace("X", "[0-9]{1}", $tag);
 		
@@ -166,7 +154,7 @@ class Record
 		
 		foreach ( $this->_datafields as $datafield )
 		{
-			if ( preg_match("/$regex/", $datafield->tag) )
+			if ( preg_match("/$regex/", $datafield->tag) || $tag  == "")
 			{
 				if ( ( $ind1 == null || $ind1 == $datafield->ind1 )
 					&& ( $ind2 == null || $ind2 == $datafield->ind2 ) ) 
@@ -180,15 +168,16 @@ class Record
 	}
 
 	/**
-	 * Run an xpath query against this MARC-XML record
+	 * Run an XPath query against this Record
 	 *
 	 * @param string $query		xpath
+	 * 
 	 * @return \DOMNodeLIst
 	 */
 	
 	public function xpath($query)
 	{
-		return $this->xpath->query($query, $this->node);
+		return $this->getXPathObject()->query($query, $this->node);
 	}
 	
 	/**
@@ -198,6 +187,7 @@ class Record
 	 * @param string $subfield		[optional] subfield, assumes all if null
 	 * @param string $ind1			[optional] first indicator
 	 * @param string $ind2			[optional] second indicator
+	 * 
 	 * @return array
 	 */
 	
@@ -223,8 +213,69 @@ class Record
 	 */
 	
 	public function getMarcXML()
-	{	
+	{
+		if ( ! $this->document instanceof \DOMDocument )
+		{
+			// we've created this MARC record from our own objects
+			// instead of a marc-xml source, so create marc-xml now
+			
+			$this->document = new \DOMDocument();
+			$this->document->loadXML('<record xmlns="' . $this->namespace. '" />');
+			
+			// leader
+			
+			if ( $this->leader instanceof Leader )
+			{
+				$leader_xml = $this->document->createElementNS($this->namespace, "leader", $this->leader->value);
+				$this->document->appendChild($leader_xml);
+			}
+			
+			// control fields
+			
+			foreach ( $this->controlfields() as $controlfield )
+			{
+				$controlfield_xml = $this->document->createElementNS($this->namespace, "controlfield", $controlfield->value);
+				$controlfield_xml->setAttribute("tag", $controlfield->tag);
+				$this->document->appendChild($controlfield_xml);	
+			}
+
+			// data fields
+			
+			foreach ( $this->datafield() as $datafield )
+			{
+				$datafield_xml = $this->document->createElementNS($this->namespace, "datafield");
+				$datafield_xml->setAttribute("tag", $datafield->tag);
+				$this->document->appendChild($datafield_xml);
+				
+				// subfields
+				
+				foreach ( $datafield->subfield() as $subfield )
+				{
+					$subfield_xml = $this->document->createElementNS($this->namespace, "subfield", $subfield->value);
+					$subfield_xml->setAttribute("code", $subfield->code);
+					$datafield_xml->appendChild($subfield_xml);
+				}
+			}		
+		}
+		
 		return $this->document;
+	}
+	
+	/**
+	 * Lazy load DOMXPath object
+	 */
+	
+	protected function getXPathObject()
+	{
+		if ( ! $this->xpath instanceof \DOMXPath )
+		{
+			// create an xpath object
+			
+			$this->xpath = new \DOMXPath($this->getMarcXML());
+			$this->xpath->registerNamespace("marc", $this->namespace);
+		}
+		
+		return $this->xpath;
 	}
 	
 	/**
@@ -235,7 +286,7 @@ class Record
 	
 	public function getMarcXMLString()
 	{
-		return $this->document->saveXML();
+		return $this->getMarcXML()->saveXML();
 	}
 	
 	/**
