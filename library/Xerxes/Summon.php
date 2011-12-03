@@ -4,17 +4,34 @@ namespace Xerxes;
 
 use Zend\Http\Client;
 
+/**
+ * Summon Client
+ * 
+ * Based on the work of Andrew Nagy
+ *
+ * @author David Walker
+ * @copyright 2011 California State University
+ * @link http://xerxes.calstate.edu
+ * @license http://www.gnu.org/licenses/
+ * @version
+ * @package Xerxes
+ */
+
 class Summon
 {
-	protected $client;
-	protected $host;
-	protected $api_key;
-	protected $app_id;
-	protected $session_id;
-	protected $debug = false;
+	protected $http_client; // zend http client
+	protected $host; // hostname
+	protected $api_key; // summon key
+	protected $app_id; // summon application id
+	protected $session_id; // current session
+	protected $facets_to_include = array(); // facets that should be included in the response
 	
 	/**
-	 * Constructor
+	 * Create a Summon Client
+	 * 
+	 * @param string $app_id		summon application id
+	 * @param string $api_key		summon application key
+	 * @param Client $client		[optional] HTTP client to use
 	 */
 	
 	function __construct($app_id, $api_key, Client $client = null)
@@ -25,135 +42,92 @@ class Summon
 		
 		if ( $client != null )
 		{
-			$this->client = $client;
+			$this->http_client = $client;
 		}
 		else 
 		{
-			$this->client = new Client();
+			$this->http_client = new Client();
 		}
-	}
-	
-	public function setDebugging($value)
-	{
-		$this->debug = (bool) $value;
 	}
 	
 	/**
 	 * Retrieves a document specified by the ID.
 	 *
 	 * @param   string  $id         The document to retrieve from the Summon API
+	 * 
 	 * @return  string              The requested resource
 	 */
 	
 	public function getRecord($id)
 	{
-		if ( $this->debug )
-		{
-			echo "<pre>Get Record: $id</pre>\n";
-		}
-		
 		$options = array('s.q' => "id:$id");
-		return $this->call($options);
+		return $this->send($options);
 	}
 	
 	/**
 	 * Execute a search.
-	 *
-	 * @param   string  $query      The search query
-	 * @param   array   $filter     The fields and values to filter results on
-	 * @param   int  $page       	The page to start with
-	 * @param   int  $limit      	The amount of records to return
-	 * @param   string  $sortBy     The value to be used by for sorting
-	 * @param   array  $facets      An array of facets to return.  Default list is used if null.
-	 * @access  public
-	 * @return  array               An array of query results
+	 * 
+	 * @param string $query		search query in summon syntax
+	 * @param array $filter		[optional] filters to apply
+	 * @param int $page			[optional] page number to start with
+	 * @param int $limit		[optional] total records per page
+	 * @param string $sortBy	[optional] sort restlts on this index
+	 * 
+	 * @return array
 	 */
 	
-	public function query($query, $filter = array(), $page = 1, $limit = 20, $sortBy = null, $facets = array())
+	public function query( $query, $filter = array(), $page = 1, $limit = 20, $sortBy = null )
 	{
-		if ( $this->debug )
-		{
-			echo '<pre>Query: ';
-			
-			print_r($query);
-			
-			if ( $filter )
-			{
-				echo "\nFilterQuery: ";
-				
-				foreach ( $filter as $filterItem )
-				{
-					echo " $filterItem";
-				}
-			}
-			
-			echo "</pre>\n";
-		}
+		// convert this to summon query string
 		
 		$options = array();
 		
-		// Query String Parameters
-		
-		// Define search query
+		// search query
 		
 		if ( $query != '' )
 		{
 			$options['s.q'] = $query;
 		}
 		
-		// Define facets to be polled
-		
-		if ( count($facets) == 0 )
-		{
-			// Set Default Facets
-			
-			$facets = array(
-				'IsScholarly,or,1,2' , 
-				'ContentType,or,1,30' , 
-				'SubjectTerms,or,1,30'
-			);
-			
-			$options['s.ff'] = $facets;
-		}
-		
-		// add filters to be applied
+		// filters to be applied
 		
 		if ( count($filter) > 0 )
 		{
 			$options['s.fvf'] = $filter;
 		}
 		
-		// Define which sorting to use
+		// sort
 		
 		if ( $sortBy != "" )
 		{
 			$options['s.sort'] = $sortBy;
 		}
 		
-		// Define Paging Parameters
+		// paging
 		
 		$options['s.ps'] = $limit;
 		$options['s.pn'] = $page;
 		
-		// Define Visibility 
+		// facets to return in response
 		
-		// $options['s.ho'] = 'true';
+		$options['s.ff'] = $this->getFacetsToInclude();
 		
-		return $this->call($options);
+		
+		return $this->send($options);
 	}
 	
 	/**
-	 * Submit request
+	 * Submit search
 	 *
-	 * @param   array       $params     An array of parameters for the request
-	 * @param   string      $service    The API Service to call
+	 * @param array $params			An array of parameters for the request
+	 * @param string $service    	The api service to call
 	 * 
-	 * @return  string                  The response from the Summon API
+	 * @return array
 	 */
 	
-	private function call($params = array(), $service = 'search')
+	private function send( array $params, $service = 'search' )
 	{
-		// Build Query String
+		// build querystring
 		
 		$query = array();
 		
@@ -176,17 +150,12 @@ class Summon
 		
 		asort($query);
 		$queryString = implode('&', $query);
+		
+		// set the url
 
-		$this->client->setUri($this->host . "/$service?" . $queryString);		
+		$this->http_client->setUri($this->host . "/$service?" . $queryString);		
 		
-		if ( $this->debug )
-		{
-			echo "<pre>";
-			print_r($this->host . "/$service?" . $queryString);
-			echo "</pre>\n";
-		}
-		
-		// Build Authorization Headers
+		// main headers
 		
 		$headers = array(
 			'Accept' => 'application/json' , 
@@ -194,23 +163,39 @@ class Summon
 			'Host' => 'api.summon.serialssolutions.com'
 		);
 		
+		// set auth header based on hash
+		
 		$data = implode($headers, "\n") . "\n/$service\n" . urldecode($queryString) . "\n";
 		$hmacHash = $this->hmacsha1($this->api_key, $data);
 		
 		$headers["Authorization"] = "Summon " . $this->app_id . ";" . $hmacHash;
 		
-		$this->client->setHeaders($headers);
+		// set them all
+		
+		$this->http_client->setHeaders($headers);
+		
+		// keep the same session id
 		
 		if ( $this->session_id )
 		{
-			$this->client->setHeaders('x-summon-session-id', $this->session_id);
+			$this->http_client->setHeaders('x-summon-session-id', $this->session_id);
 		}
 		
-		// Send Request
+		// send the request
 		
-		$response = $this->client->send();
+		$response = $this->http_client->send();
+		
+		// decode the response into array
+		
 		return json_decode($response->getBody(), true);
 	}
+	
+	/**
+	 * Create the auth hash
+	 * 
+	 * @param string $key		summon application key
+	 * @param string $data		header data
+	 */
 	
 	private function hmacsha1($key, $data)
 	{
@@ -225,5 +210,36 @@ class Summon
 		$opad = str_repeat(chr(0x5c), $blocksize);
 		$hmac = pack('H*', $hashfunc(($key ^ $opad) . pack('H*', $hashfunc(($key ^ $ipad) . $data))));
 		return base64_encode($hmac);
+	}
+	
+	/**
+	 * Set the facets that should be returned in the response
+	 * 
+	 * @param array $facets
+	 */
+	
+	public function setFacetsToInclude(array $facets)
+	{
+		$this->facets_to_include = $facets;
+	}
+	
+	/**
+	 * Get the facets to be included in the response
+	 * 
+	 * @return array
+	 */
+	
+	public function getFacetsToInclude()
+	{
+		if ( count($this->facets_to_include) == 0 )
+		{
+			// default
+		
+			return array(
+				'IsScholarly,or,1,2' ,
+				'ContentType,or,1,30' ,
+				'SubjectTerms,or,1,30'
+			);
+		}
 	}
 }
