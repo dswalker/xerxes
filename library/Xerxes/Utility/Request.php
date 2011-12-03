@@ -10,14 +10,14 @@ use Zend\Http\PhpEnvironment\Request as ZendRequest,
 	Zend\Session\SessionManager;
 
 /**
- * Process parameter in the request, either from HTTP or CLI, as well as session
+ * Process HTTP and CLI requests, as well as Session
  * 
  * @author David Walker
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
  * @license http://www.gnu.org/licenses/
  * @version
- * @package Xerxes_Framework
+ * @package Xerxes_Utility
  */
 
 class Request extends ZendRequest
@@ -29,6 +29,10 @@ class Request extends ZendRequest
 	private $session; // zend session manager
 	private $container; // zend session container
 	
+	/**
+	 * Creae Request object
+	 */
+	
 	public function __construct()
 	{
 		parent::__construct();
@@ -37,6 +41,14 @@ class Request extends ZendRequest
 		
 		$this->extractQueryParams();
 	}
+	
+	/**
+	 * Set the router from the MVC framework
+	 * 
+	 * This will push the route paths into the request as parameters
+	 * 
+	 * @param RouteStack $router
+	 */
 	
     public function setRouter(RouteStack $router)
     {
@@ -105,9 +117,12 @@ class Request extends ZendRequest
     	return $this->container;
     }    
     
-    /**
-     * Add session value
-     */
+	/**
+	 * Add value to Session
+	 * 
+	 * @param string $key
+	 * @param mixed $value
+	 */
     
     public function setSession($key, $value)
     {
@@ -116,14 +131,19 @@ class Request extends ZendRequest
     
     /**
      * Get session value
+     * 
+     * @param string $key
      */
+    
     public function getSession($key)
     {
     	return $this->getContainer()->offsetGet($key);
     } 
     
     /**
-     * Get all session values as array
+     * Get all session values
+     * 
+     * @return array
      */
     
     public function getAllSession()
@@ -226,7 +246,7 @@ class Request extends ZendRequest
 	/**
 	 * Whether the request came in on the command line
 	 *
-	 * @return bool		true if came in on the cli
+	 * @return bool
 	 */
 	
 	public function isCommandLine()
@@ -246,14 +266,15 @@ class Request extends ZendRequest
 	}
 	
 	/**
-	 * Add a value to the request parameters
+	 * Add a parameter to the request
 	 *
 	 * @param string $key		key to identify the value
 	 * @param string $value		value to add
-	 * @param bool $bolArray	[optional] set to true will ensure property is set as array
+	 * @param bool $is_array	[optional] set to true will ensure property is set as array
+	 * @param bool $override	[optional] replace any existing values
 	 */
 	
-	public function setParam( $key, $value, $bolArray = false, $override = false )
+	public function setParam( $key, $value, $is_array = false, $override = false )
 	{
 		if ( ! is_array($value) )
 		{
@@ -273,7 +294,7 @@ class Request extends ZendRequest
 			
 			array_push( $this->params[$key], $value );
 		} 
-		elseif ( $bolArray == true )
+		elseif ( $is_array == true )
 		{
 			// no existing value in property, but the calling code says 
 			// this *must* be added as an array, so make it an array, if not one already
@@ -301,18 +322,18 @@ class Request extends ZendRequest
 	 *
 	 * @param string $key		key that identify the value
 	 * @param string $default	[optional] a default value to return if no param supplied
-	 * @param bool $bolArray	[optional] whether value should be returned as an array, even if only one value
+	 * @param bool $is_array	[optional] whether value should be returned as an array, even if only one value
 	 * 
-	 * @return mixed 			[string or array] value if available, otherwise default
+	 * @return string|array 	returns value if available, otherwise default
 	 */
 	
-	public function getParam( $key, $default = null, $bolArray = false )
+	public function getParam( $key, $default = null, $is_array = false )
 	{
 		if ( array_key_exists( $key, $this->params ) )
 		{
 			// if the value is requested as array, but is not array, make it one!
 			
-			if ( $bolArray == true && ! is_array( $this->params[$key] ) )
+			if ( $is_array == true && ! is_array( $this->params[$key] ) )
 			{
 				return array ($this->params[$key] );
 			} 
@@ -320,7 +341,7 @@ class Request extends ZendRequest
 			// the opposite: if the the value is not requested as array but is,
 			// take just the first value in the array
 			
-			elseif ( $bolArray == false && is_array( $this->params[$key] ) )
+			elseif ( $is_array == false && is_array( $this->params[$key] ) )
 			{
 				return $this->params[$key][0];
 			} 
@@ -336,13 +357,13 @@ class Request extends ZendRequest
 	}
 
 	/**
-	 * Get a group of properties using regular expression
+	 * Get all parameters, or a group of parameters using regular expression
 	 * 
-	 * @param string $regex		(optional) regular expression for properties to get
-	 * @param bool $shrink		(optional) whether to collapse properties stored as 
-	 * 				array into simple element, default false
-	 * @param string $shrink_del 	(opptional) if $shrink is true, then separate multiple 
-	 *				elements by this character, default comma
+	 * @param string $regex			[optional] regular expression for properties to get
+	 * @param bool $shrink			[optional] whether to collapse properties stored as 
+	 * 											array into simple element, default false
+	 * @param string $shrink_del 	[optional] if $shrink is true, then separate multiple 
+	 *											elements by this character, default comma
 	 * 
 	 * @return array
 	 */
@@ -418,14 +439,14 @@ class Request extends ZendRequest
 	}
 	
 	/**
-	 * serialize to xml
+	 * Serialize to xml
 	 * 
-	 * @param bool $bolHideServer	[optional]	true will exclude the server variables from the response, default false
+	 * @param bool $should_hide_server	[optional]	exclude the server variables from the response
 	 *
 	 * @return DOMDocument
 	 */
 	
-	public function toXML($bolHideServer = false)
+	public function toXML($should_hide_server = false)
 	{
 		// add the url parameters and session and server global arrays
 		// to the master xml document
@@ -447,7 +468,7 @@ class Request extends ZendRequest
 		// add the server global array
 		// but only if the request asks for it, for security purposes
 		
-		if ( $bolHideServer == true )
+		if ( $should_hide_server == true )
 		{
 			$server = $xml->createElement( "server" );
 			$xml->documentElement->appendChild( $server );
@@ -460,7 +481,7 @@ class Request extends ZendRequest
 	/**
 	 * Add global array as xml to request xml document
 	 *
-	 * @param DOMDocument $xml		[by reference] request xml document
+	 * @param DOMDocument $xml			[by reference] request xml document
 	 * @param DOMNode $objAppend		[by reference] node to append values to
 	 * @param array $arrValues			global array
 	 */
@@ -469,6 +490,8 @@ class Request extends ZendRequest
 	{
 		foreach ( $arrValues as $key => $value )
 		{
+			// @todo: change this to 'data' element and fix xslt
+			
 			// need to make sure the xml element has a valid name
 			// and not something crazy with spaces or commas, etc.
 			
