@@ -4,7 +4,10 @@ namespace Xerxes\Utility;
 
 use Zend\Http\PhpEnvironment\Request as ZendRequest,
 	Zend\Mvc\Router\RouteStack,
-	Zend\Mvc\Router\RouteMatch;
+	Zend\Mvc\Router\RouteMatch,
+	Zend\Session\Container,
+	Zend\Session\Manager,
+	Zend\Session\SessionManager;
 
 /**
  * Process parameter in the request, either from HTTP or CLI, as well as session
@@ -23,6 +26,8 @@ class Request extends ZendRequest
 	private $params = array(); // request paramaters
 	private $router; // router
 	private $registry; // registry
+	private $session; // zend session manager
+	private $container; // zend session container
 	
 	public function __construct()
 	{
@@ -49,7 +54,83 @@ class Request extends ZendRequest
 	        }
         }
     }
-	
+    
+    /**
+     * Set the session manager
+     *
+     * @param  Manager $manager
+     * @return FlashMessenger
+     */
+    
+    public function setSessionManager(Manager $manager)
+    {
+    	$this->session = $manager;
+    	return $this;
+    }
+    
+    /**
+     * Retrieve the session manager
+     *
+     * If none composed, lazy-loads a SessionManager instance
+     *
+     * @return Manager
+     */
+    
+    public function getSessionManager()
+    {
+    	if (!$this->session instanceof Manager)
+    	{
+    		$this->setSessionManager(new SessionManager());
+    	}
+    	
+    	return $this->session;
+    }   
+    
+    /**
+     * Get session container
+     *
+     * @return Container
+     */
+    
+    public function getContainer()
+    {
+    	if ($this->container instanceof Container) 
+    	{
+    		return $this->container;
+    	}
+    
+    	$manager = $this->getSessionManager();
+    	$this->container = new Container('Testing', $manager);
+
+    	return $this->container;
+    }    
+    
+    /**
+     * Add session value
+     */
+    
+    public function setSession($key, $value)
+    {
+    	$this->getContainer()->offsetSet($key, $value);
+    }
+    
+    /**
+     * Get session value
+     */
+    public function getSession($key)
+    {
+    	return $this->getContainer()->offsetGet($key);
+    } 
+    
+    /**
+     * Get all session values as array
+     */
+    
+    public function getAllSession()
+    {
+    	return $this->getContainer()->getIterator()->getArrayCopy();
+    }
+    
 	/**
 	 * Process the incoming request paramaters
 	 */
@@ -361,7 +442,7 @@ class Request extends ZendRequest
 		
 		$session = $xml->createElement( "session" );
 		$xml->documentElement->appendChild( $session );
-		$this->addElement( $xml, $session, $_SESSION );
+		$this->addElement( $xml, $session, $this->getAllSession() );
 		
 		// add the server global array
 		// but only if the request asks for it, for security purposes
@@ -419,62 +500,4 @@ class Request extends ZendRequest
 			}
 		}
 	}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	// @todo: use zend\session
-	
-	
-	
-	/**
-	 * Get a value stored in the session
-	 *
-	 * @param string $key	variable name
-	 * @return mixed
-	 */
-	
-	public function getSession($key)
-	{
-		if ( isset($_SESSION) )
-		{
-			if ( array_key_exists( $key, $_SESSION ) )
-			{
-				return $_SESSION[$key];
-			}
-		}
-	
-		return null;
-	}
-	
-	/**
-	 * Get all session variables
-	 *
-	 * @return array
-	 */
-	
-	public function getAllSession()
-	{
-		return $_SESSION;
-	}
-	
-	/**
-	 * Save a value in session state
-	 *
-	 * @param string $key		name of the variable
-	 * @param mixed $value		value of the variable
-	 */
-	
-	public function setSession($key, $value)
-	{
-		$_SESSION[$key] = $value;
-	}	
-	
 }
