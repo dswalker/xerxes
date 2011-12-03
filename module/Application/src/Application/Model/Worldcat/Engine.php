@@ -3,7 +3,7 @@
 namespace Application\Model\Worldcat;
 
 use Application\Model\Search,
-	Xerxes\WorldCat,
+	Xerxes\Worldcat,
 	Xerxes\Marc;
 
 /**
@@ -34,7 +34,7 @@ class Engine extends Search\Engine
 		
 		// worldcat search object
 		
-		$this->worldcat_client = new WorldCat($config_key);
+		$this->worldcat_client = new Worldcat($config_key);
 		
 		// if user is a guest, make it open, and return it pronto, since we
 		// can't use the limiters below
