@@ -2,6 +2,8 @@
 
 namespace Application\Model\Authentication;
 
+use Zend\Mvc\MvcEvent;
+
 /**
  * Authentication factory
  *
@@ -15,7 +17,7 @@ namespace Application\Model\Authentication;
 
 class AuthenticationFactory
 {
-	public function getAuthenticationObject($name, Request $request, Registry $registry, Response $response)
+	public function getAuthenticationObject($name, MvcEvent $e)
 	{
 		// sanitize
 		
@@ -43,7 +45,7 @@ class AuthenticationFactory
 
 		// make it
 
-		$authentication = new $class_name($request, $registry, $response);
+		$authentication = new $class_name($e);
 		
 		if ( ! $authentication instanceof AbstractAuthentication)
 		{

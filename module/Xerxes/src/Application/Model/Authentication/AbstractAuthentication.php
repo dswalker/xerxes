@@ -3,7 +3,9 @@
 namespace Application\Model\Authentication;
 
 use Application\Model\DataMap\Users, 
-	Application\Model\DataMap\SavedRecords;
+	Application\Model\DataMap\SavedRecords,
+	Xerxes\Utility\Registry,
+	Zend\Mvc\MvcEvent;
 
 /**
  * An event-based authentication framework
@@ -21,50 +23,49 @@ abstract class AbstractAuthentication
 	protected $user; // user object
 	public $id; // the id of this auth scheme, set by the factory method invoking it
 	protected $role = "named"; // users role as named or guest
-	protected $return; // the return url to get the user back to where they are in Xerxes
+	protected $return_url; // the return url to get the user back to where they are in Xerxes
 	protected $validate_url; // the url to return for a validate request, for external auths
 	
 	protected $registry; // config object
 	protected $request; // request object
 	protected $response; // response object	
 	
-	public function __construct(Request $request, Registry $registry, Response $response)
+	public function __construct(MvcEvent $e)
 	{
-		$this->request = $request;
-		$this->registry = $registry;
-		$this->response = $response;
+		$this->request = $e->getRequest();
+		$this->registry = Registry::getInstance();
 		
 		$this->user = new User();
-		$this->return = $this->request->getParam("return");
+		$this->return_url = $this->request->getParam("return");
 		
-		$base = $this->registry->getConfig("BASE_URL", true);
+		$base = $this->request->getBaseUrl();
 		$server = $this->registry->getConfig("SERVER_URL", true);
 		
 		// if no return supplied, then send them home!
 		
-		if ( $this->return == "" )
+		if ( $this->return_url == "" )
 		{
-			$this->return = $base;
+			$this->return_url = $base;
 		}
 		else
 		{
-			if ( ! strstr($this->return, $server) )
+			if ( ! strstr($this->return_url, $server) )
 			{
-				$this->return = $server . $this->return;
+				$this->return_url = $server . $this->return_url;
 			}
 		}
 
 		// we always send the user back on http: since shib and possibly other schemes
 		// will drop the user back in xerxes on https:, which is weird
 		
-		$this->return = str_replace("https://", "http://", $this->return);		
+		$this->return_url = str_replace("https://", "http://", $this->return_url);		
 		
 		// we're explicitly _not_ using pretty-url here because some CAS servers might only
 		// be set-up with a single URL wildcard, while some other funky auth schemes get 
 		// tripped-up by the 'sub-folder' path elements that pretty-url creates
 		
 		$this->validate_url = $base . "/?base=authenticate&action=validate" .
-			"&return=" . urlencode($this->return);
+			"&return=" . urlencode($this->return_url);
 	}
 	
 	/**
@@ -172,6 +173,6 @@ abstract class AbstractAuthentication
 		
 		// now forward them to the return url
 		
-		$this->response->setRedirect($this->return);
+		$this->response->setRedirect($this->return_url);
 	}
 }

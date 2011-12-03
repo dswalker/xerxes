@@ -2,15 +2,27 @@
 
 namespace Application\Controller;
 
-use Zend\Mvc\Controller\ActionController,
-	Application\Model\Authentication\AuthenticationFactory;
+use Application\Model\Authentication\AuthenticationFactory,
+	Xerxes\Utility\Registry,
+	Zend\Mvc\Controller\ActionController;
 
 class AuthenticateController extends ActionController
 {
 	protected $authentication = null;
+	protected $registry;
 	
-	public function init()
+	// @todo: figure out a better way to do this
+	
+	public function execute(MvcEvent $e)
 	{
+		$this->init($e);
+		parent::execute($e);
+	}
+	
+	public function init(MvcEvent $e)
+	{
+		$this->registry = Registry::getInstance();
+		
 		// if the authentication_source is set in the request, then it takes precedence
 		
 		$override = $this->request->getParam("authentication_source");
@@ -36,7 +48,7 @@ class AuthenticateController extends ActionController
 		
 		$factory = new AuthenticationFactory();
 		
-		$this->authentication = $factory->getAuthenticationObject($configAuth, $this->request, $this->registry, $this->response);
+		$this->authentication = $factory->getAuthenticationObject($configAuth, $e);
 		$this->authentication->id = $configAuth;
 	}
 	
@@ -85,7 +97,7 @@ class AuthenticateController extends ActionController
 		{
 			// failed the login, so present a message to the user
 	
-			$this->response->add("error", "authentication");
+			return array("error" => "authentication");
 		}
 	}
 	
@@ -121,7 +133,7 @@ class AuthenticateController extends ActionController
 	
 		// redirect to specified logout location
 	
-		$this->response->setRedirect($configLogoutUrl);
+		$this->redirect()->toUrl($configLogoutUrl);
 	}
 	
 	public function validate()

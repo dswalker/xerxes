@@ -26,7 +26,7 @@ class CAS extends AbstractAuthentication
 		$configCasLogin = $this->registry->getConfig( "CAS_LOGIN", true );
 		
 		$strUrl = $configCasLogin . "?service=" . urlencode($this->validate_url);
-		$this->request->setRedirect( $strUrl );
+		$this->setRedirect( $strUrl );
 		
 		return true;
 	}
