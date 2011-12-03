@@ -64,7 +64,7 @@ class Document
 		foreach ( $records as $record )
 		{
 			$marc_record = new Record;
-			$record->loadXML($record);
+			$marc_record->loadXML($record);
 			array_push($this->_records, $marc_record);
 		}
 	}
