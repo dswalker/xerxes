@@ -18,10 +18,22 @@ abstract class FieldList implements \Iterator
 	protected $list = array();
 	protected $position = 0;
 	
-	public function addField($record)
+	/**
+	 * Add a Field to the list
+	 * 
+	 * @param Field $field
+	 */
+	
+	public function addField(Field $field)
 	{
-		array_push($this->list, $record);
+		array_push($this->list, $field);
 	}
+	
+	/**
+	 * Retrieve a Field from the specified position
+	 * 
+	 * @param int $position
+	 */
 	
 	public function item($position)
 	{
@@ -59,6 +71,12 @@ abstract class FieldList implements \Iterator
 	{
 		return isset($this->list[$this->position]);
 	}
+	
+	/**
+	 * Return list as string separated by space
+	 * 
+	 * @return string
+	 */
 
 	public function __toString() // convenience method
 	{
@@ -71,6 +89,12 @@ abstract class FieldList implements \Iterator
 		
 		return trim($content);
 	}
+	
+	/**
+	 * Get the list's length
+	 * 
+	 * @return int
+	 */
 
 	public function length()
 	{

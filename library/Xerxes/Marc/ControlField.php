@@ -3,7 +3,7 @@
 namespace Xerxes\Marc;
 
 /**
- * MARC ControlField
+ * MARC Control Field
  * 
  * @author David Walker
  * @copyright 2011 California State University
@@ -18,6 +18,12 @@ class ControlField extends Field
 	public $tag;
 	public $value;
 	
+	/**
+	 * Create Control Field
+	 * 
+	 * @param \DOMNode $objNode
+	 */
+	
 	public function __construct(\DOMNode $objNode = null)
 	{
 		if ( $objNode != null )
@@ -26,6 +32,14 @@ class ControlField extends Field
 			$this->value = $objNode->nodeValue;
 		}
 	}
+	
+	/**
+	 * Retrieve value at supplied position
+	 * 
+	 * @param int|string $position	expressed as a number (6) or range (6-7)
+	 * 
+	 * @return string|null			if value found at supplied position
+	 */
 
 	public function position($position)
 	{

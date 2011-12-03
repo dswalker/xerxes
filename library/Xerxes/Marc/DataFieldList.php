@@ -15,6 +15,16 @@ namespace Xerxes\Marc;
 
 class DataFieldList extends FieldList 
 {
+	/**
+	 * Retrieve SubField(s) from the first DataField in the List
+	 * 
+	 * @param string $code		[optional] single subfield code, or multiple subfield codes listed together,
+	 * 							empty value returns all subfields
+	 * @param bool 				[optional] return fields in the order specified in $code
+	 * 
+	 * @return SubField|SubFieldList	latter if $code is set to multiple subfields
+	 */
+	
 	public function subfield($code, $specified_order = false) // convenience method
 	{
 		if ( count($this->list) == 0 )

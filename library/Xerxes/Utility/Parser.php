@@ -295,7 +295,7 @@ class Parser
 		}	
 		else
 		{
-			throw new \Exception("param 1 must be of type string, DOMNode, or DOMDocument");
+			throw new \InvalidArgumentException("param 1 must be of type string, DOMNode, or DOMDocument");
 		}
 	}
 	

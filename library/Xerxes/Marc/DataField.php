@@ -3,7 +3,7 @@
 namespace Xerxes\Marc;
 
 /**
- * MARC Datafield
+ * MARC Data Field
  * 
  * @author David Walker
  * @copyright 2011 California State University
@@ -20,6 +20,12 @@ class DataField
 	public $ind2;
 	
 	private $_subfields = array();
+	
+	/**
+	 * Create Marc Data Field
+	 * 
+	 * @param \DOMNode $objNode
+	 */
 	
 	public function __construct(\DOMNode $objNode = null )
 	{
@@ -43,6 +49,7 @@ class DataField
 	 * @param string $code		[optional] single subfield code, or multiple subfield codes listed together,
 	 * 							empty value returns all subfields
 	 * @param bool 				[optional] return fields in the order specified in $code
+	 * 
 	 * @return SubFieldList
 	 */
 	
@@ -113,6 +120,12 @@ class DataField
 		
 		return trim($content);
 	}
+	
+	/**
+	 * Add a MARC SubField to this Data Field
+	 * 
+	 * @param SubField $field
+	 */
 	
 	public function addSubField(SubField $field)
 	{

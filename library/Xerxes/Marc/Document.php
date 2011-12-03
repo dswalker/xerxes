@@ -2,6 +2,8 @@
 
 namespace Xerxes\Marc;
 
+use Xerxes\Utility\Parser;
+
 /**
  * MARC Document
  * 
@@ -22,27 +24,13 @@ class Document
 	/**
 	 * Load a MARC-XML document from string or object
 	 *
-	 * @param mixed $xml	XML as string or \DOMDocument
+	 * @param string|DOMNode|DOMDocument $xml
 	 */
 	
 	public function loadXML($xml)
 	{
-		$objDocument = new \DOMDocument();
-		
-		if ( is_string($xml) )
-		{
-			$objDocument->loadXML($xml);
-		}
-		elseif ( $xml instanceof \DOMDocument )
-		{
-			$objDocument = $xml;
-		}
-		else
-		{
-			throw new \Exception("param 1 must be XML of type DOMDocument or string");
-		}
-		
-		$this->parse($objDocument);
+		$xml = Parser::convertToDOMDocument($xml);
+		$this->parse($xml);
 	}
 	
 	/**
@@ -53,31 +41,31 @@ class Document
 	
 	public function load($file)
 	{
-		$objDocument = new \DOMDocument();
-		$objDocument->load($file);
+		$document = new \DOMDocument();
+		$document->load($file);
 		
-		$this->loadXML($objDocument);
+		$this->loadXML($document);
 	}
 	
 	/**
 	 * Parse the XML into objects
 	 *
-	 * @param \DOMDocument $objDocument
+	 * @param \DOMDocument $document
 	 */
 
-	protected function parse(\DOMDocument $objDocument)
+	protected function parse(\DOMDocument $document)
 	{
-		$objXPath = new \DOMXPath($objDocument);
-		$objXPath->registerNamespace("marc", $this->namespace);
+		$xpath = new \DOMXPath($document);
+		$xpath->registerNamespace("marc", $this->namespace);
 		
-		$objRecords = $objXPath->query("//marc:record");
-		$this->_length = $objRecords->length;
+		$records = $xpath->query("//marc:record");
+		$this->_length = $records->length;
 		
-		foreach ( $objRecords as $objRecord )
+		foreach ( $records as $record )
 		{
-			$record = new Record;
-			$record->loadXML($objRecord);
-			array_push($this->_records, $record);
+			$marc_record = new Record;
+			$record->loadXML($record);
+			array_push($this->_records, $marc_record);
 		}
 	}
 	
@@ -95,7 +83,7 @@ class Document
 	}
 	
 	/**
-	 * List of MARC-XML records from the Document
+	 * List of MARC Records from the Document
 	 *
 	 * @return array of Record objects
 	 */
@@ -106,7 +94,7 @@ class Document
 	}
 	
 	/**
-	 * The number of MARC-XML records in the Document
+	 * The number of MARC Records in the Document
 	 *
 	 * @return unknown
 	 */

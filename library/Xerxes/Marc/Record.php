@@ -26,44 +26,58 @@ class Record
 	protected $xpath;
 	protected $node;
 	
+	/**
+	 * Create a MARC Record
+	 */
+	
 	public function __construct()
 	{
 		$this->leader = new Leader();
 	}
 	
 	/**
-	 * Create an object for a MARC-XML Record
+	 * Load from XML source
 	 *
-	 * @param \DOMNode $objNode
+	 * @param string|DOMNode|DOMDocument $node
 	 */
 	
 	public function loadXML($node = null)
 	{
 		if ( $node != null )
 		{
-			$objNode = Parser::convertToDOMDocument($node);
+			// make sure we have a DOMDocument
 			
-			$objLeader = $objNode->getElementsByTagName("leader");
-			$objControlFields = $objNode->getElementsByTagName("controlfield");
-			$objDataFields = $objNode->getElementsByTagName("datafield");
+			$node = Parser::convertToDOMDocument($node);
 			
-			$this->leader = new Leader($objLeader->item(0));
+			// extract the three data types
 			
-			foreach ( $objControlFields as $objControlField )
+			$leader = $node->getElementsByTagName("leader");
+			$control_fields = $node->getElementsByTagName("controlfield");
+			$data_fields = $node->getElementsByTagName("datafield");
+			
+			// leader
+			
+			$this->leader = new Leader($leader->item(0));
+			
+			// control fields
+			
+			foreach ( $control_fields as $control_field )
 			{
-				$controlfield = new ControlField($objControlField);
+				$controlfield = new ControlField($control_field);
 				array_push($this->_controlfields, $controlfield);
 			}
 			
-			foreach ( $objDataFields as $objDataField )
+			// data fields
+			
+			foreach ( $data_fields as $data_field )
 			{
-				$datafield = new DataField($objDataField);
+				$datafield = new DataField($data_field);
 				array_push($this->_datafields, $datafield);
 			}
 			
-			// register it
+			// register xml objects for later use
 			
-			$this->document = $objNode;
+			$this->document = $node;
 			$this->node = $this->document->documentElement;
 				
 			// now create an xpath object and the current node as properties
@@ -76,7 +90,7 @@ class Record
 	}
 	
 	/**
-	 * Leader
+	 * Retrieve the Leader
 	 * 
 	 * @return Leader
 	 */
@@ -87,9 +101,10 @@ class Record
 	}
 	
 	/**
-	 * Control field
+	 * Retrieve a Control Field
 	 *
 	 * @param string $tag			the marc tag number
+	 * 
 	 * @return ControlField object
 	 */
 	
@@ -109,9 +124,12 @@ class Record
 	}
 
 	/**
-	 * Return a list of control fields, essentially for 007
+	 * Return a list of control fields
+	 * 
+	 * Essentially for the 007, the only control field (in theory) that is repeatable
 	 *
 	 * @param string $tag			the marc tag number
+	 * 
 	 * @return FieldList object
 	 */	
 	
@@ -131,11 +149,12 @@ class Record
 	}
 
 	/**
-	 * Data Field
+	 * Retrieve a list of Data Fields
 	 *
 	 * @param string $tag			the marc tag number
 	 * @param string $ind1			[optional] first indicator
 	 * @param string $ind2			[optional] second indicator
+	 * 
 	 * @return DataFieldList
 	 */
 	
@@ -197,20 +216,55 @@ class Record
 		return $return;
 	}
 	
+	/**
+	 * Retrieve the MARC Record as MARC-XML
+	 * 
+	 * @return DOMDocument
+	 */
+	
 	public function getMarcXML()
 	{	
 		return $this->document;
 	}
+	
+	/**
+	 * Retrieve the MARC Record as MARC-XML
+	 * 
+	 * @return string
+	 */
 	
 	public function getMarcXMLString()
 	{
 		return $this->document->saveXML();
 	}
 	
+	/**
+	 * Set the Leader for the Record
+	 *
+	 * @param Leader $leader
+	 */
+	
+	public function setLeader(Leader $leader)
+	{
+		$this->leader = $leader;
+	}	
+	
+	/**
+	 * Add a Control Field to the Record
+	 * 
+	 * @param ControlField $field
+	 */
+	
 	public function addControlField(ControlField $field)
 	{
 		array_push($this->_controlfields, $field);
 	}
+	
+	/**
+	 * Add a Data Field to the Record
+	 * 
+	 * @param DataField $field
+	 */
 	
 	public function addDataField(DataField $field)
 	{

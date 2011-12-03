@@ -15,13 +15,19 @@ namespace Xerxes\Marc;
 
 class Leader extends ControlField 
 {
-	public $value;					// the entire leader
+	public $value; // the entire leader
 	
-	public function __construct(\DOMNode $objNode = null)
+	/**
+	 * Create a MARC Leader 
+	 * 
+	 * @param \DOMNode $node
+	 */
+	
+	public function __construct(\DOMNode $node = null)
 	{
-		if ( $objNode != null )
+		if ( $node != null )
 		{
-			$this->value = $objNode->nodeValue;
+			$this->value = $node->nodeValue;
 		}
 	}
 }

@@ -3,7 +3,7 @@
 namespace Xerxes\Marc;
 
 /**
- * MARC Datafield
+ * MARC Sub Field List
  * 
  * @author David Walker
  * @copyright 2011 California State University

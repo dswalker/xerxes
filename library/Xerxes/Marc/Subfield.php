@@ -3,7 +3,7 @@
 namespace Xerxes\Marc;
 
 /**
- * MARC Subfield
+ * MARC Sub Field
  * 
  * @author David Walker
  * @copyright 2011 California State University
@@ -18,12 +18,18 @@ class SubField extends Field
 	public $code;
 	public $value;
 	
-	public function __construct(\DOMNode $objNode = null )
+	/**
+	 * Create a MARC Sub Field
+	 * 
+	 * @param \DOMNode $node
+	 */
+	
+	public function __construct(\DOMNode $node = null )
 	{
-		if ( $objNode != null )
+		if ( $node != null )
 		{
-			$this->code = $objNode->getAttribute("code");
-			$this->value = $objNode->nodeValue;
+			$this->code = $node->getAttribute("code");
+			$this->value = $node->nodeValue;
 		}
 	}
 }
