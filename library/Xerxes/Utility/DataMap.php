@@ -36,7 +36,7 @@ abstract class DataMap
 	protected $rdbms; // the explicit rdbms name (should be 'mysql' or 'mssql' as of 1.5.1) 
 
 	/**
-	 * Constructor
+	 * Create a Data Map
 	 * 
 	 * @param string $connection	[optional] database connection info
 	 * @param string $username		[optional] username to connect with

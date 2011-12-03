@@ -11,7 +11,7 @@ use Xerxes\Record,
 	Xerxes\Utility\Parser;
 
 /**
- * Extract properties for books, articles, and dissertations from MARC-XML
+ * Extract properties for books, articles, and dissertations from MARC
  * 
  * @author David Walker
  * @copyright 2011 California State University
