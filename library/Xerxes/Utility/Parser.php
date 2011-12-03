@@ -348,5 +348,93 @@ class Parser
 		}
 	
 		return $array;
+	}
+	
+	/**
+	 * Strips periods and pads the subnets of an IP address to three spaces
+	 * 
+	 * e.g., 144.37.1.23 = 144037001023
+	 *
+	 * @param string $original			original ip address
+	 * @return string					address normalized with extra zeros
+	 */
+	
+	public static function normalizeIpAddress($original)
+	{
+		$strNormalized = "";
+		$arrAddress = explode( ".", $original );
+	
+		foreach ( $arrAddress as $subnet )
+		{
+			$strNormalized .= str_pad( $subnet, 3, "0", STR_PAD_LEFT );
+		}
+	
+		return $strNormalized;
+	}
+	
+	/**
+	 * Is the ip address within the supplied ip range(s)
+	 * 
+	 * Comma separated ranges, where each range can use
+	 * wildcard (*) or hyphen to separate endpoints.
+	 *
+	 * @param string $address		ip address
+	 * @param string $ranges		ip ranges, separate multiple ranged by comma
+	 * @return bool					true if in range, otherwise false
+	 */
+	
+	public static function isIpAddrInRanges($address, $ranges)
+	{
+		$local = false;
+	
+		// normalize the remote address
+	
+		$remote_address = self::normalizeIpAddress( $address );
+	
+		// multiple ranges separated by comma
+	
+		$arrRange = array ( );
+		$arrRange = explode( ",", $ranges );
+	
+		// loop through ranges
+	
+		foreach ( $arrRange as $range )
+		{
+			$range = str_replace( " ", "", $range );
+			$iStart = null;
+			$iEnd = null;
+	
+			// normalize the campus range
+	
+			if ( strpos( $range, "-" ) !== false )
+			{
+				// range expressed with start and stop addresses
+	
+				$arrLocalRange = explode( "-", $range );
+	
+				$iStart = self::normalizeAddress( $arrLocalRange[0] );
+				$iEnd = self::normalizeAddress( $arrLocalRange[1] );
+			}
+			else
+			{
+				// range expressed with wildcards
+	
+				$strStart = str_replace( "*", "000", $range );
+				$strEnd = str_replace( "*", "255", $range );
+	
+				$iStart = self::normalizeAddress( $strStart );
+				$iEnd = self::normalizeAddress( $strEnd );
+	
+			}
+	
+			// see if remote address falls in between the campus range
+	
+			if ( $remote_address >= $iStart && $remote_address <= $iEnd )
+			{
+				$local = true;
+			}
+		}
+	
+		return $local;
 	}	
 }
