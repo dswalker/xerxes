@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xerxes>
+
+	<!-- 
+	
+	BEFORE YOU GET STARTED
+	
+	Consult the Xerxes wiki, which contains more information about each config below
+	http://code.google.com/p/xerxes-portal/w/list
+	
+	 -->
+	 
+	<configuration>
+
+	<!-- EZPROXY EXPORT -->
+	
+		<!-- See http://code.google.com/p/xerxes-portal/wiki/EzProxyExport -->
+		
+		<!-- domains that should not excluded as "Domain" config in the EZProxy export, 
+			even if ordinary rules would include them -->
+		
+		<config name="ezp_exp_domain_avoid">youruniv.edu</config>
+		
+		<!-- Particular databases that should be excluded from the EZProxy
+		export, even if ordinary rules would include them. -->
+		
+		<config name="ezp_exp_resourceid_omit"></config>
+		
+		<!-- "Group" statement to output for ordinary default KB resources. -->
+		
+		<config name="ezp_exp_default_group">EzP_Group</config>
+		
+		
+	<!-- DATABASES DISPLAY -->
+		
+		<config name="categories_quicksearch" pass="true">quick-search</config>
+		<!-- <config name="categories_quicksearch" pass="true" lang="cze">rychle-vyhledavani</config> -->
+		
+		<!-- number of columns for subjects on categories page; 
+			enter '2' or '3', if you want more columns, you'll need to customize the page itself -->
+			
+		<config name="categories_num_columns" pass="true">3</config>
+		
+		<!-- only include the following subcategories in the subject page, 
+			separate multiple enties by comma, will look for the presence 
+			of the words, not an exact match -->
+		
+		<config name="subcategories_include"></config>
+		
+		<!-- subcategories that should be taken out of the 'main' part of the subject page
+		     and made part of the sidebar -->
+		
+		<config name="subcategories_sidebar"></config>
+		
+		<!-- database types to exclude from the A-Z listing -->
+		
+		<config name="databases_type_exclude_az"></config>
+		
+		<!-- strip out HTML tags in database description. Possible values:
+		
+			escape: Escape all HTML so it shows up as source.
+			allow: Allow all HTML through as code. NOT recommended. Suggest you use strip with some 
+			       tags in db_description_allow_tags instead. 
+			strip: Strip out all HTML tags. May be used in combination with db_description_allow_tags below. -->
+			
+		<config name="db_description_html">escape</config>
+		
+		<!-- use multilingual database descriptions
+			
+			For this to work, database descriptions in your Metalib IRD must have multiple paragraphs
+			separated by three newlines, one per language, in order of languages specified by this option.
+			Three newlines (exported as ###### by Metalib X-Server, replaced back to newlines in Xerxes)
+			will be recognized by XSLT as language separator.
+			
+			If this option is left empty, Xerxes will display description as it is regardless of Xerxes language -->
+			
+		<config name="db_description_multilingual" xml="true" pass="true">
+			<!-- Example:
+			<language code="eng" />
+			<language code="cze" />
+			-->
+		</config>
+		
+		<!-- tags NOT to strip in database descriptions.
+		
+			Only used with db_description_html=strip. Tags listed here (comma separated) will NOT be stripped, but
+			will be allowed - they are a whitelist. All other tags will be stripped. -->
+		
+		<config name="db_description_allow_tags">b,i,strong,em,a</config>
+		
+		<!-- whether the alphabetical database list should include a search box, allowing users to search for
+			databases by name or other information -->
+		
+		<config name="database_list_searchable" pass="true">false</config>
+		
+		<!-- whether to show a search box in the database detail page -->
+		
+		<config name="show_db_detail_search" pass="true">true</config>
+			
+		<!-- open window for links to databases (for values see above), by default no new window -->
+		
+		<config name="link_target_databases" pass="true"></config>
+				
+
+		<!-- MY SAVED DATABASES DISPLAY -->	
+		
+		<!-- default name for new (my databases) collection and section.
+			see wiki for making changes _after_ this has been deployed
+		-->
+		<config name="default_collection_name" pass="true">My Saved Databases</config>
+		<config name="default_collection_section_name" pass="true">Databases</config>
+		
+	</configuration>
+	
+</xerxes>

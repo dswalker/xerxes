@@ -13,20 +13,11 @@
 	<configuration>
 		
 	<!-- BASIC CONFIGURATION -->
-	
-		<!-- the base web server path for your xerxes installation. 
-			NO trailing slash. If you have installed at web root, empty string. -->
-		
-		<config name="base_web_path">/demo</config>
 		
 		<!-- what is your application called? Will be used in parts of the system. -->
 			 
 		<config name="application_name" pass="true">Xerxes Demo</config>
-		
-		<!-- turns the display of php errors and warnings on in a production system; value = true | false -->
-		
-		<config name="display_errors">false</config>
-		
+			
 		<!-- include here the range of local ip addresses that should not be challenged for a login.
 		 	enter as either 144.37.*.*, with * as wildcard, or as 144.37.0.0-144.37.255.255,
 		 	separate multiple entries by comma -->
@@ -117,16 +108,7 @@
 			of the database to the sid -->
 		
 		<config name="application_sid">calstate.edu:xerxes</config>
-		
-		<!-- for spell check api, doesn't hurt to leave this as 'calstate', since the usage limits are 
-			based on ip address, but better to get your own key from Yahoo -->
-		
-		<config name="yahoo_id">calstate</config>
-
-		<!-- location of an alternate relay script for the yahoo api. -->
-			
-		<config name="alternate_yahoo_location"></config>
-				
+						
 		<!-- base url of proxy server 
 		
 			EZProxy: include the entire proxy url prefix, e.g., 'http: ezproxy.library.edu/login?qurl='
