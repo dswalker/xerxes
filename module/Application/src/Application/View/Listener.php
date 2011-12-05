@@ -146,8 +146,8 @@ class Listener implements ListenerAggregate
         $vars = array();
         
         $vars["base_url"] = $e->getRequest()->getBaseUrl();
-        $vars["request"] = $e->getRequest()->toXML();
-        $vars["config"] = Registry::getInstance()->toXML();
+        $vars["request"] = $e->getRequest();
+        $vars["config"] = Registry::getInstance();
         
         
         // get results from controller(s)
