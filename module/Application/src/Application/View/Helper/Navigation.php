@@ -2,26 +2,30 @@
 
 namespace Application\View\Helper;
 
-use Xerxes\Utility\Registry;
+use Xerxes\Utility\Registry,
+	Application\View;
 
-class Navigation
+class Navigation extends View\Helper
 {
-	protected $request;
-	
-	public function __construct(Request $request)
+	public function getNavbar()
 	{
-		$this->request = $request;
-		$this->registry = Registry::getInstance();
-	}
+		return array(
+			'accessible_link' => $this->accessibleLink(),
+			'login_link' => $this->loginLink(),
+			'logout_link' => $this->logoutLink(),
+			'my_account_link' => $this->myAccountLink(),
+			'labels_link' => $this->labelsLink()
+		);
+	}	
 	
 	public function myAccountLink()
 	{
 		$params = array(
-			'base' => 'folder',
-			'return' => $this->request->getServer( 'REQUEST_URI' )
+			'controller' => 'folder',
+			'return' => $this->request->server()->get( 'REQUEST_URI' )
 		);
 		
-		return $this->request->url_for($params);
+		return $this->url_for($params);
 	}
 	
 	public function loginLink()
@@ -34,44 +38,44 @@ class Navigation
 		}		
 		
 		$params = array(
-			'base' => 'authenticate', 
+			'controller' => 'authenticate', 
 			'action' => 'login', 
-			'return' => $this->request->getServer('REQUEST_URI') 
+			'return' => $this->request->server()->get('REQUEST_URI') 
 		);
 		
-		return $this->request->url_for($params, $force_secure_login);		
+		return $this->url_for($params, $force_secure_login);		
 	}
 	
 	public function logoutLink()
 	{
 		$params = array(
-			'base' => 'authenticate', 
+			'controller' => 'authenticate', 
 			'action' => 'logout', 
-			'return' => $this->request->getServer('REQUEST_URI')
+			'return' => $this->request->server()->get('REQUEST_URI')
 		); 
 		
-		return $this->request->url_for($params);			
+		return $this->url_for($params);			
 	}
 	
 	public function accessibleLink()
 	{
 		$params = array(
-			'base' => 'databases',
+			'controller' => 'databases',
 			'action' => 'accessible',
-			'return' => $this->request->getServer('REQUEST_URI')
+			'return' => $this->request->server()->get('REQUEST_URI')
 		);
 
-		return $this->request->url_for($params);	
+		return $this->url_for($params);	
 	}
 
 	public function labelsLink()
 	{
 		$params = array(
-			'base' => 'navigation',
+			'controller' => 'navigation',
 			'action' => 'labels',
 		);
 
-		return $this->request->url_for($params);	
+		return $this->url_for($params);	
 	}
 }
 

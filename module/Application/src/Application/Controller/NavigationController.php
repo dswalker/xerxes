@@ -18,19 +18,4 @@ class NavigationController extends ActionController
 		
 		$this->response->setView("scripts/helper/labels.phtml");
 	}
-	
-	public function navbar()
-	{
-		$helper = new Navigation();
-		
-		$navbar = array(
-			'accessible_link' => $helper->accessibleLink(),
-			'login_link' => $helper->loginLink(),
-			'logout_link' => $helper->logoutLink(),
-			'my_account_link' => $helper->myAccountLink(),
-			'labels_link' => $helper->labelsLink()	
-		);
-		
-		$this->response->add("navbar", $navbar);
-	}
 }

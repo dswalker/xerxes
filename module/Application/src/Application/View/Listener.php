@@ -4,7 +4,8 @@ namespace Application\View;
 
 use Xerxes\Utility\Registry;
 
-use ArrayAccess,
+use Application\View\Helper\Navigation,
+	ArrayAccess,
     Xerxes\Utility\ViewRenderer,
     Zend\Di\Locator,
     Zend\EventManager\EventCollection,
@@ -148,6 +149,11 @@ class Listener implements ListenerAggregate
         $vars["base_url"] = $e->getRequest()->getBaseUrl();
         $vars["request"] = $e->getRequest();
         $vars["config"] = Registry::getInstance();
+        
+        // navigation
+        
+        $nav = new Navigation($e);
+        $vars["navbar"] = $nav->getNavbar();
         
         
         // get results from controller(s)

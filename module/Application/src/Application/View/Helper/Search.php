@@ -19,16 +19,10 @@ class Search extends View\Helper
 	protected $query;
 	protected $config;
 	
-	protected $request;
-	protected $registry;
-	
 	public function __construct(MvcEvent $e, $id, Engine $engine)
 	{
 		parent::__construct($e);
 		
-		$this->request = $e->getRequest();
-		$this->registry = Registry::getInstance();
-
 		$this->id = $id;
 		$this->query = $engine->getQuery($this->request);
 		$this->config = $engine->getConfig();
