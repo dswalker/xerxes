@@ -477,7 +477,7 @@ class Engine extends Search\Engine
 				$record->loadXML($xml_data);
 				
 				$record->setRecordID($id);
-				$record->setFormat($format);
+				$record->format()->setFormat($format);
 				$record->setScore($score);
 				
 				array_push($records, $record);

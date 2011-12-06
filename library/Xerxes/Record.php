@@ -1090,7 +1090,7 @@ class Record
 		
 		### simple values
 
-		$arrReferant["rft.genre"] = $this->format->getOpenURLGenre();
+		$arrReferant["rft.genre"] = $this->format->toOpenURLGenre();
 		
 		switch($arrReferant["rft.genre"])
 		{
@@ -1680,14 +1680,9 @@ class Record
 		return $this->editor;
 	}
 	
-	public function getFormat()
+	public function format()
 	{
-		return $this->format->getPublicFormat();
-	}
-	
-	public function setFormat($format)
-	{
-		$this->format->setFormat($format);
+		return $this->format;
 	}
 	
 	public function getTechnology()

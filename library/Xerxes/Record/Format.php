@@ -21,145 +21,110 @@ class Format
 	protected $normalized = "";
 	protected $public = "";
 	
-	// marc content types
-
-	const Art = "Art";
-	const ArtReproduction = "ArtReproduction";
-	const Atlas = "Atlas";
-	const Book = "Book";
-	const BookCollection = "BookCollection";
-	const BookComponentPart = "BookComponentPart";
-	const BookSeries = "BookSeries";
-	const BookSubunit = "BookSubunit";
-	const Chart = "Chart";
-	const ComputerBibliographicData = "ComputerBibliographicData";
-	const ComputerCombination = "ComputerCombination";
-	const ComputerDocument = "ComputerDocument";
-	const ComputerFile = "ComputerFile";
-	const ComputerFont = "ComputerFont";
-	const ComputerGame = "ComputerGame";
-	const ComputerInteractiveMultimedia = "ComputerInteractiveMultimedia";
-	const ComputerNumericData = "ComputerNumericData";
-	const ComputerOnlineSystem = "ComputerOnlineSystem";
-	const ComputerProgram = "ComputerProgram";
-	const ComputerRepresentational = "ComputerRepresentational";
-	const ComputerSound = "ComputerSound";
-	const Database = "Database";
-	const Diorama = "Diorama";
-	const Filmstrip = "Filmstrip";
-	const FlashCard = "FlashCard";
-	const Game = "Game";
-	const Globe = "Globe";
-	const Graphic = "Graphic";
-	const Image = "Image";
-	const Kit = "Kit";
-	const LooseLeaf = "LooseLeaf";
-	const Manuscript = "Manuscript";
-	const Map = "Map";
-	const MapBound = "MapBound";
-	const MapManuscript = "MapManuscript";
-	const MapSeparate = "MapSeparate";
-	const MapSerial = "MapSerial";
-	const MapSeries = "MapSeries";
-	const MapSingle = "MapSingle";
-	const MicroscopeSlide = "MicroscopeSlide";
-	const MixedMaterial = "MixedMaterial";
-	const Model = "Model";
-	const MotionPicture = "MotionPicture";
-	const MusicalScore = "MusicalScore";
-	const MusicalScoreManuscript = "MusicalScoreManuscript";
-	const MusicRecording = "MusicRecording";
-	const Newspaper = "Newspaper";
-	const Pamphlet = "Pamphlet";
-	const Periodical = "Periodical";
-	const PhysicalObject = "PhysicalObject";
-	const Picture = "Picture";
-	const ProjectedMedium = "ProjectedMedium";
-	const Realia = "Realia";
-	const Serial = "Serial";
-	const SerialComponentPart = "SerialComponentPart";
-	const SerialIntegratingResource = "SerialIntegratingResource";
-	const Slide = "Slide";
-	const SoundRecording = "SoundRecording";
-	const SpecialInstructionalMaterial = "SpecialInstructionalMaterial";
-	const TechnicalDrawing = "TechnicalDrawing";
-	const Thesis = "Thesis";
-	const Toy = "Toy";
-	const Transparency = "Transparency";
-	const Video = "Video";
-	const Website = "Website";
+	// ris format types
 	
-	// non-marc types
-
-	const Article = "Article"; 
-	const Archive = "Archive";
-	const BookChapter = "BookChapter"; 
-	const BookReview = "BookReview"; 
-	const ConferencePaper = "ConferencePaper"; 
-	const ConferenceProceeding = "ConferenceProceeding"; 
-	const Dissertation = "Dissertation"; 
-	const Hearing = "Hearing";
-	const Patent = "Patent";
-	const PrePrint = "PrePrint";
-	const Report = "Report";
-	const Review = "Review";
-	const TestMeasure = "TestMeasure";
-	const WorkingPaper = "WorkingPaper";
+	// see pdf available at -- http://www.refman.com/support/risformat_intro.asp
+	// also from wikipedia -- http://en.wikipedia.org/wiki/RIS_(file_format)
 	
-	// unknown
+	const Generic = "GEN";
+	const AbstractOfWork = "ABS";
 	
-	const Unknown = "Unkown";
+	const AggregatedDatabase = "AGGR";
+	const AncientText = "ANCIENT";
+	const ArticleElectronic = "EJOUR";
+	const ArticleInPress = "INPR";
+	const ArticleJournal = "JOUR";
+	const ArticleMagazine = "MGZN";
+	const ArticleNewspaper = "NEWS";
+	const Artwork = "ART";
+	const AudiovisualMaterial = "ADVS";
+	const Bill = "BILL";
+	const BillUnenacted = "UNBILL";
+	const Blog = "BLOG";
+	const Book = "BOOK";
+	const BookEdited = "EDBOOK";
+	const BookElectronic = "EBOOK";
+	const BookSection = "CHAP";
+	const BookSectionElectronic = "ECHAP";
+	const Broadcast = "MPCT";
+	const CourtCase = "CASE";
+	const Catalog = "CTLG";
+	const Chart = "CHART";
+	const ClassicalWork = "CLSWK";
+	const ComputerProgram = "COMP";
+	const ConferencePaper = "CPAPER";
+	const ConferenceProceeding = "CONF";
+	const Dataset = "DATA";
+	const DictionaryEntry = "DICT";
+	const EncyclopediaArticle = "ENCYC";
+	const Equation = "EQUA";
+	const Figure = "FIGURE";
+	const GovernmentDocument = "GOVDOC";
+	const Grant = "GRNT";
+	const Hearing = "HEAR";
+	const InternetCommunication = "ICOMM";
+	const Journal = "JFULL";
+	const LegalRule = "LEGAL";
+	const Manuscript = "MANSCPT";
+	const Map = "MAP";
+	const MusicalScore = "MUSIC";
+	const OnlineDatabase = "DBASE";
+	const OnlineMultimedia = "MULTI";
+	const Pamphlet = "PAMP";
+	const Patent = "PAT";
+	const PersonalCommunication = "PCOMM";
+	const Report = "RPRT";
+	const Serial = "SER";
+	const Slide = "SLIDE";
+	const SoundRecording = "SOUND";
+	const Standard = "STAND";
+	const Statute = "STAT";
+	const Thesis = "THES";
+	const UnpublishedWork = "UNPD";
+	const VideoRecording = "VIDEO";
+	const WebPage = "ELEC";
+	
+	// local types not covered above
+	// always include XERXES_ at the  start to distinguish them
+	
+	const BookReview = "XERXES_BookReview";
+	const Image = "XERXES_Image";
+	const Kit = "XERXES_KIT";
+	const MixedMaterial = "XERXES_MixedMaterial";
+	const PhysicalObject = "XERXES_PhysicalObject";
+	const Review = "XERXES_Review";
+	
+	// aliases
+	
+	const Article = "JOUR";
+	const Unknown = "GEN";
+	const Periodical = "JFULL";
 	
 	public function determineFormat($data_fields)
 	{
 		$this->setFormat($this->extractFormat($data_fields));
 	}
 	
-	public function setFormat($format)
-	{
-		$this->internal = $format;
-		$this->normalized = $format;
-		$this->public = $format;
-	}
-	
-	public function getInternalFormat()
-	{
-		return $this->internal;
-	}
-	
-	public function getNormalizedFormat()
-	{
-		return $this->normalized;
-	}
-
-	public function getPublicFormat()
-	{
-		return $this->public;
-	}
-
-		/**
-	 * Crosswalk the internal identified genre to one available in OpenURL 1.0
+	/**
+	 * Crosswalk the internal format to one available in OpenURL 1.0
 	 *
-	 * @param string $strFormat		original internal genre/format
 	 * @return string				OpenURL genre value
 	 */
 	
-	public function getOpenURLGenre()
+	public function toOpenURLGenre()
 	{
 		switch ( $this->internal )
 		{
-			case self::Newspaper :
-			case self::Periodical:	
+			case self::Journal :
 			case self::Serial :
-				
+					
 				return "journal";
 				break;
-			
-			case self::Article :
-			case self::BookReview :
-			case self::Review :
-			case self::SerialComponentPart :
-			case self::TestMeasure :
+
+			case self::ArticleElectronic :
+			case self::ArticleJournal :				
+			case self::ArticleMagazine :
+			case self::ArticleNewspaper :			
 				
 				return "article";
 				break;
@@ -174,19 +139,22 @@ class Format
 				return "conference";
 				break;				
 				
-			case self::PrePrint :
+			case self::ArticleInPress :
 				
 				return "preprint";
 				break;
 			
-			case self::Atlas :
 			case self::Book :
+			case self::BookEdited :	
+			case self::BookElectronic :							
 
 				return "book";
 				break;
 
-			case self::BookChapter :
-			case self::BookComponentPart :
+			case self::BookSection :
+			case self::BookSectionElectronic :
+			case self::DictionaryEntry :
+			case self::EncyclopediaArticle :				
 
 				return "bookitem";
 				break;
@@ -196,21 +164,28 @@ class Format
 				return "report";
 				break;
 			
-			case self::Dissertation :
 			case self::Thesis :
 				
-				// not an actual openurl genre
-				return "dissertation";
+				return "dissertation"; // not an actual openurl genre, but supported by sfx
 				break;
-
-			case self::BookCollection :
-			case self::BookSeries :
-			case self::BookSubunit :
+				
+			case self::AncientText :
+			case self::Bill :
+			case self::Blog :
+			case self::CourtCase :
+			case self::ClassicalWork :
+			case self::GovernmentDocument :
+			case self::Grant :
 			case self::Hearing :
+			case self::LegalRule :
 			case self::Manuscript :
-			case self::Patent :
 			case self::Pamphlet :
-			case self::SpecialInstructionalMaterial :
+			case self::Patent :
+			case self::PersonalCommunication :
+			case self::Standard :
+			case self::Statute :
+			case self::BillUnenacted :
+			case self::WebPage :
 
 				return "document";
 				break;				
@@ -223,24 +198,22 @@ class Format
 	
 	public function extractFormat($data_fields)
 	{
-		// combine them into a string and lowercase it
-
 		if ( is_array($data_fields) )
 		{
-			$data_fields = implode(" ", $data_fields);
+			$data_fields = implode(" ", $data_fields); // combine them into a string
 		}
 		
 		$data_fields = Parser::strtolower( $data_fields );
 		
-		if ( strstr( $data_fields, 'dissertation' ) ) return  self::Dissertation; 
+		if ( strstr( $data_fields, 'dissertation' ) ) return  self::Thesis; 
 		if ( strstr( $data_fields, 'proceeding' ) ) return  self::ConferenceProceeding; 
 		if ( strstr( $data_fields, 'conference' ) ) return  self::ConferencePaper; 
 		if ( strstr( $data_fields, 'hearing' ) ) return  self::Hearing; 
-		if ( strstr( $data_fields, 'working' ) ) return  self::WorkingPaper; 
+		if ( strstr( $data_fields, 'working' ) ) return  self::UnpublishedWork; 
 		if ( strstr( $data_fields, 'book review' ) || strstr( $data_fields, 'review-book' ) ) return  self::BookReview; 
 		if ( strstr( $data_fields, 'film review' ) || strstr( $data_fields, 'film-book' ) ) return  self::Review;
 		if ( strstr( "$data_fields ", 'review ' ) ) return  self::Review;
-		if ( strstr( $data_fields, 'book art' ) || strstr( $data_fields, 'book ch' ) || strstr( $data_fields, 'chapter' ) ) return  self::BookChapter; 
+		if ( strstr( $data_fields, 'book art' ) || strstr( $data_fields, 'book ch' ) || strstr( $data_fields, 'chapter' ) ) return  self::BookSection; 
 		if ( strstr( $data_fields, 'journal' ) ) return  self::Article; 
 		if ( strstr( $data_fields, 'periodical' ) || strstr( $data_fields, 'serial' ) ) return  self::Article; 
 		if ( strstr( $data_fields, 'book' ) ) return  self::Book;
@@ -253,8 +226,67 @@ class Format
 		return self::Unknown;		
 	}
 	
-	public function __toString()
+	/**
+	 * Return the constant name with the supplied value
+	 * 
+	 * @param string $value
+	 */
+	
+	protected function getConstNameForValue($value)
+	{
+		$reflector = new \ReflectionClass($this);
+		
+		foreach ( $reflector->getConstants() as $const => $val )
+		{
+			if ( $value == $val )
+			{
+				return $const;
+			}
+		}
+	}
+	
+	
+	// @todo this is only for testing
+	
+	public function setFormat($format)
+	{
+		$this->internal = $format;
+		$this->normalized = $format;
+		$this->public = $format;
+	}
+	
+	public function getInternalFormat()
+	{
+		return $this->internal;
+	}
+	
+	public function setInternalFormat($format)
+	{
+		$this->internal = $format;
+	}
+	
+	public function getNormalizedFormat()
+	{
+		return $this->normalized;
+	}
+	
+	public function setNormalizedFormat($format)
+	{
+		$this->normalized = $format;
+	}
+	
+	public function getPublicFormat()
 	{
 		return $this->public;
+	}
+	
+	public function setPublicFormat($format)
+	{
+		$this->public = $format;
+	}	
+	
+	public function __toString()
+	{
+		return (string) $this->public;
 	}
 }

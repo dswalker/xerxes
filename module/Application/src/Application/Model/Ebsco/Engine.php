@@ -248,7 +248,7 @@ class Engine extends Search\Engine
 		{
 			$this->url .= "&db=$database";
 		}
-				
+		
 		// get the xml from ebsco
 		
 		$client = Factory::getHttpClient();

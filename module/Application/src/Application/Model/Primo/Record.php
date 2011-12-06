@@ -38,8 +38,6 @@ class Record extends Xerxes\Record
 		$addata = $this->getElement($record, "addata");
 		$facets = $this->getElement($record, "facets");
 		
-		$format = array(); // format yo
-		
 		if ( $display != null)
 		{
 			// database name
@@ -90,6 +88,11 @@ class Record extends Xerxes\Record
 			{
 				array_push($this->authors, new Xerxes\Record\Author($author, null, "personal"));
 			}
+			
+			// format
+			// @todo: create map for internal
+			
+			$this->format->setFormat($this->getElementValue($search,"rsrctype"));			
 		}		
 		
 		// article data
@@ -101,10 +104,6 @@ class Record extends Xerxes\Record
 			$this->issue = $this->getElementValue($addata,"issue");
 			$this->start_page = $this->getElementValue($addata,"spage");
 			$this->end_page = $this->getElementValue($addata,"epage");
-			
-			// genre
-			
-			array_push($format, $this->getElementValue($addata,"genre"));
 			
 			// abstract 
 			
@@ -139,11 +138,6 @@ class Record extends Xerxes\Record
 				$subject_object->display = $topic;
 				
 				array_push(	$this->subjects, $subject_object);
-				
-				if ( stripos($topic, 'book review') !== false )
-				{
-					array_push($format, 'book review');
-				}
 			}
 			
 		}
@@ -172,14 +166,9 @@ class Record extends Xerxes\Record
 				foreach ( $arrMatches[1] as $strMatch )
 				{
 					array_push($this->notes, $strMatch);
-					array_push($format, $strMatch);
 				}
 			}
 		}
-		
-		// format
-
-		$this->format->determineFormat($format);	
 	}
 	
 	protected function getElement($node, $name)

@@ -554,7 +554,7 @@ class SavedRecords extends DataMap
 		$arrValues[":title"] = substr($strTitle, 0, 90);
 		$arrValues[":author"] = $objXerxesRecord->getPrimaryAuthor( true );
 		$arrValues[":year"] = $iYear;
-		$arrValues[":format"] = $objXerxesRecord->getFormat();
+		$arrValues[":format"] = $objXerxesRecord->format()->getInternalFormat();
 		
 		$arrValues[":marc"] = serialize($objXerxesRecord);
 		$arrValues[":record_type"] = "xerxes_record"; 			

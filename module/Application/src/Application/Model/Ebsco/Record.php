@@ -173,17 +173,19 @@ class Record extends Xerxes\Record
 			foreach ( $article->doctype as $doc_type )
 			{
 				array_push($formats, (string) $doc_type);
-				array_push($this->notes, (string) $doc_type);
 			}
 
 			foreach ( $article->pubtype as $pubtype )
 			{
 				array_push($formats, (string) $pubtype);
-			}			
+			}
+			
+			$this->notes = array_merge_recursive($this->notes, $formats);
 			
 			// format 
+			// @todo map this to internal
 			
-			$this->format->determineFormat($formats);
+			$this->format->setFormat(implode(";", $formats));
 			
 			//language
 			

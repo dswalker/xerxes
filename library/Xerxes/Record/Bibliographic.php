@@ -594,14 +594,15 @@ class Bibliographic extends Record
 	protected function parseFormat()
 	{
 		$this->technology = (string) $this->marc->datafield("538")->subfield("a");
-		$this->format->setFormat($this->extractFormat());
+		
+		$this->format->setInternalFormat($this->convertToNormalizedFormat());
 	}
 	
 	/**
 	 * Determines the format/genre of the item, broken out here for clarity
 	 */
 	
-	protected function extractFormat()
+	protected function convertToNormalizedFormat()
 	{
 		// thesis
 		
@@ -621,27 +622,36 @@ class Bibliographic extends Record
 		{
 			// high-level format from leader
 	
-			$chrLeader6 = "";
-			$chrLeader7 = "";
-			$obj008 = $this->marc->controlfield("008");
-			
-			if ( strlen( (string) $this->marc->leader() ) >= 8 )
-			{
-				$chrLeader6 = substr( (string) $this->marc->leader(), 6, 1 );
-				$chrLeader7 = substr( (string) $this->marc->leader(), 7, 1 );
-			}		
+			$chrLeader6 = $this->marc->leader()->position(6);
+			$chrLeader7 = $this->marc->leader()->position(7);
+			$field_008 = $this->marc->controlfield("008");
 			
 			if ( $chrLeader6 == 'a' && $chrLeader7 == 'm' ) return Format::Book;
-			if ( $chrLeader6 == 'a' && $chrLeader7 == 's' && $obj008->position("21") == 'n' ) return Format::Newspaper;
-			if ( $chrLeader6 == 'a' && $chrLeader7 == 's' ) return Format::Serial; 
-			if ( $chrLeader6 == 'a' && $chrLeader7 == 'i' ) return Format::Website; 
+			if ( $chrLeader6 == 'a' && $chrLeader7 == 's' )
+			{
+				switch ( $field_008->position(21) )
+				{
+					case 'd':
+					case 'w':
+						return Format::WebPage;
+					
+					case 'p':
+					case 'n':
+						return Format::Periodical;
+						
+					default:
+						return Format::Serial;
+				}
+				
+			}
+			if ( $chrLeader6 == 'a' && $chrLeader7 == 'i' ) return Format::WebPage; 
 			if ( $chrLeader6 == 'c' || $chrLeader6 == 'd' ) return Format::MusicalScore; 
 			if ( $chrLeader6 == 'e' || $chrLeader6 == 'f' ) return Format::Map;
-			if ( $chrLeader6 == 'g' ) return Format::Video; 
+			if ( $chrLeader6 == 'g' ) return Format::VideoRecording; 
 			if ( $chrLeader6 == 'i' || $chrLeader6 == 'j' ) return Format::SoundRecording; 
 			if ( $chrLeader6 == 'k' ) return Format::Image; 
-			if ( $chrLeader6 == 'm' && $chrLeader7 == 'i' ) return Format::Website; 
-			if ( $chrLeader6 == 'm' ) return Format::Unknown; 
+			if ( $chrLeader6 == 'm' && $chrLeader7 == 'i' ) return Format::WebPage; 
+			if ( $chrLeader6 == 'm' ) return Format::ComputerProgram; 
 			if ( $chrLeader6 == 'o' ) return Format::Kit; 
 			if ( $chrLeader6 == 'p' ) return Format::MixedMaterial; 
 			if ( $chrLeader6 == 'r' ) return Format::PhysicalObject;

@@ -154,7 +154,7 @@ class ResultSet
 					{
 						// not if it is a review
 						
-						if ( stripos($xerxes_record->getFormat(),'review') === false )
+						if ( stripos($xerxes_record->format()->getPublicFormat(),'review') === false )
 						{
 							$xerxes_record->setRefereed(true);
 						}
