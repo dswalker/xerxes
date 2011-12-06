@@ -595,7 +595,9 @@ class Bibliographic extends Record
 	{
 		$this->technology = (string) $this->marc->datafield("538")->subfield("a");
 		
-		$this->format->setInternalFormat($this->convertToNormalizedFormat());
+		// @todo create the public display
+		
+		$this->format->setFormat($this->convertToNormalizedFormat());
 	}
 	
 	/**
