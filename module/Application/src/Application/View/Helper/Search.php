@@ -139,7 +139,7 @@ class Search extends View\Helper
 				$params = $this->currentParams();
 				$params["start"] = 1;
 				
-				$link = $this->url_for( $params );
+				$link = $this->request->url_for( $params );
 				
 				$objPage->setAttribute( "link", Parser::escapeXml( $link ) );
 				$objPage->setAttribute( "type", "first" );
@@ -165,7 +165,7 @@ class Search extends View\Helper
 						$params = $this->currentParams();
 						$params["start"] = $base_record;
 						
-						$link = $this->url_for( $params );
+						$link = $this->request->url_for( $params );
 						
 						$objPage->setAttribute( "link", Parser::escapeXml( $link ) );
 						$objXml->documentElement->appendChild( $objPage );
@@ -186,7 +186,7 @@ class Search extends View\Helper
 				$params = $this->currentParams();
 				$params["start"] =  $next;
 				
-				$link = $this->url_for( $params );
+				$link = $this->request->url_for( $params );
 				
 				$objPage->setAttribute( "link", Parser::escapeXml( $link ) );
 				$objPage->setAttribute( "type", "next" );
@@ -234,7 +234,7 @@ class Search extends View\Helper
 				
 				$here = $xml->createElement( "option", $value );
 				$here->setAttribute( "active", "false" );
-				$here->setAttribute( "link", $this->url_for($params) );
+				$here->setAttribute( "link", $this->request->url_for($params) );
 				$xml->documentElement->appendChild( $here );
 			}
 			
@@ -321,7 +321,7 @@ class Search extends View\Helper
 						$url["facet." . $group->name] = $facet->name;									
 					}
 							
-					$facet->url = $this->url_for($url);
+					$facet->url = $this->request->url_for($url);
 				}
 			}
 		}
@@ -380,7 +380,7 @@ class Search extends View\Helper
 				$params['action'] = "results";
 				$params['source'] = (string) $option["source"];
 				
-				$url = $this->url_for($params);
+				$url = $this->request->url_for($params);
 				
 				$option->addAttribute('url', $url);
 				
@@ -410,7 +410,7 @@ class Search extends View\Helper
 		{
 			$params = $this->currentParams();
 			$params = Parser::removeFromArray($params, $limit->field, $limit->value);
-			$limit->remove_url = $this->url_for($params);
+			$limit->remove_url = $this->request->url_for($params);
 		}
 	}
 	
@@ -423,7 +423,7 @@ class Search extends View\Helper
 		$params = $this->currentParams();
 		$params["query"] = $this->request->getParam("spelling_query");
 		
-		return $this->url_for($params);
+		return $this->request->url_for($params);
 	}
 	
 	/**
@@ -441,7 +441,7 @@ class Search extends View\Helper
 			"id" => $result->getRecordID()
 		);
 		
-		return $this->url_for($arrParams);
+		return $this->request->url_for($arrParams);
 	}
 	
 	/**
@@ -459,7 +459,7 @@ class Search extends View\Helper
 			"id" => $result->getRecordID()
 		);
 		
-		return $this->url_for($arrParams);
+		return $this->request->url_for($arrParams);
 	}
 	
 	/**
@@ -477,7 +477,7 @@ class Search extends View\Helper
 			"id" => $result->getRecordID()
 		);
 		
-		return $this->url_for($arrParams);	
+		return $this->request->url_for($arrParams);	
 	}
 
 	/**

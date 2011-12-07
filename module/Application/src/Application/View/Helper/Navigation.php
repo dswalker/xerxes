@@ -25,7 +25,7 @@ class Navigation extends View\Helper
 			'return' => $this->request->server()->get( 'REQUEST_URI' )
 		);
 		
-		return $this->url_for($params);
+		return $this->request->url_for($params);
 	}
 	
 	public function loginLink()
@@ -43,7 +43,7 @@ class Navigation extends View\Helper
 			'return' => $this->request->server()->get('REQUEST_URI') 
 		);
 		
-		return $this->url_for($params, $force_secure_login);		
+		return $this->request->url_for($params, $force_secure_login);		
 	}
 	
 	public function logoutLink()
@@ -54,7 +54,7 @@ class Navigation extends View\Helper
 			'return' => $this->request->server()->get('REQUEST_URI')
 		); 
 		
-		return $this->url_for($params);			
+		return $this->request->url_for($params);			
 	}
 	
 	public function accessibleLink()
@@ -65,7 +65,7 @@ class Navigation extends View\Helper
 			'return' => $this->request->server()->get('REQUEST_URI')
 		);
 
-		return $this->url_for($params);	
+		return $this->request->url_for($params);	
 	}
 
 	public function labelsLink()
@@ -75,7 +75,7 @@ class Navigation extends View\Helper
 			'action' => 'labels',
 		);
 
-		return $this->url_for($params);	
+		return $this->request->url_for($params);	
 	}
 }
 

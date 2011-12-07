@@ -1,6 +1,5 @@
 <?php
 return array(
-    'layout'                => 'layouts/layout.phtml',
     'display_exceptions'    => true,
     'di'                    => array(
         'instance' => array(

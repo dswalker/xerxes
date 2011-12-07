@@ -4,6 +4,7 @@ namespace Application\Controller;
 
 use Application\Model\Authentication\AuthenticationFactory,
 	Xerxes\Utility\Registry,
+	Zend\Mvc\MvcEvent,
 	Zend\Mvc\Controller\ActionController;
 
 class AuthenticateController extends ActionController
@@ -21,43 +22,11 @@ class AuthenticateController extends ActionController
 	
 	public function init(MvcEvent $e)
 	{
-		$this->registry = Registry::getInstance();
-		
-		// if the authentication_source is set in the request, then it takes precedence
-		
-		$override = $this->request->getParam("authentication_source");
-		
-		if ( $override == null )
-		{
-			// otherwise, see if one has been set in session from a previous login
-			
-			$session_auth = $this->request->getSession("auth");
-			
-			if ( $session_auth != "" )
-			{
-				$override = $session_auth;
-			}
-		}
-		
-		// make sure it's in our list, or if blank still, we get the default
-		
-		$configAuth = $this->registry->getAuthenticationSource($override);
-		
-		// we set this so we can keep track of the authentication type
-		// through various requests
-		
 		$factory = new AuthenticationFactory();
-		
-		$this->authentication = $factory->getAuthenticationObject($configAuth, $e);
-		$this->authentication->id = $configAuth;
+		$this->authentication = $factory->getAuthenticationObject($e);
 	}
-	
-	public function check()
-	{
-		$this->authentication->onEveryRequest();
-	}	
-	
-	public function login()
+		
+	public function loginAction()
 	{
 		// values from the request and configuration
 	
@@ -101,7 +70,7 @@ class AuthenticateController extends ActionController
 		}
 	}
 	
-	public function logout()
+	public function logoutAction()
 	{
 		// values from the request
 	
@@ -136,7 +105,7 @@ class AuthenticateController extends ActionController
 		$this->redirect()->toUrl($configLogoutUrl);
 	}
 	
-	public function validate()
+	public function validateAction()
 	{
 		// validate the request
 	

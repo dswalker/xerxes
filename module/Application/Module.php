@@ -2,21 +2,24 @@
 
 namespace Application;
 
-use Xerxes\Utility\Request,
+use Application\Model\Authentication\AuthenticationFactory,
+	Xerxes\Utility\Registry,
+	Xerxes\Utility\Request,
 	Zend\EventManager\StaticEventManager,
+	Zend\Http\PhpEnvironment\Response as HttpResponse,
     Zend\Module\Consumer\AutoloaderProvider,
 	Zend\Module\Manager,
 	Zend\Mvc\MvcEvent;
 
 class Module implements AutoloaderProvider
 {
-    protected $view;
+    protected $request;
     protected $viewListener;
 
     public function init(Manager $moduleManager)
     {
         $events = StaticEventManager::getInstance();
-        $events->attach('bootstrap', 'bootstrap', array($this, 'initializeView'), 100);
+        $events->attach('bootstrap', 'bootstrap', array($this, 'initialize'), 100);
     }
 
     public function getAutoloaderConfig()
@@ -39,24 +42,33 @@ class Module implements AutoloaderProvider
         return include __DIR__ . '/config/module.config.php';
     }
     
-    public function initializeView($e)
+    public function initialize($e)
     {
         $app          = $e->getParam('application');
         $locator      = $app->getLocator();
         $config       = $e->getParam('config');
+        
+        // custom xerxes request object
+        
+        $app->events()->attach('route', array($this, 'getRequest'), -80);        
+        
+        // set authentication check
+        
+        $app->events()->attach('route', array($this, 'checkAuthentication'), -90);
+        
+        // view listener
+        
         $view         = $locator->get('view');
         $viewListener = $this->getViewListener($view, $config);
-        
-        $app->events()->attach('dispatch', array($this, 'setRequest'), 1000);
         $app->events()->attachAggregate($viewListener);
-        
+
         $events = StaticEventManager::getInstance();
-        $viewListener->registerStaticListeners($events, $locator);
+        $viewListener->registerStaticListeners($events, $locator);        
     }
 
     protected function getViewListener($view, $config)
     {
-        if ($this->viewListener instanceof View\Listener) 
+        if ( $this->viewListener instanceof View\Listener ) 
         {
             return $this->viewListener;
         }
@@ -70,10 +82,40 @@ class Module implements AutoloaderProvider
         return $viewListener;
     }
     
-    public function setRequest(MvcEvent $e)
+    public function getRequest(MvcEvent $e)
     {
-    	$request = new Request();
-    	$request->setRouter($e->getRouter());
-    	$e->setRequest($request);
-    }    
+    	if ( $this->request instanceof Request )
+    	{
+    		return $this->request;
+    	}
+    	
+    	$this->request = new Request();
+    	$this->request->setRouter($e->getRouter());
+    	$e->setRequest($this->request);
+    }
+    
+    public function checkAuthentication(MvcEvent $e)
+    {
+    	$request = $e->getRequest();
+    	
+    	if ( $request->getParam('controller') == 'ebsco')
+    	{
+	    	$params = array (
+	    		'controller' => 'authenticate', 
+	    		'action' => 'login',
+	    		'return' => $this->request->server()->get('REQUEST_URI')
+	    	);
+	    	
+	    	$url = $request->url_for( $params );
+	    	
+	    	$response = new HttpResponse();
+	    	$response->headers()->addHeaderLine('Location', $url);
+	    	$response->setStatusCode(302);
+	    	
+	    	return $response;
+    	}
+    }
 }
+
+
+

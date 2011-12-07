@@ -2,7 +2,8 @@
 
 namespace Application\Model\Authentication;
 
-use Zend\Mvc\MvcEvent;
+use Xerxes\Utility\Registry,
+	Zend\Mvc\MvcEvent;
 
 /**
  * Authentication factory
@@ -17,8 +18,31 @@ use Zend\Mvc\MvcEvent;
 
 class AuthenticationFactory
 {
-	public function getAuthenticationObject($name, MvcEvent $e)
+	public function getAuthenticationObject(MvcEvent $e)
 	{
+		$registry = Registry::getInstance();
+		$request = $e->getRequest();
+		
+		// if the authentication_source is set in the request, then it takes precedence
+		
+		$override = $request->getParam("authentication_source");
+		
+		if ( $override == null )
+		{
+			// otherwise, see if one has been set in session from a previous login
+		
+			$session_auth = $request->getSession("auth");
+		
+			if ( $session_auth != "" )
+			{
+				$override = $session_auth;
+			}
+		}
+		
+		// make sure it's in our list, or if blank still, we get the default
+		
+		$name = $registry->getAuthenticationSource($override);
+		
 		// sanitize
 		
 		$name = preg_replace('/\W/', '', $name);
