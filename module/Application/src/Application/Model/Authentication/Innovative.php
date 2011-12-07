@@ -69,13 +69,11 @@ class Innovative extends Authentication
 			
 			$this->mapUserData();
 			
-			$this->register();
-			
-			return true;
+			return $this->register();
 		}
 		else
 		{
-			return false;
+			return self::FAILED;
 		}
 	}
 	

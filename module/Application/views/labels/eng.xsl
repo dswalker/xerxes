@@ -192,7 +192,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_header_logout">
 		<xsl:text>Log-out </xsl:text>
 		<xsl:choose>
-			<xsl:when test="//request/authorization_info/affiliated[@user_account = 'true']">
+			<xsl:when test="//session/role = 'named'">
 				<xsl:value-of select="//request/session/username" />
 			</xsl:when>
 			<xsl:when test="//session/role = 'guest'">

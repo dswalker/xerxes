@@ -60,8 +60,7 @@ class Demo extends Authentication
 			// register the user and stop the flow
 			
 			$this->user->username = $strUsername;
-			$this->register();
-			return self::SUCCESS;
+			return $this->register();
 		}
 		else
 		{

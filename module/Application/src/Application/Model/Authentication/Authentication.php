@@ -69,12 +69,15 @@ abstract class Authentication
 		
 		$this->return_url = str_replace("https://", "http://", $this->return_url);		
 		
-		// we're explicitly _not_ using pretty-url here because some CAS servers might only
-		// be set-up with a single URL wildcard, while some other funky auth schemes get 
-		// tripped-up by the 'sub-folder' path elements that pretty-url creates
+		// @todo find out if some CAS servers are still tripping up on this
 		
-		$this->validate_url = $server . "/authenticate/validate" .
-			"?return=" . urlencode($this->return_url);
+		$params = array (
+			'controller' => 'authenticate',
+			'action' => 'validate',
+			'return' => $this->return_url 
+		);
+		
+		$this->validate_url = $this->request->url_for($params, true);
 	}
 	
 	/**
@@ -183,6 +186,8 @@ abstract class Authentication
 		// now forward them to the return url
 		
 		$this->setRedirect($this->return_url);
+		
+		return self::SUCCESS;
 	}
 	
 	public function setRedirect($url)

@@ -52,7 +52,7 @@ class AuthenticateController extends ActionController
 	
 		if ( $result == Authentication::REDIRECT )
 		{
-			return $this->redirect()->toUrl($this->authentication->getRedirect());
+			return $this->doRedirect();
 		}
 	
 		### local authentication
@@ -72,7 +72,7 @@ class AuthenticateController extends ActionController
 		}
 		else
 		{
-			return $this->redirect()->toUrl($this->authentication->getRedirect());
+			return $this->doRedirect();
 		}
 	}
 	
@@ -111,8 +111,17 @@ class AuthenticateController extends ActionController
 	
 		$result = $this->authentication->onCallBack();
 		
+		if ( $result == Authentication::SUCCESS )
+		{
+			$this->doRedirect();
+		}
 		
-	}	
+	}
+	
+	public function doRedirect()
+	{
+		return $this->redirect()->toUrl($this->authentication->getRedirect());
+	}
 }
 
 

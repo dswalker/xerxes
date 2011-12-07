@@ -2,6 +2,8 @@
 
 namespace Application\Model\Authentication;
 
+use Xerxes\Utility\Factory;
+
 use Xerxes\Utility\Parser;
 
 /**
@@ -25,8 +27,9 @@ class Cas extends Authentication
 	{
 		$configCasLogin = $this->registry->getConfig( "CAS_LOGIN", true );
 		
-		$strUrl = $configCasLogin . "?service=" . urlencode($this->validate_url);
-		$this->setRedirect( $strUrl );
+		$url = $configCasLogin . "?service=" . urlencode($this->validate_url);
+		
+		$this->setRedirect( $url );
 		
 		return self::REDIRECT;
 	}
@@ -35,23 +38,23 @@ class Cas extends Authentication
 	{
 		// validate the request
 		
-		$strUsername = $this->isValid();
+		$username = $this->isValid();
 		
-		if ($strUsername === false )
+		if ($username === false )
 		{
 			throw new \Exception("Could not validate user against CAS server");
 		}
 		else
 		{
-			$this->user->username = $strUsername;
-			$this->register();
+			$this->user->username = $username;
+			return $this->register();
 		}
 	}
 	
 	/**
 	 * Parses a validation response from a CAS server to see if the returning CAS request is valid
 	 *
-	 * @param string $strResults		xml or plain text response from cas server
+	 * @param string $results		xml or plain text response from cas server
 	 * @return bool						true if valid, false otherwise
 	 * @exception 						throws exception if cannot parse response or invalid version
 	 */
@@ -60,7 +63,7 @@ class Cas extends Authentication
 	{
 		// values from the request
 		
-		$strTicket = $this->request->getParam("ticket");
+		$ticket = $this->request->getParam("ticket");
 					
 		// configuration settings
 
@@ -73,21 +76,24 @@ class Cas extends Authentication
 		
 		// now get it!
 			
-		$strUrl = $configCasValidate . "?ticket=" . $strTicket . "&service=" . urlencode($this->validate_url);
+		$url = $configCasValidate . "?ticket=" . $ticket . "&service=" . urlencode($this->validate_url);
 		
-		$strResults = Parser::request( $strUrl );		
+		$http_client = Factory::getHttpClient();
+		$http_client->setUri($url);
+		$results = $http_client->send()->getBody();
+			
 		
 		// validate is plain text
 		
 		if ( $service == "validate" )
 		{
-			$arrMessage = explode("\n", $strResults);
+			$message_array = explode("\n", $results);
 			
-			if ( count($arrMessage) >= 2 )
+			if ( count($message_array) >= 2 )
 			{
-				if ( $arrMessage[0] == "yes")
+				if ( $message_array[0] == "yes")
 				{
-					return $arrMessage[1];
+					return $message_array[1];
 				}
 			}
 			else
@@ -99,32 +105,32 @@ class Cas extends Authentication
 		{
 			// these are XML based
 			
-			$objXml = new \DOMDocument();
-			$objXml->loadXML($strResults);
+			$xml = new \DOMDocument();
+			$xml->loadXML($results);
 			
-			$strCasNamespace = "http://www.yale.edu/tp/cas";
+			$cas_namespace = "http://www.yale.edu/tp/cas";
 			
-			$objUser = $objXml->getElementsByTagNameNS($strCasNamespace, "user")->item(0);
-			$objFailure = $objXml->getElementsByTagNameNS($strCasNamespace, "authenticationFailure")->item(0);
+			$user = $xml->getElementsByTagNameNS($cas_namespace, "user")->item(0);
+			$failure = $xml->getElementsByTagNameNS($cas_namespace, "authenticationFailure")->item(0);
 			
-			if ( $objUser != null )
+			if ( $user != null )
 			{
-				if ( $objUser->nodeValue != "" )
+				if ( $user->nodeValue != "" )
 				{
-					return $objUser->nodeValue;
+					return $user->nodeValue;
 				}
 				else
 				{
 					throw new \Exception("CAS validation response missing username value");
 				}
 			}
-			elseif ( $objFailure != null )
+			elseif ( $failure != null )
 			{
 				// see if error, rather than failed authentication
 				
-				if ( $objFailure->getAttribute("code") == "INVALID_REQUEST")
+				if ( $failure->getAttribute("code") == "INVALID_REQUEST")
 				{
-					throw new \Exception("Invalid request to CAS server: " . $objFailure->nodeValue);
+					throw new \Exception("Invalid request to CAS server: " . $failure->nodeValue);
 				}
 			}
 			else
