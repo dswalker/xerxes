@@ -4,6 +4,7 @@ namespace Application\Model\Authentication;
 
 use Application\Model\DataMap\Users, 
 	Application\Model\DataMap\SavedRecords,
+	Xerxes\Utility\Request,
 	Xerxes\Utility\Registry,
 	Zend\Mvc\MvcEvent;
 
@@ -20,11 +21,13 @@ use Application\Model\DataMap\Users,
 
 abstract class AbstractAuthentication
 {
-	protected $user; // user object
 	public $id; // the id of this auth scheme, set by the factory method invoking it
+	
+	protected $user; // user object
 	protected $role = "named"; // users role as named or guest
 	protected $return_url; // the return url to get the user back to where they are in Xerxes
 	protected $validate_url; // the url to return for a validate request, for external auths
+	protected $redirect;
 	
 	protected $registry; // config object
 	protected $request; // request object
@@ -39,7 +42,17 @@ abstract class AbstractAuthentication
 		$this->return_url = $this->request->getParam("return");
 		
 		$base = $this->request->getBaseUrl();
-		$server = $this->registry->getConfig("SERVER_URL", true);
+		
+		// @todo see if this can be done easier
+		
+		$port = $this->request->uri()->getPort();
+		
+		if ( $port != "" )
+		{
+			$port = ":$port";
+		}
+		
+		$server = $this->request->uri()->getScheme() . '//' . $this->request->uri()->getHost() . $port;
 		
 		// if no return supplied, then send them home!
 		
@@ -173,6 +186,16 @@ abstract class AbstractAuthentication
 		
 		// now forward them to the return url
 		
-		$this->response->setRedirect($this->return_url);
+		$this->setRedirect($this->return_url);
+	}
+	
+	public function setRedirect($url)
+	{
+		$this->redirect = $url;
+	}
+	
+	public function getRedirect()
+	{
+		return $this->redirect;
 	}
 }

@@ -88,7 +88,7 @@ class Request extends ZendRequest
      * @return Manager
      */
     
-    public function getSessionManager()
+    public function session()
     {
     	if (!$this->session instanceof Manager)
     	{
@@ -111,7 +111,7 @@ class Request extends ZendRequest
     		return $this->container;
     	}
     
-    	$manager = $this->getSessionManager();
+    	$manager = $this->session();
     	$this->container = new Container('Testing', $manager);
 
     	return $this->container;

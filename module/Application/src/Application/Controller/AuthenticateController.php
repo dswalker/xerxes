@@ -22,6 +22,8 @@ class AuthenticateController extends ActionController
 	
 	public function init(MvcEvent $e)
 	{
+		$this->registry = Registry::getInstance();
+		
 		$factory = new AuthenticationFactory();
 		$this->authentication = $factory->getAuthenticationObject($e);
 	}
@@ -83,24 +85,18 @@ class AuthenticateController extends ActionController
 	
 		// configuration settings
 	
-		$configBaseURL = $this->registry->getConfig("BASE_URL", true);
+		$configBaseURL = $this->request->getBaseUrl();
 		$configLogoutUrl = $this->registry->getConfig("LOGOUT_URL", false, $configBaseURL);
 	
 		// perform any anuthentication scheme-specific clean-up action
 	
 		$this->authentication->onLogout();
+		
+		$this->request->session()->destroy( array(
+        	'send_expire_cookie' => true,
+        	'clear_storage'      => true,
+    	));
 	
-		// release the data associated with the session
-	
-		session_destroy();
-		session_unset();
-	
-		// delete cookies
-	
-		setcookie("PHPSESSID", "", 0, "/");
-		setcookie("saves", "", 0, "/");
-	
-		// redirect to specified logout location
 	
 		$this->redirect()->toUrl($configLogoutUrl);
 	}

@@ -49,7 +49,7 @@ class AuthenticationFactory
 		
 		// main class
 		
-		$class_name = ucfirst($name);
+		$class_name = 'Application\Model\Authentication' . '\\' . ucfirst($name);
 		
 		// local custom version
 		

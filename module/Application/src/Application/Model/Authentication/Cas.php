@@ -15,7 +15,7 @@ use Xerxes\Utility\Parser;
  * @license http://www.gnu.org/licenses/
  */
 
-class CAS extends AbstractAuthentication 
+class Cas extends AbstractAuthentication 
 {
 	/**
 	 * Redirect to the cas login service
