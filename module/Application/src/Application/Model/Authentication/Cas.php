@@ -2,9 +2,8 @@
 
 namespace Application\Model\Authentication;
 
-use Xerxes\Utility\Factory;
-
-use Xerxes\Utility\Parser;
+use Xerxes\Utility\Factory,
+	Xerxes\Utility\Parser;
 
 /**
  * CAS authentication
