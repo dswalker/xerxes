@@ -207,5 +207,105 @@ class Record extends Xerxes\Record
 			return strip_tags($pointer);
 		}
 	}
+	
+	protected function convertFormatToInternal()
+	{
+		/*
+		 	Journal Article
+			Book Review
+			Dissertation
+			Patent
+			Newsletter
+			Trade Publication Article
+			Book Chapter
+			Conference Proceeding
+			Standard
+			Publication
+			Government Document
+			Image
+			Report
+			Audio Recording
+			Data Set
+			Photograph
+			Archival Material
+			Technical Report
+			Journal / eJournal
+			Music Recording
+			Electronic Resource
+			Manuscript
+			Paper
+			Map
+			Sheet Music
+			Music Score
+			Video Recording
+			Special Collection
+			Play
+			Personal Narrative
+			Microform
+			Newspaper
+			Student Thesis
+			Market Research
+			Pamphlet
+			Presentation
+			Poem
+			Art
+			Artifact
+			Architectural Drawing
+			Realia
+			Magazine
+			Exam
+			Poster
+			Magazine Article
+			Transcript
+			Archival Material/Manuscripts
+			Computer File
+			Compact Disc
+			Publication Article
+			Postcard
+			Library Holding
+			Sound Recording
+			Spoken Word Recording
+			Slide
+			Print
+			Drawing
+			Painting
+			Course Reading
+			Library Research Guide
+			Film Script
+			Blueprints
+			Kit
+			Finding Aid
+			Case
+			Ceremonial Object
+			Mixed
+			Catalog
+			Houseware
+			Text
+			Film
+			Equipment
+			Performance
+			Learning Object
+			Album
+			Model
+			Furnishing
+			Personal Article
+			Tool
+			Atlas
+			Musical Instrument
+			Clothing
+			Article
+			Database
+			Graphic Arts
+			Implements
+			Microfilm
+			Newspaper Article
+			Book / eBook
+			Reference
+			Web Resource
+			Research Guide		
+		 */
+	}
+	
+	
 }
 	

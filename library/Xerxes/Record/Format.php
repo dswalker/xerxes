@@ -85,7 +85,7 @@ class Format
 	const WebPage = "ELEC";
 	
 	// local types not covered above
-	// always include XERXES_ at the  start to distinguish them
+	// always include XERXES_ at the start to distinguish them
 	
 	const BookReview = "XERXES_BookReview";
 	const Image = "XERXES_Image";
@@ -103,6 +103,35 @@ class Format
 	public function determineFormat($data_fields)
 	{
 		$this->setFormat($this->extractFormat($data_fields));
+	}
+	
+	public function toRIS()
+	{
+		// the explicit cases below handle our locally defined types,
+		// otherwise just take the internal value straight-up, 
+		// since it is itself the RIS type
+		
+		switch ( $this->internal )
+		{
+			case self::BookReview :
+			case self::Review :
+				
+				return self::Article;
+				break;
+
+			case self::Image :
+			case self::Kit :
+			case self::MixedMaterial :
+			case self::PhysicalObject :
+			case "":
+				
+				return self::Unknown;
+				break;
+				
+			default:
+				
+				return $this->internal;
+		}
 	}
 	
 	/**

@@ -237,7 +237,7 @@ class Summon
 		
 			return array(
 				'IsScholarly,or,1,2' ,
-				'ContentType,or,1,30' ,
+				'ContentType,or,1,100' ,
 				'SubjectTerms,or,1,30'
 			);
 		}
