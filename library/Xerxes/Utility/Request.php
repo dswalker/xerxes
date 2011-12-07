@@ -186,6 +186,13 @@ class Request extends ZendRequest
 				}
 			}
 			
+			// post requests
+			
+			foreach ( $_POST as $key => $value )
+			{
+				$this->setParam( $key, $value );
+			}
+			
 			// set mobile
 				
 			if ( $this->getSession('is_mobile') == null )
@@ -521,20 +528,36 @@ class Request extends ZendRequest
 	
 		if ( $full == true )
 		{
-			$base = "http://";
+			$base = $this->getServerUrl();
 	
 			if ( $force_secure == true )
 			{
-				$base = "https://";
+				$base = str_replace("http://", "https://", $base);
 			}
-	
-			$base .= $this->server()->get('SERVER_NAME');
 	
 			$url = $base .= $url;
 		}
 	
 		return $url;
-	}	
+	}
+	
+	public function getServerUrl()
+	{
+		// @todo see if this can be done easier
+		
+		$port = $this->uri()->getPort();
+		
+		if ( $port == "80" )
+		{
+			$port = "";
+		}
+		else
+		{
+			$port = ":$port";
+		}
+		
+		return $this->uri()->getScheme() . '://' . $this->uri()->getHost() . $port;
+	}
 	
 	/**
 	 * Serialize to xml

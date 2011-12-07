@@ -71,9 +71,9 @@ class AuthenticationFactory
 
 		$authentication = new $class_name($e);
 		
-		if ( ! $authentication instanceof AbstractAuthentication)
+		if ( ! $authentication instanceof Authentication)
 		{
-			throw new \Exception("class '$class_name' for the '$name' authentication scheme must extend AbstractAuthentication");
+			throw new \Exception("class '$class_name' for the '$name' authentication scheme must extend Authentication");
 		}
 		
 		return $authentication;

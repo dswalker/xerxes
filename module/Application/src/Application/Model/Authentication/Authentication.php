@@ -19,7 +19,7 @@ use Application\Model\DataMap\Users,
  * @package Xerxes
  */
 
-abstract class AbstractAuthentication
+abstract class Authentication
 {
 	public $id; // the id of this auth scheme, set by the factory method invoking it
 	
@@ -33,26 +33,22 @@ abstract class AbstractAuthentication
 	protected $request; // request object
 	protected $response; // response object	
 	
+	const FAILED = 0;
+	const SUCCESS = 1;
+	const REDIRECT = 3;
+	
 	public function __construct(MvcEvent $e)
 	{
 		$this->request = $e->getRequest();
 		$this->registry = Registry::getInstance();
 		
 		$this->user = new User();
+		
 		$this->return_url = $this->request->getParam("return");
 		
 		$base = $this->request->getBaseUrl();
 		
-		// @todo see if this can be done easier
-		
-		$port = $this->request->uri()->getPort();
-		
-		if ( $port != "" )
-		{
-			$port = ":$port";
-		}
-		
-		$server = $this->request->uri()->getScheme() . '//' . $this->request->uri()->getHost() . $port;
+		$server = $this->request->getServerUrl();
 		
 		// if no return supplied, then send them home!
 		
@@ -67,7 +63,7 @@ abstract class AbstractAuthentication
 				$this->return_url = $server . $this->return_url;
 			}
 		}
-
+		
 		// we always send the user back on http: since shib and possibly other schemes
 		// will drop the user back in xerxes on https:, which is weird
 		
@@ -77,8 +73,8 @@ abstract class AbstractAuthentication
 		// be set-up with a single URL wildcard, while some other funky auth schemes get 
 		// tripped-up by the 'sub-folder' path elements that pretty-url creates
 		
-		$this->validate_url = $base . "/?base=authenticate&action=validate" .
-			"&return=" . urlencode($this->return_url);
+		$this->validate_url = $server . "/authenticate/validate" .
+			"?return=" . urlencode($this->return_url);
 	}
 	
 	/**

@@ -49,11 +49,11 @@ class Restrict
 	 * not an authenticated user.
 	 */
 	
-	public static function isAuthenticatedUser(Request $request)
+	public function isAuthenticatedUser()
 	{
-		return ( $request->getSession( "username" ) != null && 
-			$request->getSession( "role" ) != "local" && 
-			$request->getSession( "role" ) != "guest"
+		return ( $this->request->getSession( "username" ) != null && 
+			$this->request->getSession( "role" ) != "local" && 
+			$this->request->getSession( "role" ) != "guest"
 		);
 	}
 	

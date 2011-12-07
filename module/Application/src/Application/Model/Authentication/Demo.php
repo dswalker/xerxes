@@ -13,7 +13,7 @@ namespace Application\Model\Authentication;
  * @package Xerxes
  */
 
-class Demo extends AbstractAuthentication 
+class Demo extends Authentication 
 {
 	/**
 	* Authenticates the user against the directory server
@@ -61,11 +61,11 @@ class Demo extends AbstractAuthentication
 			
 			$this->user->username = $strUsername;
 			$this->register();
-			return true;
+			return self::SUCCESS;
 		}
 		else
 		{
-			return false;
+			return self::FAILED;
 		}
 	}
 }

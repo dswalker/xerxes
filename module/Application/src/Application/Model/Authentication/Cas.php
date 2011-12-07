@@ -15,7 +15,7 @@ use Xerxes\Utility\Parser;
  * @license http://www.gnu.org/licenses/
  */
 
-class Cas extends AbstractAuthentication 
+class Cas extends Authentication 
 {
 	/**
 	 * Redirect to the cas login service
@@ -28,7 +28,7 @@ class Cas extends AbstractAuthentication
 		$strUrl = $configCasLogin . "?service=" . urlencode($this->validate_url);
 		$this->setRedirect( $strUrl );
 		
-		return true;
+		return self::REDIRECT;
 	}
 	
 	public function onCallBack()

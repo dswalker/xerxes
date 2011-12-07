@@ -3,6 +3,7 @@
 namespace Application\Controller;
 
 use Application\Model\Authentication\AuthenticationFactory,
+	Application\Model\Authentication\Authentication,
 	Xerxes\Utility\Registry,
 	Zend\Mvc\MvcEvent,
 	Zend\Mvc\Controller\ActionController;
@@ -37,22 +38,21 @@ class AuthenticateController extends ActionController
 	
 		// if secure login is required, then force the user back thru https
 	
-		if ( $config_https == true && $this->request->getServer("HTTPS") == null )
+		if ( $config_https == true && $this->request->uri()->getScheme() == "http" )
 		{
-			$web = $this->registry->getConfig( "SERVER_URL" );
-			$web = str_replace("http://", "https://", $web);
+			$uri = $this->request->uri();
+			$uri->setScheme('https');
 	
-			$this->request->setRedirect( $web . $_SERVER['REQUEST_URI'] );
-			return 1;
+			return $this->redirect()->toUrl((string) $uri);
 		}
 	
 		### remote authentication
 	
-		$bolStop = $this->authentication->onLogin();
+		$result = $this->authentication->onLogin();
 	
-		if ( $bolStop == true )
+		if ( $result == Authentication::REDIRECT )
 		{
-			return 1;
+			return $this->redirect()->toUrl($this->authentication->getRedirect());
 		}
 	
 		### local authentication
@@ -64,11 +64,15 @@ class AuthenticateController extends ActionController
 	
 		$bolAuth = $this->authentication->onCallBack();
 	
-		if ( $bolAuth == false )
+		if ( $bolAuth == Authentication::FAILED )
 		{
 			// failed the login, so present a message to the user
 	
 			return array("error" => "authentication");
+		}
+		else
+		{
+			return $this->redirect()->toUrl($this->authentication->getRedirect());
 		}
 	}
 	
@@ -105,7 +109,9 @@ class AuthenticateController extends ActionController
 	{
 		// validate the request
 	
-		$this->authentication->onCallBack();
+		$result = $this->authentication->onCallBack();
+		
+		
 	}	
 }
 

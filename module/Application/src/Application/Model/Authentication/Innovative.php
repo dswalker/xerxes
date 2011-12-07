@@ -17,7 +17,7 @@ use Xerxes\Utility\Parser,
  * @package Xerxes
  */
 
-class Innovative extends AbstractAuthentication 
+class Innovative extends Authentication 
 {
 	protected $server;
 	protected $user_data;

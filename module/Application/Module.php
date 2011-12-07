@@ -5,6 +5,7 @@ namespace Application;
 use Application\Model\Authentication\AuthenticationFactory,
 	Xerxes\Utility\Registry,
 	Xerxes\Utility\Request,
+	Xerxes\Utility\Restrict,
 	Zend\EventManager\StaticEventManager,
 	Zend\Http\PhpEnvironment\Response as HttpResponse,
     Zend\Module\Consumer\AutoloaderProvider,
@@ -100,19 +101,24 @@ class Module implements AutoloaderProvider
     	
     	if ( $request->getParam('controller') == 'ebsco')
     	{
-	    	$params = array (
-	    		'controller' => 'authenticate', 
-	    		'action' => 'login',
-	    		'return' => $this->request->server()->get('REQUEST_URI')
-	    	);
-	    	
-	    	$url = $request->url_for( $params );
-	    	
-	    	$response = new HttpResponse();
-	    	$response->headers()->addHeaderLine('Location', $url);
-	    	$response->setStatusCode(302);
-	    	
-	    	return $response;
+    		$restrict = new Restrict($request);
+    		
+    		if ( ! $restrict->isAuthenticatedUser() )
+    		{
+		    	$params = array (
+		    		'controller' => 'authenticate', 
+		    		'action' => 'login',
+		    		'return' => $this->request->server()->get('REQUEST_URI')
+		    	);
+		    	
+		    	$url = $request->url_for( $params );
+		    	
+		    	$response = new HttpResponse();
+		    	$response->headers()->addHeaderLine('Location', $url);
+		    	$response->setStatusCode(302);
+		    	
+		    	return $response;
+    		}
     	}
     }
 }

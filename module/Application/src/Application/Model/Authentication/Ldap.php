@@ -14,7 +14,7 @@ namespace Application\Model\Authentication;
  * @package Xerxes
  */
 
-class Ldap extends AbstractAuthentication 
+class Ldap extends Authentication 
 {
 	/**
 	* Authenticates the user against the directory server
