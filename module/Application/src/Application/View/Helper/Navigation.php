@@ -3,10 +3,19 @@
 namespace Application\View\Helper;
 
 use Xerxes\Utility\Registry,
-	Application\View;
+	Zend\Mvc\MvcEvent;
 
-class Navigation extends View\Helper
+class Navigation
 {
+	protected $request; // request
+	protected $registry; // reistry
+	
+	public function __construct( MvcEvent $e )
+	{
+		$this->request = $e->getRequest();
+		$this->registry = Registry::getInstance();
+	}
+	
 	public function getNavbar()
 	{
 		return array(
@@ -43,7 +52,7 @@ class Navigation extends View\Helper
 			'return' => $this->request->server()->get('REQUEST_URI') 
 		);
 		
-		return $this->request->url_for($params, $force_secure_login);		
+		return $this->request->url_for($params, true, $force_secure_login);		
 	}
 	
 	public function logoutLink()

@@ -6,22 +6,25 @@ use Application\Model\Search\Engine,
 	Application\Model\Search\Result,
 	Application\Model\Search\ResultSet,
 	Application\Model\Search\Query,
-	Application\View,
 	Xerxes\Record,
 	Xerxes\Utility\Parser,
 	Xerxes\Utility\Request,
 	Xerxes\Utility\Registry,
 	Zend\Mvc\MvcEvent;
 
-class Search extends View\Helper
+class Search
 {
 	protected $id;
 	protected $query;
 	protected $config;
 	
+	protected $request; // request
+	protected $registry; // reistry
+	
 	public function __construct(MvcEvent $e, $id, Engine $engine)
 	{
-		parent::__construct($e);
+		$this->request = $e->getRequest();
+		$this->registry = Registry::getInstance();
 		
 		$this->id = $id;
 		$this->query = $engine->getQuery($this->request);
