@@ -273,12 +273,30 @@ class Request extends ZendRequest
 	}
 	
 	/**
+	 * Is the request a Javascript XMLHttpRequest?
+	 *
+	 * @return boolean
+	 */
+	
+	public function isXmlHttpRequest()
+	{
+		if ( $this->headers()->get('X_REQUESTED_WITH') == 'XMLHttpRequest')
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}	
+	
+	/**
 	 * Add a parameter to the request
 	 *
-	 * @param string $key		key to identify the value
-	 * @param string $value		value to add
-	 * @param bool $is_array	[optional] set to true will ensure property is set as array
-	 * @param bool $override	[optional] replace any existing values
+	 * @param string $key			key to identify the value
+	 * @param string|array $value	value to add
+	 * @param bool $is_array		[optional] set to true will ensure property is set as array
+	 * @param bool $override		[optional] replace any existing values
 	 */
 	
 	public function setParam( $key, $value, $is_array = false, $override = false )
@@ -445,7 +463,16 @@ class Request extends ZendRequest
 		return $arrFinal;
 	}
 	
-	public function url_for($params = array(), $full = false, $force_secure = false, $options = array())
+	/**
+	 * Construct a URL, taking into account routes, based on supplied parameters
+	 * 
+	 * @param array $params				the elements of the url
+	 * @param bool $full				[optional] should be full url
+	 * @param bool $force_secure		[optional] should be https://
+	 * @param array $options			route/assemble options
+	 */
+	
+	public function url_for(array $params, $full = false, $force_secure = false, $options = array())
 	{
 		// use the default route if no option supplied
 	
@@ -528,23 +555,21 @@ class Request extends ZendRequest
 	
 		if ( $full == true )
 		{
-			$base = $this->getServerUrl();
-	
-			if ( $force_secure == true )
-			{
-				$base = str_replace("http://", "https://", $base);
-			}
-	
+			$base = $this->getServerUrl($force_secure);
 			$url = $base .= $url;
 		}
 	
 		return $url;
 	}
 	
-	public function getServerUrl()
+	/**
+	 * Get the current server URL, including scheme, hostname, port
+	 * 
+	 * @param bool $force_secure		[optional] should be https://
+	 */
+	
+	public function getServerUrl($force_secure = false )
 	{
-		// @todo see if this can be done easier
-		
 		$port = $this->uri()->getPort();
 		
 		if ( $port == "80" )
@@ -556,7 +581,16 @@ class Request extends ZendRequest
 			$port = ":$port";
 		}
 		
-		return $this->uri()->getScheme() . '://' . $this->uri()->getHost() . $port;
+		if ( $force_secure == true )
+		{
+			$scheme = "https";
+		}
+		else
+		{
+			$scheme = $this->uri()->getScheme();
+		}
+		
+		return $scheme . '://' . $this->uri()->getHost() . $port;
 	}
 	
 	/**
