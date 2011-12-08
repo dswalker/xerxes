@@ -59,7 +59,7 @@ class AuthenticationFactory
 		{
 			require_once($local_file);
 			
-			$class_name = 'XerxesLocal\Authentication' . '\\' . ucfirst($name);
+			$class_name = 'Local\Authentication' . '\\' . ucfirst($name);
 			
 			if ( ! class_exists($class_name) )
 			{
