@@ -1,5 +1,9 @@
 <?php
 
+namespace Local\Authentication;
+
+use Application\Model\Authentication\Authentication;
+
 /**
  * custom authentication
  * 
@@ -11,7 +15,7 @@
  * @package Xerxes
  */
 
-class Xerxes_CustomAuth_Custom extends Xerxes_Model_Authentication_Abstract
+class Custom extends Authentication
 {
 	public function onLogin()
 	{
@@ -23,15 +27,12 @@ class Xerxes_CustomAuth_Custom extends Xerxes_Model_Authentication_Abstract
 		
 		$url = "https://some.example.edu/login?return=" . $this->validate_url;
 		$this->request->setRedirect($url);
-		return true;
+		return self::REDIRECT;
 		*/
 	}
 	
 	public function onCallBack()
 	{
-		// do some logic here to authenticate the user
-		
-		$bolSuccess = false;
 		
 		// LOCAL:
 		//
@@ -41,8 +42,8 @@ class Xerxes_CustomAuth_Custom extends Xerxes_Model_Authentication_Abstract
 		// the following paramaters are the default ones offered  by the form; if you need others, 
 		// simply customize the login form
 		
-		$strUsername = $this->request->getProperty("username");
-		$strPassword = $this->request->getProperty("password");
+		$strUsername = $this->request->getParam("username");
+		$strPassword = $this->request->getParam("password");
 		
 		// REMOTE:
 		//
@@ -62,6 +63,6 @@ class Xerxes_CustomAuth_Custom extends Xerxes_Model_Authentication_Abstract
 		$this->user->last_name;
 		$this->user->email_addr;
 
-		return $bolSuccess;
+		return self::SUCCESS; // or self::FAILURE
 	}
 }

@@ -1,5 +1,9 @@
 <?php
 
+namespace Local\Authentication;
+
+use Application\Model\Authentication;
+
 /**
  * custom authentication for shibboleth
  * 
@@ -11,7 +15,7 @@
  * @package Xerxes
  */
 
-class Xerxes_CustomAuth_Shibboleth extends Xerxes_Model_Authentication_Abstract
+class Shibboleth extends Authentication\Shibboleth
 { 
 	/**
 	 * Implement code in this function to authorize the user and/or map
@@ -19,7 +23,7 @@ class Xerxes_CustomAuth_Shibboleth extends Xerxes_Model_Authentication_Abstract
 	 * 
 	 * User has already been authenticated when this function is called. 
 	 * 
-	 * HTTP headers are available via $this->request->getServer("header_name");
+	 * HTTP headers are available via $this->request->server()->get("header_name");
 	 * 
 	 * This function may:
 	 * 

@@ -1,5 +1,9 @@
 <?php
 
+namespace Local\Authentication;
+
+use Application\Model\Authentication;
+
 /**
  * custom authentication for iii patron api
  * 
@@ -11,7 +15,7 @@
  * @package Xerxes
  */
 
-class Xerxes_CustomAuth_Innovative extends Xerxes_Model_Authentication_Abstract
+class Innovative extends Authentication\Innovative
 { 
 	/**
 	 * Implement code in this function to authorize the user and/or map
