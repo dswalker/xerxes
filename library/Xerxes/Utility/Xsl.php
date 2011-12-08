@@ -16,13 +16,20 @@ namespace Xerxes\Utility;
 
 class Xsl
 {
-	private $distro_xsl_dir;
-	private $local_xsl_dir;
+	private $distro_xsl_dir; // location of distro xsl
+	private $local_xsl_dir; // directory with local override
+	
+	/**
+	 * Return an XSL parsing object
+	 * 
+	 * @param string $distro_xsl_dir		location of distro xsl
+	 * @param string $local_xsl_dir			directory with local override
+	 */
 	
 	public function __construct($distro_xsl_dir, $local_xsl_dir )
 	{
-		$this->distro_xsl_dir = $distro_xsl_dir;
-		$this->local_xsl_dir = $local_xsl_dir;		
+		$this->distro_xsl_dir = rtrim($distro_xsl_dir, '/');
+		$this->local_xsl_dir = rtrim($local_xsl_dir, '/');
 	}
 	
 	/**
@@ -108,8 +115,8 @@ class Xsl
 		
 		### first, set up the paths to the distro and local directories
 
-		$distro_path =  $this->distro_xsl_dir . $path_to_file;
-		$local_path =  $this->local_xsl_dir . $path_to_file;
+		$distro_path =  $this->distro_xsl_dir . '/' . $path_to_file;
+		$local_path =  $this->local_xsl_dir . '/' . $path_to_file;
 		      
 
 		### check to make sure at least one of the files exists
@@ -154,14 +161,14 @@ class Xsl
 				
 				if ( file_exists($this->distro_xsl_dir . $strInclude) )
 				{
-					array_push($files_to_import, $this->distro_xsl_dir . $strInclude);
+					array_push($files_to_import, $this->distro_xsl_dir . '/' . $strInclude);
 				}
 				
 				// see if there is a local version, and include it too
 				
 				if ( file_exists($this->local_xsl_dir . $strInclude) )
 				{
-					array_push($files_to_import, $this->local_xsl_dir . $strInclude);
+					array_push($files_to_import, $this->local_xsl_dir . '/' . $strInclude);
 				}
 			}
 		}
@@ -196,11 +203,11 @@ class Xsl
 			{
 				// path to local copy
 				
-				$local_candidate = $this->local_xsl_dir . dirname ( $path_to_file ) . '/' . $extra['href'];
+				$local_candidate = $this->local_xsl_dir . '/' . dirname ( $path_to_file ) . '/' . $extra['href'];
 				
 				// path to distro copy as a check
 				
-				$distro_check = $this->distro_xsl_dir . dirname ( $path_to_file ) . '/' . $extra['href'];
+				$distro_check = $this->distro_xsl_dir . '/' . dirname ( $path_to_file ) . '/' . $extra['href'];
 				
 				// make sure local copy exists, and they are both not pointing at the same file 
 				

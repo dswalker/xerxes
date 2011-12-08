@@ -8,7 +8,7 @@ use Application\Model\Authentication\AuthenticationFactory,
 	Xerxes\Utility\Restrict,
 	Zend\EventManager\StaticEventManager,
 	Zend\Http\PhpEnvironment\Response as HttpResponse,
-    Zend\Module\Consumer\AutoloaderProvider,
+	Zend\Module\Consumer\AutoloaderProvider,
 	Zend\Module\Manager,
 	Zend\Mvc\MvcEvent;
 
@@ -45,9 +45,10 @@ class Module implements AutoloaderProvider
     
     public function initialize($e)
     {
-        $app          = $e->getParam('application');
-        $locator      = $app->getLocator();
-        $config       = $e->getParam('config');
+        $app = $e->getParam('application');
+        $config = $e->getParam('config');
+        
+        $locator = $app->getLocator();
         
         // custom xerxes request object
         
@@ -59,7 +60,7 @@ class Module implements AutoloaderProvider
         
         // view listener
         
-        $view         = $locator->get('view');
+        $view = $locator->get('view');
         $viewListener = $this->getViewListener($view, $config);
         $app->events()->attachAggregate($viewListener);
 
@@ -97,7 +98,7 @@ class Module implements AutoloaderProvider
     
     public function checkAuthentication(MvcEvent $e)
     {
-    	$request = $e->getRequest();
+    	$request = $this->getRequest($e); // make sure we have a request object
     	
     	if ( $request->getParam('controller') == 'ebsco')
     	{

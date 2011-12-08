@@ -294,7 +294,7 @@ class Request extends ZendRequest
 	 * Add a parameter to the request
 	 *
 	 * @param string $key			key to identify the value
-	 * @param string|array $value	value to add
+	 * @param mixed $value			value to add
 	 * @param bool $is_array		[optional] set to true will ensure property is set as array
 	 * @param bool $override		[optional] replace any existing values
 	 */
