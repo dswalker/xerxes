@@ -412,8 +412,8 @@ class Parser
 	
 				$arrLocalRange = explode( "-", $range );
 	
-				$iStart = self::normalizeAddress( $arrLocalRange[0] );
-				$iEnd = self::normalizeAddress( $arrLocalRange[1] );
+				$iStart = self::normalizeIpAddress( $arrLocalRange[0] );
+				$iEnd = self::normalizeIpAddress( $arrLocalRange[1] );
 			}
 			else
 			{
@@ -422,8 +422,8 @@ class Parser
 				$strStart = str_replace( "*", "000", $range );
 				$strEnd = str_replace( "*", "255", $range );
 	
-				$iStart = self::normalizeAddress( $strStart );
-				$iEnd = self::normalizeAddress( $strEnd );
+				$iStart = self::normalizeIpAddress( $strStart );
+				$iEnd = self::normalizeIpAddress( $strEnd );
 	
 			}
 	
