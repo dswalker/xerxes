@@ -27,7 +27,7 @@ class Request extends ZendRequest
 	private $router; // router
 	private $registry; // registry
 	private $session; // zend session manager
-	private $container; // zend session container
+	private $containers = array(); // array of zend session containers
 	
 	/**
 	 * Creae Request object
@@ -100,21 +100,32 @@ class Request extends ZendRequest
     
     /**
      * Get session container
+     * 
+     * @param string $name		[optional] id for the container, default is Public
      *
      * @return Container
      */
     
-    public function getContainer()
+    public function getContainer($name = "Public")
     {
-    	if ($this->container instanceof Container) 
+    	// got one already?
+    	
+    	if ( array_key_exists($name, $this->containers) )
     	{
-    		return $this->container;
+	    	if ($this->containers[$name] instanceof Container) 
+	    	{
+	    		return $this->containers[$name];
+	    	}
     	}
+    	
+    	// make a new one
     
     	$manager = $this->session();
-    	$this->container = new Container('Testing', $manager);
+    	$container = new Container($name, $manager);
+    	
+    	$this->containers[$name] = $container; // set for later
 
-    	return $this->container;
+    	return $container;
     }    
     
 	/**
