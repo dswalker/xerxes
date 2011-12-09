@@ -3,6 +3,7 @@
 namespace Application;
 
 use Application\Model\Authentication\AuthenticationFactory,
+	Xerxes\Utility\ControllerMap,
 	Xerxes\Utility\Registry,
 	Xerxes\Utility\Request,
 	Xerxes\Utility\Restrict,
@@ -14,8 +15,9 @@ use Application\Model\Authentication\AuthenticationFactory,
 
 class Module implements AutoloaderProvider
 {
-    protected $request;
-    protected $viewListener;
+    protected $request; // xerxes request object
+    protected $viewListener; // application view listener
+    protected $controller_map; // xerxes controller map
 
     public function init(Manager $moduleManager)
     {
@@ -33,7 +35,7 @@ class Module implements AutoloaderProvider
                 'namespaces' => array(
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 	'Xerxes' => __DIR__ . '/../../library/Xerxes',
-                	'XerxesLocal\Authentication' => 'config/authentication',
+                	'Local\Authentication' => 'config/authentication',
                 ),
             ),
         );
@@ -41,6 +43,8 @@ class Module implements AutoloaderProvider
 
     public function getConfig($env = null)
     {
+    	$this->controller_map = new ControllerMap(__DIR__ . '/config/map.xml');
+    	
         return include __DIR__ . '/config/module.config.php';
     }
     
@@ -55,7 +59,7 @@ class Module implements AutoloaderProvider
         
         $app->events()->attach('route', array($this, 'getRequest'), -80);        
         
-        // set authentication check
+        // access control
         
         $app->events()->attach('route', array($this, 'checkAuthentication'), -90);
         
@@ -76,13 +80,11 @@ class Module implements AutoloaderProvider
             return $this->viewListener;
         }
 
-        $viewListener = new View\Listener($view);
+        $this->viewListener = new View\Listener($view);
         
-        $viewListener->setDisplayExceptionsFlag($config->display_exceptions);
+        $this->viewListener->setDisplayExceptionsFlag($config->display_exceptions);
 
-        $this->viewListener = $viewListener;
-        
-        return $viewListener;
+        return $this->viewListener;
     }
     
     public function getRequest(MvcEvent $e)
@@ -95,17 +97,51 @@ class Module implements AutoloaderProvider
     	$this->request = new Request();
     	$this->request->setRouter($e->getRouter());
     	$e->setRequest($this->request);
+    	
+    	return $this->request;
     }
     
     public function checkAuthentication(MvcEvent $e)
     {
     	$request = $this->getRequest($e); // make sure we have a request object
     	
-    	if ( $request->getParam('controller') == 'ebsco')
+    	$controller = $request->getParam('controller');
+    	$action = $request->getParam('action');
+    	
+    	// set up our controller map
+    	
+    	$this->controller_map->setController($controller, $action);
+    	$restricted = $this->controller_map->isRestricted(); 
+    	$requires_login = $this->controller_map->requiresLogin();
+    	
+    	// this action requires authentication
+    	
+    	if ( $restricted || $requires_login )
     	{
+    		$redirect_to_login = false;
+    		
+    		// @todo: move these functions somewhere else? this is still weird
+    		
     		$restrict = new Restrict($request);
     		
-    		if ( ! $restrict->isAuthenticatedUser() )
+    		// this action requires a logged in user, but user is not logged in
+    		
+    		if ( $requires_login && ! $restrict->isAuthenticatedUser() )
+    		{
+    			$redirect_to_login = true;
+    		}
+    		
+    		// this action is restricted (user needs to be either loged in or in local ip range)
+    		// but user is neither
+    		
+    		elseif ( $restricted && ! $restrict->checkIP() )
+    		{
+    			$redirect_to_login = true;
+    		}    		
+    		
+    		// redirect to login page
+    		
+    		if ( $redirect_to_login == true )
     		{
 		    	$params = array (
 		    		'controller' => 'authenticate', 
