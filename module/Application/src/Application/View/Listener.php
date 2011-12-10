@@ -2,10 +2,10 @@
 
 namespace Application\View;
 
-use Xerxes\Utility\Registry;
-
 use Application\View\Helper\Navigation,
 	ArrayAccess,
+	Xerxes\Utility\ControllerMap,
+	Xerxes\Utility\Registry,
     Xerxes\Utility\ViewRenderer,
     Zend\Di\Locator,
     Zend\EventManager\EventCollection,
@@ -20,12 +20,15 @@ class Listener implements ListenerAggregate
 {
     protected $listeners = array();
     protected $staticListeners = array();
-    protected $view;
     protected $displayExceptions = false;
     
-    public function __construct(ViewRenderer $view)
+    protected $controller_map; // xerxes controller map
+    protected $view_renderer; // xerxes view renderer
+    
+    public function __construct(ViewRenderer $view_renderer, ControllerMap $controller_map)
     {
-    	$this->view = $view;
+    	$this->view_renderer = $view_renderer;
+    	$this->controller_map = $controller_map;
     }
 
     public function setDisplayExceptionsFlag($flag)
@@ -57,12 +60,6 @@ class Listener implements ListenerAggregate
 
     public function registerStaticListeners(StaticEventCollection $events, $locator)
     {
-    	/*
-        $ident   = 'Application\Controller\PageController';
-        $handler = $events->attach($ident, 'dispatch', array($this, 'renderPageController'), -50);
-        $this->staticListeners[] = array($ident, $handler);
-        */
-
         $ident   = 'Zend\Mvc\Controller\ActionController';
         $handler = $events->attach($ident, 'dispatch', array($this, 'renderView'), -50);
         $this->staticListeners[] = array($ident, $handler);
@@ -137,14 +134,14 @@ class Listener implements ListenerAggregate
         if ( $e->getRequest()->getParam('format') == 'xerxes' )
         {
         	$response->headers()->addHeaderLine("Content-type", "text/xml");
-        	$content = $this->view->toXML($vars)->saveXML();
+        	$content = $this->view_renderer->toXML($vars)->saveXML();
         }
         
         // render as html
         
         else
         {	
-	        $content = $this->view->render($script, $vars);
+	        $content = $this->view_renderer->render($script, $vars);
         }
 
         $e->setResult($content);
@@ -172,7 +169,7 @@ class Listener implements ListenerAggregate
             'display_exceptions' => $this->displayExceptions(),
         );
 
-        $content = $this->view->render('error/404.phtml', $vars);
+        $content = $this->view_renderer->render('error/404.phtml', $vars);
 
         $e->setResult($content);
 
@@ -212,7 +209,7 @@ class Listener implements ListenerAggregate
                 break;
         }
 
-        $content = $this->view->render('error/index.phtml', $vars);
+        $content = $this->view_renderer->render('error/index.phtml', $vars);
 
         $e->setResult($content);
 
