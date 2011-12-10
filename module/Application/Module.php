@@ -6,7 +6,7 @@ use Application\Model\Authentication\AuthenticationFactory,
 	Xerxes\Utility\ControllerMap,
 	Xerxes\Utility\Registry,
 	Xerxes\Utility\Request,
-	Xerxes\Utility\Restrict,
+	Xerxes\Utility\User,
 	Zend\EventManager\StaticEventManager,
 	Zend\Http\PhpEnvironment\Response as HttpResponse,
 	Zend\Module\Consumer\AutoloaderProvider,
@@ -43,8 +43,6 @@ class Module implements AutoloaderProvider
 
     public function getConfig($env = null)
     {
-    	$this->controller_map = new ControllerMap(__DIR__ . '/config/map.xml');
-    	
         return include __DIR__ . '/config/module.config.php';
     }
     
@@ -65,22 +63,24 @@ class Module implements AutoloaderProvider
         
         // view listener
         
-        $view = $locator->get('view');
-        $viewListener = $this->getViewListener($view, $config);
+        $view_renderer = $locator->get('view');
+        $viewListener = $this->getViewListener($view_renderer, $config);
         $app->events()->attachAggregate($viewListener);
 
         $events = StaticEventManager::getInstance();
         $viewListener->registerStaticListeners($events, $locator);        
     }
 
-    protected function getViewListener($view, $config)
+    protected function getViewListener($view_renderer, $config)
     {
         if ( $this->viewListener instanceof View\Listener ) 
         {
             return $this->viewListener;
         }
+        
+        $controller_map = $this->getControllerMap();
 
-        $this->viewListener = new View\Listener($view);
+        $this->viewListener = new View\Listener($view_renderer, $controller_map);
         
         $this->viewListener->setDisplayExceptionsFlag($config->display_exceptions);
 
@@ -101,6 +101,18 @@ class Module implements AutoloaderProvider
     	return $this->request;
     }
     
+    public function getControllerMap()
+    {
+    	if ( $this->controller_map instanceof ControllerMap )
+    	{
+    		return $this->controller_map;
+    	}
+    	
+    	$this->controller_map = new ControllerMap(__DIR__ . '/config/map.xml');
+    	
+    	return $this->controller_map;
+    }
+    
     public function checkAuthentication(MvcEvent $e)
     {
     	$request = $this->getRequest($e); // make sure we have a request object
@@ -110,9 +122,11 @@ class Module implements AutoloaderProvider
     	
     	// set up our controller map
     	
-    	$this->controller_map->setController($controller, $action);
-    	$restricted = $this->controller_map->isRestricted(); 
-    	$requires_login = $this->controller_map->requiresLogin();
+    	$controller_map = $this->getControllerMap();
+    	$controller_map->setController($controller, $action);
+
+    	$restricted = $controller_map->isRestricted(); 
+    	$requires_login = $controller_map->requiresLogin();
     	
     	// this action requires authentication
     	
@@ -120,21 +134,19 @@ class Module implements AutoloaderProvider
     	{
     		$redirect_to_login = false;
     		
-    		// @todo: move these functions somewhere else? this is still weird
+    		$user = new User($request); // user from session
     		
-    		$restrict = new Restrict($request);
+    		// this action requires a logged-in user, but user is not logged-in
     		
-    		// this action requires a logged in user, but user is not logged in
-    		
-    		if ( $requires_login && ! $restrict->isAuthenticatedUser() )
+    		if ( $requires_login && ! $user->isAuthenticated() )
     		{
     			$redirect_to_login = true;
     		}
     		
-    		// this action is restricted (user needs to be either loged in or in local ip range)
+    		// this action requires that the user either be logged-in or in local ip range
     		// but user is neither
     		
-    		elseif ( $restricted && ! $restrict->checkIP() )
+    		elseif ( $restricted && ! $user->isAuthenticated() && ! $user->isInLocalIpRange() )
     		{
     			$redirect_to_login = true;
     		}    		
@@ -160,6 +172,3 @@ class Module implements AutoloaderProvider
     	}
     }
 }
-
-
-
