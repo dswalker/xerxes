@@ -4,6 +4,7 @@ return array(
 	'di' => array(
 		'instance' => array(
 			'alias' => array(
+				'asset'  => 'Application\Controller\AssetController',
 				'authenticate'  => 'Application\Controller\AuthenticateController',
 				'databases'  => 'Application\Controller\DatabasesController',
 				'ebsco' => 'Application\Controller\EbscoController',
