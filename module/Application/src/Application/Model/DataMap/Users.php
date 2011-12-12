@@ -3,7 +3,7 @@
 namespace Application\Model\DataMap;
 
 use Xerxes\Utility\DataMap,
-	Application\Model\Authentication\User;
+	Xerxes\Utility\User;
 
 /**
  * Database access mapper for users

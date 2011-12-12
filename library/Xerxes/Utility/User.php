@@ -13,9 +13,16 @@ namespace Xerxes\Utility;
  * @license http://www.gnu.org/licenses/
  */
 
-class User
+class User extends DataValue
 {
 	public $username;
+	
+	public $last_login;
+	public $suspended;
+	public $first_name;
+	public $last_name;
+	public $email_addr;
+	public $usergroups = array();	
 	
 	private $role;
 	private $ip_address;
