@@ -196,11 +196,22 @@ class Listener implements ListenerAggregate
                 break;
         }
         
+        // basic web request
+        
         $script = 'error/index.phtml';
+        
+        // ajax request
         
         if ( $e->getRequest()->isXmlHttpRequest() )
         {
         	$script = 'error/ajax.phtml';
+        }
+        
+        // command line request
+        
+        elseif ( $e->getRequest()->isCommandLine() )
+        {
+        	$script = 'error/console.phtml';
         }
 
         $content = $this->view_renderer->render($script, $vars);

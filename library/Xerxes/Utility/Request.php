@@ -33,7 +33,7 @@ class Request extends ZendRequest
 	private $containers = array(); // array of zend session containers
 	
 	/**
-	 * Creae Request object
+	 * Create Request object
 	 */
 	
 	public function __construct()
@@ -188,7 +188,7 @@ class Request extends ZendRequest
 	{
 		// coming from http
 			
-		if ( isset($_SERVER) )
+		if ( isset( $_SERVER['QUERY_STRING']) )
 		{
 			// got a query string? 
 				
