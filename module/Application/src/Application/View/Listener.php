@@ -45,7 +45,6 @@ class Listener implements ListenerAggregate
     public function attach(EventCollection $events)
     {
         $this->listeners[] = $events->attach('dispatch.error', array($this, 'renderError'));
-        $this->listeners[] = $events->attach('dispatch', array($this, 'render404'), -80);
     }
 
     public function detach(EventCollection $events)
@@ -157,66 +156,54 @@ class Listener implements ListenerAggregate
         return $response;
     }
 
-    public function render404(MvcEvent $e)
-    {
-        $vars = $e->getResult();
-        if ($vars instanceof Response) {
-            return;
-        }
-
-        $response = $e->getResponse();
-        if ($response->getStatusCode() != 404) {
-            // Only handle 404's
-            return;
-        }
-
-        $vars = array(
-            'message'            => 'Page not found.',
-            'exception'          => $e->getParam('exception'),
-            'display_exceptions' => $this->displayExceptions(),
-        );
-
-        $content = $this->view_renderer->render('error/404.phtml', $vars);
-
-        $e->setResult($content);
-
-        return $this->renderView($e);
-    }
-
     public function renderError(MvcEvent $e)
     {
-        $error    = $e->getError();
-        $app      = $e->getTarget();
+        $error = $e->getError();
         $response = $e->getResponse();
-        if (!$response) {
+        
+        if (!$response)
+        {
             $response = new Response();
             $e->setResponse($response);
         }
 
-        switch ($error) {
+        switch ($error)
+        {
             case Application::ERROR_CONTROLLER_NOT_FOUND:
             case Application::ERROR_CONTROLLER_INVALID:
-                $vars = array(
-                    'message'            => 'Page not found.',
-                    'exception'          => $e->getParam('exception'),
+
+            	$vars = array(
+                    'message' => 'Page not found.',
+                    'exception' => $e->getParam('exception'),
                     'display_exceptions' => $this->displayExceptions(),
                 );
+                
                 $response->setStatusCode(404);
                 break;
 
             case Application::ERROR_EXCEPTION:
             default:
+            	
                 $exception = $e->getParam('exception');
+                
                 $vars = array(
-                    'message'            => 'An error occurred during execution; please try again later.',
-                    'exception'          => $e->getParam('exception'),
+                    'message' => 'An error occurred during execution; please try again later.',
+                    'exception' => $e->getParam('exception'),
                     'display_exceptions' => $this->displayExceptions(),
                 );
+                
                 $response->setStatusCode(500);
                 break;
         }
+        
+        $script = 'error/index.phtml';
+        
+        if ( $e->getRequest()->isXmlHttpRequest() )
+        {
+        	$script = 'error/ajax.phtml';
+        }
 
-        $content = $this->view_renderer->render('error/index.phtml', $vars);
+        $content = $this->view_renderer->render($script, $vars);
 
         $e->setResult($content);
 
