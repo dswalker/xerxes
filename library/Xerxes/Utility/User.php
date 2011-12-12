@@ -67,6 +67,8 @@ class User extends DataValue
 	
 	/**
 	 * Is the user authenticated
+	 * 
+	 * Not guest or temporary local user 
 	 */
 	
 	public function isAuthenticated()
