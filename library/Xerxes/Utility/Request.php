@@ -24,8 +24,11 @@ class Request extends ZendRequest
 {
 	private $commandline = false;
 	private $params = array(); // request paramaters
-	private $router; // router
-	private $registry; // registry
+
+	private $registry; // xerxes registry
+	private $controller_map; // xerxes controller map
+	
+	private $router; // zend router	
 	private $session; // zend session manager
 	private $containers = array(); // array of zend session containers
 	
@@ -65,6 +68,21 @@ class Request extends ZendRequest
 	        	$this->setParam($name, $value);
 	        }
         }
+    }
+    
+    public function setControllerMap(ControllerMap $controller_map )
+    {
+    	$this->controller_map = $controller_map;
+    }
+    
+    public function getControllerMap()
+    {
+    	if ( ! $this->controller_map instanceof ControllerMap )
+    	{
+    		throw new \Exception("No controller map set");
+    	}
+    	
+    	return $this->controller_map;
     }
     
     /**

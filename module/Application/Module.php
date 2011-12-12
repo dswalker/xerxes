@@ -53,13 +53,13 @@ class Module implements AutoloaderProvider
         
         $locator = $app->getLocator();
         
-        // custom xerxes request object
+        // xerxes request object
         
-        $app->events()->attach('route', array($this, 'getRequest'), -80);        
-        
+        $app->events()->attach('route', array($this, 'getRequest'), -80);     
+
         // access control
         
-        $app->events()->attach('route', array($this, 'checkAuthentication'), -90);
+        $app->events()->attach('route', array($this, 'checkAuthentication'), -100);
         
         // view listener
         
@@ -73,58 +73,52 @@ class Module implements AutoloaderProvider
 
     protected function getViewListener($view_renderer, $config)
     {
-        if ( $this->viewListener instanceof View\Listener ) 
+        if ( ! $this->viewListener instanceof View\Listener ) 
         {
-            return $this->viewListener;
+	        $this->viewListener = new View\Listener($view_renderer);
+	        $this->viewListener->setDisplayExceptionsFlag($config->display_exceptions);
         }
-        
-        $controller_map = $this->getControllerMap();
-
-        $this->viewListener = new View\Listener($view_renderer, $controller_map);
-        
-        $this->viewListener->setDisplayExceptionsFlag($config->display_exceptions);
 
         return $this->viewListener;
     }
     
     public function getRequest(MvcEvent $e)
     {
-    	if ( $this->request instanceof Request )
+    	// make sure we have a request object
+    	
+    	if ( ! $this->request instanceof Request )
     	{
-    		return $this->request;
+	    	$this->request = new Request();
+	    	$this->request->setRouter($e->getRouter());
+	    	$e->setRequest($this->request);
     	}
     	
-    	$this->request = new Request();
-    	$this->request->setRouter($e->getRouter());
-    	$e->setRequest($this->request);
+    	// also controller map
+    	
+    	if ( ! $this->controller_map instanceof ControllerMap )
+    	{
+    		$this->controller_map = new ControllerMap(__DIR__ . '/config/map.xml');
+    		
+    		// set the current controller/action
+    		
+    		$controller =  $this->request->getParam('controller');
+    		$action =  $this->request->getParam('action');
+    		
+    		$this->controller_map->setController($controller, $action);
+    		
+    		// now stuff it in the request object for later access
+    		
+    		$this->request->setControllerMap($this->controller_map);
+    	}
     	
     	return $this->request;
-    }
-    
-    public function getControllerMap()
-    {
-    	if ( $this->controller_map instanceof ControllerMap )
-    	{
-    		return $this->controller_map;
-    	}
-    	
-    	$this->controller_map = new ControllerMap(__DIR__ . '/config/map.xml');
-    	
-    	return $this->controller_map;
     }
     
     public function checkAuthentication(MvcEvent $e)
     {
     	$request = $this->getRequest($e); // make sure we have a request object
+    	$controller_map = $request->getControllerMap(); // make sure we have a controller map
     	
-    	$controller = $request->getParam('controller');
-    	$action = $request->getParam('action');
-    	
-    	// set up our controller map
-    	
-    	$controller_map = $this->getControllerMap();
-    	$controller_map->setController($controller, $action);
-
     	$restricted = $controller_map->isRestricted(); 
     	$requires_login = $controller_map->requiresLogin();
     	

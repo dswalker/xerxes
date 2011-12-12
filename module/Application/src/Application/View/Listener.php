@@ -2,6 +2,8 @@
 
 namespace Application\View;
 
+use Application\Controller\SearchController;
+
 use Application\View\Helper\Navigation,
 	ArrayAccess,
 	Xerxes\Utility\ControllerMap,
@@ -22,13 +24,11 @@ class Listener implements ListenerAggregate
     protected $staticListeners = array();
     protected $displayExceptions = false;
     
-    protected $controller_map; // xerxes controller map
     protected $view_renderer; // xerxes view renderer
     
-    public function __construct(ViewRenderer $view_renderer, ControllerMap $controller_map)
+    public function __construct(ViewRenderer $view_renderer)
     {
     	$this->view_renderer = $view_renderer;
-    	$this->controller_map = $controller_map;
     }
 
     public function setDisplayExceptionsFlag($flag)
@@ -77,8 +77,9 @@ class Listener implements ListenerAggregate
     public function renderView(MvcEvent $e)
     {
         $response = $e->getResponse();
+        $request = $e->getRequest();
         
-        // header("Content-type: text/plain"); print_r($response); exit;
+        // error
         
         if ( ! $response->isSuccess() )
         {
@@ -87,18 +88,24 @@ class Listener implements ListenerAggregate
         
         // set the view
         
-        $routeMatch = $e->getRouteMatch();
-        $controller = $routeMatch->getParam('controller', 'index');
-        $action = $routeMatch->getParam('action', 'index');
+        $script = $request->getControllerMap()->getView($request->getParam('format'));
         
         
         ##### @todo: HACK 
-        if ( $controller != "authenticate" && ( $action != "results" && $action != "record") ) $controller = "search";
+        
+        $controller =  $request->getParam('controller', 'index');
+        $action =  $request->getParam('action', 'index');
+        
+        if ( $controller != "authenticate" && $action != "results" && $action != "record" ) 
+        {
+        	$script = "search" . '/' . $action . '.xsl';
+        }
+        
         ##### END HACK
         
         
         
-        $script = $controller . '/' . $action . '.xsl';
+       
         
         // set up the response
         
@@ -131,7 +138,7 @@ class Listener implements ListenerAggregate
         
         // show internal xml
         
-        if ( $e->getRequest()->getParam('format') == 'xerxes' )
+        if ( $request->getParam('format') == 'xerxes' )
         {
         	$response->headers()->addHeaderLine("Content-type", "text/xml");
         	$content = $this->view_renderer->toXML($vars)->saveXML();

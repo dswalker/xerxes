@@ -57,6 +57,11 @@ class ControllerMap
 	
 	public function setController($controller, $action)
 	{
+		if ( ! is_string($controller) )
+		{
+			throw new \InvalidArgumentException("WTF!");
+		}
+		
 		$this->controller = $controller;
 		$this->action = $action;
 	}
@@ -150,7 +155,28 @@ class ControllerMap
 		{
 			return false;
 		}
-	}	
+	}
+	
+	public function getView($format = "")
+	{		
+		$format_query = "";
+		
+		$view =  $this->controller . '/' . $this->action . '.xsl';
+		
+		if ( $format != "" )
+		{
+			$format_query = "[@name = '$format']";
+		}
+		
+		$view_def = $this->xml->xpath("//controller[@name='$this->controller']/action[@name='$this->action']/view" . $format_query);
+		
+		foreach ( $view_def as $def )
+		{
+			$view = $def;
+		}
+		
+		return $view;
+	}
 	
 		
 	/**

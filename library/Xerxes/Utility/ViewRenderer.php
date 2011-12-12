@@ -16,7 +16,7 @@ namespace Xerxes\Utility;
 
 class ViewRenderer
 {
-	private $_script_path;
+	private $_script_path; // path to the distro script
 	
 	public function __construct($script_path)
 	{
@@ -45,7 +45,7 @@ class ViewRenderer
 			foreach ( $vars as $id => $value )
 			{
 				$this->$id = $value;
-			}			
+			}		
 			
 			require_once $this->_script_path . "/" . $view;
 		}
