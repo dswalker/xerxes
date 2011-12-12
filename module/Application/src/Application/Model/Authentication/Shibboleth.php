@@ -66,9 +66,7 @@ class Shibboleth extends Authentication
 			
 			// register the user
 			
-			$this->register();
-			
-			return true;
+			return $this->register();
 		}
 		else 
 		{

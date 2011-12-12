@@ -2,6 +2,8 @@
 
 namespace Application\Model\Authentication;
 
+use Xerxes\Utility\User;
+
 /**
  * Guest Authentication
  * 
@@ -21,10 +23,9 @@ class Guest extends Authentication
 	
 	public function onLogin() 
 	{
-		$this->role = "guest";
-		$this->user->username = "guest@" . session_id ();
-		$this->register ();
+		$this->user->username = User::genRandomUsername(User::GUEST);
+		$this->user->role = User::GUEST;
 		
-		return true;
+		return $this->register();
 	}
 }

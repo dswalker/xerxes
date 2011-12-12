@@ -167,9 +167,11 @@ class Ldap extends Authentication
 				{
 					$this->user->usergroups = Array($matches[$strGroupFilterMatch]);
 				}
-				$this->register();
+				
+				return $this->register();
 			}
 		}
-		return $bolAuth;
+		
+		return self::FAILED;
 	}
 }

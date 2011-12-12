@@ -27,6 +27,15 @@ class User extends DataValue
 	private $role;
 	private $ip_address;
 	private $ip_range;
+	
+	const LOCAL = "local";
+	const GUEST = "guest";
+	
+	/**
+	 * Create a user
+	 * 
+	 * @param Request $request		[optional] create user from existing session
+	 */
 
 	public function __construct(Request $request = null)
 	{
@@ -47,8 +56,8 @@ class User extends DataValue
 			
 			if ( $this->username == "" && $this->isInLocalIpRange() == true )
 			{
-				$this->username = "local@" . session_id(); // @todo: move session_id() to request?
-				$this->role = "local";
+				$this->username = self::genRandomUsername(self::LOCAL);
+				$this->role = self::LOCAL;
 				
 				$request->setSession("username", $this->username);
 				$request->setSession("role", $this->role);
@@ -56,13 +65,44 @@ class User extends DataValue
 		}
 	}
 	
+	/**
+	 * Is the user authenticated
+	 */
+	
 	public function isAuthenticated()
 	{
-		return ( $this->username != "" && $this->role != "local" && $this->role != "guest" );
+		return ( $this->username != "" && $this->role != self::LOCAL && $this->role != self::GUEST );
 	}
+	
+	/**
+	 * Is the user inside the local ip range
+	 */
 	
 	public function isInLocalIpRange()
 	{
 		return Parser::isIpAddrInRanges( $this->ip_address, $this->ip_range );
+	}
+	
+	/**
+	 * Generate a random username 
+	 * 
+	 * Used for local and guest users
+	 * 
+	 * @param string $prefix		local or guest
+	 * @return string
+	 */
+	
+	public static function genRandomUsername($prefix)
+	{
+		$length = 10;
+		$characters = '0123456789abcdefghijklmnopqrstuvwxyz';
+		$string = "";    
+		
+		for ($p = 0; $p < $length; $p++)
+		{
+			$string .= $characters[mt_rand(0, strlen($characters) - 1)];
+		}
+		
+		return $prefix . '@' . $string;
 	}
 }
