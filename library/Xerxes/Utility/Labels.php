@@ -16,12 +16,8 @@ namespace Xerxes\Utility;
 class Labels
 {
 	private $xml; // simple xml
-	private $labels = array(); // label values
+	private $labels = null; // label values
 	private $path; // path to label file
-	
-	private static $instance; // singleton pattern
-
-	protected function __construct() {}
 	
 	/**
 	 * Create Labels access object
@@ -29,29 +25,18 @@ class Labels
 	 * @param string $language		language identifier
 	 */
 	
-	public static function getInstance($path)
+	public function __construct($path)
 	{
-		if ( empty( self::$instance ) )
-		{
-			self::$instance = new Labels();
-			$object = self::$instance;
-			$object->path = $path;
-			$object->init();
-		}
-		
-		return self::$instance;
+		$this->path = $path;
+		$this->init();
 	}
 	
 	/**
-	 * Process distro and local label files
-	 * 
-	 * @param string $language		language identifier
+	 * Initial process dof istro and local eng label files
 	 */
 	
-	public function setLanguage($language)
+	protected function init()
 	{
-		// @todo should really set this path outside this class, back in module
-		
 		// distro file
 		
 		$this->xml = new \DOMDocument();
@@ -66,16 +51,25 @@ class Labels
 			$import = $this->xml->importNode($local_xml->documentElement, true);
 			$this->xml->documentElement->appendChild($import);			
 		}
-		
+	}
+	
+	/**
+	 * Set the language
+	 * 
+	 * @param string $language		language identifier
+	 */
+	
+	public function setLanguage($language)
+	{
 		// if language is set to something other than english
 		// then also include that file to override the english labels
 
-		if ( $language != "" )
+		if ( $language != "eng" &&  $language != "" )
 		{
 			// distro
 			
 			$language_xml = new \DOMDocument();
-			$language_xml->load("$path/$language.xsl");
+			$language_xml->load("$this->path/$language.xsl");
 			
 			$import = $this->xml->importNode($language_xml->documentElement, true);
 			$this->xml->documentElement->appendChild($import);
@@ -90,16 +84,6 @@ class Labels
 				$this->xml->documentElement->appendChild($import);			
 			}		
 		}
-
-		$labels = $this->xml->getElementsByTagName("variable");
-		
-		// set the values in the master array
-		// last ones takes precedence
-		
-		foreach ( $labels as $label )
-		{
-			$this->labels[(string) $label->getAttribute("name")] = $label->nodeValue;
-		}		
 	}
 	
 	/**
@@ -113,10 +97,40 @@ class Labels
 	
 	/**
 	 * Get all labels
+	 * 
+	 * @return array
 	 */
 	
 	public function getLabels()
 	{
+		return  $this->labels()->getIterator()->getArrayCopy();
+	}
+	
+	/**
+	 * Internal labels array object
+	 * 
+	 * @return ArrayObject
+	 */
+	
+	public function labels()
+	{
+		// lazy load the labels into an array
+		
+		if ( ! $this->labels instanceof \ArrayObject )
+		{
+			$this->labels = new \ArrayObject();
+		
+			$labels = $this->xml->getElementsByTagName("variable");
+		
+			// set the values in the master array
+			// last ones takes precedence
+		
+			foreach ( $labels as $label )
+			{
+				$this->labels->offsetSet((string) $label->getAttribute("name"), $label->nodeValue );
+			}
+		}
+		
 		return $this->labels;
 	}
 	
@@ -128,9 +142,9 @@ class Labels
 	
 	public function getLabel($name)
 	{
-		if ( array_key_exists($name, $this->labels) )
+		if ( $this->labels()->offsetExists($name) )
 		{
-			return $this->labels[$name];
+			return $this->offsetGet($name);
 		}
 		else
 		{

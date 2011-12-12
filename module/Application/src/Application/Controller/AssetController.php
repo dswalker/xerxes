@@ -11,7 +11,8 @@ class AssetController extends ActionController
 	{
 		$lang = $this->request->getParam("lang");
 		
-		$labels = Labels::getInstance($lang);
+		$labels = $this->getLocator()->get('labels');
+		$labels->setLanguage($lang);
 		
 		return array("labels" => $labels);
 	}

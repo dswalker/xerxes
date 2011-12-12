@@ -16,10 +16,16 @@ return array(
 				'summon' => 'Application\Controller\SummonController',
 				'worldcat' => 'Application\Controller\WorldcatController',
 				'view'   => 'Xerxes\Utility\ViewRenderer',
+				'labels'   => 'Xerxes\Utility\Labels',
 			),
 			'Xerxes\Utility\ViewRenderer' => array(
 				'parameters' => array(
 					'script_path' => __DIR__ . '/../views'
+				),
+			),
+			'Xerxes\Utility\Labels' => array(
+				'parameters' => array(
+					'path' => __DIR__ . '/../views/labels'
 				),
 			),
 		),
