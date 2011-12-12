@@ -36,8 +36,8 @@ class Custom extends Authentication
 		
 		// LOCAL:
 		//
-		// if you are using the Xerxes login form for authentication, then do your authentication
-		// logic here and return true or false
+		// if you are using the Xerxes login form for authentication
+		// then do your authentication logic here
 		
 		// the following paramaters are the default ones offered  by the form; if you need others, 
 		// simply customize the login form
@@ -50,7 +50,7 @@ class Custom extends Authentication
 		// if onLogin() pushed the user to an external system for login, then this function
 		// will be called when the user comes back; the task here then is simply to validate 
 		// that the login was successful (if necessary), and register the user; If the request
-		// is bad, throw an Exception with details, do _not_ simple return false
+		// is bad, throw an Exception with details, do _not_ simply return self::FAILURE
 		
 		
 		// REGISTRATION:
@@ -63,6 +63,12 @@ class Custom extends Authentication
 		$this->user->last_name;
 		$this->user->email_addr;
 
-		return self::SUCCESS; // or self::FAILURE
+		// on success:
+		
+		return $this->register(); 
+		
+		// on failure: 
+		
+		// return self::FAILURE
 	}
 }

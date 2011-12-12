@@ -197,6 +197,13 @@ abstract class Authentication
 	
 	public function getRedirect()
 	{
-		return $this->redirect;
+		if ( $this->redirect != "" )
+		{
+			return $this->redirect;
+		}
+		else
+		{
+			return $this->return_url;
+		}
 	}
 }

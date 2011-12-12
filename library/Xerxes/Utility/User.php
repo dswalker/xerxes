@@ -16,9 +16,9 @@ namespace Xerxes\Utility;
 class User
 {
 	public $username;
+	
 	private $role;
 	private $ip_address;
-	
 	private $ip_range;
 
 	public function __construct(Request $request = null)

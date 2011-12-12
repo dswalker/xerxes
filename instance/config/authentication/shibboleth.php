@@ -27,12 +27,11 @@ class Shibboleth extends Authentication\Shibboleth
 	 * 
 	 * This function may:
 	 * 
-	 * 1) Throw a Xerxes_Exception_AccessDenied if based on attributes
-	 *    you want to deny user access to logging into Xerxes at all.
-	 *    The message should explain why. 
+	 * 1) Throw an AccessDenied exception if, based on attributes, you want to deny user 
+	 *    access to logging into Xerxes at all. The message should explain why. 
 	 * 
 	 * 2) Set various propertes in $this->user (a Xerxes_Model_Authentication_User) object if you want
-   *    to fill out some more user properties  based on attributes in headers 
+	 *    to fill out some more user properties  based on attributes in headers 
 	 *    set by Shib. You could even pick a new username, if you so choose.
 	 */
 	
