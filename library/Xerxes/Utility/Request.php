@@ -309,14 +309,17 @@ class Request extends ZendRequest
 	
 	public function isXmlHttpRequest()
 	{
-		if ( $this->headers()->get('X_REQUESTED_WITH')->getFieldValue() == 'XMLHttpRequest')
+		$requested_with = $this->headers()->get('X_REQUESTED_WITH');
+		
+		if ( $requested_with != null )
 		{
-			return true;
+			if ( $requested_with->getFieldValue() == 'XMLHttpRequest')
+			{
+				return true;
+			}
 		}
-		else
-		{
-			return false;
-		}
+
+		return false;
 	}	
 	
 	/**
