@@ -47,7 +47,15 @@ class ViewRenderer
 				$this->$id = $value;
 			}		
 			
+			// buffer the output so we can catch and return it
+			
+			ob_start();
+			
 			require_once $this->_script_path . "/" . $view;
+			
+			$content = ob_get_clean();
+			
+			return $content;
 		}
 	}
 	
