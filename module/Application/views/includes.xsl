@@ -492,7 +492,7 @@
 	
 	<xsl:template name="jslabels">
 	
-		<script language="javascript" type="text/javascript" src="{navbar/labels_link}"></script> 
+		<script language="javascript" type="text/javascript" src="asset/labels"></script> 
 	
 	</xsl:template>
 	

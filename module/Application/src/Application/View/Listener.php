@@ -6,7 +6,7 @@ use Application\Controller\SearchController;
 
 use Application\View\Helper\Navigation,
 	ArrayAccess,
-	Xerxes\Utility\ControllerMap,
+	Xerxes\Utility\Request,
 	Xerxes\Utility\Registry,
     Xerxes\Utility\ViewRenderer,
     Zend\Di\Locator,
@@ -90,12 +90,14 @@ class Listener implements ListenerAggregate
         $script = $request->getControllerMap()->getView($request->getParam('format'));
         
         
+        
+        
         ##### @todo: HACK 
         
         $controller =  $request->getParam('controller', 'index');
         $action =  $request->getParam('action', 'index');
         
-        if ( $controller != "authenticate" && $action != "results" && $action != "record" ) 
+        if ( $controller != "authenticate" &&  $controller != "asset" && $action != "results" && $action != "record" ) 
         {
         	$script = "search" . '/' . $action . '.xsl';
         }

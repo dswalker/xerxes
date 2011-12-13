@@ -22,8 +22,7 @@ class Navigation
 			'accessible_link' => $this->accessibleLink(),
 			'login_link' => $this->loginLink(),
 			'logout_link' => $this->logoutLink(),
-			'my_account_link' => $this->myAccountLink(),
-			'labels_link' => $this->labelsLink()
+			'my_account_link' => $this->myAccountLink()
 		);
 	}	
 	
@@ -72,16 +71,6 @@ class Navigation
 			'controller' => 'databases',
 			'action' => 'accessible',
 			'return' => $this->request->server()->get('REQUEST_URI')
-		);
-
-		return $this->request->url_for($params);	
-	}
-
-	public function labelsLink()
-	{
-		$params = array(
-			'controller' => 'navigation',
-			'action' => 'labels',
 		);
 
 		return $this->request->url_for($params);	
