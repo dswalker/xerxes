@@ -78,7 +78,7 @@ abstract class SearchController extends ActionController
 
 		$url = $this->request->url_for($params);
 		
-		$this->redirect()->toUrl($url);
+		return $this->redirect()->toUrl($url);
 	}
 	
 	public function hitsAction()
@@ -215,7 +215,7 @@ abstract class SearchController extends ActionController
 	{
 		$datamap = new SavedRecords();
 		
-		$username = "testing"; // $this->request->getSessionData("username"); // @todo: with authentication framework
+		$username = $this->request->getSessionData("username");
 		$original_id = $this->request->getParam("id");
 
 		$inserted_id = ""; // internal database id

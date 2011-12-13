@@ -3,17 +3,20 @@
 namespace Application\Controller;
 
 use Application\Model\Saved\Engine,
-	Zend\Http\Client;
+	Zend\Http\Client,
+	Zend\Mvc\MvcEvent;
 
 class FolderController extends SearchController
 {
 	protected $id = "folder";
 	
-	public function init()
+	public function init(MvcEvent $e)
 	{
 		// make the username the query
-		$this->request->setParam("query", 'testing');
-		parent::init();
+		
+		$this->request->setParam("query", $this->request->getSessionData('username'));
+		
+		parent::init($e);
 	}
 	
 	protected function getEngine()
@@ -21,19 +24,19 @@ class FolderController extends SearchController
 		return new Engine();
 	}
 	
-	public function index()
+	public function indexAction()
 	{
 		$this->request->setSessionData("return", $this->request->getParam("return"));
 		
 		$params = array (
-			'base' => 'folder',
+			'controller' => 'folder',
 			'action' => 'results',
-			'username' => 'testing'
+			'username' => $this->request->getSessionData('username')
 		);
 		
 		$url = $this->request->url_for($params);
 		
-		$this->response->setRedirect($url);
+		return $this->redirect()->toUrl($url);
 	}
 	
 	
