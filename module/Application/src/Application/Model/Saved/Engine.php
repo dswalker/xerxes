@@ -37,7 +37,7 @@ class Engine extends Search\Engine
 	 * @return int
 	 */		
 	
-	public function getHits( Query $search )
+	public function getHits( Search\Query $search )
 	{
 	}
 
@@ -52,7 +52,7 @@ class Engine extends Search\Engine
 	 * @return Results
 	 */	
 	
-	public function searchRetrieve( Query $search, $start = 1, $max = 10, $sort = "")
+	public function searchRetrieve( Search\Query $search, $start = 1, $max = 10, $sort = "")
 	{
 		return $this->doSearch( $search, $start, $max, $sort);
 	}	
@@ -84,7 +84,7 @@ class Engine extends Search\Engine
 		return Config::getInstance();
 	}
 	
-	protected function doSearch(Query $search, $start = 1, $max = 10, $sort = "")
+	protected function doSearch(Search\Query $search, $start = 1, $max = 10, $sort = "")
 	{
 		$username = $search->getQueryTerm(0)->phrase;
 		$label = $search->getLimit("label");
