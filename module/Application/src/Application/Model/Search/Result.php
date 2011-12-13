@@ -37,8 +37,8 @@ class Result
 	/**
 	 * Constructor
 	 * 
-	 * @param Xerxes_Record $record						record
-	 * @param Config $config		local config
+	 * @param Xerxes_Record $record		record
+	 * @param Config $config			local config
 	 */
 	
 	public function __construct(Record $record, Config $config)

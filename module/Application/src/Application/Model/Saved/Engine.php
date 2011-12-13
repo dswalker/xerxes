@@ -39,6 +39,7 @@ class Engine extends Search\Engine
 	
 	public function getHits( Search\Query $search )
 	{
+		return $this->doSearch( $search, 0, 0 ); 
 	}
 
 	/**
@@ -61,11 +62,33 @@ class Engine extends Search\Engine
 	 * Return an individual record
 	 * 
 	 * @param string	record identifier
-	 * @return Results
+	 * @return ResultSet
 	 */
 	
 	public function getRecord( $id )
 	{
+		$results = new Search\ResultSet($this->config);
+		
+		$record = $this->datamap->getRecordByID($id);
+		
+		// no record found?
+		
+		if ( $record == null )
+		{
+			$results->total = 0;
+			return $results;
+		}
+		
+		// got one
+		
+		$results->total = 1;
+		
+		// add it to the results
+		
+		$result = $this->createSearchResult($record);
+		$results->addResult($result);
+		
+		return $results;
 	}
 
 	/**
@@ -119,15 +142,26 @@ class Engine extends Search\Engine
 		
 		foreach ( $records as $record )
 		{
-			// set the internal id as the record id, not the original
-			
-			$record->xerxes_record->setRecordID($record->id);
-			
-			$result = new Search\Result($record->xerxes_record, $this->config);
-			
+			$result = $this->createSearchResult($record);
 			$results->addResult($result);
 		}
 		
 		return $results;
+	}
+	
+	protected function createSearchResult(Record $record)
+	{
+		// set the internal id as the record id, not the original
+		
+		$record->xerxes_record->setRecordID($record->id);
+		
+		$result = new Result($record->xerxes_record, $this->config);
+		$result->id = $record->id;
+		$result->username = $record->username;
+		$result->source = $record->source;
+		$result->original_id = $record->original_id;
+		$result->timestamp = $record->timestamp;
+		
+		return $result;		
 	}
 }

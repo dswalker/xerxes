@@ -17,21 +17,11 @@ use Application\Model\Search,
  */
 
 
-class Record extends DataValue
+class Result extends Search\Result
 {
 	public $id;
 	public $source;
 	public $original_id;
 	public $timestamp;
 	public $username;
-	public $nonsort;
-	public $title;
-	public $author;
-	public $year;
-	public $format;
-	public $refereed;
-	public $marc;
-	public $xerxes_record; // not in database
-	
-	public $tags = array();
 }

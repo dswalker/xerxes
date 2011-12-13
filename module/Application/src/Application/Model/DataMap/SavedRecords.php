@@ -4,6 +4,7 @@ namespace Application\Model\DataMap;
 
 use Xerxes\Utility\DataMap,
 	Xerxes\Record,
+	Application\Model\Saved\Record as SavedRecord,
 	Application\Model\Saved\Record\Format,
 	Application\Model\Saved\Record\Tag;
 
@@ -31,7 +32,7 @@ class SavedRecords extends DataMap
 	
 	public function totalRecords($strUsername, $strLabel = null, $strFormat = null)
 	{
-		$arrParams = array ( );
+		$arrParams = array();
 		
 		// labels are little different, since we need to make sure they
 		// include the tags table 
@@ -184,8 +185,7 @@ class SavedRecords extends DataMap
 	 * @return array					array of Record objects
 	 */
 	
-	private function returnRecords($strUsername = null, $strView = "full", $arrID = null, 
-		$strOrder = null, $iStart = 1, $iCount = null, $strFormat = null, $strLabel = null)
+	private function returnRecords($strUsername = null, $strView = "full", $arrID = null, $strOrder = null, $iStart = 1, $iCount = null, $strFormat = null, $strLabel = null)
 	{
 		// esnure that we don't just end-up with a big database dump
 
@@ -369,7 +369,7 @@ class SavedRecords extends DataMap
 		
 		if ( $arrResults != null )
 		{
-			$objRecord = new Record();
+			$objRecord = new SavedRecord();
 			
 			foreach ( $arrResults as $arrResult )
 			{
@@ -383,27 +383,12 @@ class SavedRecords extends DataMap
 						array_push( $arrRecords, $objRecord );
 					}
 					
-					$objRecord = new Record( );
+					$objRecord = new SavedRecord();
 					$objRecord->load( $arrResult );
 					
-					// only full display will include marc records
-
 					if ( array_key_exists( "marc", $arrResult ) )
 					{
-						if ( $arrResult["record_type"] == "xerxes_record")
-						{
-							// new-style saved record
-							
-							$objRecord->xerxes_record = unserialize($arrResult["marc"]);
-						}
-						else
-						{
-							// old style
-							
-							$objXerxes_Record = new Xerxes_MetalibRecord();
-							$objXerxes_Record->loadXML( $arrResult["marc"] );
-							$objRecord->xerxes_record = $objXerxes_Record;
-						}
+						$objRecord->xerxes_record = unserialize($arrResult["marc"]);
 					}
 				}
 				
