@@ -145,8 +145,8 @@ abstract class Authentication
 		// if the user was previously active under a local username 
 		// then reassign any saved records to the new username
 		
-		$old_username = $this->request->getSession("username");
-		$old_role = $this->request->getSession("role");
+		$old_username = $this->request->getSessionData("username");
+		$old_role = $this->request->getSessionData("role");
 		
 		if ( $old_role == "local" )
 		{
@@ -165,24 +165,24 @@ abstract class Authentication
 		
 		// set main properties in session
 		
-		$this->request->setSession("username", $this->user->username);
-		$this->request->setSession("role", $this->role);
+		$this->request->setSessionData("username", $this->user->username);
+		$this->request->setSessionData("role", $this->role);
 		
 		$configApplication = $this->registry->getConfig("BASE_WEB_PATH", false, "");
-		$this->request->setSession("application", $configApplication);
+		$this->request->setSessionData("application", $configApplication);
 		
 		// store user's additional properties in session, so they can be used by
 		// controller, and included in xml for views. 
 		
-		$this->request->setSession("user_properties", $this->user->properties());
+		$this->request->setSessionData("user_properties", $this->user->properties());
 		
 		// groups too empty array not null please. 
 	
-		$this->request->setSession("user_groups", $this->user->usergroups);
+		$this->request->setSessionData("user_groups", $this->user->usergroups);
 		
 		// set this object's id in session
 		
-		$this->request->setSession("auth", $this->id);
+		$this->request->setSessionData("auth", $this->id);
 		
 		// now forward them to the return url
 		

@@ -70,10 +70,26 @@ class Request extends ZendRequest
         }
     }
     
+    /**
+     * Add the Controller Map 
+     * 
+     * This is really just convenience so other parts of the system can
+     * easily gain access to it
+     * 
+     * @param ControllerMap $controller_map
+     */
+    
     public function setControllerMap(ControllerMap $controller_map )
     {
     	$this->controller_map = $controller_map;
     }
+    
+    /**
+     * Get the Controller Map
+     * 
+     * @throws \Exception		if no controller map previous set
+     * @return ControllerMap
+     */
     
     public function getControllerMap()
     {
@@ -153,21 +169,44 @@ class Request extends ZendRequest
 	 * @param mixed $value
 	 */
     
-    public function setSession($key, $value)
+    public function setSessionData($key, $value)
     {
     	$this->getContainer()->offsetSet($key, $value);
     }
     
     /**
-     * Get session value
-     * 
+     * Unset a value in Session
+     *
      * @param string $key
      */
     
-    public function getSession($key)
+    public function unsetSessionData($key)
+    {
+   		$this->getContainer()->offsetUnset($key);
+    }    
+    
+    /**
+     * Check if a key is set in Session
+     *
+     * @param string $key
+     */
+    
+    public function existsInSessionData($key)
+    {
+    	$this->getContainer()->offsetExists($key);
+    }    
+    
+    /**
+     * Get session value
+     * 
+     * @param string $key
+     * @return mixed 		value, if key exists, otherwise null
+     */
+    
+    public function getSessionData($key)
     {
     	return $this->getContainer()->offsetGet($key);
-    } 
+    }
     
     /**
      * Get all session values
@@ -175,7 +214,7 @@ class Request extends ZendRequest
      * @return array
      */
     
-    public function getAllSession()
+    public function getAllSessionData()
     {
     	return $this->getContainer()->getIterator()->getArrayCopy();
     }
@@ -215,7 +254,7 @@ class Request extends ZendRequest
 				}
 			}
 			
-			// post requests
+			// post request parameters
 			
 			foreach ( $_POST as $key => $value )
 			{
@@ -224,16 +263,16 @@ class Request extends ZendRequest
 			
 			// set mobile
 				
-			if ( $this->getSession('is_mobile') == null )
+			if ( $this->getSessionData('is_mobile') == null )
 			{
-				$this->setSession('is_mobile', (string) $this->isMobileDevice());
+				$this->setSessionData('is_mobile', (string) $this->isMobileDevice());
 			}
 				
 			// troubleshooting mobile
 				
 			if ( $this->getParam("is_mobile") != "" )
 			{
-				$this->setSession('is_mobile', $this->getParam("is_mobile"));
+				$this->setSessionData('is_mobile', $this->getParam("is_mobile"));
 			}
 		} 
 		else
@@ -261,12 +300,12 @@ class Request extends ZendRequest
 				
 		if ( $this->registry->getConfig("REVERSE_PROXY", false, false ) == true )
 		{
-			$forward_host = $_SERVER['HTTP_X_FORWARDED_HOST'];
-			$forward_address = $_SERVER['HTTP_X_FORWARDED_FOR'];
+			$forward_host = $this->server()->get('HTTP_X_FORWARDED_HOST');
+			$forward_address = $this->server()->get('HTTP_X_FORWARDED_FOR');
 					
 			if ( $forward_host != "" )
 			{
-				$_SERVER['SERVER_NAME'] = $forward_host;
+				$this->server()->set('SERVER_NAME', $forward_host);
 			}
 					
 			// last ip address is the user's
@@ -274,7 +313,7 @@ class Request extends ZendRequest
 			if ( $forward_address != "" )
 			{
 				$arrIP = explode(",", $forward_address);
-				$_SERVER['REMOTE_ADDR'] = trim(array_pop($arrIP));
+				$this->server()->set('REMOTE_ADDR', trim(array_pop($arrIP)));
 			}		
 		}
 	}
@@ -650,7 +689,7 @@ class Request extends ZendRequest
 		
 		$session = $xml->createElement( "session" );
 		$xml->documentElement->appendChild( $session );
-		$this->addElement( $xml, $session, $this->getAllSession() );
+		$this->addElement( $xml, $session, $this->getAllSessionData() );
 		
 		// add the server global array
 		// but only if the request asks for it, for security purposes

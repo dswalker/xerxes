@@ -10,7 +10,7 @@ class WorldcatController extends SearchController
 	
 	protected function getEngine()
 	{
-		$role = $this->request->getSession("role");
+		$role = $this->request->getSessionData("role");
 		$source = $this->request->getParam("source");
 		
 		return new Engine($role, $source);

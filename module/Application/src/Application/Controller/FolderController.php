@@ -23,7 +23,7 @@ class FolderController extends SearchController
 	
 	public function index()
 	{
-		$this->request->setSession("return", $this->request->getParam("return"));
+		$this->request->setSessionData("return", $this->request->getParam("return"));
 		
 		$params = array (
 			'base' => 'folder',

@@ -43,8 +43,8 @@ class User extends DataValue
 		{
 			// user attributes
 			
-			$this->username = $request->getSession("username");
-			$this->role = $request->getSession("role");
+			$this->username = $request->getSessionData("username");
+			$this->role = $request->getSessionData("role");
 			$this->ip_address = $request->server()->get('REMOTE_ADDR');
 			
 			// local ip range from config
@@ -59,8 +59,8 @@ class User extends DataValue
 				$this->username = self::genRandomUsername(self::LOCAL);
 				$this->role = self::LOCAL;
 				
-				$request->setSession("username", $this->username);
-				$request->setSession("role", $this->role);
+				$request->setSessionData("username", $this->username);
+				$request->setSessionData("role", $this->role);
 			}		
 		}
 	}

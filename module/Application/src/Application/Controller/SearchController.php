@@ -89,7 +89,7 @@ abstract class SearchController extends ActionController
 		
 		// see if one exists in session already
 		
-		$total = $this->request->getSession($id);
+		$total = $this->request->getSessionData($id);
 		
 		// nope
 		
@@ -100,7 +100,7 @@ abstract class SearchController extends ActionController
 			
 			$total = $this->engine->getHits($this->query);
 			$total = Parser::number_format($total);
-			$this->request->setSession($id, (string) $total);
+			$this->request->setSessionData($id, (string) $total);
 		}
 		
 		// and tell the browser too
@@ -150,7 +150,7 @@ abstract class SearchController extends ActionController
 		// cache it
 		
 		$id = $this->helper->getQueryID();
-		$this->request->setSession($id, (string) $total);
+		$this->request->setSessionData($id, (string) $total);
 		
 		// add links
 		
@@ -215,7 +215,7 @@ abstract class SearchController extends ActionController
 	{
 		$datamap = new SavedRecords();
 		
-		$username = "testing"; // $this->request->getSession("username"); // @todo: with authentication framework
+		$username = "testing"; // $this->request->getSessionData("username"); // @todo: with authentication framework
 		$original_id = $this->request->getParam("id");
 
 		$inserted_id = ""; // internal database id
@@ -266,7 +266,9 @@ abstract class SearchController extends ActionController
 	
 	protected function markSaved( $original_id, $saved_id )
 	{
-		$_SESSION['resultsSaved'][$original_id]['xerxes_record_id'] = $saved_id;
+		$data = array();
+		$data[$original_id]['xerxes_record_id'] = $saved_id;
+		$this->request->setSessionData('resultsSaved', $data);
 	}
 
 	/**
@@ -277,9 +279,15 @@ abstract class SearchController extends ActionController
 	
 	protected function unmarkSaved( $original_id )
 	{
-		if ( array_key_exists( "resultsSaved", $_SESSION ) && array_key_exists( $original_id, $_SESSION["resultsSaved"] ) )
+		$results_saved = $this->request->getSessionData('resultsSaved');
+		
+		if ( is_array($results_saved ) )
 		{
-			unset( $_SESSION['resultsSaved'][$original_id] );
+			if ( array_key_exists( $original_id, $results_saved ) )
+			{
+				unset($results_saved[$original_id]);
+				$this->request->setSessionData('resultsSaved', $results_saved);
+			}
 		}
 	}
 
@@ -291,14 +299,17 @@ abstract class SearchController extends ActionController
 	
 	protected function isMarkedSaved($original_id)
 	{
-		if ( array_key_exists( "resultsSaved", $_SESSION ) && array_key_exists( $original_id, $_SESSION["resultsSaved"] ) )
+		$results_saved = $this->request->getSessionData('resultsSaved');
+		
+		if ( is_array($results_saved ) )
 		{
-			return true;
+			if ( array_key_exists( $original_id, $results_saved ) )
+			{
+				return true;
+			}
 		}
-		else
-		{
-			return false;
-		}
+		
+		return false;
 	}
 
 	/**
@@ -309,9 +320,11 @@ abstract class SearchController extends ActionController
 	{
 		$num = 0;
 		
-		if ( array_key_exists( "resultsSaved", $_SESSION ) )
+		$results_saved = $this->request->getSessionData('resultsSaved');
+		
+		if ( is_array($results_saved ) )
 		{
-			$num = count( $_SESSION["resultsSaved"] );
+			$num = count($results_saved);
 		}
 		
 		return $num;

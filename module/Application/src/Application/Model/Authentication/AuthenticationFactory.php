@@ -31,7 +31,7 @@ class AuthenticationFactory
 		{
 			// otherwise, see if one has been set in session from a previous login
 		
-			$session_auth = $request->getSession("auth");
+			$session_auth = $request->getSessionData("auth");
 		
 			if ( $session_auth != "" )
 			{

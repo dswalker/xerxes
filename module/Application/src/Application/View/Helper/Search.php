@@ -389,7 +389,7 @@ class Search
 				
 				// cached search hit count?
 		
-				foreach ( $this->request->getAllSession() as $session_id => $session_value )
+				foreach ( $this->request->getAllSessionData() as $session_id => $session_value )
 				{
 					// does this value in the cache have the save id as our tab?
 					
