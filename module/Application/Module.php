@@ -122,13 +122,15 @@ class Module implements AutoloaderProvider
     	$restricted = $controller_map->isRestricted(); 
     	$requires_login = $controller_map->requiresLogin();
     	
+    	// get user from session
+    	
+    	$user = new User($request); 
+    	
     	// this action requires authentication
     	
     	if ( $restricted || $requires_login )
     	{
     		$redirect_to_login = false;
-    		
-    		$user = new User($request); // user from session
     		
     		// this action requires a logged-in user, but user is not logged-in
     		
