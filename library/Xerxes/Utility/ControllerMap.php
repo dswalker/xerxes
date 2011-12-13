@@ -49,9 +49,24 @@ class ControllerMap
 				throw new \Exception("could not parse local map.xml");
 			}
 			
-			$this->addLocalFile($this->xml, $local );
-		}				
-
+			$this->addXml($this->xml, $local );
+		}
+		
+		foreach ( $this->xml->controller as $controller )
+		{
+			$inherits = $controller["inherits"];
+			
+			if ( $inherits  != "" )
+			{
+				$controller_to_copy = $this->xml->xpath("//controller[@name='$inherits']");
+				
+				if ( count($controller_to_copy) > 0 )
+				{
+					$this->addXml($this->xml, $controller_to_copy[0], $controller );
+				}
+			}
+		}
+		
 		// header("Content-type: text/xml"); echo $this->xml->asXML(); exit;	
 	}
 	
@@ -66,31 +81,6 @@ class ControllerMap
 		$this->action = $action;
 	}
 
-	/**
-	 * Adds instructions from the local map.xml file into the master one
-	 * 
-	 * @param \SimpleXMLElement $parent
-	 * @param \SimpleXMLElement $local
-	 * @throws Exception
-	 */
-	
-	private function addLocalFile( \SimpleXMLElement $parent, \SimpleXMLElement $local )
-	{
-		// amazingly, the code below changes the simplexml object itself
-		// no need to cast this back to simplexml
-		
-		$master = dom_import_simplexml ( $parent );
-		
-		// import and append the local file
-		
-		foreach ( $local->children() as $entry )
-		{
-			$new = dom_import_simplexml ( $entry );
-			$import = $master->ownerDocument->importNode( $new, true );
-			$master->ownerDocument->documentElement->appendChild($import);
-		}
-	}
-	
 	public function isRestricted()
 	{
 		$restrict = "";
@@ -165,10 +155,11 @@ class ControllerMap
 		
 		if ( $format != "" )
 		{
-			$format_query = "[@name = '$format']";
+			$format_query = "[@format='$format']";
 		}
 		
-		$view_def = $this->xml->xpath("//controller[@name='$this->controller']/action[@name='$this->action']/view" . $format_query);
+		$query = "//controller[@name='$this->controller']/action[@name='$this->action']/view" . $format_query;
+		$view_def = $this->xml->xpath($query);
 		
 		foreach ( $view_def as $def )
 		{
@@ -178,6 +169,44 @@ class ControllerMap
 		return $view;
 	}
 	
+	/**
+	 * Append one simple xml element to another 
+	 *
+	 * @param \SimpleXMLElement $parent			master document
+	 * @param \SimpleXMLElement $local			xml nodes to add
+	 * @param \SimpleXMLElement $node			[optional] the insertion point to append local
+	 * 
+	 * @throws Exception
+	 */
+	
+	private function addXml( \SimpleXMLElement $parent, \SimpleXMLElement $local, \SimpleXMLElement $node = null )
+	{
+		// amazingly, the code below changes the simplexml object itself
+		// no need to cast this back to simplexml
+	
+		$master = dom_import_simplexml( $parent );
+		
+		// insertion point is main document node, unless we specify one
+		
+		$insert_node = $master->ownerDocument->documentElement;
+		
+		if ( $node != null )
+		{
+			$insert_node = dom_import_simplexml( $node );
+		}
+	
+		// import and append the local xml's child nodes
+	
+		foreach ( $local->children() as $entry )
+		{
+			$new = clone dom_import_simplexml( $entry ); // make sure we are copying the node
+			
+			$import = $master->ownerDocument->importNode( $new, true );
+			
+			$insert_node->appendChild($import);
+		}
+	}	
+	
 		
 	/**
 	 * Get the Xerxes version number
@@ -186,5 +215,10 @@ class ControllerMap
 	public function getVersion()
 	{
 		return $this->version;
+	}
+	
+	public function saveXML()
+	{
+		return $this->xml->asXML();
 	}
 }

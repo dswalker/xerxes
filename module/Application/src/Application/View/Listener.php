@@ -85,30 +85,8 @@ class Listener implements ListenerAggregate
             return;
         }
         
-        // set the view
         
-        $script = $request->getControllerMap()->getView($request->getParam('format'));
-        
-        
-        
-        
-        ##### @todo: HACK 
-        
-        $controller =  $request->getParam('controller', 'index');
-        $action =  $request->getParam('action', 'index');
-        
-        if ( $controller != "authenticate" &&  $controller != "asset" && $action != "results" && $action != "record" ) 
-        {
-        	$script = "search" . '/' . $action . '.xsl';
-        }
-        
-        ##### END HACK
-        
-        
-        
-       
-        
-        // set up the response
+        ### get results
         
         $vars = array();
         
@@ -121,8 +99,7 @@ class Listener implements ListenerAggregate
         $nav = new Navigation($e);
         $vars["navbar"] = $nav->getNavbar();
         
-        
-        // get results from controller(s)
+        // controller action
 
         $result = $e->getResult();
         
@@ -136,6 +113,10 @@ class Listener implements ListenerAggregate
         }
         
 		$vars = array_merge($vars,$result);
+		
+		
+		
+		### display the results
         
         // show internal xml
         
@@ -149,8 +130,20 @@ class Listener implements ListenerAggregate
         
         else
         {	
+        	// determine which view script to use
+        	
+        	$script = $request->getControllerMap()->getView($request->getParam('format'));
+        	
+        	// test view chosen
+        	// header("Content-type: text/xml"); echo $request->getControllerMap()->saveXML();	echo "<!-- $script -->"; exit;
+        	
+        	// render it
+        	
 	        $content = $this->view_renderer->render($script, $vars);
         }
+        
+        
+        ### return the result
 
         $e->setResult($content);
         $response->setContent($content);
@@ -218,8 +211,11 @@ class Listener implements ListenerAggregate
 
         $content = $this->view_renderer->render($script, $vars);
 
-        $e->setResult($content);
+        ### return the result
 
-        return $this->renderView($e);
+        $e->setResult($content);
+        $response->setContent($content);
+        
+        return $response;
     }
 }
