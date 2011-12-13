@@ -20,9 +20,6 @@
 	<controller name="error" class="Application\Controller\ErrorController" />
 	<controller name="folder" class="Application\Controller\FolderController" inherits="search" >
 		<map-path index="2" param="username" />
-		<action name="full">
-			<map-path index="3" param="record" />		
-		</action>
 		<action name="export">
 			<view format="text-file">citation/basic.xsl</view>
 			<view format="ris-file">citation/ris.xsl</view>
