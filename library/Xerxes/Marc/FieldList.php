@@ -13,7 +13,7 @@ namespace Xerxes\Marc;
  * @package Xerxes
  */
 
-abstract class FieldList implements \Iterator 
+class FieldList implements \Iterator 
 {
 	protected $list = array();
 	protected $position = 0;

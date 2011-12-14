@@ -33,6 +33,7 @@ class Bibliographic extends Record
 	{
 		parent::__construct();
 		$this->utility[] = "marc";
+		$this->utility[] = "alt_scripts"; // @todo remove this when ready to render this to xml properly
 	}	
 	
 	public function loadXML($xml)
@@ -854,7 +855,7 @@ class Bibliographic extends Record
 			// we create a new marc record from the 880, using subfield 6 as the 
 			// name of each new tag
 			
-			$marc = new Record();
+			$marc = new MarcRecord();
 			
 			foreach ( $this->marc->datafield("880") as $datafield )
 			{
