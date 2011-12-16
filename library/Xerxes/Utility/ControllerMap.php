@@ -7,11 +7,11 @@ namespace Xerxes\Utility;
  * for a given request
  * 
  * @author David Walker
- * @copyright 2008 California State University
- * @version $Id: ControllerMap.php 2045 2011-11-28 14:17:37Z dwalker.calstate@gmail.com $
- * @package  Xerxes_Framework
+ * @copyright 2011 California State University
+ * @version 
+ * @package  Xerxes
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license 
  *
  */
 
@@ -23,6 +23,9 @@ class ControllerMap
 	
 	private $controller; // supplied controller
 	private $action; // supplied action
+	
+	private $view = array(); // view(s) set programmatically
+	private $default_controller; // default controller/action for index	 
 	
 	public function __construct($distro)
 	{
@@ -70,7 +73,12 @@ class ControllerMap
 		// header("Content-type: text/xml"); echo $this->xml->asXML(); exit;	
 	}
 	
-	public function setController($controller, $action)
+	public function getDefaultController()
+	{
+		return (string) $this->xml->default;
+	}
+	
+	public function setController($controller, $action = 'index')
 	{
 		if ( ! is_string($controller) )
 		{
@@ -80,7 +88,7 @@ class ControllerMap
 		$this->controller = $controller;
 		$this->action = $action;
 	}
-
+	
 	public function isRestricted()
 	{
 		$restrict = "";
@@ -147,13 +155,32 @@ class ControllerMap
 		}
 	}
 	
-	public function getView($format = "")
-	{		
+	public function setView($view, $format = "html")
+	{
+		$this->view[$format] = $view;
+	}
+	
+	public function getView($format = "html")
+	{
+		if ( $format == "" )
+		{
+			$format = "html";
+		}
+		
+		// already set
+		
+		if ( array_key_exists($format, $this->view) )
+		{
+			return $this->view;
+		}
+		
+		// get it out of the config
+		
 		$format_query = "";
 		
 		$view =  $this->controller . '/' . $this->action . '.xsl';
 		
-		if ( $format != "" )
+		if ( $format != "html" )
 		{
 			$format_query = "[@format='$format']";
 		}
@@ -165,6 +192,8 @@ class ControllerMap
 		{
 			$view = $def;
 		}
+		
+		$this->view[$format] = $view; // save for later
 		
 		return $view;
 	}

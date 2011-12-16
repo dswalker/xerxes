@@ -15,9 +15,9 @@ use Application\Model\Authentication\AuthenticationFactory,
 
 class Module implements AutoloaderProvider
 {
-    protected $request; // xerxes request object
-    protected $viewListener; // application view listener
-    protected $controller_map; // xerxes controller map
+	protected $viewListener; // application view listener
+	protected $request; // xerxes request object
+	protected $controller_map; // xerxes controller map
 
     public function init(Manager $moduleManager)
     {
@@ -101,8 +101,8 @@ class Module implements AutoloaderProvider
     		
     		// set the current controller/action
     		
-    		$controller =  $this->request->getParam('controller');
-    		$action =  $this->request->getParam('action');
+    		$controller =  $this->request->getParam('controller', 'index');
+    		$action =  $this->request->getParam('action', 'index');
     		
     		$this->controller_map->setController($controller, $action);
     		

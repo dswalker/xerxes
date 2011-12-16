@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xerxes version="2.0.beta.1">
-	<default contoller="databases" action="categories" />
+
+	<default>summon</default>
 	
 	<controller name="asset" class="Application\Controller\AssetController">
 		<action name="labels">
