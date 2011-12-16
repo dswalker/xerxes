@@ -408,6 +408,25 @@ class Request extends ZendRequest
 		}
 	}
 	
+	/**
+	 * Replace a parameter with supplied value
+	 *
+	 * @param string $key			key to identify the value
+	 * @param mixed $value			value to add
+	 * @param bool $is_array		[optional] set to true will ensure property is set as array
+	 */	
+	
+	public function replaceParam( $key, $value, $is_array = false )
+	{
+		$this->setParam( $key, $value, $is_array, true );
+	}
+	
+	/**
+	 * Replace all params
+	 * 
+	 * @param array $params
+	 */
+	
 	public function setParams(array $params)
 	{
 		$this->params = $params;
