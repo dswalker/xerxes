@@ -361,16 +361,79 @@ class Parser
 	
 	public static function normalizeIpAddress($original)
 	{
-		$strNormalized = "";
+		$normalized = "";
 		$arrAddress = explode( ".", $original );
 	
 		foreach ( $arrAddress as $subnet )
 		{
-			$strNormalized .= str_pad( $subnet, 3, "0", STR_PAD_LEFT );
+			$normalized .= str_pad( $subnet, 3, "0", STR_PAD_LEFT );
 		}
 	
-		return $strNormalized;
+		return $normalized;
 	}
+	
+	/**
+	 * Opposite of normalizeIpAddress
+	 *
+	 * e.g., 144037001023 = 144.37.1.23
+	 *
+	 * @param string $original			normalized ip address
+	 * @return string					nicely formatted version
+	 */	
+	
+	public function formatIpAddress($normalized)
+	{
+		$parts = str_split($normalized, 3);
+		
+		$parts_int = array();
+		
+		foreach ( $parts as $part )
+		{
+			$parts_int[] = (int) $part;
+		}
+		
+		$formatted = implode('.', $parts_int);
+		
+		return $formatted;
+	}
+	
+	/**
+	 * Strips periods and pads the subnets of a range of IP addresses
+	 *
+	 * Range can use wildcard (*) or hyphen to separate endpoints.
+	 *
+	 * @param string $range			ip range
+	 * @return array				start,end
+	 */	
+	
+	public static function normalizeIpRange($range)
+	{
+		$iStart = null;
+		$iEnd = null;
+	
+		if ( strpos( $range, "-" ) !== false )
+		{
+			// range expressed with start and stop addresses
+	
+			$arrLocalRange = explode( "-", $range );
+	
+			$iStart = self::normalizeIpAddress( str_replace( "*", "000", $arrLocalRange[0]) );
+			$iEnd = self::normalizeIpAddress( str_replace( "*", "255", $arrLocalRange[1]) );
+		}
+		else
+		{
+			// range expressed with wildcards
+	
+			$strStart = str_replace( "*", "000", $range );
+			$strEnd = str_replace( "*", "255", $range );
+	
+			$iStart = self::normalizeIpAddress( $strStart );
+			$iEnd = self::normalizeIpAddress( $strEnd );
+		}
+	
+		return array($iStart,$iEnd);
+	}
+	
 	
 	/**
 	 * Is the ip address within the supplied ip range(s)
@@ -393,7 +456,7 @@ class Parser
 	
 		// multiple ranges separated by comma
 	
-		$arrRange = array ( );
+		$arrRange = array();
 		$arrRange = explode( ",", $ranges );
 	
 		// loop through ranges
@@ -406,27 +469,8 @@ class Parser
 	
 			// normalize the campus range
 	
-			if ( strpos( $range, "-" ) !== false )
-			{
-				// range expressed with start and stop addresses
-	
-				$arrLocalRange = explode( "-", $range );
-	
-				$iStart = self::normalizeIpAddress( $arrLocalRange[0] );
-				$iEnd = self::normalizeIpAddress( $arrLocalRange[1] );
-			}
-			else
-			{
-				// range expressed with wildcards
-	
-				$strStart = str_replace( "*", "000", $range );
-				$strEnd = str_replace( "*", "255", $range );
-	
-				$iStart = self::normalizeIpAddress( $strStart );
-				$iEnd = self::normalizeIpAddress( $strEnd );
-	
-			}
-	
+			list($iStart,$iEnd) = self::normalizeIpRange($range);
+			
 			// see if remote address falls in between the campus range
 	
 			if ( $remote_address >= $iStart && $remote_address <= $iEnd )
@@ -434,7 +478,7 @@ class Parser
 				$local = true;
 			}
 		}
-	
+		
 		return $local;
 	}
 	
