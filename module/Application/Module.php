@@ -145,7 +145,7 @@ class Module implements AutoloaderProvider
     	
     	// get user from session
     	
-    	$user = new User($request); 
+    	$user = $request->getUser(); 
     	
     	// this action requires authentication
     	

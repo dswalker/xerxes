@@ -27,6 +27,7 @@ class Request extends ZendRequest
 
 	private $registry; // xerxes registry
 	private $controller_map; // xerxes controller map
+	private $user; // xerxes user
 	
 	private $router; // zend router	
 	private $session; // zend session manager
@@ -681,6 +682,16 @@ class Request extends ZendRequest
 		}
 		
 		return $scheme . '://' . $this->uri()->getHost() . $port;
+	}
+	
+	public function getUser()
+	{
+		if ( ! $this->user instanceof User )
+		{
+			$this->user = new User($this);
+		}
+		
+		return $this->user;
 	}
 	
 	/**
