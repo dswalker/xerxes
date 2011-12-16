@@ -43,7 +43,24 @@ class Module implements AutoloaderProvider
 
     public function getConfig($env = null)
     {
-        return include __DIR__ . '/config/module.config.php';
+        $config = include __DIR__ . '/config/module.config.php';
+        
+        // grab a copy of the aliases in config
+        
+        $aliases = $config['di']['instance']['alias'];
+        
+        // add those supplied by controller map
+        
+        foreach ( $this->getControllerMap()->getAliases() as $key => $value )
+        {
+        	$aliases[$key] = $value;
+        }
+        
+        // now set it back and return the whole config
+        
+        $config['di']['instance']['alias'] = $aliases;
+        
+        return $config;
     }
     
     public function initialize($e)
@@ -91,27 +108,31 @@ class Module implements AutoloaderProvider
 	    	$this->request = new Request();
 	    	$this->request->setRouter($e->getRouter());
 	    	$e->setRequest($this->request);
-    	}
     	
-    	// also controller map
-    	
-    	if ( ! $this->controller_map instanceof ControllerMap )
-    	{
-    		$this->controller_map = new ControllerMap(__DIR__ . '/config/map.xml');
-    		
-    		// set the current controller/action
+    		// set the current action for controller map
     		
     		$controller =  $this->request->getParam('controller', 'index');
     		$action =  $this->request->getParam('action', 'index');
     		
-    		$this->controller_map->setController($controller, $action);
+    		$controller_map = $this->getControllerMap();
+    		$controller_map->setController($controller, $action);
     		
     		// now stuff it in the request object for later access
     		
-    		$this->request->setControllerMap($this->controller_map);
+    		$this->request->setControllerMap($controller_map);
     	}
     	
     	return $this->request;
+    }
+    
+    public function getControllerMap()
+    {
+    	if ( ! $this->controller_map instanceof ControllerMap )
+    	{
+    		$this->controller_map = new ControllerMap(__DIR__ . '/config/map.xml');
+    	}
+    	
+    	return $this->controller_map;
     }
     
     public function checkAuthentication(MvcEvent $e)

@@ -4,17 +4,6 @@ return array(
 	'di' => array(
 		'instance' => array(
 			'alias' => array(
-				'asset'  => 'Application\Controller\AssetController',
-				'authenticate'  => 'Application\Controller\AuthenticateController',
-				'databases'  => 'Application\Controller\DatabasesController',
-				'ebsco' => 'Application\Controller\EbscoController',
-				'error'  => 'Application\Controller\ErrorController',
-				'folder'  => 'Application\Controller\FolderController',
-				'index'  => 'Application\Controller\IndexController',
-				'primo' => 'Application\Controller\PrimoController',
-				'solr' => 'Application\Controller\SolrController',
-				'summon' => 'Application\Controller\SummonController',
-				'worldcat' => 'Application\Controller\WorldcatController',
 				'view'   => 'Xerxes\Utility\ViewRenderer',
 				'labels'   => 'Xerxes\Utility\Labels',
 			),

@@ -89,6 +89,23 @@ class ControllerMap
 		$this->action = $action;
 	}
 	
+	public function getAliases()
+	{
+		$aliases = array();
+		
+		foreach ( $this->xml->controller as $controller )
+		{
+			if ( $controller["class"] == "" )
+			{
+				continue;
+			}			
+			
+			$aliases[(string) $controller["name"]] = (string) $controller["class"];
+		}
+		
+		return $aliases;
+	}
+	
 	public function isRestricted()
 	{
 		$restrict = "";
