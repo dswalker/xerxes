@@ -35,6 +35,9 @@
 		<action name="hits">
 			<view>search/hits.xsl</view>
 		</action>
+		<action name="lookup">
+			<view>search/lookup.xsl</view>
+		</action>
 		<action name="save">
 			<view format="json">search/save-ajax.xsl</view>
 		</action>	
