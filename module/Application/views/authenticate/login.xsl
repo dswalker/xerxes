@@ -30,15 +30,9 @@
 
 <xsl:template name="main">
 
-	<xsl:variable name="return" 	select="request/return" />
-	<xsl:variable name="local" 	select="request/local" />
+	<xsl:variable name="return" select="request/return" />
+	<xsl:variable name="local" select="request/local" />
 	<xsl:variable name="authentication_source" select="request/authentication_source" />
-
-	<xsl:variable name="username">
-		<xsl:if test="not(contains(request/session/username,'local@')) and not(contains(request/session/username,'guest@'))">
-			<xsl:value-of select="request/session/username" />
-		</xsl:if>
-	</xsl:variable>
 	
 	<div id="authentication">
 	
@@ -60,7 +54,7 @@
 				
 				<p>
 				<label for="username"><xsl:copy-of select="$text_authentication_login_username" /></label>
-				<input name="username" type="text" id="username" value="{$username}" />
+				<input name="username" type="text" id="username" value="" />
 				</p>
 				
 				<p>
