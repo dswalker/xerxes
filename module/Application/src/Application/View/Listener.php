@@ -103,7 +103,7 @@ class Listener implements ListenerAggregate
 
         $result = $e->getResult();
         
-        if ( is_scalar($result) ) 
+        if ( $result == null || is_scalar($result) ) 
         {
             $result = array('content' => $vars);
         } 
