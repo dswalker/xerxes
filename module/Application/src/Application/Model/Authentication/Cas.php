@@ -26,6 +26,8 @@ class Cas extends Authentication
 	{
 		$configCasLogin = $this->registry->getConfig( "CAS_LOGIN", true );
 		
+		$configCasLogin = rtrim($configCasLogin, '/');
+		
 		$url = $configCasLogin . "?service=" . urlencode($this->validate_url);
 		
 		$this->setRedirect( $url );
@@ -67,6 +69,7 @@ class Cas extends Authentication
 		// configuration settings
 
 		$configCasValidate = $this->registry->getConfig("CAS_VALIDATE", true);
+		$configCasValidate = rtrim($configCasValidate, '/');
 
 		// figure out which type of response this is based on the service url
 		

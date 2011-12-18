@@ -33,12 +33,9 @@ class Engine extends Search\Engine
 		
 		$this->server = $this->config->getConfig('SOLR', true);
 		
-		if ( substr($this->server,-1,1) != "/" )
-		{
-			$this->server .= "/";
-		}
+		$this->server = rtrim($this->server, '/');
 		
-		$this->server .= "select/?version=2.2";
+		$this->server .= "/select/?version=2.2";
 	}
 	
 	/**

@@ -33,7 +33,7 @@ class Engine
 		}
 		else
 		{
-			$this->url = $url;
+			$this->url = rtrim($url, '/');
 		}
 	}
 	

@@ -37,10 +37,7 @@ class Engine extends Search\Engine
 		
 		$this->server = $this->config->getConfig('PRIMO_ADDRESS', true);
 
-		if ( substr($this->server,-1,1) != "/" )
-		{
-			$this->server .= "/";
-		}		
+		$this->server = rtrim($this->server, '/');	
 		
 		// institutional id's
 		
@@ -204,7 +201,7 @@ class Engine extends Search\Engine
 		
 		// create the url
 		
-		$this->url = $this->server . "xservice/search/brief?" .
+		$this->url = $this->server . "/xservice/search/brief?" .
 			"institution=" . $this->institution .
 			"&onCampus=" . $on_campus .
 			$query .

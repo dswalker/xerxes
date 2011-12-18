@@ -27,6 +27,7 @@ class Innovative extends Authentication
 		parent::__construct($objRequest, $objRegistry);
 		
 		$this->server = $this->registry->getConfig( "INNOVATIVE_PATRON_API", true );
+		$this->server = rtrim($this->server, '/');
 	}
 	
 	public function onCallBack()
@@ -103,7 +104,7 @@ class Innovative extends Authentication
 		
 		// fetch data from the api
 		
-		$url = $this->server . "PATRONAPI/$id/dump";
+		$url = $this->server . "/PATRONAPI/$id/dump";
 		$arrData = $this->getContent($url);
 		
 		// if something went wrong
@@ -134,7 +135,7 @@ class Innovative extends Authentication
 		// fetch data from the api
 
 		$pin = urlencode($pin);
-		$url = $this->server . "PATRONAPI/$id/$pin/pintest";
+		$url = $this->server . "/PATRONAPI/$id/$pin/pintest";
 		$arrData = $this->getContent($url);
 		
 		// check pin test for error message, indicating
