@@ -1024,7 +1024,7 @@ class Bibliographic extends Record
 		
 		if ( $language_note != null )
 		{
-			$language_note = $this->stripEndPunctuation( $language_note, "." );
+			$language_note = rtrim( $language_note, "." );
 			
 			if ( ! stristr( $language_note, "Undetermined" ) )
 			{
