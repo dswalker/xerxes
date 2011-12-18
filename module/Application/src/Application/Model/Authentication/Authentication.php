@@ -43,25 +43,28 @@ abstract class Authentication
 		$this->request = $e->getRequest();
 		$this->registry = Registry::getInstance();
 		
-		$this->user = new User();
+		// get the user from the request
+		
+		$this->user = $this->request->getUser();
+		
+		// send them back here when they are done
 		
 		$this->return_url = $this->request->getParam("return");
 		
-		$base = $this->request->getBaseUrl();
+		// flesh out our return url
 		
+		$base = $this->request->getBaseUrl();
 		$server = $this->request->getServerUrl();
 		
-		// if no return supplied, then send them home!
-		
-		if ( $this->return_url == "" )
+		if ( $this->return_url == "" ) // no return supplied
 		{
-			$this->return_url = $base;
+			$this->return_url = $base; // so send them home!
 		}
 		else
 		{
-			if ( ! strstr($this->return_url, $server) )
+			if ( ! strstr($this->return_url, $server) ) // not a full url
 			{
-				$this->return_url = $server . $this->return_url;
+				$this->return_url = $server . $this->return_url; // make it so  @todo: why?
 			}
 		}
 		
@@ -153,8 +156,8 @@ abstract class Authentication
 			$datamap_records->reassignRecords( $old_username, $this->user->username );
 		}
 		
-		// add or update user in the database, get any values in the db not
-		// specified here.
+		// add or update user in the database
+		// get any values in the db not specified here and populates user
 		 
 		$this->user = $datamap_users->touchUser( $this->user );
 		
