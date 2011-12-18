@@ -450,17 +450,17 @@ class Record
 		
 		### punctuation clean-up
 
-		$this->book_title = $this->stripEndPunctuation( $this->book_title, "./;,:" );
-		$this->title = $this->stripEndPunctuation( $this->title, "./;,:" );
-		$this->sub_title = $this->stripEndPunctuation( $this->sub_title, "./;,:" );
-		$this->short_title = $this->stripEndPunctuation( $this->short_title, "./;,:" );
-		$this->journal_title = $this->stripEndPunctuation( $this->journal_title, "./;,:" );
-		$this->series_title = $this->stripEndPunctuation( $this->series_title, "./;,:" );
-		$this->technology = $this->stripEndPunctuation( $this->technology, "./;,:" );
+		$this->book_title = rtrim( $this->book_title, "./;,:" );
+		$this->title = rtrim( $this->title, "./;,:" );
+		$this->sub_title = rtrim( $this->sub_title, "./;,:" );
+		$this->short_title = rtrim( $this->short_title, "./;,:" );
+		$this->journal_title = rtrim( $this->journal_title, "./;,:" );
+		$this->series_title = rtrim( $this->series_title, "./;,:" );
+		$this->technology = rtrim( $this->technology, "./;,:" );
 		
-		$this->place = $this->stripEndPunctuation( $this->place, "./;,:" );
-		$this->publisher = $this->stripEndPunctuation( $this->publisher, "./;,:" );
-		$this->edition = $this->stripEndPunctuation( $this->edition, "./;,:" );
+		$this->place = rtrim( $this->place, "./;,:" );
+		$this->publisher = rtrim( $this->publisher, "./;,:" );
+		$this->edition = rtrim( $this->edition, "./;,:" );
 		
 		for ( $x = 0 ; $x < count( $this->authors ) ; $x ++ )
 		{
@@ -470,7 +470,7 @@ class Record
 				
 				foreach ( $objXerxesAuthor as $key => $value )
 				{
-					$objXerxesAuthor->$key = $this->stripEndPunctuation( $value, "./;,:" );
+					$objXerxesAuthor->$key = rtrim( $value, "./;,:" );
 				}
 				
 				$this->authors[$x] = $objXerxesAuthor;
@@ -480,7 +480,7 @@ class Record
 		for ( $s = 0 ; $s < count( $this->subjects ) ; $s ++ )
 		{
 			$subject_object = $this->subjects[$s];
-			$subject_object->value = $this->stripEndPunctuation( $subject_object->value, "./;,:" );
+			$subject_object->value = rtrim( $subject_object->value, "./;,:" );
 			$this->subjects[$s] = $subject_object;
 		}
 	}
@@ -1269,51 +1269,6 @@ class Record
 		return $results;
 	}	
 	
-	protected function stripEndPunctuation($strInput, $strPunct)
-	{
-		$bolDone = false;
-		$arrPunct = str_split( $strPunct );
-		
-		if ( strlen( $strInput ) == 0 )
-		{
-			return $strInput;
-		}
-		
-		// check if the input ends in a character entity
-		// reference, in which case, leave it alone, yo!
-		
-		if ( preg_match('/\&\#[0-9a-zA-Z]{1,5}\;$/', $strInput) )
-		{
-			return $strInput;
-		}
-		
-		while ( $bolDone == false )
-		{
-			$iEnd = strlen( $strInput ) - 1;
-			
-			foreach ( $arrPunct as $strPunct )
-			{
-				if ( substr( $strInput, $iEnd ) == $strPunct )
-				{
-					$strInput = substr( $strInput, 0, $iEnd );
-					$strInput = trim( $strInput );
-				}
-			}
-			
-			$bolDone = true;
-			
-			foreach ( $arrPunct as $strPunct )
-			{
-				if ( substr( $strInput, $iEnd ) == $strPunct )
-				{
-					$bolDone = false;
-				}
-			}
-		}
-		
-		return $strInput;
-	}
-	
 	protected function extractYear($strYear)
 	{
 		$arrYear = array();
@@ -1351,7 +1306,7 @@ class Record
 		// array of small words
 		
 		$arrSmallWords = array ('of', 'a', 'the', 'and', 'an', 'or', 'nor', 'but', 'is', 'if', 'then', 
-		'else', 'when', 'at', 'from', 'by', 'on', 'off', 'for', 'in', 'out', 'over', 'to', 'into', 'with', 'as' );
+			'else', 'when', 'at', 'from', 'by', 'on', 'off', 'for', 'in', 'out', 'over', 'to', 'into', 'with', 'as' );
 		
 		// split the string into separate words
 
