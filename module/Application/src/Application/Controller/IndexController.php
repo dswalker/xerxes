@@ -8,7 +8,7 @@ class IndexController extends ActionController
 {
 	public function indexAction()
 	{
-		$controller_map = $this->getEvent()->getParam('request')->getControllerMap();
+		$controller_map = $this->request->getControllerMap();
 		
 		// get the default controller configured in map
 		
