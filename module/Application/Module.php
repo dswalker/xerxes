@@ -41,7 +41,7 @@ class Module implements AutoloaderProvider
         );
     }
 
-    public function getConfig($env = null)
+    public function getConfig()
     {
         $config = include __DIR__ . '/config/module.config.php';
         
