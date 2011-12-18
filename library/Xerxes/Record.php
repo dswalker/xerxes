@@ -99,6 +99,10 @@ class Record
 	protected $document; // original xml
 	protected $serialized; // for serializing the object
 	
+	/**
+	 * Create a Xerxes Record
+	 */
+	
 	public function __construct()
 	{
 		$this->document = new \DOMDocument();
@@ -126,6 +130,12 @@ class Record
 		$this->loadXML($this->serialized);
 	}
 	
+	/**
+	 * Load, map, and clean-up record data from XML
+	 * 
+	 * @param mixed $xml		XML as DOM, SimpleXML or string
+	 */
+	
 	public function loadXML($xml)
 	{
 		$this->document = Parser::convertToDOMDocument($xml);
@@ -133,6 +143,10 @@ class Record
 		$this->map();
 		$this->cleanup();
 	}
+	
+	/**
+	 * Map the source data to record properties
+	 */
 	
 	protected function map()
 	{

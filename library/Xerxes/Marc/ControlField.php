@@ -19,7 +19,7 @@ class ControlField extends Field
 	public $value;
 	
 	/**
-	 * Create Control Field
+	 * Create a MARC Control Field
 	 * 
 	 * @param \DOMNode $objNode
 	 */

@@ -3,7 +3,7 @@
 namespace Xerxes\Record;
 
 /**
- * Record Subject
+ * Record Link
  * 
  * @author David Walker
  * @copyright 2011 California State University
@@ -19,11 +19,43 @@ class Link
 	protected $display;
 	protected $url;
 	
-	const PDF = "pdf"; // link is to full-text pdf document
-	const HTML = "html"; // link is to full-text in HTML
-	const ONLINE = "online"; // link is to the online full-text, but we're unsure of exact format
-	const INFORMATIONAL = "none"; // this is merely an informational link about the item, e.g., TOC or publisher desc.
-	const ORIGINAL_RECORD = "original"; // link to the original record in the system of origin, no indication of full-text
+	/**
+	 * link is to full-text pdf document
+	 */
+	
+	const PDF = "pdf";
+	
+	/**
+	 * link is to full-text in HTML
+	 */
+
+	const HTML = "html";
+	
+	/**
+	 * link is to the online full-text, but we're unsure of exact format
+	 */
+	
+	const ONLINE = "online";
+
+	/**
+	 * this is merely an informational link about the item, e.g., TOC or publisher desc.
+	 */
+	
+	const INFORMATIONAL = "none";
+	
+	/**
+	 * link to the original record in the system of origin, no indication of full-text
+	 */
+	
+	const ORIGINAL_RECORD = "original";
+	
+	/**
+	 * Create a Record Link
+	 * 
+	 * @param string $url			URL
+	 * @param string $type			[optional] type of link, or data from which to determine that
+	 * @param string $display		[optional] text to display
+	 */
 	
 	public function __construct($url, $type = null, $display = null)
 	{
@@ -31,6 +63,12 @@ class Link
 		$this->type = $this->extractType($type);
 		$this->display = $display;
 	}
+	
+	/**
+	 * Determine type of link from supplied data
+	 * 
+	 * @param string $data
+	 */
 	
 	public function extractType($data)
 	{
@@ -52,25 +90,55 @@ class Link
 		}
 	}
 	
+	/**
+	 * Set link type
+	 * 
+	 * @param string $type
+	 */
+	
 	public function setType($type)
 	{
 		$this->type = $type;
 	}
+	
+	/**
+	 * Get link type
+	 * 
+	 * @return string
+	 */
 	
 	public function getType()
 	{
 		return $this->type;
 	}
 	
+	/**
+	 * Get text to display
+	 * 
+	 * @return string
+	 */
+	
 	public function getDisplay()
 	{
 		return $this->display;
 	}
 	
+	/**
+	 * Get URL
+	 * 
+	 * @return string
+	 */
+	
 	public function getURL()
 	{
 		return $this->url;
 	}	
+	
+	/**
+	 * Whether link is to full-text
+	 * 
+	 * @return bool
+	 */
 	
 	public function isFullText()
 	{
@@ -83,20 +151,4 @@ class Link
 			return false;
 		}
 	}
-	
-	/**
-	 * 			// if this is a "construct" link, then the second element is an associative 
-				// array of marc fields and their values for constructing a link based on
-				// the metalib IRD record linking syntax
-				
-				if ( is_array($arrLink[1]) )
-				{
-					foreach ( $arrLink[1] as $strField => $strValue )
-					{
-						$objParam = $objXml->createElement("param", Parser::escapeXml($strValue));
-						$objParam->setAttribute("field", $strField);
-						$objLink->appendChild($objParam);
-					}
-				}
-	 */
 }

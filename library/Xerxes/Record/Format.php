@@ -17,9 +17,9 @@ use Xerxes\Utility\Parser;
 
 class Format
 {
-	protected $internal = "";
-	protected $normalized = "";
-	protected $public = "";
+	protected $internal = ""; // original value from source
+	protected $normalized = ""; // normalized value
+	protected $public = ""; // value for public display
 	
 	// ris format types
 	

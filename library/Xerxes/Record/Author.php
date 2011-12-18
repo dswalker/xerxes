@@ -22,6 +22,17 @@ class Author
 	public $type;
 	public $additional;
 	public $display;
+	
+	const PERSONAL = 'personal';
+	
+	/**
+	 * Create a Record Author
+	 * 
+	 * @param string $author			[optional] author name
+	 * @param string $author_display	[optional] autor display name
+	 * @param string $type				[optional] type of author
+	 * @param bool $additional			[optional] whether this author is an additional author
+	 */
 
 	public function __construct($author = null, $author_display = null, $type = null, $additional = false)
 	{
@@ -38,7 +49,7 @@ class Author
 		// something of a guess, assuming the person has a single word for last name
 		// rather than 'van der Kamp', but better than the alternative?
 
-		if ( $type == "personal" )
+		if ( $type == self::PERSONAL )
 		{
 			$match_array = array();
 			$last = "";
@@ -89,6 +100,10 @@ class Author
 		}
 	}			
 	
+	/**
+	 * Get all fields
+	 */
+	
 	public function getAllFields()
 	{
 		$values = "";
@@ -104,5 +119,14 @@ class Author
 		}
 		
 		return trim($values);
+	}
+	
+	/**
+	 * Serialize to string
+	 */
+	
+	public function __toString()
+	{
+		return $this->getAllFields();
 	}
 }

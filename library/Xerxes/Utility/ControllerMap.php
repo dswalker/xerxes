@@ -3,8 +3,7 @@
 namespace Xerxes\Utility;
 
 /**
- * Parses the required configuration files and registers the appropriate commands and views
- * for a given request
+ * Map of controllers and views for a given request
  * 
  * @author David Walker
  * @copyright 2011 California State University
@@ -25,7 +24,16 @@ class ControllerMap
 	private $action; // supplied action
 	
 	private $view = array(); // view(s) set programmatically
-	private $default_controller; // default controller/action for index	 
+	private $default_controller; // default controller/action for index
+	
+	/**
+	 * Create a Controller Map
+	 * 
+	 * @param string $distro	path to disto config/map.xml file
+	 * 
+	 * @throws \InvalidArgumentException
+	 * @throws \Exception
+	 */
 	
 	public function __construct($distro)
 	{
@@ -55,17 +63,25 @@ class ControllerMap
 			$this->addXml($this->xml, $local );
 		}
 		
+		// set the version number
+		
+		$this->version = (string) $this->xml['version'];
+		
+		// see if any controller inherits from another
+		
 		foreach ( $this->xml->controller as $controller )
 		{
 			$inherits = $controller["inherits"];
-			
-			if ( $inherits  != "" )
+						
+			if ( $inherits  != "" ) // this one does
 			{
+				// grab the controller that this one inherits fom
+				
 				$controller_to_copy = $this->xml->xpath("//controller[@name='$inherits']");
 				
 				if ( count($controller_to_copy) > 0 )
 				{
-					$this->addXml($this->xml, $controller_to_copy[0], $controller );
+					$this->addXml($this->xml, $controller_to_copy[0], $controller ); // import its nodes
 				}
 			}
 		}
@@ -73,10 +89,23 @@ class ControllerMap
 		// header("Content-type: text/xml"); echo $this->xml->asXML(); exit;	
 	}
 	
+	/**
+	 * Get the default controller
+	 */
+	
 	public function getDefaultController()
 	{
 		return (string) $this->xml->default;
 	}
+	
+	/**
+	 * Set the current conroller/action context
+	 * 
+	 * @param string $controller	controller name
+	 * @param string $action		[optional] action name
+	 * 
+	 * @throws \InvalidArgumentException
+	 */
 	
 	public function setController($controller, $action = 'index')
 	{
@@ -88,6 +117,10 @@ class ControllerMap
 		$this->controller = $controller;
 		$this->action = $action;
 	}
+	
+	/**
+	 * Get the controller alias and corresponding class name
+	 */
 	
 	public function getAliases()
 	{
@@ -105,6 +138,12 @@ class ControllerMap
 		
 		return $aliases;
 	}
+	
+	/**
+	 * Is the currently set action restricted
+	 * 
+	 * @return boolean
+	 */
 	
 	public function isRestricted()
 	{
@@ -139,6 +178,12 @@ class ControllerMap
 		}
 	}
 	
+	/**
+	 * Does the current action require a login
+	 * 
+	 * @return boolean
+	 */
+	
 	public function requiresLogin()
 	{
 		$requires_login = "";
@@ -172,10 +217,24 @@ class ControllerMap
 		}
 	}
 	
+	/**
+	 * Set view script to use
+	 * 
+	 * @param string $view			relative path to view script
+	 * @param string $format		[optional] for given format, default is 'html'
+	 */
+	
 	public function setView($view, $format = "html")
 	{
 		$this->view[$format] = $view;
 	}
+	
+	/**
+	 * Get relative path to view script
+	 * 
+	 * @param string $format		[optional] for given format, default is 'html'
+	 * @return string
+	 */
 	
 	public function getView($format = "html")
 	{
@@ -204,6 +263,8 @@ class ControllerMap
 		
 		$query = "//controller[@name='$this->controller']/action[@name='$this->action']/view" . $format_query;
 		$view_def = $this->xml->xpath($query);
+		
+		// last one takes precedence
 		
 		foreach ( $view_def as $def )
 		{
@@ -262,6 +323,10 @@ class ControllerMap
 	{
 		return $this->version;
 	}
+	
+	/**
+	 * Serialize xml config to string
+	 */
 	
 	public function saveXML()
 	{

@@ -3,7 +3,7 @@
 namespace Xerxes\Utility;
 
 /**
- * Parses and holds information about language codes and names
+ * Translate language codes and names
  *
  * @author Ivan Masar
  * @copyright 2010 Ivan Masar
@@ -30,7 +30,7 @@ class Languages
 	}
 	
 	/**
-	 * Get an instance of the file; Singleton to ensure correct data
+	 * Get an instance of the Languages object
 	 *
 	 * @return Xerxes_Framework_Languages
 	 */
@@ -86,14 +86,14 @@ class Languages
 		
 		// which language shall we display?
 		
-		$objRegistry = Registry::getInstance();		
+		$registry = Registry::getInstance();		
 		
 		if ( $lang == null ) 
 		{
-			$lang = $objRegistry->defaultLanguage();
+			$lang = $registry->defaultLanguage();
 		}
 		
-		$this->locale = $objRegistry->getLocale($lang);
+		$this->locale = $registry->getLocale($lang);
 		
 		// bindings
 		

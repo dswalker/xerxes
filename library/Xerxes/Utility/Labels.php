@@ -3,7 +3,7 @@
 namespace Xerxes\Utility;
 
 /**
- * Labels class
+ * Labels Access Object
  * 
  * @author David Walker
  * @copyright 2008 California State University
@@ -32,7 +32,7 @@ class Labels
 	}
 	
 	/**
-	 * Initial process dof istro and local eng label files
+	 * Initial process of distro and local eng label files
 	 */
 	
 	protected function init()

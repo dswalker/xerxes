@@ -29,12 +29,20 @@ class Bibliographic extends Record
 
 	protected $marc; // marc object
 	
+	/**
+	 * Create Record from MARC
+	 */
+	
 	public function __construct()
 	{
 		parent::__construct();
 		$this->utility[] = "marc";
 		$this->utility[] = "alt_scripts"; // @todo remove this when ready to render this to xml properly
-	}	
+	}
+	
+	/**
+	 * Load data from MARC-XML
+	 */
 	
 	public function loadXML($xml)
 	{
@@ -43,6 +51,12 @@ class Bibliographic extends Record
 
 		parent::loadXML($xml);
 	}
+	
+	/**
+	 * Load data from MARC record
+	 * 
+	 * @param MarcRecord $marc
+	 */
 	
 	public function loadMarc( MarcRecord $marc )
 	{
@@ -53,7 +67,7 @@ class Bibliographic extends Record
 	}
 	
 	/**
-	 * Maps the marc data to the object's properties
+	 * Map the MARC data to the object's properties
 	 */
 	
 	protected function map()
@@ -117,12 +131,20 @@ class Bibliographic extends Record
 		
 		$this->parseLinks();
 	}
+	
+	/**
+	 * Parse control number
+	 */
 		
 	protected function parseControlNumber()
 	{
 		$this->control_number = (string) $this->marc->controlfield("001");
 		$this->record_id = $this->control_number;		
 	}
+	
+	/**
+	 * Parse OCLC number
+	 */
 	
 	protected function parseOCLC()
 	{
@@ -161,6 +183,10 @@ class Bibliographic extends Record
 		}		
 	}
 	
+	/**
+	 * Parse ISSN numbers
+	 */
+	
 	protected function parseISSN()
 	{
 		$issns = $this->marc->fieldArray("022", "a" );
@@ -182,6 +208,10 @@ class Bibliographic extends Record
 		}
 	}
 	
+	/**
+	 * Parse ISBN numbers
+	 */
+	
 	protected function parseISBN()
 	{
 		$isbns = $this->marc->fieldArray("020", "az" );
@@ -196,6 +226,10 @@ class Bibliographic extends Record
 			}
 		}	
 	}
+	
+	/**
+	 * Parse Digital Object Identifier
+	 */
 	
 	protected function parseDOI()
 	{
@@ -222,6 +256,10 @@ class Bibliographic extends Record
 		}		
 	}
 	
+	/**
+	 * Parse call numbers
+	 */
+	
 	protected function parseCallNumber()
 	{
 		$call_number = (string) $this->marc->datafield("050");
@@ -237,11 +275,19 @@ class Bibliographic extends Record
 		}		
 	}
 	
+	/**
+	 * Parse Gov Doc and GPO numbers
+	 */
+	
 	protected function parseGovernmentNumbers()
 	{
 		$this->govdoc_number = (string) $this->marc->datafield("086")->subfield("a");		
 		$this->gpo_number = (string) $this->marc->datafield("074")->subfield("a");
 	}
+	
+	/**
+	 * Parse thesis note
+	 */
 
 	protected function parseThesis()
 	{
@@ -293,6 +339,10 @@ class Bibliographic extends Record
 			$this->year = $this->extractYear( $thesis );
 		}		
 	}
+	
+	/**
+	 * Parse all author fields
+	 */
 	
 	protected function parseAuthors()
 	{
@@ -391,7 +441,18 @@ class Bibliographic extends Record
 		}
 	}
 	
-	protected function makeAuthor($author, $subfields, $strType, $bolAdditional = false)
+	/**
+	 * Create an author object
+	 * 
+	 * @param mixed $datafield			author name as string, DataField or DataFieldList
+	 * @param chars $subfields			list of subfields containing the author data
+	 * @param string $type				[optional] type of author
+	 * @param bool $additional			[optional] whether this author is an additional author
+	 * 
+	 * @return Author
+	 */
+	
+	protected function makeAuthor($author, $subfields, $type, $bolAdditional = false)
 	{
 		$author_string = "";
 		$author_display = "";		
@@ -408,8 +469,12 @@ class Bibliographic extends Record
 			$author_string = $author;
 		}
 		
-		return new Author($author_string, $author_display, $strType, $bolAdditional);
+		return new Author($author_string, $author_display, $type, $bolAdditional);
 	}
+	
+	/**
+	 * Parse title information
+	 */
 
 	protected function parseTitle()
 	{
@@ -503,12 +568,20 @@ class Bibliographic extends Record
 	{
 
 	}
+	
+	/**
+	 * Parse publisher place and name
+	 */
 
 	protected function parsePublisher()
 	{
 		$this->place = (string) $this->marc->datafield("260")->subfield("a");
 		$this->publisher = (string) $this->marc->datafield("260")->subfield("b");		
 	}
+	
+	/**
+	 * Parse edtion, extent, description, and price
+	 */
 	
 	protected function parseBookInfo()
 	{
@@ -517,6 +590,10 @@ class Bibliographic extends Record
 		$this->description = (string) $this->marc->datafield("300");
 		$this->price = (string) $this->marc->datafield("365");
 	}
+	
+	/**
+	 * Parse year of pubication
+	 */
 	
 	protected function parseYear()
 	{
@@ -542,12 +619,20 @@ class Bibliographic extends Record
 
 			$this->year = $this->extractYear( $this->journal );
 		}
-	}	
+	}
+	
+	/**
+	 * Parse series title
+	 */
 	
 	protected function parseSeriesTitle()
 	{
 		$this->series_title = (string) $this->marc->datafield("440")->subfield("a");
 	}
+	
+	/**
+	 * Parse additional titles
+	 */
 	
 	protected function parseAdditionalTitles()
 	{
@@ -559,6 +644,10 @@ class Bibliographic extends Record
 			array_push($this->additional_titles, $subfields);
 		}		
 	}
+	
+	/**
+	 * Parse all notes
+	 */
 
 	protected function parseNotes()
 	{
@@ -580,6 +669,10 @@ class Bibliographic extends Record
 		}		
 	}
 	
+	/**
+	 * Parse abstract
+	 */
+	
 	protected function parseAbstract()
 	{
 		$abstracts = $this->marc->fieldArray("520", "a");		
@@ -591,6 +684,10 @@ class Bibliographic extends Record
 		
 		$this->abstract = trim( strip_tags( $this->abstract ) );		
 	}
+	
+	/**
+	 * Parse content type 
+	 */
 	
 	protected function parseFormat()
 	{
@@ -669,6 +766,10 @@ class Bibliographic extends Record
 		return Format::Unknown;	
 	}	
 	
+	/**
+	 * Parse subjects
+	 */
+	
 	protected function parseSubjects()
 	{
 		// we'll exclude the numeric subfields since they contain information about the
@@ -693,6 +794,10 @@ class Bibliographic extends Record
 		}		
 	}
 	
+	/**
+	 * Parse series information
+	 */
+	
 	protected function parseSeries()
 	{
 		// series information
@@ -702,6 +807,10 @@ class Bibliographic extends Record
 			array_push($this->series, (string) $subject);
 		}			
 	}
+	
+	/**
+	 * Parse journal information from host entry
+	 */
 	
 	protected function parseJournal()
 	{
@@ -844,7 +953,13 @@ class Bibliographic extends Record
 		}
 		
 		return $arrFinal;
-	}	
+	}
+	
+	/**
+	 * Parse record information in alternate languae script
+	 * 
+	 * Such as CJK, Cyrillic, etc.
+	 */
 	
 	protected function parseAltScript()
 	{	
@@ -897,6 +1012,10 @@ class Bibliographic extends Record
 		}		
 	}
 	
+	/**
+	 * Parse language of item
+	 */
+	
 	protected function parseLanguage()
 	{
 		// take an explicit language note over 008 if available
@@ -930,6 +1049,10 @@ class Bibliographic extends Record
 			}
 		}		
 	}
+	
+	/**
+	 * Parse full-text and informational links
+	 */
 	
 	protected function parseLinks()
 	{

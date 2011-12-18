@@ -20,11 +20,19 @@ class ContextObject extends Record
 {
 	protected $xpath;
 	
+	/**
+	 * Create Record from OpenURL Context Object
+	 */
+	
 	public function __construct()
 	{
 		parent::__construct();
 		$this->utility[] = "xpath";
-	}	
+	}
+	
+	/**
+	 * Load data from XML
+	 */
 
 	public function loadXML($xml)
 	{
@@ -54,6 +62,10 @@ class ContextObject extends Record
 		$this->map();
 		$this->cleanup();
 	}
+	
+	/**
+	 * Map the data to properties
+	 */
 	
 	protected function map()
 	{
@@ -129,6 +141,12 @@ class ContextObject extends Record
 			}
 		}
 	}
+	
+	/**
+	 * Convenience function to extract the value from the XML
+	 * 
+	 * @param string $ref		element name
+	 */
 	
 	protected function extractValue($ref)
 	{

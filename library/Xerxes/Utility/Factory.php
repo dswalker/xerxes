@@ -5,7 +5,7 @@ namespace Xerxes\Utility;
 use Zend\Http\Client;
 
 /**
- * Utility class for basic parsing functions
+ * Utility class
  * 
  * @author David Walker
  * @copyright 2008 California State University

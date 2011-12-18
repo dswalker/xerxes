@@ -22,7 +22,7 @@ class DataField extends Field
 	private $_subfields = array();
 	
 	/**
-	 * Create Marc Data Field
+	 * Create a MARC Data Field
 	 * 
 	 * @param \DOMNode $objNode
 	 */
