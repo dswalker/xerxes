@@ -318,4 +318,14 @@ class Format
 	{
 		return (string) $this->public;
 	}
+	
+	public function toXML()
+	{
+		$value = Parser::escapeXml((string) $this->public);
+		
+		$xml = new \DOMDocument();
+		$xml->loadXML("<format>$value</format>");
+		
+		return $xml;
+	}
 }

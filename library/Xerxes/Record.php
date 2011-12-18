@@ -975,24 +975,9 @@ class Record
 				continue;
 			}
 			
-			// has no value
-			
-			if ( is_array($value) )
-			{
-				if ( count($value) == 0 )
-				{
-					continue;
-				}
-			}
-			
-			if ( $value == "" )
-			{
-				continue;	
-			}
-			
 			// otherwise, create a new node
 			
-			$this->createNode($key, $value, $objXml, $objXml->documentElement);
+			Parser::addToXML($objXml, $key, $value);
 		}
 		
 		return $objXml;
@@ -1058,38 +1043,6 @@ class Record
 		return $citation;
 	}
 
-	private function createNode($key, $value, $objDocument, $objParent)
-	{
-		if ( is_array($value) )
-		{
-			$objNode = $objDocument->createElement($key);
-			$objParent->appendChild($objNode);
-			
-			foreach ( $value as $child_key => $child )
-			{
-				// assumes key is plural form with 's', so individual is minus 's'
-				
-				$name = substr($key, 0, -1);
-				
-				// unless it has a specific name
-				
-				if ( ! is_int($child_key) )
-				{
-					$name = $child_key;
-				}
-				
-				// recursive
-				
-				$this->createNode($name, $child, $objDocument, $objNode);
-			}
-		}
-		else
-		{
-			$objNode = $objDocument->createElement($key, Parser::escapeXML($value));
-			$objParent->appendChild($objNode);
-		}
-	}
-	
 	/**
 	 * Returns the object's properties that correspond to the OpenURL standard
 	 * as an easy to use associative array
