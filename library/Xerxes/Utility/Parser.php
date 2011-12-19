@@ -262,11 +262,24 @@ class Parser
 	
 	public static function convertToDOMDocument($xml)
 	{
+		// alread a document
+		
 		if ( $xml instanceof \DOMDocument )
 		{
 			return $xml;
 		}
-		elseif ( is_string($xml) )
+		
+		// convert simplexml to string, which will 
+		// get covered by string below
+		
+		if ( $xml instanceof \SimpleXMLElement )
+		{
+			$xml = $xml->asXML();
+		}
+		
+		// convertable type
+		
+		if ( is_string($xml) )
 		{
 			$document = new \DOMDocument();
 			$document->loadXML($xml);
@@ -292,10 +305,10 @@ class Parser
 			$document->loadXML($intermediate->saveXML($our_node));
 			
 			return $document;
-		}	
+		}
 		else
 		{
-			throw new \InvalidArgumentException("param 1 must be of type string, DOMNode, or DOMDocument");
+			throw new \InvalidArgumentException("param 1 must be of type string, SimpleXMLElement, DOMNode, or DOMDocument");
 		}
 	}
 	
@@ -502,7 +515,7 @@ class Parser
 			return null;
 		}
 	
-		// already in xml, so take it
+		// already an xml-based object, so take it
 	
 		elseif ( $object instanceof \DOMDocument )
 		{
