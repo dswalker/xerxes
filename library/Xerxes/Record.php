@@ -901,38 +901,6 @@ class Record
 			$objXml->documentElement->appendChild($objTOC);
 		}
 
-		// links
-			
-		if ( $this->links != null )
-		{
-			$objLinks = $objXml->createElement("links");
-		
-			foreach ( $this->links as $link )
-			{
-				$objLink = $objXml->createElement("link");
-				
-				if ( $link->isFullText() )
-				{
-					$objLink->setAttribute("type", "full");
-					$objLink->setAttribute("format", $link->getType());
-				}
-				else
-				{
-					$objLink->setAttribute("type", $link->getType());
-				}
-				
-				$objDisplay = $objXml->createElement("display", Parser::escapeXml($link->getDisplay()));
-				$objLink->appendChild($objDisplay);
-				
-				$objURL = $objXml->createElement("url", Parser::escapeXml($link->getURL()));
-				$objLink->appendChild($objURL);
-				
-				$objLinks->appendChild($objLink);
-			}
-			
-			$objXml->documentElement->appendChild($objLinks);
-		}
-		
 		// subjects
 		
 		if ( count($this->subjects) > 0 )
@@ -968,7 +936,6 @@ class Record
 				$key == "gpo_number" ||
 				$key == "oclc_number" ||
 				$key == "toc" ||
-				$key == "links" || 
 				$key == "journal_title" ||
 				$key == "subjects" )
 			{

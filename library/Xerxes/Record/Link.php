@@ -2,6 +2,8 @@
 
 namespace Xerxes\Record;
 
+use Xerxes\Utility\Parser;
+
 /**
  * Record Link
  * 
@@ -150,5 +152,29 @@ class Link
 		{
 			return false;
 		}
+	}
+	
+	/**
+	 * Serialize to XML
+	 */
+	
+	public function toXML()
+	{
+		$xml = new \SimpleXMLElement('<link />');
+		
+		if ( $this->isFullText() )
+		{
+			$xml->addAttribute("type", "full");
+			$xml->addAttribute("format", $this->getType());
+		}
+		else
+		{
+			$xml->addAttribute("type", $this->getType());
+		}
+		
+		$xml->display = Parser::escapeXml($this->getDisplay());
+		$xml->url = $this->getURL();
+		
+		return Parser::convertToDOMDocument($xml);
 	}
 }
