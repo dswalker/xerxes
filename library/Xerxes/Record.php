@@ -1298,39 +1298,6 @@ class Record
 		return $strFinal;
 	}
 	
-	protected function ordinal($value)
-	{
-		if ( is_numeric( $value ) )
-		{
-			if ( substr( $value, - 2, 2 ) == 11 || substr( $value, - 2, 2 ) == 12 || substr( $value, - 2, 2 ) == 13 )
-			{
-				$suffix = "th";
-			} 
-			elseif ( substr( $value, - 1, 1 ) == 1 )
-			{
-				$suffix = "st";
-			} 
-			elseif ( substr( $value, - 1, 1 ) == 2 )
-			{
-				$suffix = "nd";
-			} 
-			elseif ( substr( $value, - 1, 1 ) == 3 )
-			{
-				$suffix = "rd";
-			} 
-			else
-			{
-				$suffix = "th";
-			}
-			
-			return $value . $suffix;
-		} 
-		else
-		{
-			return $value;
-		}
-	}
-	
 	### PROPERTIES ###
 	
 	public function hasFullText()
