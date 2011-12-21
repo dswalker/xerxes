@@ -651,11 +651,41 @@ class Bibliographic extends Record
 
 	protected function parseNotes()
 	{
+		// table of contents
+		
+		$table_of_contents = "";
+		
 		$tocs = $this->marc->fieldArray("505", "agrt");
 
 		foreach ( $tocs as $toc )
 		{
-			$this->toc .=  $toc;
+			$table_of_contents .=  $toc;
+		}
+		
+		// process toc into parts
+		
+		if ( $table_of_contents != "" )
+		{
+			$chapter_titles_array = explode("--", $table_of_contents);
+				
+			foreach ( $chapter_titles_array as $chapter )
+			{
+				$chapter_obj = new Chapter($chapter);
+				
+				if ( strpos($chapter, "/") !== false )
+				{
+					$chapter_parts = explode("/", $chapter);
+						
+					$chapter_obj->title = $chapter_parts[0];
+					$chapter_obj->author = $chapter_parts[1];
+				}
+				else
+				{
+					$chapter_obj->statement = $chapter;
+				}
+				
+				$this->toc[] = $chapter_obj;
+			}
 		}
 		
 		// other notes

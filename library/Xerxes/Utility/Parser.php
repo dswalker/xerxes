@@ -496,17 +496,18 @@ class Parser
 	}
 	
 	/**
-	 * Recursively convert data to XML
+	 * Recursively convert and add data to XML
+	 * 
+	 * @param \DOMDocument $xml			document to add data to
+	 * @param mixed $id					id of the data
+	 * @param mixed $object				data
+	 * 
+	 * @throws \Exception
 	 */
 	
 	public static function addToXML(\DOMDocument &$xml, $id, $object)
 	{
 		$object_xml = null;
-	
-		if ( is_int($id) )
-		{
-			$id = "object_$id";
-		}
 	
 		// no value, no mas!
 	
@@ -552,19 +553,20 @@ class Parser
 			}
 			else
 			{
-				// this object tells us to use this id in the xml
+				$reflection = new \ReflectionObject($object);
+				
+				// no id supplied, likely because this is an array, 
+				// so take class name (no namespace) as id
 	
-				if ( property_exists($object, "nodeName") )
+				if ( is_int($id) )
 				{
-					$id = $object->nodeName;
+					$id = strtolower($reflection->getShortName());
 				}
-	
+				
 				$object_xml = new \DOMDocument();
 				$object_xml->loadXML("<$id />");
 	
 				// only public properties
-	
-				$reflection = new \ReflectionObject($object);
 	
 				foreach ( $reflection->getProperties(\ReflectionProperty::IS_PUBLIC) as $property )
 				{
@@ -603,6 +605,13 @@ class Parser
 	
 		else
 		{
+			// no id supplied, likely from array, so give it a proper name
+			
+			if ( is_int($id) )
+			{
+				$id = "object_$id";
+			}
+			
 			// just create a simple new element and return this thing
 	
 			$element = $xml->createElement($id, Parser::escapeXml($object) );

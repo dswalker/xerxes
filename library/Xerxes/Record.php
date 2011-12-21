@@ -77,7 +77,7 @@ class Record
 	protected $summary_type = ""; // the type of summary
 	protected $language = ""; // primary language of the record
 	protected $notes = array(); // notes that are not the abstract, language, or table of contents
-	protected $toc = ""; // table of contents note
+	protected $toc = array(); // table of contents note
 
 	protected $degree = ""; // thesis degree conferred
 	protected $institution = ""; // thesis granting institution
@@ -242,9 +242,9 @@ class Record
 			$this->summary = $this->snippet;
 			$this->summary_type = "snippet";
 		} 
-		elseif ( $this->toc != "" )
+		elseif ( count($this->toc) > 0 )
 		{
-			$this->summary = $this->toc;
+			$this->summary = implode(' ', $this->toc);
 			$this->summary_type = "toc";
 		} 
 		elseif ( count( $this->subjects ) > 0 )
@@ -867,40 +867,6 @@ class Record
 			$objXml->documentElement->appendChild($objStandard);
 		}		
 		
-		// table of contents
-		
-		if ($this->toc != null )
-		{
-			$objTOC = $objXml->createElement("toc");
-				
-			$arrChapterTitles = explode("--",$this->toc);
-				
-			foreach ( $arrChapterTitles as $strTitleStatement )
-			{
-				$objChapter = $objXml->createElement("chapter");
-				
-				if ( strpos($strTitleStatement, "/") !== false )
-				{
-					$arrChapterTitleAuth = explode("/", $strTitleStatement);
-					
-					$objChapterTitle = $objXml->createElement("title",  Parser::escapeXml(trim($arrChapterTitleAuth[0])));
-					$objChapterAuthor = $objXml->createElement("author",  Parser::escapeXml(trim($arrChapterTitleAuth[1])));
-					
-					$objChapter->appendChild($objChapterTitle);
-					$objChapter->appendChild($objChapterAuthor);
-				}
-				else 
-				{
-					$objStatement = $objXml->createElement("statement", Parser::escapeXml(trim($strTitleStatement)));
-					$objChapter->appendChild($objStatement);
-				}
-				
-				$objTOC->appendChild($objChapter);
-			}
-			
-			$objXml->documentElement->appendChild($objTOC);
-		}
-
 		// subjects
 		
 		if ( count($this->subjects) > 0 )
@@ -935,7 +901,6 @@ class Record
 				$key == "govdoc_number" ||
 				$key == "gpo_number" ||
 				$key == "oclc_number" ||
-				$key == "toc" ||
 				$key == "journal_title" ||
 				$key == "subjects" )
 			{
@@ -1154,6 +1119,23 @@ class Record
 		}
 		
 		return $arrReferant;
+	}
+	
+	public static function decode($item)
+	{
+		if (  is_string($item) )
+		{
+			return html_entity_decode($item, null, 'UTF-8');
+		}
+		elseif ( is_array($item) )
+		{
+			foreach ( $item as $key => $value )
+			{
+				$item[$key] = html_entity_decode($item, null, 'UTF-8');
+			}
+			
+			return $item;
+		}
 	}
 
 	/**
