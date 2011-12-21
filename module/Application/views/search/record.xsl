@@ -480,7 +480,7 @@
 			<h2><xsl:copy-of select="$text_record_subjects" />:</h2>
 			<ul>
 				<xsl:for-each select="subjects/subject">
-					<li><xsl:value-of select="text()" /></li>
+					<li><xsl:value-of select="display" /></li>
 				</xsl:for-each>
 			</ul>
 		</xsl:if>
