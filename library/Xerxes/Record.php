@@ -718,46 +718,43 @@ class Record
 	{
 		$objXml = new \DOMDocument( );
 		$objXml->loadXML( "<xerxes_record />" );
-
+		
+		$properties = $this->getProperties();
 		
 		#### special handling
 		
 		// normalized title
 		
-		$strTitle = $this->getTitle(true);
+		$title_normalized = $this->getTitle(true);
 		
-		if ( $strTitle != "" )
+		if ( $title_normalized != "" )
 		{
-			$objTitle = $objXml->createElement("title_normalized",  Parser::escapeXML($strTitle));
-			$objXml->documentElement->appendChild($objTitle);
+			$properties['title_normalized'] = $title_normalized;
 		}
 		
 		// journal title
 		
-		$strJournalTitle = $this->getJournalTitle(true);
+		$journal_title = $this->getJournalTitle(true);
 		
-		if ( $strJournalTitle != "" )
+		if ( $journal_title != "" )
 		{
-			$objJTitle = $objXml->createElement("journal_title",  Parser::escapeXML($strJournalTitle));
-			$objXml->documentElement->appendChild($objJTitle);
+			$properties['journal_title'] = $journal_title;
 		}		
 		
 		// primary author
 		
-		$strPrimaryAuthor = $this->getPrimaryAuthor(true);
+		$primary_author = $this->getPrimaryAuthor(true);
 		
-		if ( $strPrimaryAuthor != "")
+		if ( $primary_author != "")
 		{
-			$objPrimaryAuthor= $objXml->createElement("primary_author", Parser::escapeXML($strPrimaryAuthor));
-			$objXml->documentElement->appendChild($objPrimaryAuthor);
+			$properties['primary_author'] = $primary_author;
 		}
 		
 		// full-text indicator
 		
 		if ($this->hasFullText())
 		{
-			$objFull= $objXml->createElement("full_text_bool", 1);
-			$objXml->documentElement->appendChild($objFull);
+			$properties['full_text_bool'] = 1;
 		}
 		
 		// authors
@@ -867,24 +864,9 @@ class Record
 			$objXml->documentElement->appendChild($objStandard);
 		}		
 		
-		// subjects
-		
-		if ( count($this->subjects) > 0 )
-		{
-			$objSubjects = $objXml->createElement("subjects");
-			$objXml->documentElement->appendChild($objSubjects);
-		
-			foreach ( $this->subjects as $subject_object )
-			{
-				$objSubject = $objXml->createElement("subject", Parser::escapeXml($subject_object->display));
-				$objSubject->setAttribute("value", $subject_object->value);
-				$objSubjects->appendChild($objSubject);
-			}
-		}
-		
 		## basic elements
 		
-		foreach ( $this as $key => $value )
+		foreach ( $properties as $key => $value )
 		{
 			// these are utility variables
 			
@@ -900,9 +882,7 @@ class Record
 				$key == "issns" ||
 				$key == "govdoc_number" ||
 				$key == "gpo_number" ||
-				$key == "oclc_number" ||
-				$key == "journal_title" ||
-				$key == "subjects" )
+				$key == "oclc_number" )
 			{
 				continue;
 			}
@@ -1725,5 +1705,17 @@ class Record
 	public function setScore($score)
 	{
 		$this->score = $score;
+	}
+	
+	public function getProperties()
+	{
+		$properties = array();
+		
+		foreach ( $this as $key => $value )
+		{
+			$properties[$key] = $value;
+		}
+		
+		return $properties;
 	}
 }
