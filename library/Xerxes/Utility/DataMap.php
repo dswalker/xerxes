@@ -175,6 +175,11 @@ abstract class DataMap
 		{
 			foreach ($arrValues as $key => $value )
 			{
+				if ( is_object($value) )
+				{
+					throw new \Exception('Value cannot be an object');
+				}
+				
 				$objStatement->bindValue( $key, $value);
 			}
 		}
