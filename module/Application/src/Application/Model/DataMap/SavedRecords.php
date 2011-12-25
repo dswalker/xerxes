@@ -308,7 +308,7 @@ class SavedRecords extends DataMap
 		
 		switch ( $strOrder )
 		{
-			case "year" :
+			case "date" :
 				$strSort = " ORDER BY year DESC";
 				break;
 			case "author" :
@@ -424,7 +424,7 @@ class SavedRecords extends DataMap
 	 * @return array					array of Record_Facet objects
 	 */
 	
-	public function getRecordFormats($strUsername)
+	public function getFormats($strUsername)
 	{
 		$arrFacets = array ( );
 		
@@ -448,7 +448,7 @@ class SavedRecords extends DataMap
 	 * @return unknown
 	 */
 	
-	public function getRecordTags($strUsername)
+	public function getTags($strUsername)
 	{
 		$arrFacets = array ( );
 		
