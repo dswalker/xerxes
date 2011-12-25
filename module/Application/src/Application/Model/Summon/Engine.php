@@ -207,6 +207,16 @@ class Engine extends Search\Engine
 			throw new \Exception("Cannot connect to Summon server");
 		}		
 		
+		// just an error, so throw it
+		
+		if ( ! array_key_exists('recordCount', $summon_results) && array_key_exists('errors', $summon_results) )
+		{
+			$message = $summon_results['errors'][0]['message'];
+			
+			throw new \Exception($message);
+		}
+		
+		
 		$result_set = new Search\ResultSet($this->config);
 
 		// total
