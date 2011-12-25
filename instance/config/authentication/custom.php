@@ -26,7 +26,7 @@ class Custom extends Authentication
 		/* Example:
 		
 		$url = "https://some.example.edu/login?return=" . $this->validate_url;
-		$this->request->setRedirect($url);
+		$this->setRedirect($url);
 		return self::REDIRECT;
 		*/
 	}
