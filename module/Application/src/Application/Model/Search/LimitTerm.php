@@ -28,7 +28,7 @@ class LimitTerm
 	 * @param string $value			value
 	 */
 	
-	public function __construct($field, $relation, $value, $key = null)
+	public function __construct($field = null, $relation = null, $value = null, $key = null)
 	{
 		$this->field = $field;
 		$this->relation = $relation;

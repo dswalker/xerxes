@@ -227,7 +227,7 @@ class Engine extends Search\Engine
 		
 		$limit_array = array();
 		
-		foreach ( $search->getLimits() as $limit )
+		foreach ( $search->getLimits(true) as $limit )
 		{
 			if ( $limit->value == "" )
 			{

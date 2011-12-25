@@ -110,11 +110,12 @@ class Engine extends Search\Engine
 	protected function doSearch(Search\Query $search, $start = 1, $max = 10, $sort = "")
 	{
 		$username = $search->getQueryTerm(0)->phrase;
-		$label = $search->getLimit("label");
-		$format = $search->getLimit("format");
+		
+		$label = $search->getLimit("facet.label");
+		$format = $search->getLimit("facet.format");
 		
 		$results = new Search\ResultSet($this->config);
-		$results->total = $this->datamap->totalRecords($username, $label, $format);
+		$results->total = $this->datamap->totalRecords($username, $label->value, $format->value);
 		
 		// just the hit count please
 		
@@ -127,24 +128,76 @@ class Engine extends Search\Engine
 		
 		$records = array();
 		
-		if ( $label != "" )
+		if ( $label->value != "" ) // tag
 		{
-			$records = $this->datamap->getRecordsByLabel($username, $label, $sort, $start, $max);
+			$records = $this->datamap->getRecordsByLabel($username, $label->value, $sort, $start, $max);
 		}
-		elseif ( $format != "" )
+		elseif ( $format->value != "" ) // format facet
 		{
-			$records = $this->datamap->getRecordsByFormat($username, $format, $sort, $start, $max);
+			$records = $this->datamap->getRecordsByFormat($username,  $format->value, $sort, $start, $max);
 		}
-		else
+		else // just the regular results
 		{
 			$records = $this->datamap->getRecords($username, null, $sort, $start, $max);
 		}
+		
+		// convert them into our model
 		
 		foreach ( $records as $record )
 		{
 			$result = $this->createSearchResult($record);
 			$results->addResult($result);
 		}
+		
+		// facets
+		
+		$facets = new Search\Facets();
+		
+		// formats
+		
+		$formats = $this->datamap->getFormats($username);
+		
+		if ( count($formats) > 0 )
+		{
+			$group = new Search\FacetGroup();
+			$group->name = "format";
+			$group->public = "Formats"; // @todo: i18n this?
+			
+			foreach ( $formats as $format )
+			{
+				$facet = new Search\Facet();
+				$facet->name = $format->format;
+				$facet->count = $format->total;
+				
+				$group->addFacet($facet);				
+			}
+			
+			$facets->addGroup($group);
+		}
+
+		// labels
+		
+		$tags = $this->datamap->getTags($username);
+		
+		if ( count($tags) > 0 )
+		{
+			$group = new Search\FacetGroup();
+			$group->name = "label";
+			$group->public = "Label"; // @todo: i18n this?
+				
+			foreach ( $tags as $tag )
+			{
+				$facet = new Search\Facet();
+				$facet->name = $tag->label;
+				$facet->count = $tag->total;
+		
+				$group->addFacet($facet);
+			}
+			
+			$facets->addGroup($group);
+		}		
+		
+		$results->setFacets($facets);
 		
 		return $results;
 	}

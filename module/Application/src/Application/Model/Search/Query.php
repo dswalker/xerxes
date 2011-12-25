@@ -109,9 +109,9 @@ class Query
 			}
 		}
 		
-		// we didn't find it?
+		// we didn't find it, so return empty limit term
 		
-		return null;
+		return new LimitTerm();
 	}	
 	
 	/**
