@@ -35,7 +35,7 @@
 
 		<div class="yui-ge">
 			<div class="yui-u first">
-				<h1>Testing</h1>
+				<h1><xsl:call-template name="search_page_title" /></h1>
 				<xsl:call-template name="searchbox" />
 			</div>
 			<div class="yui-u">
@@ -976,6 +976,7 @@
 	<xsl:template name="advanced_search_option" />
 	<xsl:template name="advanced_search" />
 	<xsl:template name="searchbox_hidden_fields_local" />
+	<xsl:template name="search_page_title" />
 	
 	<!-- additional record data overriden in templates -->
 	
