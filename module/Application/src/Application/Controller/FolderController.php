@@ -2,6 +2,8 @@
 
 namespace Application\Controller;
 
+use Xerxes\Utility\User;
+
 use Application\Model\Saved\Engine,
 	Zend\Http\Client,
 	Zend\Mvc\MvcEvent;
@@ -14,7 +16,7 @@ class FolderController extends SearchController
 	{
 		// make the username the query
 		
-		$this->request->setParam("query", $this->request->getSessionData('username'));
+		$this->request->replaceParam("query", $this->request->getSessionData('username'));
 		
 		parent::init($e);
 	}
@@ -26,7 +28,11 @@ class FolderController extends SearchController
 	
 	public function indexAction()
 	{
+		// register the return url in session so we can send the user back
+		
 		$this->request->setSessionData("return", $this->request->getParam("return"));
+		
+		// redirect to the results page
 		
 		$params = array (
 			'controller' => 'folder',
@@ -37,6 +43,39 @@ class FolderController extends SearchController
 		$url = $this->request->url_for($params);
 		
 		return $this->redirect()->toUrl($url);
+	}
+	
+	public function resultsAction()
+	{
+		$total = $this->engine->getHits($this->query)->getTotal();
+		
+		// user is not logged in, and has no temporary saved records, so nothing to show here;
+		// force them to login
+		
+		if ( ! $this->request->getUser()->isAuthenticated() && $total == 0 )
+		{
+			// link back here, but minus any username
+			
+			$folder_link = $this->request->url_for(
+				array('controller' => 'folder')	
+				);
+			
+			// auth link, with return back to here
+			
+			$params = array(
+					'controller' => 'authenticate',
+					'action' => 'login',
+					'return' => $folder_link
+			);
+			
+			// redirect them out
+			
+			$redirect = $this->request->url_for($params);
+			
+			$this->redirect()->toUrl($redirect);
+		}
+		
+		return parent::resultsAction();
 	}
 	
 	

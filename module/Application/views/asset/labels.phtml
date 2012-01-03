@@ -1,16 +1,18 @@
 <?php
-/**
- 
- Convert the labels into a Javascript array
 
- author: David Walker
- copyright: 2010 California State University
- version: $Id: labels.phtml 2045 2011-11-28 14:17:37Z dwalker.calstate@gmail.com $
- package: Xerxes
- link: http://xerxes.calstate.edu
- license: http://www.gnu.org/licenses/
- 
-*/
+/**
+ *  Convert the labels into a Javascript array
+ *  
+ *  @author David Walker
+ *  @copyright 2011 California State University
+ *  @version
+ *  @package Xerxes
+ *  @link http://xerxes.calstate.edu
+ *  @license
+ */
+
+header('Content-type: application/javascript');
+
 ?>
 xerxes_labels = new Array();
 <?php 
