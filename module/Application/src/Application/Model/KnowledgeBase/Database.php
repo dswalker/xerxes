@@ -3,7 +3,9 @@
 namespace Application\Model\KnowledgeBase;
 
 use Xerxes\Utility\DataValue,
-	Xerxes\Utiltity\Restrict;
+	Xerxes\Utility\Parser,
+	Xerxes\Utiltity\Restrict,
+	Xerxes\Utility\User;
 
 /**
  * Database
@@ -59,6 +61,13 @@ class Database extends DataValue
 		}
 	}
 	
+	/**
+	 * Get value of a field
+	 *
+	 * @param string $name field name
+	 * @return string
+	 */
+	
 	public function __get($name)
 	{
 		if ( $this->xml instanceof \SimpleXMLElement )
@@ -72,10 +81,10 @@ class Database extends DataValue
 	}
 	
 	/**
-	 * Get value of a field
+	 * Get values of all given fields
 	 * 
 	 * @param string $field field name
-	 * @return string
+	 * @return array
 	 */
 	
 	public function get($field)
@@ -222,13 +231,11 @@ class Database extends DataValue
 		
 		if ( $this->searchable != 1 )
 		{
-			//nobody can search it!
-			$allowed = false;
+			$allowed = false; //nobody can search it!
 		}
 		elseif ( $this->guest_access != "" )
 		{
-			//anyone can search it!
-			$allowed = true;
+			$allowed = true; //anyone can search it!
 		}
 		elseif ( count($this->group_restrictions) > 0 )
 		{
@@ -236,7 +243,7 @@ class Database extends DataValue
 			// in the restrictions, or in an ip address associated with a
 			// restricted group.
 			
-			$allowed = ($user->isAuthenticatedUser() && array_intersect($user->getUserGroups(), $this->group_restrictions));
+			$allowed = ($user->isAuthenticated() && array_intersect($user->getUserGroups(), $this->group_restrictions));
 			
 			if ( ! $allowed )
 			{
@@ -249,7 +256,7 @@ class Database extends DataValue
 					$ranges[] = $this->config->getGroupLocalIpRanges($group);
 				}
 				
-				$allowed = Restrict::isIpAddrInRanges($user->getIpAddress(),implode(",", $ranges));
+				$allowed = Parser::isIpAddrInRanges($user->getIpAddress(),implode(",", $ranges));
 			}
 		}
 		else
@@ -257,7 +264,7 @@ class Database extends DataValue
 			// ordinary generally restricted resource.  they need to be 
 			// an authenticated user, or in the local ip range.
 			
-			if ( $user->isAuthenticatedUser() || $user->isCampusUser() )
+			if ( $user->isAuthenticated() || $user->isInLocalIpRange() )
 			{
 				$allowed = true;
 			}

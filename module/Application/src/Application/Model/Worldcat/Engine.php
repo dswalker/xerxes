@@ -4,7 +4,8 @@ namespace Application\Model\Worldcat;
 
 use Application\Model\Search,
 	Xerxes\Worldcat,
-	Xerxes\Marc;
+	Xerxes\Marc,
+	Xerxes\Utility\Factory;
 
 /**
  * Worldcat Search Engine
@@ -22,7 +23,7 @@ class Engine extends Search\Engine
 	protected $worldcat_client;
 	
 	/**
-	 * Constructor
+	 * Create Worldcat Search Engine
 	 */
 	
 	public function __construct($role, $source)
@@ -34,7 +35,7 @@ class Engine extends Search\Engine
 		
 		// worldcat search object
 		
-		$this->worldcat_client = new Worldcat($config_key);
+		$this->worldcat_client = new Worldcat($config_key, Factory::getHttpClient());
 		
 		// if user is a guest, make it open, and return it pronto, since we
 		// can't use the limiters below
