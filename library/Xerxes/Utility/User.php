@@ -32,7 +32,7 @@ class User extends DataValue
 	const GUEST = "guest";
 	
 	/**
-	 * Create a user
+	 * Create a User
 	 * 
 	 * @param Request $request		[optional] create user from existing session
 	 */
