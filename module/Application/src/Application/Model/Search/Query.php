@@ -28,7 +28,7 @@ class Query
 	protected $config; // local config
 	
 	/**
-	 * Constructor
+	 * Create a Search Query
 	 * 
 	 * @param Request $request
 	 */
@@ -270,7 +270,7 @@ class Query
 	}
 	
 	/**
-	 * Get 'limit' params out of the URL, sub-class defines this
+	 * Get 'limit' params out of the URL
 	 * 
 	 * @return array
 	 */	
