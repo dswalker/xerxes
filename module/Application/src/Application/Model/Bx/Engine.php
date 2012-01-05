@@ -53,8 +53,6 @@ class Engine
 		
 		try 
 		{
-			// @todo this needs to be gotten from a factory or something
-			
 			$client = Factory::getHttpClient();
 			$client->setUri($url);
 			$client->setConfig(array('timeout' => 4));
