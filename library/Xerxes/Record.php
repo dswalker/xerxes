@@ -1523,6 +1523,11 @@ class Record
 		return $this->series_title;
 	}
 	
+	public function getShortTitle()
+	{
+		return $this->short_title;
+	}
+	
 	public function getAbstract()
 	{
 		return $this->abstract;

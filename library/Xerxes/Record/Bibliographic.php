@@ -291,6 +291,8 @@ class Bibliographic extends Record
 
 	protected function parseThesis()
 	{
+		// @todo mapping for the new 502 subfields
+		
 		$thesis = (string) $this->marc->datafield("502")->subfield("a");
 		
 		### thesis
@@ -478,6 +480,8 @@ class Bibliographic extends Record
 
 	protected function parseTitle()
 	{
+		// @todo split out non-sort portion based on ind
+		
 		// main title
 		
 		$this->title = (string) $this->marc->datafield("245")->subfield("anp");
@@ -736,7 +740,7 @@ class Bibliographic extends Record
 	{
 		// thesis
 		
-		if ( (string) $this->marc->datafield("502") != "" || (string) $this->marc->controlfield("002") == "DS" )
+		if ( (string) $this->marc->datafield("502") != "" )
 		{
 			return Format::Thesis;
 		}
@@ -846,30 +850,17 @@ class Bibliographic extends Record
 	{
 		### all journal data
 		
+		// specify the order of the subfields in 773 for journal as $a $t $g and then everything else
+		// in case they are out of order
+		
 		$this->journal = (string) $this->marc->datafield("773")->subfield("atgbcdefhijklmnopqrsuvwxyz1234567890", true);		
 		
 		
 		### journal title
 		
-		// specify the order of the subfields in 773 for journal as $a $t $g and then everything else
-		// in case they are out of order 
-
 		$this->journal_title = (string) $this->marc->datafield("773")->subfield("t");
 		$this->short_title = (string) $this->marc->datafield("773")->subfield("p");
 
-		// we'll take the journal title form the 773$t as the best option,
-
-		if ( $this->journal_title == "" )
-		{
-			// see if a short title exists
-			
-			if ( $this->short_title != "" && 
-				($this->format == "Article" || $this->format == "Journal" || $this->format == "Newspaper")  )
-			{
-				$this->journal_title = $this->short_title;
-			}
-		}
-		
 		// continues and continued by
 		
 		foreach ( $this->marc->fieldArray("780") as $continues )
