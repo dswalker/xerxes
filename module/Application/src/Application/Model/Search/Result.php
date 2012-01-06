@@ -33,6 +33,7 @@ class Result
 	protected $registry; // global config
 	protected $config; // local config
 	protected $sid; // open url sid
+	protected $link_resolver; // link resolver
 	
 	/**
 	 * Constructor
@@ -49,10 +50,14 @@ class Result
 		
 		// link resolver stuff
 		
-		$link_resolver = $this->config->getConfig("LINK_RESOLVER_ADDRESS", false, $this->registry->getConfig("LINK_RESOLVER_ADDRESS", true));
+		$this->link_resolver = $this->config->getConfig("LINK_RESOLVER_ADDRESS", false, $this->registry->getConfig("LINK_RESOLVER_ADDRESS", false));
 		$this->sid = $this->registry->getConfig("APPLICATION_SID", false, "calstate.edu:xerxes");
 		
-		$this->url_open = $record->getOpenURL($link_resolver, $this->sid);
+		if ( $this->link_resolver != null )
+		{
+			$this->url_open = $record->getOpenURL($this->link_resolver, $this->sid);
+		}
+		
 		$this->openurl_kev_co = $record->getOpenURL(null, $this->sid);
 		
 		// holdings
@@ -73,7 +78,7 @@ class Result
 	{
 		$configToken = $this->registry->getConfig("BX_TOKEN", false);
 						
-		if ( $configToken != null )
+		if ( $configToken != null && $this->link_resolver != null )
 		{
 			$configBX = $this->registry->getConfig("BX_SERVICE_URL", false);
 			$configMinRelevance	= (int) $this->registry->getConfig("BX_MIN_RELEVANCE", false, 0);
@@ -125,7 +130,7 @@ class Result
 		$cache_id = $xerxes_record->getSource() . "." . $id; // to identify this in the cache
 		$url = $this->config->getConfig("LOOKUP"); // url to availability server
 		
-		// mark that we've checked holdigns either way
+		// mark that we've checked holdings either way
 		
 		$this->holdings->checked = true;
 		
