@@ -19,23 +19,23 @@ use Zend\Http\Client;
 class Metalib
 { 
 	private $server = "";		// metalib server address
-	private $url = "";			// url request to server
+	private $url = "";		// url request to server
 	private $xml = null;		// DOMDocument xml
 	private $warning = null;	// warning xml
 	private $timeout = 15;		// timeout
-
+	
 	private $username = "";		// this application's username
 	private $password = "";		// this application's password	
 	private $session = "";		// session id
 	private $finished = false;	// flag indicating metalib is done searching
-	private $return_quick = false; // return quick
+	private $return_quick = false;  // return quick
 
 	private $client; // http client
 	
 	/**
 	 * Create a new Metalib access object
 	 * 
-	 * @param string $server		the Metalib address url
+	 * @param string $server	the Metalib address url
 	 * @param string $username	this application's username 
 	 * @param string $password	this application's password
 	 * @param string $session	[optional] current metalib session id
@@ -91,10 +91,10 @@ class Metalib
 	/**
 	 * Initiates metasearch request
 	 *
-	 * @param string $query		metalib formatted query 
-	 * @param mixed $databases	[array if multiple or string for single] selected databases
-	 * @param bool $wait		    [optional] whether to wait until results are availble (default false)
-	 * @return mixed 				if wait = false, returns group number as string; else search progress as DOMDocument
+	 * @param string $query			metalib formatted query 
+	 * @param array|string $databases	selected databases, array if multiple
+	 * @param bool $wait			[optional] whether to wait until results are availble (default false)
+	 * @return mixed 			if wait = false, returns group number as string; else search progress as DOMDocument
 	 */
 
 	public function search( $query, $databases, $wait = false) 
@@ -126,9 +126,9 @@ class Metalib
 			$database_list . 
 			"&session_id=" . $this->session .
 			"&wait_flag=" . $strWaitFlag;
-
+		
 		// get find_response from Metalib
-
+		
 		$this->xml = $this->getResponse($this->url, $this->timeout);			
 		
 		if ( $wait == true)
@@ -149,8 +149,8 @@ class Metalib
 	/**
 	 * Check status of initiated search
 	 *
-	 * @param string $group_number	group id
-	 * @return DOMDocument 				status response
+	 * @param string $group_number		group id
+	 * @return DOMDocument 			status response
 	 */
 
 	public function searchStatus( $group_number ) 
@@ -175,8 +175,8 @@ class Metalib
 	 * 
 	 * @param string $group_number		group id
 	 * @param string $sort_primary		primary sort criteria: rank, title, author, year, database
-	 * @param string $sort_secondary		secondary sort criteria: rank, title, author, year, database
-	 * @return DOMDocument 					merge response document
+	 * @param string $sort_secondary	secondary sort criteria: rank, title, author, year, database
+	 * @return DOMDocument 			merge response document
 	 */
 	
 	public function merge( $group_number, $sort_primary = null, $sort_secondary = null )
@@ -199,17 +199,17 @@ class Metalib
 	/**
 	 * Returns facets and clusters for the merged result set
 	 *
-	 * @param string $resultset_number			result set number
+	 * @param string $resultset_number		result set number
 	 * @param string $type				valed values include:
-	 *     	-  all: both cluster and facet results: Topic Cluster, Facet Year, Facet Author, Facet Journal, Facet Database, Facet Subject
-		    - facet: all facet results: Facet Year, Facet Author, Facet Journal, Facet Database, Facet Subject
-		    - cluster: Cluster results
-		    - year: Facet Year results
-		    - author: Facet Author results
-		    - journal: Facet Journal results
-		    - database: Facet Database results
-		    - subject: Facet Subject results
-	 * @param string $id					calling application id
+	 *	-  all: both cluster and facet results: Topic Cluster, Facet Year, Facet Author, Facet Journal, Facet Database, Facet Subject
+		- facet: all facet results: Facet Year, Facet Author, Facet Journal, Facet Database, Facet Subject
+		- cluster: Cluster results
+		- year: Facet Year results
+		- author: Facet Author results
+		- journal: Facet Journal results
+		- database: Facet Database results
+		- subject: Facet Subject results
+	 * @param string $id				calling application id
 	 * @return unknown
 	 */
 	
@@ -234,8 +234,8 @@ class Metalib
 	* 
 	* @param string $group_number		group id
 	* @param string $sort_primary		[optional] primary sort criteria: rank, title, author, year, database
-	* @param string $sort_secondary	[optional] secondary sort criteria: rank, title, author, year, database
-	* @return DOMDocument sort response document
+	* @param string $sort_secondary		[optional] secondary sort criteria: rank, title, author, year, database
+	* @return DOMDocument 			sort response document
 	*/
 
 	public function sort( $group_number, $sort_primary, $sort_secondary = null )
@@ -257,14 +257,14 @@ class Metalib
 	/**
 	* Retrieves results, either as a range or individually
 	* 
-	* @param string $recordset_id	record set id
-	* @param int $start		first record in range, or individual record
-	* @param int $max		maximum number of records to retrieve
-	* @param int $total		[optional] total number of records in result set
-	* @param string $view	[optional] fullness of response: brief, full, customize
-	* @param array $fields	[optional] marc fields to return in customize response
-	* @param array $docs		[optional] list of document id's from facet
-	* @return DOMDocument marc-xml records
+	* @param string $recordset_id		record set id
+	* @param int $start			first record in range, or individual record
+	* @param int $max			maximum number of records to retrieve
+	* @param int $total			[optional] total number of records in result set
+	* @param string $view			[optional] fullness of response: brief, full, customize
+	* @param array $fields			[optional] marc fields to return in customize response
+	* @param array $docs			[optional] list of document id's from facet
+	* @return DOMDocument 			marc-xml records
 	*/
 
 	public function retrieve( $recordset_id, $start, $max, $total = null, $view = null, array $fields = array(), array $docs = array() ) 
@@ -273,7 +273,7 @@ class Metalib
 		
 		if (!is_int($start)) throw new \InvalidArgumentException("param 2 needs to be of type int");
 		if (!is_int($max)) throw new \InvalidArgumentException("param 3 needs to be of type int");
-		if ($total != null && !is_int($total)) throw new \InvalidArgumentException("param 4 needs to be of type int");			
+		if ($total != null && !is_int($total)) throw new \InvalidArgumentException("param 4 needs to be of type int");
 		
 		// if document id's supplied, use that as total
 		
@@ -282,8 +282,8 @@ class Metalib
 			$total = count($docs);
 		}
 		
-		$strFields = "";			// specified fields for customize view
-		$stop = null;				// end of range		
+		$strFields = ""; // specified fields for customize view
+		$stop = null; // end of range
 	
 		// fields to retrieve
 		
@@ -298,10 +298,10 @@ class Metalib
 		// set end point
 		
 		$stop = $start + ( $max - 1 );
-	
+		
 		// if end value of group of 10 exceeds total number of hits,
 		// take total number of hits as end value 
-
+		
 		if ( $stop > $total ) 
 		{
 			$stop = $total;
@@ -314,12 +314,12 @@ class Metalib
 			$strRange = "";
 			$strStart = "";
 			$strStop = "";
-
+			
 			// convert integers to Metalib record IDs by padding with 0's
 			
 			$strStart = str_pad($start, 9, "0", STR_PAD_LEFT);
 			$strStop = str_pad($stop, 9, "0", STR_PAD_LEFT);
-		
+			
 			// if request is for individual record, otherwise for range
 			
 			if ( $max == 1 ) 
@@ -330,7 +330,7 @@ class Metalib
 			{
 				$strRange = $strStart . "-" . $strStop;
 			}
-
+			
 			$this->url = $this->server . "/X?op=present_request" .
 				"&set_number=" . $recordset_id . 
 				"&set_entry=" . $strRange .
@@ -376,7 +376,7 @@ class Metalib
 	/**
 	 * Retrieves all categories and subcategories from the Metalib KnowledgeBase
 	 *
-	 * @return DOMDocument				Metalib category xml document	
+	 * @return DOMDocument		metalib category xml document	
 	 */
 	
 	public function categories( $institute = null, $portal = null, $language = null ) 
@@ -407,7 +407,7 @@ class Metalib
 	 *
 	 * @param string $category_id		category id number, taken from categories xml
 	 * @param string $full			whether to incldue full record, false by default
-	 * @return DOMDocument				Metalib category xml with records in marc-xml
+	 * @return DOMDocument			metalib category xml with records in marc-xml
 	 */
 	
 	public function databasesSubCategory( $category_id, $full = false ) 
@@ -433,7 +433,7 @@ class Metalib
 	 * Retrieve Metalib types
 	 *
 	 * @param string $institute		Metalib institute code
-	 * @return DOMDocument				Metalib type xml document
+	 * @return DOMDocument			Metalib type xml document
 	 */
 	
 	public function types( $institute ) 
@@ -453,9 +453,9 @@ class Metalib
 	 * Retrieve all databases from the Metalib KB
 	 *
 	 * @param string $institute		Metalib institute code
-	 * @param bool $full				whether to include full record, true by default
+	 * @param bool $full			whether to include full record, true by default
 	 * @param bool $chunk			whether we should chunk the response for a really large KB
-	 * @return DOMDocument				marc-xml collection
+	 * @return DOMDocument			marc-xml collection
 	 */
 	
 	public function allDatabases( $institute, $full = true, $chunk = false )
@@ -469,7 +469,7 @@ class Metalib
 		$institute = urlencode(trim($institute));
 		
 		// set fullness flag
-
+		
 		$strFull = "Y";
 		
 		if ($full == false) 
@@ -488,7 +488,7 @@ class Metalib
 				"&locate_command=WIN=($institute)" .
 				"&source_full_info_flag=N" . 
 				"&session_id=" . $this->session;
-
+			
 			$doc = $this->getResponse($this->url);
 			
 			// extract the database ids and fetch the full record for each individually
@@ -517,7 +517,7 @@ class Metalib
 
 			$this->xml = $this->getResponse($this->url);
 		}
-    
+		
 		// extract marc records
 		
 		$xpath = new \DOMXPath($this->xml);
@@ -540,7 +540,7 @@ class Metalib
 	/**
 	 * Status information of the Metalib server
 	 *
-	 * @return DOMDocument status information
+	 * @return DOMDocument		status information
 	 */
 	
 	public function metalibInfo()
@@ -562,8 +562,8 @@ class Metalib
 	* of terms that would indicate Metalib is still searching;
 	* if not present, return status of DONE, so hits page stops auto-refreshing.
 	* 
-	* @param string $status xml status document
-	* @return bool true if finished, false if not
+	* @param string $status 		xml status document
+	* @return bool 				true if finished, false if not
 	*/ 
 
 	private function checkFinished( $status )
@@ -642,7 +642,7 @@ class Metalib
 				$error_text = (string) $error->error_text;
 				
 				// now examine them
-
+				
 				// metalib session has timed out!
 				
 				if ( $error_code == 0151 ) 
@@ -671,10 +671,10 @@ class Metalib
 				  || $error_code == 6022 // all the resources are not authorized
 				  ) 
 				{
-						trigger_error("Metalib warning ($error_code): $error_text", E_USER_WARNING);	
+					trigger_error("Metalib warning ($error_code): $error_text", E_USER_WARNING);	
 				}
 				else
-				{			
+				{
 					throw new \Exception("Metalib exception ($error_code): $error_text");
 				}
 			}
@@ -744,7 +744,7 @@ class Metalib
 	 * @param string $strvalue 	session id
 	 */
 	
-	public function setSession($value)   
+	public function setSession($value)
 	{
 		$this->session = $value;
 	}
@@ -755,7 +755,7 @@ class Metalib
 	 * @return string
 	 */
 	
-	public function getSession()   
+	public function getSession()
 	{
 		return $this->session;
 	}
@@ -788,7 +788,7 @@ class Metalib
 		}
 		
 		$version = $version_object->getAttribute("metalib_version");
-
+		
 		// extract session ID
 		
 		if ( $version != null)
@@ -816,7 +816,7 @@ class Metalib
 	 * Override current Metalib search status flag,
 	 * useful for prematurely ending search
 	 *
-	 * @param bool $value	true for finished, false if not
+	 * @param bool $value		true for finished, false if not
 	 */
 	
 	public function setFinished($value)	
