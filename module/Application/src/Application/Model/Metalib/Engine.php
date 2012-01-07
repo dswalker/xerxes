@@ -69,7 +69,7 @@ class Engine extends Search\Engine
 		// only save the session id and expiry
 		// we'll reconstruct the rest from constructor on wakeup
 		
-		return array("session_id", "session_expires", "databases");
+		return array("session_id", "session_expires");
 	}
 	
 	public function __wakeup()
@@ -110,7 +110,7 @@ class Engine extends Search\Engine
 	 * @return int
 	 */
 	
-	public function getHits( Search\Query $search ) {}	
+	public function getHits( Search\Query $search ) {}	// @todo: had to switch to Search\Query here php complained, why?
 	
 	/**
 	 * Search and return results
@@ -123,7 +123,7 @@ class Engine extends Search\Engine
 	 * @return Results
 	 */
 	
-	public function searchRetrieve( Search\Query $search, $start = 1, $max = 10, $sort = "" ) {}
+	public function searchRetrieve( Search\Query $search, $start = 1, $max = 10, $sort = "" ) {} // @todo: had to switch to Search\Query here php complained, why?
 	
 	/**
 	 * Return an individual record
