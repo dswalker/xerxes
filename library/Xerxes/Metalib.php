@@ -5,7 +5,7 @@ namespace Xerxes;
 use Zend\Http\Client;
 
 /**
- * Search and retrieve results from Metalib X-Server
+ * Metalib X-Server Client
  * 
  * @author David Walker
  * @copyright 2011 California State University
@@ -32,12 +32,13 @@ class Metalib
 	private $client; // http client
 	
 	/**
-	 * Create a new Metalib access object
+	 * Create a new Metalib Client
 	 * 
 	 * @param string $server	the Metalib address url
 	 * @param string $username	this application's username 
 	 * @param string $password	this application's password
 	 * @param string $session	[optional] current metalib session id
+	 * @param Client $client	[optional] subclass of Zend\Client
 	 */
 	
 	public function __construct( $server, $username, $password, $session = null, Client $client = null )
