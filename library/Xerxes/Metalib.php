@@ -6,7 +6,6 @@ use Zend\Http\Client;
 
 /**
  * Search and retrieve results from Metalib X-Server
- * Accepts queries in Metalib search format and returns results in MARC-XML
  * 
  * @author David Walker
  * @copyright 2011 California State University
