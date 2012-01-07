@@ -26,28 +26,15 @@
 		<config name="metalib_institute"></config>
 		<config name="metalib_portal"></config>
 		
-		<!-- Metalib user groups (aka 'secondary affiliations'). -->
-		
-		<!-- Extra info for display and use.
-		
-			<group id="metalib_code"> : group code id used in Metalib, ordinarily in all caps.
-			<display_name> : What to call this group of users       
-			<local_ip_range>: IP range(s) associated with this group.  Users coming from this ip range will be able 
-			to search this group's resources without first having to login. Enter as either 144.37.*.*, with * as 
-			wildcard, or as 144.37.0.0-144.37.255.255, separate mutliple entries by comma
-			<ezp_exp_group> For use with EZProxy export function, ezproxy config group to output for this Metalib 
-			secondary affiliation. See: http://code.google.com/p/xerxes-portal/wiki/EzProxyExport? -->
-		
-		<!-- example:
-		
-		<groups>
-		<group id="SCIENCE">
-		<display_name>Science Library</display_name>
-		<local_ip_range>201.2.4.*</local_ip_range>
-		</group>
-		</groups> 
+	<!-- SEARCH FIELDS -->
 	
-		-->		
+		<config name="basic_search_fields" xml="true" pass="true">
+			<field id="keyword" public="all fields" internal="WRD" />
+			<field id="title" public="title" internal="WTI" />
+			<field id="author" public="author" internal="WAU" />
+			<field id="subject" public="subject" internal="WSU" />
+		</config>
+		
 		
 	<!-- METASEARCH DISPLAY -->		
 
@@ -66,14 +53,12 @@
 		<!-- show holdings links only for specific catalogs
 			enter as xml inside this config, like <database metalib_id="JHU0001" /> -->
 		
-		<config name="holdings_links" pass="true" xml="true">
-		</config>
+		<config name="holdings_links" pass="true" xml="true"></config>
 		
 		<!-- include link back to database's native interface, when present and no full text is availble 
 			enter as xml inside this config, like <database metalib_id="JHU0001" /> -->
 			
-		<config name="original_record_links" pass="true" xml="true">
-		</config>
+		<config name="original_record_links" pass="true" xml="true"></config>
 		
 		<!-- this should correspond to the search limit in metalib -->
 		

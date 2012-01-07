@@ -39,7 +39,7 @@
 		
 		<!-- if you are running xerxes behind a reverse proxy server set this to 'true' -->
 		
-		<config name="reverse_proxy"></config>
+		<config name="reverse_proxy"></config>		
 		
 		
 	<!-- LANGUAGES -->
@@ -125,7 +125,7 @@
 		<config name="google_analytics" pass="true"></config>
 		
 		
-	<!-- AUTHENTICATION + AUTHORIZATION -->
+	<!-- AUTHENTICATION -->
 	
 		<!-- the source against which you will authenticate users; valid values include:
 		
@@ -277,6 +277,32 @@
 				 enter as username:password and separate entries by comma -->
 			
 			<config name="demo_users"></config>
+
+	
+	<!-- USER GROUPS  -->
+		
+		<!-- Extra info for display and use.
+		
+			<group id="code"> Group code id used by Metalib and other systems
+			<display_name>    What to call this group of users       
+			<local_ip_range>  IP range(s) associated with this group.  Users coming from this ip range will be able 
+			                  to search this group's resources without first having to login. Enter as either 
+			                  144.37.*.*, with * as wildcard, or as 144.37.0.0-144.37.255.255, separate mutliple 
+			                  entries by comma
+			<ezp_exp_group>   For use with EZProxy export function, ezproxy config group to output for this Metalib 
+			                  secondary affiliation. See: http://code.google.com/p/xerxes-portal/wiki/EzProxyExport?
+		-->
+		
+		<!-- example:
+		
+		<groups>
+			<group id="SCIENCE">
+				<display_name>Science Library</display_name>
+				<local_ip_range>201.2.4.*</local_ip_range>
+			</group>
+		</groups> 
+	
+		-->
 			
 		
 	<!-- DISPLAY AND BEHAVIOR -->
