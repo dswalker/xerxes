@@ -95,7 +95,16 @@ class ControllerMap
 	
 	public function getDefaultController()
 	{
-		return (string) $this->xml->default;
+		$default_controller = "";
+		
+		// make sure we take the last (local) one
+		
+		foreach ( $this->xml->default as $default )
+		{
+			$default_controller = (string) $default;
+		}
+		
+		return $default_controller;
 	}
 	
 	/**
