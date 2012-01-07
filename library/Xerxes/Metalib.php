@@ -441,9 +441,9 @@ class Metalib
 		$this->url = $this->server . "/X?op=retrieve_resource_types_request" .
 			"&institute=" . $institute .
 			"&session_id=" . $this->session;
-
+		
 		// get retrieve_resource_types_response from Metalib
-
+		
 		$this->xml = $this->getResponse($this->url);
 		
 		return $this->xml; 
@@ -514,7 +514,7 @@ class Metalib
 				"&locate_command=WIN=($institute)" .
 				"&source_full_info_flag=" . $strFull .
 				"&session_id=" . $this->session;				
-
+			
 			$this->xml = $this->getResponse($this->url);
 		}
 		
@@ -523,13 +523,13 @@ class Metalib
 		$xpath = new \DOMXPath($this->xml);
 		$xpath->registerNamespace("marc", "http://www.loc.gov/MARC21/slim");
 		$records = $xpath->query("//marc:record");
-
+		
 		// import and append marc records to master document
 		
 		foreach ($records as $record)
 		{
 			$import_node = $final_xml->importNode($record, true);
-			$final_xml->documentElement->appendChild($import_node);					
+			$final_xml->documentElement->appendChild($import_node);
 		}
 		
 		$this->xml = $final_xml;
@@ -557,8 +557,9 @@ class Metalib
 	}
 	
 	/**
-	* Checks if metalib is done searching
-	* parses search status response from Metalib for existence
+	* Check if metalib is done searching
+	*
+	* Parses search status response from Metalib for existence
 	* of terms that would indicate Metalib is still searching;
 	* if not present, return status of DONE, so hits page stops auto-refreshing.
 	* 
@@ -568,7 +569,7 @@ class Metalib
 
 	private function checkFinished( $status )
 	{
-		$final = "";		// response if found
+		$final = ""; // response if found
 
 		if ( strpos( $status,"START") !== false ) {
 		} else if ( strpos( $status,"FIND") !== false ) {
@@ -684,7 +685,7 @@ class Metalib
 	}
 
 	/**
-	 * Get full URL sent to X-Server, for debugging
+	 * Get full URL sent to X-Server
 	 *
 	 * @return string
 	 */
@@ -695,7 +696,7 @@ class Metalib
 	}
 
 	/**
-	 * Get string version of current XML response, for debugging
+	 * Get string version of current XML response
 	 *
 	 * @return string
 	 */
@@ -802,9 +803,9 @@ class Metalib
 	}
 	
 	/**
-	 * Whether metalib is finished searching; true if finished, false if not 
+	 * Whether metalib is finished searching
 	 * 
-	 * @return bool
+	 * @return bool			true if finished, false if not 
 	 */
 	
 	public function getFinished()
@@ -813,10 +814,11 @@ class Metalib
 	}
 	
 	/**
-	 * Override current Metalib search status flag,
+	 * Override current Metalib search status flag
+	 *
 	 * useful for prematurely ending search
 	 *
-	 * @param bool $value		true for finished, false if not
+	 * @param bool $value		true if finished, false if not
 	 */
 	
 	public function setFinished($value)	
