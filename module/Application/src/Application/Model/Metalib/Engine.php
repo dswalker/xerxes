@@ -69,6 +69,8 @@ class Engine extends Search\Engine
 		// only save the session id and expiry
 		// we'll reconstruct the rest from constructor on wakeup
 		
+		// @todo: maybe last query too?
+		
 		return array("session_id", "session_expires");
 	}
 	
@@ -97,7 +99,11 @@ class Engine extends Search\Engine
 	
 	public function search(Query $search)
 	{
-		// print_r($search); exit;
+		// add KB information to the request
+		
+		$search->fillDatabaseInfo();
+		
+		// initiate search
 		
 		$group = $this->client->search($search->toQuery(), $search->getSearchableDatabases() );
 		

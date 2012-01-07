@@ -24,17 +24,13 @@ class Query extends Search\Query
 	protected $datamap; // data map
 	
 	/**
-	 * Create Metalib Search Query 
+	 * Flesh out the request with database information from KB
 	 * 
-	 * @param Request $request
-	 * @param Config $config
 	 * @throws \Exception
 	 */
 	
-	public function __construct(Request $request = null, Config $config = null )
+	public function fillDatabaseInfo()
 	{
-		parent::__construct($request, $config);
-		
 		// make sure we got some terms!
 		
 		if ( count($this->getQueryTerms()) == 0 )
