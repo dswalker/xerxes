@@ -18,7 +18,6 @@ use Zend\Http\Client;
 
 class Metalib
 { 
-
 	private $server = "";		// metalib server address
 	private $url = "";			// url request to server
 	private $xml = null;		// DOMDocument xml
@@ -36,17 +35,17 @@ class Metalib
 	/**
 	 * Create a new Metalib access object
 	 * 
-	 * @param string $strServer		the Metalib address url
-	 * @param string $strUsername	this application's username 
-	 * @param string $strPassword	this application's password
-	 * @param string $strSession	[optional] current metalib session id
+	 * @param string $server		the Metalib address url
+	 * @param string $username	this application's username 
+	 * @param string $password	this application's password
+	 * @param string $session	[optional] current metalib session id
 	 */
 	
-	public function __construct( $strServer, $strUsername, $strPassword, $strSession = null, Client $client = null )
+	public function __construct( $server, $username, $password, $session = null, Client $client = null )
 	{						
-		$this->setServer($strServer);
-		$this->username = $strUsername;
-		$this->password = $strPassword;
+		$this->setServer($server);
+		$this->username = $username;
+		$this->password = $password;
 		
 		if ( $client != null )
 		{
@@ -57,9 +56,9 @@ class Metalib
 			$this->client = new Client();
 		}		
 
-		if ( $strSession != null )
+		if ( $session != null )
 		{
-			$this->session = $strSession;
+			$this->session = $session;
 		}
 		else
 		{
@@ -92,39 +91,39 @@ class Metalib
 	/**
 	 * Initiates metasearch request
 	 *
-	 * @param string $strQuery		metalib formatted query 
-	 * @param mixed $arrDatabases	[array if multiple or string for single] selected databases
-	 * @param bool $bolWait		    [optional] whether to wait until results are availble (default false)
+	 * @param string $query		metalib formatted query 
+	 * @param mixed $databases	[array if multiple or string for single] selected databases
+	 * @param bool $wait		    [optional] whether to wait until results are availble (default false)
 	 * @return mixed 				if wait = false, returns group number as string; else search progress as DOMDocument
 	 */
 
-	public function search( $strQuery, $arrDatabases, $bolWait = false) 
+	public function search( $query, $databases, $wait = false) 
 	{
-		$strQuery = trim($strQuery); // extra spaces will cause error
+		$query = trim($query); // extra spaces will cause error
 		
 		$strWaitFlag = "N";			// wait flag
-		$strDatabaseList = "";		// string list of databases
+		$database_list = "";		// string list of databases
 		
-		if ( $bolWait == true )
+		if ( $wait == true )
 		{
 			$strWaitFlag = "Y";
 		}
 		
 		// expects databases as an array, so catch here if only one supplied
 					
-		if ( ! is_array($arrDatabases) ) $arrDatabases = array($arrDatabases);
+		if ( ! is_array($databases) ) $databases = array($databases);
 
-		foreach($arrDatabases as $strDatabase) 
+		foreach ( $databases as $database ) 
 		{
-			if ( $strDatabase != null )
+			if ( $database != null )
 			{
-				$strDatabaseList .= "&find_base_001=" . trim($strDatabase);
+				$database_list .= "&find_base_001=" . trim($database);
 			}
 		}
 		
 		$this->url = $this->server . "/X?op=find_request" .
-			"&find_request_command=" . urlencode($strQuery) .
-			$strDatabaseList . 
+			"&find_request_command=" . urlencode($query) .
+			$database_list . 
 			"&session_id=" . $this->session .
 			"&wait_flag=" . $strWaitFlag;
 
@@ -132,7 +131,7 @@ class Metalib
 
 		$this->xml = $this->getResponse($this->url, $this->timeout);			
 		
-		if ( $bolWait == true)
+		if ( $wait == true)
 		{
 			// return search response
 			return $this->xml;
@@ -150,14 +149,14 @@ class Metalib
 	/**
 	 * Check status of initiated search
 	 *
-	 * @param string $strGroupNumber	group id
+	 * @param string $group_number	group id
 	 * @return DOMDocument 				status response
 	 */
 
-	public function searchStatus( $strGroupNumber ) 
+	public function searchStatus( $group_number ) 
 	{
 		$this->url = $this->server . "/X?op=find_group_info_request" .
-			"&group_number=" . $strGroupNumber .
+			"&group_number=" . $group_number .
 			"&session_id=" . $this->session;
 
 		// find_group_info_response from Metalib
@@ -174,19 +173,19 @@ class Metalib
 	/**
 	 * Creates a merged set of top results from individual result sets
 	 * 
-	 * @param string $strGroupNumber		group id
-	 * @param string $strPrimarySort		primary sort criteria: rank, title, author, year, database
-	 * @param string $strSecondarySort		secondary sort criteria: rank, title, author, year, database
+	 * @param string $group_number		group id
+	 * @param string $sort_primary		primary sort criteria: rank, title, author, year, database
+	 * @param string $sort_secondary		secondary sort criteria: rank, title, author, year, database
 	 * @return DOMDocument 					merge response document
 	 */
 	
-	public function merge( $strGroupNumber, $strPrimarySort = null, $strSecondarySort = null )
+	public function merge( $group_number, $sort_primary = null, $sort_secondary = null )
 	{	
 		$this->url = $this->server . "/X?op=merge_sort_request" .
-			"&group_number=" . $strGroupNumber .
+			"&group_number=" . $group_number .
 			"&action=merge" .
-			"&primary_sort_key=" . $strPrimarySort .
-			"&secondary_sort_key=" . $strSecondarySort .
+			"&primary_sort_key=" . $sort_primary .
+			"&secondary_sort_key=" . $sort_secondary .
 			"&session_id=" . $this->session;
 
       
@@ -200,8 +199,8 @@ class Metalib
 	/**
 	 * Returns facets and clusters for the merged result set
 	 *
-	 * @param string $strResultSet			result set number
-	 * @param string $strType				valed values include:
+	 * @param string $resultset_number			result set number
+	 * @param string $type				valed values include:
 	 *     	-  all: both cluster and facet results: Topic Cluster, Facet Year, Facet Author, Facet Journal, Facet Database, Facet Subject
 		    - facet: all facet results: Facet Year, Facet Author, Facet Journal, Facet Database, Facet Subject
 		    - cluster: Cluster results
@@ -210,17 +209,17 @@ class Metalib
 		    - journal: Facet Journal results
 		    - database: Facet Database results
 		    - subject: Facet Subject results
-	 * @param string $strID					calling application id
+	 * @param string $id					calling application id
 	 * @return unknown
 	 */
 	
-	public function facets($strResultSet, $strType = "all", $strID)
+	public function facets($resultset_number, $type = "all", $id)
 	{
 		$this->url = $this->server . "/X?op=retrieve_cluster_facet_request" .
 		
-			"&set_number=" . $strResultSet .
-			"&type=" . $strType .
-			"&calling_application=" . $strID .
+			"&set_number=" . $resultset_number .
+			"&type=" . $type .
+			"&calling_application=" . $id .
 			"&session_id=" . $this->session;
 
 		// get merge_response from Metalib
@@ -233,19 +232,19 @@ class Metalib
 	/**
 	* Sorts a merged result set
 	* 
-	* @param string $strGroupNumber		group id
-	* @param string $strPrimarySort		[optional] primary sort criteria: rank, title, author, year, database
-	* @param string $strSecondarySort	[optional] secondary sort criteria: rank, title, author, year, database
+	* @param string $group_number		group id
+	* @param string $sort_primary		[optional] primary sort criteria: rank, title, author, year, database
+	* @param string $sort_secondary	[optional] secondary sort criteria: rank, title, author, year, database
 	* @return DOMDocument sort response document
 	*/
 
-	public function sort( $strGroupNumber, $strPrimarySort, $strSecondarySort = null )
+	public function sort( $group_number, $sort_primary, $sort_secondary = null )
 	{	
 		$this->url = $this->server . "/X?op=merge_sort_request" .
-			"&group_number=" . $strGroupNumber .
+			"&group_number=" . $group_number .
 			"&action=sort_only" .
-			"&primary_sort_key=" . $strPrimarySort .
-			"&secondary_sort_key=" . $strSecondarySort .
+			"&primary_sort_key=" . $sort_primary .
+			"&secondary_sort_key=" . $sort_secondary .
 			"&session_id=" . $this->session;
 
 		// get merge_response from Metalib
@@ -258,39 +257,39 @@ class Metalib
 	/**
 	* Retrieves results, either as a range or individually
 	* 
-	* @param string $strRecSet	record set id
-	* @param int $iStart		first record in range, or individual record
-	* @param int $iMaximum		maximum number of records to retrieve
-	* @param int $iTotal		[optional] total number of records in result set
-	* @param string $strView	[optional] fullness of response: brief, full, customize
-	* @param array $arrFields	[optional] marc fields to return in customize response
-	* @param array $arrDocs		[optional] list of document id's from facet
+	* @param string $recordset_id	record set id
+	* @param int $start		first record in range, or individual record
+	* @param int $max		maximum number of records to retrieve
+	* @param int $total		[optional] total number of records in result set
+	* @param string $view	[optional] fullness of response: brief, full, customize
+	* @param array $fields	[optional] marc fields to return in customize response
+	* @param array $docs		[optional] list of document id's from facet
 	* @return DOMDocument marc-xml records
 	*/
 
-	public function retrieve( $strRecSet, $iStart, $iMaximum, $iTotal = null, $strView = null, $arrFields = null, $arrDocs = null ) 
+	public function retrieve( $recordset_id, $start, $max, $total = null, $view = null, array $fields = array(), array $docs = array() ) 
 	{
 		// type check
 		
-		if (!is_int($iStart)) throw new \InvalidArgumentException("param 2 needs to be of type int");
-		if (!is_int($iMaximum)) throw new \InvalidArgumentException("param 3 needs to be of type int");
-		if ($iTotal != null && !is_int($iTotal)) throw new \InvalidArgumentException("param 4 needs to be of type int");			
-		if ($arrFields != null && !is_array($arrFields)) throw new \InvalidArgumentException("param 6 needs to be of type array");
-		if ($arrDocs != null && !is_array($arrDocs)) throw new \InvalidArgumentException("param 7 needs to be of type array");
+		if (!is_int($start)) throw new \InvalidArgumentException("param 2 needs to be of type int");
+		if (!is_int($max)) throw new \InvalidArgumentException("param 3 needs to be of type int");
+		if ($total != null && !is_int($total)) throw new \InvalidArgumentException("param 4 needs to be of type int");			
 		
-		if ( $arrDocs != null )
+		// if document id's supplied, use that as total
+		
+		if ( count($docs) > 0 )
 		{
-			$iTotal = count($arrDocs);
+			$total = count($docs);
 		}
 		
 		$strFields = "";			// specified fields for customize view
-		$iStop = null;				// end of range		
+		$stop = null;				// end of range		
 	
 		// fields to retrieve
 		
-		if ( $strView == "customize" )
+		if ( $view == "customize" )
 		{
-			foreach( $arrFields as $strField) 
+			foreach( $fields as $strField) 
 			{
 				$strFields .= "&field=" . urlencode($strField);
 			}
@@ -298,17 +297,17 @@ class Metalib
 		
 		// set end point
 		
-		$iStop = $iStart + ( $iMaximum - 1 );
+		$stop = $start + ( $max - 1 );
 	
 		// if end value of group of 10 exceeds total number of hits,
 		// take total number of hits as end value 
 
-		if ( $iStop > $iTotal ) 
+		if ( $stop > $total ) 
 		{
-			$iStop = $iTotal;
+			$stop = $total;
 		}
 		
-		if ( $arrDocs == null )
+		if ( count($docs) == 0 )
 		{
 			// strings for converting integers to Metalib IDs which have 0000s
 			
@@ -318,12 +317,12 @@ class Metalib
 
 			// convert integers to Metalib record IDs by padding with 0's
 			
-			$strStart = str_pad($iStart, 9, "0", STR_PAD_LEFT);
-			$strStop = str_pad($iStop, 9, "0", STR_PAD_LEFT);
+			$strStart = str_pad($start, 9, "0", STR_PAD_LEFT);
+			$strStop = str_pad($stop, 9, "0", STR_PAD_LEFT);
 		
 			// if request is for individual record, otherwise for range
 			
-			if ( $iMaximum == 1 ) 
+			if ( $max == 1 ) 
 			{
 				$strRange = $strStart;
 			} 
@@ -333,11 +332,11 @@ class Metalib
 			}
 
 			$this->url = $this->server . "/X?op=present_request" .
-				"&set_number=" . $strRecSet . 
+				"&set_number=" . $recordset_id . 
 				"&set_entry=" . $strRange .
 				$strFields .
 				"&format=marc" .
-				"&view=" . $strView .
+				"&view=" . $view .
 				"&session_id=" . $this->session;
 		}
 		else 
@@ -346,15 +345,15 @@ class Metalib
 			
 			$strDocs = "";
 			
-			for ( $x = $iStart - 1; $x < $iStop && $x < $iTotal; $x++ )
+			for ( $x = $start - 1; $x < $stop && $x < $total; $x++ )
 			{
-				if ( $x == $iStart - 1 )
+				if ( $x == $start - 1 )
 				{
-					$strDocs = $arrDocs[$x];
+					$strDocs = $docs[$x];
 				}
 				else
 				{
-					$strDocs .= urlencode("," . $arrDocs[$x]);
+					$strDocs .= urlencode("," . $docs[$x]);
 				}
 			}
 			
@@ -363,7 +362,7 @@ class Metalib
 				"&doc_number=" . $strDocs .
 				$strFields .
 				"&format=marc" .
-				"&view=" . $strView .
+				"&view=" . $view .
 				"&session_id=" . $this->session;
 		}
 
@@ -377,7 +376,6 @@ class Metalib
 	/**
 	 * Retrieves all categories and subcategories from the Metalib KnowledgeBase
 	 *
-	 * @param string $strIpAddress		IP address associated with a Metalib portal
 	 * @return DOMDocument				Metalib category xml document	
 	 */
 	
@@ -407,20 +405,20 @@ class Metalib
 	/**
 	 * Retrieves all the databases in a Metalib subcategory
 	 *
-	 * @param string $strCategoryId		category id number, taken from categories xml
-	 * @param string $bolFull			whether to incldue full record, false by default
+	 * @param string $category_id		category id number, taken from categories xml
+	 * @param string $full			whether to incldue full record, false by default
 	 * @return DOMDocument				Metalib category xml with records in marc-xml
 	 */
 	
-	public function databasesSubCategory( $strCategoryId, $bolFull = false ) 
+	public function databasesSubCategory( $category_id, $full = false ) 
 	{
 		// set string flag for inclusion of full marc record
 		$strFull = "N";
 				
-		if ( $bolFull == true ) $strFull = "Y";
+		if ( $full == true ) $strFull = "Y";
 
 		$this->url = $this->server . "/X?op=retrieve_resources_by_category_request" .
-			"&category_id=" . $strCategoryId .
+			"&category_id=" . $category_id .
 			"&source_full_info_flag=" . $strFull .
 			"&session_id=" . $this->session;
 
@@ -434,14 +432,14 @@ class Metalib
 	/**
 	 * Retrieve Metalib types
 	 *
-	 * @param string $strInstitute		Metalib institute code
+	 * @param string $institute		Metalib institute code
 	 * @return DOMDocument				Metalib type xml document
 	 */
 	
-	public function types( $strInstitute ) 
+	public function types( $institute ) 
 	{
 		$this->url = $this->server . "/X?op=retrieve_resource_types_request" .
-			"&institute=" . $strInstitute .
+			"&institute=" . $institute .
 			"&session_id=" . $this->session;
 
 		// get retrieve_resource_types_response from Metalib
@@ -452,34 +450,34 @@ class Metalib
 	}
 	
 	/**
-	 * Retrieve all databases from the Metalib database
+	 * Retrieve all databases from the Metalib KB
 	 *
-	 * @param string $strInstitute		Metalib institute code
-	 * @param bool $bolFull				whether to include full record, true by default
-	 * @param bool $bolChunk			whether we should chunk the response for a really large KB
+	 * @param string $institute		Metalib institute code
+	 * @param bool $full				whether to include full record, true by default
+	 * @param bool $chunk			whether we should chunk the response for a really large KB
 	 * @return DOMDocument				marc-xml collection
 	 */
 	
-	public function allDatabases( $strInstitute, $bolFull = true, $bolChunk = false )
+	public function allDatabases( $institute, $full = true, $chunk = false )
 	{
 		// master xml document
 		
-		$objFinalXml = new \DOMDocument();
-		$objFinalXml->loadXML("<collection />");
-		$objFinalXml->documentElement->setAttribute("metalib_version", $this->getVersion());
+		$final_xml = new \DOMDocument();
+		$final_xml->loadXML("<collection />");
+		$final_xml->documentElement->setAttribute("metalib_version", $this->getVersion());
 		
-		$strInstitute = urlencode(trim($strInstitute));
+		$institute = urlencode(trim($institute));
 		
 		// set fullness flag
 
 		$strFull = "Y";
 		
-		if ($bolFull == false) 
+		if ($full == false) 
 		{
 			$strFull = "N";
 		}
 		
-		if ( $bolChunk == true )
+		if ( $chunk == true ) // get them in batches
 		{
 			$this->xml = new \DOMDocument();
 			$this->xml->loadXML("<collection />");
@@ -487,35 +485,33 @@ class Metalib
 			// get the list without the full record
 			
 			$this->url = $this->server . "/X?op=source_locate_request" .
-				"&locate_command=WIN=($strInstitute)" .
+				"&locate_command=WIN=($institute)" .
 				"&source_full_info_flag=N" . 
 				"&session_id=" . $this->session;
 
-			$objXml = $this->getResponse($this->url);
+			$doc = $this->getResponse($this->url);
 			
 			// extract the database ids and fetch the full record for each individually
 			
-			foreach ( $objXml->getElementsByTagName("source_001") as $database )
+			foreach ( $doc->getElementsByTagName("source_001") as $database )
 			{
 				$this->url = $this->server . "/X?op=source_locate_request" .
 					"&locate_command=IDN=" . $database->nodeValue .
 					"&source_full_info_flag=" . $strFull . 
 					"&session_id=" . $this->session;
 				
-				$objDatabase = $this->getResponse($this->url);
+				$database = $this->getResponse($this->url);
 				
-				$objImport = $this->xml->importNode($objDatabase->documentElement, true);
-				$this->xml->documentElement->appendChild($objImport);
+				$import = $this->xml->importNode($database->documentElement, true);
+				$this->xml->documentElement->appendChild($import);
 			}
 			
 			$this->xml->save("test.xml");
 		}
-		else 
+		else // get them in one call
 		{
-			// load into DOM
-
 			$this->url = $this->server . "/X?op=source_locate_request" .
-				"&locate_command=WIN=($strInstitute)" .
+				"&locate_command=WIN=($institute)" .
 				"&source_full_info_flag=" . $strFull .
 				"&session_id=" . $this->session;				
 
@@ -524,21 +520,21 @@ class Metalib
     
 		// extract marc records
 		
-		$objXPathRecord = new \DOMXPath($this->xml);
-		$objXPathRecord->registerNamespace("marc", "http://www.loc.gov/MARC21/slim");
-		$objRecords = $objXPathRecord->query("//marc:record");
+		$xpath = new \DOMXPath($this->xml);
+		$xpath->registerNamespace("marc", "http://www.loc.gov/MARC21/slim");
+		$records = $xpath->query("//marc:record");
 
 		// import and append marc records to master document
 		
-		foreach ($objRecords as $objRecord)
+		foreach ($records as $record)
 		{
-			$objImportNode = $objFinalXml->importNode($objRecord, true);
-			$objFinalXml->documentElement->appendChild($objImportNode);					
+			$import_node = $final_xml->importNode($record, true);
+			$final_xml->documentElement->appendChild($import_node);					
 		}
 		
-		$this->xml = $objFinalXml;
+		$this->xml = $final_xml;
 		
-		return $objFinalXml;
+		return $final_xml;
 	}
 	
 	/**
@@ -566,26 +562,26 @@ class Metalib
 	* of terms that would indicate Metalib is still searching;
 	* if not present, return status of DONE, so hits page stops auto-refreshing.
 	* 
-	* @param string $strStatus xml status document
+	* @param string $status xml status document
 	* @return bool true if finished, false if not
 	*/ 
 
-	private function checkFinished( $strStatus )
+	private function checkFinished( $status )
 	{
-		$strFinal = "";		// response if found
+		$final = "";		// response if found
 
-		if ( strpos( $strStatus,"START") !== false ) {
-		} else if ( strpos( $strStatus,"FIND") !== false ) {
-		} else if ( strpos( $strStatus,"FORK") !== false ) {
-		} else if ( strpos( $strStatus,"FETCH") !== false ) {
-		} else if ( strpos( $strStatus,"DONE1") !== false && $this->return_quick == false ) {
-		} else if ( strpos( $strStatus,"DONE2") !== false ) {
-		} else if ( strpos( $strStatus,"DONE3") !== false ) {
+		if ( strpos( $status,"START") !== false ) {
+		} else if ( strpos( $status,"FIND") !== false ) {
+		} else if ( strpos( $status,"FORK") !== false ) {
+		} else if ( strpos( $status,"FETCH") !== false ) {
+		} else if ( strpos( $status,"DONE1") !== false && $this->return_quick == false ) {
+		} else if ( strpos( $status,"DONE2") !== false ) {
+		} else if ( strpos( $status,"DONE3") !== false ) {
 		} else {
-			$strFinal = "Done";
+			$final = "Done";
 		}
 
-		if ( $strFinal == "" )
+		if ( $final == "" )
 		{
 			return false;
 		}
@@ -607,8 +603,8 @@ class Metalib
 		// recover to true here in order to allow libxml to recover from errors and continue 
 		// processing the document
 		
-		$objXml = new \DOMDocument();
-		$objXml->recover = true;
+		$doc = new \DOMDocument();
+		$doc->recover = true;
 		
 		// fetch the data
 		
@@ -623,22 +619,22 @@ class Metalib
 		
 		// load into xml
 		
-		$objXml->loadXML($response->getBody());
+		$doc->loadXML($response->getBody());
 		
 		// no response?
 		
-		if ( $objXml->documentElement == null )
+		if ( $doc->documentElement == null )
 		{
 			throw new \Exception("cannot connect to metalib server");
 		}
 		
 		// error in response
 		
-		if ( $objXml->getElementsByTagName("error_code") != null )
+		if ( $doc->getElementsByTagName("error_code") != null )
 		{
 			// for easier handling
 			
-			$xml = simplexml_import_dom($objXml->documentElement);
+			$xml = simplexml_import_dom($doc->documentElement);
 			
 			foreach ( $xml->xpath("//global_error|//local_error") as $error )
 			{
@@ -684,7 +680,7 @@ class Metalib
 			}
 		}
 		
-		return $objXml;
+		return $doc;
 	}
 
 	/**
@@ -772,8 +768,8 @@ class Metalib
 	
 	public function getVersion()
 	{
-		$strVersion = "";
-		$objVersion = null;
+		$version = "";
+		$version_object = null;
 		
 		// see if some xml response has already been fetched
 		// in which case it will have the version, otherwise just
@@ -781,23 +777,23 @@ class Metalib
 		
 		if ( $this->xml->documentElement != null )
 		{
-			$objVersion = $this->xml->getElementsByTagName("x_server_response")->item(0);
+			$version_object = $this->xml->getElementsByTagName("x_server_response")->item(0);
 		}
 		else
 		{
 			$this->url = $this->server . "/X";
 			$this->xml = $this->getResponse($this->url, $this->timeout);
 		
-			$objVersion = $this->xml->getElementsByTagName("x_server_response")->item(0);
+			$version_object = $this->xml->getElementsByTagName("x_server_response")->item(0);
 		}
 		
-		$strVersion = $objVersion->getAttribute("metalib_version");
+		$version = $version_object->getAttribute("metalib_version");
 
 		// extract session ID
 		
-		if ( $strVersion != null)
+		if ( $version != null)
 		{
-			return $strVersion;
+			return $version;
 		}
 		else
 		{
