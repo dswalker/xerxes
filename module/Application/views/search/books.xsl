@@ -559,13 +559,17 @@
 		
 		<xsl:if test="count(../holdings/items/item)">
 		
-			<div class="resultsAvailability">
-				<a target="{$link_target}" href="{../url_open}" class="recordAction">
-					<img src="{$image_sfx}" alt="" border="0" class="miniIcon linkResolverLink "/>
-					<xsl:text> </xsl:text>
-					<xsl:copy-of select="$text_link_resolver_check" /> 
-				</a>
-			</div>
+			<xsl:if test="../url_open">
+		
+				<div class="resultsAvailability">
+					<a target="{$link_target}" href="{../url_open}" class="recordAction">
+						<img src="{$image_sfx}" alt="" border="0" class="miniIcon linkResolverLink "/>
+						<xsl:text> </xsl:text>
+						<xsl:copy-of select="$text_link_resolver_check" /> 
+					</a>
+				</div>
+				
+			</xsl:if>
 			
 		</xsl:if>
 			

@@ -711,41 +711,45 @@
 		
 		<!-- link resolver -->
 		
-		<xsl:choose>
+		<xsl:if test="../url_open">
+		
+			<xsl:choose>
+				
+				<!-- link resolver, full-text predetermined -->
+				
+				<xsl:when test="$link_resolver_allowed = 'true' and subscription = 1">
+						<a href="{../url_open}&amp;fulltext=1" target="{$link_target}" class="recordAction linkResolverLink">
+							<xsl:call-template name="img_format_html">
+								<xsl:with-param name="class">miniIcon linkResolverLink</xsl:with-param>
+							</xsl:call-template>
+							<xsl:text> </xsl:text>
+							<xsl:copy-of select="$text_link_resolver_available" />
+						</a>
+				</xsl:when>
+				
+				<!-- link resolver, no full-text predetermined -->
+				
+				<xsl:when test="$link_resolver_allowed = 'true'">
+						<a href="{../url_open}" target="{$link_target}" class="recordAction linkResoverLink">
+							<img src="{$image_sfx}" alt="" class="miniIcon linkResolverLink "/>
+							<xsl:text> </xsl:text>
+							<xsl:copy-of select="$text_link_resolver_check" />
+						</a>
+				</xsl:when>
+				
+				<!-- if no direct link or link resolver, do we have an original record link? -->
+				
+				<xsl:when test="links/link[@type='original_record'] and ../show_original_record_link">
+					<xsl:call-template name="record_link">
+						<xsl:with-param name="type">original_record</xsl:with-param>
+						<xsl:with-param name="text" select="$text_link_original_record"/>
+						<xsl:with-param name="img_src" select="$img_src_chain"/>
+					</xsl:call-template>
+				</xsl:when>
+				
+			</xsl:choose>
 			
-			<!-- link resolver, full-text predetermined -->
-			
-			<xsl:when test="$link_resolver_allowed = 'true' and subscription = 1">
-					<a href="{../url_open}&amp;fulltext=1" target="{$link_target}" class="recordAction linkResolverLink">
-						<xsl:call-template name="img_format_html">
-							<xsl:with-param name="class">miniIcon linkResolverLink</xsl:with-param>
-						</xsl:call-template>
-						<xsl:text> </xsl:text>
-						<xsl:copy-of select="$text_link_resolver_available" />
-					</a>
-			</xsl:when>
-			
-			<!-- link resolver, no full-text predetermined -->
-			
-			<xsl:when test="$link_resolver_allowed = 'true'">
-					<a href="{../url_open}" target="{$link_target}" class="recordAction linkResoverLink">
-						<img src="{$image_sfx}" alt="" class="miniIcon linkResolverLink "/>
-						<xsl:text> </xsl:text>
-						<xsl:copy-of select="$text_link_resolver_check" />
-					</a>
-			</xsl:when>
-			
-			<!-- if no direct link or link resolver, do we have an original record link? -->
-			
-			<xsl:when test="links/link[@type='original_record'] and ../show_original_record_link">
-				<xsl:call-template name="record_link">
-					<xsl:with-param name="type">original_record</xsl:with-param>
-					<xsl:with-param name="text" select="$text_link_original_record"/>
-					<xsl:with-param name="img_src" select="$img_src_chain"/>
-				</xsl:call-template>
-			</xsl:when>
-			
-		</xsl:choose>
+		</xsl:if>
 		
 	</xsl:template>
 
