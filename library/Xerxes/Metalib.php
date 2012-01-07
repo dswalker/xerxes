@@ -620,10 +620,6 @@ class Metalib
 		{
 			throw new \Exception( "Cannot process search at this time." );
 		}
-		else
-		{
-			return $response->getBody();
-		}
 		
 		// load into xml
 		

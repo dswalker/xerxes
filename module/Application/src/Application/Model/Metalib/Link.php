@@ -31,7 +31,7 @@ class Link extends Record\Link
 		
 		if ( is_array($url) )
 		{
-			
+			// @todo: construct the link
 		}
 		
 		parent::__construct($url, $type, $display);

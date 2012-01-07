@@ -2,7 +2,8 @@
 
 namespace Application\Model\KnowledgeBase;
 
-use Xerxes\Utility\Parser;
+use Xerxes\Utility\Parser,
+	Xerxes\Utility\Registry;
 
 /**
  * Databases Config
@@ -15,7 +16,7 @@ use Xerxes\Utility\Parser;
  * @package Xerxes
  */
 
-class Config extends Config
+class Config extends Registry
 {
 	protected $config_file = "config/databases";
 	private $usergroups = array(); // user groups

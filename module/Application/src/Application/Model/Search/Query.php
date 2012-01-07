@@ -31,6 +31,7 @@ class Query
 	 * Create a Search Query
 	 * 
 	 * @param Request $request
+	 * @param Config $config
 	 */
 	
 	public function __construct(Request $request = null, Config $config = null )

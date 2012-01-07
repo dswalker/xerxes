@@ -22,16 +22,17 @@ class Database extends DataValue
 {
 	public $xml;
 	
+	public $metalib_id; // @todo: get rid of this
+	
 	public $database_id; // database id
 	public $title_display; // database title
-	public $type; 
-	public $data;
-	
-	private $searchable_by_user; // is resource searchable by user
+	public $type; // database type
+	public $data; // other data about the database?
+
 	private $config; // database config
 	
 	/**
-	 * Constructor
+	 * Create Database
 	 */
 	
 	public function __construct()
@@ -40,24 +41,19 @@ class Database extends DataValue
 	}
 	
 	/**
-	 * Load data from database resutls array
+	 * Load data from database results array
 	 *
 	 * @param array $arrResult
 	 * @param User $user
 	 */
 	
-	public function load($arrResult, $user = null)
+	public function load($arrResult)
 	{
 		parent::load($arrResult);
 		
 		if ( $this->data != "" )
 		{
 			$this->xml = simplexml_load_string($this->data);
-		}
-
-		if ( $user != null )
-		{
-			$this->searchable_by_user = $this->isSearchableByUser($user);
 		}
 	}
 	
@@ -225,7 +221,7 @@ class Database extends DataValue
 	 * @return boolean
 	 */
 	
-	private function isSearchableByUser(User $user)
+	public function isSearchableByUser(User $user)
 	{
 		$allowed = "";
 		
@@ -239,9 +235,10 @@ class Database extends DataValue
 		}
 		elseif ( count($this->group_restrictions) > 0 )
 		{
-			// they have to be authenticated, and in a group that is included
-			// in the restrictions, or in an ip address associated with a
-			// restricted group.
+			// user has to be authenticated, and in a group that is included in the restrictions, 
+			// or in an ip address associated with a restricted group.
+			
+			// @todo: setup user groups in user object
 			
 			$allowed = ($user->isAuthenticated() && array_intersect($user->getUserGroups(), $this->group_restrictions));
 			
@@ -253,10 +250,10 @@ class Database extends DataValue
 				
 				foreach ( $this->group_restrictions as $group )
 				{
-					$ranges[] = $this->config->getGroupLocalIpRanges($group);
+					$ranges[] = $this->config->getGroupLocalIpRanges($group); // @todo: move this to registry?
 				}
 				
-				$allowed = Parser::isIpAddrInRanges($user->getIpAddress(),implode(",", $ranges));
+				$allowed = $user->isInLocalIpRange();
 			}
 		}
 		else
