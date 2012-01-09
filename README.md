@@ -1,16 +1,12 @@
 Xerxes
 =======================
 
-
-Introduction
-------------
 The primary goal of Xerxes is to provide a fully customizable and extendable interface to:
 
-  1. Commercial library discovery systems, including Summon, Primo, and Ebsco Discovery.
-  2. Open source search engines, including Solr 
-  3. No-cost web services, such as the Ebsco Integration Toolkit and the Worldcat API
-  4. Federated search systems, including Metalib and Pazpar2
-
+  1. Commercial library discovery systems, including Summon, Primo, and Ebsco Discovery
+  2. No-cost web services, such as the Ebsco Integration Toolkit and the Worldcat API
+  3. Federated search systems, including Metalib and Pazpar2
+  4. Open source search engines, including Solr
 
 Installation
 ------------
