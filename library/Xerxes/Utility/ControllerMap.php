@@ -60,7 +60,7 @@ class ControllerMap
 				throw new \Exception("could not parse local map.xml");
 			}
 			
-			$this->addXml($this->xml, $local );
+			$this->addLocalXml( $local );
 		}
 		
 		// set the version number
@@ -81,7 +81,7 @@ class ControllerMap
 				
 				if ( count($controller_to_copy) > 0 )
 				{
-					$this->addXml($this->xml, $controller_to_copy[0], $controller ); // import its nodes
+					$this->addActions($controller_to_copy[0], $controller ); // import its nodes
 				}
 			}
 		}
@@ -286,30 +286,19 @@ class ControllerMap
 	}
 	
 	/**
-	 * Append one simple xml element to another 
+	 * Append local map.xml file 
 	 *
-	 * @param \SimpleXMLElement $parent			master document
-	 * @param \SimpleXMLElement $local			xml nodes to add
-	 * @param \SimpleXMLElement $node			[optional] the insertion point to append local
-	 * 
-	 * @throws Exception
+	 * @param \SimpleXMLElement $local
 	 */
 	
-	private function addXml( \SimpleXMLElement $parent, \SimpleXMLElement $local, \SimpleXMLElement $node = null )
+	private function addLocalXml( \SimpleXMLElement $local )
 	{
 		// amazingly, the code below changes the simplexml object itself
 		// no need to cast this back to simplexml
 	
-		$master = dom_import_simplexml( $parent );
-		
-		// insertion point is main document node, unless we specify one
+		$master = dom_import_simplexml( $this->xml );
 		
 		$insert_node = $master->ownerDocument->documentElement;
-		
-		if ( $node != null )
-		{
-			$insert_node = dom_import_simplexml( $node );
-		}
 	
 		// import and append the local xml's child nodes
 	
@@ -320,6 +309,34 @@ class ControllerMap
 			$import = $master->ownerDocument->importNode( $new, true );
 			
 			$insert_node->appendChild($import);
+		}
+	}
+	
+	/**
+	 * Pre-pend the actions of the parent controller to a child controller
+	 * 
+	 * @param \SimpleXMLElement $parent_controller
+	 * @param \SimpleXMLElement $child_controller
+	 */
+	
+	private function addActions( \SimpleXMLElement $parent_controller, \SimpleXMLElement $child_controller )
+	{
+		$master = dom_import_simplexml(  $this->xml );
+	
+		$insert_node = dom_import_simplexml( $child_controller );
+		
+		$before = $insert_node->firstChild;
+				
+		// insert the actions *before* any existing child nodes, so the local child node
+		// takes precendence
+	
+		foreach ( $parent_controller->children() as $entry )
+		{
+			$new = clone dom_import_simplexml( $entry ); // make sure we are copying the node
+				
+			$import = $master->ownerDocument->importNode( $new, true );
+				
+			$insert_node->insertBefore($import, $before);
 		}
 	}	
 	
