@@ -22,7 +22,7 @@ class Database extends DataValue
 {
 	public $xml;
 	
-	public $metalib_id; // @todo: get rid of this
+	public $metalib_id; // @todo: switch to database_id
 	
 	public $database_id; // database id
 	public $title_display; // database title

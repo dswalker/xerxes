@@ -17,34 +17,46 @@ use Application\Model\DataMap\Databases;
 
 class KnowledgeBase
 {
-	private $user;
-	private $lang;
+	private $lang; // language
 	
-	public function __construct($user, $lang)
+	protected $datamap; // xerxes datamap
+	
+	public function __construct($lang = null)
 	{
-		$this->user = $user;
 		$this->lang = $lang;
 	}
 	
 	public function getCategories()
 	{
-		$databases = new Databases();
-		return $databases->getCategories($this->lang);
+		return $this->getDataMap()->getCategories($this->lang);
 	}
 	
 	public function getSubject($subject)
 	{
-		$databases = new Databases();
-		return $databases->getSubject($subject, $this->lang);		
+		return $this->getDataMap()->getSubject($subject, $this->lang);		
 	}
 	
-	public function getDatabases($query = "")
+	public function getDatabases(array $databases = null)
 	{
-		
+		return $this->getDataMap()->getDatabases($databases);
 	}
 	
 	public function getDatabase($id)
 	{
 		
 	}
+	
+	/**
+	 * Lazyload datamap
+	 */
+	
+	protected function getDataMap()
+	{
+		if ( ! $this->datamap instanceof Databases )
+		{
+			$this->datamap = new Databases();
+		}
+	
+		return $this->datamap;
+	}	
 }

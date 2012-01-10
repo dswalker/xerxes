@@ -2,14 +2,10 @@
 
 namespace Application\Model\Metalib;
 
-use Application\Model\DataMap\Databases,
+use Application\Model\KnowledgeBase\KnowledgeBase,
  	Application\Model\Search,
-	Xerxes\Metalib,
 	Xerxes\Utility\Factory,
-	Xerxes\Utility\Registry,
-	Xerxes\Utility\Request,
-	Xerxes\Utility\User,
-	Zend\Http\Client;
+	Xerxes\Utility\Request;
 
 /**
  * Metalib Search Engine
@@ -25,7 +21,7 @@ use Application\Model\DataMap\Databases,
 class Engine extends Search\Engine
 {
 	protected $client; // metalib client
-	protected $datamap; // xerxes datamap
+	protected $knowledgebase; // metalib kb
 	
 	/**
 	 * Create Metalib Search Engine
@@ -35,19 +31,9 @@ class Engine extends Search\Engine
 	{
 		parent::__construct();
 		
-		// metalib client
+		// metalib kb
 		
-		$address = $this->config->getConfig("METALIB_ADDRESS", true);
-		$username = $this->config->getConfig("METALIB_USERNAME", true);
-		$password = $this->config->getConfig("METALIB_PASSWORD", true);
-		
-		// create the client
-		
-		$this->client = new Metalib($address, $username, $password, Factory::getHttpClient());
-		
-		// datamap
-		
-		$this->datamap = new Databases(); // @todo: use KB model instead?
+		$this->knowledgebase = new KnowledgeBase();
 	}
 	
 	/**
@@ -60,28 +46,19 @@ class Engine extends Search\Engine
 	{
 		return Config::getInstance();
 	}
-
+	
 	/**
 	 * Initiate the search
 	 * 
-	 * @param Search\Query $search
+	 * @param Search\Query $query
 	 */
 	
-	public function search(Query $search)
+	public function search(Query $query)
 	{
-		// add KB information to the request
-		
-		$search->fillDatabaseInfo();
-		
 		// initiate search
-		
-		$group_id = $this->client->search($search->toQuery(), $search->getSearchableDatabases() );
-		
-		$group = new Group();
-		
-		$group->id = $group_id;
-		$group->date = $this->getSearchDate();
-		$group->query = $search;
+				
+		$group = new Group($query);
+		$group->initiateSearch();
 		
 		print_r($group); exit;
 	}
@@ -129,30 +106,6 @@ class Engine extends Search\Engine
 	 */
 	
 	 public function getRecordForSave( $id ) {}
-	
-	
-	 /**
-	  * Calculate search date based on Metalib search flush
-	  */
-	 
-	 protected function getSearchDate()
-	 {
-	 	$time = time();
-	 	$hour = (int) date("G", $time);
-	 	
-	 	$flush_hour = $this->config->getConfig("METALIB_RESTART_HOUR", false, 4);
-	 		
-	 	if ( $hour < $flush_hour )
-	 	{
-	 		// use yesterday's date
-	 		// by setting a time at least one hour greater than the flush hour,
-	 		// so for example 5 hours ago if flush hour is 4:00 AM
-	 			
-	 		$time = $time - ( ($flush_hour + 1) * (60 * 60) );
-	 	}
-	 
-	 	return date("Y-m-d", $time);
-	 }
 	 
 	/**
 	 * Return a search query object

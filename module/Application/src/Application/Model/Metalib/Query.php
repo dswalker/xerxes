@@ -2,8 +2,7 @@
 
 namespace Application\Model\Metalib;
 
-use Application\Model\DataMap\Databases,
-	Application\Model\Search,
+use Application\Model\Search,
 	Xerxes\Utility\Request;
 
 /**
@@ -19,85 +18,6 @@ use Application\Model\DataMap\Databases,
 
 class Query extends Search\Query
 {
-	protected $date; // timestamp of query
-	protected $databases = array(); // databases selected
-	protected $datamap; // data map
-	
-	/**
-	 * Flesh out the request with database information from KB
-	 * 
-	 * @throws \Exception
-	 */
-	
-	public function fillDatabaseInfo()
-	{
-		// make sure we got some terms!
-		
-		if ( count($this->getQueryTerms()) == 0 )
-		{
-			throw new \Exception("No search terms supplied");
-		}
-		
-		// databases or subject chosen
-		
-		$databases = $this->request->getParam('database', null, true);
-		$subject = $this->getSubject();
-		
-		// populate the database information from KB
-		
-		$this->datamap = new Databases(); // @todo: use KB model instead?
-		
-		// databases specifically supplied
-		
-		if ( count($databases) >= 0 )
-		{
-			$this->databases = $this->datamap->getDatabases($databases);
-		}
-		
-		// just a subject supplied, so get databases from that subject, yo!
-		
-		elseif ( count($databases) == 0 && $subject != null )
-		{
-			$search_limit = $this->config->getConfig( "SEARCH_LIMIT", true );
-				
-			// @todo: fix metalib/user kb madness
-				
-			$subject_object = $this->datamap->getSubject( $subject, null, "metalib", null, $this->getLanguage() );
-		
-			// did we find a subject that has subcategories?
-		
-			if ( $subject_object != null && $subject_object->subcategories != null && count( $subject_object->subcategories ) > 0 )
-			{
-				$subs = $subject_object->subcategories;
-				$subcategory = $subs[0];
-				$index = 0;
-					
-				// get databases up to search limit from first subcategory
-					
-				foreach ( $subcategory->databases as $database_object )
-				{
-					if ( $database_object->searchable == 1 )
-					{
-						$this->databases[] = $database_object;
-						$index++;
-					}
-						
-					if ( $index >= $search_limit )
-					{
-						break;
-					}
-				}
-			}
-		}
-		
-		// make sure we have a scope, either databases or subject
-		
-		if ( count($databases) == 0 && $subject == null )
-		{
-			throw new \Exception("No databases or subject supplied");
-		}		
-	}
-	
 	/**
 	 * Convert the search terms to Metalib query
 	 */
@@ -155,6 +75,15 @@ class Query extends Search\Query
 	}
 	
 	/**
+	 * Get User from request
+	 */
+	
+	public function getUser()
+	{
+		return $this->request->getUser();
+	}
+	
+	/**
 	 * Get all databases
 	 * 
 	 * @return array of Database objects
@@ -162,31 +91,7 @@ class Query extends Search\Query
 	
 	public function getDatabases()
 	{
-		return $this->databases;
-	}
-	
-	/**
-	 * Get searchable database IDs
-	 * 
-	 * @return array
-	 */
-	
-	public function getSearchableDatabases()
-	{
-		// don't include databases that cannot be searched by user (or at all)
-		
-		$databases_to_search = array();
-		$user = $this->request->getUser();
-		
-		foreach ( $this->databases as $database_object )
-		{
-			if ( $database_object->isSearchableByUser($user) )
-			{
-				$databases_to_search[] = $database_object->metalib_id; // @todo: get rid of this
-			}
-		}
-		
-		return $databases_to_search;
+		return $this->request->getParam('database', null, true);
 	}
 	
 	/**
