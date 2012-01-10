@@ -105,9 +105,12 @@ class Engine extends Search\Engine
 		
 		// initiate search
 		
-		$group = $this->client->search($search->toQuery(), $search->getSearchableDatabases() );
+		$group_id = $this->client->search($search->toQuery(), $search->getSearchableDatabases() );
 		
-		echo $group; exit; 
+		$group = new Group();
+		
+		$group->id = $group_id;
+		$group->date = $this->getSearchDate();
 	}
 	
 	/**
@@ -150,6 +153,25 @@ class Engine extends Search\Engine
 	 public function getRecordForSave( $id ) {}
 	
 	
+	 protected function getSearchDate()
+	 {
+	 	$time = time();
+	 	$hour = (int) date("G", $time);
+	 	
+	 	$flush_hour = $this->config->getConfig("METALIB_RESTART_HOUR", false, 4);
+	 		
+	 	if ( $hour < $flush_hour )
+	 	{
+	 		// use yesterday's date
+	 		// by setting a time at least one hour greater than the flush hour,
+	 		// so for example 5 hours ago if flush hour is 4:00 AM
+	 			
+	 		$time = $time - ( ($flush_hour + 1) * (60 * 60) );
+	 	}
+	 
+	 	return date("Y-m-d", $time);
+	 }
+	 
 	/**
 	 * Return a search query object
 	 * 
