@@ -27,7 +27,7 @@ class ResultSet
 	protected $config; // local config
 	
 	/**
-	 * Constructor
+	 * Create Search Result Set
 	 * 
 	 * @param Config $config
 	 */

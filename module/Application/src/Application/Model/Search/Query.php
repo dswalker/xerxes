@@ -238,6 +238,17 @@ class Query
 	
 	public function getHash()
 	{
+		// give me the hash!
+		
+		return md5($this->getNormalizedQuery());
+	}
+	
+	/**
+	 * Get the search query parameters in a normalized form
+	 */
+	
+	protected function getNormalizedQuery()
+	{
 		// get the search params
 		
 		$params = $this->extractSearchParams();
@@ -265,9 +276,7 @@ class Query
 			}
 		}
 		
-		// give me the hash!
-		
-		return md5($query_normalized);
+		return $query_normalized;
 	}
 	
 	/**

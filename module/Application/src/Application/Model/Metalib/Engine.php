@@ -51,6 +51,7 @@ class Engine extends Search\Engine
 	 * Initiate the search
 	 * 
 	 * @param Search\Query $query
+	 * @return Group
 	 */
 	
 	public function search(Query $query)
@@ -60,12 +61,7 @@ class Engine extends Search\Engine
 		$group = new Group($query);
 		$group->initiateSearch();
 		
-		print_r($group); exit;
-	}
-	
-	public function checkStatus(Group $group)
-	{
-		$status_xml = $this->client->searchStatus($group->id);
+		return $group;
 	}
 	
 	/**

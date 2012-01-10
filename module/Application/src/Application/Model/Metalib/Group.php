@@ -2,7 +2,8 @@
 
 namespace Application\Model\Metalib;
 
-use Application\Model\KnowledgeBase\KnowledgeBase,
+use Application\Model\KnowledgeBase\Database,
+	Application\Model\KnowledgeBase\KnowledgeBase,
 	Xerxes\Metalib,
 	Xerxes\Utility\Factory;
 
@@ -24,7 +25,8 @@ class Group
 	protected $query; // metalib search query
 	
 	protected $merged_set; // merged result set
-	protected $databases = array(); // databases together w/ resultset objects?
+	protected $result_sets = array(); // result sets
+	protected $excluded_databases = array(); // non-searchable databases
 	protected $facets; // facet object
 	
 	protected $config; // metalib config
@@ -56,19 +58,50 @@ class Group
 	
 	public function initiateSearch()
 	{
-		try 
-		{
-			$group_id = $this->client->search( $this->query->toQuery(), $this->getSearchableDatabases() );
-		}
-		catch( \Exception $e )
-		{
-			echo $this->client->getUrl();
-			
-			throw $e;
-		}
+		$this->id = $this->client->search( $this->query->toQuery(), $this->getSearchableDatabases() );
+		$this->date = $this->getSearchDate();
+	}
+	
+	/*
+	 * Check the status of the search
+	 */
+	
+	public function checkStatus()
+	{
+		// get latest status from metalib
 		
-		$group->id = $group_id;
-		$group->date = $this->getSearchDate();
+		$status_xml = $this->client->getSearchStatus($this->id);
+		
+		// find our databases in the status response
+		
+		$x_server_response = simplexml_import_dom($status_xml->documentElement);
+		
+		
+		
+		foreach ( $x_server_response->find_group_info_response->base_info as $base_info )
+		{
+			// metalib id
+			
+			$database_id = (string) $base_info->base_001;
+			
+			// not here?
+			
+			if ( ! array_key_exists($database_id, $this->result_sets) )
+			{
+				throw new \Exception("Metalib group contained resultset '$database_id' not in local resultset");
+			}
+			
+			// update resultset object with info from metalib
+			
+			$result_set = $this->result_sets[$database_id];
+			$result_set->set_number = (string) $base_info->set_number;
+			$result_set->find_status = (string)  $base_info->find_status;
+			$result_set->total = (int)  $base_info->no_of_documents; // @todo: see x1 for usual 'there were hits' madness
+			
+			// set this again explicitly
+			
+			$this->result_sets[$database_id] = $result_set;
+		}
 	}
 	
 	/**
@@ -97,17 +130,17 @@ class Group
 	
 	protected function fillDatabaseInfo(Query $query)
 	{
-		// make sure we got some terms!
-	
-		if ( count($query->getQueryTerms()) == 0 )
-		{
-			throw new \Exception("No search terms supplied");
-		}
-	
 		// databases or subject chosen
 	
 		$databases = $query->getDatabases();
 		$subject = $query->getSubject();
+		
+		// make sure we have a scope, either databases or subject
+		
+		if ( count($databases) == 0 && $subject == null )
+		{
+			throw new \Exception("No databases or subject supplied");
+		}		
 		
 	
 		### populate the database information from KB
@@ -116,12 +149,17 @@ class Group
 	
 		if ( count($databases) > 0 )
 		{
-			$this->databases = $this->knowledgebase->getDatabases($databases);
+			$databases = $this->knowledgebase->getDatabases($databases);
+			
+			foreach ( $databases as $database_object )
+			{
+				$this->addDatabase($database_object);
+			}
 		}
 	
 		// just a subject supplied, so get databases from that subject, yo!
 	
-		elseif ( count($databases) == 0 && $subject != null )
+		elseif ( $subject != null )
 		{
 			$search_limit = $this->config->getConfig( "SEARCH_LIMIT", true );
 			
@@ -141,7 +179,7 @@ class Group
 				{
 					if ( $database_object->searchable == 1 )
 					{
-						$this->databases[] = $database_object;
+						$this->addDatabase($database_object);
 						$index++;
 					}
 	
@@ -152,12 +190,23 @@ class Group
 				}
 			}
 		}
+	}
 	
-		// make sure we have a scope, either databases or subject
-	
-		if ( count($databases) == 0 && $subject == null )
+	public function addDatabase(Database $database_object)
+	{
+		$id = $database_object->metalib_id; // @todo: switch to database_id
+		
+		$user = $this->query->getUser();
+		
+		// see if this database is searchable
+		
+		if ( $database_object->isSearchableByUser($user) )
 		{
-			throw new \Exception("No databases or subject supplied");
+			$this->result_sets[$id] = new ResultSet($this->config, $database_object);
+		}
+		else // dump it into the excluded pile
+		{
+			$this->excluded_databases[$id] = $database_object;
 		}
 	}
 	
@@ -169,21 +218,7 @@ class Group
 	
 	protected function getSearchableDatabases()
 	{
-		$databases_to_search = array();
-		
-		$user = $this->query->getUser();
-	
-		foreach ( $this->databases as $database_object )
-		{
-			// only include databases searched by user
-			
-			if ( $database_object->isSearchableByUser($user) )
-			{
-				$databases_to_search[] = $database_object->metalib_id; // @todo: switch to database_id
-			}
-		}
-	
-		return $databases_to_search;
+		return array_keys($this->result_sets);
 	}
 	
 	/**
@@ -207,5 +242,10 @@ class Group
 		}
 	
 		return date("Y-m-d", $time);
+	}
+	
+	public function getResultSets()
+	{
+		return $this->result_sets;
 	}
 }

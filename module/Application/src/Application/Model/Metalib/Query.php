@@ -24,6 +24,13 @@ class Query extends Search\Query
 	
 	public function toQuery()
 	{
+		// make sure we got some terms!
+		
+		if ( count($this->getQueryTerms()) == 0 )
+		{
+			throw new \Exception("No search terms supplied");
+		}		
+		
 		// construct query
 		
 		$query = "";
@@ -110,5 +117,22 @@ class Query extends Search\Query
 	public function getLanguage()
 	{
 		return $this->request->getParam('lang');
+	}
+	
+	/**
+	 * Return an md5 hash of search parameters, bascially to identify the search
+	 */
+	
+	public function getHash()
+	{
+		$queryterms = $this->getNormalizedQuery();
+		
+		$databases = sort($this->getDatabases());
+		
+		$queryterms .= "&database=" . implode("&database=", $databases);
+		
+		// give me the hash!
+	
+		return md5($queryterms);
 	}
 }
