@@ -28,6 +28,11 @@
 		</action>	
 	</controller>
 	<controller name="index" class="Application\Controller\IndexController" />
+	<controller name="metalib" class="Application\Controller\MetalibController" inherits="search">
+		<action name="index">
+			<view>metalib/index.xsl</view>
+		</action>
+	</controller>
 	<controller name="primo" class="Application\Controller\PrimoController" inherits="search" />	
 	<controller name="search" class="Application\Controller\SearchController">
 		<action name="index">
@@ -45,7 +50,6 @@
 	</controller>
 	<controller name="solr" class="Application\Controller\SolrController" inherits="search" />
 	<controller name="summon" class="Application\Controller\SummonController" inherits="search" />
-	<controller name="metalib" class="Application\Controller\MetalibController" inherits="search" />
 	<controller name="worldcat" class="Application\Controller\WorldcatController" inherits="search">
 		<action name="results" restricted="true" />
 		<action name="record" restricted="true" />
