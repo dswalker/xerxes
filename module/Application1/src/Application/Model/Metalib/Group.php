@@ -19,19 +19,18 @@ use Application\Model\KnowledgeBase\KnowledgeBase,
 
 class Group
 {
-	public $date; // date search was initialized
-	public $id; // id for the group
-	public $query; // metalib search query
+	protected $date; // date search was initialized
+	protected $id; // id for the group
+	protected $query; // metalib search query
 	
-	public $merged_set; // merged result set
-	public $databases = array(); // databases together w/ resultset objects?
-	public $facets; // facet object
+	protected $merged_set; // merged result set
+	protected $databases = array(); // databases together w/ resultset objects?
+	protected $facets; // facet object
 	
 	protected $config; // metalib config
 	protected $client; // metalib client
 	protected $knowledgebase; // metalib kb
 
-	
 	/**
 	 * Create Metalib Search Group
 	 * 
@@ -42,7 +41,7 @@ class Group
 	{
 		$this->config = Config::getInstance(); // metalib config
 		$this->client = $this->getMetalibClient(); // metalib client
-		$this->knowledgebase = new KnowledgeBase(); // metalib kb
+		$this->knowledgebase = new KnowledgeBase($query->getLanguage()); // metalib kb
 		
 		$this->query = $query; // search query
 		
@@ -57,7 +56,16 @@ class Group
 	
 	public function initiateSearch()
 	{
-		$group_id = $this->client->search($this->query->toQuery(), $this->getSearchableDatabases() );
+		try 
+		{
+			$group_id = $this->client->search( $this->query->toQuery(), $this->getSearchableDatabases() );
+		}
+		catch( \Exception $e )
+		{
+			echo $this->client->getUrl();
+			
+			throw $e;
+		}
 		
 		$group->id = $group_id;
 		$group->date = $this->getSearchDate();
@@ -106,7 +114,7 @@ class Group
 	
 		// databases specifically supplied
 	
-		if ( count($databases) >= 0 )
+		if ( count($databases) > 0 )
 		{
 			$this->databases = $this->knowledgebase->getDatabases($databases);
 		}
@@ -116,7 +124,7 @@ class Group
 		elseif ( count($databases) == 0 && $subject != null )
 		{
 			$search_limit = $this->config->getConfig( "SEARCH_LIMIT", true );
-	
+			
 			$subject_object = $this->knowledgebase->getSubject($subject);
 	
 			// did we find a subject that has subcategories?
