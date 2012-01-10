@@ -3,10 +3,10 @@
 namespace Application;
 
 use Application\Model\Authentication\AuthenticationFactory,
+	Application\Model\Authentication\User,
 	Xerxes\Utility\ControllerMap,
 	Xerxes\Utility\Registry,
 	Xerxes\Utility\Request,
-	Xerxes\Utility\User,
 	Zend\EventManager\StaticEventManager,
 	Zend\Http\PhpEnvironment\Response as HttpResponse,
 	Zend\Module\Consumer\AutoloaderProvider,
@@ -101,12 +101,23 @@ class Module implements AutoloaderProvider
 	
 	public function getRequest(MvcEvent $e)
 	{
-		// make sure we have a request object
+		// make sure we have a xerxes request object
 		
 		if ( ! $this->request instanceof Request )
 		{
 			$this->request = new Request();
-			$this->request->setRouter($e->getRouter());
+			
+			// add router
+			
+			$this->request->setRouter($e->getRouter()); 
+			
+			// populate user from request and set it in request object
+			
+			$user = new User($this->request); 
+			$this->request->setUser($user);
+			
+			// set it in the MvcEvent so it gets passed around
+			
 			$e->setRequest($this->request);
 			
 			// set the current action for controller map

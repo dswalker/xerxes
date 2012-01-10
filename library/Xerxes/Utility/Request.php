@@ -684,11 +684,28 @@ class Request extends ZendRequest
 		return $scheme . '://' . $this->uri()->getHost() . $port;
 	}
 	
+	/**
+	 * Associate User with this Request
+	 * 
+	 * @param User $user
+	 */
+	
+	public function setUser(User $user)
+	{
+		$this->user = $user;
+	}
+	
+	/**
+	 * Get the User making this Request
+	 * 
+	 * @throws \Exception
+	 */
+	
 	public function getUser()
 	{
 		if ( ! $this->user instanceof User )
 		{
-			$this->user = new User($this);
+			throw new \Exception("No User has been set");
 		}
 		
 		return $this->user;
