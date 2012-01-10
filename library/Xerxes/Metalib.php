@@ -17,17 +17,19 @@ use Zend\Http\Client;
 
 class Metalib
 { 
-	private $server = "";		// metalib server address
-	private $url = "";		// url request to server
-	private $xml = null;		// DOMDocument xml
-	private $warning = null;	// warning xml
-	private $timeout = 15;		// timeout
-	
-	private $username = "";		// this application's username
-	private $password = "";		// this application's password	
-	private $session = "";		// session id
-	private $finished = false;	// flag indicating metalib is done searching
-	private $return_quick = false;  // return quick
+	private $server = ""; // metalib server address
+	private $username = "";	// this application's username
+	private $password = "";	// this application's password	
+
+	private $session = ""; // session id
+	private $session_expires = 0; // expiry date for metalib session
+
+	private $url = ""; // url request to server
+	private $xml = null; // DOMDocument xml
+	private $warning = null; // warning xml
+	private $timeout = 15; // timeout	
+	private $finished = false; // flag indicating metalib is done searching
+	private $return_quick = false; // return quick
 
 	private $client; // http client
 	
@@ -37,11 +39,10 @@ class Metalib
 	 * @param string $server	the Metalib address url
 	 * @param string $username	this application's username 
 	 * @param string $password	this application's password
-	 * @param string $session	[optional] current metalib session id
 	 * @param Client $client	[optional] subclass of Zend\Client
 	 */
 	
-	public function __construct( $server, $username, $password, $session = null, Client $client = null )
+	public function __construct( $server, $username, $password, Client $client = null )
 	{						
 		$this->setServer($server);
 		$this->username = $username;
@@ -54,16 +55,30 @@ class Metalib
 		else
 		{
 			$this->client = new Client();
+		}
+		
+		$this->ensureSession();
+	}
+	
+	public function __sleep()
+	{
+		return array("server", "username", "password", "session", "session_expires");
+	}
+	
+	public function __wakeup()
+	{
+		$this->ensureSession();
+	}
+	
+	protected function ensureSession()
+	{
+		// grab a new session if none exists or last one expired
+		
+		if ( $this->session == null || time() > $this->session_expires )
+		{
+			$this->session = $this->getSession();
+			$this->session_expires = time() + 1200;
 		}		
-
-		if ( $session != null )
-		{
-			$this->session = $session;
-		}
-		else
-		{
-			$this->session = $this->session();
-		}
 	}
 	
 	/**
@@ -72,7 +87,7 @@ class Metalib
 	 * @return string session id
 	 */ 
 
-	public function session() 
+	public function getSession() 
 	{			
 		$this->url = $this->server . "/X?op=login_request" .
 			"&user_name=" . $this->username .
@@ -153,7 +168,7 @@ class Metalib
 	 * @return DOMDocument 			status response
 	 */
 
-	public function searchStatus( $group_number ) 
+	public function getSearchStatus( $group_number ) 
 	{
 		$this->url = $this->server . "/X?op=find_group_info_request" .
 			"&group_number=" . $group_number .
@@ -213,7 +228,7 @@ class Metalib
 	 * @return unknown
 	 */
 	
-	public function facets($resultset_number, $type = "all", $id)
+	public function getFacets($resultset_number, $type = "all", $id)
 	{
 		$this->url = $this->server . "/X?op=retrieve_cluster_facet_request" .
 		
@@ -379,7 +394,7 @@ class Metalib
 	 * @return DOMDocument		metalib category xml document	
 	 */
 	
-	public function categories( $institute = null, $portal = null, $language = null ) 
+	public function getCategories( $institute = null, $portal = null, $language = null ) 
 	{
 		$this->url = $this->server . "/X?op=retrieve_categories_request";
 		
@@ -410,7 +425,7 @@ class Metalib
 	 * @return DOMDocument			metalib category xml with records in marc-xml
 	 */
 	
-	public function databasesSubCategory( $category_id, $full = false ) 
+	public function getDatabasesSubCategory( $category_id, $full = false ) 
 	{
 		// set string flag for inclusion of full marc record
 		$strFull = "N";
@@ -436,7 +451,7 @@ class Metalib
 	 * @return DOMDocument			Metalib type xml document
 	 */
 	
-	public function types( $institute ) 
+	public function getTypes( $institute ) 
 	{
 		$this->url = $this->server . "/X?op=retrieve_resource_types_request" .
 			"&institute=" . $institute .
@@ -458,7 +473,7 @@ class Metalib
 	 * @return DOMDocument			marc-xml collection
 	 */
 	
-	public function allDatabases( $institute, $full = true, $chunk = false )
+	public function getAllDatabases( $institute, $full = true, $chunk = false )
 	{
 		// master xml document
 		
@@ -543,7 +558,7 @@ class Metalib
 	 * @return DOMDocument		status information
 	 */
 	
-	public function metalibInfo()
+	public function getMetalibInfo()
 	{
 		$this->url = $this->server . "/X?op=retrieve_metalib_info_request" .
 			"&view=full" .
@@ -656,7 +671,7 @@ class Metalib
 					
 					if ( $retry == 0 ) // but not more than once
 					{
-						$this->session = $this->session();
+						$this->session = $this->getSession();
 						return $this->getResponse( $url, $timeout, 1);
 					}
 				}
@@ -740,23 +755,12 @@ class Metalib
 	}
 	
 	/**
-	 * Assign current Metalib session id
-	 *
-	 * @param string $strvalue 	session id
-	 */
-	
-	public function setSession($value)
-	{
-		$this->session = $value;
-	}
-	
-	/**
 	 * Get current Metalib session id
 	 *
 	 * @return string
 	 */
 	
-	public function getSession()
+	public function getSessionId()
 	{
 		return $this->session;
 	}

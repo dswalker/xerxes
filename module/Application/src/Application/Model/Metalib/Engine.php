@@ -25,9 +25,6 @@ use Application\Model\DataMap\Databases,
 class Engine extends Search\Engine
 {
 	protected $client; // metalib client
-	protected $session_id; // metalib session id
-	protected $session_expires = 0; // expiry date for metalib session
-	
 	protected $datamap; // xerxes datamap
 	
 	/**
@@ -44,41 +41,14 @@ class Engine extends Search\Engine
 		$username = $this->config->getConfig("METALIB_USERNAME", true);
 		$password = $this->config->getConfig("METALIB_PASSWORD", true);
 		
-		// see if session has expired, or if it ever even existed
-		
-		if ( time() > $this->session_expires )
-		{
-			$this->session = null; // blanking it causes Metalib class to acquire a new one
-		}
-		
-		// set the next expiry time to 20 minutes from now
-		
-		$this->session_expires = time() + 1200;
-		
 		// create the client
 		
-		$this->client = new Metalib($address, $username, $password, $this->session, Factory::getHttpClient());
+		$this->client = new Metalib($address, $username, $password, Factory::getHttpClient());
 		
 		// datamap
 		
-		$this->datamap = new Databases();
+		$this->datamap = new Databases(); // @todo: use KB model instead?
 	}
-	
-	public function __sleep()
-	{
-		// only save the session id and expiry
-		// we'll reconstruct the rest from constructor on wakeup
-		
-		// @todo: maybe last query too?
-		
-		return array("session_id", "session_expires");
-	}
-	
-	public function __wakeup()
-	{
-		$this->__construct();
-	}
-	
 	
 	/**
 	 * Return the search engine config
@@ -111,6 +81,14 @@ class Engine extends Search\Engine
 		
 		$group->id = $group_id;
 		$group->date = $this->getSearchDate();
+		$group->query = $search;
+		
+		print_r($group); exit;
+	}
+	
+	public function checkStatus(Group $group)
+	{
+		$status_xml = $this->client->searchStatus($group->id);
 	}
 	
 	/**
@@ -153,6 +131,10 @@ class Engine extends Search\Engine
 	 public function getRecordForSave( $id ) {}
 	
 	
+	 /**
+	  * Calculate search date based on Metalib search flush
+	  */
+	 
 	 protected function getSearchDate()
 	 {
 	 	$time = time();
