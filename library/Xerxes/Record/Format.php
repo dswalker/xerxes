@@ -319,7 +319,7 @@ class Format
 		return (string) $this->public;
 	}
 	
-	public function toXML()
+	public function toXML() // @todo: replace with toArray
 	{
 		$value = Parser::escapeXml((string) $this->public);
 		

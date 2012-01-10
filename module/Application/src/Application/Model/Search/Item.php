@@ -68,7 +68,7 @@ class Item
 	 * @return DOMDocument
 	 */
 	
-	public function toXML()
+	public function toXML() // @todo: replace with toArray
 	{
 		$xml = new \DOMDocument();
 		$xml->loadXML("<item />");
