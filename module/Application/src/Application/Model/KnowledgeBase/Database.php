@@ -2,10 +2,10 @@
 
 namespace Application\Model\KnowledgeBase;
 
-use Xerxes\Utility\DataValue,
+use Application\Model\Authentication\User,
+	Xerxes\Utility\DataValue,
 	Xerxes\Utility\Parser,
-	Xerxes\Utiltity\Restrict,
-	Xerxes\Utility\User;
+	Xerxes\Utiltity\Restrict;
 
 /**
  * Database

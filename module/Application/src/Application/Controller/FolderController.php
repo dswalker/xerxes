@@ -2,9 +2,8 @@
 
 namespace Application\Controller;
 
-use Xerxes\Utility\User;
-
-use Application\Model\Saved\Engine,
+use Application\Model\Authentication\User,
+	Application\Model\Saved\Engine,
 	Zend\Http\Client,
 	Zend\Mvc\MvcEvent;
 
