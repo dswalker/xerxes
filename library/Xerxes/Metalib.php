@@ -232,7 +232,7 @@ class Metalib
 	 * @return unknown
 	 */
 	
-	public function getFacets($resultset_number, $type = "all", $id)
+	public function getFacets($resultset_number, $type = "all", $id = "calstate.edu:xerxes")
 	{
 		$this->url = $this->server . "/X?op=retrieve_cluster_facet_request" .
 		

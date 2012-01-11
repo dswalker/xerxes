@@ -6,8 +6,10 @@ use Application\Model\Authentication\User,
 	Application\Model\KnowledgeBase\Database,
 	Application\Model\KnowledgeBase\KnowledgeBase,
 	Xerxes\Metalib,
+	Xerxes\Utility\Cache,
 	Xerxes\Utility\Factory,
-	Xerxes\Utility\Parser;
+	Xerxes\Utility\Parser,
+	Xerxes\Utility\Xsl;
 
 /**
  * Metalib Search Group
@@ -31,12 +33,13 @@ class Group
 	
 	protected $config; // metalib config
 	protected $client; // metalib client
+	protected $cache; // cache
 
 	public function __sleep()
 	{
-		// don't include config
+		// don't include config & cache
 		
-		return Parser::removeProperties(get_object_vars($this), array('config'));
+		return Parser::removeProperties(get_object_vars($this), array('config', 'cache'));
 	}
 	
 	/**
@@ -61,6 +64,8 @@ class Group
 	/*
 	 * Check the status of the search
 	 * 
+	 * Updates internal Merged/Database Result Set objects as well
+	 * 
 	 * @return Status
 	*/
 	
@@ -72,6 +77,8 @@ class Group
 	
 		$status_xml = $this->client()->getSearchStatus($this->id);
 		
+		// header("Content-type: text/xml"); echo $status_xml->saveXML(); exit;
+		
 		// parse response		
 	
 		$x_server_response = simplexml_import_dom($status_xml->documentElement);
@@ -82,11 +89,19 @@ class Group
 				
 			$database_id = (string) $base_info->base_001;
 				
-			// not here?
-				
-			if ( ! array_key_exists($database_id, $this->included_databases) )
+			
+			// merged set
+			
+			if ( (string) $base_info->base == 'MERGESET')
 			{
-				throw new \Exception("Metalib group contained resultset '$database_id' not in local resultset");
+				continue;
+			}
+			
+			// not here?
+			
+			if ( ! array_key_exists($database_id, $this->included_databases) )  
+			{
+				continue;
 			}
 			
 			
@@ -103,7 +118,7 @@ class Group
 			$this->included_databases[$database_id] = $database_resultset;
 			
 			
-			## add to status as well
+			## add to status
 			
 			$status->addDatabaseResultSet($database_resultset);
 		}
@@ -113,6 +128,56 @@ class Group
 		$status->setFinished($this->client()->isFinished($this->id));
 		
 		return $status;
+	}
+	
+	/**
+	 * Merge the search results
+	 * 
+	 * @param string $primary_sort			primary sort order
+	 * @param string $secondary_sort		secondary sort order
+	 */
+	
+	public function merge($primary_sort = null, $secondary_sort = null)
+	{
+		// merge results
+		
+		$merged_xml = $this->client()->merge($this->id, $primary_sort, $secondary_sort);
+		
+		// create new merged set
+
+		$this->merged_set = new MergedResultSet($merged_xml);
+		
+		// update search status
+		
+		$this->getSearchStatus();
+		
+		// fetch facets
+			
+		// only if we should show facets and there is more than 15 results
+			
+		if ( $this->merged_set->total > 15 ) // && $this->config()->getConfig('FACETS', false, false) == true )
+		{
+			// full version (this is huge)
+			
+			$facet_xml = $this->client()->getFacets( $this->merged_set->set_number, "all" );
+			$this->cache()->set( "facets-" . $this->id, $facet_xml->saveXML() );
+		
+			// slimmed down version (used for display) 
+			
+			$xsl = new Xsl(__DIR__, getcwd());
+			
+			$facets_slim = $xsl->transformToXml( $facet_xml, "xsl/facets-slim.xsl" );
+			$this->cache()->set( "facets-slim-" . $this->id, $facets_slim );
+		}
+	}
+	
+	/**
+	 * Get facets
+	 */
+	
+	public function getFacets()
+	{
+		return $this->cache()->get("facets-slim-" . $this->id);
 	}
 	
 	/**
@@ -141,6 +206,20 @@ class Group
 		}
 	
 		return $this->config;
+	}
+	
+	/**
+	 * Lazyload Cache
+	 */
+	
+	protected function cache()
+	{
+		if ( ! $this->cache instanceof Cache )
+		{
+			$this->cache = new Cache();
+		}
+	
+		return $this->cache;
 	}	
 	
 	/**

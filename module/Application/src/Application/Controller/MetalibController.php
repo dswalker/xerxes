@@ -36,8 +36,6 @@ class MetalibController extends SearchController
 			'group' => $id	
 		));
 		
-		sleep(2);
-
 		return $this->redirect()->toUrl($url);
 	}
 	
@@ -46,15 +44,26 @@ class MetalibController extends SearchController
 		$id = $this->request->getParam("group");
 		
 		$group = unserialize($this->cache->get($id));
-
+		
 		$status = $group->getSearchStatus();
 		
-		foreach ( $status->getDatabaseResultSet() as $set )
+		if ( $status->isFinished() )
 		{
-			echo $set->database->title_display . "<br>";
-			echo $set->find_status . "<br>";
-			echo $set->total . "<br>";
-			echo "<hr>";
+			$group->merge();
+			
+			echo $group->getFacets();
+			
+			exit;
+		}
+		else
+		{
+			foreach ( $status->getDatabaseResultSet() as $set )
+			{
+				echo $set->database->title_display . "<br>";
+				echo $set->find_status . "<br>";
+				echo $set->total . "<br>";
+				echo "<hr>";
+			}
 		}
 	}
 }
