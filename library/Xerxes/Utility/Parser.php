@@ -387,7 +387,7 @@ class Parser
 	 * @return array
 	 */
 	
-	public static function getAllPropertiesBut(array $object_vars, array $exclude)
+	public static function removeProperties(array $object_vars, array $exclude)
 	{
 		$properties = array_keys($object_vars); // get all properties
 		$properties = array_diff($properties, $exclude); // now exclude these

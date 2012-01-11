@@ -36,7 +36,7 @@ class Group
 	{
 		// don't include config
 		
-		return Parser::getAllPropertiesBut(get_object_vars($this), array('config'));
+		return Parser::removeProperties(get_object_vars($this), array('config'));
 	}
 	
 	/**
@@ -61,8 +61,6 @@ class Group
 	/*
 	 * Check the status of the search
 	 * 
-	 * Updates resultsets with status information from Metalib
-	 * 
 	 * @return Status
 	*/
 	
@@ -78,8 +76,6 @@ class Group
 	
 		$x_server_response = simplexml_import_dom($status_xml->documentElement);
 	
-		// cycle over the databases in the response
-	
 		foreach ( $x_server_response->find_group_info_response->base_info as $base_info )
 		{
 			// metalib id
@@ -93,28 +89,28 @@ class Group
 				throw new \Exception("Metalib group contained resultset '$database_id' not in local resultset");
 			}
 			
-			## update resultset objects
-				
-			$result_set = $this->included_databases[$database_id];
-			$result_set->set_number = (string) $base_info->set_number;
-			$result_set->find_status = (string)  $base_info->find_status;
+			
+			## update internal record set objects
+			
+			$record_set = $this->included_databases[$database_id];
+			$record_set->set_number = (string) $base_info->set_number;
+			$record_set->find_status = (string)  $base_info->find_status;
 			
 			// @todo: see x1 for usual 'there were hits' madness
 			
-			$result_set->total = (int)  $base_info->no_of_documents; 
-				
-			// set this again explicitly
-				
-			$this->included_databases[$database_id] = $result_set;
+			$record_set->total = (int)  $base_info->no_of_documents; 
 			
-			## add to status
+			$this->included_databases[$database_id] = $record_set;
 			
-			$status->addRecordSet($result_set);
+			
+			## add to status as well
+			
+			$status->addRecordSet($record_set);
 		}
 		
 		// see if search is finished
 		
-		$status->setFinished($this->client()->isFinished());
+		$status->setFinished($this->client()->isFinished($this->id));
 		
 		return $status;
 	}
@@ -137,7 +133,7 @@ class Group
 	 * Lazyload Config
 	 */
 	
-	public function config()
+	protected function config()
 	{
 		if ( ! $this->config instanceof Config )
 		{
@@ -276,6 +272,10 @@ class Group
 	
 		return date("Y-m-d", $time);
 	}
+	
+	/**
+	 * Group ID
+	 */
 	
 	public function getId()
 	{

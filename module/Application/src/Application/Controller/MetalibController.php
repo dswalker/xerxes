@@ -45,9 +45,7 @@ class MetalibController extends SearchController
 	{
 		$id = $this->request->getParam("group");
 		
-		$data = $this->cache->get($id);
-		
-		$group = unserialize($data);
+		$group = unserialize($this->cache->get($id));
 
 		$status = $group->getSearchStatus();
 		

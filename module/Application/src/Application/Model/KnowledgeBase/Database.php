@@ -51,7 +51,7 @@ class Database extends DataValue
 	{
 		// don't include config and simplexml elements
 		
-		return Parser::getAllPropertiesBut(get_object_vars($this), array('config', 'xml'));
+		return Parser::removeProperties(get_object_vars($this), array('config', 'xml'));
 	}
 	
 	/**
