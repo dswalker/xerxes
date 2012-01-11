@@ -206,7 +206,7 @@ class Group
 		
 		if ( $database_object->isSearchableByUser($user) )
 		{
-			$this->result_sets[$id] = new ResultSet($this->config, $database_object);
+			$this->result_sets[$id] = new ResultSet($database_object);
 		}
 		else // dump it into the excluded pile
 		{

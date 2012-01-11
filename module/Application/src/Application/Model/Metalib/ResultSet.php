@@ -16,22 +16,14 @@ use Application\Model\KnowledgeBase\Database,
  * @package Xerxes
  */
 
-class ResultSet extends Search\ResultSet
+class ResultSet
 {
 	public $database;
 	public $set_number;
 	public $find_status;
 	
-	/**
-	 * Create Metalib Search Result Set
-	 * 
-	 * @param Config $config
-	 */
-	
-	public function __construct( Config $config, Database $database )
+	public function __construct(Database $database)
 	{
-		parent::__construct( $config );
-
 		$this->database = $database;
-	} 
+	}
 }
