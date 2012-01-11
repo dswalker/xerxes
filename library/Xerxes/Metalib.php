@@ -812,7 +812,7 @@ class Metalib
 	 * @return bool			true if finished, false if not 
 	 */
 	
-	public function getFinished()
+	public function isFinished()
 	{
 		return $this->finished;
 	}

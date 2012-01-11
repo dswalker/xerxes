@@ -4,7 +4,6 @@ namespace Application\Model\Metalib;
 
 use Application\Model\KnowledgeBase\Database,
 	Application\Model\KnowledgeBase\KnowledgeBase,
-	Xerxes\Metalib,
 	Xerxes\Utility\Factory;
 
 /**
@@ -25,9 +24,8 @@ class Group
 	protected $query; // metalib search query
 	
 	protected $merged_set; // merged result set
-	protected $result_sets = array(); // result sets
+	protected $result_sets = array(); // individual database result sets
 	protected $excluded_databases = array(); // non-searchable databases
-	protected $facets; // facet object
 	
 	protected $config; // metalib config
 	protected $client; // metalib client
@@ -42,7 +40,7 @@ class Group
 	public function __construct(Query $query)
 	{
 		$this->config = Config::getInstance(); // metalib config
-		$this->client = $this->getMetalibClient(); // metalib client
+		$this->client = Engine::getMetalibClient(); // metalib client
 		$this->knowledgebase = new KnowledgeBase($query->getLanguage()); // metalib kb
 		
 		$this->query = $query; // search query
@@ -64,63 +62,61 @@ class Group
 	
 	/*
 	 * Check the status of the search
-	 */
+	 * 
+	 * Updates resultsets with status information from Metalib
+	 * 
+	 * @return Status
+	*/
 	
-	public function checkStatus()
+	public function getSearchStatus()
 	{
-		// get latest status from metalib
+		$status = new Status();
 		
+		// get latest status from metalib
+	
 		$status_xml = $this->client->getSearchStatus($this->id);
 		
-		// find our databases in the status response
-		
+		// parse response		
+	
 		$x_server_response = simplexml_import_dom($status_xml->documentElement);
-		
-		
-		
+	
+		// cycle over the databases in the response
+	
 		foreach ( $x_server_response->find_group_info_response->base_info as $base_info )
 		{
 			// metalib id
-			
+				
 			$database_id = (string) $base_info->base_001;
-			
+				
 			// not here?
-			
+				
 			if ( ! array_key_exists($database_id, $this->result_sets) )
 			{
 				throw new \Exception("Metalib group contained resultset '$database_id' not in local resultset");
 			}
 			
-			// update resultset object with info from metalib
-			
+			## update resultset objects
+				
 			$result_set = $this->result_sets[$database_id];
 			$result_set->set_number = (string) $base_info->set_number;
 			$result_set->find_status = (string)  $base_info->find_status;
 			$result_set->total = (int)  $base_info->no_of_documents; // @todo: see x1 for usual 'there were hits' madness
-			
-			// set this again explicitly
-			
-			$this->result_sets[$database_id] = $result_set;
-		}
-	}
-	
-	/**
-	 * Lazyload Metalib Client
-	 */
-	
-	public function getMetalibClient()
-	{
-		if ( ! $this->client instanceof Metalib )
-		{
-			$address = $this->config->getConfig("METALIB_ADDRESS", true);
-			$username = $this->config->getConfig("METALIB_USERNAME", true);
-			$password = $this->config->getConfig("METALIB_PASSWORD", true);
 				
-			$this->client = new Metalib($address, $username, $password, Factory::getHttpClient());
+			// set this again explicitly
+				
+			$this->result_sets[$database_id] = $result_set;
+			
+			## add to status
+			
+			$status->addResultSet($result_set);
 		}
-	
-		return $this->client;
-	}	
+		
+		// see if search is finished
+		
+		$status->setFinished($this->client->isFinished());
+		
+		return $status;
+	}
 	
 	/**
 	 * Flesh out the request with database information from KB
@@ -192,6 +188,14 @@ class Group
 		}
 	}
 	
+	/**
+	 * Add database to group
+	 * 
+	 * Assigns non-searchable databases to excluded list
+	 * 
+	 * @param Database $database_object
+	 */
+	
 	public function addDatabase(Database $database_object)
 	{
 		$id = $database_object->metalib_id; // @todo: switch to database_id
@@ -247,5 +251,10 @@ class Group
 	public function getResultSets()
 	{
 		return $this->result_sets;
+	}
+	
+	public function getId()
+	{
+		return $this->id;
 	}
 }

@@ -4,6 +4,7 @@ namespace Application\Model\Metalib;
 
 use Application\Model\KnowledgeBase\KnowledgeBase,
  	Application\Model\Search,
+ 	Xerxes\Metalib,
 	Xerxes\Utility\Factory,
 	Xerxes\Utility\Request;
 
@@ -20,7 +21,7 @@ use Application\Model\KnowledgeBase\KnowledgeBase,
 
 class Engine extends Search\Engine
 {
-	protected $client; // metalib client
+	private static $client; // metalib client
 	protected $knowledgebase; // metalib kb
 	
 	/**
@@ -46,6 +47,28 @@ class Engine extends Search\Engine
 	{
 		return Config::getInstance();
 	}
+	
+	/**
+	 * Metalib Client
+	 * 
+	 * Static here so we maintain the session id
+	 */
+	
+	public static function getMetalibClient()
+	{
+		if ( ! self::$client instanceof Metalib )
+		{
+			$config = Config::getInstance();
+			
+			$address = $config->getConfig("METALIB_ADDRESS", true);
+			$username = $config->getConfig("METALIB_USERNAME", true);
+			$password = $config->getConfig("METALIB_PASSWORD", true);
+	
+			self::$client = new Metalib($address, $username, $password, Factory::getHttpClient());
+		}
+	
+		return self::$client;
+	}	
 	
 	/**
 	 * Initiate the search

@@ -10,7 +10,7 @@ class MetalibController extends SearchController
 	protected $id = "metalib";
 	protected $cache;
 	
-	protected function __construct()
+	public function __construct()
 	{
 		$this->cache = new Cache();
 	}	
@@ -23,15 +23,39 @@ class MetalibController extends SearchController
 	public function searchAction()
 	{
 		$group = $this->engine->search($this->query);
+		
+		$id = $group->getId();
+		
+		// $this->cache->set($id, serialize($group));
+		
+		// redirect to status
+		
+		$url = $this->request->url_for(array(
+			'controller' => $this->id,
+			'action' => 'status',
+			'group' => $id	
+		));
+
+		return $this->redirect()->toUrl($url);
 	}
 	
 	public function statusAction()
 	{
-		$group->checkStatus();
+		$id = $this->request->getParam("group");
+		
+		echo $id; exit;
+		
+		sleep(3);
+		
+		$data = $this->cache->get($id);
+		
+		$group = unserialize($data);
+		
+		$status = $group->getSearchStatus();
 		
 		// print_r($group->getResultSets()); exit;
 		
-		foreach ( $group->getResultSets() as $result_set )
+		foreach ( $status->getResultSets() as $result_set )
 		{
 			echo $result_set->database->title_display . "<br>";
 			echo $result_set->find_status . "<br>";
