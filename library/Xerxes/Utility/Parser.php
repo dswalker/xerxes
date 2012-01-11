@@ -315,47 +315,63 @@ class Parser
 	/**
 	 * Remove from array based on key or key/value
 	 *
-	 * @param array $params		array
-	 * @param string $key		the name of the param to remove
-	 * @param string $value		[optional] only if the param has this value
+	 * @param array $params			array
+	 * @param string|array $key		the name of the param to remove
+	 * @param string $value			[optional] only if the param has this value
 	 */
 	
 	public static function removeFromArray(array $array, $key, $value = "")
 	{
-		if ( array_key_exists( $key, $array ) )
+		$keys = array();
+		
+		// key can be string or array
+		
+		if ( ! is_array($key) )
 		{
-			// delete by key
-	
-			if ( $value == "" )
+			$keys = array($key);
+		}
+		else
+		{
+			$keys = $key;
+		}
+		
+		foreach ( $keys as $key )
+		{
+			if ( array_key_exists( $key, $array ) )
 			{
-				unset($array[$key]);
-			}
-	
-			// delete only if value also matches
-	
-			else
-			{
-				$stored = $array[$key];
-	
-				// if this is an array, we need to find the right one
-	
-				if ( is_array( $stored ) )
-				{
-					for ( $x = 0; $x < count($stored); $x++ )
-					{
-						if ( $stored[$x] == $value )
-						{
-							unset($array[$key][$x]);
-						}
-					}
-	
-					// reset the keys
-	
-					$array[$key] = array_values($array[$key]);
-				}
-				elseif ( $stored == $value )
+				// delete by key
+		
+				if ( $value == "" )
 				{
 					unset($array[$key]);
+				}
+		
+				// delete only if value also matches
+		
+				else
+				{
+					$stored = $array[$key];
+		
+					// if this is an array, we need to find the right one
+		
+					if ( is_array( $stored ) )
+					{
+						for ( $x = 0; $x < count($stored); $x++ )
+						{
+							if ( $stored[$x] == $value )
+							{
+								unset($array[$key][$x]);
+							}
+						}
+		
+						// reset the keys
+		
+						$array[$key] = array_values($array[$key]);
+					}
+					elseif ( $stored == $value )
+					{
+						unset($array[$key]);
+					}
 				}
 			}
 		}
