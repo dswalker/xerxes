@@ -3,7 +3,7 @@
 namespace Xerxes\Utility;
 
 /**
- * Parses and holds basic configuration information from the config file
+ * Parses and holds basic configuration information from the config
  *
  * @author David Walker
  * @copyright 2008 California State University
@@ -17,7 +17,7 @@ class Registry
 {
 	protected $xml = ""; // simple xml object copy
 	protected $config_file = "config/config";
-	private $authentication_sources = array ( );
+	private $authentication_sources = array();
 	private $default_language = null;
 	private $arrConfig = null; // configuration settings
 	private $arrPass = array ( ); // values to pass on to the view
@@ -28,9 +28,7 @@ class Registry
 	}
 	
 	/**
-	 * Get an instance of the file; Singleton to ensure correct data
-	 *
-	 * @return Xerxes_Framework_Registry
+	 * Get an instance of the Config
 	 */
 	
 	public static function getInstance()
