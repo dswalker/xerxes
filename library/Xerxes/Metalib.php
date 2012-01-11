@@ -28,7 +28,7 @@ class Metalib
 	private $xml = null; // DOMDocument xml
 	private $warning = null; // warning xml
 	private $timeout = 15; // timeout	
-	private $finished = false; // flag indicating metalib is done searching
+	private $finished = null; // flag indicating metalib is done searching
 	private $return_quick = false; // return quick
 
 	private $client; // http client
@@ -811,13 +811,19 @@ class Metalib
 	}
 	
 	/**
-	 * Whether metalib is finished searching
+	 * Whether group is finished searching
 	 * 
-	 * @return bool			true if finished, false if not 
+	 * @param string $group		group id
+	 * @return bool				true if finished, false if not 
 	 */
 	
-	public function isFinished()
+	public function isFinished($group)
 	{
+		if ( $this->finished == null ) // we haven't checked
+		{
+			$this->getSearchStatus($group);
+		}
+		
 		return $this->finished;
 	}
 	
