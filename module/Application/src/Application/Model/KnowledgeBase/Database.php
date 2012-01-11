@@ -20,8 +20,6 @@ use Application\Model\Authentication\User,
 
 class Database extends DataValue  
 {
-	public $xml;
-	
 	public $metalib_id; // @todo: switch to database_id
 	
 	public $database_id; // database id
@@ -30,6 +28,7 @@ class Database extends DataValue
 	public $data; // other data about the database?
 
 	private $config; // database config
+	private $xml; // simplexml
 	
 	/**
 	 * Create Database
@@ -55,6 +54,8 @@ class Database extends DataValue
 		{
 			$this->xml = simplexml_load_string($this->data);
 		}
+		
+		$this->database_id = (string) $this->xml->metalib_id; // @todo: remove this when switched to database_id
 	}
 	
 	/**

@@ -2,9 +2,12 @@
 
 namespace Application\Model\Metalib;
 
-use Application\Model\KnowledgeBase\Database,
+use Application\Model\Authentication\User,
+	Application\Model\KnowledgeBase\Database,
 	Application\Model\KnowledgeBase\KnowledgeBase,
-	Xerxes\Utility\Factory;
+	Xerxes\Metalib,
+	Xerxes\Utility\Factory,
+	Xerxes\Utility\Parser;
 
 /**
  * Metalib Search Group
@@ -21,15 +24,13 @@ class Group
 {
 	protected $date; // date search was initialized
 	protected $id; // id for the group
-	protected $query; // metalib search query
 	
 	protected $merged_set; // merged result set
-	protected $result_sets = array(); // individual database result sets
-	protected $excluded_databases = array(); // non-searchable databases
+	protected $included_databases = array(); // databases included in the search
+	protected $excluded_databases = array(); // databases excluded from the search
 	
 	protected $config; // metalib config
 	protected $client; // metalib client
-	protected $knowledgebase; // metalib kb
 
 	/**
 	 * Create Metalib Search Group
@@ -37,26 +38,36 @@ class Group
 	 * @param Query $query
 	 */
 	
-	public function __construct(Query $query)
+	public function __construct()
 	{
 		$this->config = Config::getInstance(); // metalib config
-		$this->client = Engine::getMetalibClient(); // metalib client
-		$this->knowledgebase = new KnowledgeBase($query->getLanguage()); // metalib kb
+	}
+	
+	public function __sleep()
+	{
+		// don't include config
 		
-		$this->query = $query; // search query
-		
-		// flesh out database information from the kb
-		
-		$this->fillDatabaseInfo($query);
+		$properties = array_keys(get_object_vars($this));
+		$properties = array_diff($properties, array('config'));
+		return $properties;
 	}
 	
 	/**
 	 * Initiate the search with Metalib for this Group
 	 */
 	
-	public function initiateSearch()
+	public function initiateSearch(Query $query)
 	{
-		$this->id = $this->client->search( $this->query->toQuery(), $this->getSearchableDatabases() );
+		// flesh out database information from the kb
+		
+		$this->fillDatabaseInfo($query);		
+		
+		// start the search
+		
+		$this->id = $this->getClient()->search( $query->toQuery(), $this->getSearchableDatabases() );
+		
+		// register the date
+		
 		$this->date = $this->getSearchDate();
 	}
 	
@@ -74,7 +85,7 @@ class Group
 		
 		// get latest status from metalib
 	
-		$status_xml = $this->client->getSearchStatus($this->id);
+		$status_xml = $this->getClient()->getSearchStatus($this->id);
 		
 		// parse response		
 	
@@ -113,9 +124,23 @@ class Group
 		
 		// see if search is finished
 		
-		$status->setFinished($this->client->isFinished());
+		$status->setFinished($this->getClient()->isFinished());
 		
 		return $status;
+	}
+	
+	/**
+	 * Lazyload Metalib Client
+	 */
+	
+	protected function getClient()
+	{
+		if ( ! $this->client instanceof Metalib )
+		{
+			$this->client = Engine::getMetalibClient(); // metalib client
+		}
+		
+		return $this->client;
 	}
 	
 	/**
@@ -130,6 +155,7 @@ class Group
 	
 		$databases = $query->getDatabases();
 		$subject = $query->getSubject();
+		$user = $query->getUser();
 		
 		// make sure we have a scope, either databases or subject
 		
@@ -138,18 +164,19 @@ class Group
 			throw new \Exception("No databases or subject supplied");
 		}		
 		
-	
+		$knowledgebase = new KnowledgeBase(); // metalib kb
+		
 		### populate the database information from KB
 	
 		// databases specifically supplied
 	
 		if ( count($databases) > 0 )
 		{
-			$databases = $this->knowledgebase->getDatabases($databases);
+			$databases = $knowledgebase->getDatabases($databases);
 			
 			foreach ( $databases as $database_object )
 			{
-				$this->addDatabase($database_object);
+				$this->addDatabase($database_object, $user);
 			}
 		}
 	
@@ -159,7 +186,7 @@ class Group
 		{
 			$search_limit = $this->config->getConfig( "SEARCH_LIMIT", true );
 			
-			$subject_object = $this->knowledgebase->getSubject($subject);
+			$subject_object = $knowledgebase->getSubject($subject);
 	
 			// did we find a subject that has subcategories?
 	
@@ -175,7 +202,7 @@ class Group
 				{
 					if ( $database_object->searchable == 1 )
 					{
-						$this->addDatabase($database_object);
+						$this->addDatabase($database_object, $user);
 						$index++;
 					}
 	
@@ -196,21 +223,19 @@ class Group
 	 * @param Database $database_object
 	 */
 	
-	public function addDatabase(Database $database_object)
+	public function addDatabase( Database $database_object, User $user )
 	{
-		$id = $database_object->metalib_id; // @todo: switch to database_id
-		
-		$user = $this->query->getUser();
+		$id = $database_object->database_id;
 		
 		// see if this database is searchable
 		
 		if ( $database_object->isSearchableByUser($user) )
 		{
-			$this->result_sets[$id] = new ResultSet($database_object);
+			$this->included_databases[$id] = new RecordSet($database_object);
 		}
 		else // dump it into the excluded pile
 		{
-			$this->excluded_databases[$id] = $database_object;
+			$this->excluded_databases[$id] = new RecordSet($database_object);
 		}
 	}
 	
@@ -222,7 +247,7 @@ class Group
 	
 	protected function getSearchableDatabases()
 	{
-		return array_keys($this->result_sets);
+		return array_keys($this->included_databases);
 	}
 	
 	/**
@@ -246,11 +271,6 @@ class Group
 		}
 	
 		return date("Y-m-d", $time);
-	}
-	
-	public function getResultSets()
-	{
-		return $this->result_sets;
 	}
 	
 	public function getId()

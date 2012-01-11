@@ -81,8 +81,8 @@ class Engine extends Search\Engine
 	{
 		// initiate search
 				
-		$group = new Group($query);
-		$group->initiateSearch();
+		$group = new Group();
+		$group->initiateSearch($query);
 		
 		return $group;
 	}

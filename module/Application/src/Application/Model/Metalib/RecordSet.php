@@ -2,11 +2,10 @@
 
 namespace Application\Model\Metalib;
 
-use Application\Model\KnowledgeBase\Database,
-	Application\Model\Search;
+use Application\Model\KnowledgeBase\Database;
 
 /**
- * Metalib Search Results
+ * Metalib Record Set
  *
  * @author David Walker
  * @copyright 2011 California State University
@@ -16,14 +15,14 @@ use Application\Model\KnowledgeBase\Database,
  * @package Xerxes
  */
 
-class ResultSet
+class RecordSet
 {
-	public $database;
+	public $name;
 	public $set_number;
 	public $find_status;
 	
 	public function __construct(Database $database)
 	{
-		$this->database = $database;
+		$this->name = $database->name;
 	}
 }

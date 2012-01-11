@@ -26,12 +26,12 @@ class MetalibController extends SearchController
 		
 		$id = $group->getId();
 		
-		// $this->cache->set($id, serialize($group));
+		$this->cache->set($id, serialize($group));
 		
 		// redirect to status
 		
 		$url = $this->request->url_for(array(
-			'controller' => $this->id,
+			'controller' => $this->request->getParam('controller'),
 			'action' => 'status',
 			'group' => $id	
 		));
@@ -43,8 +43,6 @@ class MetalibController extends SearchController
 	{
 		$id = $this->request->getParam("group");
 		
-		echo $id; exit;
-		
 		sleep(3);
 		
 		$data = $this->cache->get($id);
@@ -53,7 +51,7 @@ class MetalibController extends SearchController
 		
 		$status = $group->getSearchStatus();
 		
-		// print_r($group->getResultSets()); exit;
+		print_r($group->getResultSets()); exit;
 		
 		foreach ( $status->getResultSets() as $result_set )
 		{
