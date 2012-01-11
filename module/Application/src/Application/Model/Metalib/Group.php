@@ -88,25 +88,28 @@ class Group
 				
 			// not here?
 				
-			if ( ! array_key_exists($database_id, $this->result_sets) )
+			if ( ! array_key_exists($database_id, $this->included_databases) )
 			{
 				throw new \Exception("Metalib group contained resultset '$database_id' not in local resultset");
 			}
 			
 			## update resultset objects
 				
-			$result_set = $this->result_sets[$database_id];
+			$result_set = $this->included_databases[$database_id];
 			$result_set->set_number = (string) $base_info->set_number;
 			$result_set->find_status = (string)  $base_info->find_status;
-			$result_set->total = (int)  $base_info->no_of_documents; // @todo: see x1 for usual 'there were hits' madness
+			
+			// @todo: see x1 for usual 'there were hits' madness
+			
+			$result_set->total = (int)  $base_info->no_of_documents; 
 				
 			// set this again explicitly
 				
-			$this->result_sets[$database_id] = $result_set;
+			$this->included_databases[$database_id] = $result_set;
 			
 			## add to status
 			
-			$status->addResultSet($result_set);
+			$status->addRecordSet($result_set);
 		}
 		
 		// see if search is finished

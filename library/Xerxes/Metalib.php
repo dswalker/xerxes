@@ -34,7 +34,7 @@ class Metalib
 	private $client; // http client
 	
 	/**
-	 * Create a new Metalib Client
+	 * Create Metalib Client
 	 * 
 	 * @param string $server	the Metalib address url
 	 * @param string $username	this application's username 
@@ -62,13 +62,17 @@ class Metalib
 	
 	public function __sleep()
 	{
-		return array("server", "username", "password", "session", "session_expires");
+		return array("server", "username", "password", "session", "session_expires", "client");
 	}
 	
 	public function __wakeup()
 	{
 		$this->ensureSession();
 	}
+	
+	/**
+	 * Create a new session if none exists or current one is expired
+	 */
 	
 	protected function ensureSession()
 	{
