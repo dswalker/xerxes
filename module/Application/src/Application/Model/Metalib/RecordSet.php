@@ -17,12 +17,12 @@ use Application\Model\KnowledgeBase\Database;
 
 class RecordSet
 {
-	public $name;
+	public $database;
 	public $set_number;
 	public $find_status;
 	
 	public function __construct(Database $database)
 	{
-		$this->name = $database->name;
+		$this->database = $database;
 	}
 }

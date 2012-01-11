@@ -168,8 +168,8 @@ class Cache extends DataMap
 		{
 			if ( count($arrCache) > 0 )
 			{
-				$this->_data[$id] = $arrCache[0]; // also save it in scope of this request
-				return $arrCache[0];
+				$this->_data[$id] = $arrCache[$id]; // also save it in scope of this request
+				return $arrCache[$id];
 			}
 			else
 			{

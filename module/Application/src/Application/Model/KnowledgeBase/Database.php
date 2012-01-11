@@ -25,19 +25,10 @@ class Database extends DataValue
 	public $database_id; // database id
 	public $title_display; // database title
 	public $type; // database type
-	public $data; // other data about the database?
+	public $data; // other data about the database
 
 	private $config; // database config
 	private $xml; // simplexml
-	
-	/**
-	 * Create Database
-	 */
-	
-	public function __construct()
-	{
-		$this->config = Config::getInstance();
-	}
 	
 	/**
 	 * Load data from database results array
@@ -49,13 +40,18 @@ class Database extends DataValue
 	public function load($arrResult)
 	{
 		parent::load($arrResult);
+		$this->database_id = (string) $this->metalib_id; // @todo: remove this when switched to database_id
+	}
+	
+	/**
+	 * Serialize
+	 */
+	
+	public function __sleep()
+	{
+		// don't include config and simplexml elements
 		
-		if ( $this->data != "" )
-		{
-			$this->xml = simplexml_load_string($this->data);
-		}
-		
-		$this->database_id = (string) $this->xml->metalib_id; // @todo: remove this when switched to database_id
+		return Parser::getAllPropertiesBut(get_object_vars($this), array('config', 'xml'));
 	}
 	
 	/**
@@ -67,14 +63,7 @@ class Database extends DataValue
 	
 	public function __get($name)
 	{
-		if ( $this->xml instanceof \SimpleXMLElement )
-		{
-			return (string) $this->xml->$name;
-		}
-		else
-		{
-			return null;
-		}
+		return (string) $this->simplexml()->$name;
 	}
 	
 	/**
@@ -88,132 +77,12 @@ class Database extends DataValue
 	{
 		$values = array();
 		
-		if ( $this->xml instanceof \SimpleXMLElement )
+		foreach ($this->simplexml()->$field as $value)
 		{
-			foreach ($this->xml->$field as $value)
-			{
-				array_push($values, $value);
-			}
+			array_push($values, $value);
 		}
 		
 		return $values;
-	}
-	
-	/**
-	 * Serialize to XML
-	 * 
-	 * @return DOMDocument
-	 */
-	
-	public function toXML()
-	{
-		// data is already in xml, we just use this opportunity to
-		// enhance it with a few bits of data we don't already have
-		
-		
-		### display name for group restrictions
-			
-		if ( count($this->xml->group_restriction) > 0 )
-		{
-			foreach ( $this->xml->group_restriction as $group_restriction )
-			{
-				$group_restriction->addAttribute("display_name", $this->config->getGroupDisplayName((string) $group_restriction));
-			}
-		}
-		
-		
-		### split note fields into separate entries per language
-		
-		$multilingual = $this->config->getConfig("db_description_multilingual", false, ""); // XML object
-
-		// build a list of configured description languages
-		
-		$db_languages_code = array();
-		$db_languages_order = array();
-		
-		if ( $multilingual != "" )
-		{
-			$order = 0;
-			
-			foreach ( $multilingual->language as $language )
-			{
-				$order++;
-				$code = NULL;
-				
-				foreach ( $language->attributes() as $name => $val )
-				{
-					if ( $name == "code" )
-					{
-						$code = (string) $val;
-					}
-				}
-				
-				$db_languages_order[$code] = $order;
-				$db_languages_code[$order] = $code;
-			}
-		}
-		
-		$notes = array("description" , "search_hints");
-		
-		foreach ( $notes as $note_field_name )
-		{
-			$node_queue = array(); // nodes to add when done looping to prevent looping over nodes added inside the loop
-			
-			foreach ( $this->xml->$note_field_name as $note_field_xml )
-			{
-				$note_field = (string) $note_field_xml;
-				
-				$pos = strpos($note_field, '######');
-				
-				if ( $multilingual == false || $pos === false )
-				{
-					$note_field = str_replace('######', '\n\n\n', $note_field);
-				}
-				else
-				{
-					$descriptions = explode('######', $note_field);
-					$i = 1;
-					
-					foreach ( $descriptions as $description )
-					{
-						$description = $this->embedNoteField($description);
-						
-						$node_queue[] = array(
-							'note_field_name' => $note_field_name , 
-							'description' => $description , 
-							'code' => $db_languages_code[$i ++]
-						);
-					}
-				}
-				
-				$note_field = $this->embedNoteField($note_field);
-				$this->xml->$note_field_name = $note_field;
-				$this->xml->$note_field_name->addAttribute('lang', 'ALL');
-			}
-			
-			foreach ( $node_queue as $node )
-			{
-				$descNode = $this->xml->addChild($node['note_field_name'], $node['description']);
-				$descNode->addAttribute('lang', $node['code']);
-			}
-		}
-		
-		// convert to DOMDocument
-		
-		$objDom = new \DOMDocument();
-		$objDom->loadXML($this->xml->asXML());
-		
-		// add database id
-		
-		$objDatabase = $objDom->documentElement;
-		$objDatabase->setAttribute("database_id", $this->database_id);
-		
-		// is the particular user allowed to search this?
-		
-		$objElement = $objDom->createElement("searchable_by_user", $this->searchable_by_user);
-		$objDatabase->appendChild($objElement);
-
-		return $objDom;
 	}
 	
 	/**
@@ -251,7 +120,7 @@ class Database extends DataValue
 				
 				foreach ( $this->group_restrictions as $group )
 				{
-					$ranges[] = $this->config->getGroupLocalIpRanges($group); // @todo: move this to registry?
+					$ranges[] = $this->config()->getGroupLocalIpRanges($group); // @todo: move this to registry?
 				}
 				
 				$allowed = $user->isInLocalIpRange();
@@ -272,6 +141,41 @@ class Database extends DataValue
 	}
 	
 	/**
+	 * Lazyload Config
+	 */
+	
+	public function config()
+	{
+		if ( ! $this->config instanceof Config )
+		{
+			$this->config = Config::getInstance();
+		}
+	
+		return $this->config;
+	}
+	
+	/**
+	 * Lazyload SimpleXmlElement
+	 *
+	 * @throws Exception
+	 */
+	
+	public function simplexml()
+	{
+		if ( ! $this->xml instanceof \SimpleXMLElement )
+		{
+			if ( $this->data == "" )
+			{
+				throw new \Exception("Cannot access data, it has not been loaded");
+			}
+				
+			$this->xml = simplexml_load_string($this->data);
+		}
+	
+		return $this->xml;
+	}	
+	
+	/**
 	 * Handling of note field escaping
 	 * 
 	 * @param string $note_field
@@ -284,12 +188,12 @@ class Database extends DataValue
 		// handle html escpaing here in controller for description, view
 		// should use disable-output-escaping="yes" on value-of of description.
 
-		$escape_behavior = $this->config->getConfig("db_description_html", false, "escape"); // 'escape' ; 'allow' ; or 'strip'
+		$escape_behavior = $this->config()->getConfig("db_description_html", false, "escape"); // 'escape' ; 'allow' ; or 'strip'
 		$note_field = str_replace('##', ' ', $note_field);
 		
 		if ( $escape_behavior == "strip" )
 		{
-			$allow_tag_list = $this->config->getConfig("db_description_allow_tags", false, '');
+			$allow_tag_list = $this->config()->getConfig("db_description_allow_tags", false, '');
 			$arr_allow_tags = explode(',', $allow_tag_list);
 			$param_allow_tags = '';
 			
@@ -306,5 +210,122 @@ class Database extends DataValue
 		}
 		
 		return $note_field;
+	}
+	
+	/**
+	 * Serialize to XML
+	 *
+	 * @return DOMDocument
+	 */
+	
+	public function toXML()
+	{
+		// data is already in xml, we just use this opportunity to
+		// enhance it with a few bits of data we don't already have
+	
+	
+		### display name for group restrictions
+			
+		if ( count($this->simplexml()->group_restriction) > 0 )
+		{
+			foreach ( $this->simplexml()->group_restriction as $group_restriction )
+			{
+				$group_restriction->addAttribute("display_name", $this->config()->getGroupDisplayName((string) $group_restriction));
+			}
+		}
+	
+	
+		### split note fields into separate entries per language
+	
+		$multilingual = $this->config()->getConfig("db_description_multilingual", false, ""); // XML object
+	
+		// build a list of configured description languages
+	
+		$db_languages_code = array();
+		$db_languages_order = array();
+	
+		if ( $multilingual != "" )
+		{
+			$order = 0;
+				
+			foreach ( $multilingual->language as $language )
+			{
+				$order++;
+				$code = NULL;
+			
+				foreach ( $language->attributes() as $name => $val )
+				{
+					if ( $name == "code" )
+					{
+						$code = (string) $val;
+					}
+				}
+		
+				$db_languages_order[$code] = $order;
+				$db_languages_code[$order] = $code;
+			}
+		}
+	
+		$notes = array("description" , "search_hints");
+	
+		foreach ( $notes as $note_field_name )
+		{
+			$node_queue = array(); // nodes to add when done looping to prevent looping over nodes added inside the loop
+				
+			foreach ( $this->simplexml()->$note_field_name as $note_field_xml )
+			{
+				$note_field = (string) $note_field_xml;
+			
+				$pos = strpos($note_field, '######');
+			
+				if ( $multilingual == false || $pos === false )
+				{
+					$note_field = str_replace('######', '\n\n\n', $note_field);
+				}
+				else
+				{
+					$descriptions = explode('######', $note_field);
+					$i = 1;
+						
+					foreach ( $descriptions as $description )
+					{
+						$description = $this->embedNoteField($description);
+					
+						$node_queue[] = array(
+						'note_field_name' => $note_field_name ,
+						'description' => $description ,
+						'code' => $db_languages_code[$i ++]
+						);
+					}
+				}
+			
+				$note_field = $this->embedNoteField($note_field);
+				$this->simplexml()->$note_field_name = $note_field;
+				$this->simplexml()->$note_field_name->addAttribute('lang', 'ALL');
+			}
+				
+			foreach ( $node_queue as $node )
+			{
+				$descNode = $this->simplexml()->addChild($node['note_field_name'], $node['description']);
+				$descNode->addAttribute('lang', $node['code']);
+			}
+		}
+	
+		// convert to DOMDocument
+	
+		$objDom = new \DOMDocument();
+		$objDom->loadXML($this->simplexml()->asXML());
+	
+		// add database id
+	
+		$objDatabase = $objDom->documentElement;
+		$objDatabase->setAttribute("database_id", $this->database_id);
+	
+		// is the particular user allowed to search this?
+
+		$objElement = $objDom->createElement("searchable_by_user", $this->searchable_by_user); // @todo need to change this
+		$objDatabase->appendChild($objElement);
+	
+		return $objDom;
 	}
 }

@@ -380,6 +380,22 @@ class Parser
 	}
 	
 	/**
+	 * Exclude properties from object serialization array
+	 * 
+	 * @param array $object_vars	from get_object_vars()
+	 * @param array $exclude		properties to exclude
+	 * @return array
+	 */
+	
+	public static function getAllPropertiesBut(array $object_vars, array $exclude)
+	{
+		$properties = array_keys($object_vars); // get all properties
+		$properties = array_diff($properties, $exclude); // now exclude these
+		
+		return $properties;
+	}
+	
+	/**
 	 * Strips periods and pads the subnets of an IP address to three spaces
 	 * 
 	 * e.g., 144.37.1.23 = 144037001023

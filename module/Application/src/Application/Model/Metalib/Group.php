@@ -32,24 +32,11 @@ class Group
 	protected $config; // metalib config
 	protected $client; // metalib client
 
-	/**
-	 * Create Metalib Search Group
-	 * 
-	 * @param Query $query
-	 */
-	
-	public function __construct()
-	{
-		$this->config = Config::getInstance(); // metalib config
-	}
-	
 	public function __sleep()
 	{
 		// don't include config
 		
-		$properties = array_keys(get_object_vars($this));
-		$properties = array_diff($properties, array('config'));
-		return $properties;
+		return Parser::getAllPropertiesBut(get_object_vars($this), array('config'));
 	}
 	
 	/**
@@ -64,7 +51,7 @@ class Group
 		
 		// start the search
 		
-		$this->id = $this->getClient()->search( $query->toQuery(), $this->getSearchableDatabases() );
+		$this->id = $this->client()->search( $query->toQuery(), $this->getSearchableDatabases() );
 		
 		// register the date
 		
@@ -85,7 +72,7 @@ class Group
 		
 		// get latest status from metalib
 	
-		$status_xml = $this->getClient()->getSearchStatus($this->id);
+		$status_xml = $this->client()->getSearchStatus($this->id);
 		
 		// parse response		
 	
@@ -124,7 +111,7 @@ class Group
 		
 		// see if search is finished
 		
-		$status->setFinished($this->getClient()->isFinished());
+		$status->setFinished($this->client()->isFinished());
 		
 		return $status;
 	}
@@ -133,7 +120,7 @@ class Group
 	 * Lazyload Metalib Client
 	 */
 	
-	protected function getClient()
+	protected function client()
 	{
 		if ( ! $this->client instanceof Metalib )
 		{
@@ -142,6 +129,20 @@ class Group
 		
 		return $this->client;
 	}
+	
+	/**
+	 * Lazyload Config
+	 */
+	
+	public function config()
+	{
+		if ( ! $this->config instanceof Config )
+		{
+			$this->config = Config::getInstance();
+		}
+	
+		return $this->config;
+	}	
 	
 	/**
 	 * Flesh out the request with database information from KB
@@ -184,7 +185,7 @@ class Group
 	
 		elseif ( $subject != null )
 		{
-			$search_limit = $this->config->getConfig( "SEARCH_LIMIT", true );
+			$search_limit = $this->config()->getConfig( "SEARCH_LIMIT", true );
 			
 			$subject_object = $knowledgebase->getSubject($subject);
 	
@@ -259,7 +260,7 @@ class Group
 		$time = time();
 		$hour = (int) date("G", $time);
 		 
-		$flush_hour = $this->config->getConfig("METALIB_RESTART_HOUR", false, 4);
+		$flush_hour = $this->config()->getConfig("METALIB_RESTART_HOUR", false, 4);
 	
 		if ( $hour < $flush_hour )
 		{
