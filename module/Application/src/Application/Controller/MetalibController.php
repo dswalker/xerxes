@@ -49,11 +49,11 @@ class MetalibController extends SearchController
 
 		$status = $group->getSearchStatus();
 		
-		foreach ( $status->getRecordSets() as $record_set )
+		foreach ( $status->getDatabaseResultSet() as $set )
 		{
-			echo $record_set->database->title_display . "<br>";
-			echo $record_set->find_status . "<br>";
-			echo $record_set->total . "<br>";
+			echo $set->database->title_display . "<br>";
+			echo $set->find_status . "<br>";
+			echo $set->total . "<br>";
 			echo "<hr>";
 		}
 	}

@@ -15,7 +15,7 @@ use Application\Model\KnowledgeBase\Database;
  * @package Xerxes
  */
 
-class RecordSet
+class DatabaseResultSet
 {
 	public $database;
 	public $set_number;

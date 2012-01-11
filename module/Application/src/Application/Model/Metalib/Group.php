@@ -92,20 +92,20 @@ class Group
 			
 			## update internal record set objects
 			
-			$record_set = $this->included_databases[$database_id];
-			$record_set->set_number = (string) $base_info->set_number;
-			$record_set->find_status = (string)  $base_info->find_status;
+			$database_resultset = $this->included_databases[$database_id];
+			$database_resultset->set_number = (string) $base_info->set_number;
+			$database_resultset->find_status = (string)  $base_info->find_status;
 			
 			// @todo: see x1 for usual 'there were hits' madness
 			
-			$record_set->total = (int)  $base_info->no_of_documents; 
+			$database_resultset->total = (int)  $base_info->no_of_documents; 
 			
-			$this->included_databases[$database_id] = $record_set;
+			$this->included_databases[$database_id] = $database_resultset;
 			
 			
 			## add to status as well
 			
-			$status->addRecordSet($record_set);
+			$status->addDatabaseResultSet($database_resultset);
 		}
 		
 		// see if search is finished
@@ -231,11 +231,11 @@ class Group
 		
 		if ( $database_object->isSearchableByUser($user) )
 		{
-			$this->included_databases[$id] = new RecordSet($database_object);
+			$this->included_databases[$id] = new DatabaseResultSet($database_object);
 		}
 		else // dump it into the excluded pile
 		{
-			$this->excluded_databases[$id] = new RecordSet($database_object);
+			$this->excluded_databases[$id] = $database_object;
 		}
 	}
 	

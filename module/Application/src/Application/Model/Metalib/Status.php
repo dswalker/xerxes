@@ -15,7 +15,7 @@ namespace Application\Model\Metalib;
 
 class Status
 {
-	protected $record_sets = array(); // individual database record sets
+	protected $result_sets = array(); // individual database record sets
 	protected $timestamp = 0; // timestamp of status check
 	protected $finished = false; // whether search is complete
 	
@@ -24,12 +24,12 @@ class Status
 		$this->timestamp = time();
 	}
 	
-	public function addRecordSet($record_set)
+	public function addDatabaseResultSet( DatabaseResultSet $set)
 	{
-		$this->record_sets[] = $record_set;
+		$this->record_sets[] = $set;
 	}
 	
-	public function getRecordSets()
+	public function getDatabaseResultSet()
 	{
 		return $this->record_sets;
 	}
