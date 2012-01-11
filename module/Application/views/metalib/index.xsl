@@ -37,7 +37,7 @@
 </xsl:template>
 
 <xsl:template name="advanced_search_option">
-	<input name="database" value="CAL00023" />
+	<input name="subject" value="history" />
 </xsl:template>
 
 </xsl:stylesheet>
