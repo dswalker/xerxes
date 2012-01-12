@@ -61,7 +61,7 @@ class Group
 		$this->date = $this->getSearchDate();
 	}
 	
-	/*
+	/**
 	 * Check the status of the search
 	 * 
 	 * Updates internal Merged/Database Result Set objects as well
