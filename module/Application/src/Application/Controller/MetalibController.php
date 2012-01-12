@@ -8,12 +8,6 @@ use Application\Model\Metalib\Engine,
 class MetalibController extends SearchController
 {
 	protected $id = "metalib";
-	protected $cache;
-	
-	public function __construct()
-	{
-		$this->cache = new Cache();
-	}	
 	
 	protected function getEngine()
 	{
@@ -22,18 +16,14 @@ class MetalibController extends SearchController
 	
 	public function searchAction()
 	{
-		$group = $this->engine->search($this->query);
+		$group_id = $this->engine->search($this->query);
 		
-		$id = $group->getId();
-		
-		$this->cache->set($id, serialize($group));
-		
-		// redirect to status
+		// redirect to status action
 		
 		$url = $this->request->url_for(array(
 			'controller' => $this->request->getParam('controller'),
 			'action' => 'status',
-			'group' => $id	
+			'group' => $group_id	
 		));
 		
 		return $this->redirect()->toUrl($url);
@@ -41,22 +31,26 @@ class MetalibController extends SearchController
 	
 	public function statusAction()
 	{
-		$id = $this->request->getParam("group");
+		$group_id = $this->request->getParam("group");
 		
-		$group = unserialize($this->cache->get($id));
-		
-		$status = $group->getSearchStatus();
+		$status = $this->engine->getSearchStatus($group_id);
 		
 		if ( $status->isFinished() )
 		{
-			$group->merge();
+			// redirect to results action
 			
-			echo $group->getFacets();
-			
-			exit;
+			$url = $this->request->url_for(array(
+				'controller' => $this->request->getParam('controller'),
+				'action' => 'results',
+				'group' => $group_id	
+			));
+		
+			return $this->redirect()->toUrl($url);
 		}
 		else
 		{
+			//////////////////// TESTING
+			
 			foreach ( $status->getDatabaseResultSet() as $set )
 			{
 				echo $set->database->title_display . "<br>";

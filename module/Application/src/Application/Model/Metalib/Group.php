@@ -135,6 +135,8 @@ class Group
 	 * 
 	 * @param string $primary_sort			primary sort order
 	 * @param string $secondary_sort		secondary sort order
+	 * 
+	 * @return Status
 	 */
 	
 	public function merge($primary_sort = null, $secondary_sort = null)
@@ -146,10 +148,6 @@ class Group
 		// create new merged set
 
 		$this->merged_set = new MergedResultSet($merged_xml);
-		
-		// update search status
-		
-		$this->getSearchStatus();
 		
 		// fetch facets
 			
@@ -169,6 +167,10 @@ class Group
 			$facets_slim = $xsl->transformToXml( $facet_xml, "xsl/facets-slim.xsl" );
 			$this->cache()->set( "facets-slim-" . $this->id, $facets_slim );
 		}
+		
+		// update search status
+		
+		return $this->getSearchStatus();
 	}
 	
 	/**

@@ -5,6 +5,7 @@ namespace Application\Model\Metalib;
 use Application\Model\KnowledgeBase\KnowledgeBase,
  	Application\Model\Search,
  	Xerxes\Metalib,
+ 	Xerxes\Utility\Cache,
 	Xerxes\Utility\Factory,
 	Xerxes\Utility\Request;
 
@@ -22,59 +23,13 @@ use Application\Model\KnowledgeBase\KnowledgeBase,
 class Engine extends Search\Engine
 {
 	private static $client; // metalib client
-	protected $knowledgebase; // metalib kb
-	
-	/**
-	 * Create Metalib Search Engine
-	 */
-	
-	public function __construct()
-	{
-		parent::__construct();
-		
-		// metalib kb
-		
-		$this->knowledgebase = new KnowledgeBase();
-	}
-	
-	/**
-	 * Return the search engine config
-	 *
-	 * @return Config
-	 */
-	
-	public function getConfig()
-	{
-		return Config::getInstance();
-	}
-	
-	/**
-	 * Metalib Client
-	 * 
-	 * Static here so we maintain the session id
-	 */
-	
-	public static function getMetalibClient()
-	{
-		if ( ! self::$client instanceof Metalib )
-		{
-			$config = Config::getInstance();
-			
-			$address = $config->getConfig("METALIB_ADDRESS", true);
-			$username = $config->getConfig("METALIB_USERNAME", true);
-			$password = $config->getConfig("METALIB_PASSWORD", true);
-	
-			self::$client = new Metalib($address, $username, $password, Factory::getHttpClient());
-		}
-	
-		return self::$client;
-	}	
+	private $cache; // xerxes cache
 	
 	/**
 	 * Initiate the search
 	 * 
-	 * @param Search\Query $query
-	 * @return Group
+	 * @param Query $query
+	 * @return string group id
 	 */
 	
 	public function search(Query $query)
@@ -82,9 +37,50 @@ class Engine extends Search\Engine
 		// initiate search
 				
 		$group = new Group();
+		
 		$group->initiateSearch($query);
 		
-		return $group;
+		// metalib group id
+		
+		$group_id = $group->getId(); 
+		
+		// cache the group object for later retrieval
+		
+		$this->cache()->set($group_id, serialize($group));
+		
+		return $group_id;
+	}
+	
+	/**
+	 * Check the status of a search
+	 * 
+	 * @param string $group_id
+	 */
+	
+	public function getSearchStatus( $group_id )
+	{
+		// resurrect the group
+		
+		$group = unserialize($this->cache()->get($group_id));
+		
+		// check status
+		
+		$status = $group->getSearchStatus();
+		
+		// we're done?
+		
+		if ( $status->isFinished() )
+		{
+			// yes, so merge the results
+			
+			$status = $group->merge();
+		}
+		
+		// save it for later
+		
+		$this->cache()->set($group_id, serialize($group));
+		
+		return $status;
 	}
 	
 	/**
@@ -125,6 +121,53 @@ class Engine extends Search\Engine
 	 */
 	
 	 public function getRecordForSave( $id ) {}
+	 
+	 /**
+	  * Metalib Client
+	  *
+	  * Static here so we maintain the session id
+	  */
+	 
+	 public static function getMetalibClient()
+	 {
+	 	if ( ! self::$client instanceof Metalib )
+	 	{
+	 		$config = Config::getInstance();
+	 			
+	 		$address = $config->getConfig("METALIB_ADDRESS", true);
+	 		$username = $config->getConfig("METALIB_USERNAME", true);
+	 		$password = $config->getConfig("METALIB_PASSWORD", true);
+	 
+	 		self::$client = new Metalib($address, $username, $password, Factory::getHttpClient());
+	 	}
+	 
+	 	return self::$client;
+	 }
+	 
+	 /**
+	  * Lazyload Cache
+	  */
+	 
+	 protected function cache()
+	 {
+	 	if ( ! $this->cache instanceof Cache )
+	 	{
+	 		$this->cache = new Cache();
+	 	}
+	 
+	 	return $this->cache;
+	 }	 
+	 
+	 /**
+	  * Return the search engine config
+	  *
+	  * @return Config
+	  */
+	 
+	 public function getConfig()
+	 {
+	 	return Config::getInstance();
+	 }	 
 	 
 	/**
 	 * Return a search query object
