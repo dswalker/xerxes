@@ -35,7 +35,7 @@ class Module implements AutoloaderProvider
 				'namespaces' => array(
 					__NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
 					'Xerxes' => __DIR__ . '/../../library/Xerxes',
-					'Local\Authentication' => 'config/authentication',
+					'Local\Authentication' => 'custom/authentication',
 				),
 			),
 		);

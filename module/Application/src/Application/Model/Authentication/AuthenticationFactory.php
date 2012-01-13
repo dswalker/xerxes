@@ -53,7 +53,7 @@ class AuthenticationFactory
 		
 		// local custom version
 		
-		$local_file = "authentication/$name.php";
+		$local_file = "custom/authentication/$name.php";
 		
 		if ( file_exists($local_file) )
 		{
