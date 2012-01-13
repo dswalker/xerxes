@@ -1,8 +1,9 @@
 <?php
 
-namespace Xerxes;
+namespace Xerxes\Lti;
 
 use Xerxes\Utility\Parser;
+
 
 /**
  * Convenience class for verifying and accessing properties of basic lti launch request
@@ -15,7 +16,7 @@ use Xerxes\Utility\Parser;
  * @license http://www.gnu.org/licenses/
  */
 
-class LTI 
+class Basic 
 {
 	protected $request;
 	
