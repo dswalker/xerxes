@@ -16,7 +16,7 @@ use Xerxes\Utility\Factory,
  * @license http://www.gnu.org/licenses/
  */
 
-class Cas extends Authentication 
+class Cas extends Scheme 
 {
 	/**
 	 * Redirect to the cas login service

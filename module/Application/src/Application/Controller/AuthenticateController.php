@@ -3,7 +3,7 @@
 namespace Application\Controller;
 
 use Application\Model\Authentication\AuthenticationFactory,
-	Application\Model\Authentication\Authentication,
+	Application\Model\Authentication\Scheme,
 	Xerxes\Utility\Registry,
 	Zend\Mvc\MvcEvent,
 	Zend\Mvc\Controller\ActionController;
@@ -26,7 +26,7 @@ class AuthenticateController extends ActionController
 		$this->registry = Registry::getInstance();
 		
 		$factory = new AuthenticationFactory();
-		$this->authentication = $factory->getAuthenticationObject($e);
+		$this->authentication = $factory->getAuthenticationObject($e->getRequest());
 	}
 		
 	public function loginAction()
@@ -50,7 +50,7 @@ class AuthenticateController extends ActionController
 	
 		$result = $this->authentication->onLogin();
 	
-		if ( $result == Authentication::REDIRECT )
+		if ( $result == Scheme::REDIRECT )
 		{
 			return $this->doRedirect();
 		}
@@ -64,7 +64,7 @@ class AuthenticateController extends ActionController
 	
 		$bolAuth = $this->authentication->onCallBack();
 	
-		if ( $bolAuth == Authentication::FAILED )
+		if ( $bolAuth == Scheme::FAILED )
 		{
 			// failed the login, so present a message to the user
 	
@@ -111,7 +111,7 @@ class AuthenticateController extends ActionController
 	
 		$result = $this->authentication->onCallBack();
 		
-		if ( $result == Authentication::SUCCESS )
+		if ( $result == Scheme::SUCCESS )
 		{
 			$this->doRedirect();
 		}

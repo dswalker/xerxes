@@ -2,7 +2,7 @@
 
 namespace Local\Authentication;
 
-use Application\Model\Authentication\Authentication;
+use Application\Model\Authentication;
 
 /**
  * custom authentication
@@ -15,7 +15,7 @@ use Application\Model\Authentication\Authentication;
  * @package Xerxes
  */
 
-class Custom extends Authentication
+class Custom extends Authentication\Scheme
 {
 	public function onLogin()
 	{

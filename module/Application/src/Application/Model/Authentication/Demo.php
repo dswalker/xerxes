@@ -13,7 +13,7 @@ namespace Application\Model\Authentication;
  * @package Xerxes
  */
 
-class Demo extends Authentication 
+class Demo extends Scheme 
 {
 	/**
 	* Authenticates the user against the directory server

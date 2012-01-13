@@ -13,7 +13,7 @@ namespace Application\Model\Authentication;
  * @license http://www.gnu.org/licenses/
  */
 
-class Shibboleth extends Authentication 
+class Shibboleth extends Scheme 
 {
 	/**
 	 *  HTTP header that the username will be found in. Subclass can over-ride

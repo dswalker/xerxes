@@ -17,14 +17,14 @@ use Xerxes\Utility\Parser,
  * @package Xerxes
  */
 
-class Innovative extends Authentication 
+class Innovative extends Scheme 
 {
 	protected $server;
 	protected $user_data;
 	
-	public function __construct($objRequest, $objRegistry)
+	public function __construct(Request $request)
 	{
-		parent::__construct($objRequest, $objRegistry);
+		parent::__construct($request);
 		
 		$this->server = $this->registry->getConfig( "INNOVATIVE_PATRON_API", true );
 		$this->server = rtrim($this->server, '/');

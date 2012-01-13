@@ -3,6 +3,7 @@
 namespace Application\Model\Authentication;
 
 use Xerxes\Utility\Registry,
+	Xerxes\Utility\Request,
 	Zend\Mvc\MvcEvent;
 
 /**
@@ -18,10 +19,9 @@ use Xerxes\Utility\Registry,
 
 class AuthenticationFactory
 {
-	public function getAuthenticationObject(MvcEvent $e)
+	public function getAuthenticationObject(Request $request)
 	{
 		$registry = Registry::getInstance();
-		$request = $e->getRequest();
 		
 		// if the authentication_source is set in the request, then it takes precedence
 		
@@ -53,7 +53,7 @@ class AuthenticationFactory
 		
 		// local custom version
 		
-		$local_file = "config/authentication/$name.php";
+		$local_file = "authentication/$name.php";
 		
 		if ( file_exists($local_file) )
 		{
@@ -69,9 +69,9 @@ class AuthenticationFactory
 
 		// make it
 
-		$authentication = new $class_name($e);
+		$authentication = new $class_name($request);
 		
-		if ( ! $authentication instanceof Authentication)
+		if ( ! $authentication instanceof Scheme)
 		{
 			throw new \Exception("class '$class_name' for the '$name' authentication scheme must extend Authentication");
 		}

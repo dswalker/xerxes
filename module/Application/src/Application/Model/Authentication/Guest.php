@@ -13,7 +13,7 @@ namespace Application\Model\Authentication;
  * @license http://www.gnu.org/licenses/
  */
 
-class Guest extends Authentication 
+class Guest extends Scheme 
 {
 	/**
 	 * Just register the user with a role of guest

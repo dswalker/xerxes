@@ -20,7 +20,7 @@ use Application\Model\Authentication\User,
  * @package Xerxes
  */
 
-abstract class Authentication
+abstract class Scheme
 {
 	public $id; // the id of this auth scheme, set by the factory method invoking it
 	
@@ -38,9 +38,15 @@ abstract class Authentication
 	const SUCCESS = 1;
 	const REDIRECT = 3;
 	
-	public function __construct(MvcEvent $e)
+	/**
+	 * Create Authentication Scheme
+	 * 
+	 * @param Request $request
+	 */
+	
+	public function __construct(Request $request)
 	{
-		$this->request = $e->getRequest();
+		$this->request = $request;
 		$this->registry = Registry::getInstance();
 		
 		// get the user from the request
