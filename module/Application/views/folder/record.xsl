@@ -18,7 +18,7 @@
 <xsl:import href="../includes.xsl" />
 <xsl:import href="../search/record.xsl" />
 
-<xsl:output method="html" encoding="utf-8" indent="yes" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN" doctype-system="http://www.w3.org/TR/html4/loose.dtd"/>
+<xsl:output method="html" />
 
 <xsl:template match="/*">
 	<xsl:call-template name="surround" />
