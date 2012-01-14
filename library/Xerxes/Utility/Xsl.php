@@ -36,25 +36,25 @@ class Xsl
 	 * Alias for transform
 	 */
 	
-	public function transformToDoc( $xml, $path_to_xsl, $params = null, $import_array = array() )
+	public function transformToDoc( $xml, $path_to_xsl, $output_type = null, array $params =  array(), $import_array = array() )
 	{
-		return $this->transform($xml, $path_to_xsl, $params, $import_array, false);
+		return $this->transform($xml, $path_to_xsl, $output_type, $params, $import_array, false);
 	}
 	
 	/**
 	 * Transform to string
 	 */	
 	
-	public function transformToXml( $xml, $path_to_xsl, $params = null, $import_array = array() )
+	public function transformToXml( $xml, $path_to_xsl, $output_type = null, array $params =  array(), array $import_array = array() )
 	{
-		return $this->transform($xml, $path_to_xsl, $params, $import_array);
+		return $this->transform($xml, $path_to_xsl, $output_type, $params, $import_array);
 	}
 	
 	/**
 	 * Simple, dynamic xsl transform
 	 */	
 				
-	protected function transform ( $xml, $path_to_xsl, $params = null, $import_array = array(), $to_string = true )
+	protected function transform ( $xml, $path_to_xsl, $output_type = null, array $params =  array(), array $import_array = array(), $to_string = true )
 	{
 		if ( $path_to_xsl == "") throw new \Exception("no stylesheet supplied");
 		
@@ -72,17 +72,14 @@ class Xsl
 
 		// add parameters
 		
-		if ($params != null)
+		foreach ($params as $key => $value)
 		{
-			foreach ($params as $key => $value)
-			{
-				$processor->setParameter(null, $key, $value);
-			}
+			$processor->setParameter(null, $key, $value);
 		}
 			
 		// add stylesheet
 		
-		$xsl = $this->generateBaseXsl($path_to_xsl, $import_array);
+		$xsl = $this->generateBaseXsl($path_to_xsl, $import_array, $output_type);
 		
 		$processor->importStylesheet($xsl);
 		
@@ -109,7 +106,7 @@ class Xsl
 	 * @static
 	*/
 	
-	private function generateBaseXsl( $path_to_file, $import_array = array() )
+	private function generateBaseXsl( $path_to_file, $import_array = array(), $output_type)
 	{
 		$files_to_import = array();
 		
@@ -137,12 +134,30 @@ class Xsl
 		### the distro and the local files
 		
 		$generated_xsl = new \DOMDocument();
-		$generated_xsl->load( __DIR__ . "/xsl/dynamic_skeleton.xsl");
 		
-		// prepend imports to this, to put them at the top of the file. 
+		$xml = "
+			<xsl:stylesheet 
+				version=\"1.0\"
+				xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\"
+				xmlns:php=\"http://php.net/xsl\" 
+				exclude-result-prefixes=\"php\">		
+			</xsl:stylesheet>";
+		
+		$generated_xsl->loadXML(trim($xml));
+		
+		// dynamically create the output type
 	
-		$importInsertionPoint = $generated_xsl->documentElement->firstChild;
+		$output = $generated_xsl->createElementNS('http://www.w3.org/1999/XSL/Transform', "output");
+		$generated_xsl->documentElement->appendChild($output);
 		
+		// html 4
+		
+		if ( $output_type == "html")
+		{
+			$output->setAttribute("method", "html");
+			$output->setAttribute("doctype-public", "-//W3C//DTD HTML 4.01 Transitional//EN");
+			$output->setAttribute("doctype-system", "http://www.w3.org/TR/html4/loose.dtd");
+		}
 		
 		### add a reference to the distro file
 
@@ -178,7 +193,7 @@ class Xsl
 		
 		if ( $local_exists )
 		{
-			$this->addIncludeReference( $generated_xsl, $local_path);
+			$this->addIncludeReference( $generated_xsl, $local_path );
 		}
 		
 
@@ -191,13 +206,13 @@ class Xsl
 		
 		if ( $distro_exists )
 		{
-			$distroXml = simplexml_load_file ( $distro_path );
+			$distroXml = simplexml_load_file( $distro_path );
 		
-			$distroXml->registerXPathNamespace ( 'xsl', 'http://www.w3.org/1999/XSL/Transform' );
+			$distroXml->registerXPathNamespace( 'xsl', 'http://www.w3.org/1999/XSL/Transform' );
 			
 			// find anything include'd or import'ed in original base file
 			
-			$array_merged = array_merge ( $distroXml->xpath( "//xsl:include" ), $distroXml->xpath ( "//xsl:import" ) );
+			$array_merged = array_merge( $distroXml->xpath( "//xsl:include" ), $distroXml->xpath ( "//xsl:import" ) );
 			
 			foreach ( $array_merged as $extra )
 			{
@@ -211,7 +226,7 @@ class Xsl
 				
 				// make sure local copy exists, and they are both not pointing at the same file 
 				
-				if ( file_exists ( $local_candidate ) && realpath($distro_check) != realpath($local_candidate) )
+				if ( file_exists( $local_candidate ) && realpath($distro_check) != realpath($local_candidate) )
 				{
 					array_push($files_to_import, $local_candidate);
 				}
@@ -227,7 +242,7 @@ class Xsl
 		
 		foreach ( $files_to_import as $import )
 		{
-			$this->addImportReference ( $generated_xsl, $import, $importInsertionPoint );
+			$this->addImportReference ( $generated_xsl, $import, $output );
 		}
 		
 		// header("Content-type: text/xml"); echo $generated_xsl->saveXML(); exit;

@@ -27,14 +27,14 @@ class ViewRenderer
 	 * Display the response by calling view
 	 */
 	
-	public function render($view, $vars)
+	public function render($view, array $vars, $output_type = "html")
 	{
 		// xslt view
 			
 		if (strstr($view, '.xsl') )
 		{
 			$xml = $this->toXML($vars);
-			$html = $this->transform($xml, $view);
+			$html = $this->transform($xml, $view, $output_type);
 			return $html;
 		}
 			
@@ -72,7 +72,7 @@ class ViewRenderer
 		return $xml;
 	}
 	
-	protected function transform($xml, $path_to_xsl, $params = array())
+	protected function transform($xml, $path_to_xsl, $output_type, array $params = array())
 	{
 		$registry = Registry::getInstance();
 
@@ -83,7 +83,7 @@ class ViewRenderer
 		$distro_xsl_dir = $this->_script_path . "/";
 		$local_xsl_dir = realpath(getcwd()) . "/views/";
 		
-		### language file
+		// language file
 		
 		$request = new Request();
 		$language = $request->getParam("lang");
@@ -105,12 +105,14 @@ class ViewRenderer
 			array_push($import_array, "labels/$language.xsl");
 		}		
 		
-		### make sure we've got a reference to the local includes too
+		// make sure we've got a reference to the local includes too
 		
 		array_push($import_array, $local_xsl_dir . "includes.xsl");
 		
+		// transform
+		
 		$xsl = new Xsl($distro_xsl_dir, $local_xsl_dir);
 		
-		return $xsl->transformToXml($xml, $path_to_xsl, $params, $import_array);
+		return $xsl->transformToXml($xml, $path_to_xsl, $output_type, $params, $import_array);
 	}
 }
