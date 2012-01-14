@@ -195,18 +195,23 @@ class Listener implements ListenerAggregate
 		
 		$script = 'error/index.phtml';
 		
-		// ajax request
+		// @todo: woraround to bug in zf2 trailing slash problem
 		
-		if ( $e->getRequest()->isXmlHttpRequest() )
+		if ( $e->getRequest() instanceof Request )
 		{
-			$script = 'error/ajax.phtml';
-		}
-		
-		// command line request
-		
-		elseif ( $e->getRequest()->isCommandLine() )
-		{
-			$script = 'error/console.phtml';
+			// ajax request
+			
+			if ( $e->getRequest()->isXmlHttpRequest() )
+			{
+				$script = 'error/ajax.phtml';
+			}
+			
+			// command line request
+			
+			elseif ( $e->getRequest()->isCommandLine() )
+			{
+				$script = 'error/console.phtml';
+			}
 		}
 		
 		$content = $this->view_renderer->render($script, $vars);
