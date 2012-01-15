@@ -65,6 +65,7 @@
 	
 	<!-- extra content to include in the HTML 'head' section -->
 	
+	<xsl:variable name="text_extra_meta_tags" />
 	<xsl:variable name="text_extra_html_head_content" />
 
 	<!-- 
@@ -203,7 +204,7 @@
 	<xsl:template name="surround-head">
 		<head>
 		<title><xsl:value-of select="//config/application_name" />: <xsl:call-template name="title" /></title>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<xsl:call-template name="surround-meta" />
 		<base href="{$base_url}/" />
 		
 		<!-- css -->
@@ -223,6 +224,11 @@
 		<!-- good junk -->
 		<xsl:call-template name="surround-google-analytics" />
 		</head>
+	</xsl:template>
+	
+	<xsl:template name="surround-meta">
+			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+			<xsl:copy-of select="$text_extra_meta_tags />
 	</xsl:template>
 	
 	<!-- 
