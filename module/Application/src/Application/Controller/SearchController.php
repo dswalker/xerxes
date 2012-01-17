@@ -2,13 +2,12 @@
 
 namespace Application\Controller;
 
-use Xerxes\Utility\Registry;
-
 use Application\View\Helper\Search as SearchHelper,
 	Application\Model\Search\Result,
 	Application\Model\DataMap\SavedRecords,
 	Xerxes\Record,
 	Xerxes\Utility\Parser,
+	Xerxes\Utility\Registry,
 	Zend\Mvc\Controller\ActionController,
 	Zend\Mvc\MvcEvent;
 

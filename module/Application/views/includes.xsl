@@ -67,6 +67,12 @@
 	
 	<xsl:variable name="text_extra_meta_tags" />
 	<xsl:variable name="text_extra_html_head_content" />
+	
+	
+	
+	
+	
+	
 
 	<!-- 
 		LANGUAGE VARIABLES
@@ -148,6 +154,12 @@
 		</xsl:choose>
 	</xsl:variable>
 	
+	
+	
+	
+	
+	
+	
 
 	<!-- 	
 		TEMPLATE: SURROUND
@@ -228,7 +240,7 @@
 	
 	<xsl:template name="surround-meta">
 			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-			<xsl:copy-of select="$text_extra_meta_tags />
+			<xsl:copy-of select="$text_extra_meta_tags" />
 	</xsl:template>
 	
 	<!-- 
