@@ -398,7 +398,7 @@ class Query
 			
 				if ( is_numeric($id) )
 				{
-					$boolean_id = $id - 1;
+					$boolean_id = $id;
 				}
 				
 				$arrTerm["query"] = $value;
