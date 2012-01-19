@@ -112,7 +112,6 @@ class Summon
 		
 		$options['s.ff'] = $this->getFacetsToInclude();
 		
-		
 		return $this->send($options);
 	}
 	
@@ -231,15 +230,6 @@ class Summon
 	
 	public function getFacetsToInclude()
 	{
-		if ( count($this->facets_to_include) == 0 )
-		{
-			// default
-		
-			return array(
-				'IsScholarly,or,1,2' ,
-				'ContentType,or,1,100' ,
-				'SubjectTerms,or,1,30'
-			);
-		}
+		return $this->facets_to_include;
 	}
 }

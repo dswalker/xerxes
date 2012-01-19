@@ -4,7 +4,8 @@ namespace Application\Model\Summon;
 
 use Application\Model\Search,
 	Xerxes\Summon,
-	Xerxes\Utility\Factory;
+	Xerxes\Utility\Factory,
+	Xerxes\Utility\Parser;
 
 /**
  * Summon Search Engine
@@ -150,25 +151,44 @@ class Engine extends Search\Engine
 		$terms = $search->getQueryTerms();
 		$term = $terms[0];
 		
+		// facets to include in the response
+		
+		$facets_to_include = array();
+		
+		foreach ( $this->config->getFacets() as $facet_config )
+		{
+			$facets_to_include[(string) $facet_config["internal"]] = (string) $facet_config["internal"] . 
+				",or,1," . (string) $facet_config["max"]; 
+		}
+		
 		// limits
 		
 		$facets = array();
 		
 		foreach ( $search->getLimits(true) as $limit )
 		{
+			// remove chosen facet from response
+			// @todo: make multi-value facets selectable 
+			
+			$facets_to_include = Parser::removeFromArray($facets_to_include, $limit->field);
+			
 			array_push($facets, $limit->field . "," . str_replace(',', '\,', $limit->value) . ",false");
 		}
+		
+		// set actual response facets
+		
+		$this->summon_client->setFacetsToInclude($facets_to_include);
 
 		
 		############## HACK
 		
 		// filter out formats
 		
-		array_push($facets, 'ContentType,Newspaper Article,true'); // newspaper
 		array_push($facets, 'ContentType,Book / eBook,true'); // catalog
 		array_push($facets, 'ContentType,Reference,true'); // catalog
 		array_push($facets, 'ContentType,Web Resource,true'); // catalog
-		array_push($facets, 'ContentType,Research Guide,true'); // just random gudies
+		array_push($facets, 'ContentType,Research Guide,true'); // just random guides
+		array_push($facets, 'ContentType,Newspaper Article,true'); // newspaper
 		
 		// summon deals in pages, not start record number
 		
@@ -276,9 +296,11 @@ class Engine extends Search\Engine
 		
 		if ( array_key_exists("facetFields", $summon_results) )
 		{		
+			// @todo: figure out how to factor out some of this to parent class
+			
 			// take them in the order defined in config
 				
-			foreach ( array_keys($this->config->getFacets()) as $group_internal_name )
+			foreach ( $this->config->getFacets() as $group_internal_name => $config )
 			{
 				foreach ( $summon_results["facetFields"] as $facetFields )
 				{
@@ -289,21 +311,37 @@ class Engine extends Search\Engine
 						$group->public = $this->config->getFacetPublicName($facetFields["displayName"]);
 							
 						$facets->addGroup($group);
-							
-						foreach ( $facetFields["counts"] as $counts )
+						
+						// choice type
+						
+						if ( (string) $config["type"] == "choice")
 						{
-							############## HACK
-							
-							if ( $counts["count"] == $total)
+							foreach ($config->choice as $choice )
 							{
-								continue;
+								foreach ( $facetFields["counts"] as $counts )
+								{
+									if ( $counts["value"] == (string) $choice["internal"] )
+									{
+										$facet = new Search\Facet();
+										$facet->name = (string) $choice["public"];
+										$facet->count = $counts["count"];
+										$facet->key = $counts["value"];
+										
+										$group->addFacet($facet);
+									}
+								}
 							}
-							
-							$facet = new Search\Facet();
-							$facet->name = $counts["value"];
-							$facet->count = $counts["count"];
-								
-							$group->addFacet($facet);
+						}
+						else // regular
+						{
+							foreach ( $facetFields["counts"] as $counts )
+							{
+								$facet = new Search\Facet();
+								$facet->name = $counts["value"];
+								$facet->count = $counts["count"];
+									
+								$group->addFacet($facet);
+							}
 						}
 					}
 				}

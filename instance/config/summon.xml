@@ -7,9 +7,12 @@
 		<config name="summon_key"></config>
 
 		<config name="facet_fields" xml="true" pass="true">
-			<facet public="Scholarly" internal="IsScholarly" />
-			<facet public="Format" internal="ContentType" />
-			<facet public="Topics" internal="SubjectTerms" />
+			<facet public="Scholarly" internal="IsScholarly" type="choice" max="2">
+				<choice public="Scholarly" internal="true" />
+				<choice public="Non-scholarly" internal="false" />
+			</facet>
+			<facet public="Format" internal="ContentType" max="100" />
+			<facet public="Topics" internal="SubjectTerms" max="30" />
 		</config>
 		
 		<config name="sort_options" xml="true" pass="true">
