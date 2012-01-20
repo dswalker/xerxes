@@ -139,7 +139,14 @@ class Listener implements ListenerAggregate
 			
 			// render it
 			
-			$content = $this->view_renderer->render($script, $vars);
+			$display_as = "html";
+			
+			if ( $request->getParam('format') == 'json')
+			{
+				$display_as = "json";
+			}
+			
+			$content = $this->view_renderer->render($script, $vars, $display_as);
 		}
 		
 		
@@ -193,6 +200,7 @@ class Listener implements ListenerAggregate
 		
 		// basic web request
 		
+		$display_as = "html";
 		$script = 'error/index.phtml';
 		
 		// @todo: woraround to bug in zf2 trailing slash problem
@@ -203,6 +211,7 @@ class Listener implements ListenerAggregate
 			
 			if ( $e->getRequest()->isXmlHttpRequest() )
 			{
+				$display_as = "json";
 				$script = 'error/ajax.phtml';
 			}
 			
@@ -210,11 +219,12 @@ class Listener implements ListenerAggregate
 			
 			elseif ( $e->getRequest()->isCommandLine() )
 			{
+				$display_as = "console";
 				$script = 'error/console.phtml';
 			}
 		}
 		
-		$content = $this->view_renderer->render($script, $vars);
+		$content = $this->view_renderer->render($script, $vars, $display_as);
 		
 		### return the result
 		
