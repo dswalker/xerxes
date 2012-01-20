@@ -680,8 +680,16 @@ div.autocomplete ul li {
 /* search sidebar */
 
 #search-sidebar {
-	font-size: 90%;
 	background-color: inherit;
+	padding-left: 0px;
+}
+
+#search-sidebar .box {
+	margin-left: .5em;
+}
+
+#search-sidebar ul li {
+	font-size: 87%;
 }
 
 
