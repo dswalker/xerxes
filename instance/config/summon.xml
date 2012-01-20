@@ -21,8 +21,10 @@
 		</config>
 
 		<config name="basic_search_fields" xml="true" pass="true">
-			<field id="keyword" public="all fields" internal="any" />
-			<field id="title" public="title" internal="title" />
+			<field id="keyword" public="all fields" internal="" />
+			<field id="title" public="title" internal="Title" />
+			<field id="author" public="author" internal="Author" />
+			<field id="subject" public="subject" internal="SubjectTerms" />
 		</config>
 		
 	</configuration>

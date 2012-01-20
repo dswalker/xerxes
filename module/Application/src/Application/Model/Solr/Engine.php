@@ -3,7 +3,8 @@
 namespace Application\Model\Solr;
 
 use Application\Model\Search,
-	Xerxes\Utility\Factory;
+	Xerxes\Utility\Factory,
+	Xerxes\Utility\Request;
 
 /**
  * Solr Search Engine
@@ -116,17 +117,6 @@ class Engine extends Search\Engine
 	}
 	
 	/**
-	 * Return the search engine config
-	 * 
-	 * @return Config
-	 */	
-	
-	public function getConfig()
-	{
-		return Config::getInstance();
-	}	
-
-	/**
 	 * Do the actual fetch of an individual record
 	 * 
 	 * @param string	record identifier
@@ -143,7 +133,7 @@ class Engine extends Search\Engine
 	/**
 	 * Do the actual search
 	 * 
-	 * @param mixed $search							search object or string
+	 * @param string|Query $search					search object or string
 	 * @param int $start							[optional] starting record number
 	 * @param int $max								[optional] max records
 	 * @param string $sort							[optional] sort order
@@ -163,157 +153,13 @@ class Engine extends Search\Engine
 		
 		### parse the query
 		
-		$query = ""; // query
-		$type = ""; // dismax or standard
+		$query = "";
 		
 		// passed in a query object, so handle this
 		
 		if ( $search instanceof Search\Query )
 		{
-			$terms = $search->getQueryTerms();
-			
-			// check if a query was supplied
-			
-			if ( count($terms) == 0 )
-			{
-				throw new \Exception("No search terms supplied");
-			}
-			
-			// get just the first term for now
-			
-			$term = $terms[0];
-		
-			// decide between basic and dismax handler
-			
-			$trunc_test = $this->config->getFieldAttribute($term->field_internal, "truncate");
-			
-			// use dismax if this is a simple search, that is:
-			// only if there is one phrase (i.e., not advanced), no boolean OR and no wildcard
-	
-			if ( count($terms) == 1 && 
-				! strstr($term->phrase, " OR ") && 
-				! strstr($term->phrase, "*") && 
-				$trunc_test == null )
-			{
-				# dismax
-				
-				$type = "&defType=dismax";
-	
-				$term = $terms[0];
-				
-				$phrase = $term->phrase;
-				$phrase = strtolower($phrase);
-				$phrase = str_replace(" NOT ", " -", $phrase);
-				
-				if ( $term->field_internal != "" )
-				{
-					$query .= "&qf=" . urlencode($term->field_internal);
-					$query .= "&pf=" . urlencode($term->field_internal);
-				}
-		
-				$query .= "&q=" . urlencode($phrase);
-			}
-			else
-			{
-				# standard
-				
-				$query = "";
-				
-				foreach ( $terms as $term )
-				{
-					$phrase = $term->phrase;
-					$phrase = strtolower($phrase);
-					$phrase = str_replace(':', '', $phrase);
-					$phrase = $search->alterQuery($phrase, $term->field_internal, $this->config);
-					
-					// break up the query into words
-					
-					$arrQuery = $term->normalizedArray( $phrase );
-					
-					// we'll now search for this term across multiple fields
-					// specified in the config
-		
-					if ( $term->field_internal != "" )
-					{
-						// we'll use this to get the phrase as a whole, but minus
-						// the boolean operators in order to boost this
-						
-						$boost_phrase = ""; 
-						
-						foreach ( $arrQuery as $strPiece )
-						{
-							// just add the booelan value straight-up
-							
-							if ( $strPiece == "AND" || $strPiece == "OR" || $strPiece == "NOT" )
-							{
-								$query .= " $strPiece ";
-								continue;			
-							}
-							
-							$boost_phrase .= " " . $strPiece;
-							
-							// try to mimick dismax query handler as much as possible
-							
-							$query .= " (";
-							$local = array();
-							
-							// take the fields we're searching on,
-							
-							foreach ( explode(" ", $term->field_internal) as $field )
-							{
-								// split them out into index and boost score
-							
-								$parts = explode("^",$field);
-								$field_name = $parts[0];
-								$boost = "";
-								
-								// make sure there really was a  boost score
-								
-								if ( array_key_exists(1,$parts) )
-								{
-									$boost = "^" . $parts[1];
-								}
-								
-								// put them together 
-								
-								array_push($local, $field_name . ":" . $strPiece . $boost);
-							}
-							
-							$query .= implode(" OR ", $local);
-								
-							$query .= " )";
-						}
-						
-						// $boost_phrase = trim($boost_phrase);
-						// $query = "($query) OR \"" . $boost_phrase . '"';
-					}
-				}
-				
-				$query = "&q=" . urlencode($query);
-			}
-			
-			// facets selected
-			
-			foreach ( $search->getLimits(true) as $facet_chosen )
-			{
-				// put quotes around non-keyed terms
-				
-				if ( $facet_chosen->key != true )
-				{
-					$facet_chosen->value = '"' . $facet_chosen->value . '"';
-				}
-				
-				$query .= "&fq=" . urlencode( $facet_chosen->field . ":" . $facet_chosen->value);
-			}
-			
-			// limits set in config
-			
-			$auto_limit = $this->config->getConfig("LIMIT", false);
-			
-			if ( $auto_limit != null )
-			{
-				$query .= "&fq=" . urlencode($auto_limit);
-			}
+			$query = $search->toQuery();
 		}
 		
 		// was just a string, so just take it straight-up
@@ -326,7 +172,7 @@ class Engine extends Search\Engine
 		
 		### now the url
 		
-		$this->url = $this->server . $type . $query;
+		$this->url = $this->server . $query;
 
 		$this->url .= "&start=$start&rows=" . $max . "&sort=" . urlencode($sort);
 		
@@ -563,4 +409,33 @@ class Engine extends Search\Engine
 		
 		return $facets;
 	}
+	
+	/**
+	 * Return the search engine config
+	 *
+	 * @return Config
+	 */
+	
+	public function getConfig()
+	{
+		return Config::getInstance();
+	}
+	
+	/**
+	 * Return the Summon search query object
+	 *
+	 * @return Query
+	 */
+	
+	public function getQuery(Request $request )
+	{
+		if ( $this->query instanceof Query )
+		{
+			return $this->query;
+		}
+		else
+		{
+			return new Query($request, $this->getConfig());
+		}
+	}	
 }

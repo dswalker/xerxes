@@ -5,7 +5,8 @@ namespace Application\Model\Summon;
 use Application\Model\Search,
 	Xerxes\Summon,
 	Xerxes\Utility\Factory,
-	Xerxes\Utility\Parser;
+	Xerxes\Utility\Parser,
+	Xerxes\Utility\Request;
 
 /**
  * Summon Search Engine
@@ -106,17 +107,6 @@ class Engine extends Search\Engine
 	}
 	
 	/**
-	 * Return the search engine config
-	 * 
-	 * @return Config
-	 */		
-	
-	public function getConfig()
-	{
-		return Config::getInstance();
-	}
-	
-	/**
 	 * Do the actual fetch of an individual record
 	 * 
 	 * @param string	record identifier
@@ -148,8 +138,7 @@ class Engine extends Search\Engine
 	{ 	
 		// prepare the query
 		
-		$terms = $search->getQueryTerms();
-		$term = $terms[0];
+		$query = $search->toQuery();
 		
 		// facets to include in the response
 		
@@ -203,7 +192,7 @@ class Engine extends Search\Engine
 		
 		// get the results
 		
-		$summon_results = $this->summon_client->query($term->phrase, $facets, $page, $max, $sort);
+		$summon_results = $this->summon_client->query($query, $facets, $page, $max, $sort);
 		
 		return $this->parseResponse($summon_results);
 	}
@@ -349,5 +338,34 @@ class Engine extends Search\Engine
 		}
 		
 		return $facets;
+	}
+	
+	/**
+	 * Return the search engine config
+	 *
+	 * @return Config
+	 */
+	
+	public function getConfig()
+	{
+		return Config::getInstance();
+	}	
+	
+	/**
+	 * Return the Solr search query object
+	 *
+	 * @return Query
+	 */
+	
+	public function getQuery(Request $request )
+	{
+		if ( $this->query instanceof Query )
+		{
+			return $this->query;
+		}
+		else
+		{
+			return new Query($request, $this->getConfig());
+		}
 	}
 }
