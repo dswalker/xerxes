@@ -4,7 +4,8 @@ namespace Application\Model\Ebsco;
 
 use Application\Model\Search,
 	Xerxes\Utility\Factory,
-	Xerxes\Utility\Parser;
+	Xerxes\Utility\Parser,
+	Xerxes\Utility\Request;
 
 /**
  * Ebsco Search Engine
@@ -111,17 +112,6 @@ class Engine extends Search\Engine
 	}
 	
 	/**
-	 * Return the search engine config
-	 * 
-	 * @return Config
-	 */		
-	
-	public function getConfig()
-	{
-		return Config::getInstance();
-	}		
-	
-	/**
 	 * Do the actual fetch of an individual record
 	 * 
 	 * @param string	record identifier
@@ -174,15 +164,7 @@ class Engine extends Search\Engine
 		
 		if ( $search instanceof Search\Query )
 		{
-			// just one term for now
-			
-			$terms = $search->getQueryTerms();
-			$term = $terms[0];
-			
-			$term->toLower()
-			     ->andAllTerms();
-			
-			$query = $term->field_internal . " " . $term->phrase;
+			$query = $search->toQuery();
 		}
 		else
 		{
@@ -432,4 +414,33 @@ class Engine extends Search\Engine
 		
 		return $facets;
 	}
+	
+	/**
+	 * Return the search engine config
+	 *
+	 * @return Config
+	 */
+	
+	public function getConfig()
+	{
+		return Config::getInstance();
+	}
+	
+	/**
+	 * Return the Solr search query object
+	 *
+	 * @return Query
+	 */
+	
+	public function getQuery(Request $request )
+	{
+		if ( $this->query instanceof Query )
+		{
+			return $this->query;
+		}
+		else
+		{
+			return new Query($request, $this->getConfig());
+		}
+	}	
 }

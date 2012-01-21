@@ -5,7 +5,8 @@ namespace Application\Model\Worldcat;
 use Application\Model\Search,
 	Xerxes\Worldcat,
 	Xerxes\Marc,
-	Xerxes\Utility\Factory;
+	Xerxes\Utility\Factory,
+	Xerxes\Utility\Request;
 
 /**
  * Worldcat Search Engine
@@ -144,17 +145,6 @@ class Engine extends Search\Engine
 	}
 	
 	/**
-	 * Return the search engine config
-	 * 
-	 * @return Config
-	 */		
-	
-	public function getConfig()
-	{
-		return Config::getInstance();
-	}
-	
-	/**
 	 * Do the actual fetch of an individual record
 	 * 
 	 * @param string	record identifier
@@ -182,7 +172,7 @@ class Engine extends Search\Engine
 	{ 	
 		// convert query
 		
-		$query = $this->convertQuery($search);
+		$query = $search->toQuery();
 		
 		// get results from Worldcat
 		
@@ -211,95 +201,6 @@ class Engine extends Search\Engine
 		return $results;		
 	}
 	
-	protected function convertQuery( Search\Query $search )
-	{
-		$query = "";
-		
-		// prepare the query
-		
-		// search terms
-		
-		foreach ( $search->getQueryTerms() as $term )
-		{
-			$query .= $this->keyValue($term);
-		}
-		
-		// limits
-		
-		$limit_array = array();
-		
-		foreach ( $search->getLimits(true) as $limit )
-		{
-			if ( $limit->value == "" )
-			{
-				continue;
-			}
-		
-			// publication year
-		
-			if ( $limit->field == "year" )
-			{
-				$year = $limit->value;
-				$year_relation = $limit->relation;
-		
-				$year_array = explode("-", $year);
-		
-				// there is a range
-		
-				if ( count($year_array) > 1 )
-				{
-					if ( $year_relation == "=" )
-					{
-						$query .= " and srw.yr >= " . trim($year_array[0]) .
-						" and srw.yr <= " . trim($year_array[1]);
-					}
-		
-					// this is probably erroneous, specifying 'before' or 'after' a range;
-					// did user really mean this? we'll catch it here just in case
-		
-					elseif ( $year_relation == ">" )
-					{
-						array_push($limit_array, " AND srw.yr > " .trim($year_array[1] . " "));
-					}
-					elseif ( $year_relation == "<" )
-					{
-						array_push($limit_array, " AND srw.yr < " .trim($year_array[0] . " "));
-					}
-				}
-				else
-				{
-					// a single year
-		
-					array_push($limit_array, " AND srw.yr $year_relation $year ");
-				}
-			}
-		
-			// language
-		
-			elseif ( $limit->field == "la")
-			{
-				array_push($limit_array, " AND srw.la=\"" . $limit->value . "\"");
-			}
-		
-			// material type
-		
-			elseif ( $limit->field == "mt")
-			{
-				array_push($limit_array, " AND srw.mt=\"" . $limit->value . "\"");
-			}
-		}
-		
-		$limits = implode(" ", $limit_array);
-		
-		if ( $limits != "" )
-		{
-			$query = "($query) $limits";
-		}
-		
-		return trim($query);		
-	}
-	
-		
 	/**
 	 * Parse records out of the response
 	 *
@@ -328,53 +229,31 @@ class Engine extends Search\Engine
 	}
 	
 	/**
-	 * Create an SRU boolean/key/value expression in the query, such as:
-	 * AND srw.su="xslt"
+	 * Return the search engine config
 	 *
-	 * @param QueryTerm $term		
-	 * @param bool $neg				(optional) whether the presence of '-' in $value should indicate a negative expression
-	 * 								in which case $boolean gets changed to 'NOT'
-	 * @return string				the resulting SRU expresion
+	 * @return Config
 	 */
 	
-	private function keyValue(Search\QueryTerm $term, $neg = false)
+	public function getConfig()
 	{
-		if ( $term->phrase == "" )
-		{
-			return "";
-		}
+		return Config::getInstance();
+	}
 	
-		if ($neg == true && strstr (  $term->phrase, "-" ))
-		{
-			$boolean = "NOT";
-			$term->phrase = str_replace ( "-", "", $term->phrase );
-		}
+	/**
+	 * Return the Solr search query object
+	 *
+	 * @return Query
+	 */
 	
-		$together = "";
-	
-		if ( $term->relation == "exact")
+	public function getQuery(Request $request )
+	{
+		if ( $this->query instanceof Query )
 		{
-			$term->phrase = str_replace ( "\"", "",  $term->phrase );
-			$together = " srw." . $term->field_internal . " exact \"  $term->phrase \"";
+			return $this->query;
 		}
 		else
 		{
-			$phrase = $term->removeStopWords()->phrase;
-			
-			foreach ( $term->normalizedArray($phrase) as $query_part )
-			{
-				if ($query_part == "AND" || $query_part == "OR" || $query_part == "NOT")
-				{
-					$together .= " " . $query_part;
-				}
-				else
-				{
-					$query_part = str_replace ( '"', '', $query_part );
-					$together .= " srw." . $term->field_internal . " = \"  $query_part \"";
-				}
-			}
+			return new Query($request, $this->getConfig());
 		}
-	
-		return " " . $term->boolean . " ( $together ) ";
 	}	
 }
