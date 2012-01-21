@@ -271,7 +271,9 @@ class Group
 	
 			// did we find a subject that has subcategories?
 	
-			if ( $subject_object != null && $subject_object->subcategories != null && count( $subject_object->subcategories ) > 0 )
+			if ( $subject_object != null 
+					&& $subject_object->subcategories != null 
+					&& count( $subject_object->subcategories ) > 0 )
 			{
 				$subs = $subject_object->subcategories;
 				$subcategory = $subs[0];
