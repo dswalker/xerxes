@@ -1,38 +1,38 @@
 /** RESULTS **/
 
-.bookCover {
+.book-cover {
 	width: 80px;
 	float: left; 
 	text-align: right;
 }
 
-.bookResult {
+.book-result {
   border-left: 2px solid #CCCCCC;
   margin-left: 79px;
   padding-left: 20px;
 }
 
-.bookAbstractData {
+.book-abstract-data {
 	margin-bottom: 10px;
 }
 
-.resultsType {
+.results-type {
 	margin-top: 5px;
 }
 
-.resultsInfo {
+.results-info {
 	padding-left: 0px;
 	border-left: 0px;
 }
 
 /** RECORD **/
 
-#bookRecordBookCover {
+#book-record-book-cover {
 	width: 120px;
 	float: left; 
 }
 
-.recordFullText {
+.record-full-text {
 	clear: both;
 	margin-top: 20px;
 }
@@ -41,35 +41,35 @@
 	clear: none;
 }
 
-.summaryOnlineHolding {
+.summary-online-holding {
 	margin: 1em;
 	margin-bottom: 1.2em;
 }
 
-#record .bookHoldings li {
+#record .book-holdings li {
 	margin-left: 30px;
 }
 
-.bookAvailableRecord {
+.book-available-record {
 	max-height: 400px; 
 	overflow-y: scroll; 
 	margin-bottom: 20px;
 }
 
-.google_preview {
+.google-preview {
 	margin: 1em;
 }
 
 /** HOLDINGS **/
 
-.holdingsTable {
+.holdings-table {
 	border-collapse:collapse;
 	border-spacing:0;
 	border: 1px solid #ccc;
 	margin: 15px;
 }
 
-.holdingsTable th, .holdingsTable td {
+.holdings-table th, .holdings-table td {
 	text-align: left;
 	margin: 0px;
 	padding: 5px;
@@ -77,27 +77,27 @@
 	border-bottom: 1px solid #eee;
 }
 
-.holdingsTable th {
+.holdings-table th {
 	background-color: #efefef;
 }
 
-ul.holdingsSummaryStatement {
+ul.holdings-summary-statement {
 	margin-bottom: 1em;
 	padding-left: 1em;
 }
 
-#record ul.holdingsSummaryStatement li {
+#record ul.holdings-summary-statement li {
 	list-style-type: none;
 	padding-bottom: .5em;
 }
 
-#bookAdvancedMore {
+#book-advanced-more {
 	margin-top: 20px;
 }
 
 /** ADVANCED SEARCH FORM **/
 	
-#bookAdvancedSearch fieldset {
+#book-advanced-search fieldset {
 	margin: 10px;
 	padding: 20px;
 	border: 2px solid #CCCCCC;
@@ -105,48 +105,48 @@ ul.holdingsSummaryStatement {
 	clear: left;
 }
 
-#bookAdvancedSearch legend {
+#book-advanced-search legend {
 	background-color: #FFFFFF;
 	margin-top: -10px;
 	font-weight: bold;
 	padding: 10px;
 }
 
-#bookAdvancedSearch p { 
+#book-advanced-search p { 
 	margin-top: 10px;
 	margin-bottom: 10px;
 }
 
-#bookAdvancedSearch .explain {
+#book-advanced-search .explain {
 	font-size: 90%;
 	color: #666;
 	margin: 10px;
 }
 
-#bookAdvancedSearch td {
+#book-advanced-search td {
 	vertical-align: top;
 }
 	
-#searchTerms li {
+#search-terms li {
 	margin-top: 10px;
 	margin-bottom: 10px;
 	background: none;
 }
 
-#searchYear {
+#search-year {
 	margin-top: 30px;
 }
 
-#bookAdvancedSearch input {
+#book-advanced-search input {
 	padding: 2px;
 }
 
-#bookAdvancedSearch option { 
+#book-advanced-search option { 
 	padding: 2px;
 	padding-right: 4px;
 }
 
-option.basicOption {
+option.basic-option {
 	background-color: #FFFFCC;	
 }
 
@@ -169,16 +169,16 @@ option.basicOption {
 	margin-left: 20px;
 }
 
-#basicLimits td {
+#basic-limits td {
 	padding: 5px;
 }
 
-#searchSubmit {
+#search-submit {
 	margin-top: 30px;
 	margin-left: 30px;
 }
 
-#searchSubmit input {
+#search-submit input {
 	padding: 10px;
 	cursor: pointer;
 	font-weight: bold;
@@ -196,13 +196,13 @@ option.basicOption {
 	background-color: #efefef;
 }
 
-.smsProperty {
+.sms-property {
 	float: left;
 	height: 150%;
 	font-weight: bold;
 }
 
-.smsProperty {
+.sms-property {
 	clear: left;
 	float: left;
 	font-weight: bold;
@@ -211,18 +211,18 @@ option.basicOption {
 	text-align: right;
 }
 
-.smsValue {
+.sms-value {
 	margin-left: 15em;
 	margin-bottom: 1em;
 }
 
-.smsCopy {
+.sms-copy {
 	margin-left: 2em;
 	margin-top: 1em;
 	display: block;
 }
 
-.smsNote {
+.sms-note {
 	margin: 1em;
 	font-size: 90%;
 	font-style: italic;

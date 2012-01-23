@@ -127,7 +127,7 @@
 	-->	
 	
 	<xsl:template name="record-actions">
-		<div id="recordFullText" class="raisedBox recordActions">
+		<div id="record-full-text" class="raised-box record-actions">
 			<xsl:call-template name="record-action-fulltext" />
 			<xsl:call-template name="save_record" />
 		</div>
@@ -397,7 +397,7 @@
 	<xsl:template name="record-abstract">
 		<xsl:if test="abstract">
 			<h2><xsl:copy-of select="$text_record_summary" /></h2>
-			<div class="recordAbstract">
+			<div class="record-abstract">
 				<xsl:value-of select="abstract" />
 			</div>
 		</xsl:if>
@@ -414,11 +414,11 @@
 			<ul id="recommendations">
 				<xsl:for-each select="//recommendations/recommendation/xerxes_record">
 					<li class="result">
-						<div class="resultsTitle">
+						<div class="results-title">
 							<a href="{../url_open}"><xsl:value-of select="title_normalized" /></a>
 						</div>
-						<div class="resultsInfo">
-							<div class="resultsType">
+						<div class="results-info">
+							<div class="results-type">
 								<xsl:call-template name="text_results_format">
 									<xsl:with-param name="format" select="format" />
 								</xsl:call-template>
@@ -450,7 +450,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</h2>
-			<div class="recordAbstract">
+			<div class="record-abstract">
 				<ul>
 				<xsl:for-each select="toc/chapter">
 					<li>
@@ -818,34 +818,34 @@
 				<xsl:text> :</xsl:text>
 			</h2>
 			
-			<div class="citation" id="citation_apa">
+			<div class="citation" id="citation-apa">
 			
 				<h3><xsl:value-of select="$text_citation_apa" /></h3>
-				<p class="citationStyle">
+				<p class="citation-style">
 					<xsl:call-template name="apa" />
 				</p>
 				
 			</div>
 			
-			<div class="citation" id="citation_mla">
+			<div class="citation" id="citation-mla">
 				
 				<h3><xsl:value-of select="$text_citation_mla" /></h3>
-				<p class="citationStyle">
+				<p class="citation-style">
 					<xsl:call-template name="mla" />
 				</p>
 				
 			</div>
 			
-			<div class="citation" id="citation_turabian">
+			<div class="citation" id="citation-turabian">
 				
 				<h3><xsl:value-of select="$text_citation_turabian" /></h3>
-				<p class="citationStyle">
+				<p class="citation-style">
 					<xsl:call-template name="turabian" />
 				</p>
 		
 			</div>
 		
-			<p id="citationNote">
+			<p id="citation-note">
 				<xsl:copy-of select="$text_record_citation_note" />
 			</p>
 			

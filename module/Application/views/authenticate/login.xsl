@@ -62,7 +62,7 @@
 				<input name="password" type="password" id="password" />
 				</p>
 				
-				<input type="submit" class="login_submit{$language_suffix}" name="Submit" value="{$text_authentication_login_pagename}" />
+				<input type="submit" class="login-submit{$language_suffix}" name="Submit" value="{$text_authentication_login_pagename}" />
 				
 			</form>
 			

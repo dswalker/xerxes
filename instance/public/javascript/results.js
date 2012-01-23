@@ -19,19 +19,19 @@ $(document).ready(addAjaxToSaveLinks);
 
 function addAjaxToFacetMoreLinks()
 {
-	$(".facetMoreOption").click(function() {
+	$(".facet-more-option").click(function() {
 		return showFacetMore(this.id);
 	});
 
-	$(".facetLessOption").click(function(){
+	$(".facet-less-option").click(function(){
 		return showFacetLess(this.id);
 	});
 }
 
 function minimizeFacets()
 {	
-	$('ul.facetListMore').hide();
-	$('.facetOptionMore').show();
+	$('ul.facet-list-more').hide();
+	$('.facet-option-more').show();
 }
 
 function showFacetMore(id)
@@ -67,11 +67,11 @@ function showHitCounts()
 		
 		for ( i = 0; i < links.length; i++)
 		{		
-			if ( /tabsHitNumber/.test(links[i].className) )
+			if ( /tabs-hit-number/.test(links[i].className) )
 			{
 				hitID = links[i].id;
 								
-				arrElements = links[i].id.split("_");
+				arrElements = links[i].id.split("-");
 				controller = arrElements[1];
 				source = arrElements[2];
 									
@@ -97,13 +97,13 @@ function fillAvailability()
 	
 	for ( i = 0; i < divs.length; i++ )
 	{
-		if ( /availabilityLoad/.test(divs[i].className) )
+		if ( /availability-load/.test(divs[i].className) )
 		{
 			$(divs[i]).html("<img src=\"images/loading.gif\" alt=\"loading\" /> Checking availability . . .");
 		
 			var url = "";		// final url to send to server
 			
-			arrElements = divs[i].id.split("_");
+			arrElements = divs[i].id.split("-");
 			controller = arrElements[0];
 			id = arrElements[1];
 			view = arrElements[2];
@@ -140,7 +140,7 @@ function setNoImage()
 
 function addAjaxToSaveLinks()
 {	
-	$(".saveRecord").click(function() {
+	$(".save-record").click(function() {
 		return updateRecord(this);
 	});
 }
@@ -148,8 +148,8 @@ function addAjaxToSaveLinks()
 function updateRecord( record )
 {
 	var id = record.id;
-	var id_array = id.split(/_/); id_array.shift();
-	var record_number = id_array.join("_");
+	var id_array = id.split(/-/); id_array.shift();
+	var record_number = id_array.join("-");
 	
 	
 	if ( $(record).hasClass("disabled")) {
@@ -194,22 +194,22 @@ function updateRecord( record )
 		{
 			numSavedRecords--;
 
-			$('#saveRecordOption_' + record_number + ' .temporary_login_note').remove();
+			$('#save-record-option-' + record_number + ' .temporary-login-note').remove();
 			
-			$('#folder_' + record_number).attr('src',"images/folder.gif");
+			$('#folder-' + record_number).attr('src',"images/folder.gif");
 			$(record).html( xerxes_labels['text_results_record_save_it'] );
 			$(record).removeClass("saved");
 			
 			// remove label input
 			
-			var label_input = $('#label_' + record_number);
+			var label_input = $('#label-' + record_number);
 			if (label_input) label_input.remove();
 		}		
 		else
 		{
 			numSavedRecords++;
 			
-			$('#folder_' + record_number).attr('src',"images/folder_on.gif");
+			$('#folder-' + record_number).attr('src',"images/folder_on.gif");
 			
 			// different label depending on whether they are logged in or not. 
 			// we tell if they are logged in or not, as well as find the login
@@ -217,7 +217,7 @@ function updateRecord( record )
 			
 			if ($('#login'))
 			{
-				var temporary_login_note = ' <span class="temporary_login_note"> ( <a  href="' + 
+				var temporary_login_note = ' <span class="temporary-login-note"> ( <a  href="' + 
 					$('#login').attr('href') +'">' + xerxes_labels['text_results_record_saved_perm'] + 
 					' </a> ) </span>';
 			

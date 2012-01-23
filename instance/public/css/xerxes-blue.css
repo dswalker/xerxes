@@ -3,9 +3,8 @@
  * Base css for main interface
  *
  * @author David Walker
- * @copyright 2009 California State University
- * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @copyright 2012 California State University
+ * @license
  * @version
  * @package Xerxes
  */
@@ -166,7 +165,7 @@ a:hover {
 	margin-left: 1.5em;
 }
 
-.sidebar .box li.sidebarFolder {
+.sidebar .box li.sidebar-folder {
 	list-style: none;
 	margin-left: 0;
 }
@@ -187,7 +186,7 @@ a:hover {
 	color: #fff;
 }
 
-#message_display {
+#message-display {
 	padding: .8em;
 	margin: 2em;
 	background-color: #FFDADA;
@@ -211,11 +210,11 @@ a:hover {
 	color: #CC0000;
 }
 
-.nonBreaking {
+.non-breaking {
 	white-space: nowrap;
 }
 
-.raisedBox {
+.raised-box {
 	padding: 1.8em;
 	background-image: url(../images/bg.gif);
 	background-repeat: repeat-x;
@@ -234,11 +233,11 @@ a:hover {
 	border-left-color: #CCCCCC;
 }
 
-.miniIcon {
+.mini-icon {
   vertical-align:middle; 
 }
 
-.iconCommand, a.iconCommand, a.iconCommand:visited, a:hover.iconCommand {
+.icon-command, a.icon-command, a.icon-command:visited, a:hover.icon-command {
 	padding: 0px 0px 0px 24px;  
 	position: relative;   
 	text-decoration: none;
@@ -247,27 +246,27 @@ a:hover {
 	*-background-image: none;  
 }
 
-.iconCommand.rename {
+.icon-command.rename {
 	background-image: url(../images/famfamfam/tag_blue_edit.png);
 }
 
-.iconCommand.delete {
+.icon-command.delete {
 	background-image: url(../images/delete.gif);
 }
 
-.iconCommand.add {
+.icon-command.add {
 	background-image: url(../images/famfamfam/add.png);
 }
 
-.iconCommand.reorder {
+.icon-command.reorder {
 	background-image: url(../images/reorder.gif);
 }
 
-.iconCommand.edit {
+.icon-command.edit {
 	background-image: url(../images/famfamfam/wrench.png);
 }
 
-.iconCommand.public {
+.icon-command.public {
 	background-image: url(../images/famfamfam/lock.png);
 	*-background-image: none;  
 }
@@ -282,31 +281,31 @@ a:hover {
 
 /** SEARCH BOX **/
 
-.searchBox {
+.search-box {
 	display: table;
 	margin-bottom: 3em;
 	padding-bottom: 1em;
 	padding-right: 2.2em;
 }
 
-.spellSuggest {
+.spell-suggest {
 	margin: 1em;
 }
 
-.searchLabel {
+.search-label {
 	float:left; 
 	padding-top: .3em;
 }
 
-.searchInputs {
+.search-inputs {
 	margin-left: 4.3em;
 }
 
-.search_input_toggle {
+.search-input-toggle {
 	margin-top: 1em;
 }
 
-.searchBox_advanced_newline {
+.search-box-advanced-newline {
 	margin-top: .2em;
 }
 
@@ -346,7 +345,7 @@ a:hover {
 }
 
 
-#sortOptions {
+#sort-options {
 	text-align: right;
 }	
 
@@ -355,11 +354,11 @@ a:hover {
 	line-height: 130%;
 }
 
-.resultsTitle a {
+.results-title a {
 	font-weight: bold;
 }
 
-.resultsInfo {
+.results-info {
 	border-left: 2px solid #ddd; 
 	margin-left: .3em;
 	padding-left: 1em;		
@@ -367,63 +366,63 @@ a:hover {
 	color: #333;
 }
 
-.resultsInfo a:link, .resultsInfo a:visited, #recordFullText a:link, #recordFullText a:visited {
+.results-info a:link, .results-info a:visited, #record-full-text a:link, #record-full-text a:visited {
 	color: green;
 }
 
-.resultsType {
+.results-type {
 	font-weight: bold;
 }
 
-.resultsLanguage {
+.results-language {
 	color: #CC0000;
 }
 
-.resultsAbstract {
+.results-abstract {
 	margin-top: .7em;
 	margin-bottom: .7em;
 }
 
-.resultsAuthor, .resultsYear, .resultsPublishing {
+.results-author, .results-year, .results-publishing {
 	display: block;
 	margin-bottom: 0.35em;
 }
 
-.recordActions {
+.record-actions {
 	margin-top: .7em;
 }
 
-.recordAction {
+.record-action {
 	margin-bottom: 0.35em;
 }
 
-a.recordAction {
+a.record-action {
 	display: table;
 }
 
-.folderLabels {
+.folder-labels {
 	margin: .4em;
 }
 
 /* pager */
 
-.resultsPager {
+.results-pager {
 	margin-top: 7em;
 	margin-bottom: 7em;
 	text-align: center;
 }
-.resultsPagerList {
+.results-pager-list {
 	display: inline;
 	padding: .8em;
 	border: 1px solid #A2C9EF;
 	background-color: #E4F1FD;
 }
-.resultsPager li {
+.results-pager li {
 	display: inline;
 	padding: .3em;
 	background-image: none;
 }
-.resultsPagerNext {
+.results-pager-next {
 	padding-left: 2em;
 }
 
@@ -438,6 +437,8 @@ a.recordAction {
 	margin-left: 3em;
 }
 
+/*
+
 #recordFullText {
 	margin-top: 2em; 
 	margin-bottom: 2em;
@@ -447,7 +448,9 @@ a.recordAction {
 	margin-left: 0;
 }
 
-#citationNote {
+*/
+
+#citation-note {
 	border: 1px solid #ccc;
 	padding: .4em;
 	font-size: 80%;
@@ -469,22 +472,22 @@ a.recordAction {
 
 /** MY SAVED RECORDS **/
 
-.folderReturn {
+.folder-return {
 	display: inline;
 	margin-left: 3em;
 }
 
-#folder_output_results thead td {
+#folder-output-results thead td {
 	background-color: #efefef;
 	font-weight: bold;
 }
 
-#folder_output_results td {
+#folder-output-results td {
 	padding: .7em;
 	border: 1px solid #ccc;
 }
 
-.folderEmailSuccess {
+.folder-email-success {
 	display: table;
 	padding: 10px;
 	background-color: #FFFFCC;
@@ -501,13 +504,13 @@ a.recordAction {
 	font-size: 140%;
 }
 
-.exportOptions div {
+.export-options div {
 	display: block;
 	margin-bottom: 1em;
 	clear: left;
 }
 	
-#export_email_options label {
+#export-email-options label {
 	display: block;
 	float: left;
 	width: 15em;
@@ -515,25 +518,25 @@ a.recordAction {
 	text-align: right;
 }
 
-#export_email_options input, #export_email_options textarea {
+#export-email-options input, #export-email-options textarea {
 	display: block;
 	margin-left: 17em;
 }
 
-#export_single {
+#export-single {
 	margin: 2em;
 }
 
-#export_single {
+#export-single {
 	font-size: 130%;
 	padding: 1em;
 }
 
-#export_options_endnote div {
+#export-options-endnote div {
 	margin: 1em;
 }
 
-#export_options_endnote input {
+#export-options-endnote input {
 	margin-right: 1em;
 	margin-left: 1em;
 }
@@ -564,7 +567,7 @@ div.autocomplete ul {
 	padding: 0;
 }
 
-#tag_suggestions li {
+#tag-suggestions li {
 	margin: 0px;
 }
 
@@ -588,7 +591,7 @@ div.autocomplete ul li {
 	margin: 3em;
 }
 
-#tabnav .tabsHit {
+#tabnav .tabs-hit {
 	font-size: 85%;
 	padding-left: .5em;
 }
@@ -645,24 +648,13 @@ div.autocomplete ul li {
 	padding: .5em;
 }
 
-#subtab h2 {
-	margin-left: 0;
-	background-color: #efefef;
-	padding: .5em;
-}
-
-#subtab .tabsHit {
-	color: #000;
-	padding-left: .5em;
-}
-
 /* facet limit */
 
-.resultsFacetsApplied {
+.results-facets-applied {
 	margin-top: 1em;
 }
 
-.resultsFacetsApplied li {
+.results-facets-applied li {
 	position: relative; 
 	padding: 10px; 
 	padding-left: 30px; 
@@ -673,10 +665,9 @@ div.autocomplete ul li {
 	border: 1px solid #cbcbcb;
 }
 
-.embedInfo {
+.embed-info {
 	border: 0px none;
 }
-
 
 /* search sidebar */
 

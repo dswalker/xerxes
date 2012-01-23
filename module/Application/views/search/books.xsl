@@ -45,13 +45,13 @@
 
 	<xsl:template name="record-basic">
 	
-		<div id="bookRecordBookCover" style="display:none">
+		<div id="book-record-book-cover" style="display:none">
 			<xsl:call-template name="book_jacket_full">
 				<xsl:with-param name="isbn" select="standard_numbers/isbn[string-length(text()) = 10]" />
 			</xsl:call-template>
 		</div>
 		
-		<div id="bookRecord">
+		<div id="book-record">
 			
 			<!-- Title -->
 			
@@ -87,7 +87,7 @@
 	-->	
 	
 	<xsl:template name="record-actions">
-		<div id="recordFullText" class="raisedBox recordActions">
+		<div id="record-full-text" class="raised-box record-actions">
 			
 			<xsl:call-template name="availability">
 				<xsl:with-param name="context">record</xsl:with-param>
@@ -132,18 +132,18 @@
 		
 		<li class="result">
 		
-			<div class="bookCover">
+			<div class="book-cover">
 				<xsl:call-template name="book_jacket_brief">
 					<xsl:with-param name="isbn" select="$isbn" />
 				</xsl:call-template>
 			</div>
 		
-			<div class="bookResult">
+			<div class="book-result">
 				
 				<!-- title -->
 				
-				<div class="resultsTitle">
-					<a href="{../url}" class="resultsTitle">
+				<div class="results-title">
+					<a href="{../url}" class="results-title">
 						
 						<xsl:value-of select="title_normalized" />
 						
@@ -157,20 +157,20 @@
 					</a>
 				</div>
 				
-				<div class="resultsInfo">
+				<div class="results-info">
 					
 					<!-- format -->
 					
-					<div class="resultsType">
+					<div class="results-type">
 						<xsl:value-of select="format" />
 					</div>
 					
 					<!-- abstract -->
 	
-					<div class="resultsAbstract">
+					<div class="results-abstract">
 					
 						<xsl:if test="abstract">
-							<div class="bookAbstractData">
+							<div class="book-abstract-data">
 								<xsl:choose>
 									<xsl:when test="string-length(abstract) &gt; 300">
 										<xsl:value-of select="substring(summary, 1, 300)" /> . . .
@@ -183,7 +183,7 @@
 						</xsl:if>
 						
 						<xsl:if test="primary_author">
-							<div class="resultsBookSummary">
+							<div class="results-book-summary">
 								<xsl:if test="format != 'Journal' and format != 'Newspaper'">
 								
 									<!-- author -->
@@ -210,7 +210,7 @@
 						
 					</div>
 					
-					<div class="recordActions">
+					<div class="record-actions">
 						
 						<!-- availability -->
 						
@@ -328,7 +328,7 @@
 			
 					<xsl:otherwise>
 								
-						<div id="{//request/controller}_{$record_id}_{$type}" class="availabilityLoad"></div>
+						<div id="{//request/controller}-{$record_id}-{$type}" class="availability-load"></div>
 			
 					</xsl:otherwise>				
 				</xsl:choose>
@@ -337,7 +337,7 @@
 														
 				<xsl:call-template name="availability_full_text">
 					<xsl:with-param name="element">span</xsl:with-param>
-					<xsl:with-param name="class">resultsAvailability</xsl:with-param>
+					<xsl:with-param name="class">results-availability</xsl:with-param>
 				</xsl:call-template>
 				
 			</xsl:when>
@@ -374,33 +374,33 @@
 		<xsl:choose>
 			<xsl:when test="../holdings/items/item and $printAvailable = '0'">
 			
-				<div class="recordAction booksAvailabilityMissing">
+				<div class="record-action books-availability-missing">
 					<xsl:call-template name="img_book_not_available">
-						<xsl:with-param name="class">miniIcon</xsl:with-param>
+						<xsl:with-param name="class">mini-icon</xsl:with-param>
 					</xsl:call-template>
 					No Copies Available
 				</div>
 				
-				<div class="recordAction">
+				<div class="record-action">
 					<xsl:call-template name="ill_option" />
 				</div>
 	
 			</xsl:when>
 			<xsl:otherwise>
 			
-				<div class="recordAction">
+				<div class="record-action">
 				
 					<xsl:choose>
 						<xsl:when test="$printAvailable = '1'">
 							<xsl:call-template name="img_holdings">
-								<xsl:with-param name="class">miniIcon</xsl:with-param>
+								<xsl:with-param name="class">mini-icon</xsl:with-param>
 							</xsl:call-template> 
 							<xsl:text> </xsl:text>
 							1 copy available
 						</xsl:when>
 						<xsl:when test="$printAvailable &gt; '1'">
 							<xsl:call-template name="img_holdings">
-									<xsl:with-param name="class">miniIcon</xsl:with-param>
+									<xsl:with-param name="class">mini-icon</xsl:with-param>
 							</xsl:call-template> 
 							<xsl:text> </xsl:text>
 							<xsl:value-of select="$printAvailable" /> copies available
@@ -428,10 +428,10 @@
 	
 			<p><strong>Online</strong></p>
 			
-			<div class="summaryOnlineHolding">
+			<div class="summary-online-holding">
 				<xsl:call-template name="availability_full_text">
 					<xsl:with-param name="element">span</xsl:with-param>
-					<xsl:with-param name="class">resultsAvailability</xsl:with-param>
+					<xsl:with-param name="class">results-availability</xsl:with-param>
 				</xsl:call-template>
 			</div>
 		</xsl:if>
@@ -441,7 +441,7 @@
 			<p><strong>Print holdings</strong></p>
 		
 			<xsl:for-each select="../holdings/holdings/holding">
-				<ul class="holdingsSummaryStatement">
+				<ul class="holdings-summary-statement">
 					<xsl:for-each select="data">
 						<li><xsl:value-of select="@key" />: <xsl:value-of select="@value" /></li>
 					</xsl:for-each>
@@ -496,7 +496,7 @@
 				</xsl:if>
 			</xsl:attribute>
 			
-			<table class="holdingsTable">
+			<table class="holdings-table">
 			<tr>
 				<xsl:if test="../holdings/items/item/institution">
 					<th>Institution</th>
@@ -532,7 +532,7 @@
 		<xsl:for-each select="links/link[@type != 'none']">
 			<xsl:element name="{$element}">
 				<xsl:attribute name="class"><xsl:value-of select="$class" /></xsl:attribute>
-				<a href="{url}" class="recordAction" target="" >
+				<a href="{url}" class="record-action" target="" >
 					<xsl:call-template name="img_format_html" />
 					<xsl:choose>
 						<xsl:when test="display != ''">
@@ -561,9 +561,9 @@
 		
 			<xsl:if test="../url_open">
 		
-				<div class="resultsAvailability">
-					<a target="{$link_target}" href="{../url_open}" class="recordAction">
-						<img src="{$image_sfx}" alt="" border="0" class="miniIcon linkResolverLink "/>
+				<div class="results-availability">
+					<a target="{$link_target}" href="{../url_open}" class="record-action">
+						<img src="{$image_sfx}" alt="" border="0" class="mini-icon link-resolver-link "/>
 						<xsl:text> </xsl:text>
 						<xsl:copy-of select="$text_link_resolver_check" /> 
 					</a>
@@ -583,11 +583,11 @@
 		
 		<xsl:if test="count(../holdings/items/item) &gt; 0">
 		
-			<div id="smsOption" class="resultsAvailability recordAction">
+			<div id="sms-option" class="results-availability record-action">
 	
 				<xsl:call-template name="img_phone" />
 				<xsl:text> </xsl:text>
-				<a id="smsLink" href="{../url_sms}">Send location to your phone</a> 
+				<a id="sms-link" href="{../url_sms}">Send location to your phone</a> 
 			
 			</div>
 			
@@ -619,17 +619,17 @@
 			<input type="hidden" name="lang" value="{//request/lang}" />
 			<input type="hidden" name="title" value="{title_normalized}" />
 			
-			<div class="smsProperty">
+			<div class="sms-property">
 				<label for="phone">Your phone number: </label>
 			</div>
-			<div class="smsValue">
+			<div class="sms-value">
 				<input type="text" name="phone" id="phone" />
 			</div>
 			
-			<div class="smsProperty">
+			<div class="sms-property">
 				<label for="provider">Provider:</label>
 			</div>
-			<div class="smsValue">
+			<div class="sms-value">
 				<select name="provider">
 					<option value="">-- choose one --</option>
 					
@@ -694,7 +694,7 @@
 				
 				<label>
 					<xsl:if test="$num_copies &gt; 1">
-						<xsl:attribute name="class">smsCopy</xsl:attribute>
+						<xsl:attribute name="class">sms-copy</xsl:attribute>
 					</xsl:if>
 					
 					<input name="item" value="{$item}">
@@ -719,9 +719,9 @@
 			
 			<br />
 			
-			<input type="submit" value="Send" class="submit_send{$language_suffix}" />
+			<input type="submit" value="Send" class="submit-send{$language_suffix}" />
 			
-			<p class="smsNote">Carrier charges may apply.</p>
+			<p class="sms-note">Carrier charges may apply.</p>
 			
 		</form>
 	
@@ -769,7 +769,7 @@
 		
 		</xsl:variable>
 		
-		<div class="google_preview">
+		<div class="google-preview">
 			<script type="text/javascript" src="http://books.google.com/books/previewlib.js"></script>
 			<script type="text/javascript">GBS_insertPreviewButtonPopup([<xsl:value-of select="$ids" />]);</script>
 			<noscript><a href="http://books.google.com/books?as_isbn={$isbn}">Check for more information at Google Book Search</a></noscript>

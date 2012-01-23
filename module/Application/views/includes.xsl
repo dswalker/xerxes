@@ -367,7 +367,7 @@
 	-->
 	
 	<xsl:template name="message_display">
-		<div id="message_display">
+		<div id="message-display">
 			<xsl:copy-of select="//session/flash_message"/>
 		</div>
 	</xsl:template>
@@ -456,7 +456,7 @@
 		<div id="account" class="box">
 			<h2><xsl:copy-of select="$text_header_myaccount" /></h2>
 			<ul>
-				<li id="login_option">
+				<li id="login-option">
 					<xsl:choose>
 						<xsl:when test="//request/session/role and //request/session/role != 'local'">
 							<a id="logout">
@@ -473,7 +473,7 @@
 					</xsl:choose>
 				</li>
 			
-				<li id="my_saved_records" class="sidebarFolder">
+				<li id="my-saved-records" class="sidebar-folder">
 					<xsl:call-template name="img_save_record">
 						<xsl:with-param name="id">folder</xsl:with-param>
 						<xsl:with-param name="test" select="//navbar/element[@id='saved_records']/@numSessionSavedRecords &gt; 0" />
@@ -556,13 +556,13 @@
 <xsl:variable name="img_src_chain">images/famfamfam/link.png</xsl:variable>
 
 <xsl:template name="img_databases_az_hint_info">
-	<img alt="{$text_databases_az_hint_info}" title="{$text_databases_az_hint_info}" src="images/info.gif" class="iconInfo miniIcon">
+	<img alt="{$text_databases_az_hint_info}" title="{$text_databases_az_hint_info}" src="images/info.gif" class="icon-info mini-icon">
 	</img>
 </xsl:template>
 
 <xsl:template name="img_databases_az_hint_searchable">
 	<img alt="{$text_databases_az_hint_searchable}" title="{$text_databases_az_hint_searchable}" 
-		class="iconSearchable miniIcon" src="images/famfamfam/magnifier.png"/>
+		class="icon-searchable mini-icon" src="images/famfamfam/magnifier.png"/>
 </xsl:template>
 
 <xsl:template name="img_refereed">

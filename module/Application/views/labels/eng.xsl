@@ -412,7 +412,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	
 	<xsl:template name="text_results_language">
 		<xsl:if test="language and language != 'English' and format != 'Video'">
-			<span class="resultsLanguage"> written in <xsl:value-of select="language" /></span>
+			<span class="results-language"> written in <xsl:value-of select="language" /></span>
 		</xsl:if>
 	</xsl:template>
 	

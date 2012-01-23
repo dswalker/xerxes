@@ -95,7 +95,7 @@
 						<div class="yui-u">
 							<xsl:choose>
 								<xsl:when test="//sort_display">
-									<div id="sortOptions">
+									<div id="sort-options">
 										<xsl:copy-of select="$text_results_sort_by" /><xsl:text>: </xsl:text>
 										<xsl:for-each select="//sort_display/option">
 											<xsl:choose>
@@ -203,13 +203,13 @@
 	
 		<xsl:variable name="query"	select="request/query" />
 		
-		<div class="raisedBox searchBox">
+		<div class="raised-box search-box">
 	
-			<div class="searchLabel">
+			<div class="search-label">
 				<label for="field">Search</label><xsl:text> </xsl:text>
 			</div>
 			
-			<div class="searchInputs">
+			<div class="search-inputs">
 	
 				<select id="field" name="field">
 					
@@ -236,12 +236,12 @@
 				
 				<input id="query" name="query" type="text" size="32" value="{$query}" /><xsl:text> </xsl:text>
 				
-				<input type="submit" name="Submit" value="GO" class="submit_searchbox{$language_suffix}" />
+				<input type="submit" name="Submit" value="GO" class="submit-searchbox{$language_suffix}" />
 			
 			</div>
 			
 			<xsl:if test="query/spelling_url">
-				<p class="spellSuggest error">
+				<p class="spell-suggest error">
 					<xsl:value-of select="$text_searchbox_spelling_error" /><xsl:text> </xsl:text>
 					<a href="{query/spelling_url/url}"><xsl:value-of select="query/spelling_url/text" /></a>
 				</p>
@@ -260,11 +260,11 @@
 	
 	<xsl:template name="tabs">
 		
-		<xsl:if test="config/tabs">
+		<xsl:if test="config/search">
 		
 			<div class="tabs">
 				
-				<xsl:for-each select="config/tabs">
+				<xsl:for-each select="config/search">
 						
 					<ul id="tabnav">
 						<xsl:call-template name="tab" />
@@ -316,13 +316,13 @@
 	
 	<xsl:template name="tab_hit">
 	
-		<span class="tabsHit">
+		<span class="tabs-hit">
 			<xsl:choose>
 				<xsl:when test="@hits">
 					(<xsl:value-of select="@hits" />)
 				</xsl:when>
 				<xsl:otherwise>
-					<span class="tabsHitNumber" id="tab_{@id}_{@source}"></span>
+					<span class="tabs-hit-number" id="tab-{@id}-{@source}"></span>
 				</xsl:otherwise>
 			</xsl:choose>								
 		</span>
@@ -337,9 +337,9 @@
 	<xsl:template name="paging_navigation">
 	
 		<xsl:if test="//pager/page">
-			<div class="resultsPager">
+			<div class="results-pager">
 	
-				<ul class="resultsPagerList">
+				<ul class="results-pager-list">
 				<xsl:for-each select="//pager/page">
 					<li>
 					<xsl:variable name="link" select="@link" />
@@ -351,11 +351,11 @@
 							<a href="{$link}">
 								<xsl:choose>
 									<xsl:when test="@type = 'next'">
-										<xsl:attribute name="class">resultsPagerNext</xsl:attribute>
+										<xsl:attribute name="class">results-pager-next</xsl:attribute>
 										<xsl:copy-of select="$text_results_next" />
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:attribute name="class">resultsPagerLink</xsl:attribute>
+										<xsl:attribute name="class">results-pager-link</xsl:attribute>
 									</xsl:otherwise>
 								</xsl:choose>
 								<xsl:call-template name="text_results_sort_options">
@@ -399,20 +399,20 @@
 					
 					<xsl:if test="count(facets/facet) &gt; 12">
 						
-						<p id="facet-more-{name}" class="facetOptionMore" style="padding: 1.3em; padding-top: .7em; display:none"> 
-							[ <a id="facet-more-link-{name}" href="#" class="facetMoreOption"> 
+						<p id="facet-more-{name}" class="facet-option-more" style="padding: 1.3em; padding-top: .7em; display:none"> 
+							[ <a id="facet-more-link-{name}" href="#" class="facet-more-option"> 
 								<xsl:value-of select="count(facets/facet[position() &gt; 10])" /> more
 							</a> ] 
 						</p>
 						
-						<ul id="facet-list-{name}" class="facetListMore">
+						<ul id="facet-list-{name}" class="facet-list-more">
 							<xsl:for-each select="facets/facet[position() &gt; 10]">
 								<xsl:call-template name="facet_option" />
 							</xsl:for-each>
 						</ul>
 						
-						<p id="facet-less-{name}" class="facetOptionLess" style="padding: 1.3em; padding-top: .7em; display:none"> 
-							[ <a id="facet-less-link-{name}" href="#" class="facetLessOption"> 
+						<p id="facet-less-{name}" class="facet-option-less" style="padding: 1.3em; padding-top: .7em; display:none"> 
+							[ <a id="facet-less-link-{name}" href="#" class="facet-less-option"> 
 								show less
 							</a> ] 
 						</p>
@@ -455,7 +455,7 @@
 	<xsl:template name="facets_applied">
 		
 		<xsl:if test="query/limits">
-			<div class="resultsFacetsApplied">
+			<div class="results-facets-applied">
 				<ul>
 					<xsl:for-each select="query/limits/limit">
 						<li>
@@ -514,13 +514,13 @@
 				</xsl:choose>
 			</xsl:variable>
 			
-			<div class="resultsTitle">
+			<div class="results-title">
 				<a href="{../url_full}"><xsl:value-of select="$title" /></a>
 			</div>
 			
-			<div class="resultsInfo">
+			<div class="results-info">
 			
-				<div class="resultsType">
+				<div class="results-type">
 				
 					<!-- format -->
 				
@@ -542,7 +542,7 @@
 				
 				<!-- abstract -->
 				
-				<div class="resultsAbstract">
+				<div class="results-abstract">
 				
 					<xsl:choose>
 						<xsl:when test="summary_type = 'toc'">
@@ -567,7 +567,7 @@
 				<!-- primary author -->
 				
 				<xsl:if test="primary_author">
-					<span class="resultsAuthor">
+					<span class="results-author">
 						<strong><xsl:copy-of select="$text_results_author" />: </strong><xsl:value-of select="primary_author" />
 					</span>
 				</xsl:if>
@@ -575,7 +575,7 @@
 				<!-- publication year -->
 				
 				<xsl:if test="year">
-					<span class="resultsYear">
+					<span class="results-year">
 						<strong><xsl:copy-of select="$text_results_year" />: </strong>
 						<xsl:value-of select="year" />
 					</span>
@@ -584,7 +584,7 @@
 				<!-- journal info -->
 				
 				<xsl:if test="journal or journal_title">
-					<span class="resultsPublishing">
+					<span class="results-publishing">
 						<strong><xsl:copy-of select="$text_results_published_in" />: </strong>
 						<xsl:choose>
 							<xsl:when test="journal_title">
@@ -601,7 +601,7 @@
 				
 				<xsl:call-template name="additional_brief_record_data" />
 				
-				<div class="recordActions">
+				<div class="record-actions">
 					
 					<!-- full text -->
 					
@@ -659,9 +659,9 @@
 				<!-- link resolver, full-text predetermined -->
 				
 				<xsl:when test="$link_resolver_allowed = 'true' and subscription = 1">
-						<a href="{../url_open}&amp;fulltext=1" target="{$link_target}" class="recordAction linkResolverLink">
+						<a href="{../url_open}&amp;fulltext=1" target="{$link_target}" class="record-action link-resolver-link">
 							<xsl:call-template name="img_format_html">
-								<xsl:with-param name="class">miniIcon linkResolverLink</xsl:with-param>
+								<xsl:with-param name="class">mini-icon link-resolver-link</xsl:with-param>
 							</xsl:call-template>
 							<xsl:text> </xsl:text>
 							<xsl:copy-of select="$text_link_resolver_available" />
@@ -671,8 +671,8 @@
 				<!-- link resolver, no full-text predetermined -->
 				
 				<xsl:when test="$link_resolver_allowed = 'true'">
-						<a href="{../url_open}" target="{$link_target}" class="recordAction linkResoverLink">
-							<img src="{$image_sfx}" alt="" class="miniIcon linkResolverLink "/>
+						<a href="{../url_open}" target="{$link_target}" class="record-action link-resover-link">
+							<img src="{$image_sfx}" alt="" class="mini-icon link-resover-link "/>
 							<xsl:text> </xsl:text>
 							<xsl:copy-of select="$text_link_resolver_check" />
 						</a>
@@ -704,19 +704,19 @@
 		<xsl:param name="source" select="source" />
 		<xsl:param name="record_id" select="record_id" />
 	
-		<div id="saveRecordOption_{$source}_{$record_id}" class="recordAction">
+		<div id="save-record-option-{$source}-{$record_id}" class="record-action">
 			
 			<xsl:call-template name="img_save_record">
-				<xsl:with-param name="id" select="concat('folder_', $source, '_', $record_id)" />
-				<xsl:with-param name="class">miniIcon saveRecordLink</xsl:with-param>
+				<xsl:with-param name="id" select="concat('folder-', $source, '-', $record_id)" />
+				<xsl:with-param name="class">mini-icon save-record-link</xsl:with-param>
 				<xsl:with-param name="test" select="//request/session/resultssaved[@key = $record_id]" />
 			</xsl:call-template>
 			<xsl:text> </xsl:text>
 			
-			<a id="link_{$source}_{$record_id}" href="{../url_save_delete}">				
+			<a id="link-{$source}-{$record_id}" href="{../url_save_delete}">				
 				<!-- 'saved' class used as a tag by ajaxy stuff -->
 				<xsl:attribute name="class">
-					 saveRecord <xsl:if test="//request/session/resultssaved[@key = $record_id]">saved</xsl:if>
+					 save-record <xsl:if test="//request/session/resultssaved[@key = $record_id]">saved</xsl:if>
 				</xsl:attribute>
 				<xsl:choose>
 					<xsl:when test="//request/session/resultssaved[@key = $record_id]">
@@ -736,7 +736,7 @@
 			<!-- temporary save note -->
 			
 			<xsl:if test="//request/session/resultssaved[@key = $record_id] and //request/session/role != 'named'"> 
-				<span class="temporary_login_note">
+				<span class="temporary-login-note">
 					(<xsl:text> </xsl:text><a href="{//navbar/element[@id = 'login']/url}">
 						<xsl:copy-of select="$text_results_record_saved_perm" />
 					</a><xsl:text> </xsl:text>)
@@ -747,7 +747,7 @@
 		<!-- label/tag input for saved records, if record is saved and it's not a temporary session -->
 		
 		<xsl:if test="//request/session/resultssaved[@key = $record_id] and $temporarySession != 'true'">
-			<div id="label_{$source}_{$record_id}"> 
+			<div id="label-{$source}-{$record_id}"> 
 				<xsl:call-template name="tag_input">
 					<xsl:with-param name="record" select="//saved_records/saved[@id = $record_id]" />
 					<xsl:with-param name="context">the results page</xsl:with-param>
@@ -765,15 +765,15 @@
 	
 	<xsl:template name="hidden_tag_layers">
 		
-		<div id="tag_suggestions" class="autocomplete" style="display:none;"></div>
+		<div id="tag-suggestions" class="autocomplete" style="display:none;"></div>
 	
-		<div id="template_tag_input" class="results_label" style="display:none;">
+		<div id="template-tag-input" class="results-label" style="display:none;">
 			<xsl:call-template name="tag_input">
 				<xsl:with-param name="id">template</xsl:with-param>
 			</xsl:call-template> 
 		</div>
 	
-		<div id="labelsMaster" class="folderOutput" style="display: none">
+		<div id="labels-master" class="folder-output" style="display: none">
 			<xsl:call-template name="tags_display" />
 		</div>
 		
@@ -815,7 +815,7 @@
 					<strong><xsl:value-of select="@label" /></strong> ( <xsl:value-of select="@total" /> )
 				</xsl:when>
 				<xsl:otherwise>
-					<a href="{@url}"><span class="label_list_item"><xsl:value-of select="@label" /></span></a> ( <xsl:value-of select="@total" /> )
+					<a href="{@url}"><span class="label-list-item"><xsl:value-of select="@label" /></span></a> ( <xsl:value-of select="@total" /> )
 				</xsl:otherwise>
 			</xsl:choose>
 			</li>
@@ -839,7 +839,7 @@
 		<xsl:param name="id" select="$record/id" /> 
 		<xsl:param name="context">the saved records page</xsl:param>
 	
-		<div class="folderLabels recordAction" id="tag_input_div-{$id}">
+		<div class="folder-labels record-action" id="tag-input-div-{$id}">
 			<form action="folder/tags_edit" method="get" class="tags">
 			
 				<!-- note that if this event is fired with ajax, the javascript changes
@@ -859,13 +859,13 @@
 					</xsl:for-each>
 				</xsl:variable>
 				
-				<input type="hidden" name="tagsShaddow" id="shadow-{$id}" value="{$tag_list}" />
+				<input type="hidden" name="tags-shaddow" id="shadow-{$id}" value="{$tag_list}" />
 				
 				<label for="tags-{$id}"><xsl:copy-of select="$text_records_tags" /></label>
 				
-				<input type="text" name="tags" id="tags-{$id}" class="tagsInput" value="{$tag_list}" />			
+				<input type="text" name="tags" id="tags-{$id}" class="tags-input" value="{$tag_list}" />			
 				<xsl:text> </xsl:text>
-				<input id="submit-{$id}" type="submit" name="submitButton" value="Update" class="tagsSubmit{$language_suffix}" />
+				<input id="submit-{$id}" type="submit" name="submit-button" value="Update" class="tags-submit{$language_suffix}" />
 			</form>
 		</div>
 		
@@ -882,27 +882,27 @@
 			<div>
 			
 				<a href="{url}">
-					<xsl:attribute name="class">recordAction <xsl:value-of select="@type"/></xsl:attribute>
+					<xsl:attribute name="class">record-action <xsl:value-of select="@type"/></xsl:attribute>
 					<xsl:attribute name="target"><xsl:value-of select="$link_target" /></xsl:attribute>
 				
 					<xsl:choose>
 						<xsl:when test="@format = 'pdf'">
 							<xsl:call-template name="img_format_pdf">
-								<xsl:with-param name="class">miniIcon fullTextLink pdf</xsl:with-param>
+								<xsl:with-param name="class">mini-icon full-text-link pdf</xsl:with-param>
 							</xsl:call-template>
 							<xsl:text> </xsl:text>
 							<xsl:copy-of select="$text_records_fulltext_pdf" />
 						</xsl:when>
 						<xsl:when test="@format = 'html'">
 							<xsl:call-template name="img_format_html">
-								<xsl:with-param name="class">miniIcon fullTextLink html</xsl:with-param>
+								<xsl:with-param name="class">mini-icon fullTextLink html</xsl:with-param>
 							</xsl:call-template>
 							<xsl:text> </xsl:text>
 							<xsl:copy-of select="$text_records_fulltext_html" />
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:call-template name="img_format_unknown">
-								<xsl:with-param name="class">miniIcon fullTextLink unknown</xsl:with-param>
+								<xsl:with-param name="class">mini-icon full-text-link unknown</xsl:with-param>
 							</xsl:call-template>
 							<xsl:text> </xsl:text>
 							<xsl:copy-of select="$text_records_fulltext_available" />
