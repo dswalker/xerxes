@@ -334,12 +334,9 @@
 				</xsl:choose>
 	
 				<!-- check for full-text -->
-														
-				<xsl:call-template name="availability_full_text">
-					<xsl:with-param name="element">span</xsl:with-param>
-					<xsl:with-param name="class">results-availability</xsl:with-param>
-				</xsl:call-template>
 				
+				<xsl:call-template name="full_text_links"/>	
+								
 			</xsl:when>
 			
 			<!-- no lookup required, thanks -->
@@ -428,12 +425,8 @@
 	
 			<p><strong>Online</strong></p>
 			
-			<div class="summary-online-holding">
-				<xsl:call-template name="availability_full_text">
-					<xsl:with-param name="element">span</xsl:with-param>
-					<xsl:with-param name="class">results-availability</xsl:with-param>
-				</xsl:call-template>
-			</div>
+			<xsl:call-template name="full_text_links"/>
+			
 		</xsl:if>
 		
 		<xsl:if test="../holdings/holdings">
@@ -518,34 +511,6 @@
 			</table>
 		</div>
 	
-	</xsl:template>
-	
-	<!-- 	
-		TEMPLATE: AVAILABILITY FULL TEXT
-		just the full-text on a holdings lookup
-	-->
-	
-	<xsl:template name="availability_full_text">
-		<xsl:param name="element" />
-		<xsl:param name="class" />
-						
-		<xsl:for-each select="links/link[@type != 'none']">
-			<xsl:element name="{$element}">
-				<xsl:attribute name="class"><xsl:value-of select="$class" /></xsl:attribute>
-				<a href="{url}" class="record-action" target="" >
-					<xsl:call-template name="img_format_html" />
-					<xsl:choose>
-						<xsl:when test="display != ''">
-							<xsl:value-of select="display" />
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:copy-of select="$text_records_fulltext_available" />
-						</xsl:otherwise>
-					</xsl:choose>
-				</a>
-			</xsl:element>
-		</xsl:for-each>
-			
 	</xsl:template>
 	
 	<!-- 	

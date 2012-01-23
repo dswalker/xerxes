@@ -1141,6 +1141,10 @@ class Bibliographic extends Record
 				{
 					$link_object->setType(Link::HTML);
 				}
+				else
+				{
+					$link_object->setType(Link::ONLINE);
+				}
 				
 				$this->links[] = $link_object;
 			}

@@ -428,6 +428,8 @@
 	
 	</xsl:template>
 	
+	<!-- TEMPLATE: FACET OPTION -->
+	
 	<xsl:template name="facet_option">
 	
 		<li>
@@ -879,11 +881,9 @@
 				
 		<xsl:for-each select="links/link[@type = 'full']">
 			
-			<div>
-			
-				<a href="{url}">
-					<xsl:attribute name="class">record-action <xsl:value-of select="@type"/></xsl:attribute>
-					<xsl:attribute name="target"><xsl:value-of select="$link_target" /></xsl:attribute>
+			<div class="record-action {@type}">
+								
+				<a href="{url}" target="{$link_target}">
 				
 					<xsl:choose>
 						<xsl:when test="@format = 'pdf'">
@@ -891,21 +891,42 @@
 								<xsl:with-param name="class">mini-icon full-text-link pdf</xsl:with-param>
 							</xsl:call-template>
 							<xsl:text> </xsl:text>
-							<xsl:copy-of select="$text_records_fulltext_pdf" />
+							<xsl:choose>
+								<xsl:when test="display != ''">
+									<xsl:value-of select="display" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:copy-of select="$text_records_fulltext_pdf" />
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:when>
 						<xsl:when test="@format = 'html'">
 							<xsl:call-template name="img_format_html">
-								<xsl:with-param name="class">mini-icon fullTextLink html</xsl:with-param>
+								<xsl:with-param name="class">mini-icon full-text-link html</xsl:with-param>
 							</xsl:call-template>
 							<xsl:text> </xsl:text>
-							<xsl:copy-of select="$text_records_fulltext_html" />
+							<xsl:choose>
+								<xsl:when test="display != ''">
+									<xsl:value-of select="display" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:copy-of select="$text_records_fulltext_html" />
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:call-template name="img_format_unknown">
 								<xsl:with-param name="class">mini-icon full-text-link unknown</xsl:with-param>
 							</xsl:call-template>
 							<xsl:text> </xsl:text>
-							<xsl:copy-of select="$text_records_fulltext_available" />
+							<xsl:choose>
+								<xsl:when test="display != ''">
+									<xsl:value-of select="display" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:copy-of select="$text_records_fulltext_available" />
+								</xsl:otherwise>
+							</xsl:choose>
 						</xsl:otherwise>
 					</xsl:choose>
 				</a>
