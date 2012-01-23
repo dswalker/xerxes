@@ -50,7 +50,7 @@ h1, h2, h3, h4 {
 
 /** hacks, can't figure why this is necessary **/
 
-#bd ul.databaseSectionList, #databases_categories .yui-u  {
+#bd ul.database-section-list, #databases-categories .yui-u  {
 	margin-left: 0px;
 }
 
@@ -60,7 +60,7 @@ h1, h2, h3, h4 {
 
 /** lists **/
 
-ul.databaseSectionList li, #databases_categories li, .result, #bd .recordFullTextOption { 
+ul.database-section-list li, #databases-categories li, .result, #bd .record-full-text-option { 
 	margin-bottom: .2em;
 	border-bottom: 2px solid #ccc;
 	background-color: #fff;
@@ -96,26 +96,26 @@ ul.databaseSectionList li, #databases_categories li, .result, #bd .recordFullTex
 
 /** results **/
 
-.resultsInfo, #sortOptions { 
+.results-info, #sort-options { 
 	display: none;
 }
 
 /** pager **/
 
-#bd div.resultsPager {
+#bd div.results-pager {
 	margin: 1em;
 }
 
-.resultsPager li {
+.results-pager li {
 	margin: 0;
 	padding: 0;
 }
 
-.resultsPagerList li strong, .resultsPagerList li a.resultsPagerLink {
+.results-pager-list li strong, .results-pager-list li a.results-pager-link {
 	display: none;
 }
 
-.resultsPagerNext {
+.results-pager-next {
 	font-size: 150%;
 	padding: .5em;
 	border: 1px solid #ccc;
@@ -148,7 +148,7 @@ ul.databaseSectionList li, #databases_categories li, .result, #bd .recordFullTex
 
 /** hide for now, will add later **/
 
-#bd .saveRecord {
+#bd .save-record {
 	display: none;
 }
 
@@ -158,30 +158,21 @@ ul.databaseSectionList li, #databases_categories li, .result, #bd .recordFullTex
 	display: none;
 }
 
-.worldcatBookCover, #worldcatRecordBookCover, #worldcatAdvancedMore {
-	display: none;
-}
-
-.worldcatAvailable, .worldcatAvailableRecord, table.holdingsTable {
-	margin: 0;
-	padding: 0;
-}
-
-table.holdingsTable {
+table.holdings-table {
 	margin-top: 1em;
 	margin-bottom: 1em;
 }
 
 /** holdings: dupped here, remove this when search arch in place **/
 
-.holdingsTable {
+.holdings-table {
 	border-collapse:collapse;
 	border-spacing:0;
 	border: 1px solid #ccc;
 	margin: 15px;
 }
 
-.holdingsTable th, .holdingsTable td {
+.holdings-table th, .holdings-table td {
 	text-align: left;
 	margin: 0px;
 	padding: 5px;
@@ -189,10 +180,10 @@ table.holdingsTable {
 	border-bottom: 1px solid #eee;
 }
 
-.holdingsTable th {
+.holdings-table th {
 	background-color: #efefef;
 }
 
-#smsOption {
+#sms-option {
 	display: none;
 }
