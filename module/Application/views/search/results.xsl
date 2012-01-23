@@ -44,9 +44,8 @@
 				</div>
 			</div>
 		</div>
-
 		
-		<!-- <xsl:call-template name="tabs" /> -->
+		<xsl:call-template name="tabs" />
 		
 		<div class="yui-gf">
 			<div class="yui-u">	
@@ -65,41 +64,11 @@
 	
 			</div>
 			<div class="yui-u first">
+			
 				<div id="search-sidebar" class="sidebar">
-				
-					<div class="box" style="font-size: 120%">
-					
-						<h2 style="font-size: inherit">Search Results</h2>
-						
-						<ul>
-						
-						<xsl:for-each select="config/search//option">
-							
-							<li>
-								<xsl:choose>
-									<xsl:when test="@current = 1">
-										<strong><xsl:value-of select="@public" /></strong>
-									</xsl:when>
-									<xsl:otherwise>
-									
-										<a href="{@url}">
-											<xsl:value-of select="@public" /> 
-										</a>
-									</xsl:otherwise>
-								</xsl:choose>
-				
-								<xsl:text> </xsl:text>
 								
-								<xsl:call-template name="tab_hit" />
-								
-							</li>
-							
-						</xsl:for-each>
-						
-						</ul>
-					</div>
-				
 					<xsl:call-template name="search_sidebar" />
+					
 				</div>
 			</div>
 		</div>	
@@ -290,12 +259,12 @@
 	-->
 	
 	<xsl:template name="tabs">
-	
-		<xsl:if test="config[@name='tabs']">
+		
+		<xsl:if test="config/tabs">
 		
 			<div class="tabs">
 				
-				<xsl:for-each select="config[@name='tabs']/top">
+				<xsl:for-each select="config/tabs">
 						
 					<ul id="tabnav">
 						<xsl:call-template name="tab" />
@@ -308,32 +277,6 @@
 		</xsl:if>
 	</xsl:template>
 	
-	<!--
-		TEMPLATE: SUB TABS
-		options that go beyond the tab; this is akward, rethinking
-	-->
-	
-	<xsl:template name="subtabs">
-	
-		<xsl:if test="config/tabs/sub[@parent = //request/controller]">
-		
-			<div id="subtab" class="box">
-			
-				<h2>Expand your search</h2>
-				
-				<xsl:for-each select="config/tabs/sub[@parent = //request/controller]">
-						
-					<ul>
-						<xsl:call-template name="tab_options" />
-					</ul>
-	
-				</xsl:for-each>
-				
-			</div>
-		
-		</xsl:if>
-	
-	</xsl:template>
 
 	<!-- 
 		TEMPLATE: TAB
@@ -342,9 +285,9 @@
 	
 	<xsl:template name="tab">
 	
-		<xsl:for-each select="tab">
+		<xsl:for-each select="option">
 			
-			<li>
+			<li id="tab-{@id}">
 				<xsl:choose>
 					<xsl:when test="@current = 1">
 						<strong><xsl:value-of select="@public" /></strong>
@@ -352,16 +295,16 @@
 					<xsl:otherwise>
 					
 						<a href="{@url}">
-							
+						
 							<xsl:value-of select="@public" /> 
+							
+							<xsl:text> </xsl:text>
+				
+							<xsl:call-template name="tab_hit" />
+							
 						</a>
 					</xsl:otherwise>
-				</xsl:choose>
-
-				<xsl:text> </xsl:text>
-				
-				<xsl:call-template name="tab_hit" />
-				
+				</xsl:choose>				
 			</li>
 		</xsl:for-each>
 		
@@ -435,9 +378,7 @@
 	-->
 	
 	<xsl:template name="search_sidebar">
-	
-		<xsl:call-template name="subtabs" />
-		
+			
 		<xsl:if test="//facets/groups">
 		
 			<div class="box">

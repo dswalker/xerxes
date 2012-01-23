@@ -58,21 +58,6 @@ a:hover {
 	text-decoration: underline;
 }
 
-/** header **/
-#hd-banner {
-	background-color: #336699;
-	padding: 20px;
-	padding-bottom: 2px;
-}
-
-#hd-banner-link {
-	color: #fff;
-	font-weight: bold;
-	font-size: 150%;
-	font-family: Arial, Helvetica, sans-serif;
-	text-decoration: none;
-}
-
 /** BASIC ELEMENTS ( but not for header, footer )**/
 
 #bd dt, #bd dd {
@@ -130,6 +115,22 @@ a:hover {
 .xer-t5 #yui-main .yui-b{
 	margin-left:19.4615em;
 	*margin-left:19.125em;
+}
+
+/** HEADER **/
+
+#hd-banner {
+	background-color: #336699;
+	padding: 20px;
+	padding-bottom: 2px;
+}
+
+#hd-banner-link {
+	color: #fff;
+	font-weight: bold;
+	font-size: 150%;
+	font-family: Arial, Helvetica, sans-serif;
+	text-decoration: none;
 }
 
 /** SIDEBAR **/
@@ -301,7 +302,7 @@ a:hover {
 	margin-left: 4.3em;
 }
 
-.metasearch_input_toggle {
+.search_input_toggle {
 	margin-top: 1em;
 }
 
