@@ -43,7 +43,7 @@
 		This one customized for a book-like display
 	-->
 
-	<xsl:template name="record-basic">
+	<xsl:template name="record_basic">
 	
 		<div id="book-record-book-cover" style="display:none">
 			<xsl:call-template name="book_jacket_full">
@@ -55,11 +55,11 @@
 			
 			<!-- Title -->
 			
-			<h1><xsl:call-template name="record-title" /></h1>
+			<h1><xsl:call-template name="record_title" /></h1>
 			
 			<!-- Basic record information (Author, Year, Format, Database, ...) -->
 			
-			<xsl:call-template name="record-summary" />
+			<xsl:call-template name="record_summary" />
 			
 			<!-- google javascript lookup -->
 			
@@ -70,7 +70,7 @@
 							
 		<!-- A box with actions for current record (get full-text, link to holdings, save record) -->
 		
-		<xsl:call-template name="record-actions" />
+		<xsl:call-template name="record_actions" />
 		
 		<!-- Umlaut stuff -->
 		
@@ -78,7 +78,7 @@
 	
 		<!-- Detailed record information (Summary, Topics, Standard numbers, ...) -->
 		
-		<xsl:call-template name="record-details" />
+		<xsl:call-template name="record_details" />
 				
 	</xsl:template>	
 
@@ -86,7 +86,7 @@
 		TEMPLATE: RECORD ACTIONS
 	-->	
 	
-	<xsl:template name="record-actions">
+	<xsl:template name="record_actions">
 		<div id="record-full-text" class="raised-box record-actions">
 			
 			<xsl:call-template name="availability">

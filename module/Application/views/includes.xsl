@@ -173,7 +173,7 @@
 	
 		<html lang="{$rfc1766}">
 	
-		<xsl:call-template name="surround-head" />
+		<xsl:call-template name="surround_head" />
 
 		<body>
 		
@@ -198,13 +198,13 @@
 	
 			<!-- The main content is split into subtemplates to make customiztion of parts easier -->
 			
-			<xsl:call-template name="surround-hd" />
+			<xsl:call-template name="surround_hd" />
 	
-			<xsl:call-template name="surround-bd">
+			<xsl:call-template name="surround_bd">
 				<xsl:with-param name="sidebar"><xsl:value-of select="$sidebar" /></xsl:with-param>
 			</xsl:call-template>
 	
-			<xsl:call-template name="surround-ft" />
+			<xsl:call-template name="surround_ft" />
 	
 		</div>
 		
@@ -213,10 +213,10 @@
 		
 	</xsl:template>
 	
-	<xsl:template name="surround-head">
+	<xsl:template name="surround_head">
 		<head>
 		<title><xsl:value-of select="//config/application_name" />: <xsl:call-template name="title" /></title>
-		<xsl:call-template name="surround-meta" />
+		<xsl:call-template name="surround_meta" />
 		<base href="{$base_url}/" />
 		
 		<!-- css -->
@@ -234,11 +234,11 @@
 		<xsl:copy-of select="$text_extra_html_head_content" />
 		
 		<!-- good junk -->
-		<xsl:call-template name="surround-google-analytics" />
+		<xsl:call-template name="surround_google_analytics" />
 		</head>
 	</xsl:template>
 	
-	<xsl:template name="surround-meta">
+	<xsl:template name="surround_meta">
 			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 			<xsl:copy-of select="$text_extra_meta_tags" />
 	</xsl:template>
@@ -247,7 +247,7 @@
 		TEMPLATE: surround-hd
 		page header
 	-->
-	<xsl:template name="surround-hd">
+	<xsl:template name="surround_hd">
 			<div id="hd">
 				<xsl:choose>
 					<xsl:when test="$is_mobile = '1'">
@@ -269,7 +269,7 @@
 		TEMPLATE: surround-bd
 		page body - main content
 	-->
-	<xsl:template name="surround-bd">
+	<xsl:template name="surround_bd">
 		<xsl:param name="sidebar" />
 	
 			<div id="bd">
@@ -294,7 +294,7 @@
 		TEMPLATE: surround-ft
 		page footer
 	-->
-	<xsl:template name="surround-ft">
+	<xsl:template name="surround_ft">
 			<div id="ft">
 				<xsl:choose>
 					<xsl:when test="$is_mobile = '1'">
@@ -311,7 +311,7 @@
 		TEMPLATE: surround-google-analytics
 		Google analytics script
 	-->
-	<xsl:template name="surround-google-analytics">
+	<xsl:template name="surround_google_analytics">
 		<xsl:if test="//config/google_analytics">
 			<script type="text/javascript">
 				var _gaq = _gaq || [];

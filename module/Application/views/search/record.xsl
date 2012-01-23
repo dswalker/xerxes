@@ -53,7 +53,7 @@
 					
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:call-template name="record-basic" />
+						<xsl:call-template name="record_basic" />
 					</xsl:otherwise>
 				</xsl:choose>
 				
@@ -69,19 +69,19 @@
 		TEMPLATE: RECORD BASIC
 	-->			
 	
-	<xsl:template name="record-basic">
+	<xsl:template name="record_basic">
 	
 		<!-- Title -->
 		
-		<h1><xsl:call-template name="record-title" /></h1>
+		<h1><xsl:call-template name="record_title" /></h1>
 		
 		<!-- Basic record information (Author, Year, Format, Database, ...) -->
 		
-		<xsl:call-template name="record-summary" />
+		<xsl:call-template name="record_summary" />
 					
 		<!-- A box with actions for current record (get full-text, link to holdings, save record) -->
 		
-		<xsl:call-template name="record-actions" />
+		<xsl:call-template name="record_actions" />
 		
 		<!-- Umlaut stuff -->
 		
@@ -89,7 +89,7 @@
 
 		<!-- Detailed record information (Summary, Topics, Standard numbers, ...) -->
 		
-		<xsl:call-template name="record-details" />	
+		<xsl:call-template name="record_details" />	
 	
 	</xsl:template>
 	
@@ -97,7 +97,7 @@
 		TEMPLATE: RECORD TITLE
 	-->		
 	
-	<xsl:template name="record-title">
+	<xsl:template name="record_title">
 		<xsl:value-of select="title_normalized" />
 	</xsl:template>
 
@@ -105,19 +105,19 @@
 		TEMPLATE: RECORD SUMMARY
 	-->	
 	
-	<xsl:template name="record-summary">
+	<xsl:template name="record_summary">
 		<dl>
 			<xsl:call-template name="additional_full_record_data_main_top" />
-			<xsl:call-template name="record-uniform-title" /> <!-- uniform title -->
-			<xsl:call-template name="record-authors" /> <!-- Authors -->
-			<xsl:call-template name="record-corp-authors" /> <!-- Corp. Authors -->
-			<xsl:call-template name="record-conference" /> <!-- Conference -->
-			<xsl:call-template name="record-format" /> <!-- Format -->
-			<xsl:call-template name="record-year" /> <!-- Year -->
-			<xsl:call-template name="record-institution" /> <!-- Institution -->
-			<xsl:call-template name="record-degree" /> <!-- Degree -->
-			<xsl:call-template name="record-source" /> <!-- Source -->
-			<xsl:call-template name="record-database" /> <!-- Database -->
+			<xsl:call-template name="record_uniform-title" /> <!-- uniform title -->
+			<xsl:call-template name="record_authors" /> <!-- Authors -->
+			<xsl:call-template name="record_corp-authors" /> <!-- Corp. Authors -->
+			<xsl:call-template name="record_conference" /> <!-- Conference -->
+			<xsl:call-template name="record_format" /> <!-- Format -->
+			<xsl:call-template name="record_year" /> <!-- Year -->
+			<xsl:call-template name="record_institution" /> <!-- Institution -->
+			<xsl:call-template name="record_degree" /> <!-- Degree -->
+			<xsl:call-template name="record_source" /> <!-- Source -->
+			<xsl:call-template name="record_database" /> <!-- Database -->
 			<xsl:call-template name="additional_full_record_data_main_bottom" />
 		</dl>
 	</xsl:template>
@@ -126,9 +126,9 @@
 		TEMPLATE: RECORD ACTIONS
 	-->	
 	
-	<xsl:template name="record-actions">
+	<xsl:template name="record_actions">
 		<div id="record-full-text" class="raised-box record-actions">
-			<xsl:call-template name="record-action-fulltext" />
+			<xsl:call-template name="record_action-fulltext" />
 			<xsl:call-template name="save_record" />
 		</div>
 	</xsl:template>
@@ -150,7 +150,7 @@
 		TEMPLATE: RECORD UNIFORM TITLE
 	-->	
 
-	<xsl:template name="record-uniform-title">
+	<xsl:template name="record_uniform-title">
 		<xsl:if test="uniform_title">
 			<div>
 			<dt>Uniform title:</dt>
@@ -165,7 +165,7 @@
 		TEMPLATE: RECORD AUTHORS
 	-->	
 	
-	<xsl:template name="record-authors">
+	<xsl:template name="record_authors">
 		<xsl:if test="authors/author[@type = 'personal']">
 			<div>
 			<dt><xsl:copy-of select="$text_results_author" />:</dt>
@@ -188,7 +188,7 @@
 		TEMPLATE: RECORD CORPORATE AUTHORS
 	-->	
 	
-	<xsl:template name="record-corp-authors">
+	<xsl:template name="record_corp-authors">
 		<xsl:if test="authors/author[@type = 'corporate']">
 			<div>
 			<dt><xsl:copy-of select="$text_record_author_corp" />:</dt>
@@ -209,7 +209,7 @@
 		TEMPLATE: RECORD CONFERENCE AUTHORS
 	-->	
 	
-	<xsl:template name="record-conference">
+	<xsl:template name="record_conference">
 		<xsl:if test="authors/author[@type = 'conference']">
 			<div>
 			<dt><xsl:copy-of select="$text_record_conf" />:</dt>
@@ -231,7 +231,7 @@
 		TEMPLATE: RECORD FORMAT
 	-->	
 	
-	<xsl:template name="record-format">
+	<xsl:template name="record_format">
 		<xsl:if test="format">
 			<div>
 			<dt><xsl:copy-of select="$text_record_format_label" />:</dt>
@@ -253,7 +253,7 @@
 		TEMPLATE: RECORD YEAR
 	-->	
 	
-	<xsl:template name="record-year">
+	<xsl:template name="record_year">
 		<xsl:if test="year">
 			<div>
 			<dt><xsl:copy-of select="$text_results_year" />:</dt>
@@ -266,7 +266,7 @@
 		TEMPLATE: RECORD INSTITUTION
 	-->	
 	
-	<xsl:template name="record-institution">
+	<xsl:template name="record_institution">
 		<xsl:if test="institution">
 			<div>
 			<dt><xsl:copy-of select="$text_record_inst" />:</dt>
@@ -279,7 +279,7 @@
 		TEMPLATE: RECORD DEGREE
 	-->	
 	
-	<xsl:template name="record-degree">
+	<xsl:template name="record_degree">
 		<xsl:if test="degree">
 			<div>
 			<dt><xsl:copy-of select="$text_record_degree" />:</dt>
@@ -292,7 +292,7 @@
 		TEMPLATE: RECORD SOURCE
 	-->	
 	
-	<xsl:template name="record-source">
+	<xsl:template name="record_source">
 		<div>
 		<xsl:choose>
 			<xsl:when test="journal">
@@ -336,7 +336,7 @@
 		TEMPLATE: RECORD DATABASE
 	-->	
 	
-	<xsl:template name="record-database">
+	<xsl:template name="record_database">
 	
 		<xsl:if test="database_name">
 			<div>
@@ -353,7 +353,7 @@
 		TEMPLATE: RECORD ACTION FULL TEXT
 	-->
 	
-	<xsl:template name="record-action-fulltext">
+	<xsl:template name="record_action-fulltext">
 	
 		<div id="umlaut_fulltext" class="umlaut_content" style="display:none;"></div>
 		
@@ -367,21 +367,21 @@
 		TEMPLATE: RECORD DETAILS
 	-->
 	
-	<xsl:template name="record-details">
+	<xsl:template name="record_details">
 	
-		<xsl:call-template name="record-abstract" />
-		<xsl:call-template name="record-recommendations" />
-		<xsl:call-template name="record-toc" />
-		<xsl:call-template name="record-subjects" />
+		<xsl:call-template name="record_abstract" />
+		<xsl:call-template name="record_recommendations" />
+		<xsl:call-template name="record_toc" />
+		<xsl:call-template name="record_subjects" />
 		
 		<div id="record-additional-info">
 		
 			<h2>Additional details</h2>
 			
 			<dl>
-				<xsl:call-template name="record-language" />
-				<xsl:call-template name="record-standard_numbers" />
-				<xsl:call-template name="record-notes" />
+				<xsl:call-template name="record_language" />
+				<xsl:call-template name="record_standard_numbers" />
+				<xsl:call-template name="record_notes" />
 				<xsl:call-template name="description" />
 				<xsl:call-template name="additional-title-info" />
 			</dl>
@@ -394,7 +394,7 @@
 		TEMPLATE: RECORD ABSTRACT
 	-->
 	
-	<xsl:template name="record-abstract">
+	<xsl:template name="record_abstract">
 		<xsl:if test="abstract">
 			<h2><xsl:copy-of select="$text_record_summary" /></h2>
 			<div class="record-abstract">
@@ -407,7 +407,7 @@
 		TEMPLATE: RECORD RECOMMENDATIONS
 	-->
 	
-	<xsl:template name="record-recommendations">
+	<xsl:template name="record_recommendations">
 		<xsl:if test="//recommendations/recommendation">
 		
 			<h2><xsl:call-template name="text_recommendation_header" />:</h2>
@@ -438,7 +438,7 @@
 		TEMPLATE: RECORD TABLE OF CONTENTS
 	-->
 	
-	<xsl:template name="record-toc">
+	<xsl:template name="record_toc">
 		<xsl:if test="toc">
 			<h2>
 				<xsl:choose>
@@ -475,7 +475,7 @@
 		TEMPLATE: RECORD SUBJECTS
 	-->
 	
-	<xsl:template name="record-subjects">
+	<xsl:template name="record_subjects">
 		<xsl:if test="subjects">
 			<h2><xsl:copy-of select="$text_record_subjects" />:</h2>
 			<ul>
@@ -490,7 +490,7 @@
 		TEMPLATE: RECORD LANGUAGE
 	-->
 	
-	<xsl:template name="record-language">
+	<xsl:template name="record_language">
 		<xsl:if test="language">
 		
 			<div>
@@ -505,7 +505,7 @@
 		TEMPLATE: RECORD STANDARD NUMBERS
 	-->	
 	
-	<xsl:template name="record-standard_numbers">
+	<xsl:template name="record_standard_numbers">
 		<xsl:call-template name="issn" />
 		<xsl:call-template name="isbn" />
 		<xsl:call-template name="gpo" />
@@ -627,7 +627,7 @@
 		TEMPLATE: RECORD NOTES
 	-->
 
-	<xsl:template name="record-notes">
+	<xsl:template name="record_notes">
 		<xsl:if test="notes">
 			<div>
 				<dt><xsl:copy-of select="$text_record_notes" />:</dt>
