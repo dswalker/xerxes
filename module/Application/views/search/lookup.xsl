@@ -16,6 +16,7 @@
 	xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 
 <xsl:import href="../includes.xsl" />
+<xsl:import href="results.xsl" />
 <xsl:import href="books.xsl" />
 
 <xsl:output method="html" />
