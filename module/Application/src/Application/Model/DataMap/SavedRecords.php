@@ -6,7 +6,8 @@ use Xerxes\Utility\DataMap,
 	Xerxes\Record,
 	Application\Model\Saved\Record as SavedRecord,
 	Application\Model\Saved\Record\Format,
-	Application\Model\Saved\Record\Tag;
+	Application\Model\Saved\Record\Tag,
+	Application\Model\Summon;
 
 /**
  * Database access mapper for saved records
@@ -552,7 +553,25 @@ class SavedRecords extends DataMap
 		$arrValues[":year"] = $iYear;
 		$arrValues[":format"] = $objXerxesRecord->format()->getInternalFormat();
 		
-		$arrValues[":marc"] = serialize($objXerxesRecord);
+		
+		
+		##### xerxes 1 transition hack  @todo remove this
+		
+		if ( $objXerxesRecord instanceof Summon\Record && $this->registry->getConfig('XERXES_1_TRANS', false) )
+		{
+			require_once '/xerxes/lib/Xerxes/saved/TransRecord.php';
+			
+			$link_resolver = $this->registry->getConfig("LINK_RESOLVER_ADDRESS", true);
+			$sid = $this->registry->getConfig("APPLICATION_SID", false, "calstate.edu:xerxes");
+			
+			$objXerxesRecord = new \Xerxes_TransRecord($objXerxesRecord, $link_resolver, $sid );
+		}
+		
+		###### end hack
+		
+		
+		
+		$arrValues[":marc"] = serialize($objXerxesRecord);		
 		$arrValues[":record_type"] = "xerxes_record"; 			
 		
 		$this->insert( $strSQL, $arrValues );

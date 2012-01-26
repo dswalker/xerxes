@@ -5,6 +5,7 @@ namespace Application;
 use Application\Model\Authentication\AuthenticationFactory,
 	Application\Model\Authentication\User,
 	Xerxes\Utility\ControllerMap,
+	Xerxes\Utility\Parser,
 	Xerxes\Utility\Registry,
 	Xerxes\Utility\Request,
 	Zend\EventManager\StaticEventManager,
@@ -157,6 +158,33 @@ class Module implements AutoloaderProvider
 		// get user from session
 		
 		$user = $request->getUser(); 
+		
+		
+		
+		##### xerxes 1 transition hack  @todo remove this
+		
+		if ( $user->isLocal() || $user->isGuest() )
+		{
+			foreach ( $_COOKIE as $key => $value )
+			{
+				if ( ( strstr($key, 'xerxessession')) )
+				{
+					if ( $user->username != $value )
+					{
+						$username = Parser::removeRight($user->username, '@');
+						
+						$request->setSessionData("username", $username . '@' . $value);
+						$user = $request->getUser();
+					}
+					
+					break;
+				}
+			}
+		}
+		
+		###### end hack
+		
+		
 		
 		// this action requires authentication
 		
