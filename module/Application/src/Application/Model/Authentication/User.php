@@ -33,6 +33,7 @@ class User extends DataValue implements Utility\User
 	private $role;
 	private $ip_address;
 	private $ip_range;
+	protected static $request;
 	
 	const LOCAL = "local";
 	const GUEST = "guest";
@@ -45,6 +46,8 @@ class User extends DataValue implements Utility\User
 
 	public function __construct(Request $request = null)
 	{
+		self::$request = $request;
+		
 		if ( $request != "" )
 		{
 			// user attributes
@@ -102,15 +105,55 @@ class User extends DataValue implements Utility\User
 	
 	public static function genRandomUsername($prefix)
 	{
-		$length = 10;
-		$characters = '0123456789abcdefghijklmnopqrstuvwxyz';
-		$string = "";    
+		$string = "";
 		
-		for ($p = 0; $p < $length; $p++)
+		// take value from session id
+		
+		if ( self::$request instanceof Request )
 		{
-			$string .= $characters[mt_rand(0, strlen($characters) - 1)];
+			$session_id = self::$request->session()->getId();
+			
+			if ( $session_id != "" )
+			{
+				$string = $session_id;
+			}
+		}
+		else // let's construct one randomly
+		{
+			$length = 10;
+			$characters = '0123456789abcdefghijklmnopqrstuvwxyz';
+			$string = "";    
+			
+			for ($p = 0; $p < $length; $p++)
+			{
+				$string .= $characters[mt_rand(0, strlen($characters) - 1)];
+			}
 		}
 		
 		return $prefix . '@' . $string;
+	}
+	
+	public function isGuest()
+	{
+		if ( $this->role == self::GUEST )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}	
+	
+	public function isLocal()
+	{
+		if ( $this->role == self::LOCAL )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }
