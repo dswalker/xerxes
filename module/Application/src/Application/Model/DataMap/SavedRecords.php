@@ -388,7 +388,18 @@ class SavedRecords extends DataMap
 					
 					if ( array_key_exists( "marc", $arrResult ) )
 					{
-						$objRecord->xerxes_record = unserialize($arrResult["marc"]);
+						if ( $arrResult["record_type"] == "xerxes_record") // new-style saved record
+						{
+							$objRecord->xerxes_record = unserialize($arrResult["marc"]);
+						}
+						else // old style @todo: remove this and maybe make a conversion script or something?
+						{
+							$xerxes_record = new \Application\Model\Metalib\Record();
+							$xerxes_record->loadXML( $arrResult["marc"] );
+							$objRecord->xerxes_record = $xerxes_record;
+						}						
+						
+						
 					}
 				}
 				
