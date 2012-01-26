@@ -15,14 +15,17 @@ abstract class SearchController extends ActionController
 {
 	protected $id = "search";
 	
+	protected $registry; // registry
 	protected $config; // local config
 	protected $query; // query object
 	protected $engine; // search engine
+	protected $helper; // search display helper
+
 	protected $max; // default records per page
 	protected $max_allowed; // upper-limit per page
 	protected $sort; // default sort
-	protected $helper; // search display helper
-	protected $response_array = array(); // response data
+	
+	protected $data = array(); // response data
 	
 	public function execute(MvcEvent $e)
 	{
@@ -235,6 +238,16 @@ abstract class SearchController extends ActionController
 			// get record
 			
 			$record = $this->engine->getRecord($original_id)->getRecord(0)->getXerxesRecord();
+			
+			
+			
+			##### xerxes 1 transition hack  @todo remove this
+			
+			if ( $this->reg)
+			
+			###### end hack
+			
+			
 			
 			// save it
 			
