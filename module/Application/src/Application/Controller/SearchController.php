@@ -239,16 +239,6 @@ abstract class SearchController extends ActionController
 			
 			$record = $this->engine->getRecord($original_id)->getRecord(0)->getXerxesRecord();
 			
-			
-			
-			##### xerxes 1 transition hack  @todo remove this
-			
-			if ( $this->reg)
-			
-			###### end hack
-			
-			
-			
 			// save it
 			
 			$inserted_id = $datamap->addRecord( $username, $this->id, $original_id, $record );
