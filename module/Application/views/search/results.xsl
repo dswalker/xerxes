@@ -37,7 +37,7 @@
 		
 		<div class="yui-ge">
 			<div class="yui-u first">
-				<h1><xsl:call-template name="search_page_title" /></h1>
+				<h1>Basic Search <xsl:call-template name="search_page_title" /></h1>
 				<xsl:call-template name="searchbox" />
 			</div>
 			<div class="yui-u">
@@ -329,23 +329,15 @@
 		<xsl:for-each select="option">
 			
 			<li id="tab-{@id}">
-				<xsl:choose>
-					<xsl:when test="@current = 1">
-						<strong><xsl:value-of select="@public" /></strong>
-					</xsl:when>
-					<xsl:otherwise>
-					
-						<a href="{@url}">
-						
-							<xsl:value-of select="@public" /> 
-							
-							<xsl:text> </xsl:text>
+				<xsl:if test="@current = 1">
+					<xsl:attribute name="class">here</xsl:attribute>
+				</xsl:if>
 				
-							<xsl:call-template name="tab_hit" />
-							
-						</a>
-					</xsl:otherwise>
-				</xsl:choose>				
+				<a href="{@url}">
+					<xsl:value-of select="@public" />
+					<xsl:text> </xsl:text>
+					<xsl:call-template name="tab_hit" />
+				</a>
 			</li>
 		</xsl:for-each>
 		
