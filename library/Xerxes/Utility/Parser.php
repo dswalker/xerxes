@@ -704,7 +704,7 @@ class Parser
 		
 		if ( ! $object_xml instanceof \DOMDocument )
 		{
-			throw new \Exception("Recursive adding of XML error.");
+			throw new \Exception("Recursion error.");
 		}
 	
 		// if we got this far, then we've got a domdocument to add
