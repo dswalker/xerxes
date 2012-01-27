@@ -437,18 +437,9 @@ a.record-action {
 	margin-left: 3em;
 }
 
-/*
-
-#recordFullText {
-	margin-top: 2em; 
-	margin-bottom: 2em;
+.record-abstract {
+	line-height: 140%;
 }
-
-#recordFullText li {
-	margin-left: 0;
-}
-
-*/
 
 #citation-note {
 	border: 1px solid #ccc;
@@ -640,12 +631,6 @@ div.autocomplete ul li {
 	background-image: url("../images/tabs/right_on.png");
 	color: #333;
 	padding-bottom: 10px;
-}
-
-.sidebar #subtab {
-	margin-left: 0;
-	border: 1px solid #ccc;
-	padding: .5em;
 }
 
 /* facet limit */
