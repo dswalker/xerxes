@@ -32,8 +32,9 @@ class User extends DataValue implements Utility\User
 	
 	private $role;
 	private $ip_address;
+	
 	private $ip_range;
-	protected static $request;
+	private static $request;
 	
 	const LOCAL = "local";
 	const GUEST = "guest";
@@ -133,6 +134,10 @@ class User extends DataValue implements Utility\User
 		return $prefix . '@' . $string;
 	}
 	
+	/**
+	 * Whether this is a guest user
+	 */
+	
 	public function isGuest()
 	{
 		if ( $this->role == self::GUEST )
@@ -143,7 +148,11 @@ class User extends DataValue implements Utility\User
 		{
 			return false;
 		}
-	}	
+	}
+	
+	/**
+	 * Whether this is a (temporary) local user
+	 */
 	
 	public function isLocal()
 	{
