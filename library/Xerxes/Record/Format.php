@@ -319,13 +319,14 @@ class Format
 		return (string) $this->public;
 	}
 	
-	public function toXML() // @todo: replace with toArray
+	/**
+	 * Serialize to Array
+	 *
+	 * @return array
+	 */
+	
+	public function toArray()
 	{
-		$value = Parser::escapeXml((string) $this->public);
-		
-		$xml = new \DOMDocument();
-		$xml->loadXML("<format>$value</format>");
-		
-		return $xml;
+		return array($this->public); // @todo: more than just public, please
 	}
 }

@@ -17,9 +17,9 @@ use Xerxes\Utility\Parser;
 
 class Item
 {
-	protected $bib_id; 		// the bibliographic record ID
+	protected $bib_id; // the bibliographic record ID
     protected $availability; // boolean: is this item available for checkout?
-    protected $status; 	// string describing the status of the item
+    protected $status; // string describing the status of the item
     protected $location; // string describing the physical location of the item
     protected $reserve; // string indicating “on reserve” status – legal values: 'Y' or 'N'
     protected $callnumber; // the call number of this item
@@ -63,15 +63,14 @@ class Item
 	}
 	
 	/**
-	 * Serialize to XML
+	 * Serialize to Array
 	 * 
-	 * @return DOMDocument
+	 * @return array
 	 */
 	
-	public function toXML() // @todo: replace with toArray
+	public function toArray()
 	{
-		$xml = new \DOMDocument();
-		$xml->loadXML("<item />");
+		$array = array();
 		
 		foreach ( $this as $key => $value )
 		{
@@ -80,12 +79,9 @@ class Item
 				continue;
 			}
 			
-			$key = preg_replace('/\W|\s/', '', $key);
-			
-			$element = $xml->createElement($key, Parser::escapeXml($value));
-			$xml->documentElement->appendChild($element);
+			$array[$key] = $value;
 		}
 		
-		return $xml;
+		return $array;
 	}
 }

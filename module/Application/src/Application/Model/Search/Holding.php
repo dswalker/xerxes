@@ -33,25 +33,13 @@ class Holding
 	}
 	
 	/**
-	 * Serialize to XML
+	 * Serialize to Array
 	 * 
-	 * @return DOMDocument
+	 * @return array
 	 */
 	
-	public function toXML() // @todo: replace with toArray
+	public function toArray()
 	{
-		$xml = new \DOMDocument();
-		$xml->loadXML("<holding />");
-		
-		foreach ( $this->data as $key => $value )
-		{
-			$element = $xml->createElement("data");
-			$element->setAttribute("key", $key);
-			$element->setAttribute("value", $value);
-			$xml->documentElement->appendChild($element);
-		}
-		
-		return $xml;
+		return $this->data;
 	}	
-	
 }

@@ -596,6 +596,8 @@ class Parser
 	
 		elseif ( $object instanceof \SimpleXMLElement )
 		{
+			// @todo: use convertToDOMDocument above
+			
 			$simple_xml = $object->asXML();
 	
 			if ( $simple_xml != "" )
@@ -624,7 +626,7 @@ class Parser
 			{
 				$reflection = new \ReflectionObject($object);
 				
-				// no id supplied, likely because this is an array, 
+				// no id supplied, likely because this object was part of an array, 
 				// so take class name (no namespace) as id
 	
 				if ( is_int($id) )
@@ -632,14 +634,24 @@ class Parser
 					$id = strtolower($reflection->getShortName());
 				}
 				
-				$object_xml = new \DOMDocument();
-				$object_xml->loadXML("<$id />");
-	
-				// only public properties
-	
-				foreach ( $reflection->getProperties(\ReflectionProperty::IS_PUBLIC) as $property )
+				// this object has a toArray method, so use that
+					
+				if ( method_exists($object, "toArray") )
 				{
-					self::addToXML($object_xml, $property->name, $property->getValue($object));
+					// make it an array and feed it back
+					return self::addToXML($xml, $id, $object->toArray());
+				}
+				else //  just grab it's properties
+				{
+					$object_xml = new \DOMDocument();
+					$object_xml->loadXML("<$id />");
+		
+					// only public properties, though
+		
+					foreach ( $reflection->getProperties(\ReflectionProperty::IS_PUBLIC) as $property )
+					{
+						self::addToXML($object_xml, $property->name, $property->getValue($object));
+					}
 				}
 			}
 		}
@@ -687,9 +699,16 @@ class Parser
 			$xml->documentElement->appendChild($element);
 			return $xml;
 		}
+		
+		// whoops!
+		
+		if ( ! $object_xml instanceof \DOMDocument )
+		{
+			throw new \Exception("Recursive adding of XML error.");
+		}
 	
 		// if we got this far, then we've got a domdocument to add
-	
+		
 		$import = $xml->importNode($object_xml->documentElement, true);
 		$xml->documentElement->appendChild($import);
 	
