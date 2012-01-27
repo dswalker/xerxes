@@ -6,88 +6,100 @@ namespace Xerxes\Utility;
  * Utility class for basic parsing functions
  * 
  * @author David Walker
- * @copyright 2008 California State University
+ * @copyright 2012 California State University
  * @link http://xerxes.calstate.edu
  * @license http://www.gnu.org/licenses/
  * @version
- * @package  Xerxes_Framework
+ * @package  Xerxes
  */ 
 
 class Parser
 {
-	public static function toSentenceCase($strInput)
+	/**
+	 * Convert a string to sentence case
+	 * 
+	 * @param string $string
+	 * @return string
+	 */
+	
+	public static function toSentenceCase($string)
 	{						
-		if ( strlen($strInput) > 1 )
+		if ( strlen($string) > 1 )
 		{
 			// drop everything
 			
-			$strInput = self::strtolower($strInput);
+			$string = self::strtolower($string);
 			
 			// capitalize the first letter
 			
-			$strInput = self::strtoupper(substr($strInput, 0, 1)) . substr($strInput, 1);
+			$string = self::strtoupper(substr($string, 0, 1)) . substr($string, 1);
 			
 			// and the start of a subtitle
 			
-			$strInput = self::capitalizeSubtitle($strInput);
+			$string = self::capitalizeSubtitle($string);
 		}
 		
-		return $strInput;
+		return $string;
 	}
 	
-	private static function capitalizeSubtitle($strFinal)
+	/**
+	 * Find the subtitle from a string and capatalize the first character
+	 * 
+	 * @param string $string
+	 * @return string
+	 */
+	
+	private static function capitalizeSubtitle($string)
 	{
-		$arrMatches = array();
+		$matches = array();
 		
-		if ( preg_match("/: ([a-z])/", $strFinal, $arrMatches) )
+		if ( preg_match("/: ([a-z])/", $string, $matches) )
 		{
-			$strLetter = ucwords($arrMatches[1]);
-			$strFinal = preg_replace("/: ([a-z])/", ": " . $strLetter, $strFinal );
+			$letter = ucwords($matches[1]);
+			$string = preg_replace("/: ([a-z])/", ": " . $letter, $string );
 		}
 		
-		return $strFinal;
+		return $string;
 	}
 	
 	
 	/**
 	 * Determine whether the url is part of a group of domains
 	 * 
-	 * @param string $strURL	the url to test
-	 * @param string $strDomain	a comma-separated list of domains
+	 * @param string $url		the url to test
+	 * @param string $domain	a comma-separated list of domains
 	 *
 	 * @return bool				true if in domain, false otherwise
 	 */
 	
-	public static function withinDomain($strURL, $strDomain)
+	public static function withinDomain($url, $domain)
 	{
-		$bolPassed = false;
+		$passed = false;
 		
-		if ( strlen($strURL) > 4 )
+		if ( strlen($url) > 4 )
 		{
 			// only do it if it's an absolute url, local are fine
 				
-			if ( substr($strURL, 0, 4) == "http" )
+			if ( substr($url, 0, 4) == "http" )
 			{
-				$arrAllowed = explode(",", $strDomain);
+				$allowed_array = explode(",", $domain);
 				
 				// if any in our list match
 				
-				$bolPassed = false;
-				
-				foreach ( $arrAllowed as $strAllowed )
+				foreach ( $allowed_array as $allowed )
 				{
-					$strAllowed = trim(str_replace(".", "\\.", $strAllowed));
-					$strAllowed = trim(str_replace("*", "[^.]*", $strAllowed));
+					$allowed = trim(str_replace(".", "\\.", $allowed));
+					$allowed = trim(str_replace("*", "[^.]*", $allowed));
 					
-					if ( preg_match('/^http[s]{0,1}:\/\/' . $strAllowed .'.*/', $strURL) )
+					if ( preg_match('/^http[s]{0,1}:\/\/' . $allowed .'.*/', $url) )
 					{
-						$bolPassed = true;
+						$passed = true;
 					}
 				}
 			}
 		}
 		
-		return $bolPassed;
+		return $passed;
 	}
 	
 
@@ -95,35 +107,34 @@ class Parser
 	 * Simple function to strip off the previous part of a string
 	 * from the start of the term to the beginning, including the term itself
 	 * 
-	 * @param string $strExpression		whole string to search 
-	 * @param string $strRemove			term to match and remove left of from 
-	 * @return string 					chopped string
-	 * @static
+	 * @param string $string			whole string to search 
+	 * @param string $part_to_remove	term to match and remove left of from 
+	 * @return string
 	 */
 
-	public static function removeLeft ( $strExpression, $strRemove ) 
+	public static function removeLeft ( $string, $part_to_remove ) 
 	{		
-		$iStartPos = 0;		// start position of removing term
-		$iStopPos = 0;		// end position of removing term
-		$strRight = "";		// right remainder of the string to return
+		$start = 0; // start position of removing term
+		$stop = 0; // end position of removing term
+		$right = ""; // right remainder of the string to return
 		
 		// if it really is there
-		if ( strpos($strExpression, $strRemove) !== false )
+		if ( strpos($string, $part_to_remove) !== false )
 		{
 			// find the starting position of string to remove
-			$iStartPos = strpos($strExpression, $strRemove);
+			$start = strpos($string, $part_to_remove);
 			
 			// find the end position of string to remove
-			$iStopPos = $iStartPos + strlen($strRemove);
+			$stop = $start + strlen($part_to_remove);
 			
 			// return everything after that
-			$strRight = substr($strExpression, $iStopPos, strlen($strExpression) - $iStopPos);
+			$right = substr($string, $stop, strlen($string) - $stop);
 			
-			return $strRight;
+			return $right;
 		} 
 		else 
 		{
-			return $strExpression;
+			return $string;
 		}
 	}
 
@@ -131,32 +142,31 @@ class Parser
 	 * Simple function to strip off the remainder of a string
 	 * from the start of the term to the end of the string, including the term itself
 	 * 
-	 * @param string $strExpression		whole string to search 
-	 * @param string $strRemove			term to match and remove right of from 
-	 * @return string chopped string
-	 * @static 
+	 * @param string $string			whole string to search 
+	 * @param string $part_to_remove	term to match and remove right of from 
+	 * @return string
 	 */ 
 
-	public static function removeRight ( $strExpression, $strRemove ) 
+	public static function removeRight ( $string, $part_to_remove ) 
 	{		
-		$iStartPos = 0;		// start position of removing term
-		$strLeft = "";		// left portion of to return
+		$start = 0;	// start position of removing term
+		$left = "";	// left portion of to return
 
 		// if it really is there
-		if ( strpos( $strExpression, $strRemove) !== false ) 
+		if ( strpos( $string, $part_to_remove) !== false ) 
 		{
 
 			// find the starting position of to remove
-			$iStartPos = strpos( $strExpression, $strRemove);
+			$start = strpos( $string, $part_to_remove);
 			
 			// get everything before that
-			$strLeft = substr( $strExpression, 0, $iStartPos);
+			$left = substr( $string, 0, $start);
 							
-			return $strLeft;
+			return $left;
 		} 
 		else 
 		{
-			return $strExpression;
+			return $string;
 		}
 	}
 	
@@ -164,9 +174,8 @@ class Parser
 	 * Clean data for inclusion in an XML document, escaping illegal
 	 * characters
 	 *
-	 * @param string $string data to be cleaned
-	 * @return string cleaned data
-	 * @static 
+	 * @param string $string 	data to be cleaned
+	 * @return string
 	 */
 	
 	public static function escapeXml( $string )
@@ -188,9 +197,11 @@ class Parser
 	}
 	
 	/**
-	 * use multi-byte string lower case if available
+	 * Make a string lowercase
 	 * 
-	 * @param string $string the string to drop to lower case
+	 * Uses multi-byte function if available
+	 * 
+	 * @param string $string
 	 */
 	
 	public static function strtolower($string)
@@ -207,9 +218,11 @@ class Parser
 
 	
 	/**
-	 * use multi-byte string upper case if available
+	 * Make a string uppercase
 	 * 
-	 * @param string $string the string to raise to upper case
+	 * Uses multi-byte function if available
+	 * 
+	 * @param string $string
 	 */
 
 	public static function strtoupper($string)
@@ -223,6 +236,17 @@ class Parser
 			return strtoupper($string);
 		}
 	}
+	
+	/**
+	 * Perform a regular expression search and replace
+	 * 
+	 * Uses multi-byte function if available
+	 * 
+	 * @param string|array $pattern			The pattern to search for
+	 * @param string|array $replacement		The string or an array with strings to replace
+	 * @param string|array $subject			The string or an array with strings to search and replace
+	 * @return mixed
+	 */
 	
 	public static function preg_replace($pattern, $replacement, $subject)
 	{
@@ -242,6 +266,16 @@ class Parser
 		}			
 	}
 	
+	/**
+	 * Format a number with grouped thousands
+	 * 
+	 * Will account for local convention of thousands seperator
+	 * 
+	 * @param float $number		The number being formatted
+	 * @param int $decimals		[optional] Sets the number of decimal points
+	 * @return string
+	 */
+	
 	public static function number_format($number, $decimals = 0)
 	{
 		$number = (int) preg_replace('/\D/', '', $number);
@@ -257,7 +291,10 @@ class Parser
 	}
 	
 	/**
-	 * Convert string, DOMNode to DOMDocument
+	 * Convert an XML-based variable to DOMDocument
+	 * 
+	 * @param string|SimpleXMLElement|DOMNode $xml
+	 * @return DOMDocument
 	 */
 	
 	public static function convertToDOMDocument($xml)
@@ -531,7 +568,7 @@ class Parser
 	 * Recursively convert and add data to XML
 	 * 
 	 * @param \DOMDocument $xml			document to add data to
-	 * @param mixed $id					id of the data
+	 * @param string $id				id of the data
 	 * @param mixed $object				data
 	 * 
 	 * @throws \Exception
