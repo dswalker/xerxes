@@ -35,6 +35,8 @@ class Engine extends Search\Engine
 		$key = $this->config->getConfig("SUMMON_KEY", true);		
 				
 		$this->summon_client = new Summon($id, $key, Factory::getHttpClient());
+		
+		$this->summon_client->setToAuthenticated(); // @todo: only for local users?
 	}
 	
 	/**

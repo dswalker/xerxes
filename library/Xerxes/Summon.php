@@ -25,6 +25,7 @@ class Summon
 	protected $app_id; // summon application id
 	protected $session_id; // current session
 	protected $facets_to_include = array(); // facets that should be included in the response
+	protected $role; // user's role: authenticated or not
 	
 	/**
 	 * Create a Summon Client
@@ -53,9 +54,9 @@ class Summon
 	/**
 	 * Retrieves a document specified by the ID.
 	 *
-	 * @param   string  $id         The document to retrieve from the Summon API
+	 * @param string  $id         The document to retrieve from the Summon API
 	 * 
-	 * @return  string              The requested resource
+	 * @return array
 	 */
 	
 	public function getRecord($id)
@@ -65,7 +66,7 @@ class Summon
 	}
 	
 	/**
-	 * Execute a search.
+	 * Execute a search
 	 * 
 	 * @param string $query		search query in summon syntax
 	 * @param array $filter		[optional] filters to apply
@@ -87,6 +88,13 @@ class Summon
 		if ( $query != '' )
 		{
 			$options['s.q'] = $query;
+		}
+		
+		// user role
+		
+		if ( $this->role != "")
+		{
+			$options['s.role'] = $this->role;
 		}
 		
 		// filters to be applied
@@ -231,5 +239,10 @@ class Summon
 	public function getFacetsToInclude()
 	{
 		return $this->facets_to_include;
+	}
+	
+	public function setToAuthenticated()
+	{
+		$this->role = 'authenticated';
 	}
 }
