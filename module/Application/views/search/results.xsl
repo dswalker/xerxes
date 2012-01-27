@@ -33,6 +33,8 @@
 
 	<xsl:template name="search_page">
 
+		<!-- search box area -->
+		
 		<div class="yui-ge">
 			<div class="yui-u first">
 				<h1><xsl:call-template name="search_page_title" /></h1>
@@ -47,8 +49,40 @@
 		
 		<xsl:call-template name="tabs" />
 		
-		<div class="yui-gf">
-			<div class="yui-u">	
+		<xsl:variable name="sidebar">
+			<xsl:choose>
+				<xsl:when test="//config/search_sidebar = 'right'">
+					<xsl:text>right</xsl:text>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:text>left</xsl:text>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		
+		<!-- results area -->
+		
+		<div class="">
+			<xsl:attribute name="class">
+				<xsl:choose>
+					<xsl:when test="$sidebar = 'right'">
+						<xsl:text>yui-ge</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>yui-gf</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
+			
+			<!-- results -->
+	
+			<div>
+				<xsl:attribute name="class">
+					<xsl:text>yui-u</xsl:text>
+					<xsl:if test="$sidebar = 'right'">
+						<xsl:text> first</xsl:text>
+					</xsl:if>
+				</xsl:attribute>	
 			
 				<xsl:call-template name="facets_applied" />
 		
@@ -63,12 +97,19 @@
 				<xsl:call-template name="hidden_tag_layers" />
 	
 			</div>
-			<div class="yui-u first">
 			
-				<div id="search-sidebar" class="sidebar">
-								
-					<xsl:call-template name="search_sidebar" />
+			<!-- facets, etc. -->
+			
+			<div>
+				<xsl:attribute name="class">
+					<xsl:text>yui-u</xsl:text>
+					<xsl:if test="$sidebar = 'left'">
+						<xsl:text> first</xsl:text>
+					</xsl:if>
+				</xsl:attribute>		
 					
+				<div id="search-sidebar" class="sidebar">				
+					<xsl:call-template name="search_sidebar" />
 				</div>
 			</div>
 		</div>	
