@@ -400,6 +400,11 @@ a.record-action {
 	display: table;
 }
 
+#record-full-text {
+	margin-top: 2em;
+	margin-bottom: 2em;
+}
+
 .folder-labels {
 	margin: .4em;
 }
