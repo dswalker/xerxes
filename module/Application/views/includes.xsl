@@ -228,7 +228,7 @@
 		</xsl:if>
 		
 		<!-- header content added by module -->
-		<xsl:call-template name="module-header" />	
+		<xsl:call-template name="module_header" />	
 		
 		<!-- and by local implementation -->
 		<xsl:copy-of select="$text_extra_html_head_content" />
@@ -384,7 +384,7 @@
 	<xsl:template name="breadcrumb" />
 	<xsl:template name="sidebar" />
 	<xsl:template name="sidebar_additional" />
-	<xsl:template name="module-header" />
+	<xsl:template name="module_header" />
 	
 	<!--
 		TEMPLATE: SIDEBAR WRAPPER
@@ -411,9 +411,7 @@
 		separate
 	-->
 	
-	<xsl:template name="breadcrumb_start">
-		
-	</xsl:template>
+	<xsl:template name="breadcrumb_start" />
 	
 	<!-- 
 		TEMPLATE: TITLE

@@ -32,7 +32,7 @@
 		add the book css and javascript to the header
 	-->	
 	
-	<xsl:template name="module-header">
+	<xsl:template name="module_header">
 	
 		<link href="css/books.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />
 	
