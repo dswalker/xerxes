@@ -15,11 +15,11 @@
 <!--
 
  author: David Walker
- copyright: 2011 California State University
- version: $Id$
+ copyright: 2012 California State University
+ version:
  package: Xerxes
  link: http://xerxes.calstate.edu
- license: http://www.gnu.org/licenses/
+ license:
  
  -->
 

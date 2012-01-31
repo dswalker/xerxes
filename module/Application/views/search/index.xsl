@@ -4,7 +4,7 @@
 
  author: David Walker
  copyright: 2010 California State University
- version: $Id$
+ version:
  package: Worldcat
  link: http://xerxes.calstate.edu
  license: http://www.gnu.org/licenses/
@@ -28,9 +28,14 @@
 	<xsl:call-template name="account_sidebar" />
 </xsl:template>
 
+<xsl:template name="breadcrumb">
+	<xsl:call-template name="breadcrumb_start" />
+	<xsl:value-of select="$text_search_module" />
+</xsl:template>
+
 <xsl:template name="main">
 
-		<h1>Testing</h1>
+		<h1><xsl:value-of select="$text_search_module" /></h1>
 		
 		<xsl:call-template name="searchbox" />
 	

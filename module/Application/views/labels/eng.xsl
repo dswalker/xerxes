@@ -316,6 +316,10 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_results_year">Year</xsl:variable>
 	<xsl:variable name="text_results_next">Next</xsl:variable>
 	
+	<xsl:variable name="text_search_record">Record</xsl:variable>
+	<xsl:variable name="text_search_module" select="//config/search/option[@id=//request/controller]/@public" />
+	<xsl:variable name="text_search_results">Search results</xsl:variable>
+	
 	<xsl:variable name="text_searchbox_ada_boolean">Boolean operator: </xsl:variable>
 	<xsl:variable name="text_searchbox_boolean_and">And</xsl:variable>
 	<xsl:variable name="text_searchbox_boolean_or">Or</xsl:variable>

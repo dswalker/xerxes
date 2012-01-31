@@ -29,7 +29,7 @@
 
 <xsl:template name="breadcrumb">
 	<xsl:call-template name="breadcrumb_search" />
-	<xsl:call-template name="page_name" />
+	<xsl:value-of select="$text_search_results" />
 </xsl:template>
 
 <xsl:template name="page_name">

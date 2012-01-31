@@ -26,9 +26,7 @@
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
-	
-	<xsl:variable name="search_module" select="config/search/option[@id=request/controller]/@public" />
-	
+		
 	<!--
 		TEMPLATE: SEARCH BREADCRUMB
 	-->
@@ -38,7 +36,7 @@
 		<xsl:call-template name="breadcrumb_start" />
 	
 		<a href="{//request/controller}">
-			<xsl:value-of select="//config/search/option[@id=//request/controller]/@public" />
+			<xsl:value-of select="$text_search_module" />
 		</a>
 		
 		<xsl:value-of select="$text_breadcrumb_separator" />
@@ -55,7 +53,7 @@
 		
 		<div class="yui-ge">
 			<div class="yui-u first">
-				<h1>Basic Search <xsl:call-template name="search_page_title" /></h1>
+				<h1><xsl:value-of select="$text_search_module" /></h1>
 				<xsl:call-template name="searchbox" />
 			</div>
 			<div class="yui-u">
@@ -126,7 +124,7 @@
 					</xsl:if>
 				</xsl:attribute>		
 					
-				<div id="search-sidebar" class="sidebar">				
+				<div id="search-sidebar" class="sidebar {$sidebar}">				
 					<xsl:call-template name="search_sidebar" />
 				</div>
 			</div>
@@ -993,7 +991,6 @@
 	<xsl:template name="advanced_search_option" />
 	<xsl:template name="advanced_search" />
 	<xsl:template name="searchbox_hidden_fields_local" />
-	<xsl:template name="search_page_title" />
 	
 	<!-- additional record data overriden in templates -->
 	
