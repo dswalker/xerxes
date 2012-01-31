@@ -27,6 +27,24 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	
+	<xsl:variable name="search_module" select="config/search/option[@id=request/controller]/@public" />
+	
+	<!--
+		TEMPLATE: SEARCH BREADCRUMB
+	-->
+	
+	<xsl:template name="breadcrumb_search">
+
+		<xsl:call-template name="breadcrumb_start" />
+	
+		<a href="{//request/controller}">
+			<xsl:value-of select="//config/search/option[@id=//request/controller]/@public" />
+		</a>
+		
+		<xsl:value-of select="$text_breadcrumb_separator" />
+		
+	</xsl:template>
+	
 	<!--
 		TEMPLATE: SEARCH PAGE
 	-->

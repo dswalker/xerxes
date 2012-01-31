@@ -3,11 +3,11 @@
 <!--
 
  author: David Walker
- copyright: 2011 California State University
- version: $Id$
+ copyright: 2012 California State University
+ version:
  package: Xerxes
  link: http://xerxes.calstate.edu
- license: http://www.gnu.org/licenses/
+ license:
  
  -->
 
@@ -24,9 +24,17 @@
 	<xsl:call-template name="surround" />
 </xsl:template>
 
-<xsl:template name="main">
-		
-	<xsl:call-template name="record" />
-	
+<xsl:template name="breadcrumb">
+	<xsl:call-template name="breadcrumb_search" />
+	<xsl:call-template name="page_name" />
 </xsl:template>
+
+<xsl:template name="page_name">
+	<xsl:value-of select="record_title" />
+</xsl:template>
+
+<xsl:template name="main">	
+	<xsl:call-template name="record" />
+</xsl:template>
+
 </xsl:stylesheet>
