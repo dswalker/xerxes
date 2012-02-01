@@ -163,7 +163,7 @@ class Module implements AutoloaderProvider
 		
 		##### xerxes 1 transition hack  @todo remove this
 		
-		if ( $user->isLocal() || $user->isGuest() )
+		if ( $this->registry->getConfig('XERXES_1_TRANS', false) && ( $user->isLocal() || $user->isGuest() ) )
 		{
 			foreach ( $_COOKIE as $key => $value )
 			{
