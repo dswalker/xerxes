@@ -101,9 +101,12 @@ abstract class SearchController extends ActionController
 			// and cache the hit total
 			
 			$total = $this->engine->getHits($this->query);
-			$total = Parser::number_format($total);
 			$this->request->setSessionData($id, (string) $total);
 		}
+		
+		// format it 
+		
+		$total = Parser::number_format($total);
 		
 		// and tell the browser too
 		
