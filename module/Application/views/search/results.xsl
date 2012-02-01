@@ -436,7 +436,7 @@
 				
 				<xsl:for-each select="//facets/groups/group">
 		
-					<h3 style="margin-top: 1em"><xsl:value-of select="public" /></h3>
+					<h3><xsl:value-of select="public" /></h3>
 					
 					<!-- only show first 10, unless there is 12 or fewer, in which case show all 12 -->
 					
@@ -448,7 +448,7 @@
 					
 					<xsl:if test="count(facets/facet) &gt; 12">
 						
-						<p id="facet-more-{name}" class="facet-option-more" style="padding: 1.3em; padding-top: .7em; display:none"> 
+						<p id="facet-more-{name}" class="facet-option-more"> 
 							[ <a id="facet-more-link-{name}" href="#" class="facet-more-option"> 
 								<xsl:value-of select="count(facets/facet[position() &gt; 10])" /> more
 							</a> ] 
@@ -460,7 +460,7 @@
 							</xsl:for-each>
 						</ul>
 						
-						<p id="facet-less-{name}" class="facet-option-less" style="padding: 1.3em; padding-top: .7em; display:none"> 
+						<p id="facet-less-{name}" class="facet-option-less"> 
 							[ <a id="facet-less-link-{name}" href="#" class="facet-less-option"> 
 								show less
 							</a> ] 
@@ -510,7 +510,7 @@
 				<ul>
 					<xsl:for-each select="query/limits/limit">
 						<li>
-							<div class="remove" style="position: absolute; top: 10px; right: 10px;">
+							<div class="remove">
 								<a href="{remove_url}">
 									<xsl:call-template name="img_facet_remove">
 										<xsl:with-param name="alt">remove limit</xsl:with-param>
