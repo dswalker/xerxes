@@ -256,7 +256,7 @@ class ControllerMap
 		
 		if ( array_key_exists($format, $this->view) )
 		{
-			return $this->view;
+			return $this->view[$format];
 		}
 		
 		// get it out of the config
