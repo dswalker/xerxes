@@ -636,7 +636,19 @@ class Request extends ZendRequest
 					$url .= '&';
 				}
 				
-				$url .= $name . '=' . urlencode($value);
+				// value is array
+				
+				if ( is_array( $value ) )
+				{
+					foreach( $value as $v )
+					{
+						$url .= $name . '=' . urlencode($v) . '&';
+					} 
+				}
+				else // single value
+				{
+					$url .= $name . '=' . urlencode($value);
+				}				
 				
 				$x++;
 			}
