@@ -233,54 +233,9 @@ function updateRecord( record )
 			
 			$(record).addClass("saved");
 			
-			// add tag input
-			
 			if ( ! isTemporarySession && savedID )
 			{
-				/*
-				
-				var input_div = $('template_tag_input').cloneNode(true);
-				var new_form = input_div.down('form');
-				
-				// take the template for a tag input and set it up for this particular
-				// record
-				
-				input_div.id = "label_" + source + ":" + record_number; 
-				new_form.record.value = savedID;
-				new_form.tagsShaddow.id = 'shadow-' + savedID; 
-				new_form.tags.id = 'tags-' + savedID;
-				
-				new_form.tags.onfocus = function () {
-					activateButton(this)
-				}
-				new_form.tags.onkeypress = function () {
-					activateButton(this)
-				}
-				new_form.tags.onblur = function () {
-					deactivateButton(this)
-				}
-				
-				new_form.submitButton.id = 'submit-' + savedID;
-				new_form.submitButton.disabled = true;
-				new_form.onsubmit = function () {
-					return updateTags(this);
-				}
-			
-				// add it to the page, now that it's all set up.
-				
-				var parentBlock = $(id).up('.recordActions');
-				
-				if (parentBlock) 
-				{
-					parentBlock.insert(input_div);
-					
-					// and add the autocompleter
-					
-					addAutoCompleterToID(new_form.tags.id);
-					input_div.show();
-				}
-				
-				*/
+				// @todo: add tag input?
 			}
 		}
 		
@@ -289,10 +244,10 @@ function updateRecord( record )
 		// change master folder image
 		
 		if ( numSavedRecords > 0 ) {
-			$('#folder').src = 'images/folder_on.gif';
+			$('#folder').attr('src','images/folder_on.gif');
 		}
 		else {
-			$('#folder').src = 'images/folder.gif';
+			$('#folder').attr('src','images/folder.gif');
 		}
 
 	});	

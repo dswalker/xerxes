@@ -752,25 +752,29 @@
 
 	<xsl:template name="save_record">
 
-		<xsl:param name="source" select="source" />
-		<xsl:param name="record_id" select="record_id" />
+		<xsl:variable name="source" select="source" />
+		<xsl:variable name="record_id" select="record_id" />
+		
+		<!-- @todo: move this to the controller? -->
+		
+		<xsl:variable name="is_already_saved" select="//request/session/resultssaved[@key = $record_id]" />
 	
 		<div id="save-record-option-{$source}-{$record_id}" class="record-action">
 			
 			<xsl:call-template name="img_save_record">
 				<xsl:with-param name="id" select="concat('folder-', $source, '-', $record_id)" />
 				<xsl:with-param name="class">mini-icon save-record-link</xsl:with-param>
-				<xsl:with-param name="test" select="//request/session/resultssaved[@key = $record_id]" />
+				<xsl:with-param name="test" select="$is_already_saved" />
 			</xsl:call-template>
 			<xsl:text> </xsl:text>
 			
 			<a id="link-{$source}-{$record_id}" href="{../url_save_delete}">				
 				<!-- 'saved' class used as a tag by ajaxy stuff -->
 				<xsl:attribute name="class">
-					 save-record <xsl:if test="//request/session/resultssaved[@key = $record_id]">saved</xsl:if>
+					 save-record <xsl:if test="$is_already_saved">saved</xsl:if>
 				</xsl:attribute>
 				<xsl:choose>
-					<xsl:when test="//request/session/resultssaved[@key = $record_id]">
+					<xsl:when test="$is_already_saved">
 						<xsl:choose>
 							<xsl:when test="//session/role = 'named'">
 								<xsl:copy-of select="$text_results_record_saved" />
@@ -786,7 +790,7 @@
 			
 			<!-- temporary save note -->
 			
-			<xsl:if test="//request/session/resultssaved[@key = $record_id] and //request/session/role != 'named'"> 
+			<xsl:if test="$is_already_saved and //request/session/role != 'named'"> 
 				<span class="temporary-login-note">
 					(<xsl:text> </xsl:text><a href="{//navbar/element[@id = 'login']/url}">
 						<xsl:copy-of select="$text_results_record_saved_perm" />
@@ -797,7 +801,7 @@
 		
 		<!-- label/tag input for saved records, if record is saved and it's not a temporary session -->
 		
-		<xsl:if test="//request/session/resultssaved[@key = $record_id] and $temporarySession != 'true'">
+		<xsl:if test="$is_already_saved and $temporarySession != 'true'">
 			<div id="label-{$source}-{$record_id}"> 
 				<xsl:call-template name="tag_input">
 					<xsl:with-param name="record" select="//saved_records/saved[@id = $record_id]" />

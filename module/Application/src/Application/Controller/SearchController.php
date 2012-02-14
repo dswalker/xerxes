@@ -271,7 +271,13 @@ abstract class SearchController extends ActionController
 	
 	protected function markSaved( $original_id, $saved_id )
 	{
-		$data = array();
+		$data = $this->request->getSessionData('resultsSaved');
+		
+		if ( $data == null )
+		{
+			$data = array();
+		}
+		
 		$data[$original_id]['xerxes_record_id'] = $saved_id;
 		$this->request->setSessionData('resultsSaved', $data);
 	}
