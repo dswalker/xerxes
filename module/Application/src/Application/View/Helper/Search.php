@@ -307,7 +307,7 @@ class Search
 				{
 					// existing url
 						
-					$url = $this->currentParams();
+					$url = $this->facetParams();
 							
 					// now add the new one
 							
@@ -514,6 +514,16 @@ class Search
 		$params["sort"] = $this->request->getParam("sort");
 		
 		return $params;
+	}
+	
+	/**
+	 * Parameters to construct the facet links
+	 * @return array
+	 */
+	
+	public function facetParams()
+	{
+		return $this->currentParams();
 	}	
 	
 	/**
