@@ -22,6 +22,7 @@ use Application\Model\Search,
 class Engine extends Search\Engine 
 {
 	protected $summon_client; // summon client
+	protected $formats_exclude = array(); // formats configured to exclude
 
 	/**
 	 * Constructor
@@ -36,7 +37,13 @@ class Engine extends Search\Engine
 				
 		$this->summon_client = new Summon($id, $key, Factory::getHttpClient());
 		
-		$this->summon_client->setToAuthenticated(); // @todo: only for local users?
+		// @todo: only for local users?
+		
+		$this->summon_client->setToAuthenticated(); 
+		
+		// formats to exclude
+		
+		$this->formats_exclude = explode(',', $this->config->getConfig("EXCLUDE_FORMATS") );
 	}
 	
 	/**
@@ -170,16 +177,12 @@ class Engine extends Search\Engine
 		
 		$this->summon_client->setFacetsToInclude($facets_to_include);
 
-		
-		############## HACK
-		
 		// filter out formats
 		
-		array_push($facets, 'ContentType,Book / eBook,true'); // catalog
-		array_push($facets, 'ContentType,Reference,true'); // catalog
-		array_push($facets, 'ContentType,Web Resource,true'); // catalog
-		array_push($facets, 'ContentType,Research Guide,true'); // just random guides
-		array_push($facets, 'ContentType,Newspaper Article,true'); // newspaper
+		foreach ( $this->formats_exclude as $format )
+		{
+			array_push($facets, "ContentType,$format,true");
+		}
 		
 		// summon deals in pages, not start record number
 		
@@ -327,6 +330,13 @@ class Engine extends Search\Engine
 						{
 							foreach ( $facetFields["counts"] as $counts )
 							{
+								// skip excluded facets
+								
+								if ( $group->name == 'ContentType' && in_array($counts["value"], $this->formats_exclude) )
+								{
+									continue;
+								}
+								
 								$facet = new Search\Facet();
 								$facet->name = $counts["value"];
 								$facet->count = $counts["count"];
