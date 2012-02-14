@@ -180,6 +180,8 @@ class Parser
 	
 	public static function escapeXml( $string )
 	{
+		$string = trim($string);
+		
 		$string = str_replace('&', '&amp;', $string);
 		$string = str_replace('<', '&lt;', $string);
 		$string = str_replace('>', '&gt;', $string);
