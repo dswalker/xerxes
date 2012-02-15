@@ -144,7 +144,7 @@ abstract class Scheme
 	 * and then forwards them to the return url
 	 */
 
-	protected function register()
+	public function register()
 	{
 		// data map
 		
@@ -168,17 +168,12 @@ abstract class Scheme
 		$this->user = $datamap_users->touchUser( $this->user );
 		
 		
-		// @todo: just save user in session? move all this to controller?
-		
-		
+		// @todo: should we just save user object in session?
 		
 		// set main properties in session
 		
 		$this->request->setSessionData("username", $this->user->username);
 		$this->request->setSessionData("role", $this->role);
-		
-		$configApplication = $this->registry->getConfig("BASE_WEB_PATH", false, "");
-		$this->request->setSessionData("application", $configApplication);
 		
 		// store user's additional properties in session, so they can be used by
 		// controller, and included in xml for views. 
