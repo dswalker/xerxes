@@ -801,6 +801,8 @@
 		
 		<!-- label/tag input for saved records, if record is saved and it's not a temporary session -->
 		
+		<!-- @todo bring this back
+		
 		<xsl:if test="$is_already_saved and $temporarySession != 'true'">
 			<div id="label-{$source}-{$record_id}"> 
 				<xsl:call-template name="tag_input">
@@ -808,7 +810,9 @@
 					<xsl:with-param name="context">the results page</xsl:with-param>
 				</xsl:call-template>	
 			</div>
-		</xsl:if>		
+		</xsl:if>
+		
+		-->
 	
 	</xsl:template>
 	
