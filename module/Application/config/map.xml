@@ -11,7 +11,7 @@
 	<controller name="authenticate" class="Application\Controller\AuthenticateController" />
 	<controller name="databases" class="Application\Controller\DatabasesController">
 		<action name="subject">
-			<map-path index="2" param="subject" />
+			<path index="2" param="subject" />
 		</action>	
 	</controller>
 	<controller name="ebsco" class="Application\Controller\EbscoController" inherits="search" >
@@ -20,7 +20,7 @@
 	</controller>
 	<controller name="error" class="Application\Controller\ErrorController" />
 	<controller name="folder" class="Application\Controller\FolderController" inherits="search" >
-		<map-path index="2" param="username" />
+		<path index="2" param="username" />
 		<action name="export">
 			<view format="text-file">citation/basic.xsl</view>
 			<view format="ris-file">citation/ris.xsl</view>
