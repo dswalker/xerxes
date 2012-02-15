@@ -368,7 +368,7 @@ class Search
 				
 				// is this the current tab?
 
-				if ( $this->request->getParam('controller') == (string) $option["id"] 
+				if ( $this->request->getControllerMap()->getControllerName() == (string) $option["id"] 
 				     && ( $this->request->getParam('source') == (string) $option["source"] 
 				     	|| (string) $option["source"] == '') )
 				    {

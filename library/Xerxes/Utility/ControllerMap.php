@@ -23,6 +23,7 @@ class ControllerMap
 	private $controller; // supplied controller
 	private $action; // supplied action
 	
+	private $url_alias = array(); // url aliases
 	private $view = array(); // view(s) set programmatically
 	private $default_controller; // default controller/action for index
 	
@@ -86,6 +87,13 @@ class ControllerMap
 			}
 		}
 		
+		// grab url aliases
+		
+		foreach ( $this->xml->url_alias as $url_alias )
+		{
+			$this->url_alias[(string) $url_alias["name"]] = (string) $url_alias["controller"];
+		}
+		
 		// header("Content-type: text/xml"); echo $this->xml->asXML(); exit;	
 	}
 	
@@ -125,6 +133,14 @@ class ControllerMap
 		
 		$this->controller = $controller;
 		$this->action = $action;
+		
+		// this is purely just an alias for the url
+		// so switch it here for it's internal name
+		
+		if ( array_key_exists($controller, $this->url_alias) )
+		{
+			$this->controller = $this->url_alias[$controller];
+		}
 	}
 	
 	/**
@@ -134,6 +150,8 @@ class ControllerMap
 	public function getAliases()
 	{
 		$aliases = array();
+		
+		// controller definitions
 		
 		foreach ( $this->xml->controller as $controller )
 		{
@@ -145,7 +163,26 @@ class ControllerMap
 			$aliases[(string) $controller["name"]] = (string) $controller["class"];
 		}
 		
+		// url aliases
+		
+		foreach ( $this->url_alias as $url_alias => $controller_name )
+		{
+			if ( array_key_exists($controller_name, $aliases))
+			{
+				$aliases[$url_alias] = $aliases[$controller_name];
+			}
+		}
+		
 		return $aliases;
+	}
+	
+	/**
+	 * Get internal controller name
+	 */
+	
+	public function getControllerName()
+	{
+		return $this->controller;
 	}
 	
 	/**
