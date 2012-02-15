@@ -215,7 +215,7 @@ function updateRecord( record )
 			// we tell if they are logged in or not, as well as find the login
 			// url, based on looking for 'login' link in the dom.
 			
-			if ($('#login'))
+			if ($('#logout').length == 0 )
 			{
 				var temporary_login_note = ' <span class="temporary-login-note"> ( <a  href="' + 
 					$('#login').attr('href') +'">' + xerxes_labels['text_results_record_saved_perm'] + 
