@@ -178,11 +178,34 @@ class ControllerMap
 	
 	/**
 	 * Get internal controller name
+	 * @return string;
 	 */
 	
 	public function getControllerName()
 	{
 		return $this->controller;
+	}
+	
+	/**
+	 * Get the URL alias for the supplied internal controller name
+	 * 
+	 * @param string $controller
+	 * @return string;
+	 */
+	
+	public function getUrlAlias($controller)
+	{
+		$alias = $controller; // no alias, return the original name
+		
+		foreach ( $this->url_alias as $url_alias => $controller_name )
+		{
+			if ( $controller == $controller_name )
+			{
+				$alias = $url_alias;
+			}
+		}
+		
+		return $alias;
 	}
 	
 	/**

@@ -362,13 +362,15 @@ class Search
 		
 		if ( $search instanceof \SimpleXMLElement )
 		{
+			$controller_map = $this->request->getControllerMap();
+			
 			foreach ( $search->xpath("//option") as $option )
 			{
 				// format the number
 				
 				// is this the current tab?
 
-				if ( $this->request->getControllerMap()->getControllerName() == (string) $option["id"] 
+				if ( $controller_map->getControllerName() == (string) $option["id"] 
 				     && ( $this->request->getParam('source') == (string) $option["source"] 
 				     	|| (string) $option["source"] == '') )
 				    {
@@ -379,7 +381,7 @@ class Search
 				
 				$params = $query->extractSearchParams();
 				
-				$params['controller'] = (string) $option["id"];
+				$params['controller'] = $controller_map->getUrlAlias((string) $option["id"]);
 				$params['action'] = "results";
 				$params['source'] = (string) $option["source"];
 				
