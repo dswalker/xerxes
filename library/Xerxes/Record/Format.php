@@ -261,7 +261,7 @@ class Format
 	 * @param string $value
 	 */
 	
-	protected function getConstNameForValue($value)
+	public function getConstNameForValue($value)
 	{
 		$reflector = new \ReflectionClass($this);
 		
