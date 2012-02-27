@@ -208,10 +208,17 @@
 	
 		</div>
 		
+		<xsl:call-template name="surround_bottom" />
+		
 		</body>
 		</html>
 		
 	</xsl:template>
+
+	<!-- 
+		TEMPLATE: surround head
+		page html <head>
+	-->
 	
 	<xsl:template name="surround_head">
 		<head>
@@ -244,7 +251,7 @@
 	</xsl:template>
 	
 	<!-- 
-		TEMPLATE: surround-hd
+		TEMPLATE: surround hd
 		page header
 	-->
 	<xsl:template name="surround_hd">
@@ -266,7 +273,7 @@
 	</xsl:template>
 	
 	<!-- 
-		TEMPLATE: surround-bd
+		TEMPLATE: surround bd
 		page body - main content
 	-->
 	<xsl:template name="surround_bd">
@@ -291,7 +298,7 @@
 	</xsl:template>
 	
 	<!-- 
-		TEMPLATE: surround-ft
+		TEMPLATE: surround ft
 		page footer
 	-->
 	<xsl:template name="surround_ft">
@@ -308,7 +315,14 @@
 	</xsl:template>
 	
 	<!-- 
-		TEMPLATE: surround-google-analytics
+		TEMPLATE: surround bottom
+		page footer
+	-->
+	
+	<xsl:template name="surround_bottom" />
+	
+	<!-- 
+		TEMPLATE: surround google analytics
 		Google analytics script
 	-->
 	<xsl:template name="surround_google_analytics">
