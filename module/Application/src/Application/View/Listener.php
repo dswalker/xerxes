@@ -90,7 +90,7 @@ class Listener implements ListenerAggregate
 		
 		$vars = array();
 		
-		$vars["base_url"] = $e->getRequest()->getBaseUrl();
+		$vars["base_url"] = $e->getRequest()->getServerUrl() . $e->getRequest()->getBaseUrl();
 		$vars["request"] = $e->getRequest();
 		$vars["config"] = Registry::getInstance();
 		
