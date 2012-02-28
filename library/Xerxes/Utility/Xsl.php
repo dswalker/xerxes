@@ -174,16 +174,16 @@ class Xsl
 			{
 				// but only if a distro copy exists
 				
-				if ( file_exists($this->distro_xsl_dir . '/' . $strInclude) )
+				if ( file_exists($this->distro_xsl_dir . $strInclude) )
 				{
-					array_push($files_to_import, $this->distro_xsl_dir . '/' . $strInclude);
+					array_push($files_to_import, $this->distro_xsl_dir . $strInclude);
 				}
 				
 				// see if there is a local version, and include it too
 				
-				if ( file_exists($this->local_xsl_dir . '/' . $strInclude) )
+				if ( file_exists($this->local_xsl_dir . $strInclude) )
 				{
-					array_push($files_to_import, $this->local_xsl_dir . '/' . $strInclude);
+					array_push($files_to_import, $this->local_xsl_dir . $strInclude);
 				}
 			}
 		}
