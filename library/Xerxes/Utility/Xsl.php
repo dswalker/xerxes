@@ -174,16 +174,22 @@ class Xsl
 			{
 				// but only if a distro copy exists
 				
-				if ( file_exists($this->distro_xsl_dir . $strInclude) )
+				$distro_include = $this->distro_xsl_dir . '/' . $strInclude;
+				$local_include = $this->local_xsl_dir . '/' . $strInclude;
+				
+				// don't include the distro includes.xsl, since this messes things up!
+				// @todo: figure out why includes.xsl is this weird exception
+				
+				if ( file_exists($distro_include) && $strInclude != "includes.xsl")
 				{
-					array_push($files_to_import, $this->distro_xsl_dir . $strInclude);
+					array_push($files_to_import, $distro_include);
 				}
 				
 				// see if there is a local version, and include it too
 				
-				if ( file_exists($this->local_xsl_dir . $strInclude) )
+				if ( file_exists($local_include) )
 				{
-					array_push($files_to_import, $this->local_xsl_dir . $strInclude);
+					array_push($files_to_import, $local_include);
 				}
 			}
 		}
