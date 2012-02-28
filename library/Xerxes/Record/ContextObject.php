@@ -101,7 +101,24 @@ class ContextObject extends Record
 		$this->start_page = $this->extractValue("rft:spage");
 		$this->end_page = $this->extractValue("rft:epage");
 		
-		$this->format->determineFormat( $this->extractValue("rft:genre") );
+		
+		
+		
+		
+		// @todo: proper format mapping
+		
+		$format = $this->extractValue("rft:genre");
+		
+		$this->format->setFormat( ucfirst($format) );
+		
+		$this->format->setInternalFormat(Format::Article);
+		if ( $format == "proceeding") $this->format->setInternalFormat(Format::ConferenceProceeding);
+		if ( $format == "dissertation") $this->format->setInternalFormat(Format::Thesis);
+		
+		
+		
+		
+		
 		$this->year = $this->extractValue("rft:date");
 		$this->issns[] = $this->extractValue("rft:issn");
 		$this->isbns[] = $this->extractValue("rft:isbn");
