@@ -100,14 +100,14 @@ class ViewRenderer
 		// if language is set to something other than english
 		// then include that file to override the english labels
 		
-		if ( $language != "eng" ) 
+		if ( $language != "eng" &&  $language != '') 
 		{
 			array_push($import_array, "labels/$language.xsl");
 		}		
 		
 		// make sure we've got a reference to the local includes too
 		
-		array_push($import_array, $local_xsl_dir . "includes.xsl");
+		array_push($import_array, "includes.xsl");
 		
 		// transform
 		
