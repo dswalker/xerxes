@@ -52,11 +52,11 @@ class Query extends Search\Query
 	
 	protected function escape($string)
 	{
-		$chars = str_split('+-&|!(){}[]^"~*?:.\\');
+		$chars = str_split(',:\()${}');
 		
 		foreach ( $chars as $char )
 		{
-			$string = str_replace($char, "\\$char", $string);
+			$string = str_replace($char, "", $string);
 		}
 		
 		return $string;
