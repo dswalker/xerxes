@@ -476,4 +476,15 @@ class Query
 		
 		return $phrase;
 	}
+	
+	/**
+	 * Get the User performing this search
+	 * 
+	 * @return Application\Model\Authentication\User
+	 */
+	
+	public function getUser()
+	{
+		return $this->request->getUser();
+	}
 }

@@ -26,7 +26,7 @@ class QueryTerm
 	public $spell_correct;
 	
 	/**
-	 * Constructor
+	 * Create Query Term
 	 * 
 	 * @param string $id				a unique identifier for this term
 	 * @param string $boolen			a boolean operator (AND, OR, NOT) that joins this term to the query
