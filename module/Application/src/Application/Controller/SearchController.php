@@ -156,7 +156,7 @@ abstract class SearchController extends ActionController
 		
 		$id = $this->helper->getQueryID();
 		
-		if ( $this->request->getSessionData($id) == "" ) // first time only, please
+		if ( $this->request->getSessionData("stat-$id") == "" ) // first time only, please
 		{
 			// log it
 			// @todo: make this an event
@@ -170,6 +170,10 @@ abstract class SearchController extends ActionController
 			{
 				trigger_error('search stats warning ' . $e->getTraceAsString(), E_USER_WARNING);
 			}
+			
+			// mark we've saved this search log
+			
+			$this->request->setSessionData("stat-$id", (string) $total);
 		
 			// cache it
 			
