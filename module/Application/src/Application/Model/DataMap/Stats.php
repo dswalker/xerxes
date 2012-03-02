@@ -25,7 +25,7 @@ class Stats extends DataMap
 		
 		$params = array();
 		
-		$params[':ip_address'] = $query->getUser()->ip_address;
+		$params[':ip_address'] = $query->getUser()->getIpAddress();
 		$params[':module'] = $module;
 		$params[':field'] = $term->field;
 		$params[':phrase'] = substr($term->phrase,0,999);

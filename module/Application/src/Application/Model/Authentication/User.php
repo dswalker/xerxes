@@ -30,8 +30,8 @@ class User extends DataValue implements Utility\User
 	public $email_addr;
 	public $usergroups = array();	
 	
-	public $role;
-	public $ip_address;
+	private $role;
+	private $ip_address;
 	
 	private $ip_range;
 	private static $request;
@@ -164,5 +164,10 @@ class User extends DataValue implements Utility\User
 		{
 			return false;
 		}
+	}
+	
+	public function getIpAddress()
+	{
+		return $this->ip_address;
 	}
 }
