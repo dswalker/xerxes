@@ -168,7 +168,7 @@ abstract class SearchController extends ActionController
 			}
 			catch ( \Exception $e ) // make it a warning so we don't stop the search
 			{
-				trigger_error('search stats warning ' . $e->getTraceAsString(), E_USER_WARNING);
+				trigger_error('search stats warning: ' . $e->getMessage(), E_USER_WARNING);
 			}
 			
 			// mark we've saved this search log
