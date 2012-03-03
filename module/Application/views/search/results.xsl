@@ -779,7 +779,7 @@
 	
 		<div id="save-record-option-{$source}-{$record_id}" class="record-action save-record">
 			
-			<a id="link-{$source}-{$record_id}" href="{../url_save_delete}">				
+			<a id="link-{$source}-{$record_id}" href="{../url_save_delete}" class="save-record">				
 				
 				<!-- 'saved' class used as a tag by ajaxy stuff -->
 				<xsl:if test="$is_already_saved">
