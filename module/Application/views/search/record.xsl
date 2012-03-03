@@ -128,7 +128,7 @@
 	
 	<xsl:template name="record_actions">
 		<div id="record-full-text" class="raised-box record-actions">
-			<xsl:call-template name="record_action-fulltext" />
+			<xsl:call-template name="record_action_fulltext" />
 			<xsl:call-template name="save_record" />
 		</div>
 	</xsl:template>
@@ -353,7 +353,7 @@
 		TEMPLATE: RECORD ACTION FULL TEXT
 	-->
 	
-	<xsl:template name="record_action-fulltext">
+	<xsl:template name="record_action_fulltext">
 	
 		<div id="umlaut_fulltext" class="umlaut_content" style="display:none;"></div>
 		

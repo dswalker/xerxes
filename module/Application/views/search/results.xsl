@@ -236,6 +236,23 @@
 			
 	</xsl:template>
 
+	<!-- 
+		TEMPLATE: MOBILE SEARCH BOX
+		Just the search box and go itself, suited for mobile
+	-->
+	
+	<xsl:template name="mobile_search_box">
+		<xsl:param name="query" />
+		
+		<div style="margin-bottom: 1em">
+			<input type="text" name="query" value="{$query}" />
+			<xsl:text> </xsl:text>
+			<input class="submit_searchbox{$language_suffix}" type="submit" name="Submit" value="{$text_searchbox_go}" />
+		</div>
+		
+	</xsl:template>
+
+
 	<!--
 		TEMPLATE: SEARCH BOX FULL
 	-->
@@ -760,20 +777,23 @@
 		
 		<xsl:variable name="is_already_saved" select="//request/session/resultssaved[@key = $record_id]" />
 	
-		<div id="save-record-option-{$source}-{$record_id}" class="record-action">
-			
-			<xsl:call-template name="img_save_record">
-				<xsl:with-param name="id" select="concat('folder-', $source, '-', $record_id)" />
-				<xsl:with-param name="class">mini-icon save-record-link</xsl:with-param>
-				<xsl:with-param name="test" select="$is_already_saved" />
-			</xsl:call-template>
-			<xsl:text> </xsl:text>
+		<div id="save-record-option-{$source}-{$record_id}" class="record-action save-record">
 			
 			<a id="link-{$source}-{$record_id}" href="{../url_save_delete}">				
+				
 				<!-- 'saved' class used as a tag by ajaxy stuff -->
-				<xsl:attribute name="class">
-					 save-record <xsl:if test="$is_already_saved">saved</xsl:if>
-				</xsl:attribute>
+				<xsl:if test="$is_already_saved">
+					<xsl:attribute name="class">saved</xsl:attribute>
+				</xsl:if>
+				
+				<xsl:call-template name="img_save_record">
+					<xsl:with-param name="id" select="concat('folder-', $source, '-', $record_id)" />
+					<xsl:with-param name="class">mini-icon save-record-link</xsl:with-param>
+					<xsl:with-param name="test" select="$is_already_saved" />
+				</xsl:call-template>
+				
+				<xsl:text> </xsl:text>
+				
 				<xsl:choose>
 					<xsl:when test="$is_already_saved">
 						<xsl:choose>

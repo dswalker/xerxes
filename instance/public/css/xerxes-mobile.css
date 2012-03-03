@@ -44,7 +44,7 @@ h1, h2, h3, h4 {
 	margin: 0;
 }
 
-#sidebar {
+.sidebar {
 	display: none;
 }
 
@@ -54,28 +54,28 @@ h1, h2, h3, h4 {
 	margin-left: 0px;
 }
 
-#bd .recordActions div {
+#bd .record-actions div {
 	width: 96%;
 }
 
 /** lists **/
 
-ul.database-section-list li, #databases-categories li, .result, #bd .record-full-text-option { 
+ul.database-section-list li, #databases-categories li, .result, #bd #record-full-text { 
 	margin-bottom: .2em;
 	border-bottom: 2px solid #ccc;
 	background-color: #fff;
 	padding: .4em;
-	padding-right: 18px;
+	/*padding-right: 18px;*/
 	margin-left: 0;
 	paddin-left: 0;
 	list-style-type: none;
 	font-size: 130%;
-	background-image: url(../images/mobile-arrow.png);
+	background-image: url(../images/mobile-arrow.gif);
 	background-position: right center;
 	background-repeat: no-repeat;
 }
 
-#databases_categories li a, .result a {
+#databases-categories li a, .result a {
 	display: block;
 }
 
