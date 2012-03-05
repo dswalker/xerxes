@@ -175,26 +175,21 @@
 	
 		<xsl:call-template name="surround_head" />
 
-		<body>
+		<body class="controller-{//request/controller} action-{//request/action}">
 		
-		<div class="ada">
-			<xsl:if test="not(request/session/ada)">
-				<a href="{navbar/accessible_link}">
-					<xsl:copy-of select="$text_ada_version" /> 
-				</a>
-			</xsl:if>
-		</div>
+		<xsl:if test="$is_mobile = 0">
+			
+			<div class="ada">
+				<xsl:if test="not(request/session/ada)">
+					<a href="{navbar/accessible_link}">
+						<xsl:copy-of select="$text_ada_version" /> 
+					</a>
+				</xsl:if>
+			</div>
+			
+		</xsl:if>
 	
-		<div>
-			<xsl:choose>
-				<xsl:when test="$is_mobile = 1">
-					<xsl:attribute name="class">mobile</xsl:attribute>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:attribute name="id"><xsl:value-of select="//config/document" /></xsl:attribute>
-					<xsl:attribute name="class"><xsl:value-of select="$surround_template" /></xsl:attribute>
-				</xsl:otherwise>
-			</xsl:choose>
+		<div data-role="page" id="{//config/document}" class="{$surround_template}">
 	
 			<!-- The main content is split into subtemplates to make customiztion of parts easier -->
 			
@@ -255,7 +250,7 @@
 		page header
 	-->
 	<xsl:template name="surround_hd">
-			<div id="hd">
+			<div id="hd" data-role="header">
 				<xsl:choose>
 					<xsl:when test="$is_mobile = '1'">
 						<xsl:call-template name="mobile_header" />
@@ -279,7 +274,7 @@
 	<xsl:template name="surround_bd">
 		<xsl:param name="sidebar" />
 	
-			<div id="bd">
+			<div id="bd" data-role="content">
 				<div id="yui-main">
 					<div class="yui-b">
 						<xsl:if test="string(//session/flash_message)">
@@ -346,27 +341,26 @@
 	-->
 	
 	<xsl:template name="css_include">
-	
-		<link href="css/reset-fonts-grids.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />
-		<link href="css/xerxes-blue.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />
-			
+				
 		<xsl:choose>
 			<xsl:when test="$is_mobile = '1'">
+
+				<meta name="viewport" content="width=device-width, initial-scale=1" /> 
+				<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.css" />
+				<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+				<script src="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.js"></script>
 			
-				<!-- mobile devices get their own stylesheet (to neutralize the main one, plus it's own
-				 definitions), and a local override stylesheet -->
-				 
-				<link href="css/xerxes-mobile.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />
-				<link href="css/local-mobile.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />
+				<!-- @todo: remove this when we square away css on production systems -->
 				
-				<!-- this is necessary for the iPhone to not start out with a zoomed view, other 
-				browsers should ignore -->
-				
-				<meta name="viewport" content="width=360" />
+				<style type="text/css">
+				.results-info, .sidebar, #breadcrumb, #bd h1, #tabnav { display: none; }
+				</style>
+
 			</xsl:when>
 			<xsl:otherwise>
 				
-				<!-- local override for the main stylesheet -->
+				<link href="css/reset-fonts-grids.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />
+				<link href="css/xerxes-blue.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />
 				<link href="css/local.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />	
 				
 			</xsl:otherwise>
@@ -444,11 +438,11 @@
 	
 	<xsl:template name="mobile_header" >
 	
-		<div style="background-color: #336699; padding: 10px; padding-bottom: 2px;">
-			<a href="{$base_url}" style="color: #fff; font-weight: bold; text-decoration:none">
-				<xsl:value-of select="$text_app_name" />
-			</a>
-		</div>
+		<a href="{$base_url}/" data-icon="home">Home</a>
+	
+		<h1><xsl:value-of select="$text_app_name" /></h1>
+		
+		<!-- <a href="{$base_url}"></a> -->
 	
 	</xsl:template>
 	

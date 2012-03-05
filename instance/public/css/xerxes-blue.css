@@ -358,7 +358,7 @@ a:hover {
 	line-height: 130%;
 }
 
-.results-title a {
+a.results-title {
 	font-weight: bold;
 }
 

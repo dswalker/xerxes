@@ -145,7 +145,7 @@
 		TEMPLATE: SORT BAR
 	-->
 
-	<xsl:template name="sort_bar">
+	<xsl:template name="sort_bar">	
 	
 		<div id="sort">
 			<div class="yui-g" style="width: 100%">
@@ -155,21 +155,20 @@
 				<div class="yui-u">
 					<xsl:choose>
 						<xsl:when test="//sort_display">
-							<div id="sort-options">
+							<div id="sort-options" data-role="controlgroup" data-type="horizontal">
 								<xsl:copy-of select="$text_results_sort_by" /><xsl:text>: </xsl:text>
 								<xsl:for-each select="//sort_display/option">
 									<xsl:choose>
 										<xsl:when test="@active = 'true'">
-											<strong><xsl:value-of select="text()" /></strong>
+											<strong data-role="button" data-theme="b"><xsl:value-of select="text()" /></strong>
 										</xsl:when>
 										<xsl:otherwise>
-											<xsl:variable name="link" select="@link" />
-											<a href="{$link}">
+											<a href="{@link}" data-role="button">
 												<xsl:value-of select="text()" />
 											</a>
 										</xsl:otherwise>
 									</xsl:choose>
-									<xsl:if test="following-sibling::option">
+									<xsl:if test="following-sibling::option and $is_mobile = 0">
 										<xsl:text> | </xsl:text>
 									</xsl:if>
 								</xsl:for-each>
@@ -244,11 +243,15 @@
 	<xsl:template name="mobile_search_box">
 		<xsl:param name="query" />
 		
-		<div style="margin-bottom: 1em">
-			<input type="text" name="query" value="{$query}" />
-			<xsl:text> </xsl:text>
-			<input class="submit_searchbox{$language_suffix}" type="submit" name="Submit" value="{$text_searchbox_go}" />
-		</div>
+		<xsl:if test="//request/action != 'results'">
+		
+			<div class="searchbox-mobile">
+				<input type="text" name="query" value="{$query}" />
+				<xsl:text> </xsl:text>
+				<input class="submit_searchbox{$language_suffix}" type="submit" name="Submit" value="{$text_searchbox_go}" />
+			</div>
+			
+		</xsl:if>
 		
 	</xsl:template>
 
@@ -404,37 +407,54 @@
 	<xsl:template name="paging_navigation">
 	
 		<xsl:if test="//pager/page">
-			<div class="results-pager">
-	
-				<ul class="results-pager-list">
-				<xsl:for-each select="//pager/page">
-					<li>
-					<xsl:variable name="link" select="@link" />
-					<xsl:choose>
-						<xsl:when test="@here = 'true'">
-							<strong><xsl:value-of select="text()" /></strong>
-						</xsl:when>
-						<xsl:otherwise>
-							<a href="{$link}">
-								<xsl:choose>
-									<xsl:when test="@type = 'next'">
-										<xsl:attribute name="class">results-pager-next</xsl:attribute>
-										<xsl:copy-of select="$text_results_next" />
-									</xsl:when>
-									<xsl:otherwise>
-										<xsl:attribute name="class">results-pager-link</xsl:attribute>
-									</xsl:otherwise>
-								</xsl:choose>
-								<xsl:call-template name="text_results_sort_options">
-									<xsl:with-param name="option" select="text()" />
-								</xsl:call-template>
-							</a>
-						</xsl:otherwise>
-					</xsl:choose>
-					</li>
-				</xsl:for-each>
-				</ul>
-			</div>
+		
+			<xsl:choose>
+				
+				<xsl:when test="$is_mobile = 1 and //pager/page[@type='next']">
+				
+					<a href="{//pager/page[@type='next']/@link}" data-role="button">
+						<xsl:copy-of select="$text_results_next" />
+					</a>
+				
+				</xsl:when>
+					
+				<xsl:otherwise>	
+					<div class="results-pager">
+			
+						<ul class="results-pager-list">
+						<xsl:for-each select="//pager/page">
+							<li>
+							<xsl:variable name="link" select="@link" />
+							<xsl:choose>
+								<xsl:when test="@here = 'true'">
+									<strong><xsl:value-of select="text()" /></strong>
+								</xsl:when>
+								<xsl:otherwise>
+									<a href="{$link}">
+										<xsl:choose>
+											<xsl:when test="@type = 'next'">
+												<xsl:attribute name="class">results-pager-next</xsl:attribute>
+												<xsl:copy-of select="$text_results_next" />
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:attribute name="class">results-pager-link</xsl:attribute>
+											</xsl:otherwise>
+										</xsl:choose>
+										<xsl:call-template name="text_results_sort_options">
+											<xsl:with-param name="option" select="text()" />
+										</xsl:call-template>
+									</a>
+								</xsl:otherwise>
+							</xsl:choose>
+							</li>
+						</xsl:for-each>
+						</ul>
+					</div>
+					
+				</xsl:otherwise>
+				
+			</xsl:choose>
+			
 		</xsl:if>
 	
 	</xsl:template>
@@ -546,12 +566,11 @@
 
 	<!-- 
 		TEMPLATE: BRIEF RESULTS
-		deprecated, used in the metasearch and folder brief results pages
 	-->
 	
 	<xsl:template name="brief_results">
 	
-		<ul id="results">
+		<ul id="results" data-role="listview" data-inset="true">
 		
 		<xsl:for-each select="//records/record/xerxes_record">
 
@@ -571,7 +590,7 @@
 	<xsl:template name="brief_result">
 
 		<li class="result">
-			
+					
 			<xsl:variable name="title">
 				<xsl:choose>
 					<xsl:when test="title_normalized != ''">
@@ -583,9 +602,7 @@
 				</xsl:choose>
 			</xsl:variable>
 			
-			<div class="results-title">
-				<a href="{../url_full}"><xsl:value-of select="$title" /></a>
-			</div>
+			<a class="results-title" href="{../url_full}"><xsl:value-of select="$title" /></a>
 			
 			<div class="results-info">
 			
