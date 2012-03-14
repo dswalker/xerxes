@@ -95,6 +95,7 @@ class Record extends Xerxes\Record
 		$this->issue = $this->extractValue($document, "Issue/0");
 		$this->volume = $this->extractValue($document, "Volume/0");
 		$this->start_page = $this->extractValue($document, "StartPage/0");
+		$this->end_page = $this->extractValue($document, "EndPage/0");
 		$this->doi = $this->extractValue($document, "DOI/0");
 		
 		$openurl = $this->extractValue($document, "openUrl");
