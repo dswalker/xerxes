@@ -72,6 +72,7 @@ class Record extends Xerxes\Record
 		$this->format->setFormat($format);
 		
 		$this->format->setInternalFormat(Format::Article);
+		if ( $format == "Book Chapter") $this->format->setInternalFormat(Format::BookSection);
 		if ( $format == "Conference Proceeding") $this->format->setInternalFormat(Format::ConferenceProceeding);
 		if ( $format == "Dissertation") $this->format->setInternalFormat(Format::Thesis);
 		
