@@ -223,16 +223,22 @@ class ControllerMap
 		
 		// see what the controller block says
 		
-		foreach ( $controller_restricted as $controller_restrict )
+		if ( $controller_restricted !== false )
 		{
-			$restrict = (string) $controller_restrict;
+			foreach ( $controller_restricted as $controller_restrict )
+			{
+				$restrict = (string) $controller_restrict;
+			}
 		}
-		
-		// action block will always override
 
-		foreach ( $action_restricted as $action_restrict )
+		// action block will always override
+		
+		if ( $action_restricted !== false )
 		{
-			$restrict = (string) $action_restrict;
+			foreach ( $action_restricted as $action_restrict )
+			{
+				$restrict = (string) $action_restrict;
+			}
 		}
 		
 		// to bool
@@ -262,16 +268,22 @@ class ControllerMap
 	
 		// see what the controller block says
 	
-		foreach ( $controller_restricted as $controller_restrict )
+		if ( $controller_restricted !== false )
 		{
-			$requires_login = (string) $controller_restrict;
+			foreach ( $controller_restricted as $controller_restrict )
+			{
+				$requires_login = (string) $controller_restrict;
+			}
 		}
 	
 		// action block will always override
-	
-		foreach ( $action_restricted as $action_restrict )
+		
+		if ( $action_restricted !== false )
 		{
-			$requires_login = (string) $action_restrict;
+			foreach ( $action_restricted as $action_restrict )
+			{
+				$requires_login = (string) $action_restrict;
+			}
 		}
 		
 		// to bool
