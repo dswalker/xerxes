@@ -559,8 +559,6 @@ class SavedRecords extends DataMap
 		
 		if ( $objXerxesRecord instanceof Summon\Record && $this->registry->getConfig('XERXES_1_TRANS', false) )
 		{
-			require_once __DIR__ . '/../../../../../../../xerxes/lib/Xerxes/saved/TransRecord.php';
-			
 			$link_resolver = $this->registry->getConfig("LINK_RESOLVER_ADDRESS", true);
 			$sid = $this->registry->getConfig("APPLICATION_SID", false, "calstate.edu:xerxes");
 			
