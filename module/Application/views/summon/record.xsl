@@ -39,4 +39,28 @@
 	<xsl:call-template name="record" />
 </xsl:template>
 
+	<xsl:template name="record_database">
+	
+		<xsl:choose>
+			<xsl:when test="database_name">
+				<div>
+				<dt><xsl:copy-of select="$text_record_database" />:</dt>
+				<dd>
+					<xsl:value-of select="database_name" />
+				</dd>
+				</div>
+			</xsl:when>
+			<xsl:when test="publisher">
+				<div>
+				<dt>Source:</dt>
+				<dd>
+					<xsl:value-of select="publisher" />
+				</dd>
+				</div>
+				
+			</xsl:when>
+		</xsl:choose>
+		
+	</xsl:template>
+
 </xsl:stylesheet>
