@@ -111,6 +111,11 @@ class Summon
 			$options['s.sort'] = $sortBy;
 		}
 		
+		// spell check
+		
+		$options['s.dym'] = 'true';
+		
+		
 		// paging
 		
 		$options['s.ps'] = $limit;
