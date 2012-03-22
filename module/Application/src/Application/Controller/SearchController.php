@@ -3,6 +3,7 @@
 namespace Application\Controller;
 
 use Application\View\Helper\Search as SearchHelper,
+	Application\Model\Search\Query,
 	Application\Model\Search\Result,
 	Application\Model\DataMap\SavedRecords,
 	Xerxes\Record,
@@ -66,15 +67,7 @@ abstract class SearchController extends ActionController
 		
 		// check spelling
 		
-		if ( $this->request->getParam("spell") != "none" )
-		{
-			$spelling = $this->query->checkSpelling();
-			
-			foreach ( $spelling as $key => $correction )
-			{
-				$params["spelling_$key"] = $correction;
-			}
-		}
+		$this->checkSpelling();
 		
 		// construct the actual url and redirect
 
@@ -152,9 +145,15 @@ abstract class SearchController extends ActionController
 		
 		$total = $results->getTotal();
 		
+		// check spelling
+		
+		$suggestion = $this->checkSpelling();
+		
+		$this->data["spelling"] = $suggestion;
+		
 		// track the query
 		
-		$id = $this->helper->getQueryID();
+		$id = $this->helper->getQueryID();		
 		
 		if ( $this->request->getSessionData("stat-$id") == "" ) // first time only, please
 		{
@@ -278,7 +277,36 @@ abstract class SearchController extends ActionController
 		} 
 		
 		return $this->data;
-	}	
+	}
+	
+	/**
+	 * Check for mispelled terms
+	 * 
+	 * @param Query $query
+	 * @return Suggestion
+	 */
+	
+	protected function checkSpelling()
+	{
+		$id = $this->helper->getQueryID();
+		
+		// have we checked it already?
+		
+		$suggestion = $this->request->getSessionData("spelling_$id");
+		
+		if ( $suggestion == null ) // nope
+		{
+			$suggestion = $this->query->checkSpelling(); // check it
+			
+			$this->request->setSessionData("spelling_$id", serialize($suggestion)); // save for later
+		}
+		else
+		{
+			$suggestion = unserialize($suggestion); // resurrect it, like shane
+		}
+		
+		return $suggestion;
+	}
 	
 	
 	########################

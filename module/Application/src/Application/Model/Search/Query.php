@@ -2,7 +2,11 @@
 
 namespace Application\Model\Search;
 
-use Xerxes\Utility\Request;
+use Application\Model\Search\Spelling\Suggestion,
+	Xerxes\Utility\Factory,
+	Xerxes\Utility\Registry,
+	Xerxes\Utility\Request,
+	Zend\Http\Client;
 
 /**
  * Search Query
@@ -10,7 +14,7 @@ use Xerxes\Utility\Request;
  * @author David Walker
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license
  * @version
  * @package Xerxes
  */
@@ -37,6 +41,8 @@ class Query
 	public function __construct(Request $request = null, Config $config = null )
 	{
 		$this->config = $config;
+		
+		// xerxes request
 		
 		if ( $request != null )
 		{
@@ -224,12 +230,23 @@ class Query
 	
 	/**
 	 * Check the spelling of the search terms
+	 * 
+	 * @return Suggestion
 	 */
 	
 	public function checkSpelling()
 	{
-		$spell_return = array(); // we'll return this one
-		return $spell_return;
+		$registry = Registry::getInstance();
+		$spell_type = $registry->getConfig('SPELL_CHECKER');
+		
+		if ( $spell_type != null )
+		{
+			$class_name = 'Application\Model\Search\Spelling\\' . ucfirst($spell_type);
+			
+			$spell_checker = new $class_name();
+			
+			return $spell_checker->checkSpelling($this->getQueryTerms());
+		}
 	}
 	
 	/**
@@ -387,28 +404,21 @@ class Query
 				{
 					continue;
 				}			
-				
-				$arrTerm = array();
-				$arrTerm["id"] = $key;
-				$arrTerm["relation"] = "=";
-				
+
 				$id = str_replace("query", "", $key);
 				
-				$boolean_id = "";
-			
-				if ( is_numeric($id) )
-				{
-					$boolean_id = $id;
-				}
+				$arrTerm = array();
 				
+				$arrTerm["id"] = $id;
 				$arrTerm["query"] = $value;
+				$arrTerm["relation"] = $this->request->getParam("relation$id");			
 				$arrTerm["field"] = $this->request->getParam("field$id");
 				
 				// boolean only counts if this is not the first query term
 				
 				if ( count($arrFinal) > 0 )
 				{
-					$arrTerm["boolean"] = $this->request->getParam("boolean" . ( $boolean_id ) );
+					$arrTerm["boolean"] = $this->request->getParam("boolean$id");
 				}
 				else
 				{

@@ -10,7 +10,7 @@ use Xerxes\Utility\Parser;
  * @author David Walker
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license
  * @version
  * @package Xerxes
  */
@@ -23,7 +23,6 @@ class QueryTerm
 	public $field_internal;
 	public $relation;
 	public $phrase;
-	public $spell_correct;
 	
 	/**
 	 * Create Query Term
@@ -223,5 +222,23 @@ class QueryTerm
 		}
 		
 		return $arrFinal;
+	}
+	
+	/**
+	 * Serialize the object to array
+	 */
+	
+	public function toArray()
+	{
+		$term = array();
+		
+		$id = $this->id;
+		
+		if ( $this->boolean != "") $term["boolean$id"] = $this->boolean;
+		if ( $this->field != "") $term["field$id"] = $this->field;
+		if ( $this->relation != "") $term["relation$id"] = $this->relation;
+		if ( $this->phrase != "") $term["query$id"] = $this->phrase;
+		
+		return $term;
 	}
 }
