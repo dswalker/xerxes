@@ -63,21 +63,9 @@ class Record extends Xerxes\Record
 		
 		$format = $this->extractValue($document, "ContentType/0");
 		
-		
-		
-		// @todo: proper format mapping
-		
-		if ( $format == "Journal Article") $format = "Article";
-		
-		$this->format->setFormat($format);
-		
-		$this->format->setInternalFormat(Format::Article);
-		if ( $format == "Book Chapter") $this->format->setInternalFormat(Format::BookSection);
-		if ( $format == "Conference Proceeding") $this->format->setInternalFormat(Format::ConferenceProceeding);
-		if ( $format == "Dissertation") $this->format->setInternalFormat(Format::Thesis);
-		
-		
-		
+		$this->format->setPublicFormat($format);
+		$this->format->setInternalFormat($format);
+		$this->format->setNormalizedFormat($this->normalizeFormat($format));
 		
 		// summary
 		
@@ -223,104 +211,272 @@ class Record extends Xerxes\Record
 		}
 	}
 	
-	protected function convertFormatToInternal()
+	protected function normalizeFormat($public)
 	{
-		/*
-		 	Journal Article
-			Book Review
-			Dissertation
-			Patent
-			Newsletter
-			Trade Publication Article
-			Book Chapter
-			Conference Proceeding
-			Standard
-			Publication
-			Government Document
-			Image
-			Report
-			Audio Recording
-			Data Set
-			Photograph
-			Archival Material
-			Technical Report
-			Journal / eJournal
-			Music Recording
-			Electronic Resource
-			Manuscript
-			Paper
-			Map
-			Sheet Music
-			Music Score
-			Video Recording
-			Special Collection
-			Play
-			Personal Narrative
-			Microform
-			Newspaper
-			Student Thesis
-			Market Research
-			Pamphlet
-			Presentation
-			Poem
-			Art
-			Artifact
-			Architectural Drawing
-			Realia
-			Magazine
-			Exam
-			Poster
-			Magazine Article
-			Transcript
-			Archival Material/Manuscripts
-			Computer File
-			Compact Disc
-			Publication Article
-			Postcard
-			Library Holding
-			Sound Recording
-			Spoken Word Recording
-			Slide
-			Print
-			Drawing
-			Painting
-			Course Reading
-			Library Research Guide
-			Film Script
-			Blueprints
-			Kit
-			Finding Aid
-			Case
-			Ceremonial Object
-			Mixed
-			Catalog
-			Houseware
-			Text
-			Film
-			Equipment
-			Performance
-			Learning Object
-			Album
-			Model
-			Furnishing
-			Personal Article
-			Tool
-			Atlas
-			Musical Instrument
-			Clothing
-			Article
-			Database
-			Graphic Arts
-			Implements
-			Microfilm
-			Newspaper Article
-			Book / eBook
-			Reference
-			Web Resource
-			Research Guide		
-		 */
+		switch($public)
+		{
+			// articles
+			
+			case 'Article':
+			case 'Journal Article':
+			case 'Publication Article':
+			case 'Trade Publication Article':
+				
+				return Format::ArticleJournal;
+				break;
+				
+			case 'Newspaper Article':
+				
+				return Format::ArticleNewspaper;
+				break;				
+				
+			case 'Magazine Article':
+			case 'Newsletter':
+				
+				return Format::ArticleMagazine;
+				break;
+			
+			case 'Book Review':
+				
+				return Format::BookReview;
+				break;
+
+			// periodicals
+				
+			case 'Journal / eJournal':
+				
+				return Format::Journal;
+				break;
+				
+			case 'Magazine':
+			case 'Newspaper':
+				
+				return Format::Periodical;
+				break;
+				
+			// books
+				
+			case 'Book / eBook':
+				
+				return Format::Book;
+				break;				
+
+			case 'Book Chapter':
+			
+				return Format::BookSection;
+				break;
+				
+			case 'Reference':
+				
+				return Format::EncyclopediaArticle;
+				break;
+				
+			// dissertation/thesis
+				
+			case 'Dissertation':
+			case 'Student Thesis':
+
+				return Format::Thesis;
+				break;
+				
+			// reports & other documents
+				
+			case 'Report':
+			case 'Market Research':
+			case 'Technical Report':
+				
+				return Format::Report;
+				break;				
+				
+			case 'Patent':
+				
+				return Format::Patent;
+				break;				
+				
+			case 'Standard':
+			
+				return Format::Standard;
+				break;
+			
+			case 'Conference Proceeding':
+
+				return Format::ConferenceProceeding;
+				break;
+				
+			case 'Government Document':
+				
+				return Format::GovernmentDocument;
+				break;
+				
+			case 'Case':
+				
+				return Format::LegalRule;
+				break;
+
+			case 'Pamphlet':
+				
+				return Format::Pamphlet;
+				break;
+				
+			// maps	
+				
+			case 'Atlas':
+			case 'Map':
+				
+				return Format::Map;
+				break;				
+				
+			// audio / visual
+				
+			case 'Album':
+			case 'Audio Recording':
+			case 'Music Recording':
+			case 'Sound Recording':
+			case 'Spoken Word Recording':
+				
+				return Format::SoundRecording;
+				break;
+			
+			case 'Image':
+			case 'Photograph':
+			case 'Postcard':
+			case 'Slide':
+				
+				return Format::Image;
+				break;
+				
+			case 'Sheet Music':
+			case 'Music Score':
+				
+				return Format::MusicalScore;
+				break;
+			
+			case 'Film':
+			case 'Video Recording':
+				
+				return Format::VideoRecording;
+				break;
+				
+			case 'Architectural Drawing':
+			case 'Art':
+			case 'Blueprints':
+			case 'Drawing':
+			case 'Graphic Arts':
+			case 'Painting':
+			case 'Poster':
+
+				return Format::Artwork;
+				break;
+				
+			// computer & web resources
+				
+			case 'Computer File':
+			case 'Compact Disc':
+				
+				return Format::ComputerProgram;
+				break;
+				
+			case 'Database':
+				
+				return Format::OnlineDatabase;
+				break;
+				
+			case 'Data Set':
+				
+				return Format::Dataset;
+				break;
+
+			case 'Learning Object':
+				
+				return Format::OnlineMultimedia;
+				break;
+							
+			case 'Electronic Resource':
+			case 'Library Research Guide':
+			case 'Research Guide':
+			case 'Web Resource':
+									
+				return Format::WebPage;
+				break;
+				
+			// physical objects				
+				
+			case 'Artifact':
+			case 'Ceremonial Object':
+			case 'Clothing':
+			case 'Equipment':
+			case 'Furnishing':
+			case 'Houseware':
+			case 'Model':
+			case 'Musical Instrument':
+			case 'Implements':
+			case 'Realia':
+			case 'Tool':
+				
+				return Format::PhysicalObject;
+				break;
+			
+			case 'Kit':
+			
+				return Format::Kit;
+				break;
+			
+			case 'Mixed':
+			
+				return Format::MixedMaterial;
+				break;
+				
+			// archival & unpublished works
+
+			case 'Archival Material':
+			case 'Archival Material/Manuscripts':
+			case 'Finding Aid':
+			case 'Special Collection':
+				
+				return Format::ArchivalMaterial;
+				break;
+				
+			case 'Manuscript':
+				
+				return Format::Manuscript;
+				break;				
+				
+			case 'Personal Article':
+			case 'Personal Narrative':
+				
+				return Format::PersonalCommunication;
+				break;				
+				
+			case 'Course Reading':				
+			case 'Exam':
+			case 'Paper':
+			case 'Print':
+			case 'Text':
+			case 'Transcript':
+			case 'Film Script':
+			case 'Catalog':
+			case 'Poem':
+			case 'Publication':
+
+				return Format::Manuscript;
+				break;
+				
+			// unknown stuff	
+				
+			case 'Performance':
+			case 'Play':
+			case 'Presentation':
+			
+			case 'Library Holding':
+			case 'Microform':
+			case 'Microfilm':				
+				
+			default:
+				
+				return Format::Unknown;
+				break;
+		
+		}
 	}
-	
-	
 }
 	

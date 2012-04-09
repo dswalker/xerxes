@@ -378,7 +378,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_snippet_show_title">Show title?</xsl:variable>
   
 	<xsl:template name="text_recommendation_header">
-		People who read this <xsl:value-of select="php:function('Xerxes\Utility\Parser::strtolower', string(format))"/> also read	
+		People who read this <xsl:value-of select="php:function('Xerxes\Utility\Parser::strtolower', string(format/public))"/> also read	
 	</xsl:template>
 
 	<xsl:template name="text_number_to_words">
@@ -415,7 +415,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	-->
 	
 	<xsl:template name="text_results_language">
-		<xsl:if test="language and language != 'English' and format != 'Video'">
+		<xsl:if test="language and language != 'English' and format/internal != 'VIDEO'">
 			<span class="results-language"> written in <xsl:value-of select="language" /></span>
 		</xsl:if>
 	</xsl:template>

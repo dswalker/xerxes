@@ -87,6 +87,7 @@ class Format
 	// local types not covered above
 	// always include XERXES_ at the start to distinguish them
 	
+	const ArchivalMaterial = "XERXES_ArchivalMaterial";
 	const BookReview = "XERXES_BookReview";
 	const Image = "XERXES_Image";
 	const Kit = "XERXES_KIT";
@@ -119,6 +120,7 @@ class Format
 				return self::Article;
 				break;
 
+			case self::ArchivalMaterial :
 			case self::Image :
 			case self::Kit :
 			case self::MixedMaterial :
@@ -284,35 +286,71 @@ class Format
 		$this->public = $format;
 	}
 	
+	/**
+	 * Get original format designation as set by source database
+	 * 
+	 * @return string
+	 */
+	
 	public function getInternalFormat()
 	{
 		return $this->internal;
 	}
+	
+	/**
+	 * Set internal (original) format designation
+	 */	
 	
 	public function setInternalFormat($format)
 	{
 		$this->internal = $format;
 	}
 	
+	/**
+	 * Get format normalized to Xerxes format
+	 * 
+	 * @return string
+	 */
+	
 	public function getNormalizedFormat()
 	{
 		return $this->normalized;
 	}
+	
+	/**
+	 * Set format normalized to Xerxes format
+	 */	
 	
 	public function setNormalizedFormat($format)
 	{
 		$this->normalized = $format;
 	}
 	
+	/**
+	 * Get public displayed format designation
+	 * 
+	 * @return string
+	 */	
+	
 	public function getPublicFormat()
 	{
 		return $this->public;
 	}
+
+	/**
+	 * Set public displayed format designation
+	 */	
 	
 	public function setPublicFormat($format)
 	{
 		$this->public = $format;
-	}	
+	}
+	
+	/**
+	 * Serialize to String
+	 * 
+	 * @return string
+	 */
 	
 	public function __toString()
 	{
@@ -327,6 +365,10 @@ class Format
 	
 	public function toArray()
 	{
-		return array($this->public); // @todo: more than just public, please
+		return array(
+			'public' => $this->public,
+			'internal' => $this->internal,
+			'normalized' => $this->normalized
+			);
 	}
 }

@@ -611,7 +611,7 @@
 					<!-- format -->
 				
 					<xsl:call-template name="text_results_format">
-						<xsl:with-param name="format" select="format" />
+						<xsl:with-param name="format" select="format/public" />
 					</xsl:call-template>
 					
 					<!-- language note -->

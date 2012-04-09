@@ -372,7 +372,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_snippet_show_title">Zobrazit název?</xsl:variable>
   
 	<xsl:template name="text_recommendation_header">
-		Lidé, kteří čtou tento <xsl:value-of select="php:function('Xerxes\Utility\Parser::strtolower', string(format))"/> čtou také	
+		Lidé, kteří čtou tento <xsl:value-of select="php:function('Xerxes\Utility\Parser::strtolower', string(format/public))"/> čtou také	
 	</xsl:template>
 
 	<xsl:template name="text_number_to_words">
@@ -409,7 +409,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	-->
 	
 	<xsl:template name="text_results_language">
-		<xsl:if test="language and language != 'angličtina' and format != 'Video'">
+		<xsl:if test="language and language != 'angličtina' and format/internal != 'VIDEO'">
 			<span>, </span><span class="results-language">jazyk: <xsl:value-of select="language" /></span>
 		</xsl:if>
 	</xsl:template>
