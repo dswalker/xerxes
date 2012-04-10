@@ -729,14 +729,14 @@ class Bibliographic extends Record
 		
 		// @todo create the public display
 		
-		$this->format->setFormat($this->convertToNormalizedFormat());
+		$this->format->setFormat($this->normalizeFormat());
 	}
 	
 	/**
 	 * Determines the format/genre of the item, broken out here for clarity
 	 */
 	
-	protected function convertToNormalizedFormat()
+	protected function normalizeFormat()
 	{
 		// thesis
 		

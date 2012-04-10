@@ -112,7 +112,7 @@ class Format
 		// otherwise just take the internal value straight-up, 
 		// since it is itself the RIS type
 		
-		switch ( $this->internal )
+		switch ( $this->normalized )
 		{
 			case self::BookReview :
 			case self::Review :
@@ -132,7 +132,7 @@ class Format
 				
 			default:
 				
-				return $this->internal;
+				return $this->normalized;
 		}
 	}
 	
@@ -274,6 +274,11 @@ class Format
 				return $const;
 			}
 		}
+	}
+	
+	public function getReadableConstName($value)
+	{
+		return trim(preg_replace("/([A-Z])/",' \\1',$this->getConstNameForValue($value)));
 	}
 	
 	
