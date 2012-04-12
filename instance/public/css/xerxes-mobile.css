@@ -148,7 +148,7 @@ ul.database-section-list li, #databases-categories li, .result, #bd #record-full
 
 /** hide for now, will add later **/
 
-#bd .save-record {
+#bd .save-record, .save-record-link {
 	display: none;
 }
 
