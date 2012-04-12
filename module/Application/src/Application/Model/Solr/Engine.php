@@ -257,72 +257,8 @@ class Engine extends Search\Engine
 		{
 			foreach ( $docs as $doc )
 			{
-				$id = null;
-				$format = null;
-				$score = null;
-				$xml_data = "";
-				
-				foreach ( $doc->str as $str )
-				{
-					// marc record
-											
-					if ( (string) $str["name"] == 'fullrecord' )
-					{
-						$marc = trim( (string) $str );
-						
-						// marc-xml or marc-y marc -- come on, come on, feel it, feel it!
-						
-						if ( substr($marc, 0, 5) == '<?xml')
-						{
-							$xml_data = $marc;
-						}
-						else
-						{
-					        $marc = preg_replace('/#31;/', "\x1F", $marc);
-					        $marc = preg_replace('/#30;/', "\x1E", $marc);
-					        
-					        $marc_file = new \File_MARC($marc, \File_MARC::SOURCE_STRING);
-					        $marc_record = $marc_file->next();
-					        $xml_data = $marc_record->toXML();
-						}
-					}
-					
-					// record id
-					
-					elseif ( (string) $str["name"] == 'id' )
-					{
-						$id = (string) $str;
-					}
-				}
-				
-				// format
-				
-				foreach ( $doc->arr as $arr )
-				{
-					if ( $arr["name"] == "format" )
-					{
-						$format = (string) $arr->str;
-					}
-				}
-				
-				// score
-				
-				foreach ( $doc->float as $float )
-				{
-					if ( $float["name"] == "score" )
-					{
-						$score = (string) $float;
-					}
-				}
-				
-				
 				$record = new Record();
-				$record->loadXML($xml_data);
-				
-				$record->setRecordID($id);
-				$record->format()->setFormat($format);
-				$record->setScore($score);
-				
+				$record->loadXML($doc);
 				array_push($records, $record);
 			}
 		}

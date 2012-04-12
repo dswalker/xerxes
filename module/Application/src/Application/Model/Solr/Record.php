@@ -2,7 +2,9 @@
 
 namespace Application\Model\Solr;
 
-use Xerxes\Record\Bibliographic;
+use Xerxes\Marc\Record as MarcRecord,
+	Xerxes\Record\Bibliographic,
+	Xerxes\Utility\Parser;
 
 /**
  * Extract properties for books, articles, and dissertations from SolrMarc implementation
@@ -19,6 +21,102 @@ class Record extends Bibliographic
 {
 	protected $source = "solr";
 	protected $record_id;
+	
+	public function loadXML($doc)
+	{
+		$id = null;
+		$format = null;
+		$score = null;
+		$xml_data = "";
+		
+		foreach ( $doc->str as $str )
+		{
+			// marc record
+				
+			if ( (string) $str["name"] == 'fullrecord' )
+			{
+				$marc = trim( (string) $str );
+		
+				// marc-xml or marc-y marc -- come on, come on, feel it, feel it!
+		
+				if ( substr($marc, 0, 5) == '<?xml')
+				{
+					$xml_data = $marc;
+				}
+				else
+				{
+					$marc = preg_replace('/#31;/', "\x1F", $marc);
+					$marc = preg_replace('/#30;/', "\x1E", $marc);
+					 
+					$marc_file = new \File_MARC($marc, \File_MARC::SOURCE_STRING);
+					$marc_record = $marc_file->next();
+					$xml_data = $marc_record->toXML();
+				}
+			}
+				
+			// record id
+				
+			elseif ( (string) $str["name"] == 'id' )
+			{
+				$id = (string) $str;
+			}
+		}
+		
+		// format
+		
+		foreach ( $doc->arr as $arr )
+		{
+			if ( $arr["name"] == "format" )
+			{
+				$format = (string) $arr->str;
+			}
+		}
+		
+		// score
+		
+		foreach ( $doc->float as $float )
+		{
+			if ( $float["name"] == "score" )
+			{
+				$score = (string) $float;
+			}
+		}
+		
+		// load marc data
+		
+		$this->marc = new MarcRecord();
+		$this->marc->loadXML($xml_data);
+		
+		// save for later
+		
+		$this->document = Parser::convertToDOMDocument($doc);
+		$this->serialized = $doc->asXml();
+		
+		// process it
+		
+		$this->map();
+		$this->cleanup();
+		
+		// add non-marc data
+		
+		$this->setRecordID($id);
+		$this->setScore($score);
+		
+		$this->format()->setInternalFormat($format);
+		$this->format()->setPublicFormat($format);		
+	}
+	
+	public function __sleep()
+	{
+		return array("serialized");
+	}
+	
+	public function __wakeup()
+	{
+		$xml = simplexml_load_string($this->serialized);
+		$this->__construct();
+		$this->loadXML($xml);
+	}
 	
 	public function map()
 	{
