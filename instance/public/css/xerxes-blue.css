@@ -348,7 +348,6 @@ a:hover {
 	margin-bottom: 2.6em;
 }
 
-
 #sort-options {
 	text-align: right;
 }	
@@ -693,6 +692,24 @@ div.autocomplete ul li {
 #search-sidebar h3 {
 	margin-top: 1em;
 }
+
+/* MY SAVED RECORDS */
+
+table#folder_output_results td {
+	padding: .7em;
+	border-bottom: 1px solid #ccc;
+}
+
+table#folder_output_results thead {
+	background-color: #efefef;
+	font-weight: bold;
+}
+
+
+
+
+
+
 
 /* x1 transition */
 /* @todo: remove */
