@@ -88,24 +88,13 @@ class Record extends Xerxes\Record
 		$this->doi = $this->extractValue($document, "DOI/0");
 		
 		$openurl = $this->extractValue($document, "openUrl");
-		$direct_link = $this->extractValue($document, "url/0");
+		$direct_link = $this->extractValue($document, "link");
 		$uri = $this->extractValue($document, "URI/0");
 		
-		/*
-		echo " <a href='$direct_link'>direct</a>: " . strlen($direct_link) .
-			" openurl: " . strlen($openurl) .
-			" id: " . strlen($this->record_id) . 
-			" uri: " . strlen($uri) . 
-			"<br />";
-		*/
 		
-		// the length of the fields gives an indication if the direct link field
-		// goes directly to an external link, or simply the link resolver
+		// @todo: figure out black magic for direct linking
 		
-		if ( 100 + strlen($openurl) - strlen($direct_link) > 0 )
-		{
-			$this->links[] = new Xerxes\Record\Link($direct_link, Xerxes\Record\Link::ONLINE);
-		}
+		// $this->links[] = new Xerxes\Record\Link($direct_link, Xerxes\Record\Link::ONLINE);
 		
 		// peer reviewed
 		
