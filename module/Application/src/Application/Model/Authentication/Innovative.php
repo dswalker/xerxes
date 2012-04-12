@@ -3,14 +3,15 @@
 namespace Application\Model\Authentication;
 
 use Xerxes\Utility\Parser,
+	Xerxes\Utility\Request,
 	Application\Model\Authentication\AccessDeniedException;
 
 /**
- * Authenticates users and downloads data from the Innovative Patron API;
- * based on the functions originally developed by John Blyberg
+ * Authenticates users and downloads data from the Innovative Patron API
+ * 
+ * Based on the functions originally developed by John Blyberg
  * 
  * @author David Walker
- * @author John Blyberg
  * @link http://xerxes.calstate.edu
  * @license http://www.gnu.org/licenses/
  * @version
@@ -185,7 +186,7 @@ class Innovative extends Scheme
 				
 				// strip out the code, leaving just the attribute name
 				
-				$arrLine[0] = preg_replace('/\[[^\]]{1,}\]/'', "", $arrLine[0]);
+				$arrLine[0] = preg_replace('/\[[^\]]{1,}\]/', "", $arrLine[0]);
 				$arrData[trim($arrLine[0])] = trim( $arrLine[1] );
 			}
 		}
