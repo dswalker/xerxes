@@ -318,10 +318,10 @@
 			
 			</div>
 			
-			<xsl:if test="query/spelling_url">
+			<xsl:if test="spelling/url">
 				<p class="spell-suggest error">
 					<xsl:value-of select="$text_searchbox_spelling_error" /><xsl:text> </xsl:text>
-					<a href="{query/spelling_url/url}"><xsl:value-of select="query/spelling_url/text" /></a>
+					<a href="{spelling/url}"><xsl:value-of select="spelling/query" /></a>
 				</p>
 			</xsl:if>	
 			

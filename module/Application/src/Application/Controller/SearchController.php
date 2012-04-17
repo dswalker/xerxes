@@ -149,6 +149,8 @@ abstract class SearchController extends ActionController
 		
 		$suggestion = $this->checkSpelling();
 		
+		$this->helper->addSpellingLink($suggestion);
+		
 		$this->data["spelling"] = $suggestion;
 		
 		// track the query

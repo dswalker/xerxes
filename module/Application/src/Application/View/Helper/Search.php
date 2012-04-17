@@ -6,6 +6,7 @@ use Application\Model\Search\Engine,
 	Application\Model\Search\Result,
 	Application\Model\Search\ResultSet,
 	Application\Model\Search\Query,
+	Application\Model\Search\Spelling\Suggestion,
 	Xerxes\Record,
 	Xerxes\Utility\Parser,
 	Xerxes\Utility\Request,
@@ -343,19 +344,6 @@ class Search
 		// to reflect back in the main object, even though they should 
 		// be references, maybe because limit objects are in an array?  
 		
-		// link to corrected spelling
-		
-		$spelling_corrected = $this->request->getParam("spelling_query");
-		
-		if ( $spelling_corrected != null )
-		{
-			$spell = array();
-			$spell["url"] = $this->linkSpelling();
-			$spell["text"] = $spelling_corrected;
-			
-			$query->spelling_url = $spell;
-		}
-		
 		// search option links
 		
 		$search = $this->registry->getConfig('search');
@@ -419,14 +407,30 @@ class Search
 		}
 	}
 	
+	public function addSpellingLink(Suggestion $spelling )
+	{
+		// link to corrected spelling
+		
+		if ( $spelling->hasSuggestions() )
+		{
+			$term = $spelling->getTerm(0);
+			
+			$params = $this->currentParams();
+			$params["field"] = $term->field;
+			$params["query"] = $term->phrase;
+				
+			$spelling->url = $this->request->url_for($params);
+		}
+	}
+	
+	
 	/**
 	 * Link for spelling correction
 	 */
 	
-	public function linkSpelling()
+	public function linkSpelling($field, $query)
 	{
-		$params = $this->currentParams();
-		$params["query"] = $this->request->getParam("spelling_query");
+
 		
 		return $this->request->url_for($params);
 	}

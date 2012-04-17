@@ -17,8 +17,15 @@ use Application\Model\Search;
 
 class Suggestion
 {
+	public $url;
 	private $terms = array();
 	private $display;
+	
+	/**
+	 * Add a Query Term
+	 * 
+	 * @param Search\QueryTerm $term
+	 */
 	
 	public function addTerm( Search\QueryTerm $term )
 	{
@@ -26,6 +33,10 @@ class Suggestion
 		$this->display .= " " . $term->phrase;
 		$this->display = trim($this->display);
 	}
+	
+	/**
+	 * Does this suggestion have any QueryTerms
+	 */
 	
 	public function hasSuggestions()
 	{
@@ -39,9 +50,31 @@ class Suggestion
 		}
 	}
 	
+	/**
+	 * Get Query term by index
+	 * 
+	 * @param int $index
+	 */
+	
+	public function getTerm($index)
+	{
+		if ( array_key_exists($index, $this->terms) )
+		{
+			return $this->terms[$index];
+		}
+		else
+		{
+			return new Search\QueryTerm();
+		}
+	}
+	
+	/**
+	 * Serialize to array
+	 */
+	
 	public function toArray()
 	{
-		$final = array();
+		$final = array('url' => $this->url);
 		
 		foreach ( $this->terms as $term )
 		{
