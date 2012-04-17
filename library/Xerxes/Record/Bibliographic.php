@@ -121,6 +121,8 @@ class Bibliographic extends Record
 		
 		$this->parseSeries();
 		
+		// journal or host item
+		
 		$this->parseJournal();
 
 		// alt script
@@ -916,6 +918,23 @@ class Bibliographic extends Record
 			// found an end page from our generic regular expression parser
 
 			$this->end_page = $arrRegExJournal["epage"];
+		}
+		
+		### book chapters
+		
+		// until this point, we've assumed 773 is journal data,
+		// but now do a sanity check for book chapters or other possible 
+		// host item data (which is what the 773 technically is)
+		
+		if ( $this->journal_title != "" && count($this->isbns) > 0 && count($this->issns) == 0 )
+		{
+			$this->book_title = $this->journal_title;
+			$this->book_host_information = $this->journal;
+			
+			$this->journal_title = "";
+			$this->journal = "";
+			
+			$this->format->setFormat("Book Chapter"); // @todo set normalized as well
 		}
 	}
 

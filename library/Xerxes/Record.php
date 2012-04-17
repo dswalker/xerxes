@@ -56,6 +56,7 @@ class Record
 	protected $price = ""; // price
 
 	protected $book_title = ""; // book title (for book chapters)
+	protected $book_host_information = ""; // host item data, for book chapters, etc.
 	
 	protected $journal_title = ""; // journal title
 	protected $journal = ""; // journal source information
