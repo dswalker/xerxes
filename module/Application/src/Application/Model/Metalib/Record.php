@@ -211,17 +211,19 @@ class Record extends Bibliographic
 		
 		$this->marc->addDataField($obj773);
 		
-		// psycinfo and related databases include a 502 that is not a thesis note -- bonkers!
-		// need to make this a basic note, otherwise xerxes will assume this is a thesis
-		// we do this here, since a couple of functions examine the 502
+		
+		// psycinfo and related databases
 		
 		if ( strstr($this->source, "EBSCO_PDH") || strstr($this->source, "EBSCO_PSYH") || strstr($this->source, "EBSCO_LOH") )
 		{
+			// includes a 502 that is not a thesis note -- bonkers!
+			// need to make this a basic note, otherwise xerxes will assume this is a thesis
+				
 			foreach ( $this->marc->datafield("502") as $thesis )
 			{
 				$thesis->tag = "500";
 			}
-		}
+		}		
 		
 		
 		### context object
@@ -260,6 +262,31 @@ class Record extends Bibliographic
 			
 			$this->format = new Format();
 			$this->format->setFormat($format);
+		}
+		
+		
+		## ebsco 77X weirdness
+		
+		if ( strstr($this->source, "EBSCO") )
+		{
+			// pages in $p (abbreviated title)
+		
+			$pages = (string) $this->datafield("773")->subfield('p');
+		
+			if ( $pages != "" )
+			{
+				$this->short_title = "";
+			}
+				
+			// book chapter
+		
+			$btitle = (string) $this->datafield("771")->subfield('a');
+		
+			if ( $btitle != "" )
+			{
+				$this->book_title = $btitle;
+				$this->format = "Book Chapter";
+			}
 		}
 		
 		
