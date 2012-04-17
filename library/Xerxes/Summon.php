@@ -111,11 +111,6 @@ class Summon
 			$options['s.sort'] = $sortBy;
 		}
 		
-		// spell check
-		
-		$options['s.dym'] = 'true';
-		
-		
 		// paging
 		
 		$options['s.ps'] = $limit;
@@ -126,6 +121,45 @@ class Summon
 		$options['s.ff'] = $this->getFacetsToInclude();
 		
 		return $this->send($options);
+	}
+	
+	/**
+	 * Spell check
+	 * 
+	 * @param string $query
+	 */
+	
+	public function checkSpelling($query)
+	{
+		$options = array();
+		
+		// spell check
+		
+		$options['s.dym'] = 'true';
+		$options['s.ps'] = 0;
+		$options['s.pn'] = 1;
+		
+		if ( $query != '' )
+		{
+			$options['s.q'] = $query;
+		}
+		
+		$results = $this->send($options);
+		
+		// if we got one, return it
+		
+		if ( array_key_exists('didYouMeanSuggestions', $results) )
+		{
+			if ( array_key_exists(0, $results['didYouMeanSuggestions']) )
+			{
+				$suggestion = $results['didYouMeanSuggestions'][0]['suggestedQuery'];
+				return urldecode($suggestion);
+			}
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	/**
