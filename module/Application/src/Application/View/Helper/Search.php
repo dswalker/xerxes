@@ -407,8 +407,13 @@ class Search
 		}
 	}
 	
-	public function addSpellingLink(Suggestion $spelling )
+	public function addSpellingLink( Suggestion $spelling = null )
 	{
+		if ( $spelling == null )
+		{
+			return;
+		}
+		
 		// link to corrected spelling
 		
 		if ( $spelling->hasSuggestions() )
