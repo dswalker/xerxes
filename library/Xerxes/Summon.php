@@ -10,9 +10,9 @@ use Zend\Http\Client;
  * Based on the work of Andrew Nagy
  *
  * @author David Walker
- * @copyright 2011 California State University
+ * @copyright 2012 California State University
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license
  * @version
  * @package Xerxes
  */
