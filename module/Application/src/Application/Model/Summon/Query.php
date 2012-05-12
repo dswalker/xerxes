@@ -33,12 +33,19 @@ class Query extends Search\Query
 		{
 			$query .= " " . $term->boolean;
 
-			if ( $term->field_internal != "" )
+			// is this a fielded search?
+			
+			if ( $term->field_internal != "" ) // yes
 			{
 				$query .= " " . $term->field_internal . ':';
+
+			}
+			else // keyword, but apply title boost
+			{
+				$query .= '(title:' . $this->escape($term->phrase). ') OR ' ;
 			}
 			
-			$query .= '(' . $this->escape($term->phrase) . ')';
+			$query .= " " . $this->escape($term->phrase);
 		}
 		
 		return trim($query);
