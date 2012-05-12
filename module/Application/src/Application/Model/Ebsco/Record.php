@@ -86,15 +86,25 @@ class Record extends Xerxes\Record
 			
 			foreach ( $article->ui as $ui )
 			{
+				$id_number = (string) $ui;
+				
 				if ( (string) $ui["type"] == "doi" )
 				{
 					// doi
-					$this->doi = (string) $ui;
+					$this->doi = $id_number;
 				}
 				elseif ( (string) $ui["type"] == "" )
 				{
 					// ebsco id
-					$this->record_id = $short_db_name . "-" . (string) $ui;
+					$this->record_id = $short_db_name . "-" . $id_number;
+					
+					// eric doc number
+					
+					if ( $short_db_name == "eric" && substr($id_number, 0, 2) == "ED" )
+					{
+						$this->eric_number = $id_number;
+						$this->issns = array();
+					}
 				}
 			}
 			
@@ -187,7 +197,7 @@ class Record extends Xerxes\Record
 			
 			$this->format->setFormat(implode(";", $formats));
 			
-			//language
+			// language
 			
 			$this->language = (string)$article->language;
 		}
