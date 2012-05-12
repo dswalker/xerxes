@@ -9,6 +9,7 @@
 		</action>	
 	</controller>
 	<controller name="authenticate" class="Application\Controller\AuthenticateController" />
+	<controller name="courses" class="Application\Controller\CoursesController" />
 	<controller name="databases" class="Application\Controller\DatabasesController">
 		<action name="subject">
 			<path index="2" param="subject" />
