@@ -3,14 +3,14 @@
 namespace Application\View\Helper;
 
 use Xerxes\Utility\Registry,
-	Zend\Mvc\MvcEvent;
+	Zend\View\ViewEvent;
 
 class Navigation
 {
 	protected $request; // request
 	protected $registry; // reistry
 	
-	public function __construct( MvcEvent $e )
+	public function __construct( ViewEvent $e )
 	{
 		$this->request = $e->getRequest();
 		$this->registry = Registry::getInstance();

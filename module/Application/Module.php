@@ -16,14 +16,13 @@ use Application\Model\Authentication\AuthenticationFactory,
 
 class Module implements AutoloaderProvider
 {
-	protected $viewListener; // application view listener
 	protected $request; // xerxes request object
 	protected $controller_map; // xerxes controller map
 	
 	public function init(Manager $moduleManager)
 	{
 		$events = StaticEventManager::getInstance();
-		$events->attach('bootstrap', 'bootstrap', array($this, 'initialize'), 100);
+		$events->attach('bootstrap', 'bootstrap', array($this, 'bootstrap'), 100);
 	}
 	
 	public function getAutoloaderConfig()
@@ -64,12 +63,9 @@ class Module implements AutoloaderProvider
 		return $config;
 	}
 	
-	public function initialize($e)
+	public function bootstrap($e)
 	{
 		$app = $e->getParam('application');
-		$config = $e->getParam('config');
-		
-		$locator = $app->getLocator();
 		
 		// xerxes request object
 		
@@ -79,25 +75,9 @@ class Module implements AutoloaderProvider
 		
 		$app->events()->attach('route', array($this, 'checkAuthentication'), -100);
 		
-		// view listener
+		// xerxes view listener
 		
-		$view_renderer = $locator->get('view');
-		$viewListener = $this->getViewListener($view_renderer, $config);
-		$app->events()->attachAggregate($viewListener);
-		
-		$events = StaticEventManager::getInstance();
-		$viewListener->registerStaticListeners($events, $locator);		
-	}
-	
-	protected function getViewListener($view_renderer, $config)
-	{
-		if ( ! $this->viewListener instanceof View\Listener ) 
-		{
-			$this->viewListener = new View\Listener($view_renderer);
-			$this->viewListener->setDisplayExceptionsFlag($config->display_exceptions);
-		}
-		
-		return $this->viewListener;
+		$app->events()->attach('render', array($this, 'registerViewStrategy'), 100);
 	}
 	
 	public function getRequest(MvcEvent $e)
@@ -227,4 +207,16 @@ class Module implements AutoloaderProvider
 			}
 		}
 	}
+	
+	public function registerViewStrategy(MvcEvent $e)
+	{
+		$app = $e->getTarget();
+		$locator = $app->getLocator();
+
+		$strategy = $locator->get('Application\View\Strategy');
+		$view = $locator->get('Zend\View\View');
+
+		$view->events()->attach( $strategy, 100 );
+	}	
 }
+

@@ -2,21 +2,32 @@
 
 namespace Xerxes\Utility;
 
+use Zend\View\Model,
+	Zend\View\Renderer,
+	Zend\View\Renderer\TreeRendererInterface,
+	Zend\View\Resolver;
+
 /**
- * Response Object
+ * View Renderer
  * 
  * @author David Walker
- * @copyright 2011 California State University
+ * @copyright 2012 California State University
  * @link http://xerxes.calstate.edu
  * @license http://www.gnu.org/licenses/
  * @version
- * @package Xerxes_Framework
- * @uses Parser
+ * @package Xerxes
  */
 
-class ViewRenderer
+class ViewRenderer implements Renderer, TreeRendererInterface
 {
 	private $_script_path; // path to the distro script
+	private $format = "html"; // output format type
+	
+	/**
+	 * Create new View Renderer
+	 * 
+	 * @param string $script_path
+	 */
 	
 	public function __construct($script_path)
 	{
@@ -24,17 +35,96 @@ class ViewRenderer
 	}
 	
 	/**
-	 * Display the response by calling view
+	 * Return the template engine object
 	 */
 	
-	public function render($view, array $vars, $output_type = "html")
+	public function getEngine()
 	{
+		return null;
+	}
+	
+	/**
+	 * Set the resolver used to map a template name to a resource the renderer may consume.
+	 *
+	 * @param  Resolver $resolver
+	 * @return ViewRenderer
+	 */
+	
+	public function setResolver(Resolver $resolver)
+	{
+		return $this;
+	}
+	
+	/**
+	 * Set output format
+	 * 
+	 * @param string $format
+	 */
+	
+	public function setFormat($format)
+	{
+		$this->format = $format;
+	}
+	
+	/**
+	 * Get output format
+	 */
+	
+	public function getFormat()
+	{
+		return $this->format;
+	}
+	
+	public function canRenderTrees()
+	{
+		return true;	
+	}
+	
+	/**
+	 * Processes a view script and returns the output.
+	 *
+	 * @param  string|Model $name The script/resource process, or a view model
+	 * @param  null|array|\ArrayAccess Values to use during rendering
+	 * @return string The script output.
+	 */
+	
+	public function render($model, $vars = null)	
+	{
+		if ( ! $model instanceof Model )
+		{
+			throw new \Exception('how did that happen?');
+		}
+		
+		// extract variables and flatten them out, since we 
+		// don't really care about child models @todo rethink that?
+		
+		$variables = $model->getVariables();
+		
+		foreach ( $model->getChildren() as $child )
+		{
+			$child_variables = $child->getVariables();
+			
+			foreach ( $child_variables as $id => $value )
+			{
+				$variables->assign($child_variables);
+			}
+		}
+		
+		// internal xml
+		
+		if ( $this->format == "xml" )
+		{
+			return $this->toXML($variables)->saveXML();
+		}
+		
+		$view = $model->getTemplate();
+		
 		// xslt view
 			
 		if (strstr($view, '.xsl') )
 		{
-			$xml = $this->toXML($vars);
-			$html = $this->transform($xml, $view, $output_type);
+			$xml = $this->toXML($variables);
+			$html = $this->transform($xml, $view);
 			return $html;
 		}
 			
@@ -42,10 +132,14 @@ class ViewRenderer
 			
 		else
 		{			
-			foreach ( $vars as $id => $value )
+			foreach ( $variables as $id => $value )
 			{
 				$this->$id = $value;
 			}		
+			
+			
+			throw new \Exception("huh");
+			
 			
 			// buffer the output so we can catch and return it
 			
@@ -58,6 +152,12 @@ class ViewRenderer
 			return $content;
 		}
 	}
+	
+	/**
+	 * Return values as XML
+	 * 
+	 * @param null|array|\ArrayAccess Values to use during rendering
+	 */
 	
 	public function toXML($vars)
 	{
@@ -72,7 +172,15 @@ class ViewRenderer
 		return $xml;
 	}
 	
-	protected function transform($xml, $path_to_xsl, $output_type, array $params = array())
+	/**
+	 * Transform XML to HTML
+	 * 
+	 * @param mixed $xml  XML-like data
+	 * @param string $path_to_xsl
+	 * @param array $params
+	 */
+	
+	protected function transform($xml, $path_to_xsl, array $params = array())
 	{
 		$registry = Registry::getInstance();
 
@@ -113,6 +221,6 @@ class ViewRenderer
 		
 		$xsl = new Xsl($distro_xsl_dir, $local_xsl_dir);
 		
-		return $xsl->transformToXml($xml, $path_to_xsl, $output_type, $params, $import_array);
+		return $xsl->transformToXml($xml, $path_to_xsl, $this->format, $params, $import_array);
 	}
 }

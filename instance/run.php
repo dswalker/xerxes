@@ -5,7 +5,7 @@ chdir(__DIR__);
 $path = dirname(__DIR__);
 
 require_once "$path/vendor/ZendFramework/library/Zend/Loader/AutoloaderFactory.php";
-Zend\Loader\AutoloaderFactory::factory(array('Zend\Loader\StandardAutoloader' => array()));
+Zend\Loader\AutoloaderFactory::factory();
 
 $appConfig = include "$path/config/application.config.php";
 
