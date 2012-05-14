@@ -86,8 +86,6 @@ class Strategy implements ListenerAggregate
 	
 	public function selectRenderer(ViewEvent $e)
 	{
-		$model = $e->getModel();
-		
 		if ( $this->enhanced == false )
 		{
 			$request = $e->getRequest();
@@ -117,12 +115,21 @@ class Strategy implements ListenerAggregate
 			{
 				// determine which view script to use
 				
-				$script = $request->getControllerMap()->getView($request->getParam('format'));
-				
-				// test view chosen
-				// header("Content-type: text/xml"); echo $request->getControllerMap()->saveXML();	echo "<!-- $script -->"; exit;
-				
-				$model->setTemplate($script);
+				if ( $e->getResponse()->getStatusCode() != 200 )
+				{
+					$model->setTemplate('error/index.phtml');
+				}
+				else
+				{
+					// determine which view script to use
+					
+					$script = $request->getControllerMap()->getView($request->getParam('format'));
+					
+					// test view chosen
+					// header("Content-type: text/xml"); echo $request->getControllerMap()->saveXML();	echo "<!-- $script -->"; exit;
+					
+					$model->setTemplate($script);
+				}
 				
 				// render it
 				

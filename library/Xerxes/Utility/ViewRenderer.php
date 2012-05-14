@@ -106,9 +106,10 @@ class ViewRenderer implements Renderer, TreeRendererInterface
 			
 			foreach ( $child_variables as $id => $value )
 			{
-				$variables->assign($child_variables);
+				$variables->offsetSet($id, $value);
 			}
 		}
+		
 		
 		// internal xml
 		
@@ -131,15 +132,11 @@ class ViewRenderer implements Renderer, TreeRendererInterface
 		// php view
 			
 		else
-		{			
+		{
 			foreach ( $variables as $id => $value )
 			{
 				$this->$id = $value;
-			}		
-			
-			
-			throw new \Exception("huh");
-			
+			}
 			
 			// buffer the output so we can catch and return it
 			
