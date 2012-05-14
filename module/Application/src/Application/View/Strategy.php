@@ -91,6 +91,14 @@ class Strategy implements ListenerAggregate
 			$request = $e->getRequest();
 			$model = $e->getModel();
 			
+			// this happens if the route is not matched properly
+			
+			if ( ! $request instanceof Request )
+			{
+				$request = new Request();
+				$e->setRequest($request);
+			}
+			
 			// add base elements
 			
 			$model->setVariable("base_url", $request->getServerUrl() . $request->getBaseUrl());
