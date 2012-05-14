@@ -8,6 +8,29 @@ return array(
 				'view'   => 'Xerxes\Utility\ViewRenderer',
 				'labels'   => 'Xerxes\Utility\Labels',
 			),
+			'Xerxes\Utility\ViewRenderer' => array(
+				'parameters' => array(
+					'script_path' => __DIR__ . '/../views'
+				),
+			),
+			'Xerxes\Utility\Labels' => array(
+				'parameters' => array(
+					'path' => __DIR__ . '/../views/labels'
+				),
+			),
+			'Application\View\Strategy' => array(
+				'parameters' => array(
+					'view_renderer' => 'Xerxes\Utility\ViewRenderer'
+				),
+			),				
+				
+				
+				
+				
+				
+				
+				
+			// BELOW is all standard from ZF2 skeleton app
 				
 			// Setup for controllers.
 			// Injecting the plugin broker for controller plugins into
@@ -24,22 +47,6 @@ return array(
 					'loader' => 'Zend\Mvc\Controller\PluginLoader',
 				),
 			),
-			'Xerxes\Utility\ViewRenderer' => array(
-				'parameters' => array(
-					'script_path' => __DIR__ . '/../views'
-				),
-			),
-			'Xerxes\Utility\Labels' => array(
-				'parameters' => array(
-					'path' => __DIR__ . '/../views/labels'
-				),
-			),
-			'Application\View\Strategy' => array(
-				'parameters' => array(
-					'view_renderer' => 'Xerxes\Utility\ViewRenderer'
-				),
-			),				
-
 			// Setup for router and routes
 			'Zend\Mvc\Router\RouteStack' => array(
 				'parameters' => array(
@@ -47,7 +54,7 @@ return array(
 						'default' => array(
 							'type'    => 'Zend\Mvc\Router\Http\Segment',
 							'options' => array(
-								'route'    => '/[:controller[/:action]]',
+								'route'    => '/[:controller/[:action]]',
 								'constraints' => array(
 									'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
 									'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
