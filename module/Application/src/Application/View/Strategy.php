@@ -117,6 +117,7 @@ class Strategy implements ListenerAggregate
 				
 				if ( $e->getResponse()->getStatusCode() != 200 )
 				{
+					$model->setVariable("display_exceptions", true);
 					$model->setTemplate('error/index.phtml');
 				}
 				else
