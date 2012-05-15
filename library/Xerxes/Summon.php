@@ -26,6 +26,7 @@ class Summon
 	protected $session_id; // current session
 	protected $facets_to_include = array(); // facets that should be included in the response
 	protected $role; // user's role: authenticated or not
+	protected $holdings_only = false;
 	
 	/**
 	 * Create a Summon Client
@@ -97,6 +98,13 @@ class Summon
 			$options['s.role'] = $this->role;
 		}
 		
+		// holdings only
+		
+		if ( $this->holdings_only == true)
+		{
+			$options['s.ho'] = 'true';
+		}		
+		
 		// filters to be applied
 		
 		if ( count($filter) > 0 )
@@ -121,6 +129,24 @@ class Summon
 		$options['s.ff'] = $this->getFacetsToInclude();
 		
 		return $this->send($options);
+	}
+	
+	/**
+	 * Limit response to library holdings
+	 * 
+	 * @param bool $bool
+	 */
+	
+	public function limitToHoldings($bool = true)
+	{
+		if ( $bool === true )
+		{
+			$this->holdings_only = true;
+		}
+		else
+		{
+			$this->holdings_only = false;
+		}
 	}
 	
 	/**
