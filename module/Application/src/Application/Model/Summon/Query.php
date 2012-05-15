@@ -17,6 +17,25 @@ use Application\Model\Search;
 
 class Query extends Search\Query
 {
+	protected $limit_fields_regex = 'facet.*';
+	
+	/*
+	 * Search limited to full-text
+	 */
+	
+	public function isHoldingsOnly()
+	{
+		if ( $this->request->getParam("holdings") != null )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		
+	}
+	
 	/**
 	 * Convert to Summon query syntax
 	 * 

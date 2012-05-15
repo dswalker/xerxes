@@ -519,7 +519,7 @@ class Search
 	
 	public function currentParams()
 	{
-		$params = $this->query->getAllSearchParams();
+		$params = $this->request->getParams();
 		$params['controller'] = $this->request->getParam('controller');
 		$params["action"] = $this->request->getParam("action");
 		$params["sort"] = $this->request->getParam("sort");

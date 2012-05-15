@@ -184,6 +184,13 @@ class Engine extends Search\Engine
 			array_push($facets, "ContentType,$format,true");
 		}
 		
+		// holdings only
+		
+		if ( $search->isHoldingsOnly() )
+		{
+			$this->summon_client->limitToHoldings();
+		}
+		
 		// summon deals in pages, not start record number
 		
 		if ( $max > 0 )
@@ -230,8 +237,19 @@ class Engine extends Search\Engine
 			throw new \Exception($message);
 		}
 		
+		// results
 		
-		$result_set = new Search\ResultSet($this->config);
+		$result_set = new ResultSet($this->config);
+		
+		
+		// recommendations
+		
+		$databases = $this->extractRecommendations($summon_results);
+		
+		foreach ( $databases as $database )
+		{
+			$result_set->addRecommendation($database);
+		}
 
 		// total
 		
@@ -251,6 +269,30 @@ class Engine extends Search\Engine
 		$result_set->setFacets($facets);
 		
 		return $result_set;
+	}
+
+	/**
+	 * Parse out database recommendations
+	 * 
+	 * @param array $summon_results
+	 * @return array of Database's
+	 */
+	
+	protected function extractRecommendations($summon_results)
+	{
+		$databases = array();
+		
+		$recommendations = $summon_results['recommendationLists'];
+		
+		if ( array_key_exists('database', $recommendations) )
+		{
+			foreach ( $recommendations['database'] as $database_array )
+			{
+				$databases[] = new Database($database_array);
+			}
+		}		
+		
+		return $databases;
 	}
 	
 	/**
