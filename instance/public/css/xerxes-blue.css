@@ -350,7 +350,30 @@ a:hover {
 
 #sort-options {
 	text-align: right;
-}	
+}
+
+.results-database-recommendations {
+	font-size: 100%;
+	margin-top: 1em;
+	margin-bottom: 2.5em;
+}
+
+.results-database-recommendations h2 {
+	font-family: Verdana, Geneva, sans-serif;
+	color: #000;
+	font-weight: bold;
+	font-size: 100%;
+}
+
+.results-database-recommendations ul {
+	margin-left: 1em;
+}
+
+.results-database-recommendations li {
+	margin-left: 1em;
+	margin-bottom: 1em;
+	list-style: disc;
+}
 
 .result {
 	margin-bottom: 3em;

@@ -43,5 +43,52 @@
 <xsl:template name="main">
 	<xsl:call-template name="search_page" />
 </xsl:template>
+
+<xsl:template name="search_recommendations">
+
+	<xsl:if test="results/database_recommendations and not(//request/start)">
+	
+		<div class="results-database-recommendations">
+		
+			<h2>We found one or more specialized collections that might help you.</h2>
+	
+			<ul>
+		
+			<xsl:for-each select="results/database_recommendations/database_recommendation">
+				
+				<li>
+					<a href="{link}"><xsl:value-of select="title" /></a>
+					
+					<xsl:if test="description">
+					 	<xsl:text> -- </xsl:text>
+						<xsl:value-of select="description" />
+					 </xsl:if>
+				</li>
+				
+			</xsl:for-each>
+			
+			</ul>
+			
+		</div>
+		
+	</xsl:if>
+	
+</xsl:template>
+
+<xsl:template name="advanced_search_option">
+
+	<div style="margin: 1em">
+	
+		<input type="checkbox" id="holdings" name="holdings" value="true">
+			<xsl:if test="//request/holdings">
+				<xsl:attribute name="checked">checked</xsl:attribute>
+			</xsl:if>
+		</input>
+		<xsl:text> </xsl:text>
+		<label for="holdings">Full-text only</label>
+	
+	</div>
+
+</xsl:template>
 		
 </xsl:stylesheet>

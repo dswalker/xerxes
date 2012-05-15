@@ -62,7 +62,7 @@
 				</div>
 			</div>
 		</div>
-		
+			
 		<xsl:call-template name="tabs" />
 		
 		<xsl:variable name="sidebar">
@@ -110,7 +110,9 @@
 				
 						<div class="tabs">
 							<xsl:call-template name="sort_bar" />
-						</div>
+						</div>		
+								
+						<xsl:call-template name="search_recommendations" />
 				
 						<xsl:call-template name="brief_results" />
 		
@@ -1042,5 +1044,9 @@
 	
 	<xsl:template name="additional_record_links" />
 	<xsl:template name="additional_brief_record_data" />
+	
+	<!-- search results templates -->
+	
+	<xsl:template name="search_recommendations" />
 	
 </xsl:stylesheet>
