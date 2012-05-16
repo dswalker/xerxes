@@ -168,6 +168,10 @@ class Strategy implements ListenerAggregate
 		{
 			$response->headers()->addHeaderLine("Content-type", "text/xml");
 		}
+		elseif ( $renderer->getFormat() == "json" )
+		{
+			$response->headers()->addHeaderLine("Content-type", "application/json");
+		}
 		
 		### return the result
 		
