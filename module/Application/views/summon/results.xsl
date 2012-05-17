@@ -50,7 +50,20 @@
 	
 		<div class="results-database-recommendations">
 		
-			<h2>We found one or more specialized collections that might help you.</h2>
+			<h2>
+				<xsl:text>We found a </xsl:text>
+			
+				<xsl:choose>
+					<xsl:when test="count(results/database_recommendations/database_recommendation) &gt; 1">
+						couple of specialized databases
+					</xsl:when>
+					<xsl:otherwise>
+						specialized database
+					</xsl:otherwise>
+				</xsl:choose>
+				
+				<xsl:text> that might help you.</xsl:text>
+				</h2>
 	
 			<ul>
 		
@@ -77,7 +90,7 @@
 
 <xsl:template name="advanced_search_option">
 
-	<div style="margin: 1em">
+	<div style="margin: 1em; margin-bottom: 0">
 	
 		<input type="checkbox" id="holdings" name="holdings" value="true">
 			<xsl:if test="//request/holdings">
@@ -85,7 +98,7 @@
 			</xsl:if>
 		</input>
 		<xsl:text> </xsl:text>
-		<label for="holdings">Full-text only</label>
+		<label for="holdings">Full-text only</label>	
 	
 	</div>
 
