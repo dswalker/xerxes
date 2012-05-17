@@ -56,15 +56,13 @@ class Query extends Search\Query
 			
 			if ( $term->field_internal != "" ) // yes
 			{
-				$query .= " " . $term->field_internal . ':';
+				$query .= " " . $term->field_internal . ':' . $this->escape($term->phrase);
 
 			}
-			else // keyword, but apply title boost
+			else // keyword
 			{
-				$query .= '(title:' . $this->escape($term->phrase). ') OR ' ;
+				$query .= " " . $term->phrase;
 			}
-			
-			$query .= " " . $this->escape($term->phrase);
 		}
 		
 		return trim($query);
