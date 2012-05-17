@@ -110,6 +110,46 @@ class Strategy implements ListenerAggregate
 			$nav = new Navigation($e);
 			$model->setVariable("navbar", $nav->getNavbar());
 			
+			
+			
+			
+			### flatten model
+			
+			// @todo this seems really hacky, but our view renderer
+			// has no notion of children, so this makes our lives easier
+			
+			foreach ( $model->getChildren() as $child )
+			{
+				// template specified
+				
+				$model->setTemplate($child->getTemplate());
+				
+				// terminate this?
+				
+				$model->setTerminal($child->terminate());
+				
+				// options
+				
+				$options = $child->getOptions();
+				
+				foreach ( $options as $id => $value )
+				{
+					$model->setOption($id, $value);
+				}				
+				
+				// variables
+				
+				$child_variables = $child->getVariables();
+						
+				foreach ( $child_variables as $id => $value )
+				{
+					$model->setVariable($id, $value);
+				}
+			}
+			
+			
+			
+			
 			// show internal xml
 			
 			if ( $request->getParam('format') == 'xerxes' )
@@ -123,7 +163,7 @@ class Strategy implements ListenerAggregate
 			{
 				// determine which view script to use
 				
-				if ( $e->getResponse()->getStatusCode() != 200 )
+				if ( $e->getResponse()->getStatusCode() != 200 ) // @todo investigate error render strategy
 				{
 					$model->setVariable("display_exceptions", true);
 					$model->setTemplate('error/index.phtml');
