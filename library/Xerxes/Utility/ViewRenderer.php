@@ -95,21 +95,7 @@ class ViewRenderer implements Renderer, TreeRendererInterface
 			throw new \Exception('how did that happen?');
 		}
 		
-		// extract variables and flatten them out, since we 
-		// don't really care about child models @todo rethink that?
-		
 		$variables = $model->getVariables();
-		
-		foreach ( $model->getChildren() as $child )
-		{
-			$child_variables = $child->getVariables();
-			
-			foreach ( $child_variables as $id => $value )
-			{
-				$variables->offsetSet($id, $value);
-			}
-		}
-		
 		
 		// internal xml
 		
@@ -119,6 +105,13 @@ class ViewRenderer implements Renderer, TreeRendererInterface
 		}
 		
 		$view = $model->getTemplate();
+		
+		// no view set, so do nothing
+		
+		if ( $view == null )
+		{
+			return;
+		}
 		
 		// xslt view
 			

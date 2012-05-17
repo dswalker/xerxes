@@ -27,6 +27,8 @@ class ControllerMap
 	private $view = array(); // view(s) set programmatically
 	private $default_controller; // default controller/action for index
 	
+	private $no_view = false;
+	
 	/**
 	 * Create a Controller Map
 	 * 
@@ -311,6 +313,15 @@ class ControllerMap
 	}
 	
 	/**
+	 * Don't use any view
+	 */
+	
+	public function setNoView()
+	{
+		$this->no_view = true;
+	}
+	
+	/**
 	 * Get relative path to view script
 	 * 
 	 * @param string $format		[optional] for given format, default is 'html'
@@ -322,6 +333,11 @@ class ControllerMap
 		if ( $format == "" )
 		{
 			$format = "html";
+		}
+		
+		if ( $this->no_view == true)
+		{
+			return null;
 		}
 		
 		// already set
