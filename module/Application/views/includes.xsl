@@ -464,7 +464,7 @@
 			<ul>
 				<li id="login-option">
 					<xsl:choose>
-						<xsl:when test="//request/session/role and //request/session/role != 'local'">
+						<xsl:when test="//request/session/role and //request/session/role = 'named'">
 							<a id="logout">
 							<xsl:attribute name="href"><xsl:value-of select="//navbar/logout_link" /></xsl:attribute>
 								<xsl:copy-of select="$text_header_logout" />

@@ -62,12 +62,22 @@ class User extends DataValue implements Utility\User
 			$registry = Registry::getInstance();
 			$this->ip_range = $registry->getConfig( "LOCAL_IP_RANGE", false, null );
 			
-			// temporarily authenticate local users
+			// temporarily authenticate users
 			
-			if ( $this->username == "" && $this->isInLocalIpRange() == true )
+			if ( $this->username == "")
 			{
-				$this->username = self::genRandomUsername(self::LOCAL);
-				$this->role = self::LOCAL;
+				// on campus
+				
+				if ( $this->isInLocalIpRange() == true )
+				{
+					$this->username = self::genRandomUsername(self::LOCAL);
+					$this->role = self::LOCAL;
+				}
+				else
+				{
+					$this->username = self::genRandomUsername(self::GUEST);
+					$this->role = self::GUEST;
+				}
 				
 				$request->setSessionData("username", $this->username);
 				$request->setSessionData("role", $this->role);
