@@ -19,3 +19,5 @@ CREATE TABLE xerxes_search_stats (
 	phrase		VARCHAR(1000),
 	hits		INTEGER
 );
+
+ALTER TABLE xerxes_records MODIFY original_id VARCHAR(255);

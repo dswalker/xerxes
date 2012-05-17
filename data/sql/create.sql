@@ -130,7 +130,7 @@ CREATE INDEX xerxes_refereed_issn_idx ON xerxes_refereed(issn);
 CREATE TABLE xerxes_records (
 	id 		MEDIUMINT NOT NULL AUTO_INCREMENT,
 	source 		VARCHAR(10),
-	original_id 	VARCHAR(100),
+	original_id 	VARCHAR(255),
 	timestamp 	DATE,
 	username 	VARCHAR(50),
 	nonsort 	VARCHAR(5),
