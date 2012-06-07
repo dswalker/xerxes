@@ -4,7 +4,7 @@
     "homepage": "http://library.csuprojects.edu/xerxes",
     "require": {
         "php": ">=5.3.3",
-        "zendframework/zendframework": ">=2.0.0beta4"
+        "zendframework/zendframework": "2.0.0beta4"
     },
     "autoload": {
         "psr-0": {
