@@ -10,7 +10,10 @@ The primary goal of Xerxes is to provide a fully customizable and extendable int
 
 Installation
 ------------
-The easiest way to get a working copy of this project is to do a recursive
-clone:
+The recommended way to get a working copy of this project is to clone the repository
+and use composer to install dependencies:
 
-    git clone --recursive git://github.com/dswalker/xerxes.git
+    cd my/project/dir
+    git clone git://github.com/dswalker/xerxes.git
+    cd xerxes
+    php composer.phar install --prefer-source

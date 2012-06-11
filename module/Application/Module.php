@@ -10,20 +10,12 @@ use Application\Model\Authentication\AuthenticationFactory,
 	Xerxes\Utility\Request,
 	Zend\EventManager\StaticEventManager,
 	Zend\Http\PhpEnvironment\Response as HttpResponse,
-	Zend\Module\Consumer\AutoloaderProvider,
-	Zend\Module\Manager,
 	Zend\Mvc\MvcEvent;
 
-class Module implements AutoloaderProvider
+class Module
 {
 	protected $request; // xerxes request object
 	protected $controller_map; // xerxes controller map
-	
-	public function init(Manager $moduleManager)
-	{
-		$events = StaticEventManager::getInstance();
-		$events->attach('bootstrap', 'bootstrap', array($this, 'bootstrap'), 100);
-	}
 	
 	public function getAutoloaderConfig()
 	{
@@ -63,7 +55,7 @@ class Module implements AutoloaderProvider
 		return $config;
 	}
 	
-	public function bootstrap($e)
+	public function onBootstrap($e)
 	{
 		$app = $e->getParam('application');
 		
@@ -210,11 +202,11 @@ class Module implements AutoloaderProvider
 	
 	public function registerViewStrategy(MvcEvent $e)
 	{
-		$app = $e->getTarget();
-		$locator = $app->getLocator();
+		$application = $e->getTarget();
+		$manager = $application->getServiceManager();
 
-		$strategy = $locator->get('Application\View\Strategy');
-		$view = $locator->get('Zend\View\View');
+		$strategy = $manager->get('Application\View\Strategy');
+		$view = $manager->get('Zend\View\View');
 
 		$view->events()->attach( $strategy, 100 );
 	}	

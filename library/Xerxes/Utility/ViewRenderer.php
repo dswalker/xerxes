@@ -2,10 +2,10 @@
 
 namespace Xerxes\Utility;
 
-use Zend\View\Model,
-	Zend\View\Renderer,
+use Zend\View\Model\ModelInterface,
+	Zend\View\Renderer\RendererInterface,
 	Zend\View\Renderer\TreeRendererInterface,
-	Zend\View\Resolver;
+	Zend\View\Resolver\ResolverInterface as Resolver;
 
 /**
  * View Renderer
@@ -18,7 +18,7 @@ use Zend\View\Model,
  * @package Xerxes
  */
 
-class ViewRenderer implements Renderer, TreeRendererInterface
+class ViewRenderer implements RendererInterface, TreeRendererInterface
 {
 	private $_script_path; // path to the distro script
 	private $format = "html"; // output format type
@@ -90,7 +90,7 @@ class ViewRenderer implements Renderer, TreeRendererInterface
 	
 	public function render($model, $vars = null)	
 	{
-		if ( ! $model instanceof Model )
+		if ( ! $model instanceof ModelInterface )
 		{
 			throw new \Exception('how did that happen?');
 		}

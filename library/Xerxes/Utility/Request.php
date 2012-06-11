@@ -3,10 +3,10 @@
 namespace Xerxes\Utility;
 
 use Zend\Http\PhpEnvironment\Request as ZendRequest,
-	Zend\Mvc\Router\RouteStack,
+	Zend\Mvc\Router\RouteStackInterface,
 	Zend\Mvc\Router\RouteMatch,
 	Zend\Session\Container,
-	Zend\Session\Manager,
+	Zend\Session\AbstractManager as Manager,
 	Zend\Session\SessionManager;
 
 /**
@@ -54,7 +54,7 @@ class Request extends ZendRequest
 	 * @param RouteStack $router
 	 */
 	
-	public function setRouter(RouteStack $router)
+	public function setRouter(RouteStackInterface $router)
 	{
 		$this->router = $router;
 		

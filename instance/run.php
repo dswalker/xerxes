@@ -1,24 +1,24 @@
 <?php
 
+use Zend\ServiceManager\ServiceManager,
+Zend\Mvc\Service\ServiceManagerConfiguration;
+
 chdir(__DIR__);
 
-$path = dirname(__DIR__);
+$path = dirname(dirname(__DIR__));
 
-require_once "$path/vendor/ZendFramework/library/Zend/Loader/AutoloaderFactory.php";
-Zend\Loader\AutoloaderFactory::factory();
+// Composer autoloading
+if (!include_once("$path/vendor/autoload.php")) {
+	throw new RuntimeException("$path/vendor/autoload.php could not be found. Did you run `php composer.phar install`?");
+}
 
-$appConfig = include "$path/config/application.config.php";
+// Get application stack configuration
+$configuration = include "$path/config/application.config.php";
 
-$listenerOptions  = new Zend\Module\Listener\ListenerOptions($appConfig['module_listener_options']);
-$defaultListeners = new Zend\Module\Listener\DefaultListenerAggregate($listenerOptions);
-$defaultListeners->getConfigListener()->addConfigGlobPath("$path/config/autoload/*.config.php");
+// Setup service manager
+$serviceManager = new ServiceManager(new ServiceManagerConfiguration($configuration['service_manager']));
+$serviceManager->setService('ApplicationConfiguration', $configuration);
+$serviceManager->get('ModuleManager')->loadModules();
 
-$moduleManager = new Zend\Module\Manager($appConfig['modules']);
-$moduleManager->events()->attachAggregate($defaultListeners);
-$moduleManager->loadModules();
-
-// Create application, bootstrap, and run
-$bootstrap   = new Zend\Mvc\Bootstrap($defaultListeners->getConfigListener()->getMergedConfig());
-$application = new Zend\Mvc\Application;
-$bootstrap->bootstrap($application);
-$application->run()->send();
+// Run application
+$serviceManager->get('Application')->bootstrap()->run()->send();

@@ -7,14 +7,14 @@ use Application\View\Helper\Navigation,
 	Xerxes\Utility\Request,
 	Xerxes\Utility\Registry,
 	Xerxes\Utility\ViewRenderer,
-	Zend\EventManager\EventCollection,
-	Zend\EventManager\ListenerAggregate,
+	Zend\EventManager\EventManagerInterface,
+	Zend\EventManager\ListenerAggregateInterface,
 	Zend\Stdlib\ResponseDescription as Response,
 	Zend\View\Model,
 	Zend\View\View,
 	Zend\View\ViewEvent;
 
-class Strategy implements ListenerAggregate
+class Strategy implements ListenerAggregateInterface
 {
 	protected $listeners = array(); // listeners
 	protected $renderer; // xerxes view renderer
@@ -53,7 +53,7 @@ class Strategy implements ListenerAggregate
 	 * @return void
 	 */	
 	
-	public function attach(EventCollection $events, $priority = 1)
+	public function attach(EventManagerInterface $events, $priority = 1)
 	{
 		$this->listeners[] = $events->attach('renderer', array($this, 'selectRenderer'), $priority);
 		$this->listeners[] = $events->attach('response', array($this, 'injectResponse'), $priority);
@@ -66,7 +66,7 @@ class Strategy implements ListenerAggregate
 	 * @return void
 	 */	
 	
-	public function detach(EventCollection $events)
+	public function detach(EventManagerInterface $events)
 	{
 		foreach ( $this->listeners as $index => $listener ) 
 		{
