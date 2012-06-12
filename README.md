@@ -16,4 +16,4 @@ and use composer to install dependencies:
     cd my/project/dir
     git clone git://github.com/dswalker/xerxes.git
     cd xerxes
-    php composer.phar install --prefer-source
+    php composer.phar install
