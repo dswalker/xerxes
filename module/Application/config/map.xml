@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xerxes version="2.0.beta.1">
+
+	<default>summon</default>
+	
+	<controller name="asset" class="Application\Controller\AssetController">
+		<action name="labels">
+			<view>asset/labels.phtml</view>
+		</action>	
+	</controller>
+	<controller name="authenticate" class="Application\Controller\AuthenticateController" />
+	<controller name="courses" class="Application\Controller\CoursesController" />
+	<controller name="databases" class="Application\Controller\DatabasesController">
+		<action name="subject">
+			<path index="2" param="subject" />
+		</action>	
+	</controller>
+	<controller name="ebsco" class="Application\Controller\EbscoController" inherits="search" >
+		<action name="results" restricted="true" />
+		<action name="record" restricted="true" />
+	</controller>
+	<controller name="error" class="Application\Controller\ErrorController" />
+	<controller name="folder" class="Application\Controller\FolderController" inherits="search" >
+		<path index="2" param="username" />
+		<action name="export">
+			<view format="text-file">citation/basic.xsl</view>
+			<view format="ris-file">citation/ris.xsl</view>
+			<view format="bibliographic">citation/ris.xsl</view>
+		</action>	
+	</controller>
+	<controller name="index" class="Application\Controller\IndexController" />
+	<controller name="metalib" class="Application\Controller\MetalibController" inherits="search">
+		<action name="index">
+			<view>metalib/index.xsl</view>
+		</action>
+	</controller>
+	<controller name="primo" class="Application\Controller\PrimoController" inherits="search" />	
+	<controller name="search" class="Application\Controller\SearchController">
+		<action name="index">
+			<view>search/index.xsl</view>
+		</action>
+		<action name="hits">
+			<view>search/hits.xsl</view>
+		</action>
+		<action name="lookup">
+			<view>search/lookup.xsl</view>
+		</action>
+		<action name="save">
+			<view format="json">search/save-ajax.xsl</view>
+		</action>	
+	</controller>
+	<controller name="solr" class="Application\Controller\SolrController" inherits="search" />
+	<controller name="summon" class="Application\Controller\SummonController" inherits="search" />
+	<controller name="worldcat" class="Application\Controller\WorldcatController" inherits="search">
+		<action name="results" restricted="true" />
+		<action name="record" restricted="true" />
+	</controller>
+</xerxes>

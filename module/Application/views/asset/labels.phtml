@@ -1,0 +1,26 @@
+<?php
+
+/**
+ *  Convert the labels into a Javascript array
+ *  
+ *  @author David Walker
+ *  @copyright 2011 California State University
+ *  @version
+ *  @package Xerxes
+ *  @link http://xerxes.calstate.edu
+ *  @license
+ */
+
+header('Content-type: application/javascript');
+
+?>
+xerxes_labels = new Array();
+<?php 
+	
+	foreach ( $this->labels->getLabels() as $name => $value )
+	{
+		$value = str_replace('"', '\\"', $value);
+		$value = str_replace("\n", " ", $value);
+		echo "xerxes_labels['$name'] = \"$value\";\n";
+	}
+?>
