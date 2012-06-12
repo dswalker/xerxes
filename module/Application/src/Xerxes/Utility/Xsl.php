@@ -159,6 +159,11 @@ class Xsl
 			$output->setAttribute("doctype-system", "http://www.w3.org/TR/html4/loose.dtd");
 		}
 		
+		// always include distro includes
+		
+		$files_to_import[] = $this->distro_xsl_dir . '/' .'includes.xsl';
+		
+		
 		### add a reference to the distro file
 
 		if ( $distro_exists == true )
@@ -287,6 +292,8 @@ class Xsl
 	
 	private function addIncludeReference($xsltStylesheet, $absoluteFilePath)
 	{
+		$absoluteFilePath = str_replace('\\', '/', $absoluteFilePath); // darn windows
+		
 		$include_element = $xsltStylesheet->createElementNS("http://www.w3.org/1999/XSL/Transform", "xsl:include");
 		$include_element->setAttribute("href", $absoluteFilePath);
 		$xsltStylesheet->documentElement->appendChild( $include_element );

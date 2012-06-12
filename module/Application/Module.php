@@ -25,8 +25,6 @@ class Module
 			),
 			'Zend\Loader\StandardAutoloader' => array(
 				'namespaces' => array(
-					__NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
-					'Xerxes' => __DIR__ . '/../../library/Xerxes',
 					'Local' => 'custom',
 				),
 			),

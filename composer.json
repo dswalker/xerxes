@@ -8,7 +8,8 @@
     },
     "autoload": {
         "psr-0": {
-            "Application": "module/Application/src"
+            "Application": "module/Application/src",
+            "Xerxes": "module/Application/src"
         }
     }
 }
