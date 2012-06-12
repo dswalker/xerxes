@@ -149,7 +149,7 @@ class Result
 		
 		$client = new Client();
 		$client->setUri($url);
-		$client->setConfig(array('timeout' => 5));
+		$client->setOptions(array('timeout' => 5));
 		
 		$data = $client->send()->getBody();
 		
