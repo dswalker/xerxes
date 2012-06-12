@@ -55,7 +55,7 @@ class Engine
 		{
 			$client = Factory::getHttpClient();
 			$client->setUri($url);
-			$client->setConfig(array('timeout' => 4));
+			$client->setOptions(array('timeout' => 4));
 			
 			$xml = $client->send()->getBody();
 			
