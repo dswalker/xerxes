@@ -2,11 +2,20 @@
 
 namespace Application\Controller;
 
-use Application\Model\Worldcat\Engine;
+use Application\Model\Worldcat\Engine,
+	Application\View\Helper\Worldcat as SearchHelper,
+	Zend\Mvc\MvcEvent;
 
 class WorldcatController extends SearchController
 {
 	protected $id = "worldcat";
+	
+	protected function init(MvcEvent $e)
+	{
+		parent::init($e);
+	
+		$this->helper = new SearchHelper($e, $this->id, $this->engine);
+	}	
 	
 	protected function getEngine()
 	{
