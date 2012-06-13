@@ -2,9 +2,16 @@
     "name": "dswalker/xerxes",
     "description": "Xerxes 2",
     "homepage": "http://library.csuprojects.edu/xerxes",
+    "repositories": [
+        {
+            "type": "pear",
+            "url": "http://pear.php.net"
+        }
+    ],
     "require": {
         "php": ">=5.3.3",
-        "zendframework/zendframework": "dev-master#c1273a4ea7ab16ecb0be1f53c211c80a27ffee9a"
+        "zendframework/zendframework": "dev-master#c1273a4ea7ab16ecb0be1f53c211c80a27ffee9a",
+        "pear-pear/File_MARC": "*"
     },
     "autoload": {
         "psr-0": {

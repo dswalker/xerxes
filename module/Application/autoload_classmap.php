@@ -4,11 +4,4 @@ return array(
     'Application\Controller\IndexController' => __DIR__ . '/src/Application/Controller/IndexController.php',
     'Application\Controller\ErrorController' => __DIR__ . '/src/Application/Controller/ErrorController.php',
     'Application\Module'                     => __DIR__ . '/Module.php',
-		
-	'File_MARC'                              => 'File/Marc.php',
-		
-	// @todo: remove these
-	
-	'Xerxes_TransRecord'                     => __DIR__ . '/../../../xerxes/lib/Xerxes/saved/TransRecord.php',
-
 );
