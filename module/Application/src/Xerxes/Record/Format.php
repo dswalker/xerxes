@@ -101,10 +101,11 @@ class Format
 	const Unknown = "GEN";
 	const Periodical = "JFULL";
 	
-	public function determineFormat($data_fields)
-	{
-		$this->setFormat($this->extractFormat($data_fields));
-	}
+	/**
+	 * Crosswalk the internal format to RIS format
+	 * 
+	 * @return string
+	 */
 	
 	public function toRIS()
 	{
@@ -137,9 +138,9 @@ class Format
 	}
 	
 	/**
-	 * Crosswalk the internal format to one available in OpenURL 1.0
+	 * Crosswalk the internal format to OpenURL 1.0 genre
 	 *
-	 * @return string				OpenURL genre value
+	 * @return string OpenURL genre value
 	 */
 	
 	public function toOpenURLGenre()
@@ -227,6 +228,23 @@ class Format
 		}
 	}
 	
+	/**
+	 * Set format based on best guess match
+	 *
+	 * @param string|array $data_fields containing possible format information
+	 */
+	
+	public function determineFormat($data_fields)
+	{
+		$this->setFormat($this->extractFormat($data_fields));
+	}	
+	
+	/**
+	 * Best guess match on format
+	 * 
+	 * @param string|array $data_fields containing possible format information
+	 */
+	
 	public function extractFormat($data_fields)
 	{
 		if ( is_array($data_fields) )
@@ -276,19 +294,59 @@ class Format
 		}
 	}
 	
+	/**
+	 * Return a more readbale (English) value for the constant name
+	 * 
+	 * @param string $value
+	 */
+	
 	public function getReadableConstName($value)
 	{
-		return trim(preg_replace("/([A-Z])/",' \\1',$this->getConstNameForValue($value)));
+		switch ($value)
+		{
+			case 'ArticleElectronic': 
+				return 'Article'; break;
+				
+			case 'ArticleJournal': 
+				return 'Journal Article'; break;
+				
+			case 'ArticleMagazine': 
+				return 'Magazine Article'; break;
+				
+			case 'ArticleNewspaper': 
+				return 'Newspaper Article'; break;
+				
+			case 'BillUnenacted': 
+				return 'Unenacted Bill'; break;
+				
+			case 'BookEdited': 
+				return 'Book'; break;
+				
+			case 'BookElectronic': 
+				return 'eBook'; break;
+				
+			case 'BookSection': 
+				return 'Book Chapter'; break;
+				
+			case 'BookSectionElectronic': 
+				return 'eBook Chapter'; break;
+				
+			default:
+				return trim(preg_replace("/([A-Z])/",' \\1',$this->getConstNameForValue($value)));
+		}
 	}
 	
-	
-	// @todo this is only for testing
+	/**
+	 * Set internal/normalized/public format values
+	 * 
+	 * @param string $format normalized value
+	 */
 	
 	public function setFormat($format)
 	{
 		$this->internal = $format;
 		$this->normalized = $format;
-		$this->public = $format;
+		$this->public = $this->getReadableConstName($format);
 	}
 	
 	/**

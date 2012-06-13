@@ -728,9 +728,6 @@ class Bibliographic extends Record
 	protected function parseFormat()
 	{
 		$this->technology = (string) $this->marc->datafield("538")->subfield("a");
-		
-		// @todo create the public display
-		
 		$this->format->setFormat($this->normalizeFormat());
 	}
 	
