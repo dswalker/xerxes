@@ -54,7 +54,7 @@ class Module
 	}
 	
 	/**
-	 * Bootstrap the Moduke
+	 * Bootstrap the module
 	 * 
 	 * @param mixed $event
 	 */
@@ -77,7 +77,7 @@ class Module
 	}
 	
 	/**
-	 * Retrieve a populated Request object
+	 * Retrieve a populated Xerxes Request object
 	 * 
 	 * @param MvcEvent $e
 	 * @return Request
@@ -121,7 +121,7 @@ class Module
 	}
 	
 	/**
-	 * Retrieved a populated ControllerMap
+	 * Retrieved a populated Xerxes ControllerMap
 	 * 
 	 * @return ControllerMap
 	 */
@@ -137,8 +137,7 @@ class Module
 	}
 	
 	/**
-	 * Perform an authentication check on this request, redirecting user to 
-	 * the authenticate/login action if required
+	 * Perform an authentication check on this request
 	 *  
 	 * @param MvcEvent $e
 	 */
