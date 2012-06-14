@@ -46,7 +46,7 @@
 
 <xsl:template name="search_recommendations">
 
-	<xsl:if test="results/database_recommendations and not(//request/start)">
+	<xsl:if test="results/database_recommendations and not(//request/start) and not(//query/limits)">
 	
 		<div class="results-database-recommendations">
 		
@@ -88,6 +88,8 @@
 	
 </xsl:template>
 
+<!--
+
 <xsl:template name="advanced_search_option">
 
 	<div style="margin: 1em; margin-bottom: 0">
@@ -103,5 +105,7 @@
 	</div>
 
 </xsl:template>
+
+-->
 		
 </xsl:stylesheet>
