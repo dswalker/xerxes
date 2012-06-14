@@ -242,6 +242,7 @@
 	
 	<xsl:template name="surround_meta">
 			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+			<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
 			<xsl:copy-of select="$text_extra_meta_tags" />
 	</xsl:template>
 	
@@ -259,11 +260,6 @@
 						<xsl:call-template name="header_div" />
 					</xsl:otherwise>
 				</xsl:choose>
-				<div id="breadcrumb">
-					<div class="trail">
-						<xsl:call-template name="breadcrumb" />
-					</div>
-				</div>
 			</div>
 	</xsl:template>
 	
@@ -275,6 +271,13 @@
 		<xsl:param name="sidebar" />
 	
 			<div id="bd" data-role="content">
+			
+				<div id="breadcrumb">
+					<div class="trail">
+						<xsl:call-template name="breadcrumb" />
+					</div>
+				</div>
+			
 				<div id="yui-main">
 					<div class="yui-b">
 						<xsl:if test="string(//session/flash_message)">
