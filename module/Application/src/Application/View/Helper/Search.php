@@ -372,6 +372,7 @@ class Search
 				$params['controller'] = $controller_map->getUrlAlias((string) $option["id"]);
 				$params['action'] = "results";
 				$params['source'] = (string) $option["source"];
+				$params['sort'] = $this->request->getParam('sort');
 				
 				$url = $this->request->url_for($params);
 				
@@ -426,18 +427,6 @@ class Search
 				
 			$spelling->url = $this->request->url_for($params);
 		}
-	}
-	
-	
-	/**
-	 * Link for spelling correction
-	 */
-	
-	public function linkSpelling($field, $query)
-	{
-
-		
-		return $this->request->url_for($params);
 	}
 	
 	/**
