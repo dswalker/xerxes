@@ -315,21 +315,41 @@ class Record
 			if ( $this->journal_title != "" )
 			{
 				$this->journal = $this->toTitleCase($this->journal_title);
+				
+				
+				if ( $this->volume != "" || $this->issue != "" )
+				{
+					$this->journal .= ',';
+				}				
 
 				if ( $this->volume != "" ) 
 				{
-					$this->journal .= " vol. " . $this->volume;
+					$this->journal .= " volume " . $this->volume;
 				}
 				
 				if ( $this->issue != "" )
 				{
-					$this->journal .= " iss. " . $this->issue;
+					$this->journal .= " issue " . $this->issue;
 				}
 				
 				if ( $this->year != "" )
 				{
 					$this->journal .= " (" . $this->year . ")";
 				}
+				
+				if ( $this->start_page != "" )
+				{
+					$this->journal .= ', ';
+					
+					if ( $this->end_page != "" )
+					{
+						$this->journal .= "pages " . $this->start_page  . '-' . $this->end_page;
+					}
+					else
+					{
+						$this->journal .= " page " . $this->start_page;
+					}
+				}				
 			}
 		}		
 		

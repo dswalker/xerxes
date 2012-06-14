@@ -135,7 +135,12 @@ class Record extends Xerxes\Record
 			}
 			
 			// start page
-			$this->start_page = $article->ppf;
+			
+			$this->start_page = (string) $article->ppf;
+			
+			// extent
+			
+			$this->extent = (string) $article->ppct;
 			
 			// end page 
 			
