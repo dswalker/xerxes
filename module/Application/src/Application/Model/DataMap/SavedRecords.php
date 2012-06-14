@@ -552,25 +552,8 @@ class SavedRecords extends DataMap
 		$arrValues[":author"] = $objXerxesRecord->getPrimaryAuthor( true );
 		$arrValues[":year"] = $iYear;
 		$arrValues[":format"] = $objXerxesRecord->format()->getInternalFormat();
-		
-		
-		
-		##### xerxes 1 transition hack  @todo remove this
-		
-		if ( $objXerxesRecord instanceof Summon\Record && $this->registry->getConfig('XERXES_1_TRANS', false) )
-		{
-			$link_resolver = $this->registry->getConfig("LINK_RESOLVER_ADDRESS", true);
-			$sid = $this->registry->getConfig("APPLICATION_SID", false, "calstate.edu:xerxes");
-			
-			$objXerxesRecord = new \Xerxes_TransRecord($objXerxesRecord, $link_resolver, $sid );
-		}
-		
-		###### end hack
-		
-		
-		
 		$arrValues[":marc"] = serialize($objXerxesRecord);		
-		$arrValues[":record_type"] = "xerxes_record"; 			
+		$arrValues[":record_type"] = "xerxes_record";
 		
 		$this->insert( $strSQL, $arrValues );
 		
