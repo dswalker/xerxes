@@ -49,22 +49,6 @@
 
 	<xsl:template name="search_page">
 
-		<!-- search box area -->
-		
-		<div class="yui-ge">
-			<div class="yui-u first">
-				<h1><xsl:value-of select="$text_search_module" /></h1>
-				<xsl:call-template name="searchbox" />
-			</div>
-			<div class="yui-u">
-				<div class="sidebar">
-					<xsl:call-template name="account_sidebar" />
-				</div>
-			</div>
-		</div>
-			
-		<xsl:call-template name="tabs" />
-		
 		<xsl:variable name="sidebar">
 			<xsl:choose>
 				<xsl:when test="//config/search_sidebar = 'right'">
@@ -76,70 +60,77 @@
 			</xsl:choose>
 		</xsl:variable>
 		
-		<xsl:choose>
-			<xsl:when test="not(results/total) or results/total = '0'">
+
+		<!-- search box area -->
+		
+		<xsl:call-template name="searchbox" />
+		
+		<!-- results area -->
+		
+		<div class="">
+			<xsl:attribute name="class">
+				<xsl:choose>
+					<xsl:when test="$sidebar = 'right'">
+						<xsl:text>yui-ge</xsl:text>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:text>yui-gf</xsl:text>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:attribute>
+			
+			<!-- results -->
+	
+			<div>
+				<xsl:attribute name="class">
+					<xsl:text>yui-u</xsl:text>
+					<xsl:if test="$sidebar = 'right'">
+						<xsl:text> first</xsl:text>
+					</xsl:if>
+				</xsl:attribute>
+					
+			
+				<xsl:call-template name="sort_bar" />
+				
+				<xsl:call-template name="facets_applied" />
+													
 				<xsl:call-template name="no_hits" />
-			</xsl:when>
-			<xsl:otherwise>
+				
+				<xsl:call-template name="search_recommendations" />
 		
-				<!-- results area -->
+				<xsl:call-template name="brief_results" />
+
+				<xsl:call-template name="paging_navigation" />
 				
-				<div class="">
-					<xsl:attribute name="class">
-						<xsl:choose>
-							<xsl:when test="$sidebar = 'right'">
-								<xsl:text>yui-ge</xsl:text>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:text>yui-gf</xsl:text>
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:attribute>
-					
-					<!-- results -->
+				<xsl:call-template name="hidden_tag_layers" />
+	
+			</div>
 			
-					<div>
-						<xsl:attribute name="class">
-							<xsl:text>yui-u</xsl:text>
-							<xsl:if test="$sidebar = 'right'">
-								<xsl:text> first</xsl:text>
-							</xsl:if>
-						</xsl:attribute>	
-					
-						<xsl:call-template name="facets_applied" />
-				
-						<div class="tabs">
-							<xsl:call-template name="sort_bar" />
-						</div>		
-								
-						<xsl:call-template name="search_recommendations" />
-				
-						<xsl:call-template name="brief_results" />
-		
-						<xsl:call-template name="paging_navigation" />
-						
-						<xsl:call-template name="hidden_tag_layers" />
+			<!-- sidebar -->
 			
-					</div>
+			<div>
+				<xsl:attribute name="class">
+					<xsl:text>yui-u</xsl:text>
+					<xsl:if test="$sidebar = 'left'">
+						<xsl:text> first</xsl:text>
+					</xsl:if>
+				</xsl:attribute>		
 					
-					<!-- facets, etc. -->
-					
-					<div>
-						<xsl:attribute name="class">
-							<xsl:text>yui-u</xsl:text>
-							<xsl:if test="$sidebar = 'left'">
-								<xsl:text> first</xsl:text>
-							</xsl:if>
-						</xsl:attribute>		
+				
+				<div id="search-sidebar" class="sidebar {$sidebar}">	
 							
-						<div id="search-sidebar" class="sidebar {$sidebar}">				
-							<xsl:call-template name="search_sidebar" />
-						</div>
-					</div>
+					<!-- modules -->
+					
+					<xsl:call-template name="search_modules" />
+									
+					<!-- facets -->
+					
+					<xsl:call-template name="search_sidebar" />
+					
 				</div>
-				
-			</xsl:otherwise>
-		</xsl:choose>
+
+			</div>
+		</div>
 		
 	</xsl:template>
 
@@ -150,36 +141,42 @@
 	<xsl:template name="sort_bar">	
 	
 		<div id="sort">
-			<div class="yui-g" style="width: 100%">
-				<div class="yui-u first">
-					<xsl:copy-of select="$text_metasearch_results_summary" />
+		
+			<xsl:if test="results/total and not(results/total = '0')">
+		
+				<div class="yui-g" style="width: 100%">
+					<div class="yui-u first">
+						<xsl:copy-of select="$text_metasearch_results_summary" />
+					</div>
+					<div class="yui-u">
+						<xsl:choose>
+							<xsl:when test="//sort_display">
+								<div id="sort-options" data-role="controlgroup" data-type="horizontal">
+									<xsl:copy-of select="$text_results_sort_by" /><xsl:text>: </xsl:text>
+									<xsl:for-each select="//sort_display/option">
+										<xsl:choose>
+											<xsl:when test="@active = 'true'">
+												<strong data-role="button" data-theme="b"><xsl:value-of select="text()" /></strong>
+											</xsl:when>
+											<xsl:otherwise>
+												<a href="{@link}" data-role="button">
+													<xsl:value-of select="text()" />
+												</a>
+											</xsl:otherwise>
+										</xsl:choose>
+										<xsl:if test="following-sibling::option and $is_mobile = 0">
+											<xsl:text> | </xsl:text>
+										</xsl:if>
+									</xsl:for-each>
+								</div>
+							</xsl:when>
+							<xsl:otherwise>&nbsp;</xsl:otherwise>
+						</xsl:choose>
+					</div>
 				</div>
-				<div class="yui-u">
-					<xsl:choose>
-						<xsl:when test="//sort_display">
-							<div id="sort-options" data-role="controlgroup" data-type="horizontal">
-								<xsl:copy-of select="$text_results_sort_by" /><xsl:text>: </xsl:text>
-								<xsl:for-each select="//sort_display/option">
-									<xsl:choose>
-										<xsl:when test="@active = 'true'">
-											<strong data-role="button" data-theme="b"><xsl:value-of select="text()" /></strong>
-										</xsl:when>
-										<xsl:otherwise>
-											<a href="{@link}" data-role="button">
-												<xsl:value-of select="text()" />
-											</a>
-										</xsl:otherwise>
-									</xsl:choose>
-									<xsl:if test="following-sibling::option and $is_mobile = 0">
-										<xsl:text> | </xsl:text>
-									</xsl:if>
-								</xsl:for-each>
-							</div>
-						</xsl:when>
-						<xsl:otherwise>&nbsp;</xsl:otherwise>
-					</xsl:choose>
-				</div>
-			</div>
+				<div style="clear:both"></div>
+				
+			</xsl:if>
 		</div>
 
 	
@@ -191,7 +188,11 @@
 	
 	<xsl:template name="no_hits">
 	
-		<div class="no-hits error"><xsl:value-of select="$text_metasearch_hits_no_match" /></div>
+		<xsl:if test="not(results/total) or results/total = '0'">
+	
+			<div class="no-hits error"><xsl:value-of select="$text_metasearch_hits_no_match" /></div>
+		
+		</xsl:if>
 	
 	</xsl:template>
 	
@@ -334,20 +335,22 @@
 	</xsl:template>
 	
 	<!-- 	
-		TEMPLATE: TABS
-		displays a tab configuration in the search architecture
+		TEMPLATE: SEARCH MODULES
+		displays search engines being searched
 	-->
 	
-	<xsl:template name="tabs">
+	<xsl:template name="search_modules">
 		
 		<xsl:if test="config/search">
 		
-			<div class="tabs">
+			<div id="search-modules">
+			
+				<!-- <h2>Search Options</h2> -->
 				
 				<xsl:for-each select="config/search">
 						
-					<ul id="tabnav">
-						<xsl:call-template name="tab" />
+					<ul>
+						<xsl:call-template name="search_module" />
 					</ul>
 					<div style="clear:both"></div>
 				</xsl:for-each>
@@ -359,20 +362,21 @@
 	
 
 	<!-- 
-		TEMPLATE: TAB
+		TEMPLATE: SEARCH MODULE
 		each tab
 	-->
 	
-	<xsl:template name="tab">
+	<xsl:template name="search_module">
 	
 		<xsl:for-each select="option">
 			
 			<li id="tab-{@id}">
+			
 				<xsl:if test="@current = 1">
 					<xsl:attribute name="class">here</xsl:attribute>
 				</xsl:if>
 				
-				<a href="{@url}">
+				<a href="{@url}">				
 					<xsl:value-of select="@public" />
 					<xsl:text> </xsl:text>
 					<xsl:call-template name="tab_hit" />
@@ -472,7 +476,7 @@
 		
 			<div class="box">
 			
-				<h2>Narrow your results</h2>
+				<h3>Narrow your results</h3>
 				
 				<xsl:for-each select="//facets/groups/group">
 		
