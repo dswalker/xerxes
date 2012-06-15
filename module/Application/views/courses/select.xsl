@@ -28,7 +28,7 @@
 </xsl:template>
 
 <xsl:template name="sidebar">
-	<xsl:call-template name="account_sidebar" />
+
 </xsl:template>
 
 <xsl:template name="breadcrumb">

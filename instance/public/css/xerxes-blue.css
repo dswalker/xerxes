@@ -272,12 +272,24 @@ a:hover {
 	*-background-image: none;  
 }
 
-/** BREADCRUMBS **/
+/** TOP ROW **/
 
-#breadcrumb {
+#bd-top {
 	padding: .7em;
-	color: #666;
 	margin-bottom: 1.5em;
+}
+
+.trail {
+	color: #666;
+}
+
+.account li {
+	display: inline;
+	padding-right: 1em;
+}
+
+.account img {
+	vertical-align: middle;
 }
 
 /** SEARCH BOX **/
