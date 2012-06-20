@@ -62,7 +62,7 @@ class Link
 	public function __construct($url, $type = null, $display = null)
 	{
 		$this->url = $url;
-		$this->type = $this->extractType($type);
+		$this->type = $type;
 		$this->display = $display;
 	}
 	
