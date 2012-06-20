@@ -300,7 +300,7 @@
 		
 		<div id="bd-top">
 		
-			<div class="yui-ge">
+			<div class="yui-gc">
 				<div class="yui-u first">	
 	
 					<!-- breadcrumbs -->
