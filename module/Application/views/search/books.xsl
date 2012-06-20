@@ -182,13 +182,17 @@
 							</div>
 						</xsl:if>
 						
-						<xsl:if test="primary_author">
+						<xsl:if test="primary_author or publisher or year">
 							<div class="results-book-summary">
 								<xsl:if test="format/internal != 'JFULL'">
 								
 									<!-- author -->
+									
+									<xsl:if test="primary_author">
 								
-									<xsl:copy-of select="$text_results_author" />: <xsl:value-of select="primary_author" /><br />
+										<xsl:copy-of select="$text_results_author" />: <xsl:value-of select="primary_author" /><br />
+										
+									</xsl:if>
 								
 									<!-- publication info -->
 								
@@ -483,9 +487,9 @@
 	
 		<div>
 			<xsl:attribute name="class">
-				<xsl:text>booksAvailable</xsl:text>
+				<xsl:text>book-available</xsl:text>
 				<xsl:if test="//request/action = 'record'">
-					<xsl:text> booksAvailableRecord</xsl:text>
+					<xsl:text> book-available-record</xsl:text>
 				</xsl:if>
 			</xsl:attribute>
 			
