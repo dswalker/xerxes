@@ -523,7 +523,10 @@ class Search
 	
 	public function facetParams()
 	{
-		return $this->currentParams();
+		$params = $this->currentParams();
+		$params["start"] = null; // send us back to page 1
+		
+		return $params;
 	}	
 	
 	/**
