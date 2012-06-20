@@ -529,6 +529,8 @@ class Search
 	{
 		$params = $this->currentParams();
 		$params["start"] = null; // send us back to page
+		
+		return $params;
 	}	
 	
 	/**
