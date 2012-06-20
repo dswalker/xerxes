@@ -17,7 +17,8 @@
 		
 		<config name="sort_options" xml="true" pass="true">
 			<option id="relevance" public="relevance" internal="" />
-			<option id="date" public="date" internal="PublicationDate:desc" type="year"/>
+			<option id="date" public="newest first" internal="PublicationDate:desc" type="year"/>
+			<option id="date-old" public="oldest first" internal="PublicationDate:asc" type="year"/>
 		</config>
 
 		<config name="basic_search_fields" xml="true" pass="true">

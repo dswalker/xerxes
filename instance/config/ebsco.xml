@@ -7,10 +7,9 @@
 		<config name="ebsco_password"></config>
 
 		<config name="sort_options" xml="true" pass="true">
-			<option id="relevance" public="relevance" internal="relevance" />
-			<option id="date" public="date" internal="date" />
-			<option id="author" public="author" internal="author" />
-			<option id="title" public="title" internal="title" />
+			<option id="relevance" public="relevance" internal="relevance" />			
+			<option id="date" public="newest first" internal="date" type="year"/>
+			<option id="date-old" public="oldest first" internal="date2" type="year"/>
 		</config>
 		
 		<config name="basic_search_fields" xml="true" pass="true">

@@ -27,9 +27,8 @@
 
 		<config name="sort_options" xml="true" pass="true">
 			<option id="relevance" public="relevance" internal="Score,,0" />
-			<option id="date" public="date" internal="Date,,0" />
-			<option id="author" public="author" internal="Author" />
-			<option id="title" public="title" internal="Title" />
+			<option id="date" public="newest first" internal="Date,,0" />
+			<option id="date-old" public="oldest first" internal="Date" />
 		</config>
 
 		<config name="basic_search_fields" xml="true" pass="true">

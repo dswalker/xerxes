@@ -14,9 +14,8 @@
 		
 		<config name="sort_options" xml="true" pass="true">
 			<option id="relevance" public="relevance" internal="score desc,publishDate desc" />
-			<option id="date" public="date" internal="publishDate desc" type="year"/>
-			<option id="author" public="author" internal="author_sort asc" />
-			<option id="title" public="title" internal="title_sort asc" />
+			<option id="date" public="newest first" internal="publishDate desc" />
+			<option id="date-old" public="oldest first" internal="publishDate asc" />
 		</config>
 
 		<config name="basic_search_fields" xml="true" pass="true">
