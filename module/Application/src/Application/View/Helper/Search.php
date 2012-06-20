@@ -403,7 +403,11 @@ class Search
 		foreach ( $query->getLimits() as $limit )
 		{
 			$params = $this->currentParams();
-			$params = Parser::removeFromArray($params, $limit->field, $limit->value);
+			
+			// urlencode here necessary to support the urlencode above on 'key' urls
+			
+			$params = Parser::removeFromArray($params, urlencode($limit->field), $limit->value);
+			
 			$limit->remove_url = $this->request->url_for($params);
 		}
 	}
@@ -524,9 +528,7 @@ class Search
 	public function facetParams()
 	{
 		$params = $this->currentParams();
-		$params["start"] = null; // send us back to page 1
-		
-		return $params;
+		$params["start"] = null; // send us back to page
 	}	
 	
 	/**
