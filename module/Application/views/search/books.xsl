@@ -34,7 +34,11 @@
 	
 	<xsl:template name="module_header">
 	
-		<link href="css/books.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />
+		<xsl:if test="$is_mobile = 0">
+	
+			<link href="css/books.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />
+			
+		</xsl:if>
 	
 	</xsl:template>
 
@@ -105,7 +109,7 @@
 
 	<xsl:template name="brief_results">
 	
-		<ul id="results">
+		<ul id="results" data-role="listview" data-inset="true">
 		
 		<xsl:for-each select="//records/record/xerxes_record">
 
