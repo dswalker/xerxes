@@ -283,6 +283,10 @@ a:hover {
 	color: #666;
 }
 
+.account {
+	text-align: right;
+}
+
 .account li {
 	display: inline;
 	padding-right: 1em;
