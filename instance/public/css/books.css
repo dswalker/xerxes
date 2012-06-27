@@ -89,6 +89,7 @@ ul.holdings-summary-statement {
 #record ul.holdings-summary-statement li {
 	list-style-type: none;
 	padding-bottom: .5em;
+	margin-left: 0;
 }
 
 #book-advanced-more {
