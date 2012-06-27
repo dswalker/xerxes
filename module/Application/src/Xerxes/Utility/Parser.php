@@ -197,7 +197,7 @@ class Parser
 		
 		return $string;
 	}
-	
+
 	/**
 	 * Make a string lowercase
 	 * 
@@ -697,7 +697,7 @@ class Parser
 			
 			// don't try to process empty strings 
 			
-			$str = Parser::escapeXml($object);
+			$str = self::escapeXml($object);
 			
 			if ($str == '')
 			{
@@ -706,8 +706,28 @@ class Parser
 			
 			// just create a simple new element and return this thing
 			
-			$element = $xml->createElement($id, $str);
-			$xml->documentElement->appendChild($element);
+			$element = '';
+			
+			// see if our id has no-no characters
+			
+			if ( preg_match('/\W/', $id) )
+			{
+				// make it an attribute instead
+				
+				$node_id = preg_replace('/\W/', '', $id);
+				$element = $xml->createElement($node_id, $str);
+				$element->setAttribute('name', $id);
+			}
+			else // just take it straight-up
+			{
+				$element = $xml->createElement($id, $str);
+			}
+			
+			if ( $element instanceof \DOMElement )
+			{
+				$xml->documentElement->appendChild($element);
+			}
+			
 			return $xml;
 		}
 		
