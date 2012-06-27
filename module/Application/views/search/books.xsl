@@ -481,23 +481,24 @@
 			<xsl:for-each select="../holdings/holdings/holding">
 				<ul class="holdings-summary-statement">
 					<xsl:for-each select="data">
-						<li><xsl:value-of select="@key" />: <xsl:value-of select="@value" /></li>
+						<li><xsl:value-of select="@key" />: <xsl:value-of select="text()" /></li>
 					</xsl:for-each>
 				</ul>
 			</xsl:for-each>
 			
 		</xsl:if>
-	
+		
 		<xsl:if test="$context = 'record'">
 		
 			<xsl:if test="../holdings/items/item">
 		
-				<p><strong><xsl:value-of select="$temp_text_bound_volumes" /></strong></p>					
+				<p><strong>Bound Volumes</strong></p>
 				<xsl:call-template name="availability_item_table" />
 				
 			</xsl:if>
 		
 		</xsl:if>
+		
 	</xsl:template>
 	
 	

@@ -43,12 +43,12 @@ class Holding
 	public function toXML()
 	{
 		$xml = new \DOMDocument();
-		$xml->loadXML('<holdings />');
+		$xml->loadXML('<holding />');
 		
 		foreach ( $this->data as $name => $value )
 		{
-			$line = $xml->createElement('line', Parser::escapeXml($value));
-			$line->setAttribute('name', $name);
+			$line = $xml->createElement('data', Parser::escapeXml($value));
+			$line->setAttribute('key', $name);
 			$xml->documentElement->appendChild($line);
 		}
 		
