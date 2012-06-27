@@ -391,7 +391,7 @@
 				<!-- @todo: remove this when we square away css on production systems -->
 					
 				<style type="text/css">
-					.results-info, .sidebar, #bd-top, #bd h1, #tabnav { display: none; }
+					.results-info, .sidebar, #bd-top, #bd h1, #tabnav, .save-record-action { display: none; }
 				</style>
 				
 				<link href="css/local-mobile.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />	

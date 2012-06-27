@@ -67,7 +67,11 @@
 			
 			<!-- google javascript lookup -->
 			
-			<xsl:call-template name="google_preview" />
+			<xsl:if test="is_mobile = 1">
+			
+				<xsl:call-template name="google_preview" />
+				
+			</xsl:if>
 		</div>
 		
 		<div style="clear:both"></div>
@@ -113,7 +117,14 @@
 		
 		<xsl:for-each select="//records/record/xerxes_record">
 
-			<xsl:call-template name="brief_result_book" />
+			<xsl:choose>
+				<xsl:when test="$is_mobile = 1">
+					<xsl:call-template name="brief_result_book_mobile" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:call-template name="brief_result_book" />
+				</xsl:otherwise>
+			</xsl:choose>
 
 		</xsl:for-each>
 		
@@ -147,18 +158,9 @@
 				<!-- title -->
 				
 				<div class="results-title">
-					<a href="{../url}" class="results-title">
-						
-						<xsl:value-of select="title_normalized" />
-						
-						<!-- conference or corporate name at end to distinguish annual reports, etc. -->
-						
-						<xsl:if test="authors/author[@type='conference' or @type='corporate' and not(@additional)]">
-							<xsl:text> / </xsl:text>
-							<xsl:value-of select="authors/author[@type='conference' or @type='corporate' and not(@additional)]/aucorp" />
-						</xsl:if>
-						
-					</a>
+				
+					<xsl:call-template name="results_title" />
+
 				</div>
 				
 				<div class="results-info">
@@ -236,6 +238,41 @@
 				</div>
 			</div>
 		</li>
+	
+	</xsl:template>
+
+	<!-- 
+		TEMPLATE: BRIEF RESULTS BOOK MOBILE
+	-->
+	
+	<xsl:template name="brief_result_book_mobile">
+	
+		<li class="result">
+		
+			<xsl:call-template name="results_title" />
+			
+		</li>
+	
+	</xsl:template>
+
+	<!-- 
+		TEMPLATE: RESULTS TITLE
+	-->
+	
+	<xsl:template name="results_title">
+	
+		<a href="{../url}" class="results-title">
+			
+			<xsl:value-of select="title_normalized" />
+			
+			<!-- conference or corporate name at end to distinguish annual reports, etc. -->
+			
+			<xsl:if test="authors/author[@type='conference' or @type='corporate' and not(@additional)]">
+				<xsl:text> / </xsl:text>
+				<xsl:value-of select="authors/author[@type='conference' or @type='corporate' and not(@additional)]/aucorp" />
+			</xsl:if>
+			
+		</a>	
 	
 	</xsl:template>
 

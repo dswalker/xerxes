@@ -413,9 +413,7 @@
 			<ul id="recommendations">
 				<xsl:for-each select="//recommendations/recommendation/xerxes_record">
 					<li class="result">
-						<div class="results-title">
-							<a href="{../url_open}"><xsl:value-of select="title_normalized" /></a>
-						</div>
+						<a class="results-title" href="{../url_open}"><xsl:value-of select="title_normalized" /></a>
 						<div class="results-info">
 							<div class="results-type">
 								<xsl:call-template name="text_results_format">
