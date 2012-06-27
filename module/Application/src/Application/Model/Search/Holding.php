@@ -2,6 +2,8 @@
 
 namespace Application\Model\Search;
 
+use Xerxes\Utility\Parser;
+
 /**
  * Search Holding
  *
@@ -33,13 +35,23 @@ class Holding
 	}
 	
 	/**
-	 * Serialize to Array
+	 * Serialize to XML
 	 * 
 	 * @return array
 	 */
 	
-	public function toArray()
+	public function toXML()
 	{
-		return $this->data;
+		$xml = new \DOMDocument();
+		$xml->loadXML('<holdings />');
+		
+		foreach ( $this->data as $name => $value )
+		{
+			$line = $xml->createElement('line', Parser::escapeXml($value));
+			$line->setAttribute('name', $name);
+			$xml->documentElement->appendChild($line);
+		}
+		
+		return $xml;
 	}	
 }
