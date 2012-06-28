@@ -131,7 +131,7 @@ class Result
 		$id = $xerxes_record->getRecordID(); // id from the record
 		$cache_id = $xerxes_record->getSource() . "." . $id; // to identify this in the cache
 		
-		$type = $this->config->getConfig("LOOKUP"); // url to availability server
+		$type = $this->config->getConfig("LOOKUP"); // availability look-up type
 		
 		// mark that we've checked holdings either way
 		

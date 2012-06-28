@@ -31,4 +31,24 @@ class Config extends Registry
 		
 		return self::$instance;
 	}
+	
+	/**
+	 * Replace status id with public message
+	 * 
+	 * @param string $id
+	 */
+	
+	public function getPublicStatus($id)
+	{
+		$results = $this->xml->xpath("//status[@key='$id']");
+		
+		if ( count($results) == 1 )
+		{
+			return (string) $results[0];
+		}
+		else
+		{
+			return null;
+		}
+	}
 }

@@ -33,7 +33,7 @@ class Voyager implements AvailabilityInterface
 		$this->config = Config::getInstance(); 
 
 		$this->server = $this->config->getConfig('server', true);
-		$this->server = rtrim($this->server, '/');
+		$this->server = rtrim($this->server, '/') . '/';
 		
 		$ignore = $this->config->getConfig('ignore_locations', false);
 		$this->ignore_locations = explode(";", $ignore);
@@ -56,7 +56,7 @@ class Voyager implements AvailabilityInterface
 	
 	public function getHoldings( $id )
 	{
-		$record = new Search\Holdings();
+		$holdings = new Search\Holdings();
 		
 		// fetch holdings page from web service
 		
@@ -65,8 +65,8 @@ class Voyager implements AvailabilityInterface
 		$this->client->setUri($url);
 		$this->client->setOptions(array('timeout' => 4));
 		
-		$content = $this->client->send()->getBody();		
-		
+		$content = $this->client->send()->getBody();	
+
 		// load and parse it
 		
 		$xml = new \DOMDocument();
@@ -76,15 +76,15 @@ class Voyager implements AvailabilityInterface
 		
 		$records = $xml->getElementsByTagName("mfhdRecord");
 		
-		$items = array();
-		
 		foreach ( $records as $record )
 		{
-			$item = array();
+			$item = new Search\Item();
 			
-			$item["id"] = $record->getAttribute("mfhdId");
+			$item->id = $record->getAttribute("mfhdId");
 			
 			$item_count = (int) $record->getElementsByTagName("itemCount")->item(0)->nodeValue;
+			
+			// @todo what is this?
 			
 			foreach ( $record->getElementsByTagName("datafield") as $datafield )
 			{
@@ -113,18 +113,21 @@ class Voyager implements AvailabilityInterface
 				}
 			}
 			
+			// holding record
+			
 			if ( $item_count > 1 && $unavailable > 0)
 			{
-				$complex = true;
-				$item["holding"] = "Y";
-						
+				$holding = new Search\Holding();
+				
 				// item count summary
 			
 				$available = $item_count - $unavailable;
 				$number_of_items = "$item_count items ($available available)";
 				
-				$item["Number of items"] = $number_of_items;
-				array_push($items, $item);
+				$holding->setProperty('Number of items', $number_of_items);
+				
+				$holdings->addHolding($holding);
+				
 				continue;				
 			}
 			
@@ -184,7 +187,7 @@ class Voyager implements AvailabilityInterface
 			{
 				if ( $data->getAttribute("name") == "callNumber")
 				{
-					$item["callnumber"] = $data->nodeValue;
+					$item->callnumber = $data->nodeValue;
 				}
 			}
 			
@@ -195,25 +198,26 @@ class Voyager implements AvailabilityInterface
 				if ( $data->getAttribute("name") == "statusCode")
 				{
 					$status = $data->nodeValue;
-					$key = "holdings_item_status_$status";
 					
-					if ( array_key_exists($key, $this->config['Holdings']) )
+					$public_status = $this->config->getPublicStatus($status);
+					
+					if ( $public_status != null )
 					{
-						$item["status"] = $this->config['Holdings'][$key];
+						$item->status = $public_status;
 						
 						if ( $item_count > count($locations) )
 						{
-							$item["status"] .= " ($item_count items)";
+							$item->status .= " ($item_count items)";
 						}
 					}
 					
 					if ( $status == 1 )
 					{
-						$item["availability"] = true;
+						$item->availability = true;
 					}
 					else
 					{
-						$item["availability"] = false;
+						$item->availability = false;
 					}
 				}
 				elseif ( $data->getAttribute("name") == "statusDate" )
@@ -223,8 +227,8 @@ class Voyager implements AvailabilityInterface
 					
 					if ( preg_match('/([0-9]{4})-([0-9]{2})-([0-9]{2})/', $date, $matches) )
 					{
-						$item["duedate"] = $matches[2] . "-" . $matches[3] . "-" . $matches[1];
-						$item["status"] = str_replace('\d', $item["duedate"], $item["status"]);
+						$item->duedate = $matches[2] . "-" . $matches[3] . "-" . $matches[1];
+						$item->status = str_replace('\d', $item["duedate"], $item["status"]);
 					}
 				}
 			}
@@ -233,19 +237,26 @@ class Voyager implements AvailabilityInterface
 			{
 				if ( $caption != "" )
 				{
-					$item["location"] = "$caption shelved at $item_location";
+					$item->location = "$caption shelved at $item_location";
 				}
 				else
 				{
-					$item["location"] = $item_location;
+					$item->location = $item_location;
 				}
 				
-				array_push($items, $item);
+				$holdings->addItem($item);
 			}
 		}
 		
-		return $items;
+		return $holdings;
 	}
+	
+	/**
+	 * Convenience function to extract value
+	 * 
+	 * @param DOMNode $node
+	 * @param string $name
+	 */
 
 	protected function getElement($node, $name)
 	{
