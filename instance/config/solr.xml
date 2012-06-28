@@ -4,7 +4,7 @@
 	<configuration>
 	
 		<config name="solr">http://localhost:8080/solr/</config>
-		<config name="lookup" pass="true">http://localhost/jangle/</config>
+		<config name="lookup" pass="true"></config>
 
 		<config name="facet_fields" xml="true" pass="true">
 			<facet public="Format" internal="format" />

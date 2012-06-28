@@ -30,7 +30,7 @@ class Voyager implements AvailabilityInterface
 	
 	public function __construct( Client $client = null )
 	{
-		$this->config = new Config(); 
+		$this->config = Config::getInstance(); 
 
 		$this->server = $this->config->getConfig('server', true);
 		$this->server = rtrim($this->server, '/');
