@@ -150,6 +150,7 @@ class Result
 		$availability = $availabilty_factory->getAvailabilityObject($type);
 		
 		$this->holdings = $availability->getHoldings($id);
+		$this->holdings->checked = true;
 		
 		// cache it for the future
 		
