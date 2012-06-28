@@ -30,10 +30,14 @@ class Voyager implements AvailabilityInterface
 	
 	public function __construct( Client $client = null )
 	{
-		$server = '';
+		$this->config = new Config(); 
+
+		$this->server = $this->config->getConfig('server', true);
+		$this->server = rtrim($this->server, '/');
 		
-		$this->server = rtrim($server, '/');
-	
+		$ignore = $this->config->getConfig('ignore_locations', false);
+		$this->ignore_locations = explode(";", $ignore);
+		
 		if ( $client != null )
 		{
 			$this->client = $client;
@@ -42,16 +46,6 @@ class Voyager implements AvailabilityInterface
 		{
 			$this->client = new Client();
 		}
-		
-		
-	
-        // load configuration 
-		
-        $this->config = parse_ini_file('conf/VoyagerXML.ini', true);
-        $this->host = $this->config['Catalog']['url'];
-        
-        $ignore = $this->config['Holdings']['ignore_locations'];
-        $this->ignore_locations = explode(";", $ignore);
     }
     
     /**
@@ -62,11 +56,18 @@ class Voyager implements AvailabilityInterface
 	
 	public function getHoldings( $id )
 	{
-	
-		$url = $this->host . "GetHoldingsService?bibId=$id";
-		$content = file_get_contents($url);
+		$record = new Search\Holdings();
 		
+		// fetch holdings page from web service
 		
+		$url = $this->server . "GetHoldingsService?bibId=$id";
+
+		$this->client->setUri($url);
+		$this->client->setOptions(array('timeout' => 4));
+		
+		$content = $this->client->send()->getBody();		
+		
+		// load and parse it
 		
 		$xml = new \DOMDocument();
 		$xml->loadXML($content);

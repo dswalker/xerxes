@@ -23,6 +23,8 @@ class Innopac implements AvailabilityInterface
 	protected $server = ''; // server address
 	protected $innreach = false; // whether this is an innreach system
 	protected $convert_to_utf8 = false; // needed?
+	protected $config; // config object
+	protected $client; // http client
 
 	/**
 	 * Create new Innopac availability lookup object
@@ -32,9 +34,13 @@ class Innopac implements AvailabilityInterface
 	
 	public function __construct( Client $client = null )
 	{
-		$server = "";
+		$this->config = new Config(); 
 		
-		$this->server = rtrim($server, '/');
+		$this->server = $this->config->getConfig('server', true);
+		$this->server = rtrim($this->server, '/');
+		
+		$this->innreach = $this->config->getConfig('innreach', false, false);
+		$this->convert_to_utf8 = $this->config->getConfig('convert_to_utf8', false, false);
 		
 		if ( $client != null )
 		{
@@ -66,7 +72,7 @@ class Innopac implements AvailabilityInterface
 		
 		$this->url = $this->server . $query;
 		
-		$response = file_get_contents( $this->url );
+		$response = $this->fectch( $this->url );
 		
 		// didn't find a record
 		
@@ -98,6 +104,23 @@ class Innopac implements AvailabilityInterface
 		return $record;
 	}
 	
+	
+	/**
+	 * Fetch URL
+	 * 
+	 * @param string $url
+	 * @return string 
+	 */
+	
+	protected function fetch( $url )
+	{
+		$this->client->setUri($url);
+		$this->client->setOptions(array('timeout' => 4));
+
+		return $this->client->send()->getBody();
+	}
+	
+	
 	/**
 	 * See if we can find the bib id on the page
 	 *
@@ -105,7 +128,7 @@ class Innopac implements AvailabilityInterface
 	 * @return string or null		if we found the id, we return it
 	 */
 	
-	private function extractID($html)
+	protected function extractID($html)
 	{
 		$matches = array();
 		
@@ -127,7 +150,7 @@ class Innopac implements AvailabilityInterface
 	 * @return array 				array of Item objects
 	 */
 	
-	private function extractItemRecords($html, $bolRecursive = false)
+	protected function extractItemRecords($html, $bolRecursive = false)
 	{
 		$bolOrderNote = false; // whether holdings table shows an ordered noted
 		$bolFieldNotes = false; // whether holdings table includes comments indicating item record marc fields
@@ -164,7 +187,7 @@ class Innopac implements AvailabilityInterface
 			
 			// get the full response page now and redo the function call
 			
-			$response = file_get_contents($holdings_url);
+			$response = $this->fectch($holdings_url);
 			
 			return $this->extractItemRecords($response, true);
 		}
@@ -432,7 +455,7 @@ class Innopac implements AvailabilityInterface
 	 * @return array 				array of Holdings objects
 	 */	
 	
-	private function extractHoldingsRecords($html)
+	protected function extractHoldingsRecords($html)
 	{
 		$final_array = array();
 		
@@ -519,7 +542,7 @@ class Innopac implements AvailabilityInterface
 	 * @return array 				array of Electronic Resource objects
 	 */		
 	
-	private function extractERMRecords($html)
+	protected function extractERMRecords($html)
 	{
 		$final_array = array();
 		
@@ -604,7 +627,7 @@ class Innopac implements AvailabilityInterface
 	 * @return DOMDocument		marc-xml document
 	 */
 	
-	private function extractMarc($response)
+	protected function extractMarc($response)
 	{
 		$xml = new \DOMDocument( );
 		$xml->recover = true;
@@ -759,34 +782,5 @@ class Innopac implements AvailabilityInterface
 	public function getURL()
 	{
 		return $this->url;
-	}
-	
-	public function getInnReach()
-	{
-		return $this->innreach;
-	}
-	
-	public function setInnReach($value)
-	{
-		if ( is_bool( $value ) )
-		{
-			$this->innreach = $value;
-		} 
-		else
-		{
-			throw new \DomainException("parameter must be of type bool");
-		}
-	}
-	
-	public function convertToUTF8($bool)
-	{
-		if ( $bool == true )
-		{
-			$this->convert_to_utf8 = true;
-		}
-		elseif ( $bool == false )
-		{
-			$this->convert_to_utf8 = false;
-		}
 	}
 }
