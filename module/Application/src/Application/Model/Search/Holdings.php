@@ -16,11 +16,29 @@ namespace Application\Model\Search;
 class Holdings
 {
 	public $id; // bibliographic id
-	public $bibliographicRecord; // bibliographic record
+	protected $bibliographicRecord; // bibliographic record
 	public $items = array(); // item record
 	public $holdings = array(); // periodical holdigs
 	public $electronicResources = array(); // ERM resources
 	public $none; // placeholder to show there are no holdings
+	
+	/**
+	 * Get bibliographic record
+	 */
+	
+	public function getBibliographicRecord()
+	{
+		return $this->bibliographicRecord;
+	}
+	
+	/**
+	 * Set bibliographic record
+	 */
+	
+	public function setBibliographicRecord($record)
+	{
+		$this->bibliographicRecord = $record;
+	}	
 	
 	/**
 	 * Add an item to this group of items
@@ -80,7 +98,7 @@ class Holdings
 	public function getElectronicResources()
 	{
 		return $this->electronicResources;
-	}	
+	}
 	
 	/**
 	 * The number of items
