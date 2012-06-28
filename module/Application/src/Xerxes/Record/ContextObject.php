@@ -109,9 +109,10 @@ class ContextObject extends Record
 		
 		$format = $this->extractValue("rft:genre");
 		
-		$this->format->setFormat( ucfirst($format) );
+		$this->format->setInternalFormat($format);
+		$this->format->setNormalizedFormat(Format::Article);
+		$this->format->setPublicFormat( ucfirst($format) );
 		
-		$this->format->setInternalFormat(Format::Article);
 		if ( $format == "proceeding") $this->format->setInternalFormat(Format::ConferenceProceeding);
 		if ( $format == "dissertation") $this->format->setInternalFormat(Format::Thesis);
 		
