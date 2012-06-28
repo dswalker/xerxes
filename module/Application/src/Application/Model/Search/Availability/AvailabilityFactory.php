@@ -19,19 +19,21 @@ class AvailabilityFactory
 	{	
 		$name = preg_replace('/\W/', '', $name);
 		
+		$upper_name = ucfirst($name);
+		
 		// main class
 		
-		$class_name = 'Application\Model\Availability' . '\\' . ucfirst($name);
+		$class_name = 'Application\Model\Search\Availability' . '\\' . $upper_name . '\\' . $upper_name;
 		
 		// local custom version
 		
-		$local_file = "custom/Availability/$name.php";
+		$local_file = "custom/Availability/$upper_name/$upper_name.php";
 		
 		if ( file_exists($local_file) )
 		{
 			require_once($local_file);
 			
-			$class_name = 'Local\Availability' . '\\' . ucfirst($name);
+			$class_name = 'Local\Availability' . '\\' . $upper_name . '\\' . $upper_name;
 			
 			if ( ! class_exists($class_name) )
 			{
