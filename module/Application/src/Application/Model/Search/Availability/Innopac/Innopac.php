@@ -4,6 +4,7 @@ namespace Application\Model\Search\Availability\Innopac;
 
 use Application\Model\Search\Availability\AvailabilityInterface,
 	Application\Model\Search,
+	Xerxes\Utility\Parser,
 	Zend\Http\Client;
 
 /**
