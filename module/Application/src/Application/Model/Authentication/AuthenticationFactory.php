@@ -73,7 +73,7 @@ class AuthenticationFactory
 		
 		if ( ! $authentication instanceof Scheme)
 		{
-			throw new \Exception("class '$class_name' for the '$name' authentication scheme must extend Authentication");
+			throw new \Exception("class '$class_name' for the '$name' authentication scheme must extend Scheme");
 		}
 		
 		return $authentication;
