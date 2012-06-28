@@ -6,6 +6,8 @@ use Xerxes\Utility\Parser;
 
 /**
  * Electronic Resource
+ * 
+ * @todo: merge this with Knowledgebase\Database?
  *
  * @author David Walker
  * @copyright 2012 California State University
