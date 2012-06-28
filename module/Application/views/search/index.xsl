@@ -21,11 +21,10 @@
 <xsl:output method="html" />
 
 <xsl:template match="/*">
-	<xsl:call-template name="surround" />
-</xsl:template>
-
-<xsl:template name="sidebar">
-	
+	<xsl:call-template name="surround">
+		<xsl:with-param name="surround_template">none</xsl:with-param>
+		<xsl:with-param name="sidebar">none</xsl:with-param>
+	</xsl:call-template>
 </xsl:template>
 
 <xsl:template name="breadcrumb">
