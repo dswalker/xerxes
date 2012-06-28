@@ -25,6 +25,8 @@ class Innopac implements AvailabilityInterface
 	protected $convert_to_utf8 = false; // needed?
 	protected $config; // config object
 	protected $client; // http client
+	protected $availability_status = array(); // statuses that show available
+	protected $locations_to_ignore = array(); // ignore these mofo's
 	
 	private $marc_ns = 'http://www.loc.gov/MARC21/slim'; // marc namespace
 
@@ -42,7 +44,22 @@ class Innopac implements AvailabilityInterface
 		$this->server = rtrim($this->server, '/');
 		
 		$this->innreach = $this->config->getConfig('innreach', false, false);
+		
 		$this->convert_to_utf8 = $this->config->getConfig('convert_to_utf8', false, false);
+		
+		$availability_status = explode(';', $this->config->getConfig('available_statuses', true));
+		
+		foreach ( $availability_status as $status )
+		{
+			$this->availability_status[] = trim($status);
+		}
+
+		$ignore_locations = explode(';', $this->config->getConfig('ignore_locations', true));
+		
+		foreach ( $ignore_locations as $location )
+		{
+			$this->ignore_locations[] = trim($location);
+		}		
 		
 		if ( $client != null )
 		{
@@ -87,22 +104,44 @@ class Innopac implements AvailabilityInterface
 		
 		$record->id = $this->extractID( $response );
 		
+		// marc record
+		
 		$record->setBibliographicRecord( $this->extractMarc($response) );
+
+		// items
+		
+		foreach ( $this->extractItemRecords( $response ) as $item )
+		{
+			// this isn't the location you are looking for
+			
+			if ( in_array($item->location, $this->locations_to_ignore) )
+			{
+				continue;
+			}
+			
+			// this status shows the item is available
+			
+			if ( in_array($item->status, $this->availability_status) )
+			{
+				$item->availability = true;
+			}
+			
+			$record->addItem($item);
+		}		
+		
+		// periodical holdings
 		
 		foreach ( $this->extractHoldingsRecords( $response ) as $holdings )
 		{
 			$record->addHolding($holdings);
 		}
-
-		foreach ( $this->extractItemRecords( $response ) as $item )
-		{
-			$record->addItem($item);
-		}	
-
+		
+		// erm records
+		
 		foreach ( $this->extractERMRecords( $response ) as $electronic )
 		{
 			$record->addElectronicResource($electronic);
-		}		
+		}
 		
 		return $record;
 	}
@@ -338,7 +377,7 @@ class Innopac implements AvailabilityInterface
 								break;
 							
 							case "C" :
-								$item->call_number = $data;
+								$item->callnumber = $data;
 								break;
 								
 							case "#":
@@ -393,7 +432,7 @@ class Innopac implements AvailabilityInterface
 									}
 									else
 									{
-										$item->call_number = $data;
+										$item->callnumber = $data;
 									}
 									
 									break;
@@ -412,7 +451,7 @@ class Innopac implements AvailabilityInterface
 									break;
 								
 								case 2 :
-									$item->call_number = $data;
+									$item->callnumber = $data;
 									break;
 								
 								case 3 :
