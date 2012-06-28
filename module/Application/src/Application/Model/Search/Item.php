@@ -17,50 +17,16 @@ use Xerxes\Utility\Parser;
 
 class Item
 {
-	protected $bib_id; // the bibliographic record ID
-    protected $availability; // boolean: is this item available for checkout?
-    protected $status; // string describing the status of the item
-    protected $location; // string describing the physical location of the item
-    protected $reserve; // string indicating “on reserve” status – legal values: 'Y' or 'N'
-    protected $callnumber; // the call number of this item
-    protected $duedate; // string showing due date of checked out item (null if not checked out)
-    protected $number; 	// the copy number for this item (note: although called “number”, 
+	public $bib_id; // the bibliographic record ID
+    public $availability; // boolean: is this item available for checkout?
+    public $status; // string describing the status of the item
+    public $location; // string describing the physical location of the item
+    public $reserve; // string indicating “on reserve” status – legal values: 'Y' or 'N'
+    public $callnumber; // the call number of this item
+    public $duedate; // string showing due date of checked out item (null if not checked out)
+    public $number; 	// the copy number for this item (note: although called “number”, 
     					// this may actually be a string if individual items are named rather than numbered)
-    protected $barcode; // the barcode number for this item
-	
-	/**
-	 * Set a property for this item
-	 * 
-	 * @param string $name		property name
-	 * @param mixed $value		the value
-	 */
-    
-	public function setProperty($name, $value)
-	{
-		if ( property_exists($this, $name) )
-		{
-			$this->$name = $value;
-		}
-	}
-
-	/**
-	 * Get a property from this item
-	 * 
-	 * @param string $name		property name
-	 * @return mixed the value
-	 */
-	
-	public function getProperty($name)
-	{
-		if ( property_exists($this, $name) )
-		{
-			return $this->$name;
-		}
-		else
-		{
-			throw new \Exception("trying to access propety '$name', which does not exist");
-		}
-	}
+    public $barcode; // the barcode number for this item
 	
 	/**
 	 * Serialize to Array
