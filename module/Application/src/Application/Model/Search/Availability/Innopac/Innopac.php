@@ -25,6 +25,8 @@ class Innopac implements AvailabilityInterface
 	protected $convert_to_utf8 = false; // needed?
 	protected $config; // config object
 	protected $client; // http client
+	
+	private $marc_ns = 'http://www.loc.gov/MARC21/slim'; // marc namespace
 
 	/**
 	 * Create new Innopac availability lookup object
@@ -34,7 +36,7 @@ class Innopac implements AvailabilityInterface
 	
 	public function __construct( Client $client = null )
 	{
-		$this->config = new Config(); 
+		$this->config = Config::getInstance(); 
 		
 		$this->server = $this->config->getConfig('server', true);
 		$this->server = rtrim($this->server, '/');
@@ -72,7 +74,7 @@ class Innopac implements AvailabilityInterface
 		
 		$this->url = $this->server . $query;
 		
-		$response = $this->fectch( $this->url );
+		$response = $this->fetch( $this->url );
 		
 		// didn't find a record
 		
@@ -84,7 +86,8 @@ class Innopac implements AvailabilityInterface
 		// parse record
 		
 		$record->id = $this->extractID( $response );
-		$record->bibliographicRecord = $this->extractMarc( $response );
+		
+		$record->setBibliographicRecord( $this->extractMarc($response) );
 		
 		foreach ( $this->extractHoldingsRecords( $response ) as $holdings )
 		{
@@ -104,7 +107,6 @@ class Innopac implements AvailabilityInterface
 		return $record;
 	}
 	
-	
 	/**
 	 * Fetch URL
 	 * 
@@ -119,7 +121,6 @@ class Innopac implements AvailabilityInterface
 
 		return $this->client->send()->getBody();
 	}
-	
 	
 	/**
 	 * See if we can find the bib id on the page
@@ -187,7 +188,7 @@ class Innopac implements AvailabilityInterface
 			
 			// get the full response page now and redo the function call
 			
-			$response = $this->fectch($holdings_url);
+			$response = $this->fetch($holdings_url);
 			
 			return $this->extractItemRecords($response, true);
 		}
@@ -479,7 +480,7 @@ class Innopac implements AvailabilityInterface
 		
 		foreach ( $holdings_blocks as $block )
 		{
-			$arrHolding = array();
+			$holding = new Search\Holding();
 			
 			while ( strstr( $block, "<tr" ) )
 			{
@@ -525,10 +526,10 @@ class Innopac implements AvailabilityInterface
 					$value = implode(":", $parts);
 				}
 				
-				$arrHolding[$id] = $value;
+				$holding->setProperty($id, $value);
 			}
 			
-			array_push($final_array, $arrHolding);
+			array_push($final_array, $holding);
 			
 		}
 		
@@ -689,7 +690,7 @@ class Innopac implements AvailabilityInterface
 				}
 			}
 				
-			$data = $this->escapeXml( $data );
+			$data = Parser::escapeXml( $data );
 			$data = trim( $data );
 			
 			if ( $strTagNumber == "LEA" )
