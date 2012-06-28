@@ -8,16 +8,19 @@ namespace Application\Model\Search;
  * @author David Walker
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license
  * @version
  * @package Xerxes
  */
 
 class Holdings
 {
-	public $none;
-	public $items = array();
-	public $holdings = array();
+	public $id; // bibliographic id
+	public $bibliographicRecord; // bibliographic record
+	public $items = array(); // item record
+	public $holdings = array(); // periodical holdigs
+	public $electronicResources = array(); // ERM resources
+	public $none; // placeholder to show there are no holdings
 	
 	/**
 	 * Add an item to this group of items
@@ -42,6 +45,17 @@ class Holdings
 	}
 	
 	/**
+	 * Add (journal) holdings record to this group of items
+	 *
+	 * @param Holding $holdings
+	 */
+	
+	public function addElectronicResource(ElectronicResource $electronic)
+	{
+		array_push($this->electronicResources, $electronic);
+	}	
+	
+	/**
 	 * Get all items
 	 */
 	
@@ -57,6 +71,15 @@ class Holdings
 	public function getHoldingRecords()
 	{
 		return $this->holdings;
+	}	
+	
+	/**
+	 * Get all electronic resources
+	 */
+	
+	public function getElectronicResources()
+	{
+		return $this->electronicResources;
 	}	
 	
 	/**

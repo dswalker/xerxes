@@ -2,6 +2,8 @@
 
 namespace Application\Model\Search;
 
+use Application\Model\Search\Availability\AvailabilityFactory;
+
 use Application\Model\Bx\Engine as BxEngine,
 	Xerxes\Record,
 	Xerxes\Utility\Cache,
@@ -15,7 +17,7 @@ use Application\Model\Bx\Engine as BxEngine,
  * @author David Walker
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license
  * @version
  * @package Xerxes
  */
@@ -128,7 +130,8 @@ class Result
 		
 		$id = $xerxes_record->getRecordID(); // id from the record
 		$cache_id = $xerxes_record->getSource() . "." . $id; // to identify this in the cache
-		$url = $this->config->getConfig("LOOKUP"); // url to availability server
+		
+		$type = $this->config->getConfig("LOOKUP"); // url to availability server
 		
 		// mark that we've checked holdings either way
 		
@@ -136,73 +139,21 @@ class Result
 		
 		// no holdings source defined or somehow id's are blank
 		
-		if ( $xerxes_record->hasPhysicalHoldings() == false || $url == "" || $id == "" )
+		if ( $xerxes_record->hasPhysicalHoldings() == false || $type == "" || $id == "" )
 		{
 			return null;
-		}		
-
+		}
+		
 		// get the data
 		
-		$url .= "?action=status&id=" . urlencode($id);
+		$availabilty_factory = new AvailabilityFactory();
+		$availability = $availabilty_factory->getAvailabilityObject($type);
 		
-		// @todo this needs to be gotten from a factory or something
-		
-		$client = new Client();
-		$client->setUri($url);
-		$client->setOptions(array('timeout' => 5));
-		
-		$data = $client->send()->getBody();
-		
-		// echo $url; exit;
-		
-		// no data, what's up with that?
-		
-		if ( $data == "" )
-		{
-			throw new \Exception("could not connect to availability server");
-		}		
-		
-		
-		// response is (currently) an array of json objects
-		
-		$results = json_decode($data);
-		
-		// parse the response
-		
-		if ( is_array($results) )
-		{
-			if ( count($results) > 0 )
-			{
-				// now just slot them into our item object
-				
-				foreach ( $results as $holding )
-				{
-					$is_holding = property_exists($holding, "holding"); 
-										
-					if ( $is_holding == true )
-					{
-						$item = new Holding();
-						$this->holdings->addHolding($item);
-					}
-					else
-					{
-						$item = new Item();
-						$this->holdings->addItem($item);
-					}
-					
-					foreach ( $holding as $property => $value )
-					{
-						$item->setProperty($property, $value);
-					}
-				}
-			}
-		}
+		$this->holdings = $availability->getHoldings($id);
 		
 		// cache it for the future
 		
-		// @todo: zend\cache
-		
-		$cache = new Cache();
+		$cache = new Cache(); // @todo: zend\cache
 		
 		$expiry = $this->config->getConfig("HOLDINGS_CACHE_EXPIRY", false, 2 * 60 * 60); // expiry set for two hours
 		$expiry += time(); 
