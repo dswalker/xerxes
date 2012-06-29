@@ -342,7 +342,7 @@
 					
 						<xsl:choose>
 						
-							<xsl:when test="../holdings/holdings">
+							<xsl:when test="../holdings[holdings|electronicResources]">
 							
 								<xsl:call-template name="availability_lookup_holdings">
 									<xsl:with-param name="context" select="$context" />
@@ -471,6 +471,27 @@
 			<p><strong>Online</strong></p>
 			
 			<xsl:call-template name="full_text_links"/>
+			
+		</xsl:if>
+
+		<xsl:if test="../holdings/electronicResources">
+	
+			<p><strong>Online</strong></p>
+			
+			<table class="holdings-table">
+			<tr>
+				<th>Database</th>
+				<th>Coverage</th>
+				<th>Information</th>
+			</tr>
+			<xsl:for-each select="../holdings/electronicResources/electronicResource">
+				<tr>
+					<td><a href="{link}"><xsl:value-of select="database" /></a></td>
+					<td><xsl:value-of select="coverage" /></td>
+					<td><a href="{package}">About resource</a></td>
+				</tr>
+			</xsl:for-each>
+			</table>
 			
 		</xsl:if>
 		
