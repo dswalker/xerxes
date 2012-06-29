@@ -810,12 +810,16 @@
 						
 			<xsl:text> </xsl:text>	
 			
-			<a id="link-{$source}-{$record_id}" href="{../url_save_delete}" class="save-record">				
+			<a id="link-{$source}-{$record_id}" href="{../url_save_delete}">
 				
-				<!-- 'saved' class used as a tag by ajaxy stuff -->
-				<xsl:if test="$is_already_saved">
-					<xsl:attribute name="class">saved</xsl:attribute>
-				</xsl:if>
+				<xsl:attribute name="class">save-record
+				
+					<!-- 'saved' class used as a tag by ajaxy stuff -->
+					<xsl:if test="$is_already_saved">
+						<xsl:text> saved</xsl:text>
+					</xsl:if>
+				
+				</xsl:attribute>
 							
 				<xsl:choose>
 					<xsl:when test="$is_already_saved">
