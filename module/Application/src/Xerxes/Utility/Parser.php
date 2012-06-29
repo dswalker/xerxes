@@ -321,6 +321,7 @@ class Parser
 		if ( is_string($xml) )
 		{
 			$document = new \DOMDocument();
+			$document->recover = true;
 			$document->loadXML($xml);
 			
 			return $document;
