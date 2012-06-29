@@ -542,7 +542,7 @@
 			<li id="my-saved-records" class="sidebar-folder">
 				<xsl:call-template name="img_save_record">
 					<xsl:with-param name="id">folder</xsl:with-param>
-					<xsl:with-param name="test" select="//navbar/element[@id='saved_records']/@numSessionSavedRecords &gt; 0" />
+					<xsl:with-param name="test" select="count(//session/resultssaved) &gt; 0" />
 				</xsl:call-template>
 				<xsl:text> </xsl:text>
 				<a>
