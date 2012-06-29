@@ -228,7 +228,7 @@ class Voyager implements AvailabilityInterface
 					if ( preg_match('/([0-9]{4})-([0-9]{2})-([0-9]{2})/', $date, $matches) )
 					{
 						$item->duedate = $matches[2] . "-" . $matches[3] . "-" . $matches[1];
-						$item->status = str_replace('\d', $item["duedate"], $item["status"]);
+						$item->status = str_replace('\d', $item->duedate, $item->status);
 					}
 				}
 			}
