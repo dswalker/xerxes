@@ -669,16 +669,11 @@ class Innopac implements AvailabilityInterface
 	
 	protected function extractMarc($response)
 	{
-		$xml = new \DOMDocument( );
-		$xml->recover = true;
+		$xml = Parser::convertToDOMDocument("<record xmlns=\"http://www.loc.gov/MARC21/slim\" />");
 		
 		$marc = ""; // marc data as text
 		$arrTags = array(); // array to hold each MARC tag
 
-		// begin building the XML response
-
-		$xml->loadXML( "<record xmlns=\"http://www.loc.gov/MARC21/slim\" />" );
-		
 		if ( ! stristr($response, "<pre>") )
 		{
 			// didn't find a record

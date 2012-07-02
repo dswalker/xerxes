@@ -107,8 +107,7 @@ class Cas extends Scheme
 		{
 			// these are XML based
 			
-			$xml = new \DOMDocument();
-			$xml->loadXML($results);
+			$xml = Parser::convertToDOMDocument($results);
 			
 			$cas_namespace = "http://www.yale.edu/tp/cas";
 			

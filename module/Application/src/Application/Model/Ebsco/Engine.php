@@ -247,9 +247,7 @@ class Engine extends Search\Engine
 		
 		// load it in
 		
-		$xml = new \DOMDocument();
-		$xml->recover = true;
-		$xml->loadXML($response);
+		$xml = Parser::convertToDOMDocument($response);
 		
 		// result set
 		

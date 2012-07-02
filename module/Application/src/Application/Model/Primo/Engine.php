@@ -3,7 +3,8 @@
 namespace Application\Model\Primo;
 
 use Application\Model\Search,
-	Xerxes\Utility\Factory;
+	Xerxes\Utility\Factory,
+	Xerxes\Utility\Parser;
 
 /**
  * Primo Search Engine
@@ -239,8 +240,7 @@ class Engine extends Search\Engine
 		
 		// load it
 
-		$xml = new \DOMDocument();
-		$xml->loadXML($response);
+		$xml = Parser::convertToDOMDocument($response);
 		
 		// parse it
 		

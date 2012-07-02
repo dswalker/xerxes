@@ -183,9 +183,7 @@ class Result
 			
 			if ( $data != "" )
 			{
-				$xml = new \DOMDocument();
-				$xml->recover = true;
-				$xml->loadXML($data);
+				$xml = Parser::convertToDOMDocument($data);
 				
 				$this->reviews = $xml;
 			}

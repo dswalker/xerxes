@@ -2,7 +2,8 @@
 
 namespace Xerxes;
 
-use Zend\Http\Client;
+use Xerxes\Utility\Parser,
+	Zend\Http\Client;
 
 /**
  * Search and retrieve records from worldcat api
@@ -153,8 +154,7 @@ class Worldcat
 		
 		$results = $this->fetchResults($this->url);
 		
-		$objXml = new \DOMDocument();
-		$objXml->loadXML( $results );
+		$objXml = Parser::convertToDOMDocument( $results );
 		
 		return $objXml;
 	}
@@ -219,8 +219,7 @@ class Worldcat
 		
 		$results = $this->fetchResults($this->url);
 		
-		$objXml = new \DOMDocument();
-		$objXml->loadXML( $results );
+		$objXml = Parser::convertToDOMDocument($results );
 
 		$objXPath = new \DOMXPath( $objXml );
 		$objXPath->registerNameSpace( "zs", "http://www.loc.gov/zing/srw/" );

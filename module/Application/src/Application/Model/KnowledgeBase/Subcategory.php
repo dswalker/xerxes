@@ -2,7 +2,8 @@
 
 namespace Application\Model\KnowledgeBase;
 
-use Xerxes\Utility\DataValue;
+use Xerxes\Utility\DataValue,
+	Xerxes\Utility\Parser;
 
 /**
  * Metalib SubCategory
@@ -25,8 +26,7 @@ class Subcategory extends DataValue
 	
 	public function toXML()
 	{
-		$xml = new \DOMDocument();
-		$xml->loadXML("<subcategory />");
+		$xml = Parser::convertToDOMDocument("<subcategory />");
 		$xml->documentElement->setAttribute("name", $this->name);
 		$xml->documentElement->setAttribute("sequence", $this->sequence);
 		$xml->documentElement->setAttribute("id", $this->databases_id);

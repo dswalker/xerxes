@@ -2,11 +2,12 @@
 
 namespace Application\Model\DataMap;
 
-use Xerxes\Utility\DataMap,
-	Application\Model\KnowledgeBase\Category,
+use Application\Model\KnowledgeBase\Category,
 	Application\Model\KnowledgeBase\Database,
 	Application\Model\KnowledgeBase\Subcategory,
-	Application\Model\KnowledgeBase\Type;
+	Application\Model\KnowledgeBase\Type,
+	Xerxes\Utility\DataMap,
+	Xerxes\Utility\Parser;
 
 /**
  * Database access mapper for Metalib KB
@@ -113,8 +114,7 @@ class Databases extends DataMap
 		
 		// remove empty nodes
 		
-		$dom = new \DOMDocument();
-		$dom->loadXML($xml->asXML());
+		$dom = Parser::convertToDOMDocument($xml->asXML());
 		
 		$xmlPath = new \DOMXPath($dom);
 		$xmlNullNodes = $xmlPath->query('//*[not(node())]');

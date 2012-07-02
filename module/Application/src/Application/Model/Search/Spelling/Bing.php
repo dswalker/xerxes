@@ -3,6 +3,7 @@
 namespace Application\Model\Search\Spelling;
 
 use Xerxes\Utility\Factory,
+	Xerxes\Utility\Parser,
 	Xerxes\Utility\Registry;
 
 /**
@@ -55,8 +56,7 @@ class Bing
 			
 					// process it
 						
-					$xml = new \DOMDocument();
-					$xml->loadXML($response);
+					$xml = Parser::convertToDOMDocument($response);
 						
 					// echo header("Content-Type: text/xml"); echo $xml->saveXML(); exit;
 						

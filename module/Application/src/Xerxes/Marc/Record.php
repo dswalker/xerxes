@@ -219,8 +219,7 @@ class Record
 			// we've created this MARC record from our own objects
 			// instead of a marc-xml source, so create marc-xml now
 			
-			$this->document = new \DOMDocument();
-			$this->document->loadXML('<record xmlns="' . $this->namespace. '" />');
+			$this->document = Parser::convertToDOMDocument('<record xmlns="' . $this->namespace. '" />');
 			
 			// leader
 			

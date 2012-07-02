@@ -42,8 +42,7 @@ class Holding
 	
 	public function toXML()
 	{
-		$xml = new \DOMDocument();
-		$xml->loadXML('<holding />');
+		$xml = Parser::convertToDOMDocument('<holding />');
 		
 		foreach ( $this->data as $name => $value )
 		{

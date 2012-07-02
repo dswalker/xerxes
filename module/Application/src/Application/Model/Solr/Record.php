@@ -189,8 +189,7 @@ class Record extends Bibliographic
 		}
 		else
 		{
-			$xml = new \DOMDocument();
-			$xml->loadXML($string);
+			$xml = Parser::convertToDOMDocument($string);
 			return $xml;
 		}		
 	}

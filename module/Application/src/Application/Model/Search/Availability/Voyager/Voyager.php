@@ -4,6 +4,7 @@ namespace Application\Model\Search\Availability\Voyager;
 
 use Application\Model\Search\Availability\AvailabilityInterface,
 	Application\Model\Search,
+	Xerxes\Utility\Parser,
 	Zend\Http\Client;
 
 /**
@@ -69,8 +70,7 @@ class Voyager implements AvailabilityInterface
 
 		// load and parse it
 		
-		$xml = new \DOMDocument();
-		$xml->loadXML($content);
+		$xml = Parser::convertToDOMDocument($content);
 		
 		// header("Content-type: text/xml"); echo $xml->saveXML(); 	exit;
 		

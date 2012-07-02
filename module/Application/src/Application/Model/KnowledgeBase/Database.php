@@ -313,8 +313,7 @@ class Database extends DataValue
 	
 		// convert to DOMDocument
 	
-		$objDom = new \DOMDocument();
-		$objDom->loadXML($this->simplexml()->asXML());
+		$objDom = Parser::convertToDOMDocument($this->simplexml()->asXML());
 	
 		// add database id
 	

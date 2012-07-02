@@ -80,8 +80,7 @@ class Basic
 	
 	public function toXML()
 	{
-		$xml = new \DOMDocument();
-		$xml->loadXML("<lti />");
+		$xml = Parser::convertToDOMDocument("<lti />");
 		
 		$this->appendElement($xml, "id", $this->getID());
 		$this->appendElement($xml, "instructor", $this->isInstructor());

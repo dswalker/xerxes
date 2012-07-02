@@ -3,6 +3,7 @@
 namespace Application\Model\Bx;
 
 use Xerxes\Utility\Factory,
+	Xerxes\Utility\Parser,
 	Xerxes,
 	Zend\Http\Client;
 
@@ -74,9 +75,7 @@ class Engine
 		
 		// header("Content-type: text/xml"); echo $xml; exit;
 		
-		$doc = new \DOMDocument();
-		$doc->recover = true;
-		$doc->loadXML($xml);
+		$doc = Parser::convertToDOMDocument($xml);
 		
 		$xpath = new \DOMXPath($doc);
 		$xpath->registerNamespace("ctx", "info:ofi/fmt:xml:xsd:ctx");

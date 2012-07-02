@@ -151,8 +151,7 @@ class ViewRenderer implements RendererInterface, TreeRendererInterface
 	
 	public function toXML($vars)
 	{
-		$xml = new \DOMDocument();
-		$xml->loadXML("<xerxes />");
+		$xml = Parser::convertToDOMDocument('<xerxes />');
 	
 		foreach ( $vars as $id => $object )
 		{

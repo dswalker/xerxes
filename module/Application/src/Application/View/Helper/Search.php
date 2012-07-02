@@ -89,8 +89,7 @@ class Search
 			return null;
 		}
 		
-		$objXml = new \DOMDocument( );
-		$objXml->loadXML( "<pager />" );
+		$objXml = Parser::convertToDOMDocument( "<pager />" );
 		
 		$base_record = 1; // starting record in any result set
 		$page_number = 1; // starting page number in any result set
@@ -218,8 +217,7 @@ class Search
 			return null;
 		}
 		
-		$xml = new \DOMDocument();
-		$xml->loadXML( "<sort_display />" );
+		$xml = Parser::convertToDOMDocument( "<sort_display />" );
 		
 		$x = 1;
 		

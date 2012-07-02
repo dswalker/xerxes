@@ -57,8 +57,7 @@ class Category extends DataValue
 
 	public function toXML()
 	{
-		$xml = new \DOMDocument();
-		$xml->loadXML("<category />");
+		$xml = Parser::convertToDOMDocument("<category />");
 		$xml->documentElement->setAttribute("name", $this->name);
 		$xml->documentElement->setAttribute("normalized", $this->normalized);
 		

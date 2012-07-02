@@ -2,7 +2,8 @@
 
 namespace Xerxes;
 
-use Zend\Http\Client;
+use Xerxes\Utility\Parser,
+	Zend\Http\Client;
 
 /**
  * Metalib X-Server Client
@@ -481,8 +482,7 @@ class Metalib
 	{
 		// master xml document
 		
-		$final_xml = new \DOMDocument();
-		$final_xml->loadXML("<collection />");
+		$final_xml = Parser::convertToDOMDocument("<collection />");
 		$final_xml->documentElement->setAttribute("metalib_version", $this->getVersion());
 		
 		$institute = urlencode(trim($institute));
@@ -498,8 +498,7 @@ class Metalib
 		
 		if ( $chunk == true ) // get them in batches
 		{
-			$this->xml = new \DOMDocument();
-			$this->xml->loadXML("<collection />");
+			$this->xml = Parser::convertToDOMDocument("<collection />");
 			
 			// get the list without the full record
 			
@@ -619,13 +618,6 @@ class Metalib
 	
 	private function getResponse( $url, $timeout = null, $retry = 0)
 	{
-		// metalib takes little care to ensure propper encoding of its xml, so we will set 
-		// recover to true here in order to allow libxml to recover from errors and continue 
-		// processing the document
-		
-		$doc = new \DOMDocument();
-		$doc->recover = true;
-		
 		// fetch the data
 		
 		$this->client->setUri($url);
@@ -639,7 +631,7 @@ class Metalib
 		
 		// load into xml
 		
-		$doc->loadXML($response->getBody());
+		$doc = Parser::convertToDOMDocument($response->getBody());
 		
 		// no response?
 		
