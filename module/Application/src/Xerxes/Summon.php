@@ -78,7 +78,7 @@ class Summon
 	 * @return array
 	 */
 	
-	public function query( $query, $filter = array(), $page = 1, $limit = 20, $sortBy = null )
+	public function query( $query, $filter = array(), $complex_filters = array(), $page = 1, $limit = 20, $sortBy = null )
 	{
 		// convert this to summon query string
 		
@@ -111,6 +111,13 @@ class Summon
 		{
 			$options['s.fvf'] = $filter;
 		}
+		
+		// complex filters to be applied
+		
+		if ( count($complex_filters) > 0 )
+		{
+			$options['s.fvgf'] = $complex_filters;
+		}		
 		
 		// sort
 		

@@ -162,15 +162,28 @@ class Engine extends Search\Engine
 		// limits
 		
 		$facets = array();
+		$complex_facets = array();
 		
 		foreach ( $search->getLimits(true) as $limit )
 		{
 			// remove chosen facet from response
-			// @todo: make multi-value facets selectable 
+			// $facets_to_include = Parser::removeFromArray($facets_to_include, $limit->field);
 			
-			$facets_to_include = Parser::removeFromArray($facets_to_include, $limit->field);
+			$value = ''; // final value
 			
-			array_push($facets, $limit->field . "," . str_replace(',', '\,', $limit->value) . ",false");
+			if ( is_array($limit->value) )
+			{
+				foreach ( $limit->value as $limited )
+				{
+					$value .= ',' . str_replace(',', '\,', $limited);
+				}
+				
+				array_push($complex_facets, $limit->field . ",or" . $value);
+			}
+			else
+			{
+				array_push($facets, $limit->field . "," . str_replace(',', '\,', $limit->value) . ",false");
+			}
 		}
 		
 		// set actual response facets
@@ -204,7 +217,7 @@ class Engine extends Search\Engine
 		
 		// get the results
 		
-		$summon_results = $this->summon_client->query($query, $facets, $page, $max, $sort);
+		$summon_results = $this->summon_client->query($query, $facets, $complex_facets, $page, $max, $sort);
 		
 		return $this->parseResponse($summon_results);
 	}
