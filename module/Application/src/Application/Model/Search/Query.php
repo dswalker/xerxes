@@ -216,16 +216,8 @@ class Query
 	
 	public function addLimit($field, $relation, $phrase)
 	{
-		if ( ! is_array($phrase) )
-		{
-			$phrase = array($phrase);
-		}
-		
-		foreach ( $phrase as $value )
-		{
-			$term = new LimitTerm($field, $relation, $value);
-			array_push($this->limits , $term);
-		}
+		$term = new LimitTerm($field, $relation, $phrase);
+		array_push($this->limits , $term);
 	}
 	
 	/**
@@ -353,18 +345,18 @@ class Query
 				}
 				
 				$key = urldecode($key);
-				
+					
 				if ( strstr($key, "_relation") )
 				{
 					continue;
 				}
-				
+					
 				$arrTerm = array();
 				
 				$arrTerm["field"] = $key;
 				$arrTerm["relation"] = "=";
 				$arrTerm["value"] = $value;
-				
+					
 				$relation = $this->request->getParam($key . "_relation");
 				
 				if ( $relation != null )
