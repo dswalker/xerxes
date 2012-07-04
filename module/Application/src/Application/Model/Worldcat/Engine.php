@@ -95,9 +95,19 @@ class Engine extends Search\Engine
 	
 	public function getHits( Search\Query $search )
 	{
+		// always get hits on the full service
+		
+		$service_level = $this->worldcat_client->getServiceLevel();
+		
+		$this->worldcat_client->setServiceLevel('full');
+		
 		// get the results
 		
 		$results = $this->doSearch( $search, 1, 1 );
+		
+		// set it back
+		
+		$this->worldcat_client->setServiceLevel($service_level);
 
 		// return total
 		
