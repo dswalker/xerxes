@@ -304,26 +304,37 @@ class Search
 			{
 				foreach ( $group->getFacets() as $facet )
 				{
-					// existing url
-						
-					$url = $this->facetParams();
-							
-					// now add the new one
-							
+					
+					$param_name = '';
+												
 					if ( $facet->key != "" ) 
 					{
 						// key defines a way to pass the (internal) value
 						// in the param, while the name is the display value
 						
-						$url["facet." . $group->name . "." . 
-							urlencode($facet->key)] = $facet->name;
+						$param_name = 'facet.' . $group->name . '.' . urlencode($facet->key);
 					}
 					else
 					{
-						$url["facet." . $group->name] = $facet->name;									
+						$param_name = 'facet.' . $group->name;									
 					}
-							
+					
+					// existing url plus our param
+					
+					$url = $this->facetParams();
+					$url[$param_name] = $facet->name;
 					$facet->url = $this->request->url_for($url);
+					
+					// add the name of the param as well
+					
+					$facet->param_name = $param_name;
+					
+					// see if this facet is selected (for multi-select facets)
+					
+					if ( $this->request->hasParamValue($param_name, $facet->name) )
+					{
+						$facet->selected = true;
+					}
 				}
 			}
 		}
@@ -526,7 +537,7 @@ class Search
 	public function facetParams()
 	{
 		$params = $this->currentParams();
-		$params["start"] = null; // send us back to page
+		$params["start"] = null; // send us back to page 1
 		
 		return $params;
 	}	
