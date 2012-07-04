@@ -555,6 +555,26 @@ class Request extends ZendRequest
 	}
 	
 	/**
+	 * See if the request contains the corresponding param and value
+	 * 
+	 * @param string $param
+	 * @param string $value
+	 */
+	
+	public function hasParamValue($param, $value)
+	{
+		foreach ( $this->getParam($param, array(), true) as $param_value )
+		{
+			if ( $param_value == $value)
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
 	 * Construct a URL, taking into account routes, based on supplied parameters
 	 * 
 	 * @param array $params				the elements of the url
