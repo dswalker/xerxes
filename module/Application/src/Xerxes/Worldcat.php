@@ -405,6 +405,17 @@ class Worldcat
 	}
 	
 	/**
+	 * Get service level
+	 * 
+	 * @return string
+	 */
+	
+	public function getServiceLevel()
+	{
+		return $this->service;
+	}	
+	
+	/**
 	 * Set the service level
 	 * 
 	 * @param string $level		'full' or 'default'
