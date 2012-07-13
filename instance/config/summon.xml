@@ -5,6 +5,8 @@
 	
 		<config name="summon_id"></config>
 		<config name="summon_key"></config>
+		
+		<config name="facet_multiple" pass="true">true</config>
 
 		<config name="facet_fields" xml="true" pass="true">
 			<facet public="Scholarly" internal="IsScholarly" type="choice" max="2">
