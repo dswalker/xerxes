@@ -312,6 +312,15 @@ abstract class SearchController extends ActionController
 		return $suggestion;
 	}
 	
+	public function facetAction()
+	{
+		$this->request->setParam('max', 1);
+		
+		
+		
+		return $this->resultsAction();
+	}
+	
 	
 	########################
 	#  SAVED RECORD STATE  #

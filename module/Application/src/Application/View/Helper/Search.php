@@ -302,15 +302,20 @@ class Search
 		{
 			foreach ( $facets->getGroups() as $group )
 			{
+				$group_params = $this->currentParams();
+				$group_params['action'] = 'facet';
+				$group_params['group'] = $group->name;
+				
+				$group->url = $this->request->url_for($group_params);
+				
 				foreach ( $group->getFacets() as $facet )
 				{
-					
 					$param_name = '';
 												
 					if ( $facet->key != "" ) 
 					{
 						// key defines a way to pass the (internal) value
-						// in the param, while the name is the display value
+						// in the param, while the 'name' is the display value
 						
 						$param_name = 'facet.' . $group->name . '.' . urlencode($facet->key);
 					}
@@ -335,6 +340,11 @@ class Search
 					{
 						$facet->selected = true;
 					}
+					
+					$input_id = $param_name . '.' . $facet->name;
+					$input_id = preg_replace('/\W/', '_', $input_id);
+					
+					$facet->input_id = $input_id;
 				}
 			}
 		}

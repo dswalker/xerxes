@@ -45,6 +45,9 @@
 		<action name="lookup">
 			<view>search/lookup.xsl</view>
 		</action>
+		<action name="facet">
+			<view>search/facet.xsl</view>
+		</action>
 		<action name="save">
 			<view format="json">search/save-ajax.xsl</view>
 		</action>	
