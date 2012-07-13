@@ -560,7 +560,8 @@ class Search
 	public function searchRedirectParams()
 	{
 		$params['controller'] = $this->request->getParam('controller');
-		$params["action"] = "results";
+		$params['action'] = "results";
+		$params['sort'] = $this->request->getParam('sort');
 		
 		return $params;
 	}
