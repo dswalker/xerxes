@@ -36,7 +36,9 @@
 
 		<h1><xsl:value-of select="$text_search_module" /></h1>
 		
-		<xsl:call-template name="searchbox" />
+		<form action="{//request/controller}/search" method="get">	
+			<xsl:call-template name="searchbox" />
+		</form>
 	
 </xsl:template>
 

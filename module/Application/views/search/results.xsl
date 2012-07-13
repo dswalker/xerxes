@@ -60,78 +60,97 @@
 			</xsl:choose>
 		</xsl:variable>
 		
+		<form id="results-search" action="{//request/controller}/search" method="get">		
 
-		<!-- search box area -->
-		
-		<xsl:call-template name="searchbox" />
-		
-		<!-- results area -->
-		
-		<div class="">
-			<xsl:attribute name="class">
-				<xsl:choose>
-					<xsl:when test="$sidebar = 'right'">
-						<xsl:text>yui-ge</xsl:text>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:text>yui-gf</xsl:text>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:attribute>
+			<!-- search box area -->
 			
-			<!-- results -->
-	
-			<div>
+			<xsl:call-template name="searchbox" />
+			
+			<!-- results area -->
+			
+			<div class="">
 				<xsl:attribute name="class">
-					<xsl:text>yui-u</xsl:text>
-					<xsl:if test="$sidebar = 'right'">
-						<xsl:text> first</xsl:text>
-					</xsl:if>
+					<xsl:choose>
+						<xsl:when test="$sidebar = 'right'">
+							<xsl:text>yui-ge</xsl:text>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:text>yui-gf</xsl:text>
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:attribute>
-					
-			
-				<xsl:call-template name="sort_bar" />
 				
-				<xsl:call-template name="facets_applied" />
-													
-				<xsl:call-template name="no_hits" />
-				
-				<xsl:call-template name="search_recommendations" />
+				<!-- results -->
 		
-				<xsl:call-template name="brief_results" />
-
-				<xsl:call-template name="paging_navigation" />
+				<div>
+					<xsl:attribute name="class">
+						<xsl:text>yui-u</xsl:text>
+						<xsl:if test="$sidebar = 'right'">
+							<xsl:text> first</xsl:text>
+						</xsl:if>
+					</xsl:attribute>
+						
 				
-				<xsl:call-template name="hidden_tag_layers" />
+					<xsl:call-template name="sort_bar" />
+					
+					<xsl:call-template name="facets_applied" />
+														
+					<xsl:call-template name="no_hits" />
+					
+					<xsl:call-template name="search_recommendations" />
+			
+					<xsl:call-template name="brief_results" />
 	
-			</div>
-			
-			<!-- sidebar -->
-			
-			<div>
-				<xsl:attribute name="class">
-					<xsl:text>yui-u</xsl:text>
-					<xsl:if test="$sidebar = 'left'">
-						<xsl:text> first</xsl:text>
-					</xsl:if>
-				</xsl:attribute>		
+					<xsl:call-template name="paging_navigation" />
 					
-				
-				<div id="search-sidebar" class="sidebar {$sidebar}">	
-							
-					<!-- modules -->
-					
-					<xsl:call-template name="search_modules" />
-									
-					<!-- facets -->
-					
-					<xsl:call-template name="search_sidebar" />
-					
-				</div>
-
-			</div>
-		</div>
+					<!-- <xsl:call-template name="hidden_tag_layers" /> -->
 		
+				</div>
+				
+				<!-- sidebar -->
+				
+				<div>
+					<xsl:attribute name="class">
+						<xsl:text>yui-u</xsl:text>
+						<xsl:if test="$sidebar = 'left'">
+							<xsl:text> first</xsl:text>
+						</xsl:if>
+					</xsl:attribute>		
+						
+					
+					<div id="search-sidebar" class="sidebar {$sidebar}">	
+								
+						<!-- modules -->
+						
+						<xsl:call-template name="search_modules" />
+										
+						<!-- facets -->
+						
+						<xsl:call-template name="search_sidebar" />
+						
+					</div>
+	
+				</div>
+			</div>
+			
+		</form>
+		
+		<xsl:call-template name="results_loader" />
+		
+	</xsl:template>
+	
+	<!--
+		TEMPLATE: RESULTS LOADER
+	-->	
+	
+	<xsl:template name="results_loader">
+	
+		<div id="fullscreen" style="display:none">
+		</div>
+		<div id="loading" style="display:none">
+			<img src="images/ajax-loader.gif" alt="" /> Updating results . . . 
+		</div>	
+	
 	</xsl:template>
 
 	<!--
@@ -202,16 +221,16 @@
 	
 	<xsl:template name="searchbox">
 	
-		<form action="{//request/controller}/search" method="get">
-	
+		<xsl:if test="//request/lang">
 			<input type="hidden" name="lang" value="{//request/lang}" />
-			
-			<xsl:call-template name="searchbox_hidden_fields_local" />
-	
-			<xsl:if test="request/sort">
-				<input type="hidden" name="sort" value="{request/sort}" />
-			</xsl:if>
-	
+		</xsl:if>
+		
+		<xsl:call-template name="searchbox_hidden_fields_local" />
+
+		<xsl:if test="request/sort">
+			<input type="hidden" name="sort" value="{request/sort}" />
+		</xsl:if>
+
 		<xsl:choose>
 			<xsl:when test="$is_mobile = '1'">
 				<xsl:call-template name="searchbox_mobile" />
@@ -220,8 +239,6 @@
 				<xsl:call-template name="searchbox_full" />
 			</xsl:otherwise>
 		</xsl:choose>
-	
-		</form>	
 		
 	</xsl:template>
 
@@ -251,7 +268,7 @@
 			<div class="searchbox-mobile">
 				<input type="text" name="query" value="{$query}" />
 				<xsl:text> </xsl:text>
-				<input class="submit_searchbox{$language_suffix}" type="submit" name="Submit" value="{$text_searchbox_go}" />
+				<input class="submit_searchbox{$language_suffix}" type="submit" value="{$text_searchbox_go}" />
 			</div>
 			
 		</xsl:if>
@@ -482,46 +499,63 @@
 		
 					<h3><xsl:value-of select="public" /></h3>
 					
-					<!-- only show first 10, unless there is 12 or fewer, in which case show all 12 -->
-					
-					<ul>
-					<xsl:for-each select="facets/facet[position() &lt;= 10 or count(../facet) &lt;= 12]">
-						<xsl:call-template name="facet_option" />
-					</xsl:for-each>
-					</ul>
-					
-					<xsl:if test="count(facets/facet) &gt; 12">
-						
-						<p id="facet-more-{name}" class="facet-option-more"> 
-							[ <a id="facet-more-link-{name}" href="#" class="facet-more-option"> 
-								<xsl:value-of select="count(facets/facet[position() &gt; 10])" /> more
-							</a> ] 
-						</p>
-						
-						<ul id="facet-list-{name}" class="facet-list-more">
-							<xsl:for-each select="facets/facet[position() &gt; 10]">
-								<xsl:call-template name="facet_option" />
-							</xsl:for-each>
-						</ul>
-						
-						<p id="facet-less-{name}" class="facet-option-less"> 
-							[ <a id="facet-less-link-{name}" href="#" class="facet-less-option"> 
-								show less
-							</a> ] 
-						</p>
-	
-					</xsl:if>
+					<xsl:choose>
+						<xsl:when test="//config/facet_multiple">
+							<xsl:call-template name="facet_multiple" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:call-template name="facet_links" />
+						</xsl:otherwise>
+					</xsl:choose>
 		
 				</xsl:for-each>
 			</div>
-			
-			<xsl:call-template name="sidebar_additional" />
 		
 		</xsl:if>
 	
 	</xsl:template>
 	
-	<!-- TEMPLATE: FACET OPTION -->
+	<!-- 
+		TEMPLATE: FACET LINKS 
+	-->
+	
+	<xsl:template name="facet_links">
+	
+		<!-- only show first 10, unless there is 12 or fewer, in which case show all 12 -->
+		
+		<ul>
+		<xsl:for-each select="facets/facet[position() &lt;= 10 or count(../facet) &lt;= 12]">
+			<xsl:call-template name="facet_option" />
+		</xsl:for-each>
+		</ul>
+		
+		<xsl:if test="count(facets/facet) &gt; 12">
+			
+			<p id="facet-more-{name}" class="facet-option-more"> 
+				[ <a id="facet-more-link-{name}" href="#" class="facet-more-option"> 
+					<xsl:value-of select="count(facets/facet[position() &gt; 10])" /> more
+				</a> ] 
+			</p>
+			
+			<ul id="facet-list-{name}" class="facet-list-more">
+				<xsl:for-each select="facets/facet[position() &gt; 10]">
+					<xsl:call-template name="facet_option" />
+				</xsl:for-each>
+			</ul>
+			
+			<p id="facet-less-{name}" class="facet-option-less"> 
+				[ <a id="facet-less-link-{name}" href="#" class="facet-less-option"> 
+					show less
+				</a> ] 
+			</p>
+	
+		</xsl:if>	
+	
+	</xsl:template>
+	
+	<!-- 
+		TEMPLATE: FACET OPTION 
+	-->
 	
 	<xsl:template name="facet_option">
 	
@@ -538,6 +572,62 @@
 			<xsl:if test="count">			
 				&nbsp;(<xsl:value-of select="count" />)
 			</xsl:if>
+		</li>
+	
+	</xsl:template>
+	
+	<!-- 
+		TEMPLATE: FACET MULTIPLE 
+	-->	
+	
+	<xsl:template name="facet_multiple">
+			
+		<ul>
+			<li class="facet-selection">
+				<input type="checkbox" class="facet-selection-clear" id="clear_{name}">
+					<xsl:if test="not(facets/facet/selected)">
+						<xsl:attribute name="checked">checked</xsl:attribute>
+					</xsl:if>
+				</input>
+				<xsl:text> </xsl:text>
+				<label for="clear-{name}">Any</label>
+			</li>
+			
+			<xsl:for-each select="facets/facet[position() &lt;= 7 or selected or count(../facet) &lt;= 9]">
+				<xsl:call-template name="facet_selection" />
+			</xsl:for-each>
+		</ul>
+				
+		<p id="facet-more-{name}" class="facet-option-more"> 
+			[ <a id="facet-more-link-{name}" href="{url}" class="facet-more-launch"> 
+				More Options
+			</a> ] 
+		</p>
+	
+	</xsl:template>
+
+	<!-- 
+		TEMPLATE: FACET SELECTION 
+	-->
+	
+	<xsl:template name="facet_selection">
+		
+		<li class="facet-selection">
+		
+			<input type="checkbox" id="{input_id}" class="facet-selection-option" name="{param_name}" value="{name}">
+				<xsl:if test="selected">
+					<xsl:attribute name="checked">checked</xsl:attribute>
+				</xsl:if>
+			</input>
+			
+			<xsl:text> </xsl:text>	
+			
+			<label for="{input_id}"><xsl:value-of select="name" /></label>
+			
+			<xsl:if test="count">		
+				&nbsp;(<xsl:value-of select="count" />)
+			</xsl:if>
+			
 		</li>
 	
 	</xsl:template>

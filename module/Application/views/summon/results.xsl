@@ -88,6 +88,8 @@
 	
 </xsl:template>
 
+<xsl:template name="facets_applied" />
+
 <!--
 
 <xsl:template name="advanced_search_option">
