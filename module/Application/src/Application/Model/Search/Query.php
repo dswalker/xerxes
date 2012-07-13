@@ -66,7 +66,7 @@ class Query
 			
 			foreach ( $this->extractLimitGroupings() as $limit )
 			{
-				$this->addLimit($limit["field"], $limit["relation"], $limit["value"]);
+				$this->addLimit($limit["boolean"], $limit["field"], $limit["relation"], $limit["value"]);
 			}
 		}
 	}
@@ -209,14 +209,15 @@ class Query
 	/**
 	 * Add a limit
 	 * 
+	 * @param string $boolean	boolean combine type
 	 * @param string $field		field name
 	 * @param string $relation	operator
 	 * @param string $phrase	the value of the limit
 	 */
 	
-	public function addLimit($field, $relation, $phrase)
+	public function addLimit($boolean, $field, $relation, $phrase)
 	{
-		$term = new LimitTerm($field, $relation, $phrase);
+		$term = new LimitTerm($boolean, $field, $relation, $phrase);
 		array_push($this->limits , $term);
 	}
 	
@@ -350,8 +351,19 @@ class Query
 				{
 					continue;
 				}
-					
+				
 				$arrTerm = array();
+				
+
+				if ( strstr($key, "facet.remove.") )
+				{
+					$key = str_replace('remove.', '', $key);
+					$arrTerm["boolean"] = "NOT";
+				}
+				else
+				{
+					$arrTerm["boolean"] = "";
+				}
 				
 				$arrTerm["field"] = $key;
 				$arrTerm["relation"] = "=";

@@ -8,13 +8,14 @@ namespace Application\Model\Search;
  * @author David Walker
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license
  * @version
  * @package Xerxes
  */
 
 class LimitTerm
 {
+	public $boolean;
 	public $field;
 	public $relation;
 	public $value;
@@ -23,13 +24,15 @@ class LimitTerm
 	/**
 	 * Constructor
 	 * 
+	 * @param string $boolean		boolean combine type
 	 * @param string $field			field name
 	 * @param string $relation		operator ('=', '>', etc.)
 	 * @param string $value			value
 	 */
 	
-	public function __construct($field = null, $relation = null, $value = null, $key = null)
+	public function __construct($boolean = null, $field = null, $relation = null, $value = null, $key = null)
 	{
+		$this->boolean = $boolean;
 		$this->field = $field;
 		$this->relation = $relation;
 		$this->value = $value;		
