@@ -38,6 +38,21 @@ class Record extends Xerxes\Record
 		$this->original_array = $document;
 		$this->map($document);
 		$this->cleanup();
+	}
+	
+	public function getOpenURL($strResolver, $strReferer = null, $param_delimiter = "&")
+	{
+		// make sure the OpenURL source is always summon, not the publisher
+		// or other source where Summon has gotten its data
+		
+		$source = $this->source;
+		$this->source = "Summon";
+		
+		$url = parent::getOpenURL($strResolver, $strReferer, $param_delimiter);
+		
+		$this->source = $source;
+	
+		return $url;
 	}	
 	
 	protected function map($document)

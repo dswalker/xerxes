@@ -166,23 +166,20 @@ class Engine extends Search\Engine
 		
 		foreach ( $search->getLimits(true) as $limit )
 		{
-			// remove chosen facet from response
-			// $facets_to_include = Parser::removeFromArray($facets_to_include, $limit->field);
-			
 			$value = ''; // final value
 			
-			if ( is_array($limit->value) )
+			if ( is_array($limit->value) || $limit->boolean != "" )
 			{
 				foreach ( $limit->value as $limited )
 				{
 					$value .= ',' . str_replace(',', '\,', $limited);
 				}
 				
-				array_push($complex_facets, $limit->field . ",or" . $value);
+				array_push($complex_facets, $limit->field . ',' . $limit->boolean . $value);
 			}
 			else
 			{
-				array_push($facets, $limit->field . "," . str_replace(',', '\,', $limit->value) . ",false");
+				array_push($facets, $limit->field . ',' . str_replace(',', '\,', $limit->value) . ",false");
 			}
 		}
 		
@@ -278,7 +275,7 @@ class Engine extends Search\Engine
 		
 		// extract facets
 		
-		$facets = $this->extractFacets($summon_results, $total);	 ############## HACK	
+		$facets = $this->extractFacets($summon_results);
 		$result_set->setFacets($facets);
 		
 		return $result_set;
@@ -339,7 +336,7 @@ class Engine extends Search\Engine
 	 * @return Facets
 	 */	
 	
-	protected function extractFacets($summon_results, $total)
+	protected function extractFacets($summon_results)
 	{
 		$facets = new Search\Facets();
 		

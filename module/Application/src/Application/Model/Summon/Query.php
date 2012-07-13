@@ -10,15 +10,13 @@ use Application\Model\Search;
  * @author David Walker
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license
  * @version
  * @package Xerxes
  */
 
 class Query extends Search\Query
 {
-	protected $limit_fields_regex = 'facet.*';
-	
 	/*
 	 * Search limited to full-text
 	 */
