@@ -618,7 +618,7 @@
 			
 		<ul>
 			<li class="facet-selection">
-				<input type="checkbox" class="facet-selection-clear" id="clear_{name}">
+				<input type="checkbox" class="facet-selection-clear" id="{group_id}">
 					<xsl:if test="not(facets/facet/selected)">
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
@@ -648,7 +648,7 @@
 		
 		<li class="facet-selection">
 		
-			<input type="checkbox" id="{input_id}" class="facet-selection-option" name="{param_name}" value="{name}">
+			<input type="checkbox" id="{input_id}" class="facet-selection-option {../../group_id}" name="{param_name}" value="{name}">
 				<xsl:if test="selected">
 					<xsl:attribute name="checked">checked</xsl:attribute>
 				</xsl:if>

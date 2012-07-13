@@ -300,16 +300,24 @@ class Search
 		
 		if ( $facets != "" )
 		{
+			$group_id = 0;
+			
 			foreach ( $facets->getGroups() as $group )
 			{
+				$group_id++;
+				$facet_id = 0;
+				
 				$group_params = $this->currentParams();
 				$group_params['action'] = 'facet';
 				$group_params['group'] = $group->name;
 				
 				$group->url = $this->request->url_for($group_params);
+				$group->group_id = 'facet_' . $group_id;
 				
 				foreach ( $group->getFacets() as $facet )
 				{
+					$facet_id++;
+					
 					$param_name = '';
 												
 					if ( $facet->key != "" ) 
@@ -341,10 +349,7 @@ class Search
 						$facet->selected = true;
 					}
 					
-					$input_id = $param_name . '.' . $facet->name;
-					$input_id = preg_replace('/\W/', '_', $input_id);
-					
-					$facet->input_id = $input_id;
+					$facet->input_id = 'facet_' . $group_id . '_' . $facet_id;
 				}
 			}
 		}

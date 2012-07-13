@@ -50,7 +50,13 @@ function showFacetMore(id)
 function addFacetSelection()
 {	
 	$('.facet-selection-option').click(function() {			
-		$('#clear-' +  this.name).attr('checked', false);
+		
+		group_array = this.id.split('_');
+		group_array.pop();
+		group_id = '#' + group_array.join('_');
+		
+		$(group_id).attr('checked', false);
+		
 		submitSearch();
 		loadWaitMessage();
 	});
@@ -59,8 +65,7 @@ function addFacetSelection()
 function addFacetClear()
 {
 	$('.facet-selection-clear').click(function() {
-		name = this.id.replace('clear_',  '');	
-		$('input[name="facet.' +  name + '"]').attr('checked', false);
+		$('input[class~="' + this.id + '"]').attr('checked', false);
 		submitSearch();
 		loadWaitMessage();
 	});	
