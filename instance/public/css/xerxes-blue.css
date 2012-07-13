@@ -295,8 +295,8 @@ a:hover {
 	padding-right: 2.2em;
 }
 
-.spell-suggest {
-	margin: 1em;
+#bd p.spell-suggest {
+	margin-bottom: 3em;
 }
 
 .search-label {
