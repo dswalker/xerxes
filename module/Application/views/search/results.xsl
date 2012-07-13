@@ -95,9 +95,9 @@
 					
 					<xsl:call-template name="facets_applied" />
 														
-					<xsl:call-template name="no_hits" />
-					
 					<xsl:call-template name="spell_suggest" />
+					
+					<xsl:call-template name="no_hits" />
 					
 					<xsl:call-template name="search_recommendations" />
 			
@@ -359,7 +359,7 @@
 			<div style="padding: 1em;">
 				<input id="results-clear-facets-false" type="radio" name="clear-facets" value="" />
 				<xsl:text> </xsl:text>
-				<label for="results-clear-facets-true"> Keep search refinements</label>
+				<label for="results-clear-facets-false"> Keep search refinements</label>
 				<xsl:text> </xsl:text>
 				<input id="results-clear-facets-true" type="radio" name="clear-facets" value="true" checked="checked" />
 				<xsl:text> </xsl:text>
