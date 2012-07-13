@@ -51,7 +51,7 @@ function addFacetSelection()
 {	
 	$('.facet-selection-option').click(function() {			
 		$('#clear-' +  this.name).attr('checked', false);
-		$('#results-search').submit();
+		submitSearch();
 		loadWaitMessage();
 	});
 }
@@ -61,9 +61,15 @@ function addFacetClear()
 	$('.facet-selection-clear').click(function() {
 		name = this.id.replace('clear_',  '');	
 		$('input[name="facet.' +  name + '"]').attr('checked', false);
-		$('#results-search').submit();
+		submitSearch();
 		loadWaitMessage();
 	});	
+}
+
+function submitSearch()
+{
+	$('#results-clear-facets-true').attr('checked', false);
+	$('#results-search').submit();
 }
 
 function loadWaitMessage()

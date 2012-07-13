@@ -291,7 +291,7 @@ a:hover {
 .search-box {
 	display: table;
 	margin-bottom: 3em;
-	padding-bottom: 1em;
+	padding-bottom: .7em;
 	padding-right: 2.2em;
 }
 

@@ -97,6 +97,8 @@
 														
 					<xsl:call-template name="no_hits" />
 					
+					<xsl:call-template name="spell_suggest" />
+					
 					<xsl:call-template name="search_recommendations" />
 			
 					<xsl:call-template name="brief_results" />
@@ -338,16 +340,48 @@
 			
 			</div>
 			
-			<xsl:if test="spelling/url">
-				<p class="spell-suggest error">
-					<xsl:value-of select="$text_searchbox_spelling_error" /><xsl:text> </xsl:text>
-					<a href="{spelling/url}"><xsl:value-of select="spelling/query" /></a>
-				</p>
-			</xsl:if>	
+			<xsl:call-template name="search_refinement" />
 			
 			<xsl:call-template name="advanced_search_option" />
 			
 		</div>
+	
+	</xsl:template>
+
+	<!-- 	
+		TEMPLATE: SEARCH REFINEMENT
+	-->
+	
+	<xsl:template name="search_refinement">
+	
+		<xsl:if test="//config/facet_multiple">
+		
+			<div style="padding: 1em;">
+				<input id="results-clear-facets-false" type="radio" name="clear-facets" value="" />
+				<xsl:text> </xsl:text>
+				<label for="results-clear-facets-true"> Keep search refinements</label>
+				<xsl:text> </xsl:text>
+				<input id="results-clear-facets-true" type="radio" name="clear-facets" value="true" checked="checked" />
+				<xsl:text> </xsl:text>
+				<label for="results-clear-facets-true"> New search</label>
+			</div>
+			
+		</xsl:if>	
+	
+	</xsl:template>
+
+	<!-- 	
+		TEMPLATE: SPELL SUGGEST
+	-->
+	
+	<xsl:template name="spell_suggest">
+	
+		<xsl:if test="spelling/url">
+			<p class="spell-suggest error">
+				<xsl:value-of select="$text_searchbox_spelling_error" /><xsl:text> </xsl:text>
+				<a href="{spelling/url}"><xsl:value-of select="spelling/query" /></a>
+			</p>
+		</xsl:if>	
 	
 	</xsl:template>
 	

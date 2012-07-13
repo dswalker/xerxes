@@ -443,8 +443,13 @@ class Query
 	
 	public function getAllSearchParams()
 	{
-		$limits = $this->extractLimitParams();
 		$search = $this->extractSearchParams();
+		$limits = array();
+		
+		if ( $this->request->getParam('clear-facets') != "true" )
+		{
+			$limits = $this->extractLimitParams();
+		}
 		
 		return array_merge($search, $limits);
 	}
