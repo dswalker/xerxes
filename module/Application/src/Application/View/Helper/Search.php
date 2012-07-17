@@ -309,18 +309,21 @@ class Search
 				$group_id++;
 				$facet_id = 0;
 				
+				// group identifier
+				
+				$group->group_id = 'facet-' . $group_id;
+				$group->param_name = 'facet.' . $group->name;
+				
 				// link to multi-select facet page
 				
 				$group_params = $this->query->getAllSearchParams();
 				$group_params['controller'] = $this->request->getParam('controller');
 				$group_params['action'] = 'facet';
-				$group_params['group'] = $group->name;
+				$group_params['group'] = $group->param_name;
 				
 				$group->url = $this->request->url_for($group_params);
 				
-				// group identifier
-				
-				$group->group_id = 'facet_' . $group_id;
+
 				
 				foreach ( $group->getFacets() as $facet )
 				{
@@ -346,7 +349,7 @@ class Search
 					$url[$param_name] = $facet->name;
 					$facet->url = $this->request->url_for($url);
 					
-					$facet->input_id = 'facet_' . $group_id . '_' . $facet_id;
+					$facet->input_id = $group->group_id  . '-' . $facet_id;
 					
 					// add the name of the param as well
 					

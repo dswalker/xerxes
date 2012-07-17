@@ -50,14 +50,14 @@ function showFacetMore(id)
 function addFacetSelection()
 {	
 	$('.facet-selection-option').click(function() {			
-		
-		group_array = this.id.split('_');
+			
+		group_array = this.id.split('-');
 		group_array.pop();
-		group_id = '#' + group_array.join('_');
+		group_id =  group_array.join('-');
 		
-		$(group_id).attr('checked', false);
+		$('#' + group_id).attr('checked', false);
 		
-		submitSearch();
+		submitSearch(group_id);
 		loadWaitMessage();
 	});
 }
@@ -66,15 +66,15 @@ function addFacetClear()
 {
 	$('.facet-selection-clear').click(function() {
 		$('input[class~="' + this.id + '"]').attr('checked', false);
-		submitSearch();
+		submitSearch(this.id);
 		loadWaitMessage();
 	});	
 }
 
-function submitSearch()
-{
+function submitSearch(id)
+{	
 	$('#results-clear-facets-true').attr('checked', false);
-	$('#results-search').submit();
+	$('#form-' + id).submit();
 }
 
 function loadWaitMessage()
