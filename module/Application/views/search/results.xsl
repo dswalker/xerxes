@@ -354,7 +354,7 @@
 	
 	<xsl:template name="search_refinement">
 	
-		<xsl:if test="//config/facet_multiple">
+		<xsl:if test="config/facet_multiple and results/facets">
 		
 			<div style="padding: 1em;">
 				<input id="results-clear-facets-false" type="radio" name="clear-facets" value="" />
