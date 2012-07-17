@@ -807,6 +807,8 @@ class Request extends ZendRequest
 				foreach ( $value as $strKey => $strValue )
 				{
 					$objElement = $xml->createElement( $strSafeKey );
+					$objElement->setAttribute('original_key', $key);
+					
 					$objElement->setAttribute( "key", $strKey );
 					$objAppend->appendChild( $objElement );
 					
@@ -824,8 +826,12 @@ class Request extends ZendRequest
 			else
 			{
 				$objElement = $xml->createElement( $strSafeKey, Parser::escapeXml( $value ) );
+				$objElement->setAttribute('original_key', $key);
+				
 				$objAppend->appendChild( $objElement );
 			}
+			
+			
 		}
 	}
 }
