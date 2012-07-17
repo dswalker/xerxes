@@ -220,7 +220,7 @@
 	
 	<xsl:template name="searchbox">
 	
-		<form id="results-search" action="{//request/controller}/search" method="get">	
+		<form id="form-main-search" action="{//request/controller}/search" method="get">	
 	
 			<xsl:if test="//request/lang">
 				<input type="hidden" name="lang" value="{//request/lang}" />
