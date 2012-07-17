@@ -155,18 +155,23 @@ class Engine extends Search\Engine
 		
 		foreach ( $this->config->getFacets() as $facet_config )
 		{
-			$facets_to_include[(string) $facet_config["internal"]] = (string) $facet_config["internal"] . 
-				",or,1," . (string) $facet_config["max"]; 
+			if ( $facet_config['type'] == 'date' )
+			{
+				
+			}
+			else
+			{
+				$this->summon_client->includeFacet( (string) $facet_config["internal"] .",or,1," . (string) $facet_config["max"] ); 
+			}
 		}
 		
 		// limits
 		
-		$facets = array();
-		$complex_facets = array();
-		
 		foreach ( $search->getLimits(true) as $limit )
 		{
 			$value = ''; // final value
+			
+			// multi-select (i.e., include) filter
 			
 			if ( is_array($limit->value) )
 			{
@@ -175,8 +180,11 @@ class Engine extends Search\Engine
 					$value .= ',' . str_replace(',', '\,', $limited);
 				}
 				
-				array_push($complex_facets, $limit->field . ',' . $limit->boolean . $value);
+				$this->summon_client->addComplexFilter($limit->field . ',' . $limit->boolean . $value);
 			}
+			
+			// regular filter (or exclude)
+			
 			else
 			{
 				$boolean = 'false';
@@ -186,19 +194,15 @@ class Engine extends Search\Engine
 					$boolean = 'true';
 				}
 				
-				array_push($facets, $limit->field . ',' . str_replace(',', '\,', $limit->value) . ",$boolean");
+				$this->summon_client->addFilter($limit->field . ',' . str_replace(',', '\,', $limit->value) . ",$boolean");
 			}
 		}
-		
-		// set actual response facets
-		
-		$this->summon_client->setFacetsToInclude($facets_to_include);
 
 		// filter out formats
 		
 		foreach ( $this->formats_exclude as $format )
 		{
-			array_push($facets, "ContentType,$format,true");
+			$this->summon_client->addFilter("ContentType,$format,true");
 		}
 		
 		// holdings only
@@ -221,7 +225,7 @@ class Engine extends Search\Engine
 		
 		// get the results
 		
-		$summon_results = $this->summon_client->query($query, $facets, $complex_facets, $page, $max, $sort);
+		$summon_results = $this->summon_client->query($query, $page, $max, $sort);
 		
 		return $this->parseResponse($summon_results);
 	}
@@ -384,6 +388,24 @@ class Engine extends Search\Engine
 									}
 								}
 							}
+						}
+						
+						// date type
+						
+						elseif ( (string) $config["type"] == "date")
+						{
+							$start_date = $counts['range']['minValue'];
+							$end_date = $counts['range']['maxValue'];
+							
+							
+							$facet = new Search\Facet();
+							$facet->name = "$start_date-$end_date";
+							$facet->count = $counts["count"];
+							$facet->key = "$start_date:$end_date";
+							$facet->is_date = true;
+								
+							$group->addFacet($facet);
+						
 						}
 						else // regular
 						{
