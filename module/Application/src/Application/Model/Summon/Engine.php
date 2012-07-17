@@ -351,7 +351,22 @@ class Engine extends Search\Engine
 	{
 		$facets = new Search\Facets();
 		
-		if ( array_key_exists("facetFields", $summon_results) )
+		$facet_fields = array();
+		
+		if ( array_key_exists('facetFields', $summon_results) )
+		{
+			$facet_fields = $summon_results['facetFields'];
+		}
+		
+		if ( array_key_exists('rangeFacetFields', $summon_results) )
+		{
+			foreach ( $summon_results['rangeFacetFields'] as $range_facet )
+			{
+				$facet_fields[] = $range_facet;
+			}
+		}
+		
+		if ( count($facet_fields) > 0 )
 		{		
 			// @todo: figure out how to factor out some of this to parent class
 			
@@ -359,7 +374,7 @@ class Engine extends Search\Engine
 				
 			foreach ( $this->config->getFacets() as $group_internal_name => $config )
 			{
-				foreach ( $summon_results["facetFields"] as $facetFields )
+				foreach ( $facet_fields as $facetFields )
 				{
 					if ( $facetFields["displayName"] == $group_internal_name)
 					{
@@ -394,17 +409,20 @@ class Engine extends Search\Engine
 						
 						elseif ( (string) $config["type"] == "date")
 						{
-							$start_date = $counts['range']['minValue'];
-							$end_date = $counts['range']['maxValue'];
-							
-							
-							$facet = new Search\Facet();
-							$facet->name = "$start_date-$end_date";
-							$facet->count = $counts["count"];
-							$facet->key = "$start_date:$end_date";
-							$facet->is_date = true;
+							foreach ( $facetFields["counts"] as $counts )
+							{
+								$start_date = $counts['range']['minValue'];
+								$end_date = $counts['range']['maxValue'];
 								
-							$group->addFacet($facet);
+								
+								$facet = new Search\Facet();
+								$facet->name = "$start_date-$end_date";
+								$facet->count = $counts["count"];
+								$facet->key = "$start_date:$end_date";
+								$facet->is_date = true;
+									
+								$group->addFacet($facet);
+							}
 						
 						}
 						else // regular
