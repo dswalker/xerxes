@@ -168,7 +168,7 @@ class Engine extends Search\Engine
 		{
 			$value = ''; // final value
 			
-			if ( is_array($limit->value) || $limit->boolean != "" )
+			if ( is_array($limit->value) )
 			{
 				foreach ( $limit->value as $limited )
 				{
@@ -179,7 +179,14 @@ class Engine extends Search\Engine
 			}
 			else
 			{
-				array_push($facets, $limit->field . ',' . str_replace(',', '\,', $limit->value) . ",false");
+				$boolean = 'false';
+				
+				if ( $limit->boolean == "NOT" )
+				{
+					$boolean = 'true';
+				}
+				
+				array_push($facets, $limit->field . ',' . str_replace(',', '\,', $limit->value) . ",$boolean");
 			}
 		}
 		

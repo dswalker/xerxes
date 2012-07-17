@@ -304,14 +304,22 @@ class Search
 			
 			foreach ( $facets->getGroups() as $group )
 			{
+				// this is used for javascript selecting
+				
 				$group_id++;
 				$facet_id = 0;
 				
-				$group_params = $this->currentParams();
+				// link to multi-select facet page
+				
+				$group_params = $this->query->getAllSearchParams();
+				$group_params['controller'] = $this->request->getParam('controller');
 				$group_params['action'] = 'facet';
 				$group_params['group'] = $group->name;
 				
 				$group->url = $this->request->url_for($group_params);
+				
+				// group identifier
+				
 				$group->group_id = 'facet_' . $group_id;
 				
 				foreach ( $group->getFacets() as $facet )
@@ -338,6 +346,8 @@ class Search
 					$url[$param_name] = $facet->name;
 					$facet->url = $this->request->url_for($url);
 					
+					$facet->input_id = 'facet_' . $group_id . '_' . $facet_id;
+					
 					// add the name of the param as well
 					
 					$facet->param_name = $param_name;
@@ -349,7 +359,16 @@ class Search
 						$facet->selected = true;
 					}
 					
-					$facet->input_id = 'facet_' . $group_id . '_' . $facet_id;
+					// exclude facet param
+					
+					$facet->param_exclude = str_replace('facet.', 'facet.remove.', $param_name);
+					
+					// see if this facet is excluded (for multi-select facets)
+						
+					if ( $this->request->hasParamValue($facet->param_exclude, $facet->name) )
+					{
+						$facet->excluded = true;
+					}					
 				}
 			}
 		}
