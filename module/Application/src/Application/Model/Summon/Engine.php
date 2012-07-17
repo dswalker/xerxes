@@ -157,7 +157,7 @@ class Engine extends Search\Engine
 		{
 			if ( $facet_config['type'] == 'date' )
 			{
-				
+				$this->summon_client->setDateRangesToInclude((string) $facet_config["ranges"]);
 			}
 			else
 			{
@@ -183,6 +183,13 @@ class Engine extends Search\Engine
 				$this->summon_client->addComplexFilter($limit->field . ',' . $limit->boolean . $value);
 			}
 			
+			// date type
+			
+			elseif ( $this->config->getFacetType($limit->field) == 'date' )
+			{
+				$this->summon_client->addDateRangeFilter($limit->field . ',' . $limit->value);
+			}
+			
 			// regular filter (or exclude)
 			
 			else
@@ -193,8 +200,8 @@ class Engine extends Search\Engine
 				{
 					$boolean = 'true';
 				}
-				
-				$this->summon_client->addFilter($limit->field . ',' . str_replace(',', '\,', $limit->value) . ",$boolean");
+					
+				$this->summon_client->addFilter($limit->field . ',' . str_replace(',', '\,', $limit->value) . ',' . $boolean);
 			}
 		}
 

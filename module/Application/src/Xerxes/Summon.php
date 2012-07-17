@@ -25,8 +25,9 @@ class Summon
 	protected $app_id; // summon application id
 	protected $session_id; // current session
 	protected $facets_to_include = array(); // facets that should be included in the response
-	protected $date_ranges_to_include = array(); // date ranges that should be included in the response filters
+	protected $date_ranges_to_include = ''; // date ranges that should be included in the response filters
 	protected $facet_filters = array(); // filter on these facets
+	protected $date_filters = array(); // filter on this date range
 	protected $complex_filters = array(); // complex facet filters
 	
 	protected $role; // user's role: authenticated or not
@@ -122,6 +123,13 @@ class Summon
 		{
 			$options['s.fvgf'] = $this->complex_filters;
 		}
+
+		// date range filters to be applied
+		
+		if ( count($this->date_filters) > 0 )
+		{
+			$options['s.rf'] = $this->date_filters;
+		}		
 		
 		// sort
 		
@@ -141,9 +149,9 @@ class Summon
 		
 		// date groupings to return in response
 		
-		if ( count($this->date_ranges_to_include) == 0 ) ############## hack
+		if ( count($this->date_ranges_to_include) != '' )
 		{
-			$options['s.rff'] = 'PublicationDate,1971:1980,1981:1990,1991:2000,2001:2010';
+			$options['s.rff'] = 'PublicationDate,' . $this->date_ranges_to_include;
 		}		
 		
 		return $this->send($options);
@@ -305,7 +313,7 @@ class Summon
 	/**
 	 * Add a facet to those that should be returned in the response
 	 * 
-	 * @param array $facets
+	 * @param string $facet
 	 */
 	
 	public function includeFacet($facet)
@@ -325,12 +333,12 @@ class Summon
 	}
 	
 	/**
-	 * Get the facets to be included in the response
+	 * set the date ranges to include in facet response
 	 *
-	 * @return array
+	 * @param string $ranges
 	 */
 	
-	public function setDateRangesToInclude(array $ranges)
+	public function setDateRangesToInclude($ranges)
 	{
 		$this->date_ranges_to_include = $ranges;
 	}	
@@ -356,6 +364,21 @@ class Summon
 	{
 		$this->complex_filters[] = $filter;
 	}
+	
+	/**
+	 * Date range to filter on
+	 *
+	 * @param string $filter
+	 */	
+	
+	public function addDateRangeFilter($filter)
+	{
+		$this->date_filters[] = $filter;
+	}
+	
+	/**
+	 * Tell Summon user is authenticated
+	 */
 	
 	public function setToAuthenticated()
 	{
