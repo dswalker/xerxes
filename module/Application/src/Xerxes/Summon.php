@@ -150,7 +150,7 @@ class Summon
 		
 		// date groupings to return in response
 		
-		if ( count($this->date_ranges_to_include) != '' )
+		if ( $this->date_ranges_to_include != '' )
 		{
 			$options['s.rff'] = 'PublicationDate,' . $this->date_ranges_to_include;
 		}		
