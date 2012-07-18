@@ -39,6 +39,8 @@ class Engine extends Search\Engine
 		
 		$this->worldcat_client = new Worldcat($config_key, Factory::getHttpClient());
 		
+		$this->group = new ConfigGroup();
+		
 		// if user is a guest, make it open, and return it pronto, since we
 		// can't use the limiters below
 		
