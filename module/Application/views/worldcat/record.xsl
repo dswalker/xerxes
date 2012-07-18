@@ -31,4 +31,32 @@
 	<xsl:call-template name="record" />
 	
 </xsl:template>
+
+
+<xsl:template name="availability">
+
+	<xsl:if test="../holdings/holding">
+
+		<table class="holdings-table">
+	
+			<tr>
+				<th>Institution</th>
+				<th>Availability</th>
+			</tr>
+	
+			<xsl:for-each select="../holdings/holding">
+			
+				<tr>
+					<td><span id="institution-{oclc}"><xsl:value-of select="institution" /></span></td>
+					<td><a href="{url}" aria-describedby="institution-{oclc}">Check availability</a></td>
+				</tr>
+			
+			</xsl:for-each>
+	
+		</table>
+		
+	</xsl:if>
+
+</xsl:template>	
+
 </xsl:stylesheet>
