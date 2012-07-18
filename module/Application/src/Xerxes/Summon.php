@@ -27,7 +27,8 @@ class Summon
 	protected $facets_to_include = array(); // facets that should be included in the response
 	protected $date_ranges_to_include = ''; // date ranges that should be included in the response filters
 	protected $facet_filters = array(); // filter on these facets
-	protected $date_filters = array(); // filter on this date range
+	protected $start_date = '*'; // start date in range filter
+	protected $end_date = '*'; // end date in range filter
 	protected $complex_filters = array(); // complex facet filters
 	
 	protected $role; // user's role: authenticated or not
@@ -126,9 +127,9 @@ class Summon
 
 		// date range filters to be applied
 		
-		if ( count($this->date_filters) > 0 )
+		if ( $this->start_date != '*' || $this->end_date != '*' )
 		{
-			$options['s.rf'] = $this->date_filters;
+			$options['s.rf'] = 'PublicationDate,' . $this->start_date . ":" . $this->end_date;
 		}		
 		
 		// sort
@@ -366,15 +367,26 @@ class Summon
 	}
 	
 	/**
-	 * Date range to filter on
+	 * Start date to filter on
 	 *
 	 * @param string $filter
 	 */	
 	
-	public function addDateRangeFilter($filter)
+	public function setStartDate($date)
 	{
-		$this->date_filters[] = $filter;
+		$this->start_date = $date;
 	}
+
+	/**
+	 * End date to filter on
+	 *
+	 * @param string $filter
+	 */
+	
+	public function setEndDate($date)
+	{
+		$this->end_date = $date;
+	}	
 	
 	/**
 	 * Tell Summon user is authenticated

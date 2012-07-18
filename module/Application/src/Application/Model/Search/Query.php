@@ -156,6 +156,7 @@ class Query
 						$new_limit->value = array_pop($parts);
 						$new_limit->field = array_pop($parts);
 						$new_limit->key = true;
+						$new_limit->display = $limit->value;  // @todo: make this not 'display'
 					}
 					else
 					{

@@ -559,17 +559,31 @@
 	
 	<xsl:template name="facet_dates">
 	
-		<label for="facet-date-start">From: </label>
-		<input type="text" name="facet.date.start" id="facet-date-start" maxlength="4" size="4" />
+		<form id="form-{group_id}" action="{//request/controller}/search" method="get">
 		
-		<br />
-		
-		<label for="facet-date-end">To: </label>
-		<input type="text" name="facet.date.end" id="facet-date-end" maxlength="4" size="4" />
-		
-		<br />
-		
-		<input type="submit" value="Update" />
+			<xsl:variable name="start_date" select="concat(param_name,'.start')" />
+			<xsl:variable name="end_date" select="concat(param_name,'.end')" />
+
+
+			<xsl:call-template name="hidden_search_inputs">
+				<xsl:with-param name="exclude_limit" select="param_name" />
+			</xsl:call-template>
+	
+			<label for="facet-date-start">From: </label>
+			<input type="text" name="{$start_date}" id="facet-date-start" value="{//request/*[@original_key = $start_date]}" 
+				maxlength="4" size="4" />
+			
+			<br />
+			
+			<label for="facet-date-end">To: </label>
+			<input type="text" name="{$end_date}" id="facet-date-end" value="{//request/*[@original_key = $end_date]}" 
+				maxlength="4" size="4" />
+			
+			<br />
+			
+			<input type="submit" value="Update" />
+			
+		</form>
 		
 	</xsl:template>	
 	
@@ -1218,8 +1232,8 @@
 			</xsl:for-each>
 			
 		</xsl:if>
-		
-		<xsl:for-each select="//query/limits/limit[field != $exclude_limit]">
+				
+		<xsl:for-each select="//query/limits/limit[substring(field, 1, string-length($exclude_limit)) != $exclude_limit]">
 		
 			<xsl:choose>
 				<xsl:when test="value/*">

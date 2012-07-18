@@ -187,7 +187,16 @@ class Engine extends Search\Engine
 			
 			elseif ( $this->config->getFacetType($limit->field) == 'date' )
 			{
-				$this->summon_client->addDateRangeFilter($limit->field . ',' . $limit->value);
+				// @todo: make this not 'display'
+				
+				if ( $limit->value == 'start' )
+				{
+					$this->summon_client->setStartDate($limit->display);
+				}
+				elseif ( $limit->value == 'end' )
+				{
+					$this->summon_client->setEndDate($limit->display);
+				}
 			}
 			
 			// regular filter (or exclude)
