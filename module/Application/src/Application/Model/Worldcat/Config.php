@@ -44,20 +44,23 @@ class Config extends Search\Config
 			{
 				if ( $group["id"] == $source )
 				{
-					$group_object->libraries_include = (string) $group->libraries;
 					$group_object->limit_material_types = (string) $group->limit_material_types;
 					$group_object->exclude_material_types = (string) $group->exclude_material_types;
 					$group_object->frbr = (string) $group->frbr;
+					$group_object->query_limit = (string) $group->query_limit;
 	
 					if ( (string) $group->show_holdings == "true" )
 					{
 						$group_object->show_holdings = true;
 					}
 	
-					// exclude certain libraries?
+					// include certain libraries
+					
+					$group_object->libraries_include = (string) $group->libraries;
+					
+					// exclude certain libraries
 	
 					$id = (string) $group->exclude;
-					$group_object->query_limit = (string) $group->query_limit;
 	
 					if ( $id != "" )
 					{

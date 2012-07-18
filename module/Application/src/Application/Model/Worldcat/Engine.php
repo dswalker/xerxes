@@ -21,7 +21,8 @@ use Application\Model\Search,
 
 class Engine extends Search\Engine 
 {
-	protected $worldcat_client;
+	protected $worldcat_client; // client
+	protected $group; // group config based on source
 	
 	/**
 	 * Create Worldcat Search Engine
@@ -50,39 +51,39 @@ class Engine extends Search\Engine
 		
 		elseif ( $source != "" )
 		{
-			$group = $this->config->getWorldcatGroup($source);
+			$this->group = $this->config->getWorldcatGroup($source);
 			
 			// no workset grouping, please
 		
-			if ( $group->frbr == "false" )
+			if ( $this->group->frbr == "false" )
 			{
 				$this->worldcat_client->setWorksetGroupings(false);
 			}
 
 			// limit to certain libraries
 		
-			if ( $group->libraries_include != null )
+			if ( $this->group->libraries_include != null )
 			{
-				$this->worldcat_client->limitToLibraries($group->libraries_include);
+				$this->worldcat_client->limitToLibraries($this->group->libraries_include);
 			}
 		
 			// exclude certain libraries
 		
-			if ( $group->libraries_exclude != null )
+			if ( $this->group->libraries_exclude != null )
 			{
-				$this->worldcat_client->excludeLibraries($group->libraries_exclude);
+				$this->worldcat_client->excludeLibraries($this->group->libraries_exclude);
 			}
 		
 			// limit results to specific document types; a limit entry will
 			// take presidence over any format specifically excluded
 		
-			if ( $group->limit_material_types != null )
+			if ( $this->group->limit_material_types != null )
 			{
-				$this->worldcat_client->limitToMaterialType($group->limit_material_types);
+				$this->worldcat_client->limitToMaterialType($this->group->limit_material_types);
 			}
-			elseif ( $group->exclude_material_types != null )
+			elseif ( $this->group->exclude_material_types != null )
 			{
-				$this->worldcat_client->excludeMaterialType($group->exclude_material_types);
+				$this->worldcat_client->excludeMaterialType($this->group->exclude_material_types);
 			}
 		}
 	}
@@ -139,7 +140,22 @@ class Engine extends Search\Engine
 	
 	public function getRecord( $id )
 	{
-		return $this->doGetRecord( $id );
+		$results = $this->doGetRecord( $id );
+		
+		$record = $results->getRecord(0);
+		
+		// add holdings
+		
+		if ($this->group->libraries_include != '' && $record != null )
+		{
+			$library_codes = $this->group->libraries_include;
+			
+			$holdings_xml = $this->worldcat_client->getHoldings($id, $library_codes);
+			
+			$record->holdings = $this->extractHoldings($holdings_xml);
+		}
+		
+		return $results;
 	}
 
 	/**
@@ -191,7 +207,15 @@ class Engine extends Search\Engine
 		return $this->parseResponse($xml);
 	}
 	
-	protected function parseResponse($xml)
+	/*
+	 * Parse Wolrdcat XML response into search results object
+	 * 
+	 * @param DOMDocument $xml
+	 * 
+	 * @return ResultSet
+	 */
+	
+	protected function parseResponse(\DOMDocument $xml)
 	{
 		// create results
 		
@@ -236,6 +260,35 @@ class Engine extends Search\Engine
 		// echo $xml->saveXML(); print_r($records); exit;
 		
 		return $records;
+	}
+	
+	/**
+	 * Parse library information out of the holdings response
+	 *
+	 * @param DOMDocument $xml
+	 *
+	 * @return array of Library's
+	 */	
+	
+	protected function extractHoldings(\DOMDocument $xml)
+	{
+		$libraries = array();
+		
+		$simple_xml = simplexml_import_dom($xml->documentElement);
+		
+		foreach ( $simple_xml->holding as $holding )
+		{
+			$library = new Library();
+			
+			$library->oclc = (string) $holding->institutionIdentifier->value;
+			$library->institution = (string) $holding->physicalLocation;
+			$library->address = (string) $holding->physicalAddress->text;
+			$library->url = (string) $holding->electronicAddress->text;
+			
+			$libraries[] = $library;
+		}
+		
+		return $libraries;
 	}
 	
 	/**

@@ -132,7 +132,7 @@ class Worldcat
 	 * @return DOMDocument			holdings in ISO 20775 Holdings schema format
 	 */
 	
-	public function holdings( $id, $strLibraries, $iStart = 1, $iMax = 10 )
+	public function getHoldings( $id, $strLibraries, $iStart = 1, $iMax = 10 )
 	{
 		if ( $id == "" ) throw new \Exception( "no oclc number supplied" );
 		if ( $iStart == null ) $iStart = 1;
@@ -157,18 +157,6 @@ class Worldcat
 		$objXml = Parser::convertToDOMDocument( $results );
 		
 		return $objXml;
-	}
-	
-	/**
-	 * Get just the number of hits
-	 * 
-	 * @param string $search	the query in CQL format
-	 */
-	
-	public function hits($query)
-	{
-		$this->searchRetrieve($query, 1,1); // worldcat expects at least 1 for result
-		return $this->total;
 	}
 	
 	/**
@@ -299,31 +287,34 @@ class Worldcat
 	/**
 	 * Limit results to those libraries specifid
 	 *
-	 * @param string $codes		Comma separated list of OCLC codes for the libraries
+	 * @param string|array $codes		Comma separated list of OCLC codes for the libraries
 	 */
 	
 	public function limitToLibraries($codes)
 	{
-		$arrLibraries = explode( ",", $codes );
+		if ( ! is_array($codes) )
+		{
+			$codes = explode( ",", $codes );
+		}
 		
-		for ( $x = 0 ; $x < count( $arrLibraries ) ; $x ++ )
+		for ( $x = 0 ; $x < count( $codes ) ; $x ++ )
 		{
 			if ( $x == 0 )
 			{
-				$this->limits .= " AND ( srw.li=\"" . $arrLibraries[$x] . "\" ";
+				$this->limits .= " AND ( srw.li=\"" . $codes[$x] . "\" ";
 				
-				if ( count( $arrLibraries ) == 1 )
+				if ( count( $codes ) == 1 )
 				{
 					$this->limits .= " )";
 				}
 			} 
-			elseif ( $x + 1 == count( $arrLibraries ) )
+			elseif ( $x + 1 == count( $codes ) )
 			{
-				$this->limits .= " OR srw.li=\"" . $arrLibraries[$x] . "\" )";
+				$this->limits .= " OR srw.li=\"" . $codes[$x] . "\" )";
 			} 
 			else
 			{
-				$this->limits .= " OR srw.li=\"" . $arrLibraries[$x] . "\" ";
+				$this->limits .= " OR srw.li=\"" . $codes[$x] . "\" ";
 			}
 		}
 	}
