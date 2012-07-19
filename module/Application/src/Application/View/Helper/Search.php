@@ -201,6 +201,28 @@ class Search
 	}
 	
 	/**
+	 * Helper function for XSLT to supress hidden limit inputs for a specific facet
+	 *  
+	 * @param string $field  name of field to check if it is excluded
+	 * @param string $excluded  comma delimited list of fields to be exlcuded
+	 */
+	
+	public static function limitExcluded($field, $excluded)
+	{
+		$exclude_array = explode(',', $excluded);
+		
+		foreach ( $exclude_array as $exclude )
+		{
+			if ( $field == $exclude )
+			{
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	/**
 	 * Creates a sorting page element
 	 *
 	 * @param string $sort			current sort

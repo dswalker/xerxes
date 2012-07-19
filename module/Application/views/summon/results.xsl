@@ -111,11 +111,12 @@
 		<form id="form-facet-0" action="{//request/controller}/search" method="get">
 
 			<xsl:call-template name="hidden_search_inputs">
-				<xsl:with-param name="exclude_limit" select="param_name" />
+				<xsl:with-param name="exclude_limit">facet.IsScholarly,facet.holdings</xsl:with-param>
 			</xsl:call-template>
 
 			<ul>
 				<li class="facet-selection">
+				
 					<input type="checkbox" class="facet-selection-clear" id="facet-0">
 						<xsl:if test="$showall = ''">
 							<xsl:attribute name="checked">checked</xsl:attribute>
@@ -123,6 +124,7 @@
 					</input>
 					<xsl:text> </xsl:text>
 					<label for="facet-0">All results</label>
+					
 				</li>
 				
 				<li class="facet-selection">

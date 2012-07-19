@@ -1241,18 +1241,13 @@
 			
 		</xsl:if>
 		
-		<xsl:choose>
-			<xsl:when test="$exclude_limit != ''">		
-				<xsl:for-each select="//query/limits/limit[substring(field, 1, string-length($exclude_limit)) != $exclude_limit]">
-					<xsl:call-template name="hidden_search_limit" />
-				</xsl:for-each>	
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:for-each select="//query/limits/limit">
-					<xsl:call-template name="hidden_search_limit" />
-				</xsl:for-each>					
-			</xsl:otherwise>
-		</xsl:choose>
+		<xsl:for-each select="//query/limits/limit">
+			
+			<xsl:if test="php:function('Application\View\Helper\Search::limitExcluded', string(field), string($exclude_limit))">
+				<xsl:call-template name="hidden_search_limit" />
+			</xsl:if>
+			
+		</xsl:for-each>					
 	
 	</xsl:template>
 	
