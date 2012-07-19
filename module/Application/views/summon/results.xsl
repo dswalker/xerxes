@@ -88,26 +88,75 @@
 	
 </xsl:template>
 
-<xsl:template name="facets_applied" />
+<xsl:template name="facet_narrow_results">
 
-<!--
-
-<xsl:template name="advanced_search_option">
-
-	<div style="margin: 1em; margin-bottom: 0">
-	
-		<input type="checkbox" id="holdings" name="holdings" value="true">
-			<xsl:if test="//request/holdings">
-				<xsl:attribute name="checked">checked</xsl:attribute>
+		<h3>Narrow Results</h3>
+		
+		<xsl:variable name="scholarly">
+			<xsl:if test="//request/*[@original_key = 'facet.IsScholarly']">
+				<xsl:text>true</xsl:text>
+			</xsl:if>		
+		</xsl:variable>
+		
+		<xsl:variable name="fulltext">
+			<xsl:if test="//request/*[@original_key = 'facet.holdings']">
+				<xsl:text>true</xsl:text>
 			</xsl:if>
-		</input>
-		<xsl:text> </xsl:text>
-		<label for="holdings">Full-text only</label>	
-	
-	</div>
+		</xsl:variable>
+		
+		<xsl:variable name="showall">
+			<xsl:value-of select="$scholarly" /><xsl:value-of select="$fulltext" />
+		</xsl:variable>
+
+		<form id="form-facet-0" action="{//request/controller}/search" method="get">
+
+			<xsl:call-template name="hidden_search_inputs">
+				<xsl:with-param name="exclude_limit" select="param_name" />
+			</xsl:call-template>
+
+			<ul>
+				<li class="facet-selection">
+					<input type="checkbox" class="facet-selection-clear" id="facet-0">
+						<xsl:if test="$showall = ''">
+							<xsl:attribute name="checked">checked</xsl:attribute>
+						</xsl:if>
+					</input>
+					<xsl:text> </xsl:text>
+					<label for="facet-0">All results</label>
+				</li>
+				
+				<li class="facet-selection">
+				
+					<input type="checkbox" id="facet-0-1" class="facet-selection-option facet-0" name="facet.IsScholarly" value="true">
+						<xsl:if test="$scholarly = 'true'">
+							<xsl:attribute name="checked">checked</xsl:attribute>
+						</xsl:if>
+					</input>
+					<xsl:text> </xsl:text>
+					<label for="facet-0-1">Scholarly Only</label>
+				
+				</li>
+
+				<li class="facet-selection">
+				
+					<input type="checkbox" id="facet-0-2" class="facet-selection-option facet-0" name="facet.holdings" value="true">
+						<xsl:if test="$fulltext = 'true'">
+							<xsl:attribute name="checked">checked</xsl:attribute>
+						</xsl:if>
+					</input>
+					<xsl:text> </xsl:text>
+					<label for="facet-0-2">Full-text Only</label>
+				
+				</li>
+				
+				
+			</ul>
+			
+			
+		</form>
 
 </xsl:template>
-
--->
+	
+<xsl:template name="facets_applied" />
 		
 </xsl:stylesheet>
