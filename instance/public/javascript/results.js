@@ -57,7 +57,7 @@ function addFacetSelection()
 		
 		$('#' + group_id).attr('checked', false);
 		
-		submitSearch(group_id);
+		$('#form-' + group_id).submit();
 		loadWaitMessage();
 	});
 }
@@ -66,15 +66,10 @@ function addFacetClear()
 {
 	$('.facet-selection-clear').click(function() {
 		$('input[class~="' + this.id + '"]').attr('checked', false);
-		submitSearch(this.id);
+
+		$('#form-' + this.id).submit();
 		loadWaitMessage();
 	});	
-}
-
-function submitSearch(id)
-{	
-	$('#results-clear-facets-true').attr('checked', false);
-	$('#form-' + id).submit();
 }
 
 function loadWaitMessage()
