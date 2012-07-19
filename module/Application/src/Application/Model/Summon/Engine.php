@@ -171,9 +171,17 @@ class Engine extends Search\Engine
 		{
 			$value = ''; // final value
 			
+			
+			// holdings only
+			
+			if ( $limit->field == 'holdings' )
+			{
+				$this->summon_client->limitToHoldings();
+			}
+			
 			// multi-select (i.e., include) filter
 			
-			if ( is_array($limit->value) )
+			elseif ( is_array($limit->value) )
 			{
 				foreach ( $limit->value as $limited )
 				{
@@ -397,33 +405,17 @@ class Engine extends Search\Engine
 						$group = new Search\FacetGroup();
 						$group->name = $facetFields["displayName"];
 						$group->public = $this->config->getFacetPublicName($facetFields["displayName"]);
+						
+						if ( $config['display'] == 'false' )
+						{
+							$group->display = 'false';
+						}
 							
 						$facets->addGroup($group);
 						
-						// choice type
-						
-						if ( (string) $config["type"] == "choice")
-						{
-							foreach ($config->choice as $choice )
-							{
-								foreach ( $facetFields["counts"] as $counts )
-								{
-									if ( $counts["value"] == (string) $choice["internal"] )
-									{
-										$facet = new Search\Facet();
-										$facet->name = (string) $choice["public"];
-										$facet->count = $counts["count"];
-										$facet->key = $counts["value"];
-										
-										$group->addFacet($facet);
-									}
-								}
-							}
-						}
-						
 						// date type
 						
-						elseif ( (string) $config["type"] == "date")
+						if ( (string) $config["type"] == "date")
 						{
 							foreach ( $facetFields["counts"] as $counts )
 							{
@@ -455,7 +447,7 @@ class Engine extends Search\Engine
 								$facet = new Search\Facet();
 								$facet->name = $counts["value"];
 								$facet->count = $counts["count"];
-									
+								
 								$group->addFacet($facet);
 							}
 						}
