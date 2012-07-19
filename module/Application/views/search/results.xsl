@@ -358,11 +358,19 @@
 		<xsl:if test="config/facet_multiple and results/facets">
 		
 			<div style="padding-top: 1em;">
-				<input id="results-clear-facets-false" type="radio" name="clear-facets" value="" />
+				<input id="results-clear-facets-false" type="radio" name="clear-facets" value="false">
+					<xsl:if test="//request/session/clear_facets = 'false'">
+						<xsl:attribute name="checked">checked</xsl:attribute>
+					</xsl:if>
+				</input>
 				<xsl:text> </xsl:text>
 				<label for="results-clear-facets-false"> Keep search refinements</label>
 				<xsl:text> </xsl:text>
-				<input id="results-clear-facets-true" type="radio" name="clear-facets" value="true" checked="checked" />
+				<input id="results-clear-facets-true" type="radio" name="clear-facets" value="true">
+					<xsl:if test="//request/session/clear_facets != 'false'">
+						<xsl:attribute name="checked">checked</xsl:attribute>
+					</xsl:if>				
+				</input>
 				<xsl:text> </xsl:text>
 				<label for="results-clear-facets-true"> New search</label>
 			</div>
@@ -528,13 +536,13 @@
 	
 	<xsl:template name="search_sidebar">
 			
-		<xsl:if test="//facets/groups">
+		<xsl:if test="//facets/groups[not(display)]">
 		
 			<div class="box">
 			
-				<h3>Narrow your results</h3>
+				<xsl:call-template name="facet_narrow_results" />
 				
-				<xsl:for-each select="//facets/groups/group">
+				<xsl:for-each select="//facets/groups/group[not(display)]">
 		
 					<h3><xsl:value-of select="public" /></h3>
 					
@@ -668,7 +676,7 @@
 					</xsl:if>
 				</input>
 				<xsl:text> </xsl:text>
-				<label for="clear-{name}">Any</label>
+				<label for="{group_id}">Any</label>
 			</li>
 			
 			<xsl:for-each select="facets/facet[position() &lt;= 7 or selected or count(../facet) &lt;= 9]">
@@ -1232,23 +1240,34 @@
 			</xsl:for-each>
 			
 		</xsl:if>
-				
-		<xsl:for-each select="//query/limits/limit[substring(field, 1, string-length($exclude_limit)) != $exclude_limit]">
 		
-			<xsl:choose>
-				<xsl:when test="value/*">
-					<xsl:for-each select="value/*">
-						<input type="hidden" name="{../../field}" value="{text()}" />
-					</xsl:for-each>
-				</xsl:when>
-				<xsl:otherwise>
-					<input type="hidden" name="{field}" value="{value}" />
-				</xsl:otherwise>
-			</xsl:choose>
-
-			
-			
-		</xsl:for-each>		
+		<xsl:choose>
+			<xsl:when test="$exclude_limit != ''">		
+				<xsl:for-each select="//query/limits/limit[substring(field, 1, string-length($exclude_limit)) != $exclude_limit]">
+					<xsl:call-template name="hidden_search_limit" />
+				</xsl:for-each>	
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:for-each select="//query/limits/limit">
+					<xsl:call-template name="hidden_search_limit" />
+				</xsl:for-each>					
+			</xsl:otherwise>
+		</xsl:choose>
+	
+	</xsl:template>
+	
+	<xsl:template name="hidden_search_limit">
+	
+		<xsl:choose>
+			<xsl:when test="value/*">
+				<xsl:for-each select="value/*">
+					<input type="hidden" name="{../../field}" value="{text()}" />
+				</xsl:for-each>
+			</xsl:when>
+			<xsl:otherwise>
+				<input type="hidden" name="{field}" value="{value}" />
+			</xsl:otherwise>
+		</xsl:choose>	
 	
 	</xsl:template>
 
@@ -1266,5 +1285,6 @@
 	<!-- search results templates -->
 	
 	<xsl:template name="search_recommendations" />
+	<xsl:template name="facet_narrow_results" />
 	
 </xsl:stylesheet>

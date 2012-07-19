@@ -73,6 +73,13 @@ abstract class SearchController extends ActionController
 
 		$url = $this->request->url_for($params);
 		
+		// keep search refinements if user says so
+		
+		if ( $this->request->getParam('clear-facets') != '' )
+		{
+			$this->request->setSessionData('clear_facets', $this->request->getParam('clear-facets'));
+		}
+		
 		return $this->redirect()->toUrl($url);
 	}
 	

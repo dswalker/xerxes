@@ -323,8 +323,6 @@ class Search
 				
 				$group->url = $this->request->url_for($group_params);
 				
-
-				
 				foreach ( $group->getFacets() as $facet )
 				{
 					$facet_id++;

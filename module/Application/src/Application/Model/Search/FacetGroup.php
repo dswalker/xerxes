@@ -19,6 +19,7 @@ class FacetGroup
 {
 	public $name; // internal name
 	public $public; // public facing name
+	public $display; // to display
 	public $facets = array();
 
 	/**
@@ -206,7 +207,6 @@ class FacetGroup
 			{
 				$decade_display[$key] = $date[0];
 			}
-			
 		}
 		
 		// sort em in date order
