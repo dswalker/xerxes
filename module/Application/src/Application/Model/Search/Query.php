@@ -26,7 +26,7 @@ class Query
 	
 	protected $stop_words = "";
 	protected $search_fields_regex = '^query[0-9]{0,1}$|^field[0-9]{0,1}$|^boolean[0-9]{0,1}$';
-	protected $limit_fields_regex = 'facet.*';	
+	protected $limit_fields_regex = '^facet.*';	
 	
 	protected $request; // xerxes request object
 	protected $config; // local config
