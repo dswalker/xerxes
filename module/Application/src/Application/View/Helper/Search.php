@@ -205,9 +205,11 @@ class Search
 	 *  
 	 * @param string $field  name of field to check if it is excluded
 	 * @param string $excluded  comma delimited list of fields to be exlcuded
+	 * 
+	 * @return bool false if the field is in the exlcude list
 	 */
 	
-	public static function limitExcluded($field, $excluded)
+	public static function shouldIncludeLimit($field, $excluded)
 	{
 		$exclude_array = explode(',', $excluded);
 		

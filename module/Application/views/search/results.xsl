@@ -367,7 +367,7 @@
 				<label for="results-clear-facets-false"> Keep search refinements</label>
 				<xsl:text> </xsl:text>
 				<input id="results-clear-facets-true" type="radio" name="clear-facets" value="true">
-					<xsl:if test="//request/session/clear_facets != 'false'">
+					<xsl:if test="not(//request/session/clear_facets) or //request/session/clear_facets != 'false'">
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>				
 				</input>
@@ -1243,7 +1243,7 @@
 		
 		<xsl:for-each select="//query/limits/limit">
 			
-			<xsl:if test="php:function('Application\View\Helper\Search::limitExcluded', string(field), string($exclude_limit))">
+			<xsl:if test="php:function('Application\View\Helper\Search::shouldIncludeLimit', string(field), string($exclude_limit))">
 				<xsl:call-template name="hidden_search_limit" />
 			</xsl:if>
 			
