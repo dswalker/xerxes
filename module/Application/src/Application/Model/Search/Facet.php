@@ -19,5 +19,6 @@ class Facet
 	public $count;
 	public $url;
 	public $key;
+	public $is_excluded;
 	public $is_date;
 }

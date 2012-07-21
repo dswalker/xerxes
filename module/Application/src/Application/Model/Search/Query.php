@@ -218,7 +218,21 @@ class Query
 	
 	public function addLimit($boolean, $field, $relation, $phrase)
 	{
-		$term = new LimitTerm($boolean, $field, $relation, $phrase);
+		$term = new LimitTerm();
+		$term->boolean = $boolean;
+		$term->field = $field;
+		$term->relation = $relation;
+		$term->value = $phrase;
+		
+		if ( $boolean == 'NOT' )
+		{
+			$term->param = str_replace('facet.', 'facet.remove.', $field);
+		}
+		else
+		{
+			$term->param = $field;
+		}
+		
 		array_push($this->limits , $term);
 	}
 	
@@ -506,5 +520,27 @@ class Query
 	public function getUser()
 	{
 		return $this->request->getUser();
+	}
+	
+	public static function getParamFromParts($field, $key, $excluded)
+	{
+		$param_name = 'facet';
+		
+		if ( $excluded === true )
+		{
+			$param_name .= '.remove';
+		}
+		
+		$param_name .= '.' . $field;
+		
+		// key defines a way to pass the (internal) value
+		// in the param, while the 'name' is the display value
+		
+		if ( $key != "" )
+		{
+			$param_name .= '.' . $key;
+		}
+		
+		return $param_name;
 	}
 }

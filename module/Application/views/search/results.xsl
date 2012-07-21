@@ -679,9 +679,12 @@
 				<label for="{group_id}">Any</label>
 			</li>
 			
-			<xsl:for-each select="facets/facet[position() &lt;= 7 or selected or count(../facet) &lt;= 9]">
+			<xsl:for-each select="facets/facet[(position() &lt;= 7 or selected or count(../facet) &lt;= 9) and not(excluded)]">
 				<xsl:call-template name="facet_selection" />
 			</xsl:for-each>
+			
+			<xsl:call-template name="facet_excluded" />
+			
 		</ul>
 				
 		<p id="facet-more-{name}" class="facet-option-more"> 
@@ -712,11 +715,29 @@
 			
 			<label for="{input_id}"><xsl:value-of select="name" /></label>
 			
-			<xsl:if test="count">		
+			<xsl:if test="count">
 				&nbsp;(<xsl:value-of select="count" />)
 			</xsl:if>
 			
 		</li>
+	
+	</xsl:template>
+
+	<!-- 
+		TEMPLATE: FACET EXCLUDED 
+	-->
+	
+	<xsl:template name="facet_excluded">
+	
+		<xsl:for-each select="facets/facet[is_excluded]">
+			<li class="facet-selection">
+				<!-- <img src="images/famfamfam/delete.png" /> -->
+				<input type="checkbox" id="{input_id}" class="facet-selection-option {../../group_id}" 
+					name="{param_exclude}" value="{name}" checked="checked" />
+				<xsl:text> </xsl:text>
+				<label style="text-decoration:line-through"><xsl:value-of select="name" /></label>
+			</li>
+		</xsl:for-each>	
 	
 	</xsl:template>
 
@@ -1256,11 +1277,11 @@
 		<xsl:choose>
 			<xsl:when test="value/*">
 				<xsl:for-each select="value/*">
-					<input type="hidden" name="{../../field}" value="{text()}" />
+					<input type="hidden" name="{../../param}" value="{text()}" />
 				</xsl:for-each>
 			</xsl:when>
 			<xsl:otherwise>
-				<input type="hidden" name="{field}" value="{value}" />
+				<input type="hidden" name="{param}" value="{value}" />
 			</xsl:otherwise>
 		</xsl:choose>	
 	

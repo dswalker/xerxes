@@ -448,6 +448,11 @@ class Engine extends Search\Engine
 								$facet->name = $counts["value"];
 								$facet->count = $counts["count"];
 								
+								if ( $counts['isNegated'] == '1')
+								{
+									$facet->is_excluded = 1;
+								}
+								
 								$group->addFacet($facet);
 							}
 						}
