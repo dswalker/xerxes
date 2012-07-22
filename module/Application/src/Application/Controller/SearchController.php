@@ -69,6 +69,16 @@ abstract class SearchController extends ActionController
 		
 		$this->checkSpelling();
 		
+		// remove default field
+		
+		if (array_key_exists('field', $params) )
+		{
+			if ($params['field'] == 'keyword' )
+			{
+				unset($params['field']);
+			}
+		}
+		
 		// construct the actual url and redirect
 
 		$url = $this->request->url_for($params);
