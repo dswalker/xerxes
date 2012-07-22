@@ -679,7 +679,7 @@
 				<label for="{group_id}">Any</label>
 			</li>
 			
-			<xsl:for-each select="facets/facet[(position() &lt;= 7 or selected or count(../facet) &lt;= 9) and not(excluded)]">
+			<xsl:for-each select="facets/facet[(position() &lt;= 7 or selected or count(../facet) &lt;= 9) and not(is_excluded)]">
 				<xsl:call-template name="facet_selection" />
 			</xsl:for-each>
 			
