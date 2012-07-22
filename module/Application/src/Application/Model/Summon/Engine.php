@@ -151,8 +151,6 @@ class Engine extends Search\Engine
 		
 		// facets to include in the response
 		
-		$facets_to_include = array();
-		
 		foreach ( $this->config->getFacets() as $facet_config )
 		{
 			if ( $facet_config['type'] == 'date' )
@@ -169,26 +167,11 @@ class Engine extends Search\Engine
 		
 		foreach ( $search->getLimits(true) as $limit )
 		{
-			$value = ''; // final value
-			
-			
 			// holdings only
 			
 			if ( $limit->field == 'holdings' )
 			{
 				$this->summon_client->limitToHoldings();
-			}
-			
-			// multi-select (i.e., include) filter
-			
-			elseif ( is_array($limit->value) )
-			{
-				foreach ( $limit->value as $limited )
-				{
-					$value .= ',' . str_replace(',', '\,', $limited);
-				}
-				
-				$this->summon_client->addComplexFilter($limit->field . ',' . $limit->boolean . $value);
 			}
 			
 			// date type
@@ -207,18 +190,53 @@ class Engine extends Search\Engine
 				}
 			}
 			
-			// regular filter (or exclude)
+			// regular type
 			
 			else
 			{
+				$value = '';
 				$boolean = 'false';
-				
+					
 				if ( $limit->boolean == "NOT" )
 				{
 					$boolean = 'true';
 				}
+				
+				// multi-select filter
 					
-				$this->summon_client->addFilter($limit->field . ',' . str_replace(',', '\,', $limit->value) . ',' . $boolean);
+				if ( is_array($limit->value) )
+				{
+					// exclude
+					
+					if ( $boolean == 'true' ) 
+					{
+						foreach ( $limit->value as $limited )
+						{
+							$value = str_replace(',', '\,', $limited) ;
+							$this->summon_client->addFilter($limit->field . ",$value,$boolean");
+						}
+					}
+					
+					// inlcude
+					
+					else
+					{
+						foreach ( $limit->value as $limited )
+						{
+							$value .= ',' . str_replace(',', '\,', $limited);
+						}
+					
+						$this->summon_client->addComplexFilter($limit->field . ',' . $boolean . $value);
+					}
+				}
+				
+				// regular filter
+				
+				else
+				{
+					$value = str_replace(',', '\,', $limit->value);
+					$this->summon_client->addFilter($limit->field . ",$value,$boolean");
+				}
 			}
 		}
 
