@@ -683,6 +683,14 @@ div.autocomplete ul li {
 	text-indent: -22px;
 }
 
+.facet-excluded a {
+	color: #333;
+}
+
+.facet-excluded-text {
+	text-decoration:line-through;	
+}
+
 #fullscreen {
 	position: absolute; 
 	top: 0;
@@ -743,7 +751,12 @@ table#folder_output_results thead {
 }
 
 
-
+.saved-records-sort #sort {
+	padding: 1em;
+	padding-left: 1em;
+	margin-left: 0;
+	background-color: transparent;
+}
 
 
 

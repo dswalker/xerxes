@@ -730,12 +730,12 @@
 	<xsl:template name="facet_excluded">
 	
 		<xsl:for-each select="facets/facet[is_excluded]">
-			<li class="facet-selection">
-				<!-- <img src="images/famfamfam/delete.png" /> -->
-				<input type="checkbox" id="{input_id}" class="facet-selection-option {../../group_id}" 
-					name="{param_exclude}" value="{name}" checked="checked" />
-				<xsl:text> </xsl:text>
-				<label style="text-decoration:line-through"><xsl:value-of select="name" /></label>
+			<li class="facet-selection facet-excluded">
+				<a href="{url}">
+					<img src="images/famfamfam/delete.png" alt="remove exlcuded facet" />
+					<xsl:text> </xsl:text>
+					<span class="facet-excluded-text"><xsl:value-of select="name" /></span>
+				</a>
 			</li>
 		</xsl:for-each>	
 	

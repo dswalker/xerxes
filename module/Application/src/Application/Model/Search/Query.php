@@ -526,7 +526,7 @@ class Query
 	{
 		$param_name = 'facet';
 		
-		if ( $excluded === true )
+		if ( $excluded == true )
 		{
 			$param_name .= '.remove';
 		}
