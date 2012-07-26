@@ -64,72 +64,86 @@
 		
 		<xsl:call-template name="searchbox" />
 		
-		<!-- results area -->
+		<div>
 		
-		<div class="">
-			<xsl:attribute name="class">
-				<xsl:choose>
-					<xsl:when test="$sidebar = 'right'">
-						<xsl:text>yui-ge</xsl:text>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:text>yui-gf</xsl:text>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:attribute>
+			<!-- tabbed design -->
 			
-			<!-- results -->
-	
-			<div>
+			<xsl:if test="config/use_tabs">
+			
+				<xsl:attribute name="class">tabs</xsl:attribute>
+				
+				<xsl:call-template name="search_modules" />
+				
+			</xsl:if>
+			
+			<!-- results area -->
+			
+			<div class="">
 				<xsl:attribute name="class">
-					<xsl:text>yui-u</xsl:text>
-					<xsl:if test="$sidebar = 'right'">
-						<xsl:text> first</xsl:text>
-					</xsl:if>
+					<xsl:choose>
+						<xsl:when test="$sidebar = 'right'">
+							<xsl:text>yui-ge</xsl:text>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:text>yui-gf</xsl:text>
+						</xsl:otherwise>
+					</xsl:choose>
 				</xsl:attribute>
-					
-			
-				<xsl:call-template name="sort_bar" />
 				
-				<xsl:call-template name="facets_applied" />
-													
-				<xsl:call-template name="spell_suggest" />
-				
-				<xsl:call-template name="no_hits" />
-				
-				<xsl:call-template name="search_recommendations" />
+				<!-- results -->
 		
-				<xsl:call-template name="brief_results" />
-
-				<xsl:call-template name="paging_navigation" />
+				<div>
+					<xsl:attribute name="class">
+						<xsl:text>yui-u</xsl:text>
+						<xsl:if test="$sidebar = 'right'">
+							<xsl:text> first</xsl:text>
+						</xsl:if>
+					</xsl:attribute>
 				
-				<!-- <xsl:call-template name="hidden_tag_layers" /> -->
+					<xsl:call-template name="sort_bar" />
+					
+					<xsl:call-template name="facets_applied" />
+														
+					<xsl:call-template name="spell_suggest" />
+					
+					<xsl:call-template name="no_hits" />
+					
+					<xsl:call-template name="search_recommendations" />
+			
+					<xsl:call-template name="brief_results" />
 	
-			</div>
-			
-			<!-- sidebar -->
-			
-			<div>
-				<xsl:attribute name="class">
-					<xsl:text>yui-u</xsl:text>
-					<xsl:if test="$sidebar = 'left'">
-						<xsl:text> first</xsl:text>
-					</xsl:if>
-				</xsl:attribute>		
+					<xsl:call-template name="paging_navigation" />
 					
-				
-				<div id="search-sidebar" class="sidebar {$sidebar}">	
-							
-					<!-- modules -->
-					
-					<xsl:call-template name="search_modules" />
-									
-					<!-- facets -->
-					
-					<xsl:call-template name="search_sidebar" />
-					
+					<!-- <xsl:call-template name="hidden_tag_layers" /> -->
+		
 				</div>
-
+				
+				<!-- sidebar -->
+				
+				<div>
+					<xsl:attribute name="class">
+						<xsl:text>yui-u</xsl:text>
+						<xsl:if test="$sidebar = 'left'">
+							<xsl:text> first</xsl:text>
+						</xsl:if>
+					</xsl:attribute>		
+						
+					
+					<div id="search-sidebar" class="sidebar {$sidebar}">	
+								
+						<!-- modules -->
+						
+						<xsl:if test="not(config/use_tabs)">
+							<xsl:call-template name="search_modules" />
+						</xsl:if>
+										
+						<!-- facets -->
+						
+						<xsl:call-template name="search_sidebar" />
+						
+					</div>
+	
+				</div>
 			</div>
 		</div>
 		
@@ -146,9 +160,14 @@
 	
 		<div id="fullscreen" style="display:none">
 		</div>
+		
 		<div id="loading" style="display:none">
 			<img src="images/ajax-loader.gif" alt="" /> Updating results . . . 
-		</div>	
+		</div>
+		
+		<div id="facet-selector" style="display:none; position:absolute; background-color: #fff">
+			<iframe id="facet-selector-page" style="width: 100%; height: 100%" />
+		</div>			
 	
 	</xsl:template>
 
@@ -324,10 +343,10 @@
 						</xsl:variable>
 					
 						<option value="{$internal}">
-						<xsl:if test="//request/field = $internal">
-							<xsl:attribute name="selected">seleted</xsl:attribute>
-						</xsl:if>
-						<xsl:value-of select="@public" />
+							<xsl:if test="//request/field = $internal">
+								<xsl:attribute name="selected">seleted</xsl:attribute>
+							</xsl:if>
+							<xsl:value-of select="@public" />
 						</option>
 						
 					</xsl:for-each>
@@ -407,7 +426,15 @@
 		
 		<xsl:if test="config/search">
 		
-			<div id="search-modules">
+			<div>
+				<xsl:choose>
+					<xsl:when test="config/use_tabs">
+						<xsl:attribute name="id">tabnav</xsl:attribute>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:attribute name="id">search-modules</xsl:attribute>
+					</xsl:otherwise>
+				</xsl:choose>
 			
 				<!-- <h2>Search Options</h2> -->
 				
@@ -687,8 +714,8 @@
 			
 		</ul>
 				
-		<p id="facet-more-{name}" class="facet-option-more"> 
-			[ <a id="facet-more-link-{name}" href="{url}" class="facet-more-launch"> 
+		<p id="facet-more-{group_id}" class="facet-option-more"> 
+			[ <a id="facet-more-link-{group_id}" href="{url}" class="facet-more-launch"> 
 				More Options
 			</a> ] 
 		</p>
