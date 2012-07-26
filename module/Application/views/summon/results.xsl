@@ -46,7 +46,7 @@
 
 <xsl:template name="search_recommendations">
 
-	<xsl:if test="results/database_recommendations and not(//request/start) and not(//query/limits)">
+	<xsl:if test="results/database_recommendations and not(//request/start) and not(//query/limits) and //config/show_database_recommendations = 'true'">
 	
 		<div class="results-database-recommendations">
 		
