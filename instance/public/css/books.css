@@ -6,8 +6,13 @@
 	text-align: right;
 }
 
+.result {
+	margin-bottom: 1.5em;
+	padding-bottom: 1.5em;
+	border-bottom: 1px solid #ccc;
+}
+
 .book-result {
-  border-left: 2px solid #CCCCCC;
   margin-left: 79px;
   padding-left: 20px;
 }
