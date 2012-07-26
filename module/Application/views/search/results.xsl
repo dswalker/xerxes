@@ -68,11 +68,15 @@
 		
 			<!-- tabbed design -->
 			
-			<xsl:if test="config/use_tabs">
+			<xsl:if test="config/use_tabs = 'true'">
 			
 				<xsl:attribute name="class">tabs</xsl:attribute>
 				
-				<xsl:call-template name="search_modules" />
+				<div class="tab-{$sidebar}">
+				
+					<xsl:call-template name="search_modules" />
+					
+				</div>
 				
 			</xsl:if>
 			
@@ -133,7 +137,7 @@
 								
 						<!-- modules -->
 						
-						<xsl:if test="not(config/use_tabs)">
+						<xsl:if test="not(config/use_tabs = 'true')">
 							<xsl:call-template name="search_modules" />
 						</xsl:if>
 										
@@ -428,7 +432,7 @@
 		
 			<div>
 				<xsl:choose>
-					<xsl:when test="config/use_tabs">
+					<xsl:when test="config/use_tabs = 'true'">
 						<xsl:attribute name="id">tabnav</xsl:attribute>
 					</xsl:when>
 					<xsl:otherwise>
