@@ -43,14 +43,14 @@
 		
 		<xsl:call-template name="facets_applied" />
 		
-		<div class="tabs">
+		<div class="saved-records-sort">
 			<xsl:call-template name="sort_bar" />
 		</div>
 		
 		<table id="folder_output_results">
 			<thead>
 				<tr>
-					<td>Select</td>
+					<td><input type="checkbox" value="true" id="saved-select-all" /></td>
 					<td>Title</td>
 					<td>Author</td>
 					<td>Format</td>

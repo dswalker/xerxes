@@ -12,6 +12,7 @@
 $(document).ready(addFacetMoreLinks);
 $(document).ready(addFacetSelection);
 $(document).ready(addFacetClear);
+//$(document).ready(addFacetLaunch);
 $(document).ready(minimizeFacets);
 $(document).ready(showHitCounts);
 $(window).load(setNoImage);
@@ -45,6 +46,29 @@ function showFacetMore(id)
 	$('#facet-less-' + id).show();
 	
 	return false;
+}
+
+function addFacetLaunch()
+{
+	$('.facet-more-launch').click(function() {	
+		
+		left = $(this).offset().left + 200;
+		top = $(this).offset().top;
+		
+		alert(top);
+		
+		$('#facet-selector').css('top', top);	
+		$('#facet-selector').css('left', left);	
+		$('#facet-selector').css('width', '300px');	
+		$('#facet-selector').css('height', '400px');	
+		
+		$('#facet-selector-page').attr('src', this.href);
+		
+		// $('#fullscreen').show();
+		$('#facet-selector').show();
+		
+		return false;
+	});
 }
 
 function addFacetSelection()
