@@ -137,7 +137,7 @@ class Record extends Bibliographic
 		
 		if ( $item_field != null ) 
 		{
-			$items = $this->datafield($item_field);
+			$items = $this->marc->datafield($item_field);
 			
 			// print_r($items);
 			
