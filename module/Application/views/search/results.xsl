@@ -65,17 +65,16 @@
 		<xsl:call-template name="searchbox" />
 		
 		<div>
+			<xsl:if test="config/use_tabs = 'true'">
+				<xsl:attribute name="class">tabs</xsl:attribute>
+			</xsl:if>
 		
-			<!-- tabbed design -->
+			<!-- tabs -->
 			
 			<xsl:if test="config/use_tabs = 'true'">
 			
-				<xsl:attribute name="class">tabs</xsl:attribute>
-				
-				<div class="tab-{$sidebar}">
-				
+				<div class="tab-{$sidebar}">				
 					<xsl:call-template name="search_modules" />
-					
 				</div>
 				
 			</xsl:if>
