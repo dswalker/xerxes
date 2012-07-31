@@ -72,10 +72,12 @@
 				<li>
 					<a href="{link}"><xsl:value-of select="title" /></a>
 					
+					<!--
 					<xsl:if test="description">
-					 	<xsl:text> -- </xsl:text>
+					 	
 						<xsl:value-of select="description" />
 					 </xsl:if>
+					 -->
 				</li>
 				
 			</xsl:for-each>
