@@ -1,189 +1,23 @@
+.record-actions, .sidebar, #bd-top, #bd h1, #tabnav, .save-record-action { display: none; }
 
-/** mobile reset **/
-
-body {
-	text-align: left;
+.results-info {
+	font-size: 90%;
+	padding: 0 30px .7em 15px;
+	white-space: normal;
 }
 
-#bd div, #bd ul, #bd legend, #authentication .box {
-	width: 100%;
-	float: none;, 
-	margin: 0;
-	padding: 0;
-	border: none;
-	background: none;
-	margin-top: .5em;
-	margin-bottom: .5em;
-	text-align: left;
+.results-info a.ui-link, .results-info a.ui-link:visited {
+	text-decoration: none;
+	color: #666;
+	font-weight: normal;
 }
 
-.yui-t6 #yui-main, .yui-t6 #yui-main .yui-b, .yui-t6 .yui-b {
-	width: 100%;
-	margin: 0;
-	padding: 0;
-	float: none;
+.results-info div {
+	margin-bottom: .6em;
 }
 
-h1, h2, h3, h4 {
-	font-weight: bold;
-	font-size: 110%;
-	margin-top: .5em;
-	margin-bottom: .5em;
-	color: #000;
+.results-info span {
+	padding-right: 1em;
 }
 
-/** layout **/
 
-#bd {
-	padding: 1em;
-	padding-top: 0;
-}
-
-#breadcrumb {
-	padding: .5em;
-	margin: 0;
-}
-
-.sidebar {
-	display: none;
-}
-
-/** hacks, can't figure why this is necessary **/
-
-#bd ul.database-section-list, #databases-categories .yui-u  {
-	margin-left: 0px;
-}
-
-#bd .record-actions div {
-	width: 96%;
-}
-
-/** lists **/
-
-ul.database-section-list li, #databases-categories li, .result, #bd #record-full-text { 
-	margin-bottom: .2em;
-	border-bottom: 2px solid #ccc;
-	background-color: #fff;
-	padding: .4em;
-	/*padding-right: 18px;*/
-	margin-left: 0;
-	paddin-left: 0;
-	list-style-type: none;
-	font-size: 130%;
-	background-image: url(../images/mobile-arrow.gif);
-	background-position: right center;
-	background-repeat: no-repeat;
-}
-
-#databases-categories li a, .result a {
-	display: block;
-}
-
-/** database selection **/
-
-#bd legend {
-	padding-top: .7em;
-	padding-bottom: .7em;
-}
-
-/** login **/
-
-#authentication .box {
-	margin: 0;
-	width: inherit;
-	padding: 0;
-}
-
-/** results **/
-
-.results-info, #sort-options { 
-	display: none;
-}
-
-/** pager **/
-
-#bd div.results-pager {
-	margin: 1em;
-}
-
-.results-pager li {
-	margin: 0;
-	padding: 0;
-}
-
-.results-pager-list li strong, .results-pager-list li a.results-pager-link {
-	display: none;
-}
-
-.results-pager-next {
-	font-size: 150%;
-	padding: .5em;
-	border: 1px solid #ccc;
-	background-color: #fff
-}
-
-/** full record **/
-
-#bd dt, #bd dd {
-	margin-bottom: .3em;
-	display: block;
-}
-
-#bd dt { 
-	margin: 0;
-	padding: 0;
-	float: none;
-	font-weight: bold;
-	width: 100%;
-	text-align: left;
-}
-
-#bd dd {
-	margin-left: 1em;
-}
-
-#record li {
-	margin-left: 1em;
-}
-
-/** hide for now, will add later **/
-
-#bd .save-record, .save-record-link {
-	display: none;
-}
-
-/** books: this is hacked in here until we get the search arch finished **/
-
-#tabnav {
-	display: none;
-}
-
-table.holdings-table {
-	margin-top: 1em;
-	margin-bottom: 1em;
-}
-
-/** holdings: dupped here, remove this when search arch in place **/
-
-.holdings-table {
-	border-collapse:collapse;
-	border-spacing:0;
-	border: 1px solid #ccc;
-	margin: 15px;
-}
-
-.holdings-table th, .holdings-table td {
-	text-align: left;
-	margin: 0px;
-	padding: 5px;
-	padding-right: 10px;
-	border-bottom: 1px solid #eee;
-}
-
-.holdings-table th {
-	background-color: #efefef;
-}
-
-#sms-option {
-	display: none;
-}
