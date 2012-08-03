@@ -180,11 +180,11 @@ class Engine extends Search\Engine
 			{
 				// @todo: make this not 'display'
 				
-				if ( $limit->value == 'start' )
+				if ( $limit->value == 'start' && $limit->display != '')
 				{
 					$this->summon_client->setStartDate($limit->display);
 				}
-				elseif ( $limit->value == 'end' )
+				elseif ( $limit->value == 'end' && $limit->display != '')
 				{
 					$this->summon_client->setEndDate($limit->display);
 				}
