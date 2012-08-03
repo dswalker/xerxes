@@ -410,6 +410,19 @@ class Search
 	
 	public static function shouldIncludeLimit($field, $excluded)
 	{
+		// if this is our three-part field, then take only the base
+		
+		$field_parts = explode('.', $field);
+		
+		if ( count($field_parts) > 2 )
+		{
+			array_pop($field_parts);
+			
+			$field = implode('.', $field_parts );
+		}
+		
+		// compare it to excluded fields
+		
 		$exclude_array = explode(',', $excluded);
 	
 		foreach ( $exclude_array as $exclude )
