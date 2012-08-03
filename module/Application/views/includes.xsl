@@ -219,7 +219,12 @@
 		<head>
 		<title><xsl:value-of select="//config/application_name" />: <xsl:call-template name="title" /></title>
 		<xsl:call-template name="surround_meta" />
-		<base href="{$base_url}/" />
+		
+		<!-- jquery mobile adds its own base tag, so we don't here; weird, I know -->
+		
+		<xsl:if test="$is_mobile = 0">
+			<base href="{$base_url}/" />
+		</xsl:if>
 		
 		<!-- css -->
 		<xsl:call-template name="css_include" />
@@ -394,7 +399,7 @@
 					.results-info, .sidebar, #bd-top, #bd h1, #tabnav, .save-record-action { display: none; }
 				</style>
 				
-				<link href="css/local-mobile.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />	
+				<link href="{$base_url}/css/local-mobile.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />	
 
 			</xsl:when>
 			<xsl:otherwise>
