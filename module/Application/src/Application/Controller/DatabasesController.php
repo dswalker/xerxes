@@ -6,20 +6,12 @@ use Zend\Mvc\Controller\ActionController;
 
 class DatabasesController extends ActionController
 {
-	private $lang;
-	
-	public function __construct()
-	{
-		parent::__construct();
-		$this->lang = $this->request->getParam("lang");
-	}
-	
 	public function index()
 	{
+		$params = array('databases');
+		
+		$url = $this->request->url_for($params);
+		
+		return $this->redirect()->toUrl($url);
 	}
-	
-	public function subject()
-	{
-		$subject = $this->request->getParam("subject");
-	}	
 }
