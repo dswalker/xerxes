@@ -41,6 +41,18 @@
 	
 	<xsl:variable name="base_url" select="//base_url" />
 	
+	<xsl:variable name="base_include">
+		<xsl:choose>
+			<xsl:when test="//config/shared_assets">
+				<xsl:value-of select="//config/shared_assets" />	
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$base_url" />			
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
+	
+	
 	<xsl:variable name="xerxes_version" select="//config/xerxes_version" />
 
 	<xsl:variable name="link_target" select="//config/link_target" />
@@ -393,14 +405,14 @@
 				<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 				<script src="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.js"></script>
 				
-				<link href="{$base_url}/css/xerxes-mobile.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />	
+				<link href="{$base_include}/css/xerxes-mobile.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />	
 				<link href="{$base_url}/css/local-mobile.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />	
 
 			</xsl:when>
 			<xsl:otherwise>
 				
-				<link href="css/reset-fonts-grids.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />
-				<link href="css/xerxes-blue.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />
+				<link href="{$base_include}/css/reset-fonts-grids.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />
+				<link href="{$base_include}/css/xerxes-blue.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />
 				<link href="css/local.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />	
 				
 			</xsl:otherwise>
@@ -481,8 +493,6 @@
 		<a href="{$base_url}/" data-icon="home">Home</a>
 	
 		<h1><xsl:value-of select="$text_app_name" /></h1>
-		
-		<!-- <a href="{$base_url}"></a> -->
 	
 	</xsl:template>
 	
@@ -563,9 +573,9 @@
 			
 		<xsl:call-template name="jslabels" />
 	
-		<script src="javascript/jquery/jquery-1.6.2.min.js" language="javascript" type="text/javascript"></script>
+		<script src="{$base_include}/javascript/jquery/jquery-1.6.2.min.js" language="javascript" type="text/javascript"></script>
 		
-		<script src="javascript/results.js" language="javascript" type="text/javascript"></script>
+		<script src="{$base_include}/javascript/results.js" language="javascript" type="text/javascript"></script>
 
 	</xsl:template>
 		
