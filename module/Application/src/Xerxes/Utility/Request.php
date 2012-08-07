@@ -635,6 +635,10 @@ class Request extends ZendRequest
 				}
 			}
 		}
+		else
+		{
+			$query_string = $params;
+		}
 		
 		// take any remaining as the query string
 		
