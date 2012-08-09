@@ -1,4 +1,4 @@
-.record-actions, .sidebar, #bd-top, #tabnav, .save-record-action { display: none; }
+.record-actions, .sidebar, #bd-top, #tabnav, .results-database-recommendations, .save-record-action { display: none; }
 
 .results-info {
 	font-size: 90%;
