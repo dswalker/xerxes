@@ -163,6 +163,14 @@ class Engine extends Search\Engine
 			}
 		}
 		
+		// limit to local holdings unless told otherwise
+		
+		if ( $this->config->getConfig('LIMIT_TO_HOLDINGS', false) )
+		{
+			$this->summon_client->limitToHoldings();
+		}
+		
+		
 		// limits
 		
 		foreach ( $search->getLimits(true) as $limit )
@@ -171,7 +179,16 @@ class Engine extends Search\Engine
 			
 			if ( $limit->field == 'holdings' )
 			{
-				$this->summon_client->limitToHoldings();
+				if ( $limit->value == 'false')
+				{
+					// this is actually an expander to search everything
+					
+					$this->summon_client->limitToHoldings(false);
+				}
+				else
+				{
+					$this->summon_client->limitToHoldings();
+				}
 			}
 			
 			// date type
@@ -245,13 +262,6 @@ class Engine extends Search\Engine
 		foreach ( $this->formats_exclude as $format )
 		{
 			$this->summon_client->addFilter("ContentType,$format,true");
-		}
-		
-		// holdings only
-		
-		if ( $search->isHoldingsOnly() )
-		{
-			$this->summon_client->limitToHoldings();
 		}
 		
 		// summon deals in pages, not start record number
