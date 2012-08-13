@@ -26,6 +26,17 @@
 	<xsl:call-template name="surround" />
 </xsl:template>
 
+<xsl:template name="breadcrumb">
+	<xsl:call-template name="breadcrumb_search" />
+	<xsl:value-of select="$text_search_record" />
+</xsl:template>
+
+<xsl:template name="page_name">
+	<xsl:for-each select="/*/results/records/record/xerxes_record">
+		<xsl:call-template name="record_title" />
+	</xsl:for-each>
+</xsl:template>
+
 <xsl:template name="main">
 		
 	<xsl:call-template name="record" />

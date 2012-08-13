@@ -49,16 +49,19 @@
 
 	<xsl:template name="search_page">
 
-		<xsl:variable name="sidebar">
+		<xsl:param name="sidebar">
 			<xsl:choose>
 				<xsl:when test="//config/search_sidebar = 'right'">
 					<xsl:text>right</xsl:text>
+				</xsl:when>
+				<xsl:when test="//config/search_sidebar = 'none'">
+					<xsl:text>none</xsl:text>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:text>left</xsl:text>
 				</xsl:otherwise>
 			</xsl:choose>
-		</xsl:variable>
+		</xsl:param>
 	
 		<!-- search box area -->
 		
@@ -87,9 +90,9 @@
 						<xsl:when test="$sidebar = 'right'">
 							<xsl:text>yui-ge</xsl:text>
 						</xsl:when>
-						<xsl:otherwise>
+						<xsl:when test="$sidebar = 'left'">
 							<xsl:text>yui-gf</xsl:text>
-						</xsl:otherwise>
+						</xsl:when>
 					</xsl:choose>
 				</xsl:attribute>
 				
@@ -123,30 +126,34 @@
 				
 				<!-- sidebar -->
 				
-				<div>
-					<xsl:attribute name="class">
-						<xsl:text>yui-u</xsl:text>
-						<xsl:if test="$sidebar = 'left'">
-							<xsl:text> first</xsl:text>
-						</xsl:if>
-					</xsl:attribute>		
+				<xsl:if test="$sidebar != 'none'">
+				
+					<div>
+						<xsl:attribute name="class">
+							<xsl:text>yui-u</xsl:text>
+							<xsl:if test="$sidebar = 'left'">
+								<xsl:text> first</xsl:text>
+							</xsl:if>
+						</xsl:attribute>		
+							
 						
-					
-					<div id="search-sidebar" class="sidebar {$sidebar}">	
-								
-						<!-- modules -->
-						
-						<xsl:if test="not(config/use_tabs = 'true')">
-							<xsl:call-template name="search_modules" />
-						</xsl:if>
-										
-						<!-- facets -->
-						
-						<xsl:call-template name="search_sidebar" />
-						
+						<div id="search-sidebar" class="sidebar {$sidebar}">	
+									
+							<!-- modules -->
+							
+							<xsl:if test="not(config/use_tabs = 'true')">
+								<xsl:call-template name="search_modules" />
+							</xsl:if>
+											
+							<!-- facets -->
+							
+							<xsl:call-template name="search_sidebar_facets" />
+							
+						</div>
+				
 					</div>
-	
-				</div>
+					
+				</xsl:if>
 			</div>
 		</div>
 		
@@ -191,7 +198,7 @@
 					<div class="yui-u">
 						<xsl:choose>
 							<xsl:when test="//sort_display">
-								<div id="sort-options" data-role="controlgroup" data-type="horizontal">
+								<div id="sort-options" data-role="controlgroup" data-type="horizontal" data-mini="true">
 									<xsl:copy-of select="$text_results_sort_by" /><xsl:text>: </xsl:text>
 									<xsl:for-each select="//sort_display/option">
 										<xsl:choose>
@@ -560,11 +567,11 @@
 	</xsl:template>
 	
 	<!-- 
-		TEMPLATE: SEARCH SIDEBAR 
+		TEMPLATE: SEARCH SIDEBAR FACETS
 		the sidebar within the search results
 	-->
 	
-	<xsl:template name="search_sidebar">
+	<xsl:template name="search_sidebar_facets">
 			
 		<xsl:if test="//facets/groups[not(display)]">
 		
