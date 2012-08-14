@@ -249,7 +249,9 @@
 	
 	<xsl:template name="searchbox">
 	
-		<form id="form-main-search" action="{//request/controller}/search" method="get">	
+		<xsl:param name="action"><xsl:value-of select="//request/controller" />/search</xsl:param>
+	
+		<form id="form-main-search" action="{$action}" method="get">	
 	
 			<xsl:if test="//request/lang">
 				<input type="hidden" name="lang" value="{//request/lang}" />
