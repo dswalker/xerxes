@@ -3,6 +3,7 @@
 
 	<default>summon</default>
 	
+	<controller name="backdoor" class="Application\Controller\BackdoorController" />
 	<controller name="asset" class="Application\Controller\AssetController">
 		<action name="labels">
 			<view>asset/labels.phtml</view>
@@ -15,12 +16,12 @@
 			<path index="2" param="subject" />
 		</action>	
 	</controller>
-	<controller name="ebsco" class="Application\Controller\EbscoController" inherits="search" >
+	<controller name="ebsco" class="Application\Controller\EbscoController">
 		<action name="results" restricted="true" />
 		<action name="record" restricted="true" />
 	</controller>
 	<controller name="error" class="Application\Controller\ErrorController" />
-	<controller name="folder" class="Application\Controller\FolderController" inherits="search" >
+	<controller name="folder" class="Application\Controller\FolderController">
 		<path index="2" param="username" />
 		<action name="export">
 			<view format="text-file">citation/basic.xsl</view>
@@ -29,32 +30,12 @@
 		</action>	
 	</controller>
 	<controller name="index" class="Application\Controller\IndexController" />
-	<controller name="metalib" class="Application\Controller\MetalibController" inherits="search">
-		<action name="index">
-			<view>metalib/index.xsl</view>
-		</action>
-	</controller>
-	<controller name="primo" class="Application\Controller\PrimoController" inherits="search" />	
-	<controller name="search" class="Application\Controller\SearchController">
-		<action name="index">
-			<view>search/index.xsl</view>
-		</action>
-		<action name="hits">
-			<view>search/hits.xsl</view>
-		</action>
-		<action name="lookup">
-			<view>search/lookup.xsl</view>
-		</action>
-		<action name="facet">
-			<view>search/facet.xsl</view>
-		</action>
-		<action name="save">
-			<view format="json">search/save-ajax.xsl</view>
-		</action>	
-	</controller>
-	<controller name="solr" class="Application\Controller\SolrController" inherits="search" />
-	<controller name="summon" class="Application\Controller\SummonController" inherits="search" />
-	<controller name="worldcat" class="Application\Controller\WorldcatController" inherits="search">
+	<controller name="metalib" class="Application\Controller\MetalibController" />
+	<controller name="primo" class="Application\Controller\PrimoController" />	
+	<controller name="search" class="Application\Controller\SearchController" />
+	<controller name="solr" class="Application\Controller\SolrController" />
+	<controller name="summon" class="Application\Controller\SummonController" />
+	<controller name="worldcat" class="Application\Controller\WorldcatController">
 		<action name="results" restricted="true" />
 		<action name="record" restricted="true" />
 	</controller>

@@ -70,25 +70,6 @@ class ControllerMap
 		
 		$this->version = (string) $this->xml['version'];
 		
-		// see if any controller inherits from another
-		
-		foreach ( $this->xml->controller as $controller )
-		{
-			$inherits = $controller["inherits"];
-						
-			if ( $inherits  != "" ) // this one does
-			{
-				// grab the controller that this one inherits fom
-				
-				$controller_to_copy = $this->xml->xpath("//controller[@name='$inherits']");
-				
-				if ( count($controller_to_copy) > 0 )
-				{
-					$this->addActions($controller_to_copy[0], $controller ); // import its nodes
-				}
-			}
-		}
-		
 		// grab url aliases
 		
 		foreach ( $this->xml->url_alias as $url_alias )

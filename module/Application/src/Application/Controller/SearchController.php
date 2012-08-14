@@ -2,6 +2,8 @@
 
 namespace Application\Controller;
 
+use Zend\View\Model\ViewModel;
+
 use Application\View\Helper\Search as SearchHelper,
 	Application\Model\Search\Query,
 	Application\Model\Search\Result,
@@ -26,7 +28,7 @@ abstract class SearchController extends ActionController
 	protected $max_allowed; // upper-limit per page
 	protected $sort; // default sort
 	
-	protected $data = array(); // response data
+	protected $data; // response data
 	
 	public function execute(MvcEvent $e)
 	{
@@ -42,7 +44,9 @@ abstract class SearchController extends ActionController
 		
 		$this->registry = Registry::getInstance();
 		
-		$this->data["config_local"] = $this->config->toXML();
+		$this->data = new ViewModel();
+		
+		$this->data->setVariable('config_local', $this->config->toXML());
 		
 		$this->query = $this->engine->getQuery($this->request);
 		
@@ -53,6 +57,10 @@ abstract class SearchController extends ActionController
 	
 	public function indexAction()
 	{
+		// set view template
+		
+		$this->data->setTemplate('search/index.xsl');
+		
 		return $this->data;
 	}
 	
@@ -120,7 +128,12 @@ abstract class SearchController extends ActionController
 		
 		// and tell the browser too
 		
-		$this->data["hits"] = $total;
+		$this->data->setVariable('hits', $total);
+		
+		// view template
+		
+		$this->data->setTemplate('search/hits.xsl');
+		
 		return $this->data;
 	}
 	
@@ -169,7 +182,7 @@ abstract class SearchController extends ActionController
 			$suggestion = $this->checkSpelling();
 			
 			$this->helper->addSpellingLink($suggestion);
-			$this->data["spelling"] = $suggestion;
+			$this->data->setVariable('spelling', $suggestion);
 		}
 		
 		// track the query
@@ -215,8 +228,12 @@ abstract class SearchController extends ActionController
 		
 		// response
 		
-		$this->data["query"] = $this->query;
-		$this->data["results"] = $results;
+		$this->data->setVariable('query', $this->query);
+		$this->data->setVariable('results',$results);
+		
+		// view template
+		
+		$this->data->setTemplate($this->id . '/results.xsl');		
 		
 		return $this->data;
 	}
@@ -235,7 +252,11 @@ abstract class SearchController extends ActionController
 		
 		// add to response
 		
-		$this->data["results"] = $results;
+		$this->data->setVariable('results', $results);
+		
+		// view template
+		
+		$this->data->setTemplate($this->id . '/record.xsl');
 		
 		return $this->data;
 	}
@@ -255,7 +276,11 @@ abstract class SearchController extends ActionController
 		
 		// add to response
 		
-		$this->data["results"] = $result;
+		$this->data->setVariable('results', $result);
+		
+		// view template
+		
+		$this->data->setTemplate('search/lookup.xsl');
 		
 		return $this->data;
 	}	
@@ -275,7 +300,7 @@ abstract class SearchController extends ActionController
 		{
 			$datamap->deleteRecordBySource( $username, $this->id, $original_id );
 			$this->unmarkSaved( $original_id );
-			$this->data["delete"] = "1";
+			$this->data->setVariable('delete', '1');
 		}
 
 		// add command
@@ -294,8 +319,12 @@ abstract class SearchController extends ActionController
 				
 			$this->markSaved( $original_id, $inserted_id );
 			
-			$this->data["savedRecordID"] = $inserted_id;
+			$this->data->setVariable('savedRecordID', $inserted_id);
 		} 
+		
+		// view template
+		
+		$this->data->setTemplate('search/save-ajax.xsl');
 		
 		return $this->data;
 	}
@@ -332,8 +361,6 @@ abstract class SearchController extends ActionController
 	public function facetAction()
 	{
 		$this->request->setParam('max', 1);
-		
-		
 		
 		return $this->resultsAction();
 	}
