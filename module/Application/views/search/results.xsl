@@ -386,7 +386,7 @@
 	
 	<xsl:template name="search_refinement">
 	
-		<xsl:if test="config/facet_multiple and results/facets">
+		<xsl:if test="config/facet_multiple = 'true' and results/facets">
 		
 			<div style="padding-top: 1em;">
 				<input id="results-clear-facets-false" type="radio" name="clear-facets" value="false">
@@ -589,7 +589,7 @@
 						<xsl:when test="facets/facet/is_date">
 							<xsl:call-template name="facet_dates" />
 						</xsl:when>
-						<xsl:when test="//config/facet_multiple">
+						<xsl:when test="//config/facet_multiple = 'true'">
 							<xsl:call-template name="facet_multiple" />
 						</xsl:when>
 						<xsl:otherwise>
@@ -787,7 +787,7 @@
 	
 	<xsl:template name="facets_applied">
 		
-		<xsl:if test="query/limits">
+		<xsl:if test="not(//config/facet_multiple = 'true') and query/limits">
 			<div class="results-facets-applied">
 				<ul>
 					<xsl:for-each select="query/limits/limit">

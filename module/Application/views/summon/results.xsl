@@ -218,7 +218,5 @@
 		</ul>
 
 </xsl:template>
-	
-<xsl:template name="facets_applied" />
-		
+			
 </xsl:stylesheet>
