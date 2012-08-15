@@ -126,9 +126,11 @@
 	-->	
 	
 	<xsl:template name="record_actions">
+		
 		<div id="record-full-text" class="raised-box record-actions">
 			<xsl:call-template name="record_action_fulltext" />
 			<xsl:call-template name="save_record" />
+			<xsl:call-template name="additional_full_record_actions" />
 		</div>
 	</xsl:template>
 
@@ -781,9 +783,7 @@
 
 <xsl:template name="additional_full_record_data_main_top" />
 <xsl:template name="additional_full_record_data_main_bottom" />
-
-
-
+<xsl:template name="additional_full_record_actions" />
 
 
 
