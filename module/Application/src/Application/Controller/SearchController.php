@@ -362,7 +362,11 @@ abstract class SearchController extends ActionController
 	{
 		$this->request->setParam('max', 1);
 		
-		return $this->resultsAction();
+		$model = $this->resultsAction();
+		
+		$model->setTemplate('search/facet.xsl');
+		
+		return $model;
 	}
 	
 	
