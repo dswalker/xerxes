@@ -4,11 +4,7 @@
 	<default>summon</default>
 	
 	<controller name="backdoor" class="Application\Controller\BackdoorController" />
-	<controller name="asset" class="Application\Controller\AssetController">
-		<action name="labels">
-			<view>asset/labels.phtml</view>
-		</action>	
-	</controller>
+	<controller name="asset" class="Application\Controller\AssetController" />
 	<controller name="authenticate" class="Application\Controller\AuthenticateController" />
 	<controller name="courses" class="Application\Controller\CoursesController" />
 	<controller name="databases" class="Application\Controller\DatabasesController">
