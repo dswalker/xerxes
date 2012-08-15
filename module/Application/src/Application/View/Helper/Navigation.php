@@ -30,7 +30,8 @@ class Navigation
 	{
 		$params = array(
 			'controller' => 'folder',
-			'return' => $this->request->server()->get( 'REQUEST_URI' )
+			'return' => $this->request->server()->get( 'REQUEST_URI' ),
+			'userid' => $this->request->getUser()->username // @todo x1 trans hack
 		);
 		
 		return $this->request->url_for($params);
