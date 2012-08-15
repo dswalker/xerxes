@@ -2,9 +2,10 @@
 
 namespace Application\Model\Search;
 
-use Application\Model\Search\Availability\AvailabilityFactory;
+use Xerxes\Utility\Email;
 
 use Application\Model\Bx\Engine as BxEngine,
+	Application\Model\Search\Availability\AvailabilityFactory,
 	Xerxes\Record,
 	Xerxes\Utility\Cache,
 	Xerxes\Utility\Parser,
@@ -129,7 +130,6 @@ class Result
 		$xerxes_record = $this->getXerxesRecord();
 		
 		$id = $xerxes_record->getRecordID(); // id from the record
-		$cache_id = $xerxes_record->getSource() . "." . $id; // to identify this in the cache
 		
 		$type = $this->config->getConfig("LOOKUP"); // availability look-up type
 		
@@ -141,7 +141,7 @@ class Result
 		
 		if ( $xerxes_record->hasPhysicalHoldings() == false || $type == "" || $id == "" )
 		{
-			return null;
+			return $this;
 		}
 		
 		// get the data
@@ -159,9 +159,71 @@ class Result
 		$expiry = $this->config->getConfig("HOLDINGS_CACHE_EXPIRY", false, 2 * 60 * 60); // expiry set for two hours
 		$expiry += time(); 
 		
-		$cache->set($cache_id, serialize($this->holdings), $expiry);
+		$cache->set($this->getCacheId(), serialize($this->holdings), $expiry);
 		
-		return null;
+		return $this;
+	}
+	
+	/**
+	 * Send a text message of this record to carrier using email gateway 
+	 * 
+	 * @param unknown_type $item_number
+	 */
+	
+	public function textLocationTo($email, $item_number)
+	{
+		if ( $this->holdings->length() == 0 )
+		{
+			$this->fetchHoldings();
+			
+			// nothing here to text!
+			
+			if ( $this->holdings->length() == 0 )
+			{
+				return $this;
+			}
+		}
+		
+		// title
+		
+		$title = $this->getXerxesRecord()->getTitle();
+		
+		// item info
+		
+		$item = $this->holdings->getItems($item_number);
+		
+		$item_message = $item->location . " " . $item->callnumber;
+		
+		// make sure we don't go over sms size limit
+		
+		$title_length = strlen($title);
+		$item_length = strlen($item_message);
+		$total_length = $title_length + $item_length;
+			
+		if ( $total_length > 150 )
+		{
+			$title = substr($title,0,$total_length - $item_length - 6) . "...";
+		}
+		
+		$body = $title . " / " . $item_message;
+		
+		$email_client = new Email();
+		$email_client->send($email, 'library', $body);
+		
+		return $this;
+	}
+	
+	/**
+	 * Canonical cache id to identify this record
+	 * 
+	 * @return string
+	 */
+	
+	protected function getCacheId()
+	{
+		$xerxes_record = $this->getXerxesRecord();
+		
+		return $xerxes_record->getSource() . "." . $xerxes_record->getRecordID();
 	}
 	
 	/**

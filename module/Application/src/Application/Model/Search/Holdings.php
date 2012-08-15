@@ -74,12 +74,25 @@ class Holdings
 	}	
 	
 	/**
-	 * Get all items
+	 * Get all items or item at specified position
+	 * 
+	 * @param int [optional] item position
 	 */
 	
-	public function getItems()
+	public function getItems($position = null)
 	{
-		return $this->items;
+		if ( $position === null )
+		{
+			return $this->items;
+		}
+		elseif ( array_key_exists($position, $this->items) )
+		{
+			return $this->items[$position];
+		}
+		else
+		{
+			throw new \DomainException("no item at position '$position'");
+		}
 	}
 
 	/**

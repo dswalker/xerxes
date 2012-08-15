@@ -189,8 +189,8 @@ function setNoImage()
 		{			
 			if ( imgs[i].width != 1 )
 			{
-				$(".bookRecordBookCover").show();
-				$(".bookRecord").css('marginLeft', (imgs[i].width + 20) + 'px');
+				$("#book-record-book-cover").show();
+				$("#book-record").css('marginLeft', (imgs[i].width + 20) + 'px');
 			}
 		}
 		else ( /book-jacket/.test(imgs[i].className) )

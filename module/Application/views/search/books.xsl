@@ -37,9 +37,10 @@
 		<xsl:if test="$is_mobile = 0">
 	
 			<link href="css/books.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />
+			<script src="{$base_include}/javascript/sms.js" language="javascript" type="text/javascript"></script>
 			
 		</xsl:if>
-	
+		
 	</xsl:template>
 
 	<!-- 
@@ -95,12 +96,15 @@
 	-->	
 	
 	<xsl:template name="record_actions">
+	
 		<div id="record-full-text" class="raised-box record-actions">
 			
 			<xsl:call-template name="availability">
 				<xsl:with-param name="context">record</xsl:with-param>
 			</xsl:call-template>			
 
+			<xsl:call-template name="additional_full_record_actions" />
+			<xsl:call-template name="sms_option" />
 			<xsl:call-template name="save_record" />
 			
 		</div>
@@ -646,10 +650,9 @@
 			Send title and location to your mobile phone
 		</xsl:element>
 	
-		<form name="smsForm" action="folder/sms" method="get">
-		
-			<input type="hidden" name="lang" value="{//request/lang}" />
-			<input type="hidden" name="title" value="{title_normalized}" />
+		<form name="smsForm" id="sms-form" action="{//request/controller}/sms" method="get">
+
+			<input type="hidden" name="id" value="{record_id}" />
 			
 			<div class="sms-property">
 				<label for="phone">Your phone number: </label>
@@ -729,7 +732,7 @@
 						<xsl:attribute name="class">sms-copy</xsl:attribute>
 					</xsl:if>
 					
-					<input name="item" value="{$item}">
+					<input name="item" value="{position()}">
 						<xsl:attribute name="type">
 							<xsl:choose>
 								<xsl:when test="$num_copies &gt; 1">radio</xsl:when>
