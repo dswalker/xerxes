@@ -147,8 +147,7 @@ class Strategy implements ListenerAggregateInterface
 				}
 			}
 			
-			
-			
+
 			
 			// show internal xml
 			
@@ -171,7 +170,7 @@ class Strategy implements ListenerAggregateInterface
 				
 				// template not already set, so grab out of config / convention
 				
-				elseif ( $model->getTemplate() == '')
+				elseif ( ! strstr($model->getTemplate(), '.') )
 				{
 					$script = $request->getControllerMap()->getView($request->getParam('format'));
 					
