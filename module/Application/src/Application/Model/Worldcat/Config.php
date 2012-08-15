@@ -36,7 +36,7 @@ class Config extends Search\Config
 	{
 		$group_object = new ConfigGroup();
 		
-		$groups = $this->xml->xpath("//worldcat_groups/group");
+		$groups = $this->xml->xpath("//config[@name='worldcat_groups']/group");
 		
 		if ( $groups != false )
 		{
@@ -68,7 +68,7 @@ class Config extends Search\Config
 	
 						foreach ( $arrID as $strID )
 						{
-							foreach ( $this->xml->xpath("//worldcat_groups/group[@id='$strID']/libraries") as $exclude )
+							foreach ( $this->xml->xpath("//config[@name='worldcat_groups']/group[@id='$strID']/libraries") as $exclude )
 							{
 								if ( $group_object->libraries_exclude != null )
 								{

@@ -38,7 +38,7 @@
 			<field id="subject" public="subject" internal="su" />		
 		</config>
 
-		<worldcat_groups>
+		<config name="worldcat_groups" xml="true" pass="true">
 			<group id="local" label="Xerxes Library">
 				<libraries>CFI</libraries>
 				<exclude></exclude>
@@ -74,7 +74,7 @@
 				
 				<query_limit>srw.cg = "05"</query_limit>
 			</group>
-		</worldcat_groups>
+		</config>
 		
 	</configuration>
 	
