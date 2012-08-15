@@ -293,7 +293,7 @@
 			
 				<div id="yui-main">
 					<div class="yui-b">
-						<xsl:if test="string(//session/flash_message)">
+						<xsl:if test="string(//flash_message)">
 							<xsl:call-template name="message_display"/>
 						</xsl:if>
 						
@@ -428,7 +428,7 @@
 	
 	<xsl:template name="message_display">
 		<div id="message-display">
-			<xsl:copy-of select="//session/flash_message"/>
+			<xsl:copy-of select="//flash_message"/>
 		</div>
 	</xsl:template>
 	

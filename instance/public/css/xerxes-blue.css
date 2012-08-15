@@ -190,9 +190,11 @@ a:hover {
 #message-display {
 	padding: .8em;
 	margin: 2em;
-	background-color: #FFDADA;
+	margin-top: .7em;
+	background-color: #dbffda;
 	display: table;
-	max-width: 300px;
+	white-space: nowrap;
+	max-width: 500px;
 	border-top-width: 1px;
 	border-right-width: 1px;
 	border-bottom-width: 2px;
