@@ -33,7 +33,14 @@
 <xsl:output method="html" />
 
 <xsl:template match="/*">
-	<xsl:call-template name="main" />
+	<xsl:call-template name="surround">
+		<xsl:with-param name="surround_template">none</xsl:with-param>
+		<xsl:with-param name="sidebar">none</xsl:with-param>
+	</xsl:call-template>
+</xsl:template>
+
+<xsl:template name="module_header">
+	<link href="css/books.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />
 </xsl:template>
 
 <xsl:template name="breadcrumb">
@@ -63,15 +70,13 @@
 				<xsl:with-param name="exclude_limit" select="//request/group" />
 			</xsl:call-template>
 			
-			<table>
-				<thead>
-					<tr>
-						<td>Include</td>
-						<td>Exclude</td>
-						<td><xsl:value-of select="public" /></td>
-					</tr>
-				</thead>
-				
+			<table class="holdings-table">
+				<tr>
+					<th>Include</th>
+					<th>Exclude</th>
+					<th><xsl:value-of select="public" /></th>
+				</tr>
+
 				<xsl:for-each select="facets/facet">
 					<tr>
 						<td>
