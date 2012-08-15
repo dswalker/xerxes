@@ -148,7 +148,7 @@ class Engine extends Search\Engine
 		
 		// add holdings
 		
-		if ($this->group->libraries_include != '' && $record != null )
+		if ($this->group->libraries_include != '' && $record != null && $this->group->show_holdings == true)
 		{
 			$library_codes = $this->group->libraries_include;
 			
