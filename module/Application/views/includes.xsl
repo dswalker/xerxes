@@ -53,7 +53,7 @@
 	</xsl:variable>
 	
 	
-	<xsl:variable name="xerxes_version" select="//config/xerxes_version" />
+	<xsl:variable name="asset_version" select="//config/asset_version" />
 
 	<xsl:variable name="link_target" select="//config/link_target" />
 
@@ -405,15 +405,15 @@
 				<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 				<script src="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.js"></script>
 				
-				<link href="{$base_include}/css/xerxes-mobile.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />	
-				<link href="{$base_url}/css/local-mobile.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />	
+				<link href="{$base_include}/css/xerxes-mobile.css?version={$asset_version}" rel="stylesheet" type="text/css" />	
+				<link href="{$base_url}/css/local-mobile.css?version={$asset_version}" rel="stylesheet" type="text/css" />	
 
 			</xsl:when>
 			<xsl:otherwise>
 				
-				<link href="{$base_include}/css/reset-fonts-grids.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />
-				<link href="{$base_include}/css/xerxes-blue.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />
-				<link href="css/local.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />	
+				<link href="{$base_include}/css/reset-fonts-grids.css?version={$asset_version}" rel="stylesheet" type="text/css" />
+				<link href="{$base_include}/css/xerxes-blue.css?version={$asset_version}" rel="stylesheet" type="text/css" />
+				<link href="css/local.css?version={$asset_version}" rel="stylesheet" type="text/css" />	
 				
 			</xsl:otherwise>
 		</xsl:choose>

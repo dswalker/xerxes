@@ -40,7 +40,7 @@
 </xsl:template>
 
 <xsl:template name="module_header">
-	<link href="css/books.css?xerxes_version={$xerxes_version}" rel="stylesheet" type="text/css" />
+	<link href="css/books.css?version={$asset_version}" rel="stylesheet" type="text/css" />
 </xsl:template>
 
 <xsl:template name="breadcrumb">
