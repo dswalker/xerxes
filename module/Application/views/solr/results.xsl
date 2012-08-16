@@ -51,7 +51,7 @@
 
 		<div id="subtab" class="box">
 		
-			<h3>Exapnd your search</h3>
+			<h3>Expand your search</h3>
 			
 			<ul>
 				<li><a href="{@url}"><xsl:value-of select="@public" /></a></li>
