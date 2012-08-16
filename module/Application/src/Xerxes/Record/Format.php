@@ -236,7 +236,8 @@ class Format
 	
 	public function determineFormat($data_fields)
 	{
-		$this->setFormat($this->extractFormat($data_fields));
+		$format = $this->extractFormat($data_fields);
+		$this->setFormat($format);
 	}	
 	
 	/**
@@ -302,7 +303,7 @@ class Format
 	
 	public function getReadableConstName($value)
 	{
-		switch ($value)
+		switch ( $this->getConstNameForValue($value) )
 		{
 			case 'ArticleElectronic': 
 				return 'Article'; break;

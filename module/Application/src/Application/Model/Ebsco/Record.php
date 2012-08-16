@@ -200,7 +200,7 @@ class Record extends Xerxes\Record
 			// format 
 			// @todo map this to internal
 			
-			$this->format->setFormat(implode(";", $formats));
+			$this->format->determineFormat($formats);
 			
 			// language
 			
