@@ -2,6 +2,7 @@
 
 namespace Xerxes\Utility;
 
+use Zend\Mail\Transport\Smtp;
 use Zend\Mail\Transport\SmtpOptions;
 use Zend\Mail\Transport\Sendmail;
 use Zend\Mail\Message;
@@ -42,7 +43,7 @@ class Email
 			$options->setHost($this->host);
 			$options->setPort($this->port);
 		
-			$this->transport = new Sendmail($options);
+			$this->transport = new Smtp($options);
 		}
 		else
 		{
