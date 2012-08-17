@@ -617,7 +617,7 @@
 
 	<xsl:template name="sms_option">
 		
-		<xsl:if test="count(../holdings/items/item) &gt; 0">
+		<xsl:if test="count(../holdings/items/item) &gt; 0 and $is_mobile = 0">
 		
 			<div id="sms-option" class="results-availability record-action">
 	
