@@ -68,7 +68,7 @@
 			
 			<!-- google javascript lookup -->
 			
-			<xsl:if test="is_mobile = 1">
+			<xsl:if test="$is_mobile = 0">
 			
 				<xsl:call-template name="google_preview" />
 				
