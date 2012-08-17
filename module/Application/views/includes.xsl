@@ -626,7 +626,9 @@
 -->
 
 <xsl:variable name="app_mini_icon_url">images/famfamfam/page_find.png</xsl:variable>
-<xsl:variable name="image_sfx">images/sfx.gif</xsl:variable>
+<xsl:variable name="image_sfx">
+	<xsl:value-of select="$base_url" /><xsl:text>/images/sfx.gif</xsl:text>
+</xsl:variable>
 <xsl:variable name="img_src_original_record">images/famfamfam/link.png</xsl:variable>
 <xsl:variable name="img_src_holdings">images/book.gif</xsl:variable>
 <xsl:variable name="img_src_chain">images/famfamfam/link.png</xsl:variable>
@@ -642,7 +644,7 @@
 </xsl:template>
 
 <xsl:template name="img_refereed">
-	<img src="images/refereed_hat.gif" width="20" height="14" alt="" />
+	<img src="{$base_url}/images/refereed_hat.gif" width="20" height="14" alt="" />
 </xsl:template>
 
 <xsl:template name="img_save_record">
