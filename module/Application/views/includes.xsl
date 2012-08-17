@@ -575,7 +575,7 @@
 	
 		<script src="{$base_include}/javascript/jquery/jquery-1.6.2.min.js" language="javascript" type="text/javascript"></script>
 		
-		<script src="{$base_include}/javascript/results.js" language="javascript" type="text/javascript"></script>
+		<script src="{$base_include}/javascript/results.js?version={$asset_version}" language="javascript" type="text/javascript"></script>
 
 	</xsl:template>
 		
@@ -586,7 +586,7 @@
 	
 	<xsl:template name="jslabels">
 	
-		<script language="javascript" type="text/javascript" src="asset/labels"></script> 
+		<script language="javascript" type="text/javascript" src="asset/labels?version={$asset_version}"></script> 
 	
 	</xsl:template>
 	
