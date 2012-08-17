@@ -48,5 +48,34 @@
 	</xsl:call-template>
 	
 </xsl:template>
+
+<xsl:template name="availability">
+	<xsl:call-template name="worldcat_results_availability" />
+</xsl:template>	
+
+<xsl:template name="worldcat_results_availability">
+
+	<div class="record-action">
+		<a href="{../url_open}">
+		<xsl:choose>
+			<xsl:when test="//config/worldcat_groups/group[@id=//request/source]/lookup/ill_text">
+
+				<img src="images/ill.gif" alt=""/>
+				<xsl:text> </xsl:text>
+				<xsl:value-of select="//config/worldcat_groups/group[@id=//request/source]/lookup/ill_text" />					
+
+			</xsl:when>
+			<xsl:otherwise>
+			
+				<img src="{$image_sfx}" alt="" border="0" class="mini-icon link-resolver-link "/>
+				<xsl:text> </xsl:text>
+				<xsl:copy-of select="$text_link_resolver_check" /> 
+
+			</xsl:otherwise>
+		</xsl:choose>
+		</a>
+	</div>
+
+</xsl:template>
 		
 </xsl:stylesheet>
