@@ -145,7 +145,7 @@ class Format
 	
 	public function toOpenURLGenre()
 	{
-		switch ( $this->internal )
+		switch ( $this->normalized )
 		{
 			case self::Journal :
 			case self::Serial :
@@ -156,7 +156,8 @@ class Format
 			case self::ArticleElectronic :
 			case self::ArticleJournal :				
 			case self::ArticleMagazine :
-			case self::ArticleNewspaper :			
+			case self::ArticleNewspaper :
+			case self::Article :		
 				
 				return "article";
 				break;
