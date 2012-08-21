@@ -598,7 +598,7 @@
 			<xsl:if test="../url_open">
 		
 				<div class="results-availability">
-					<a target="{$link_target}" href="{../url_open}" class="record-action">
+					<a target="{$link_target}" href="{../url_open}" class="record-action" data-role="button">
 						<img src="{$image_sfx}" alt="" border="0" class="mini-icon link-resolver-link "/>
 						<xsl:text> </xsl:text>
 						<xsl:copy-of select="$text_link_resolver_check" /> 

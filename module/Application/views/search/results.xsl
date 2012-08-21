@@ -1012,7 +1012,7 @@
 				<!-- link resolver, full-text predetermined -->
 				
 				<xsl:when test="$link_resolver_allowed = 'true' and subscription = 1">
-						<a href="{../url_open}&amp;fulltext=1" target="{$link_target}" class="record-action link-resolver-link">
+						<a href="{../url_open}&amp;fulltext=1" target="{$link_target}" class="record-action link-resolver-link" data-role="button">
 							<xsl:call-template name="img_format_html">
 								<xsl:with-param name="class">mini-icon link-resolver-link</xsl:with-param>
 							</xsl:call-template>
@@ -1024,7 +1024,7 @@
 				<!-- link resolver, no full-text predetermined -->
 				
 				<xsl:when test="$link_resolver_allowed = 'true'">
-						<a href="{../url_open}" target="{$link_target}" class="record-action link-resover-link">
+						<a href="{../url_open}" target="{$link_target}" class="record-action link-resover-link" data-role="button">
 							<img src="{$image_sfx}" alt="" class="mini-icon link-resover-link "/>
 							<xsl:text> </xsl:text>
 							<xsl:copy-of select="$text_link_resolver_check" />
@@ -1249,7 +1249,7 @@
 			
 			<div class="record-action {@type}">
 								
-				<a href="{url}" target="{$link_target}">
+				<a href="{url}" target="{$link_target}" data-role="button">
 				
 					<xsl:choose>
 						<xsl:when test="@format = 'pdf'">

@@ -736,21 +736,21 @@
 	<xsl:param name="alt" />
 	<xsl:param name="title" />
 	<xsl:param name="class" />
-	<img src="images/pdf.gif" width="16" height="16" border="0" alt="{$alt}" title="{$title}" class="{$class}" />
+	<img src="{$base_url}/images/pdf.gif" width="16" height="16" border="0" alt="{$alt}" title="{$title}" class="{$class}" />
 </xsl:template>
 
 <xsl:template name="img_format_html">
 	<xsl:param name="alt" />
 	<xsl:param name="title" />
 	<xsl:param name="class" />
-	<img src="images/html.gif" width="16" height="16" border="0" alt="{$alt}" title="{$title}" class="{$class}" />
+	<img src="{$base_url}/images/html.gif" width="16" height="16" border="0" alt="{$alt}" title="{$title}" class="{$class}" />
 </xsl:template>
 
 <xsl:template name="img_format_unknown">
 	<xsl:param name="alt" />
 	<xsl:param name="title" />
 	<xsl:param name="class" />
-	<img src="images/html.gif" width="16" height="16" border="0" alt="{$alt}" title="{$title}" class="{$class}" />
+	<img src="{$base_url}/images/html.gif" width="16" height="16" border="0" alt="{$alt}" title="{$title}" class="{$class}" />
 </xsl:template>
 
 <xsl:template name="img_databases_subject_hint_restricted">
