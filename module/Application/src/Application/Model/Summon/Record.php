@@ -19,6 +19,8 @@ use Xerxes,
 
 class Record extends Xerxes\Record
 {
+	protected $source = "Summon";
+	
 	private $original_array;
 
 	public function __sleep()

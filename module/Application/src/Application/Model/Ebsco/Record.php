@@ -2,11 +2,13 @@
 
 namespace Application\Model\Ebsco;
 
+use Xerxes\Utility\Registry;
+
 use Xerxes;
 
 class Record extends Xerxes\Record
 {
-	protected $source = "ebsco";
+	protected $source = "Ebsco";
 	
 	public function map()
 	{
@@ -108,6 +110,11 @@ class Record extends Xerxes\Record
 				}
 			}
 			
+			// @todo factor this out to a common class
+			
+			$registry = Registry::getInstance();
+			$proxy_server = $registry->getConfig('PROXY_SERVER', false );
+			
 			// full-text
 			
 			if ( count($article->formats->fmt) > 0 )
@@ -122,14 +129,21 @@ class Record extends Xerxes\Record
 					{
 						// pdf link is set only if there is both html and pdf full-text?
 						
-						$pdf_link = $xml->pdfLink;
+						$link = $xml->pdfLink;
 						
-						if ( $pdf_link == "" )
+						if ( $link == "" )
 						{
-							$pdf_link = $xml->plink;
+							$link = $xml->plink;
 						}
 						
-						$this->links[] = new Xerxes\Record\Link($xml->plink, Xerxes\Record\Link::PDF);
+						// @todo factor this out to a common class
+						
+						if ( $proxy_server != '' )
+						{
+							$link = $proxy_server .= urlencode($link);
+						}
+						
+						$this->links[] = new Xerxes\Record\Link($link, Xerxes\Record\Link::PDF);
 					}
 				}
 			}

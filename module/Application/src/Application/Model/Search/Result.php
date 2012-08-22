@@ -54,7 +54,7 @@ class Result
 		// link resolver stuff
 		
 		$this->link_resolver = $this->config->getConfig("LINK_RESOLVER_ADDRESS", false, $this->registry->getConfig("LINK_RESOLVER_ADDRESS", false));
-		$this->sid = $this->registry->getConfig("APPLICATION_SID", false, "calstate.edu:xerxes");
+		$this->sid = $this->config->getConfig("APPLICATION_SID", false, $this->registry->getConfig("APPLICATION_SID", false, "calstate.edu:xerxes"));
 		
 		if ( $this->link_resolver != null )
 		{

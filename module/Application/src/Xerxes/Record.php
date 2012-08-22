@@ -532,9 +532,31 @@ class Record
 		{
 			$strKev .= $param_delimiter . "rfr_id=info:sid/" . urlencode( $strReferer );
 		}
+		
+		// search engine and database
+		
+		$source = '';
+		
+		if ( $this->source != "" )
+		{
+			$source = $this->source;
+			
+			if ( $this->database_name != "" )
+			{
+				$source .= ":";
+			}
+		}
+		
 		if ( $this->database_name != "" )
 		{
-			$strKev .= urlencode( " ( " . $this->database_name . ")" );
+			$source .= $this->database_name;
+		}
+		
+		$source = trim($source);
+		
+		if ( $source != '' )
+		{
+			$strKev .= urlencode( "($source)" );
 		}
 		
 		// add rft_id's
