@@ -575,32 +575,33 @@
 	
 	<xsl:template name="search_sidebar_facets">
 			
-		<xsl:if test="//facets/groups[not(display)]">
-		
 			<div class="box">
 			
 				<xsl:call-template name="facet_narrow_results" />
 				
-				<xsl:for-each select="//facets/groups/group[not(display) and count(facets/facet) &gt; 1]">
+				<xsl:if test="//facets/groups[not(display)] and //results/total &gt; 3">
+				
+					<xsl:for-each select="//facets/groups/group[not(display) and count(facets/facet) &gt; 1]">
+			
+						<h3><xsl:value-of select="public" /></h3>
+						
+						<xsl:choose>
+							<xsl:when test="facets/facet/is_date">
+								<xsl:call-template name="facet_dates" />
+							</xsl:when>
+							<xsl:when test="//config/facet_multiple = 'true'">
+								<xsl:call-template name="facet_multiple" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:call-template name="facet_links" />
+							</xsl:otherwise>
+						</xsl:choose>
 		
-					<h3><xsl:value-of select="public" /></h3>
-					
-					<xsl:choose>
-						<xsl:when test="facets/facet/is_date">
-							<xsl:call-template name="facet_dates" />
-						</xsl:when>
-						<xsl:when test="//config/facet_multiple = 'true'">
-							<xsl:call-template name="facet_multiple" />
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:call-template name="facet_links" />
-						</xsl:otherwise>
-					</xsl:choose>
-		
-				</xsl:for-each>
+					</xsl:for-each>
+				
+				</xsl:if>
+			
 			</div>
-		
-		</xsl:if>
 	
 	</xsl:template>
 	
