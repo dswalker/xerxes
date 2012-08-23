@@ -172,9 +172,12 @@
 			<dt><xsl:copy-of select="$text_results_author" />:</dt>
 			<dd>
 				<xsl:for-each select="authors/author[@type = 'personal']">
-					<xsl:value-of select="aufirst" /><xsl:text> </xsl:text>
-					<xsl:value-of select="auinit" /><xsl:text> </xsl:text>
-					<xsl:value-of select="aulast" /><xsl:text> </xsl:text>
+					
+					<a href="{url}">
+						<xsl:value-of select="aufirst" /><xsl:text> </xsl:text>
+						<xsl:value-of select="auinit" /><xsl:text> </xsl:text>
+						<xsl:value-of select="aulast" /><xsl:text> </xsl:text>
+					</a>
 					
 					<xsl:if test="following-sibling::author[@type = 'personal']">
 						<xsl:text> ; </xsl:text>
@@ -195,7 +198,10 @@
 			<dt><xsl:copy-of select="$text_record_author_corp" />:</dt>
 			<dd>
 				<xsl:for-each select="authors/author[@type = 'corporate']">
-					<xsl:value-of select="aucorp" /><xsl:text> </xsl:text>
+				
+					<a href="{url}">
+						<xsl:value-of select="aucorp" /><xsl:text> </xsl:text>
+					</a>
 					
 					<xsl:if test="following-sibling::author[@type = 'corporate']">
 						<xsl:text> ; </xsl:text>
@@ -479,7 +485,7 @@
 			<h2><xsl:copy-of select="$text_record_subjects" />:</h2>
 			<ul>
 				<xsl:for-each select="subjects/subject">
-					<li><xsl:value-of select="display" /></li>
+					<li><a href="{url}"><xsl:value-of select="display" /></a></li>
 				</xsl:for-each>
 			</ul>
 		</xsl:if>

@@ -8,6 +8,8 @@ use Application\Model\Search\Engine,
 	Application\Model\Search\Query,
 	Application\Model\Search\Spelling\Suggestion,
 	Xerxes\Record,
+	Xerxes\Record\Author,
+	Xerxes\Record\Subject,
 	Xerxes\Utility\Parser,
 	Xerxes\Utility\Request,
 	Xerxes\Utility\Registry,
@@ -267,8 +269,17 @@ class Search
 			
 			// author links
 			
+			foreach ( $xerxes_record->getAuthors() as $author )
+			{
+				$author->url = $this->linkAuthor($author);
+			}
+			
 			// subject links
 			
+			foreach ( $xerxes_record->getSubjects() as $subject )
+			{
+				$subject->url = $this->linkSubject($subject);
+			}			
 			
 			// full-record link
 			
@@ -595,6 +606,44 @@ class Search
 		
 		return $this->request->url_for($arrParams);	
 	}
+	
+	/**
+	 * URL for author
+	 *
+	 * @param Author $author
+	 * @return string url
+	 */
+	
+	public function linkAuthor( Author $author )
+	{
+		$arrParams = array(
+				'controller' => $this->request->getParam('controller'),
+				'action' => 'search',
+				'field' => 'author',
+				'query' => $author->getName(),
+		);
+	
+		return $this->request->url_for($arrParams);
+	}	
+	
+	/**
+	 * URL for Subject
+	 *
+	 * @param Subject $subject
+	 * @return string url
+	 */
+	
+	public function linkSubject( Subject $subject )
+	{
+		$arrParams = array(
+				'controller' => $this->request->getParam('controller'),
+				'action' => 'search',
+				'query' => $subject->value,
+				'field' => 'subject'
+		);
+	
+		return $this->request->url_for($arrParams);
+	}	
 
 	/**
 	 * Other links for the record beyond those supplied by the framework

@@ -286,7 +286,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_record_summary">Summary</xsl:variable>
 	<xsl:variable name="text_record_summary_subjects">Covers the topics</xsl:variable>
 	<xsl:variable name="text_record_summary_toc">Includes chapters on</xsl:variable>
-	<xsl:variable name="text_record_subjects">Covers the topics</xsl:variable>
+	<xsl:variable name="text_record_subjects">Find other books and articles on</xsl:variable>
 	<xsl:variable name="text_record_standard_nos">Standard Numbers</xsl:variable>
 	<xsl:variable name="text_records_tags">Labels: </xsl:variable>
 	<xsl:variable name="text_records_tags_update">Update</xsl:variable>
