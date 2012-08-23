@@ -169,7 +169,7 @@ abstract class SearchController extends ActionController
 		
 		// keep search refinements, if not set by user already and so configured 
 		
-		if ( $this->request->getSessionData('clear_facets') == '' && $this->config->getParam('KEEP_SEARCH_REFINEMENT', false, false) )
+		if ( $this->request->getSessionData('clear_facets') == '' && $this->config->getConfig('KEEP_SEARCH_REFINEMENT', false, false) )
 		{
 			$this->request->setSessionData('clear_facets', 'false');
 		}
