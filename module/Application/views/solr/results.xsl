@@ -62,5 +62,9 @@
 	</xsl:for-each>
 		
 </xsl:template>
+
+<xsl:template name="facet_dates">
+	<xsl:call-template name="facet_links" />
+</xsl:template>
 		
 </xsl:stylesheet>
