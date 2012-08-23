@@ -265,6 +265,11 @@ class Search
 		{
 			$xerxes_record = $result->getXerxesRecord();
 			
+			// author links
+			
+			// subject links
+			
+			
 			// full-record link
 			
 			$result->url = $this->linkFullRecord($xerxes_record);
@@ -544,12 +549,12 @@ class Search
 	 * @return string url
 	 */
 	
-	public function linkFullRecord( Record $result )
+	public function linkFullRecord( Record $record )
 	{
 		$arrParams = array(
 			'controller' => $this->request->getParam('controller'),
 			"action" => "record",
-			"id" => $result->getRecordID()
+			"id" => $record->getRecordID()
 		);
 		
 		return $this->request->url_for($arrParams);
@@ -558,16 +563,16 @@ class Search
 	/**
 	 * URL for the full record display
 	 * 
-	 * @param Record $result
+	 * @param Record $record
 	 * @return string url
 	 */
 	
-	public function linkSaveRecord( Record $result )
+	public function linkSaveRecord( Record $record )
 	{
 		$arrParams = array(
 			'controller' => $this->request->getParam('controller'),
 			"action" => "save",
-			"id" => $result->getRecordID()
+			"id" => $record->getRecordID()
 		);
 		
 		return $this->request->url_for($arrParams);
@@ -576,26 +581,25 @@ class Search
 	/**
 	 * URL for the sms feature
 	 * 
-	 * @param Record $result
+	 * @param Record $record
 	 * @return string url
 	 */	
 	
-	public function linkSMS( Record $result )
+	public function linkSMS( Record $record )
 	{
 		$arrParams = array(
 			'controller' => $this->request->getParam('controller'),
 			"action" => "sms",
-			"id" => $result->getRecordID()
+			"id" => $record->getRecordID()
 		);
 		
 		return $this->request->url_for($arrParams);	
 	}
 
 	/**
-	 * Other links for the record beyond those supplied by the framework,
-	 * such as lateral subject or author links
+	 * Other links for the record beyond those supplied by the framework
 	 * 
-	 * @param Xerxes_Model_Search_Result $result 
+	 * @param Result $result 
 	 */	
 	
 	public function linkOther( Result $result )
