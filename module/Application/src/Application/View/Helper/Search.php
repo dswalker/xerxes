@@ -89,7 +89,7 @@ class Search
 			return null;
 		}
 		
-		$objXml = Parser::convertToDOMDocument( "<pager />" );
+		$xml = Parser::convertToDOMDocument( "<pager />" );
 		
 		$base_record = 1; // starting record in any result set
 		$page_number = 1; // starting page number in any result set
@@ -137,16 +137,16 @@ class Search
 			
 			if ( $bolShowFirst == true )
 			{
-				$objPage = $objXml->createElement( "page", "1" );
+				$page = $xml->createElement( "page", "1" );
 				
 				$params = $this->currentParams();
 				$params["start"] = 1;
 				
 				$link = $this->request->url_for( $params );
 				
-				$objPage->setAttribute( "link", Parser::escapeXml( $link ) );
-				$objPage->setAttribute( "type", "first" );
-				$objXml->documentElement->appendChild( $objPage );
+				$page->setAttribute( "link", Parser::escapeXml( $link ) );
+				$page->setAttribute( "type", "first" );
+				$xml->documentElement->appendChild( $page );
 			}
 			
 			// create pages and links
@@ -157,22 +157,21 @@ class Search
 				{
 					if ( $current_page == $page_number )
 					{
-						$objPage = $objXml->createElement( "page", $page_number );
-						$objPage->setAttribute( "here", "true" );
-						$objXml->documentElement->appendChild( $objPage );
+						$page = $xml->createElement( "page", $page_number );
+						$page->setAttribute( "here", "true" );
+						$xml->documentElement->appendChild( $page );
 					} 
 					else
 					{
-						$objPage = $objXml->createElement( "page", $page_number );
+						$page = $xml->createElement( "page", $page_number );
 						
 						$params = $this->currentParams();
 						$params["start"] = $base_record;
 						
 						$link = $this->request->url_for( $params );
 						
-						$objPage->setAttribute( "link", Parser::escapeXml( $link ) );
-						$objXml->documentElement->appendChild( $objPage );
-					
+						$page->setAttribute( "link", Parser::escapeXml( $link ) );
+						$xml->documentElement->appendChild( $page );
 					}
 				}
 				
@@ -184,20 +183,20 @@ class Search
 			
 			if ( $next <= $total )
 			{
-				$objPage = $objXml->createElement( "page", "" ); // element to hold the text_results_next label
+				$page = $xml->createElement( "page", "" ); // element to hold the text_results_next label
 				
 				$params = $this->currentParams();
 				$params["start"] =  $next;
 				
 				$link = $this->request->url_for( $params );
 				
-				$objPage->setAttribute( "link", Parser::escapeXml( $link ) );
-				$objPage->setAttribute( "type", "next" );
-				$objXml->documentElement->appendChild( $objPage );
+				$page->setAttribute( "link", Parser::escapeXml( $link ) );
+				$page->setAttribute( "type", "next" );
+				$xml->documentElement->appendChild( $page );
 			}
 		}
 		
-		return $objXml;
+		return $xml;
 	}
 	
 	/**
