@@ -581,7 +581,7 @@
 			
 				<xsl:call-template name="facet_narrow_results" />
 				
-				<xsl:for-each select="//facets/groups/group[not(display)]">
+				<xsl:for-each select="//facets/groups/group[not(display) and count(facets/facet) &gt; 1]">
 		
 					<h3><xsl:value-of select="public" /></h3>
 					
