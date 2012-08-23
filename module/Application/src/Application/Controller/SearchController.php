@@ -167,6 +167,13 @@ abstract class SearchController extends ActionController
 			$max = $this->max_allowed;
 		}
 		
+		// keep search refinements, if not set by user already and so configured 
+		
+		if ( $this->request->getSessionData('clear_facets') == '' && $this->config->getParam('KEEP_SEARCH_REFINEMENT', false, false) )
+		{
+			$this->request->setSessionData('clear_facets', 'false');
+		}
+		
 		// search
 				
 		$results = $this->engine->searchRetrieve($this->query, $start, $max, $internal_sort);
