@@ -894,7 +894,7 @@ class Record
 				continue;
 			}
 			
-			// these we handled these above
+			// we handled these above
 			
 			if ($key == "authors" || 
 				$key == "isbns" ||
