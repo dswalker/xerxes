@@ -116,10 +116,21 @@
 	-->		
 	
 	<xsl:template name="record_authors_top">
-	
-		<xsl:call-template name="record_authors">
-			<xsl:with-param name="primary_only">true</xsl:with-param>
-		</xsl:call-template>
+			
+		<xsl:if test="authors/author[@type = 'personal' and not(@additional)]">
+			<div>
+				<dt><xsl:copy-of select="$text_results_author" />:</dt>
+				<dd>
+					<a href="{url}">
+						<xsl:value-of select="authors/author[@type = 'personal' and not(@additional)]/aufirst" />
+						<xsl:text> </xsl:text>
+						<xsl:value-of select="authors/author[@type = 'personal' and not(@additional)]/auinit" />
+						<xsl:text> </xsl:text>
+						<xsl:value-of select="authors/author[@type = 'personal' and not(@additional)]/aulast" />
+					</a>
+				</dd>
+			</div>
+		</xsl:if>
 		
 	</xsl:template>	
 	

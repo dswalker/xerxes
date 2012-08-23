@@ -177,26 +177,21 @@
 	-->	
 	
 	<xsl:template name="record_authors">
-		<xsl:param name="primary_only" />
 	
 		<xsl:if test="authors/author[@type = 'personal']">
 			<div>
 			<dt><xsl:copy-of select="$text_results_author" />:</dt>
 			<dd>
 				<xsl:for-each select="authors/author[@type = 'personal']">
-				
-					<xsl:if test="$primary_only != 'true' or position() = 1">
+									
+					<a href="{url}">
+						<xsl:value-of select="aufirst" /><xsl:text> </xsl:text>
+						<xsl:value-of select="auinit" /><xsl:text> </xsl:text>
+						<xsl:value-of select="aulast" /><xsl:text> </xsl:text>
+					</a>
 					
-						<a href="{url}">
-							<xsl:value-of select="aufirst" /><xsl:text> </xsl:text>
-							<xsl:value-of select="auinit" /><xsl:text> </xsl:text>
-							<xsl:value-of select="aulast" /><xsl:text> </xsl:text>
-						</a>
-						
-						<xsl:if test="following-sibling::author[@type = 'personal'] and $primary_only != 'true'">
-							<xsl:text> ; </xsl:text>
-						</xsl:if>
-						
+					<xsl:if test="following-sibling::author[@type = 'personal']">
+						<xsl:text> ; </xsl:text>
 					</xsl:if>
 					
 				</xsl:for-each>
@@ -400,19 +395,10 @@
 		<xsl:call-template name="record_subjects" />
 		<xsl:call-template name="record_toc" />
 		<xsl:call-template name="record_authors_bottom" />
-		
-		<div id="record-additional-info">
-		
-			<h2>Additional details</h2>
-			
-			<dl>
-				<xsl:call-template name="record_language" />
-				<xsl:call-template name="record_standard_numbers" />
-				<xsl:call-template name="record_notes" />
-				<xsl:call-template name="additional-title-info" />
-			</dl>
-			
-		</div>
+		<xsl:call-template name="record_language" />
+		<xsl:call-template name="record_standard_numbers" />
+		<xsl:call-template name="record_notes" />
+		<xsl:call-template name="additional-title-info" />
 		
 	</xsl:template>	
 
@@ -530,121 +516,30 @@
 	-->	
 	
 	<xsl:template name="record_standard_numbers">
-		<xsl:call-template name="issn" />
-		<xsl:call-template name="isbn" />
-		<xsl:call-template name="gpo" />
-		<xsl:call-template name="govdoc" />
-		<xsl:call-template name="oclc-number" />	
-	</xsl:template>
 	
-	<!--
-		TEMPLATE: ISSN
-	-->
-	
-	<xsl:template name="issn">
-	
-		<xsl:if test="standard_numbers/issn">
-			<div>
-				<dt>ISSN:</dt>
-				<dd>
-					<xsl:for-each select="standard_numbers/issn">
-						<xsl:value-of select="text()" />
-						<xsl:if test="following-sibling::issn">
-							<br />
-						</xsl:if>
-					</xsl:for-each>
-				</dd>
-			</div>
-		</xsl:if>
-		
-	</xsl:template>
-	
-	<!--
-		TEMPLATE: ISBN
-	-->
-	
-	<xsl:template name="isbn">
+		<xsl:if test="standard_numbers">
 
-		<xsl:if test="standard_numbers/isbn">
-			<div>
-				<dt>ISBN:</dt>
-				<dd>
-					<xsl:for-each select="standard_numbers/isbn">
-						<xsl:value-of select="text()" />
-						<xsl:if test="following-sibling::isbn">
-							<br />
-						</xsl:if>
-					</xsl:for-each>
-				</dd>
-			</div>
-		</xsl:if>
-		
-	</xsl:template>
-	
-	<!--
-		TEMPLATE: GPO
-	-->
-	
-	<xsl:template name="gpo">			
+			<h2>Standard Numbers</h2>
+			<ul>
+			<xsl:for-each select="standard_numbers/issn">
+				<li>ISSN: <xsl:value-of select="text()" /></li>
+			</xsl:for-each>
+			<xsl:for-each select="standard_numbers/isbn">
+				<li>ISBN: <xsl:value-of select="text()" /></li>
+			</xsl:for-each>
+			<xsl:for-each select="standard_numbers/gpo">
+				<li>GPO Item: <xsl:value-of select="text()" /></li>
+			</xsl:for-each>
+			<xsl:for-each select="standard_numbers/govdoc">
+				<li>Gov Doc: <xsl:value-of select="text()" /></li>
+			</xsl:for-each>
+			<xsl:for-each select="standard_numbers/oclc">
+				<li>OCLC: <xsl:value-of select="text()" /></li>
+			</xsl:for-each>
+			</ul>
 
-		<xsl:if test="standard_numbers/gpo">
-			<div>
-				<dt>GPO Item Number:</dt>
-				<dd>
-					<xsl:for-each select="standard_numbers/gpo">
-						<xsl:value-of select="text()" />
-						<xsl:if test="following-sibling::gpo">
-							<br />
-						</xsl:if>
-					</xsl:for-each>
-				</dd>
-			</div>
 		</xsl:if>
 		
-	</xsl:template>
-	
-	<!--
-		TEMPLATE: GOV DOC
-	-->
-	
-	<xsl:template name="govdoc">
-		
-		<xsl:if test="standard_numbers/govdoc">
-			<div>
-				<dt>Gov Doc Number:</dt>
-				<dd>
-					<xsl:for-each select="standard_numbers/govdoc">
-						<xsl:value-of select="text()" />
-						<xsl:if test="following-sibling::govdoc">
-							<br />
-						</xsl:if>
-					</xsl:for-each>
-				</dd>
-			</div>
-		</xsl:if>
-		
-	</xsl:template>
-	
-	<!--
-		TEMPLATE: OCLC NUMBER
-	-->
-	
-	<xsl:template name="oclc-number">
-		
-		<xsl:if test="standard_numbers/govdoc">
-			<div>
-				<dt>OCLC number:</dt>
-				<dd>
-					<xsl:for-each select="standard_numbers/oclc">
-						<xsl:value-of select="text()" />
-						<xsl:if test="following-sibling::oclc">
-							<br />
-						</xsl:if>
-					</xsl:for-each>
-				</dd>
-			</div>
-		</xsl:if>				
-			
 	</xsl:template>
 
 	<!--
@@ -653,17 +548,12 @@
 
 	<xsl:template name="record_notes">
 		<xsl:if test="notes">
-			<div>
-				<dt><xsl:copy-of select="$text_record_notes" />:</dt>
-				<dd>
-					<xsl:for-each select="notes/note">
-						<xsl:value-of select="text()" />
-						<xsl:if test="following-sibling::oclc">
-							<br />
-						</xsl:if>
-					</xsl:for-each>
-				</dd>
-			</div>
+			<h2><xsl:copy-of select="$text_record_notes" />:</h2>
+			<ul>
+				<xsl:for-each select="notes/note">
+					<li><xsl:value-of select="text()" /></li>
+				</xsl:for-each>
+			</ul>
 		</xsl:if>
 	</xsl:template>
 
@@ -699,17 +589,12 @@
 		
 		<xsl:if test="alternate_titles">
 
-			<div>
-				<dt>Alternate titles:</dt>
-				<dd>
-					<xsl:for-each select="alternate_titles/alternate_title">
-						<xsl:value-of select="text()" />
-						<xsl:if test="following-sibling::alternate_title">
-							<br />
-						</xsl:if>
-					</xsl:for-each>
-				</dd>
-			</div>
+			<h2>Alternate titles</h2>
+			<ul>
+				<xsl:for-each select="alternate_titles/alternate_title">
+					<li><xsl:value-of select="text()" /></li>
+				</xsl:for-each>
+			</ul>
 			
 		</xsl:if>
 		
@@ -723,17 +608,12 @@
 		
 		<xsl:if test="additional_titles">
 
-			<div>
-				<dt>Additional titles:</dt>
-				<dd>
+				<h2>Additional titles</h2>
+				<ul>
 					<xsl:for-each select="additional_titles/additional_title">
-						<xsl:value-of select="text()" />
-						<xsl:if test="following-sibling::additional_title">
-							<br />
-						</xsl:if>
+						<li><xsl:value-of select="text()" /></li>
 					</xsl:for-each>
-				</dd>
-			</div>
+				</ul>
 			
 		</xsl:if>
 		
@@ -748,33 +628,25 @@
 		
 		<xsl:if test="journal_title_continues">
 
-			<div>
-				<dt>Continues:</dt>
-				<dd>
-					<xsl:for-each select="journal_title_continues">
-						<xsl:value-of select="journal_title_continue" />
-						<xsl:if test="following-sibling::journal_title_continue">
-							<br />
-						</xsl:if>
-					</xsl:for-each>
-				</dd>
-			</div>
-			
+			<h2>Continues</h2>
+			<ul>
+				<xsl:for-each select="journal_title_continues">
+					<li><xsl:value-of select="journal_title_continue" /></li>
+				</xsl:for-each>
+			</ul>
+
 		</xsl:if>
 
 		<xsl:if test="journal_title_continued_by">
 
-			<div>
-				<dt>Continued by:</dt>
-				<dd>
-					<xsl:for-each select="journal_title_continued_by/journal_title_continued_by">
-						<xsl:value-of select="text()" />
-						<xsl:if test="following-sibling::journal_title_continued_by">
-							<br />
-						</xsl:if>
-					</xsl:for-each>
-				</dd>
-			</div>
+
+			<h2>Continued by</h2>
+			<ul>
+				<xsl:for-each select="journal_title_continued_by/journal_title_continued_by">
+					<li><xsl:value-of select="text()" /></li>
+				</xsl:for-each>
+			</ul>
+
 			
 		</xsl:if>
 		
@@ -788,17 +660,13 @@
 
 		<xsl:if test="series">
 
-			<div>
-				<dt>Series:</dt>
-				<dd>
-					<xsl:for-each select="series/serie">
-						<xsl:value-of select="text()" />
-						<xsl:if test="following-sibling::serie">
-							<br />
-						</xsl:if>
-					</xsl:for-each>
-				</dd>
-			</div>
+			<h2>Series</h2>
+			<ul>
+				<xsl:for-each select="series/serie">
+					<li><xsl:value-of select="text()" /></li>
+				</xsl:for-each>
+			</ul>
+
 			
 		</xsl:if>		
 
