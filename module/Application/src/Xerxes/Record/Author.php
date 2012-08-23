@@ -98,7 +98,49 @@ class Author
 		{
 			$this->display = $author_display;
 		}
-	}			
+	}
+	
+	/**
+	 * Get formatted author name
+	 * 
+	 * @param bool $bolReverse     [optional] reverse personal names as last, first
+	 * @return string
+	 */
+	
+	public function getName($bolReverse = false)
+	{
+		// corporate name
+		
+		if ( $this->name != "" )
+		{
+			return $this->name;
+		}
+		
+		else // personal name
+		{
+			$name = ""; // author name formatted
+			
+			// last, first init
+			
+			if ( $bolReverse == true )
+			{
+				$name = $this->last_name . ", " . $this->first_name . " " . $this->init;
+			}
+			else // first init last
+			{
+				$name = $this->first_name . " ";
+		
+				if ( $this->init != "" )
+				{
+					$name .= $this->init . " ";
+				}
+		
+				$name .= $this->last_name;
+			}
+			
+			return trim($name);
+		}
+	}
 	
 	/**
 	 * Get all fields
@@ -120,6 +162,8 @@ class Author
 		
 		return trim($values);
 	}
+	
+	
 	
 	/**
 	 * Serialize to string

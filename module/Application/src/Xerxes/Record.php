@@ -1360,8 +1360,7 @@ class Record
 	
 	/**
 	 * Return authors.  Authors will return as array, with each author name optionally formatted
-	 * as a string ('first last' or 'last, first') or as an associative array in parts, based on
-	 * paramaters listed below.
+	 * as a string ('first last' or 'last, first') or objects
 	 *
 	 * @param bool $bolPrimary		[optional] return just the primary author, default false
 	 * @param bool $bolFormat		[optional] return the author names as strings (otherwise as objects), default false
@@ -1373,49 +1372,17 @@ class Record
 	{
 		$arrFinal = array();
 		
-		foreach ( $this->authors as $objXerxesAuthor )
+		foreach ( $this->authors as $author )
 		{
 			// author as string
 			
 			if ( $bolFormat == true )
 			{
-				$strAuthor = ""; // author name formatted
-
-				$strFirst = $objXerxesAuthor->first_name;
-				$strLast = $objXerxesAuthor->last_name;
-				$strInit = $objXerxesAuthor->init;
-				$strName = $objXerxesAuthor->name;
-				
-				if ( $strName != "" )
-				{
-					$strAuthor = $strName;
-				} 
-				else
-				{
-					if ( $bolReverse == false )
-					{
-						$strAuthor = $strFirst . " ";
-						
-						if ( $strInit != "" )
-						{
-							$strAuthor .= $strInit . " ";
-						}
-						
-						$strAuthor .= $strLast;
-					} 
-					else
-					{
-						$strAuthor = $strLast . ", " . $strFirst . " " . $strInit;
-					}
-				}
-				
-				array_push( $arrFinal, $strAuthor );
+				array_push( $arrFinal, $author->getName($bolReverse) );
 			} 
-			else
+			else // author objects
 			{
-				// author objects
-				
-				array_push( $arrFinal, $objXerxesAuthor );
+				array_push( $arrFinal, $author );
 			}
 			
 			// we're only asking for the primary author
@@ -1424,14 +1391,13 @@ class Record
 			{
 				// sorry, only additional authors (7XX), so return empty
 				
-				if ( $objXerxesAuthor->additional == true )
+				if ( $author->additional == true )
 				{
 					return array();
 				}
 				else
 				{
-					// exit loop, we've got the author we need
-					break;
+					break; // exit loop, we've got the author we need
 				}
 			}
 		}
