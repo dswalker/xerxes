@@ -32,9 +32,7 @@
 </xsl:template>
 
 <xsl:template name="page_name">
-	<xsl:for-each select="/*/results/records/record/xerxes_record">
-		<xsl:call-template name="record_title" />
-	</xsl:for-each>
+	<xsl:value-of select="//xerxes_record/title_normalized" />
 </xsl:template>
 
 <xsl:template name="main">
