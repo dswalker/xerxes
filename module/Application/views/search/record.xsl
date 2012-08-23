@@ -109,7 +109,7 @@
 			<xsl:call-template name="additional_full_record_data_main_top" />
 			<xsl:call-template name="record_uniform-title" /> <!-- uniform title -->
 			<xsl:call-template name="record_authors" /> <!-- Authors -->
-			<xsl:call-template name="record_corp-authors" /> <!-- Corp. Authors -->
+			<xsl:call-template name="record_corp_authors" /> <!-- Corp. Authors -->
 			<xsl:call-template name="record_conference" /> <!-- Conference -->
 			<xsl:call-template name="record_format" /> <!-- Format -->
 			<xsl:call-template name="record_year" /> <!-- Year -->
@@ -192,7 +192,7 @@
 		TEMPLATE: RECORD CORPORATE AUTHORS
 	-->	
 	
-	<xsl:template name="record_corp-authors">
+	<xsl:template name="record_corp_authors">
 		<xsl:if test="authors/author[@type = 'corporate']">
 			<div>
 			<dt><xsl:copy-of select="$text_record_author_corp" />:</dt>
@@ -325,7 +325,7 @@
 					</xsl:if>
 				</xsl:if>
 			</xsl:when>
-			<xsl:when test="format/internal = 'BOOK'">
+			<xsl:otherwise>
 				<xsl:if test="publisher">
 					<dt><xsl:copy-of select="$text_record_publisher" />:</dt>
 					<dd>
@@ -334,7 +334,8 @@
 						<xsl:value-of select="year" />
 					</dd>
 				</xsl:if>
-			</xsl:when>
+				<xsl:call-template name="description" /> <!-- extent and stuff -->
+			</xsl:otherwise>
 		</xsl:choose>
 		</div>
 	</xsl:template>
@@ -389,7 +390,6 @@
 				<xsl:call-template name="record_language" />
 				<xsl:call-template name="record_standard_numbers" />
 				<xsl:call-template name="record_notes" />
-				<xsl:call-template name="description" />
 				<xsl:call-template name="additional-title-info" />
 			</dl>
 			
@@ -447,7 +447,7 @@
 		<xsl:if test="toc">
 			<h2>
 				<xsl:choose>
-					<xsl:when test="format/internal = 'BOOK'">
+					<xsl:when test="format/normalized = 'BOOK'">
 						<xsl:copy-of select="$text_record_chapters" />:
 					</xsl:when>
 					<xsl:otherwise>
