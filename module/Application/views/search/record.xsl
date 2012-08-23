@@ -108,8 +108,7 @@
 		<dl>
 			<xsl:call-template name="additional_full_record_data_main_top" />
 			<xsl:call-template name="record_uniform-title" /> <!-- uniform title -->
-			<xsl:call-template name="record_authors" /> <!-- Authors -->
-			<xsl:call-template name="record_corp_authors" /> <!-- Corp. Authors -->
+			<xsl:call-template name="record_authors_top" /> <!-- author wrapper -->
 			<xsl:call-template name="record_conference" /> <!-- Conference -->
 			<xsl:call-template name="record_format" /> <!-- Format -->
 			<xsl:call-template name="record_year" /> <!-- Year -->
@@ -163,29 +162,48 @@
 	</xsl:template>
 
 	<!--
+		TEMPLATE: RECORD AUTHORS TOP
+	-->	
+
+	<xsl:template name="record_authors_top">
+	
+		<xsl:call-template name="record_authors" /> <!-- Authors -->
+		<xsl:call-template name="record_corp_authors" /> <!-- Corp. Authors -->
+		
+	</xsl:template>
+
+	<!--
 		TEMPLATE: RECORD AUTHORS
 	-->	
 	
 	<xsl:template name="record_authors">
+		<xsl:param name="primary_only" />
+	
 		<xsl:if test="authors/author[@type = 'personal']">
 			<div>
 			<dt><xsl:copy-of select="$text_results_author" />:</dt>
 			<dd>
 				<xsl:for-each select="authors/author[@type = 'personal']">
+				
+					<xsl:if test="$primary_only != 'true' or position() = 1">
 					
-					<a href="{url}">
-						<xsl:value-of select="aufirst" /><xsl:text> </xsl:text>
-						<xsl:value-of select="auinit" /><xsl:text> </xsl:text>
-						<xsl:value-of select="aulast" /><xsl:text> </xsl:text>
-					</a>
-					
-					<xsl:if test="following-sibling::author[@type = 'personal']">
-						<xsl:text> ; </xsl:text>
+						<a href="{url}">
+							<xsl:value-of select="aufirst" /><xsl:text> </xsl:text>
+							<xsl:value-of select="auinit" /><xsl:text> </xsl:text>
+							<xsl:value-of select="aulast" /><xsl:text> </xsl:text>
+						</a>
+						
+						<xsl:if test="following-sibling::author[@type = 'personal'] and $primary_only != 'true'">
+							<xsl:text> ; </xsl:text>
+						</xsl:if>
+						
 					</xsl:if>
+					
 				</xsl:for-each>
 			</dd>
 			</div>
 		</xsl:if>
+		
 	</xsl:template>
 
 	<!--
@@ -379,8 +397,9 @@
 	
 		<xsl:call-template name="record_abstract" />
 		<xsl:call-template name="record_recommendations" />
-		<xsl:call-template name="record_toc" />
 		<xsl:call-template name="record_subjects" />
+		<xsl:call-template name="record_toc" />
+		<xsl:call-template name="record_authors_bottom" />
 		
 		<div id="record-additional-info">
 		
@@ -790,8 +809,7 @@
 <xsl:template name="additional_full_record_data_main_top" />
 <xsl:template name="additional_full_record_data_main_bottom" />
 <xsl:template name="additional_full_record_actions" />
-
-
+<xsl:template name="record_authors_bottom" />
 
 
 

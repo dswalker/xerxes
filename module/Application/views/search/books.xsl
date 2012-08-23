@@ -109,6 +109,57 @@
 			
 		</div>
 	</xsl:template>
+	
+	<!--
+		TEMPLATE: RECORD AUTHORS TOP
+		Only show primary author here to satisfy a more catalog-ish design *sigh*
+	-->		
+	
+	<xsl:template name="record_authors_top">
+	
+		<xsl:call-template name="record_authors">
+			<xsl:with-param name="primary_only">true</xsl:with-param>
+		</xsl:call-template>
+		
+	</xsl:template>	
+	
+	<!-- 
+		TEMPLATE RECORD AUTHORS BOTTOM
+		additional authors only 
+	-->
+	
+	<xsl:template name="record_authors_bottom">
+	
+		<xsl:if test="authors/author[@additional='true' and @type != 'corporate']">
+
+			<h2>Additional Authors</h2>
+			<ul>
+				<xsl:for-each select="authors/author[@additional='true']">
+					<li>
+						<a href="{url}">
+							<xsl:choose>
+								<xsl:when test="display">
+									<xsl:value-of select="display" />							
+								</xsl:when>
+								<xsl:when test="@type = 'personal'">
+									<xsl:value-of select="aufirst" />
+									<xsl:text> </xsl:text>
+									<xsl:value-of select="auinit" />
+									<xsl:text> </xsl:text>
+									<xsl:value-of select="aulast" />								
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="aucorp" />
+								</xsl:otherwise>
+							</xsl:choose>
+						</a>
+					</li>
+				</xsl:for-each>
+			</ul>
+
+		</xsl:if>
+	
+	</xsl:template>
 
 	<!-- 
 		TEMPLATE: BRIEF RESULTS
