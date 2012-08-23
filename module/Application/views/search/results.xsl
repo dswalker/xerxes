@@ -579,23 +579,30 @@
 			
 				<xsl:call-template name="facet_narrow_results" />
 				
-				<xsl:if test="//facets/groups[not(display)] and //results/total &gt; 3">
+				<xsl:if test="//facets/groups[not(display)]">
 				
-					<xsl:for-each select="//facets/groups/group[not(display) and count(facets/facet) &gt; 1]">
+					<xsl:for-each select="//facets/groups/group[not(display)]">
+
+						<!-- only show the facets if there is more than one, unless a limit has been applied
+						     in which case we want to show our multi-select facets -->
+	
+						<xsl:if test="count(facets/facet) &gt; 1 or //query/limits">
 			
-						<h3><xsl:value-of select="public" /></h3>
-						
-						<xsl:choose>
-							<xsl:when test="facets/facet/is_date">
-								<xsl:call-template name="facet_dates" />
-							</xsl:when>
-							<xsl:when test="//config/facet_multiple = 'true'">
-								<xsl:call-template name="facet_multiple" />
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:call-template name="facet_links" />
-							</xsl:otherwise>
-						</xsl:choose>
+							<h3><xsl:value-of select="public" /></h3>
+							
+							<xsl:choose>
+								<xsl:when test="facets/facet/is_date">
+									<xsl:call-template name="facet_dates" />
+								</xsl:when>
+								<xsl:when test="//config/facet_multiple = 'true'">
+									<xsl:call-template name="facet_multiple" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:call-template name="facet_links" />
+								</xsl:otherwise>
+							</xsl:choose>
+							
+						</xsl:if>
 		
 					</xsl:for-each>
 				
