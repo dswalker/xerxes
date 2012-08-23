@@ -583,10 +583,9 @@
 				
 					<xsl:for-each select="//facets/groups/group[not(display)]">
 
-						<!-- only show the facets if there is more than one, unless a limit has been applied
-						     in which case we want to show our multi-select facets -->
+						<!-- only show the facets if there is more than one -->
 	
-						<xsl:if test="count(facets/facet) &gt; 1 or //query/limits">
+						<xsl:if test="count(facets/facet) &gt; 1">
 			
 							<h3><xsl:value-of select="public" /></h3>
 							
