@@ -194,7 +194,7 @@
 						
 						<xsl:if test="primary_author or publisher or year">
 							<div class="results-book-summary">
-								<xsl:if test="format/internal != 'JFULL'">
+								<xsl:if test="format/normalized != 'JFULL'">
 								
 									<!-- author -->
 									
