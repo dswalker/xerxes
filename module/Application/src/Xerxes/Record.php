@@ -804,62 +804,38 @@ class Record
 			
 		if ( count($this->authors) > 0 )
 		{
-			$objAuthors = $objXml->createElement("authors");
+			$authors_xml = $objXml->createElement("authors");
 			$x = 1;
 			
-			foreach ( $this->authors as $objXerxesAuthor )
+			foreach ( $this->authors as $author )
 			{
-				$objAuthor =  $objXml->createElement("author");
-				$objAuthor->setAttribute("type", $objXerxesAuthor->type);
+				$author_xml =  $objXml->createElement("author");
+				$author_xml->setAttribute("type", $author->type);
 				
-				if ( $objXerxesAuthor->additional == true )
+				if ( $author->additional == true )
 				{
-					$objAuthor->setAttribute("additional", "true");
+					$author_xml->setAttribute("additional", "true");
 				}
 
-				if ( $objXerxesAuthor->last_name != "" )
-				{					
-					$objAuthorLast =  $objXml->createElement("aulast", Parser::escapeXml( $objXerxesAuthor->last_name ) );
-					$objAuthor->appendChild($objAuthorLast);
-				}
-				
-				if ( $objXerxesAuthor->first_name != "" )
-				{
-					$objAuthorFirst =  $objXml->createElement("aufirst", Parser::escapeXml( $objXerxesAuthor->first_name ) );
-					$objAuthor->appendChild($objAuthorFirst);
-				}
-				
-				if ( $objXerxesAuthor->init != "" )
-				{
-					$objAuthorInit =  $objXml->createElement("auinit", Parser::escapeXml( $objXerxesAuthor->init) );
-					$objAuthor->appendChild($objAuthorInit);
-				}
-
-				if ( $objXerxesAuthor->name != "" )
-				{
-					$objAuthorCorp =  $objXml->createElement("aucorp", Parser::escapeXml( $objXerxesAuthor->name) );
-					$objAuthor->appendChild($objAuthorCorp);
-				}
-
-				if ( $objXerxesAuthor->display != "" )
-				{
-					$objAuthorDisplay = $objXml->createElement("display", Parser::escapeXml( $objXerxesAuthor->display) );
-					$objAuthor->appendChild($objAuthorDisplay);
-				}				
-				
-				$objAuthor->setAttribute("rank", $x);
+				$author_xml->setAttribute("rank", $x);
 				
 				if ( $x == 1 && $this->editor == true )
 				{
-					$objAuthor->setAttribute("editor", "true");
+					$author_xml->setAttribute("editor", "true");
 				}
 				
-				$objAuthors->appendChild($objAuthor);
+				foreach ( $author->toArray() as $key => $value )
+				{
+					$objNew = $objXml->createElement($key, Parser::escapeXml( $value ) );
+					$author_xml->appendChild($objNew);
+				}
+				
+				$authors_xml->appendChild($author_xml);
 				
 				$x++;
 			}
 			
-			$objXml->documentElement->appendChild($objAuthors);
+			$objXml->documentElement->appendChild($authors_xml);
 		}		
 	
 		// standard numbers
