@@ -253,6 +253,11 @@ abstract class SearchController extends ActionController
 
 		$results = $this->engine->getRecord($id);
 		
+		if ( $this->config->getConfig('INCLUDE_ORIGINAL_RECORD', false) )
+		{
+			$results->getRecord(0)->includeOriginalRecord();
+		}
+		
 		// set links
 		
 		$this->helper->addRecordLinks($results);

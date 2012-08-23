@@ -179,18 +179,13 @@ class Record extends Bibliographic
 
 	public function getOriginalXML($bolString = false)
 	{
-		$node = $this->document->getElementsByTagName("record" )->item( 0 );
-		
-		$string = $this->document->saveXML($node);
+		$xml = $this->marc->getMarcXML();
 		
 		if ( $bolString == true )
 		{
-			return $string;
+			return $xml->saveXML();
 		}
-		else
-		{
-			$xml = Parser::convertToDOMDocument($string);
-			return $xml;
-		}		
+
+		return $xml;
 	}
 }

@@ -74,6 +74,15 @@ class Result
 	}
 	
 	/**
+	 * Include original record in object
+	 */
+	
+	public function includeOriginalRecord()
+	{
+		$this->original_record = $this->xerxes_record->getOriginalXML();
+	}
+	
+	/**
 	 * Enhance record with bx recommendations
 	 */
 	
