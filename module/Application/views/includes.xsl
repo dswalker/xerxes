@@ -229,7 +229,7 @@
 	
 	<xsl:template name="surround_head">
 		<head>
-		<title><xsl:value-of select="//config/application_name" />: <xsl:call-template name="title" /></title>
+		<title><xsl:call-template name="title" /> | <xsl:value-of select="//config/application_name" /></title>
 		<xsl:call-template name="surround_meta" />
 		
 		<!-- jquery mobile adds its own base tag, so we don't here; weird, I know -->
