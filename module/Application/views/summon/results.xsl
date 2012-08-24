@@ -94,103 +94,51 @@
 
 	<h3>Refine your search</h3>
 
+	<xsl:variable name="scholarly">
+		<xsl:if test="//request/*[@original_key = 'facet.IsScholarly']">
+			<xsl:text>true</xsl:text>
+		</xsl:if>		
+	</xsl:variable>
+
+	<xsl:variable name="fulltext">
+		<xsl:if test="//request/*[@original_key = 'facet.IsFullText']">
+			<xsl:text>true</xsl:text>
+		</xsl:if>
+	</xsl:variable>
+
+	<xsl:variable name="showall">
+		<xsl:value-of select="$scholarly" /><xsl:value-of select="$fulltext" />
+	</xsl:variable>
+	
+	<xsl:variable name="holdings">
+		<xsl:if test="//request/*[@original_key = 'facet.holdings']">
+			<xsl:text>true</xsl:text>
+		</xsl:if>
+	</xsl:variable>
+
 	<form id="form-facet-0" action="{//request/controller}/search" method="get">
 
-	<xsl:choose>
-		<xsl:when test="//config/limit_to_holdings = 'true'">
-			<xsl:call-template name="facet_narrrow_results_holdings" />
-		</xsl:when>
-		<xsl:otherwise>
-			<xsl:call-template name="facet_narrow_results_all" />
-		</xsl:otherwise>
-	</xsl:choose>
-	
-	</form>
-
-</xsl:template>
-
-<xsl:template name="facet_narrrow_results_holdings">
-
-		<xsl:variable name="scholarly">
-			<xsl:if test="//request/*[@original_key = 'facet.IsScholarly']">
-				<xsl:text>true</xsl:text>
-			</xsl:if>		
-		</xsl:variable>
-		
-		<xsl:variable name="all">
-			<xsl:if test="//request/*[@original_key = 'facet.holdings']">
-				<xsl:text>true</xsl:text>
-			</xsl:if>
-		</xsl:variable>
-
 		<xsl:call-template name="hidden_search_inputs">
-			<xsl:with-param name="exclude_limit">facet.IsScholarly,facet.holdings</xsl:with-param>
+			<xsl:with-param name="exclude_limit">facet.IsScholarly,facet.IsFullText,facet.holdings</xsl:with-param>
 		</xsl:call-template>
-
-		<ul>
-			
-			<li class="facet-selection">
-			
-				<input type="checkbox" id="facet-0-1" class="facet-selection-option facet-0" name="facet.IsScholarly" value="true">
-					<xsl:if test="$scholarly = 'true'">
-						<xsl:attribute name="checked">checked</xsl:attribute>
-					</xsl:if>
-				</input>
-				<xsl:text> </xsl:text>
-				<label for="facet-0-1">Limit to scholarly articles</label>
-			
-			</li>
-
-			<li class="facet-selection">
-			
-				<input type="checkbox" id="facet-0-2" class="facet-selection-option facet-0" name="facet.holdings" value="false">
-					<xsl:if test="$all = 'true'">
-						<xsl:attribute name="checked">checked</xsl:attribute>
-					</xsl:if>
-				</input>
-				<xsl:text> </xsl:text>
-				<label for="facet-0-2">Add results beyond the library's collection</label>
-			
-			</li>
-		</ul>
-
-</xsl:template>
-
-<xsl:template name="facet_narrow_results_all">
-
-		<xsl:variable name="scholarly">
-			<xsl:if test="//request/*[@original_key = 'facet.IsScholarly']">
-				<xsl:text>true</xsl:text>
-			</xsl:if>		
-		</xsl:variable>
 		
-		<xsl:variable name="fulltext">
-			<xsl:if test="//request/*[@original_key = 'facet.holdings']">
-				<xsl:text>true</xsl:text>
-			</xsl:if>
-		</xsl:variable>
-		
-		<xsl:variable name="showall">
-			<xsl:value-of select="$scholarly" /><xsl:value-of select="$fulltext" />
-		</xsl:variable>
-
-
-		<xsl:call-template name="hidden_search_inputs">
-			<xsl:with-param name="exclude_limit">facet.IsScholarly,facet.holdings</xsl:with-param>
-		</xsl:call-template>
-
 		<ul>
-			<li class="facet-selection">
-			
-				<input type="checkbox" class="facet-selection-clear" id="facet-0">
-					<xsl:if test="$showall = ''">
-						<xsl:attribute name="checked">checked</xsl:attribute>
-					</xsl:if>
-				</input>
-				<xsl:text> </xsl:text>
-				<label for="facet-0">All results</label>
+		
+			<xsl:if test="not(//config/limit_to_holdings) or //config/limit_to_holdings = 'false'">
+		
+				<li class="facet-selection">
 				
-			</li>
+					<input type="checkbox" class="facet-selection-clear" id="facet-0">
+						<xsl:if test="$showall = ''">
+							<xsl:attribute name="checked">checked</xsl:attribute>
+						</xsl:if>
+					</input>
+					<xsl:text> </xsl:text>
+					<label for="facet-0">All results</label>
+					
+				</li>		
+				
+			</xsl:if>		
 			
 			<li class="facet-selection">
 			
@@ -200,22 +148,40 @@
 					</xsl:if>
 				</input>
 				<xsl:text> </xsl:text>
-				<label for="facet-0-1">Scholarly Only</label>
+				<label for="facet-0-1">Scholarly only</label>
 			
 			</li>
-
+	
 			<li class="facet-selection">
 			
-				<input type="checkbox" id="facet-0-2" class="facet-selection-option facet-0" name="facet.holdings" value="true">
+				<input type="checkbox" id="facet-0-2" class="facet-selection-option facet-0" name="facet.IsFullText" value="true">
 					<xsl:if test="$fulltext = 'true'">
 						<xsl:attribute name="checked">checked</xsl:attribute>
 					</xsl:if>
 				</input>
 				<xsl:text> </xsl:text>
-				<label for="facet-0-2">Full-text Only</label>
+				<label for="facet-0-2">Full-text only</label>
 			
 			</li>
+	
+			<xsl:if test="//config/limit_to_holdings = 'true'">
+	
+				<li class="facet-selection">
+				
+					<input type="checkbox" id="facet-0-3" class="facet-selection-option facet-0" name="facet.holdings" value="false">
+						<xsl:if test="$holdings = 'true'">
+							<xsl:attribute name="checked">checked</xsl:attribute>
+						</xsl:if>
+					</input>
+					<xsl:text> </xsl:text>
+					<label for="facet-0-2">Add results beyond the library's collection</label>
+				
+				</li>
+				
+			</xsl:if>
 		</ul>
+	
+	</form>
 
 </xsl:template>
 			
