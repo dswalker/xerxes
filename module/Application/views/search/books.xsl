@@ -409,11 +409,17 @@
 						<xsl:choose>
 						
 							<xsl:when test="../holdings[holdings|electronicResources]">
-							
+													
 								<xsl:call-template name="availability_lookup_holdings">
 									<xsl:with-param name="context" select="$context" />
 								</xsl:call-template>
 								
+							</xsl:when>
+							
+							<xsl:when test="../holdings/items/item/onOrder = '1'">
+							
+								<xsl:call-template name="availability_on_order" />
+							
 							</xsl:when>
 							
 							<xsl:when test="$type = 'summary'">
@@ -458,6 +464,23 @@
 		</xsl:choose>
 	
 	</xsl:template>
+
+	<!-- 	
+		TEMPLATE: AVAILABILITY ON ORDER
+		On order display, FTW!
+	-->
+	
+	<xsl:template name="availability_on_order">
+	
+		<div class="record-action books-availability-missing">
+			<xsl:call-template name="img_book_not_available">
+				<xsl:with-param name="class">mini-icon</xsl:with-param>
+			</xsl:call-template>
+			<xsl:text> </xsl:text>
+			<xsl:value-of select="../holdings/items/item/note" />
+		</div>	
+	
+	</xsl:template>
 	
 	<!-- 	
 		TEMPLATE: NO LOOKUP
@@ -480,6 +503,7 @@
 		<xsl:param name="printAvailable" />	
 		
 		<xsl:choose>
+			
 			<xsl:when test="../holdings/items/item and $printAvailable = '0'">
 			
 				<div class="record-action books-availability-missing">
@@ -528,9 +552,7 @@
 	-->
 	
 	<xsl:template name="availability_lookup_holdings">
-		
 		<xsl:param name="context">record</xsl:param>
-	
 		
 		<xsl:if test="links">
 	
@@ -562,7 +584,7 @@
 		</xsl:if>
 		
 		<xsl:if test="../holdings/holdings">
-	
+		
 			<p><strong>Print holdings</strong></p>
 		
 			<xsl:for-each select="../holdings/holdings/holding">
@@ -679,7 +701,7 @@
 
 	<xsl:template name="sms_option">
 		
-		<xsl:if test="count(../holdings/items/item) &gt; 0 and $is_mobile = 0">
+		<xsl:if test="count(../holdings/items/item[not(onOrder)]) &gt; 0 and $is_mobile = 0">
 		
 			<div id="sms-option" class="results-availability record-action">
 	
