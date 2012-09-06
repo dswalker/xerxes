@@ -36,7 +36,7 @@
 	
 		<xsl:if test="$is_mobile = 0">
 	
-			<link href="css/books.css?version={$asset_version}" rel="stylesheet" type="text/css" />
+			<link href="{$base_include}/css/books.css?version={$asset_version}" rel="stylesheet" type="text/css" />
 			<script src="{$base_include}/javascript/sms.js?version={$asset_version}" language="javascript" type="text/javascript"></script>
 			
 		</xsl:if>
