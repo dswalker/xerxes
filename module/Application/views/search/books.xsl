@@ -422,7 +422,7 @@
 							
 							</xsl:when>
 							
-							<xsl:when test="$type = 'summary'">
+							<xsl:when test="$type = 'summary' or ($context = 'results' and $totalCopies &gt; 6)">
 							
 								<xsl:call-template name="availability_lookup_summary">
 									<xsl:with-param name="totalCopies" select="$totalCopies" />
@@ -659,7 +659,12 @@
 						<td><xsl:value-of select="institution" /></td>
 					</xsl:if>
 					<td><xsl:value-of select="location" /></td>
-					<td><xsl:value-of select="callnumber" /></td>
+					<td>
+						<xsl:value-of select="callnumber" />
+						<xsl:if test="volume">
+							<xsl:text> </xsl:text><xsl:value-of select="volume" />
+						</xsl:if>
+					</td>
 					<td><xsl:value-of select="status" /></td>
 				</tr>
 			</xsl:for-each>
