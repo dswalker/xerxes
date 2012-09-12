@@ -503,10 +503,10 @@
 	<xsl:template name="record_language">
 		<xsl:if test="language">
 		
-			<div>
-				<dt><xsl:copy-of select="$text_record_language_label" />:</dt>
-				<dd><xsl:value-of select="language" /></dd>
-			</div>
+			<h2><xsl:copy-of select="$text_record_language_label" /></h2>
+			<ul>
+				<li><xsl:value-of select="language" /></li>
+			</ul>
 			
 		</xsl:if>
 	</xsl:template>	
