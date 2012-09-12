@@ -46,6 +46,11 @@ class Query extends Search\Query
 			$query .= ' )';
 		}
 		
+		if ( $this->request->getParam('scholarly') )
+		{
+			$query = "$query AND PT Academic Journal";
+		}
+		
 		return trim($query);
 	}
 }

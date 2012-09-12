@@ -33,7 +33,7 @@
 </xsl:template>
 
 <xsl:template name="page_name">
-	Search Results
+	<xsl:value-of select="//request/query" />
 </xsl:template>
 
 <xsl:template name="title">
@@ -44,6 +44,35 @@
 	<xsl:call-template name="search_page" />
 </xsl:template>
 	
+
+<xsl:template name="facet_narrow_results">
+
+	<xsl:call-template name="peer_sidebar" />
+		
+</xsl:template>
+
+<xsl:template name="peer_sidebar">
+	
+	<div class="box">
+		
+		<h3>Scholarly Journals</h3>
+				
+		<ul>		
+			<xsl:choose>
+				<xsl:when test="//request/scholarly">
+					<li><a href="{//refereed_link}">all journals</a></li>
+					<li><strong>scholarly only</strong></li>
+				</xsl:when>
+				<xsl:otherwise>
+					<li><strong>all journals</strong></li>
+					<li><a href="{//refereed_link}">scholarly only</a></li>
+				</xsl:otherwise>
+			</xsl:choose>
+		</ul>
+		
+	</div>
+
+</xsl:template>
 
 		
 </xsl:stylesheet>

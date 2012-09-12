@@ -48,11 +48,34 @@ class Email
 		else
 		{
 			$this->transport = new Sendmail();
-		}		
+		}
 	}
 	
 	public function send($email, $subject, $body)
 	{
+		require_once __DIR__ . '/../../../../../../../xerxes/lib/PHPMailer/class.phpmailer.php';
+		
+		$registry = Registry::getInstance();
+		
+		$mail = new \PHPMailer();
+		$mail->IsSMTP();  // telling the class to use SMTP
+		$mail->Host = "coweumx01.calstate.edu:25"; // SMTP server		
+		
+		$mail->From = $registry->getConfig("EMAIL_FROM", true);
+		$mail->FromName = $subject;
+		$mail->AddAddress($email);
+			
+		$mail->Subject = $subject;
+		$mail->Body = $body;
+		$mail->WordWrap = 50;
+
+		if ( ! $mail->Send() )
+		{
+			throw new \Exception("Could not send message", 2);
+		}		
+		
+		
+		/*
 		$message = new Message();
 		
 		$message->setTo($email);
@@ -61,5 +84,7 @@ class Email
 		$message->setBody($body);
 		
 		$this->transport->send($message);
+		
+		*/
 	}
 }
