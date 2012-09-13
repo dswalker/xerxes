@@ -69,6 +69,14 @@ class Summon
 	public function getRecord($id)
 	{
 		$options = array('s.q' => "id:$id");
+		
+		// user role
+		
+		if ( $this->role != "")
+		{
+			$options['s.role'] = $this->role;
+		}		
+		
 		return $this->send($options);
 	}
 	
