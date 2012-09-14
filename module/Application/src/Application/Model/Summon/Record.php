@@ -20,6 +20,7 @@ use Xerxes,
 class Record extends Xerxes\Record
 {
 	protected $source = "Summon";
+	protected $direct_link; // summon direct link
 	
 	private $original_array;
 
@@ -49,11 +50,11 @@ class Record extends Xerxes\Record
 		
 		$source = $this->source;
 		$this->source = "Summon";
-		
+			
 		$url = parent::getOpenURL($strResolver, $strReferer, $param_delimiter);
-		
+			
 		$this->source = $source;
-	
+		
 		return $url;
 	}	
 	
@@ -105,9 +106,8 @@ class Record extends Xerxes\Record
 		$this->doi = $this->extractValue($document, "DOI/0");
 		
 		$openurl = $this->extractValue($document, "openUrl");
-		$direct_link = $this->extractValue($document, "link");
+		$this->direct_link = $this->extractValue($document, "link");
 		$uri = $this->extractValue($document, "URI/0");
-		
 		
 		// @todo: figure out black magic for direct linking
 		
@@ -158,7 +158,12 @@ class Record extends Xerxes\Record
 		if ( array_key_exists('Notes', $document) )
 		{
 			$this->notes = $document['Notes'];
-		}			
+		}
+		
+		if ( array_key_exists('Genre', $document) )
+		{
+			$this->notes = $document['Genre'];
+		}		
 		
 		// authors
 		
@@ -338,4 +343,13 @@ class Record extends Xerxes\Record
 		return Format::Unknown;
 	}
 	
+	public function getOriginalXML($bolString = false)
+	{
+		// convert original (JSON-based) array to xml
+		
+		$this->document = Parser::convertToDOMDocument('<original />');
+		Parser::addToXML($this->document, 'record', $this->original_array);
+		
+		return parent::getOriginalXML($bolString);
+	}
 }
