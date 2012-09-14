@@ -667,7 +667,12 @@ class Parser
 			{
 				return null;
 			}
-	
+			
+			if ( is_int($id) )
+			{
+				$id = "object_$id";
+			}
+			
 			$object_xml = new \DOMDocument();
 			$object_xml->loadXML("<$id />");
 	
