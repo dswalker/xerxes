@@ -26,6 +26,7 @@
 		</action>	
 	</controller>
 	<controller name="index" class="Application\Controller\IndexController" />
+	<controller name="linkplus" class="Application\Controller\LinkplusController" />
 	<controller name="metalib" class="Application\Controller\MetalibController" />
 	<controller name="primo" class="Application\Controller\PrimoController" />	
 	<controller name="search" class="Application\Controller\SearchController" />
