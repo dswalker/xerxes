@@ -161,6 +161,25 @@ class Result
 		$this->holdings = $availability->getHoldings($id);
 		$this->holdings->checked = true;
 		
+		
+		// items not to cache
+		
+		$no_cache = $this->config->getConfig('LOCATIONS_NO_CACHE', false);
+		
+		if ( $no_cache != '' )
+		{
+			$no_cache = explode(';', $no_cache);
+			
+			foreach ( $this->holdings->getItems() as $item )
+			{
+				if (in_array($item->location, $no_cache) )
+				{
+					return $this;
+				}
+			}
+		}
+		
+		
 		// cache it for the future
 		
 		$cache = new Cache(); // @todo: zend\cache
