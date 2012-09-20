@@ -257,6 +257,7 @@
 				<input type="hidden" name="lang" value="{//request/lang}" />
 			</xsl:if>
 			
+			<xsl:call-template name="searchbox_hidden_fields_module" />
 			<xsl:call-template name="searchbox_hidden_fields_local" />
 	
 			<xsl:if test="request/sort">
@@ -1360,6 +1361,7 @@
 	
 	<xsl:template name="advanced_search_option" />
 	<xsl:template name="advanced_search" />
+	<xsl:template name="searchbox_hidden_fields_module" />
 	<xsl:template name="searchbox_hidden_fields_local" />
 	
 	<!-- additional record data overriden in templates -->

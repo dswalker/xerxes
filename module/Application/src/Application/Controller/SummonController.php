@@ -12,4 +12,15 @@ class SummonController extends SearchController
 	{
 		return new Engine();
 	}
+	
+	public function indexAction()
+	{
+		$data = parent::indexAction();
+		
+		// set view template
+	
+		$data->setTemplate('summon/index.xsl');
+	
+		return $data;
+	}	
 }
