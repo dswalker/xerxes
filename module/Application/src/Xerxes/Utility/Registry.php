@@ -81,6 +81,23 @@ class Registry
 			
 			foreach ( $xml->configuration->config as $config )
 			{
+				// server specific config, 
+				// e.g., only a test server 
+				
+				$host = (string) $config["host"];
+				
+				if ( $host != "" && isset($_SERVER) )
+				{
+					// nope not this server, so skip it
+					
+					if ($host != $_SERVER['SERVER_NAME'] && $host != $_SERVER['SERVER_ADDR'] )
+					{
+						continue;
+					}
+				}
+				
+				// name 
+				
 				$name = Parser::strtoupper( $config["name"] );
 				$lang = (string) $config["lang"];
 				
