@@ -203,11 +203,24 @@ class Module
 	{
 		$application = $e->getTarget();
 		$manager = $application->getServiceManager();
+		
+		// @todo: this is hacky-sack, get a proper error handler in here
+		
+		try 
+		{
+			$strategy = $manager->get('Application\View\Strategy');
+			$view = $manager->get('Zend\View\View');
 
-		$strategy = $manager->get('Application\View\Strategy');
-		$view = $manager->get('Zend\View\View');
-
-		$view->events()->attach( $strategy, 100 );
+			$view->events()->attach( $strategy, 100 );
+		}
+		catch (\Zend\ServiceManager\Exception\ServiceNotCreatedException $e)
+		{
+			$this->message = 'The requested URL ' . $_SERVER["REQUEST_URI"] . ' was not found on this server.';
+			
+			error_log($this->message);
+			require_once __DIR__ . '/views/error/404.phtml';
+			exit; 
+		}
 	}	
 }
 
