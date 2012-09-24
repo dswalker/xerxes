@@ -52,7 +52,7 @@ class ResultSet
 		}
 		else
 		{
-			return null;
+			throw new \Exception("No such record");
 		}
 	}
 	
