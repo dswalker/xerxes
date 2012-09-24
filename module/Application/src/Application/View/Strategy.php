@@ -164,8 +164,23 @@ class Strategy implements ListenerAggregateInterface
 				
 				if ( $e->getResponse()->getStatusCode() != 200 ) // @todo investigate error render strategy
 				{
-					$model->setVariable("display_exceptions", true);
-					$model->setTemplate('error/index.phtml');
+					$display_excpetions = false;
+					
+					if ( $_SERVER['APPLICATION_ENV'] == 'development')
+					{
+						$display_excpetions = true;
+					}
+					
+					$model->setVariable("display_exceptions", $display_excpetions);
+					
+					if (  $e->getResponse()->getStatusCode() == 404 )
+					{
+						$model->setTemplate('error/404.phtml');
+					}
+					else
+					{
+						$model->setTemplate('error/index.phtml');
+					}
 				}
 				
 				// template not already set, so grab out of config / convention
