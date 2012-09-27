@@ -71,6 +71,19 @@ class Result
 		{
 			$this->holdings->checked = true;
 		}
+		
+		// proxy links?
+		
+		$proxy_server = $this->registry->getConfig('PROXY_SERVER', false );
+		$should_proxy_links = $this->config->getConfig('SHOULD_PROXY', false, false );
+		
+		if ( $should_proxy_links )
+		{
+			foreach ( $this->xerxes_record->getLinks() as $link )
+			{
+				$link->addProxyPrefix($proxy_server);
+			}
+		}
 	}
 	
 	/**

@@ -154,6 +154,83 @@ class Link
 		}
 	}
 	
+	public function addProxyPrefix($proxy_server)
+	{
+		// no link, no proxy, don't do nuttin'
+		
+		if ( $this->url == '' || $proxy_server == "")
+		{
+			return false;
+		}		
+		
+		// make sure the link doesn't include the proxy server prefix already
+			
+		if ( preg_match('/http:\/\/[0-9]{1,3}-.*/', $this->url) != 0 )
+		{
+			// WAM proxy: this is kind of a rough estimate of a WAM-style
+			// proxy link, but I think sufficient for our purposes?
+		
+			return false;
+		}
+		elseif ( stristr($this->url, $proxy_server) )
+		{
+			// EZProxy
+		
+			return false;
+		}
+			
+		// we made it this far, we need to proxy
+			
+		// if WAM proxy, take the base url and port out and 'prefix';
+		// otherwise we only support EZPRoxy, so cool to take as else ?
+		
+		if ( strstr($proxy_server, '{WAM}') )
+		{
+			$arrMatch = array();
+				
+			if ( preg_match('/http[s]{0,1}:\/\/([^\/]*)\/{0,1}(.*)/', $this->url, $arrMatch) != 0 )
+			{
+				$port = "0";
+				$arrPort = array();
+	
+				// port specifically included
+	
+				if ( preg_match("/:([0-9]{2,5})/", $arrMatch[1], $arrPort) != 0 )
+				{
+					if ( $arrPort[1] != "80") 
+					{
+						$port = $arrPort[1];
+					}
+					
+					$arrMatch[1] = str_replace($arrPort[0], "", $arrMatch[1]);
+				}
+	
+				$base = str_replace("{WAM}", $port . "-" . $arrMatch[1], $proxy_server);
+	
+				$this->url =  $base . "/" . $arrMatch[2];
+	
+				$this->url = str_replace("..", ".", $this->url);
+			}
+			else
+			{
+				throw new \Exception("could not construct WAM link");
+			}
+		}
+		else
+		{
+			// check if this is using EZProxy qurl param, in which case urlencode that mo-fo
+				
+			if ( strstr($proxy_server, "qurl=") )
+			{
+				$this->url = urlencode($this->url);
+			}
+				
+			$this->url = $proxy_server . $this->url;
+		}
+		
+		return true;
+	}
+	
 	/**
 	 * Serialize to XML
 	 */

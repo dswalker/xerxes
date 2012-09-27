@@ -110,22 +110,21 @@ class Record extends Xerxes\Record
 				}
 			}
 			
-			// @todo factor this out to a common class
-			
-			$registry = Registry::getInstance();
-			$proxy_server = $registry->getConfig('PROXY_SERVER', false );
-			
 			// full-text
 			
 			if ( count($article->formats->fmt) > 0 )
 			{
 				foreach ( $article->formats->fmt as $fmt )
 				{
+					$link = '';
+					$type = '';
+					
 					if ( (string) $fmt["type"] == "T" )
 					{
-						$this->links[] = new Xerxes\Record\Link($xml->plink, Xerxes\Record\Link::HTML);
+						$link = $xml->plink;
+						$type = Xerxes\Record\Link::HTML;
 					}
-					if ( (string) $fmt["type"] == "P" )
+					elseif ( (string) $fmt["type"] == "P" )
 					{
 						// pdf link is set only if there is both html and pdf full-text?
 						
@@ -135,16 +134,11 @@ class Record extends Xerxes\Record
 						{
 							$link = $xml->plink;
 						}
-						
-						// @todo factor this out to a common class
-						
-						if ( $proxy_server != '' )
-						{
-							$link = $proxy_server .= urlencode($link);
-						}
-						
-						$this->links[] = new Xerxes\Record\Link($link, Xerxes\Record\Link::PDF);
+
+						$type = Xerxes\Record\Link::PDF;
 					}
+					
+					$this->links[] = new Xerxes\Record\Link($link, $type );
 				}
 			}
 			

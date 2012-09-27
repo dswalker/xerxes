@@ -26,7 +26,11 @@ class Config extends Search\Config
 		{
 			self::$instance = new Config();
 			$object = self::$instance;
-			$object->init();			
+			$object->init();
+			
+			// all ebsco links should be proxied
+			
+			$object->setConfig('SHOULD_PROXY', true);
 		}
 		
 		return self::$instance;
