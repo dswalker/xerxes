@@ -3,11 +3,11 @@
 <!--
 
  author: David Walker
- copyright: 2011 California State University
- version: $Id$
- package: Xerxes
+ copyright: 2012 California State University
+ version:
+ package:
  link: http://xerxes.calstate.edu
- license: http://www.gnu.org/licenses/
+ license: 
  
  -->
 
@@ -19,6 +19,7 @@
 <xsl:import href="../search/results.xsl" />
 <xsl:import href="../search/record.xsl" />
 <xsl:import href="../search/books.xsl" />
+<xsl:import href="worldcat.xsl" />
 
 <xsl:output method="html" />
 
@@ -67,6 +68,8 @@
 		</table>
 		
 	</xsl:if>
+	
+	<xsl:call-template name="worldcat_results_availability" />
 
 </xsl:template>	
 
