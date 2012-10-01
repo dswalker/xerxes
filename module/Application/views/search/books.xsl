@@ -121,7 +121,7 @@
 			<div>
 				<dt><xsl:copy-of select="$text_results_author" />:</dt>
 				<dd>
-					<a href="{url}">
+					<a href="{authors/author/url}">
 						<xsl:value-of select="authors/author[@type = 'personal' and not(@additional)]/aufirst" />
 						<xsl:text> </xsl:text>
 						<xsl:value-of select="authors/author[@type = 'personal' and not(@additional)]/auinit" />
