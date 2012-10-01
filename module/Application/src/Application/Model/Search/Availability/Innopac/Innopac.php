@@ -58,7 +58,7 @@ class Innopac implements AvailabilityInterface
 		
 		foreach ( $ignore_locations as $location )
 		{
-			$this->ignore_locations[] = trim($location);
+			$this->locations_to_ignore[] = trim($location);
 		}		
 		
 		if ( $client != null )
