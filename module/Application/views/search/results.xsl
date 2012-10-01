@@ -65,7 +65,11 @@
 	
 		<!-- search box area -->
 		
+		<xsl:call-template name="search_promo" />
+		
 		<xsl:call-template name="searchbox" />
+		
+		<div style="clear:both"></div>
 		
 		<div>
 			<xsl:if test="config/use_tabs = 'true'">
@@ -1373,5 +1377,6 @@
 	
 	<xsl:template name="search_recommendations" />
 	<xsl:template name="facet_narrow_results" />
+	<xsl:template name="search_promo" />
 	
 </xsl:stylesheet>
