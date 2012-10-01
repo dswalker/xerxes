@@ -53,7 +53,7 @@ class Email
 	
 	public function send($email, $subject, $body)
 	{
-		require_once __DIR__ . '/../../../../../../../xerxes/lib/PHPMailer/class.phpmailer.php';
+		require_once __DIR__ . '/../../../../../../xerxes/lib/PHPMailer/class.phpmailer.php';
 		
 		$registry = Registry::getInstance();
 		
