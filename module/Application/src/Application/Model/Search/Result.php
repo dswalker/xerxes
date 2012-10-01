@@ -179,13 +179,18 @@ class Result
 		
 		$no_cache = $this->config->getConfig('LOCATIONS_NO_CACHE', false);
 		
-		if ( $no_cache != '' )
+		if ( $no_cache != '' && $no_cache instanceof \SimpleXMLElement )
 		{
-			$no_cache = explode(';', $no_cache);
+			$locations = array();
+			
+			foreach ( $no_cache->location as $location )
+			{
+				$locations[] = (string) $location;
+			}
 			
 			foreach ( $this->holdings->getItems() as $item )
 			{
-				if (in_array($item->location, $no_cache) )
+				if (in_array($item->location, $locations) )
 				{
 					return $this;
 				}
