@@ -7,6 +7,20 @@ use Xerxes\Record;
 class Worldcat extends Search
 {
 	/**
+	 * Parameters to construct the url on the search redirect
+	 * Accounts for worldcat 'source' identifier
+	 * @return array
+	 */
+	
+	public function searchRedirectParams()
+	{
+		$params = parent::searchRedirectParams();
+		$params['source'] = $this->request->getParam('source');
+	
+		return $params;
+	}	
+	
+	/**
 	 * Query ID
 	 * Accounts for worldcat 'source' identifier
 	 * 
@@ -38,5 +52,22 @@ class Worldcat extends Search
 		);
 	
 		return $this->request->url_for($arrParams);
-	}	
+	}
+	
+	/**
+	 * lateral link base
+	 * Accounts for worldcat 'source' identifier
+	 * 
+	 * @return array
+	 */
+	
+	public function lateralLink()
+	{
+		return array(
+			'controller' => $this->request->getParam('controller'),
+			'action' => 'search',
+			'source' => $this->request->getParam('source')
+		);
+	}
+	
 }

@@ -616,13 +616,10 @@ class Search
 	
 	public function linkAuthor( Author $author )
 	{
-		$arrParams = array(
-				'controller' => $this->request->getParam('controller'),
-				'action' => 'search',
-				'field' => 'author',
-				'query' => $author->getName(),
-		);
-	
+		$arrParams = $this->lateralLink();
+		$arrParams['field'] = 'author';
+		$arrParams['query'] = $author->getName();
+
 		return $this->request->url_for($arrParams);
 	}	
 	
@@ -635,15 +632,26 @@ class Search
 	
 	public function linkSubject( Subject $subject )
 	{
-		$arrParams = array(
-				'controller' => $this->request->getParam('controller'),
-				'action' => 'search',
-				'query' => $subject->value,
-				'field' => 'subject'
-		);
+		$arrParams = $this->lateralLink();
+		$arrParams['field'] = 'subject';
+		$arrParams['query'] = $subject->value;
 	
 		return $this->request->url_for($arrParams);
-	}	
+	}
+	
+	/**
+	 * Lateral link base
+	 * 
+	 * @return array
+	 */
+	
+	public function lateralLink()
+	{
+		return array(
+			'controller' => $this->request->getParam('controller'),
+			'action' => 'search'
+		);
+	}
 
 	/**
 	 * Other links for the record beyond those supplied by the framework
