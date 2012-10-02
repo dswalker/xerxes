@@ -668,13 +668,15 @@ class Parser
 				return null;
 			}
 			
+			$doc_element = "<$id />";
+			
 			if ( is_int($id) )
 			{
-				$id = "object_$id";
+				$doc_element = "<object position=\"$id\" />";
 			}
 			
 			$object_xml = new \DOMDocument();
-			$object_xml->loadXML("<$id />");
+			$object_xml->loadXML($doc_element);
 	
 			foreach ( $object as $property => $value )
 			{
@@ -696,14 +698,17 @@ class Parser
 		{
 			// no id supplied, likely from array, so give it a proper name
 			
+			$attr = "";
+			
 			if ( is_int($id) )
 			{
-				$id = "object_$id";
+				$attr = $id;
+				$id = "object";
 			}
 			
-			// don't try to process empty strings 
-			
 			$str = self::escapeXml($object);
+			
+			// don't try to process empty strings
 			
 			if ($str == '')
 			{
@@ -727,6 +732,11 @@ class Parser
 			else // just take it straight-up
 			{
 				$element = $xml->createElement($id, $str);
+			}
+			
+			if ( $attr != '')
+			{
+				$element->setAttribute('position', $attr);
 			}
 			
 			if ( $element instanceof \DOMElement )
