@@ -95,7 +95,7 @@
 		
 		<xsl:if test="//lti/instructor = '1'">
 			<div class="reading-list-header">
-				<img src="images/famfamfam/add.png" alt="" /> <xsl:text> </xsl:text>
+				<img src="{$base_url}/images/famfamfam/add.png" alt="" /> <xsl:text> </xsl:text>
 				<a href="courses/authenticate">Add records</a>
 			</div>
 		</xsl:if>
@@ -113,9 +113,9 @@
 					<xsl:if test="//lti/instructor = '1'">
 					
 						<div class="reading-list-item-action">
-							<img src="images/famfamfam/arrow_out.png" alt="" />
+							<img src="{$base_url}/images/famfamfam/arrow_out.png" alt="" />
 							<div style="position: absolute; top: 0px; right: 10px">
-								<a href="{../url_delete}"><img src="images/delete.gif" alt="" /><xsl:text> </xsl:text>Remove</a>
+								<a href="{../url_delete}"><img src="{$base_url}/images/delete.gif" alt="" /><xsl:text> </xsl:text>Remove</a>
 							</div>
 						</div>
 					

@@ -26,7 +26,7 @@
 		<xsl:choose>
 			<xsl:when test="//config/worldcat_groups/group[@id=//request/source]/lookup/ill_text">
 
-				<img src="images/ill.gif" alt=""/>
+				<img src="{$base_url}/images/ill.gif" alt=""/>
 				<xsl:text> </xsl:text>
 				<xsl:value-of select="//config/worldcat_groups/group[@id=//request/source]/lookup/ill_text" />					
 
