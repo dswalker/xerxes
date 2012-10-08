@@ -1,7 +1,7 @@
 {
     "name": "dswalker/xerxes",
     "description": "Xerxes 2",
-    "homepage": "http://library.csuprojects.edu/xerxes",
+    "homepage": "http://library.csuprojects.org",
     "repositories": [
         {
             "type": "pear",
