@@ -151,18 +151,22 @@
 				<label for="facet-0-1">Scholarly only</label>
 			
 			</li>
-	
-			<li class="facet-selection">
 			
-				<input type="checkbox" id="facet-0-2" class="facet-selection-option facet-0" name="facet.IsFullText" value="true">
-					<xsl:if test="$fulltext = 'true'">
-						<xsl:attribute name="checked">checked</xsl:attribute>
-					</xsl:if>
-				</input>
-				<xsl:text> </xsl:text>
-				<label for="facet-0-2">Full-text only</label>
+			<xsl:if test="not(//config/show_fulltext_limit) or //config/show_fulltext_limit = 'true'">
+		
+				<li class="facet-selection">
+				
+					<input type="checkbox" id="facet-0-2" class="facet-selection-option facet-0" name="facet.IsFullText" value="true">
+						<xsl:if test="$fulltext = 'true'">
+							<xsl:attribute name="checked">checked</xsl:attribute>
+						</xsl:if>
+					</input>
+					<xsl:text> </xsl:text>
+					<label for="facet-0-2">Full-text only</label>
+				
+				</li>
 			
-			</li>
+			</xsl:if>
 	
 			<xsl:if test="//config/limit_to_holdings = 'true'">
 	
