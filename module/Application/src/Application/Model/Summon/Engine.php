@@ -124,6 +124,11 @@ class Engine extends Search\Engine
 	
 	protected function doGetRecord( $id )
 	{
+		if ( $id == "" )
+		{
+			throw new \DomainException('No record ID supplied');
+		}
+		
 		// get result
 		
 		$summon_results = $this->summon_client->getRecord($id);
