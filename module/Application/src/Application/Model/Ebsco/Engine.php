@@ -252,6 +252,13 @@ class Engine extends Search\Engine
 		
 		$xml = Parser::convertToDOMDocument($response);
 		
+		// catch a non-xml response
+		
+		if ( $xml->documentElement == null )
+		{
+			throw new \Exception("Could not connect to Ebsco search server");
+		}
+		
 		// check for fatal error
 		
 		if ( $xml->documentElement->nodeName == 'Fault')
@@ -263,7 +270,6 @@ class Engine extends Search\Engine
 				throw new \Exception('Ebsco server error: ' . $message->nodeValue);
 			}
 		}
-		
 		
 		// result set
 		
