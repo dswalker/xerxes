@@ -34,7 +34,7 @@ class Cache extends DataMap
 			throw new \InvalidArgumentException("you must supply an id for the cache");
 		}
 		
-		if ( $data == "" )
+		if ( $data === "" )
 		{
 			throw new \InvalidArgumentException("cached data was empty");
 		}		
