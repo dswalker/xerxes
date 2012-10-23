@@ -116,11 +116,12 @@ class ContextObject extends Record
 		if ( $format == "proceeding") $this->format->setInternalFormat(Format::ConferenceProceeding);
 		if ( $format == "dissertation") $this->format->setInternalFormat(Format::Thesis);
 		
+		// date
 		
+		$this->year = substr($this->extractValue("rft:date"), 0, 4);
 		
+		// standard numbers
 		
-		
-		$this->year = $this->extractValue("rft:date");
 		$this->issns[] = $this->extractValue("rft:issn");
 		$this->isbns[] = $this->extractValue("rft:isbn");
 		
