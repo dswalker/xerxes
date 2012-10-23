@@ -61,18 +61,6 @@ class Record extends Xerxes\Record
 		return $this->config;
 	}
 	
-	public function getOpenURL($strResolver, $strReferer = null, $param_delimiter = "&")
-	{
-		$source = $this->source;
-		$this->source = "Summon";
-				
-		$url = parent::getOpenURL($strResolver, $strReferer, $param_delimiter);
-				
-		$this->source = $source;
-			
-		return $url;
-	}	
-	
 	protected function map($document)
 	{
 		$this->source = "Summon";
