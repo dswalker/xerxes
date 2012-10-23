@@ -49,7 +49,11 @@ class Record
 	
 	protected $place = ""; // place of publication	
 	protected $publisher = ""; // publisher	
-	protected $year = ""; // date of publication
+	
+	protected $year = ""; // year of publication
+	protected $month = ''; // month of publication
+	protected $day = ''; // day of publication
+	protected $publication_date; // formatted publication date set by search engine
 
 	protected $edition = ""; // edition
 	protected $extent = ""; // total pages
@@ -332,9 +336,16 @@ class Record
 					$this->journal .= " issue " . $this->issue;
 				}
 				
-				if ( $this->year != "" )
+				$date = $this->getPublicationDate();
+				
+				if ( $this->publication_date != "")
 				{
-					$this->journal .= " (" . $this->year . ")";
+					$date = $this->publication_date;
+				}
+				
+				if ( $date != null )
+				{
+					$this->journal .= " ($date)";
 				}
 				
 				if ( $this->start_page != "" )
@@ -1046,7 +1057,6 @@ class Record
 		$arrReferant["rft.series"] = $this->series_title;
 		$arrReferant["rft.place"] = $this->place;
 		$arrReferant["rft.pub"] = $this->publisher;
-		$arrReferant["rft.date"] = $this->year;
 		$arrReferant["rft.edition"] = $this->edition;
 		$arrReferant["rft.tpages"] = $this->extent;
 		$arrReferant["rft.jtitle"] = $this->journal_title;
@@ -1057,6 +1067,11 @@ class Record
 		$arrReferant["rft.epage"] = $this->end_page;
 		$arrReferant["rft.degree"] = $this->degree;
 		$arrReferant["rft.inst"] = $this->institution;
+		
+		// date
+		
+		$arrReferant["rft.date"] = $this->getPublicationDate('Y-m-d');
+		
 		
 		### title
 
@@ -1551,6 +1566,29 @@ class Record
 	public function getYear()
 	{
 		return $this->year;
+	}
+	
+	public function getPublicationDate($format = 'j F Y')
+	{
+		// no date, no mas
+		
+		if ( $this->month == "" && $this->day == "" && $this->year == "")
+		{
+			return null;
+		}
+		
+		// full date, full response!
+		
+		if ( is_int($this->month) && is_int($this->day) && is_int($this->year) )
+		{
+			$date = new \DateTime();
+			$date->setDate($this->year, $this->month, $this->day);
+			return $date->format($format);
+		}
+		
+		// just return the year
+		
+		return $this->year;		
 	}
 	
 	public function getJournal()

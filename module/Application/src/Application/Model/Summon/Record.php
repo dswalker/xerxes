@@ -63,7 +63,6 @@ class Record extends Xerxes\Record
 	
 	protected function map($document)
 	{
-		$this->source = "Summon";
 		$this->database_name = $this->extractValue($document, "Source/0");
 		
 		$this->record_id = $this->extractValue($document, "ID/0");
@@ -77,8 +76,22 @@ class Record extends Xerxes\Record
 		// basic info
 		
 		$this->language = $this->extractValue($document, "Language/0");
-		$this->year = $this->extractValue($document, "PublicationDate_xml/0/year");
 		$this->extent = $this->extractValue($document, "PageCount/0");
+		
+		// date
+		
+		$this->year = (int) $this->extractValue($document, "PublicationDate_xml/0/year");
+		$this->month = (int) $this->extractValue($document, "PublicationDate_xml/0/month");
+		$this->day = (int) $this->extractValue($document, "PublicationDate_xml/0/day");
+		
+		// only use this if it has text in it
+		
+		$publication_date = $this->extractValue($document, "PublicationDate_xml/0/text");
+		
+		if ( preg_match('/[a-zA-Z]{1}/', $publication_date) )
+		{
+			$this->publication_date = $publication_date;
+		}
 		
 		// format
 		
