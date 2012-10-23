@@ -157,7 +157,9 @@ class Format
 			case self::ArticleJournal :				
 			case self::ArticleMagazine :
 			case self::ArticleNewspaper :
-			case self::Article :		
+			case self::Article :
+			case self::BookReview :
+			case self::Review:
 				
 				return "article";
 				break;
