@@ -2,6 +2,8 @@
 
 namespace Application\Model\Summon;
 
+use Application\Model\Metalib\Link;
+
 use Xerxes,
 	Xerxes\Record\Format,
 	Xerxes\Utility\Parser;
@@ -20,7 +22,6 @@ use Xerxes,
 class Record extends Xerxes\Record
 {
 	protected $source = "Summon";
-	protected $direct_link; // summon direct link
 	
 	private $original_array; // main data from summon
 	private $config; // summon config
@@ -62,32 +63,20 @@ class Record extends Xerxes\Record
 	
 	public function getOpenURL($strResolver, $strReferer = null, $param_delimiter = "&")
 	{
-		// only use openurls
-		
-		if ( $this->config()->getConfig('OPENURL_ONLY', false, false)  )
-		{
-			// make sure the OpenURL source is always summon, not the publisher
-			// or other source where Summon has gotten its data
-			
-			$source = $this->source;
-			$this->source = "Summon";
+		$source = $this->source;
+		$this->source = "Summon";
 				
-			$url = parent::getOpenURL($strResolver, $strReferer, $param_delimiter);
+		$url = parent::getOpenURL($strResolver, $strReferer, $param_delimiter);
 				
-			$this->source = $source;
+		$this->source = $source;
 			
-			return $url;
-		}
-		else // use the direct link from summon
-		{
-			return $this->direct_link;
-		}
+		return $url;
 	}	
 	
 	protected function map($document)
 	{
 		$this->source = "Summon";
-		$this->database_name = $this->extractValue($document, "Source/0");;
+		$this->database_name = $this->extractValue($document, "Source/0");
 		
 		$this->record_id = $this->extractValue($document, "ID/0");
 		$this->score = $this->extractValue($document, "Score/0");
@@ -131,9 +120,28 @@ class Record extends Xerxes\Record
 		$this->end_page = $this->extractValue($document, "EndPage/0");
 		$this->doi = $this->extractValue($document, "DOI/0");
 		
-		$openurl = $this->extractValue($document, "openUrl");
-		$this->direct_link = $this->extractValue($document, "link");
+		// full text link
+		
+		if ( $this->config()->getConfig('direct_linking', false, false ) )
+		{
+			$direct_link = $this->extractValue($document, "link");
+			$has_full_text = (int) $this->extractValue($document, 'hasFullText');
+			$in_holdings = (int) $this->extractValue($document, 'inHoldings');
+			
+			if ($has_full_text == 1 && $in_holdings == 1)
+			{
+				$this->links[] = new Link($direct_link, Link::ONLINE);
+			}
+		}
+		
+		// original record link
+		
 		$uri = $this->extractValue($document, "URI/0");
+		
+		if ( $uri != '' )
+		{
+			$this->links[] = new Link($uri, Link::ORIGINAL_RECORD);
+		}
 		
 		// peer reviewed
 		
