@@ -37,10 +37,6 @@ class Engine extends Search\Engine
 				
 		$this->summon_client = new Summon($id, $key, Factory::getHttpClient());
 		
-		// @todo: only for local users?
-		
-		$this->summon_client->setToAuthenticated(); 
-		
 		// formats to exclude
 		
 		$this->formats_exclude = explode(',', $this->config->getConfig("EXCLUDE_FORMATS") );
@@ -78,7 +74,10 @@ class Engine extends Search\Engine
 	{
 		$results = $this->doSearch( $search, $start, $max, $sort);
 		
-		$results->markFullText();
+		if ( $this->config->getConfig('mark_fulltext_using_export', false, false ) )
+		{
+			$results->markFullText(); // sfx data
+		}
 		
 		return $results;
 	}	
@@ -97,8 +96,11 @@ class Engine extends Search\Engine
 		$results = $this->doGetRecord( $id );
 		
 		$results->getRecord(0)->addRecommendations(); // bx
-		$results->markFullText(); // sfx data
-		$results->markRefereed(); // refereed
+		
+		if ( $this->config->getConfig('mark_fulltext_using_export', false, false ) )
+		{
+			$results->markFullText(); // sfx data
+		}
 		
 		return $results;
 	}
@@ -149,7 +151,14 @@ class Engine extends Search\Engine
 	 */		
 	
 	protected function doSearch( Search\Query $search, $start = 1, $max = 10, $sort = "")
-	{ 	
+	{
+		// limit to local users?
+		
+		if ( $search->getUser()->isAuthorized() )
+		{
+			$this->summon_client->setToAuthenticated();
+		}
+		
 		// prepare the query
 		
 		$query = $search->toQuery();
