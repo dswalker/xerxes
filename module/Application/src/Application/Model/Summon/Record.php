@@ -2,10 +2,9 @@
 
 namespace Application\Model\Summon;
 
-use Application\Model\Metalib\Link;
-
 use Xerxes,
 	Xerxes\Record\Format,
+	Xerxes\Record\Link,
 	Xerxes\Utility\Parser;
 
 /**
@@ -25,6 +24,8 @@ class Record extends Xerxes\Record
 	
 	private $original_array; // main data from summon
 	private $config; // summon config
+	
+	protected $direct_link; // summon direct link
 
 	public function __sleep()
 	{
@@ -37,6 +38,12 @@ class Record extends Xerxes\Record
 		parent::__construct();
 		$this->load($this->serialized);
 	}	
+	
+	/**
+	 * Load, map, and clean-up record data from Summon
+	 *
+	 * @param array $document
+	 */	
 	
 	public function load($document)
 	{
@@ -60,6 +67,30 @@ class Record extends Xerxes\Record
 		
 		return $this->config;
 	}
+	
+	/**
+	 * Get an OpenURL 1.0 formatted URL
+	 *
+	 * @param string $strResolver	base url of the link resolver
+	 * @param string $strReferer	referrer (unique identifier)
+	 * @return string
+	 */	
+	
+	public function getOpenURL($resolver, $referer = null, $para_delimiter = '&')
+	{
+		if ( $this->config()->getConfig('direct_linking', false, false ) )
+		{
+			return $this->direct_link;
+		}
+		else
+		{
+			return parent::getOpenURL($resolver, $referer, $para_delimiter);
+		}
+	}
+	
+	/**
+	 * Map the source data to record properties
+	 */	
 	
 	protected function map($document)
 	{
@@ -121,19 +152,9 @@ class Record extends Xerxes\Record
 		$this->end_page = $this->extractValue($document, "EndPage/0");
 		$this->doi = $this->extractValue($document, "DOI/0");
 		
-		// full text link
+		// direct link
 		
-		if ( $this->config()->getConfig('direct_linking', false, false ) )
-		{
-			$direct_link = $this->extractValue($document, "link");
-			$has_full_text = (int) $this->extractValue($document, 'hasFullText');
-			$in_holdings = (int) $this->extractValue($document, 'inHoldings');
-			
-			if ($has_full_text == 1 && $in_holdings == 1)
-			{
-				$this->links[] = new Link($direct_link, Link::ONLINE);
-			}
-		}
+		$this->direct_link = $this->extractValue($document, "link");
 		
 		// original record link
 		
@@ -143,6 +164,16 @@ class Record extends Xerxes\Record
 		{
 			$this->links[] = new Link($uri, Link::ORIGINAL_RECORD);
 		}
+		
+		// subscription
+		
+		$has_full_text = (int) $this->extractValue($document, 'hasFullText');
+		$in_holdings = (int) $this->extractValue($document, 'inHoldings');
+			
+		if ($has_full_text == 1 && $in_holdings == 1)
+		{
+			$this->setSubscription(true);
+		}		
 		
 		// peer reviewed
 		
