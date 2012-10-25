@@ -30,6 +30,12 @@ interface User
 	public function isInLocalIpRange();
 	
 	/**
+	 * Is the user a local user or authenticated
+	 */
+	
+	public function isAuthorized();
+	
+	/**
 	 * Generate a random username 
 	 * 
 	 * Used for local and guest users

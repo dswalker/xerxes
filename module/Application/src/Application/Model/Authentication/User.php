@@ -86,6 +86,22 @@ class User extends DataValue implements Utility\User
 	}
 	
 	/**
+	 * Is the user a local user or authenticated
+	 */	
+	
+	public function isAuthorized()
+	{
+		if ( $this->isAuthenticated() || $this->isInLocalIpRange() )
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	/**
 	 * Is the user authenticated
 	 * 
 	 * Not guest or temporary local user 
