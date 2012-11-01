@@ -27,6 +27,7 @@ class Item
     public $number; 	// the copy number for this item (note: although called “number”, 
     					// this may actually be a string if individual items are named rather than numbered)
     public $barcode; // the barcode number for this item
+    public $request_url; // automated storage or hold request
 	
 	/**
 	 * Serialize to Array

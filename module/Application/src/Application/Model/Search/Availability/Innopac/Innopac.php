@@ -81,32 +81,28 @@ class Innopac implements AvailabilityInterface
 	{
 		// echo strlen($bib_id);
 
-		$record = new Search\Holdings();
+		$holdings = new Search\Holdings();
 		
 		// fetch info from server
 		
 		$id = substr( $bib_id, 1 );
 		
-		$query = "/search/.$bib_id/.$bib_id/1,1,1,B/detlmarc~$id&FF=&1,0,";
+		$query = "/record=$id";
 		
 		$this->url = $this->server . $query;
 		
 		$response = $this->fetch( $this->url );
 		
-		// didn't find a record
-		
-		if ( ! stristr($response, "<pre>") )
-		{
-			return $record;
-		}
-		
 		// parse record
 		
-		$record->id = $this->extractID( $response );
+		$holdings->id = $this->extractID( $response );
+		
+		$holdings->hold_url = $this->extractHoldLink( $response );
 		
 		// marc record
 		
-		$record->setBibliographicRecord( $this->extractMarc($response) );
+		// $query = "/search/.$bib_id/.$bib_id/1,1,1,B/detlmarc~$id&FF=&1,0,";
+		// $record->setBibliographicRecord( $this->extractMarc($response) );
 
 		// items
 		
@@ -126,24 +122,24 @@ class Innopac implements AvailabilityInterface
 				$item->availability = true;
 			}
 			
-			$record->addItem($item);
+			$holdings->addItem($item);
 		}		
 		
 		// periodical holdings
 		
-		foreach ( $this->extractHoldingsRecords( $response ) as $holdings )
+		foreach ( $this->extractHoldingsRecords( $response ) as $periodical_holdings )
 		{
-			$record->addHolding($holdings);
+			$holdings->addHolding($periodical_holdings);
 		}
 		
 		// erm records
 		
 		foreach ( $this->extractERMRecords( $response ) as $electronic )
 		{
-			$record->addElectronicResource($electronic);
+			$holdings->addElectronicResource($electronic);
 		}
 		
-		return $record;
+		return $holdings;
 	}
 	
 	/**
@@ -180,6 +176,29 @@ class Innopac implements AvailabilityInterface
 		{
 			return null;
 		}
+	}
+	
+	/**
+	 * Extract the hold link on the page
+	 * 
+	 * @param string $html		the HTML response from the server
+	 */
+	
+	protected function extractHoldLink($html)
+	{
+		// hold link
+		
+		$hold_link = null;
+		
+		$arrMatch = array();
+		$pattern = '/href="(.*request~[^"]*)"/';
+		
+		if ( preg_match($pattern, $html, $arrMatch) )
+		{
+			$hold_link = $arrMatch[1];
+		}
+		
+		return $hold_link;
 	}
 	
 	/**
@@ -237,36 +256,22 @@ class Innopac implements AvailabilityInterface
 		// look to see which template this is and adjust the 
 		// parser to accomadate the html structure
 
-		if ( strpos( $html, "class=\"bibItems\">" ) !== false )
+		if ( strpos( $html, "class=\"bibItems\">" ) !== false ) // most local innopac systems
 		{
-			// most library innopac systems
 			$table = "class=\"bibItems\">";
 		} 
-		elseif ( strpos( $html, "BGCOLOR=#DDEEFF>" ) !== false )
+		elseif ( strpos( $html, "centralHolding" ) !== false ) // innreach system
 		{
-			// old innreach system
-			$table = "BGCOLOR=#DDEEFF>";
-		} 
-		elseif ( strpos( $html, "centralHolding" ) !== false )
-		{
-			// newer innreach system
 			$table = "centralHolding";
 		}
-		elseif ( strpos( $html, "centralDetailHoldings" ) !== false )
+		elseif ( strpos( $html, "centralDetailHoldings" ) !== false ) // newer innreach system
 		{
-			// newer innreach system
 			$table = "centralDetailHoldings";			
 		}
-		elseif ( strpos( $html, "class=\"bibOrder" ) !== false )
+		elseif ( strpos( $html, "class=\"bibOrder" ) !== false ) // order record
 		{
-			// this is just a note saying the item has been ordered
-			
 			$table = "class=\"bibOrder";
 			$bolOrderNote = true;
-		} 
-		elseif ( strpos( $html, "class=\"bibDetail" ) !== false )
-		{
-			$table = "class=\"bibDetail";
 		} 
 		else
 		{
@@ -299,13 +304,9 @@ class Innopac implements AvailabilityInterface
 			{
 				// extract any url in item, especially for InnReach
 
-				$strUrl = null;
 				$arrUrl = array();
 				
-				if ( preg_match( "/<a href=\"([^\"]{1,})\">/", $item_data, $arrUrl ) )
-				{
-					$strUrl = $arrUrl[1];
-				}
+				preg_match_all( "/<a href=\"([^\"]{1,})\">/", $item_data, $arrUrl, PREG_SET_ORDER );
 				
 				// replace the item record marc field comments with place holders
 				// so we can grab them latter after removing the html tags
@@ -353,18 +354,24 @@ class Innopac implements AvailabilityInterface
 				else
 				{
 					$item_array = explode( "\n", $item_data );
-
-					// add url back into the array
-				
-					if ( $strUrl != null )
-					{
-						array_push( $item_array, $strUrl );
-					}				
 				}
 				
-				// final clean-up, assignment
+				
+				### final clean-up, assignment
 				
 				$item = new Search\Item();
+				
+				
+				// add url back into the array
+				
+				foreach ( $arrUrl as $url )
+				{
+					if ( strstr($url[1], 'asrsreq') )
+					{
+						$item->request_url = $this->server . $url[1];
+					}
+				}				
+				
 				
 				if ( $bolFieldNotes == true )
 				{

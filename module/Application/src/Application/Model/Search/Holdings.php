@@ -21,6 +21,7 @@ class Holdings
 	public $holdings = array(); // periodical holdigs
 	public $electronicResources = array(); // ERM resources
 	public $none; // placeholder to show there are no holdings
+	public $hold_url; // link to place a hold
 	
 	/**
 	 * Get bibliographic record
