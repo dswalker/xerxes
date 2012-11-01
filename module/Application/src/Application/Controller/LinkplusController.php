@@ -49,33 +49,4 @@ class LinkplusController extends SolrController
 		
 		return $this->redirect()->toUrl($url);		
 	}
-	
-	public function requestAction()
-	{
-		$id = $this->request->getParam("id");
-		
-		$config = Config::getInstance();
-		
-		$server = $config->getConfig('SERVER', true);
-		$server = rtrim($server, '/');
-	
-		$url = "$server/record=$id";
-		
-		$html = file_get_contents($url);
-	
-		$arrMatch = array();
-		$redirect = "";
-	
-		$pattern = '/href="(.*asrsreq[^"]*)"/';
-	
-		if ( preg_match_all($pattern, $html, $arrMatch) != 1 )
-		{
-			return $this->redirect()->toUrl($url);
-		}
-		elseif ( preg_match($pattern, $html, $arrMatch) )
-		{
-			$redirect = $server . $arrMatch[1];
-			return $this->redirect()->toUrl($redirect);
-		}
-	}
 }
