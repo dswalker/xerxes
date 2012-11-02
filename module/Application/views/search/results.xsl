@@ -130,7 +130,7 @@
 				
 				<!-- sidebar -->
 				
-				<xsl:if test="$sidebar != 'none'">
+				<xsl:if test="$sidebar != 'none' and $is_mobile = 0">
 				
 					<div>
 						<xsl:attribute name="class">
@@ -968,21 +968,25 @@
 			
 			<xsl:call-template name="additional_brief_record_data" />
 			
-			<div class="record-actions">
+			<xsl:if test="$is_mobile = 0">
+			
+				<div class="record-actions">
+					
+					<!-- full text -->
+					
+					<xsl:call-template name="full_text_options" />
+					
+					<!-- custom area for additional links -->
+					
+					<xsl:call-template name="additional_record_links" />
+					
+					<!-- save record -->
+					
+					<xsl:call-template name="save_record" />
+								
+				</div>
 				
-				<!-- full text -->
-				
-				<xsl:call-template name="full_text_options" />
-				
-				<!-- custom area for additional links -->
-				
-				<xsl:call-template name="additional_record_links" />
-				
-				<!-- save record -->
-				
-				<xsl:call-template name="save_record" />
-							
-			</div>
+			</xsl:if>
 			
 		</div>
 	
