@@ -256,7 +256,7 @@ class Innopac implements AvailabilityInterface
 		// look to see which template this is and adjust the 
 		// parser to accomadate the html structure
 
-		if ( strpos( $html, "class=\"bibItems\">" ) !== false ) // most local innopac systems
+		if ( preg_match('/<table[^>]*class="bibItems">/', $html) ) // most local innopac systems
 		{
 			$table = "class=\"bibItems\">";
 		} 
@@ -266,7 +266,7 @@ class Innopac implements AvailabilityInterface
 		}
 		elseif ( strpos( $html, "centralDetailHoldings" ) !== false ) // newer innreach system
 		{
-			$table = "centralDetailHoldings";			
+			$table = "centralDetailHoldings";
 		}
 		elseif ( strpos( $html, "class=\"bibOrder" ) !== false ) // order record
 		{
