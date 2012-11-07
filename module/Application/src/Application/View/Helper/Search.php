@@ -295,6 +295,10 @@ class Search
 			$result->url_save = $this->linkSaveRecord($xerxes_record);
 			$result->url_save_delete = $result->url_save; // backwards compatibility
 			
+			// openurl redirect
+			
+			$result->url_open_redirect = $this->linkOpenURL($xerxes_record);
+			
 			// other links
 			
 			$this->linkOther($result);
@@ -570,6 +574,24 @@ class Search
 		
 		return $this->request->url_for($arrParams);
 	}
+	
+	/**
+	 * URL for the full record display
+	 *
+	 * @param $result Record object
+	 * @return string url
+	 */
+	
+	public function linkOpenUrl( Record $record )
+	{
+		$arrParams = array(
+			'controller' => $this->request->getParam('controller'),
+			"action" => "openurl",
+			"id" => $record->getRecordID()
+		);
+	
+		return $this->request->url_for($arrParams);
+	}	
 	
 	/**
 	 * URL for the full record display

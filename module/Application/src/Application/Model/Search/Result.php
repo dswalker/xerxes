@@ -300,6 +300,8 @@ class Result
 	
 	/**
 	 * Get the Xerxes_Record object
+	 * 
+	 * @return Record
 	 */
 	
 	public function getXerxesRecord()

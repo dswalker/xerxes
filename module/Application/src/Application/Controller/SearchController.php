@@ -273,6 +273,23 @@ abstract class SearchController extends ActionController
 		return $this->data;
 	}
 	
+	public function openurlAction()
+	{
+		$id = $this->request->getParam('id');
+		
+		// get the record
+		
+		$results = $this->engine->getRecord($id);
+		$record = $results->getRecord(0);
+		
+		if ( $record->url_open == null )
+		{
+			throw new \Exception("Could not create OpenURL");
+		}
+
+		return $this->redirect()->toUrl($record->url_open);
+	}
+	
 	public function lookupAction()
 	{
 		$id = $this->request->getParam("id");
@@ -295,7 +312,18 @@ abstract class SearchController extends ActionController
 		$this->data->setTemplate('search/lookup.xsl');
 		
 		return $this->data;
-	}	
+	}
+	
+	public function facetAction()
+	{
+		$this->request->setParam('max', 1);
+	
+		$model = $this->resultsAction();
+	
+		$model->setTemplate('search/facet.xsl');
+	
+		return $model;
+	}
 
 	public function saveAction()
 	{
@@ -368,17 +396,6 @@ abstract class SearchController extends ActionController
 		}
 		
 		return $suggestion;
-	}
-	
-	public function facetAction()
-	{
-		$this->request->setParam('max', 1);
-		
-		$model = $this->resultsAction();
-		
-		$model->setTemplate('search/facet.xsl');
-		
-		return $model;
 	}
 	
 	
