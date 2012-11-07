@@ -302,6 +302,8 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_results_hint_remove_limit">remove limit</xsl:variable>
 	<xsl:variable name="text_results_no_title">[ No Title ]</xsl:variable>
 	<xsl:variable name="text_results_published_in">Published in</xsl:variable>
+	<xsl:variable name="text_results_record_hold">Place hold</xsl:variable>
+	<xsl:variable name="text_results_record_recall">Recall item</xsl:variable>
 	<xsl:variable name="text_results_record_saved">Record saved</xsl:variable>
 	<xsl:variable name="text_results_record_saved_temp">Temporarily Saved</xsl:variable>
 	<xsl:variable name="text_results_record_save_it">Save this record</xsl:variable>
