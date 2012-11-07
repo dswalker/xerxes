@@ -118,6 +118,8 @@
 					
 					<xsl:call-template name="no_hits" />
 					
+					<xsl:call-template name="search_login_reminder" />
+					
 					<xsl:call-template name="search_recommendations" />
 			
 					<xsl:call-template name="brief_results" />
@@ -1382,5 +1384,6 @@
 	<xsl:template name="search_recommendations" />
 	<xsl:template name="facet_narrow_results" />
 	<xsl:template name="search_promo" />
+	<xsl:template name="search_login_reminder" />
 	
 </xsl:stylesheet>
