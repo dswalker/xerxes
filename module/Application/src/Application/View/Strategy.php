@@ -90,6 +90,7 @@ class Strategy implements ListenerAggregateInterface
 		{
 			$request = $e->getRequest();
 			$model = $e->getModel();
+			$registry = Registry::getInstance();
 			
 			// this happens if the route is not matched properly
 			
@@ -103,7 +104,7 @@ class Strategy implements ListenerAggregateInterface
 			
 			$model->setVariable("base_url", $request->getServerUrl() . $request->getBaseUrl());
 			$model->setVariable("request", $request);
-			$model->setVariable("config", Registry::getInstance());
+			$model->setVariable("config", $registry);
 			
 			// add navigation
 			
@@ -166,7 +167,7 @@ class Strategy implements ListenerAggregateInterface
 				{
 					$display_excpetions = false;
 					
-					if ( $_SERVER['APPLICATION_ENV'] == 'development')
+					if ( $_SERVER['APPLICATION_ENV'] == 'development' || $registry->getConfig('DISPLAY_ERRORS', false, false) == true )
 					{
 						$display_excpetions = true;
 					}
