@@ -131,6 +131,10 @@ class Engine extends Search\Engine
 			throw new \DomainException('No record ID supplied');
 		}
 		
+		// always set to authenticated if you know the id
+		
+		$this->summon_client->setToAuthenticated();
+		
 		// get result
 		
 		$summon_results = $this->summon_client->getRecord($id);
