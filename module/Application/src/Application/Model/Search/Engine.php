@@ -2,7 +2,8 @@
 
 namespace Application\Model\Search;
 
-use Xerxes\Utility\Registry,
+use Xerxes\Utility\Cache,
+	Xerxes\Utility\Registry,
 	Xerxes\Utility\Request,
 	Zend\Http\Client;
 
@@ -26,12 +27,16 @@ abstract class Engine
 	protected $config; // local search engine config
 	protected $query; // search query
 	
+	private $cache; // cache object
+	
 	/**
 	 * Constructor
 	 */
 	
 	public function __construct()
 	{
+		$this->cache = new Cache();
+		
 		// application config
 		
 		$this->registry = Registry::getInstance();
@@ -115,5 +120,35 @@ abstract class Engine
 		{
 			return new Query($request, $this->getConfig());
 		}
+	}
+	
+	/**
+	 * Check for previously cached results
+	 * 
+	 * @param Query $query
+	 * @return null|ResultSet     null if no previously cached results
+	 */
+	
+	public function getCachedResults(Query $query)
+	{
+		$id = $query->getUrlHash();
+		
+		$results = $this->cache->get($id);
+		
+		return unserialize($results);
+	}
+	
+	/**
+	 * Cache search results
+	 * 
+	 * @param ResultSet $results
+	 * @param Query $query
+	 */
+	
+	public function setCachedResults(ResultSet $results, Query $query)
+	{
+		$id = $query->getUrlHash();
+		
+		$this->cache->set($id, serialize($results));
 	}
 }
