@@ -258,6 +258,15 @@ class Query
 	}
 	
 	/**
+	 * Return an md5 hash of the request uri
+	 */	
+	
+	public function getUrlHash()
+	{
+		return md5($this->request->getRequestUri());
+	}
+	
+	/**
 	 * Return an md5 hash of the main search parameters, bascially to identify the search
 	 */
 	
