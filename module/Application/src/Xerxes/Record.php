@@ -1070,7 +1070,7 @@ class Record
 		
 		// date
 		
-		$arrReferant["rft.date"] = $this->getPublicationDate('Y-m-d');
+		$arrReferant["rft.date"] = $this->year; // $this->getPublicationDate('Y-m-d');
 		
 		
 		### title
