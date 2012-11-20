@@ -2,6 +2,8 @@
 
 namespace Application\Controller;
 
+use Application\Model\Search\Engine;
+
 use Zend\View\Model\ViewModel;
 
 use Application\View\Helper\Search as SearchHelper,
@@ -52,6 +54,12 @@ abstract class SearchController extends ActionController
 		
 		$this->helper = new SearchHelper($e, $this->id, $this->engine);
 	}
+	
+	/**
+	 * Return the search engine for this sytem
+	 * 
+	 * @return Engine
+	 */
 	
 	abstract protected function getEngine();
 	
@@ -173,9 +181,9 @@ abstract class SearchController extends ActionController
 		{
 			$this->request->setSessionData('clear_facets', 'false');
 		}
-		
+
 		// search
-				
+		
 		$results = $this->engine->searchRetrieve($this->query, $start, $max, $internal_sort);
 		
 		// total
