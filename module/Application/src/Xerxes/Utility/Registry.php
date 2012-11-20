@@ -13,7 +13,7 @@ namespace Xerxes\Utility;
  * @package  Xerxes_Framework
  */
 
-class Registry
+class Registry implements \Serializable
 {
 	protected $xml = ""; // simple xml object copy
 	protected $config_file = "config/config";
@@ -23,8 +23,30 @@ class Registry
 	private $arrPass = array ( ); // values to pass on to the view
 	private static $instance; // singleton pattern
 
+	
 	protected function __construct()
 	{
+	}
+	
+	/**
+	 * Serialize
+	 * @see Serializable::serialize()
+	 */
+	
+	public function serialize()
+	{
+		return $this->xml->saveXML();
+	}
+	
+	/**
+	 * Unserialize
+	 * @see Serializable::unserialize()
+	 */
+	
+	public function unserialize($data)
+	{
+		$this->xml = simplexml_load_string($data);
+		$this->process();
 	}
 	
 	/**
@@ -51,108 +73,106 @@ class Registry
 	{
 		if ( $this->arrConfig == null )
 		{
-			$file = "";
-			$file_xml = $this->config_file . ".xml";
-			$file_php = $this->config_file . ".php";
+			// locate the config file
 			
-			$this->arrConfig = array ();
-			
-			// check if the config file has an .xml or .php extension
-			
-			if ( file_exists( $file_xml ) )
-			{
-				$file = $file_xml;
-			}
-			elseif ( file_exists($file_php) )
-			{
-				$file = $file_php;
-			}
-			else
+			$file = $this->config_file . ".xml";
+
+			if ( ! file_exists($file) )
 			{
 				throw new \Exception( "could not find configuration file" );
 			}
 			
-			$this->authentication_sources["guest"] = "guest";
-			
-			// get it!
+			// load it
 
-			$xml = simplexml_load_file( $file );
-			$this->xml = $xml;
+			$this->xml = simplexml_load_file( $file );
 			
-			foreach ( $xml->configuration->config as $config )
+			// process it
+			
+			$this->process();
+		}
+	}
+	
+	/**
+	 * Process the config file xml
+	 */
+	
+	protected function process()
+	{
+		$this->authentication_sources["guest"] = "guest";		
+		
+		foreach ( $this->xml->configuration->config as $config )
+		{
+			// server specific config,
+			// e.g., only a test server
+				
+			$host = (string) $config["host"];
+				
+			if ( $host != "" && isset($_SERVER) )
 			{
-				// server specific config, 
-				// e.g., only a test server 
-				
-				$host = (string) $config["host"];
-				
-				if ( $host != "" && isset($_SERVER) )
+				// nope not this server, so skip it
+		
+				if ($host != $_SERVER['SERVER_NAME'] && $host != $_SERVER['SERVER_ADDR'] )
 				{
-					// nope not this server, so skip it
-					
-					if ($host != $_SERVER['SERVER_NAME'] && $host != $_SERVER['SERVER_ADDR'] )
-					{
-						continue;
-					}
+					continue;
 				}
+			}
 				
-				// name 
+			// name
 				
-				$name = Parser::strtoupper( $config["name"] );
-				$lang = (string) $config["lang"];
+			$name = Parser::strtoupper( $config["name"] );
+			$lang = (string) $config["lang"];
 				
-				if ( $lang != "" && $lang != $this->initDefaultLanguage() )
-				{
-					$name .= "_$lang";
-				}
+			if ( $lang != "" && $lang != $this->initDefaultLanguage() )
+			{
+				$name .= "_$lang";
+			}
 				
-				if ( $config["xml"] == "true" ) 
+			if ( $config["xml"] == "true" )
+			{
+				// special XML config, already parsed as SimpleXML, leave it that way.
+				$value = $config;
+			}
+			else
+			{
+				//simple string
+				 
+				$value = trim( ( string ) $config );
+		
+				// convert simple xml-encoded values to something easier
+				// for the client code to digest
+		
+				$value = str_replace( "&lt;", "<", $value );
+				$value = str_replace( "&gt;", ">", $value );
+				$value = str_replace( "&amp;", "&", $value );
+			}
+		
+			// special logic for authentication_source because we can
+			// have more than one.
+		
+			if ( $name == "AUTHENTICATION_SOURCE" )
+			{
+				$this->authentication_sources[( string ) $config["id"]] = $value;
+		
+				// and don't overwrite the first one in our standard config array
+		
+				if ( ! empty( $this->arrConfig["AUTHENTICATION_SOURCE"] ) )
 				{
-					// special XML config, already parsed as SimpleXML, leave it that way.
-					$value = $config;          
+					$value = "";
 				}
-				else 
+			}
+		
+			if (! empty($value) )
+			{
+				// add it to the config array
+		
+				$this->arrConfig[$name] = $value;
+		
+				// types that are listed as 'pass' will be forwarded
+				// on to the xml layer for use in the view
+		
+				if ( ( string ) $config["pass"] == "true" )
 				{
-					//simple string
-					     
-					$value = trim( ( string ) $config );
-            
-					// convert simple xml-encoded values to something easier 
-					// for the client code to digest
-
-					$value = str_replace( "&lt;", "<", $value );
-					$value = str_replace( "&gt;", ">", $value );
-					$value = str_replace( "&amp;", "&", $value );
-				}
-        
-				// special logic for authentication_source because we can
-				// have more than one. 
-
-				if ( $name == "AUTHENTICATION_SOURCE" )
-				{
-					$this->authentication_sources[( string ) $config["id"]] = $value;
-
-					// and don't overwrite the first one in our standard config array
-
-					if ( ! empty( $this->arrConfig["AUTHENTICATION_SOURCE"] ) )
-					{
-						$value = "";
-					}
-				}
-					
-				if (! empty($value) )
-				{
-					// add it to the config array
-
-					$this->arrConfig[$name] = $value;
-					
-					// types that are listed as 'pass' will be forwarded
-					// on to the xml layer for use in the view
-					
-					if ( ( string ) $config["pass"] == "true" )
-					{
-						$this->arrPass[Parser::strtolower( $name )] = $value;
-					}
+					$this->arrPass[Parser::strtolower( $name )] = $value;
 				}
 			}
 		}
@@ -165,7 +185,7 @@ class Registry
 	 * @param bool $bolRequired		[optional] whether function should throw exception if no value found
 	 * @param mixed $default		[optional] a default value for the constant if none found
 	 * @param string $lang			[optional] must include language attribute 
-	 * @return mixed  Can return a String or a SimpleXMLElement, depending on whether it was XML config value. 
+	 * @return string|SimpleXMLElement  depending on whether it was XML config value. 
 	 */
 	
 	public function getConfig($name, $bolRequired = false, $default = null, $lang = "")
