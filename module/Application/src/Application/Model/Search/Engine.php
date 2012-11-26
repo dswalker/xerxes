@@ -125,13 +125,13 @@ abstract class Engine
 	/**
 	 * Check for previously cached results
 	 * 
-	 * @param Query $query
+	 * @param string|Query $query
 	 * @return null|ResultSet     null if no previously cached results
 	 */
 	
-	public function getCachedResults(Query $query)
+	public function getCachedResults($query)
 	{
-		$id = $query->getUrlHash();
+		$id = $this->getCacheID($query);
 		
 		$results = $this->cache->get($id);
 		
@@ -142,13 +142,40 @@ abstract class Engine
 	 * Cache search results
 	 * 
 	 * @param ResultSet $results
-	 * @param Query $query
+	 * @param string|Query $query
 	 */
 	
-	public function setCachedResults(ResultSet $results, Query $query)
+	public function setCachedResults(ResultSet $results, $query)
 	{
-		$id = $query->getUrlHash();
+		$id = $this->getCacheID($query);
 		
 		$this->cache->set($id, serialize($results));
+	}
+	
+	/**
+	 * calculate query identifier
+	 * 
+	 * @param string|Query $query
+	 */
+	
+	protected function getCacheID($query)
+	{
+		if ( $query == '' )
+		{
+			throw new \DomainException("Query ID cannot be empty");
+		}
+		
+		$id = 'results';
+		
+		if ( $query instanceof Query)
+		{
+			$id .= $query->getUrlHash();
+		}
+		else
+		{
+			$id .= $query;
+		}
+		
+		return $id;
 	}
 }
