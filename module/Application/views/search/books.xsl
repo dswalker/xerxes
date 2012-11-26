@@ -570,13 +570,17 @@
 			<tr>
 				<th>Database</th>
 				<th>Coverage</th>
-				<th>Information</th>
+				<xsl:if test="../holdings/electronicResources//electronicResource/package">
+					<th>Information</th>
+				</xsl:if>
 			</tr>
 			<xsl:for-each select="../holdings/electronicResources/electronicResource">
 				<tr>
 					<td><a href="{link}"><xsl:value-of select="database" /></a></td>
 					<td><xsl:value-of select="coverage" /></td>
-					<td><a href="{package}">About resource</a></td>
+					<xsl:if test="package">
+						<td><a href="{package}">About resource</a></td>
+					</xsl:if>
 				</tr>
 			</xsl:for-each>
 			</table>

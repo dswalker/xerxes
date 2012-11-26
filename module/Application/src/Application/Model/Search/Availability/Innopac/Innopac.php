@@ -632,7 +632,7 @@ class Innopac implements AvailabilityInterface
 				$matches = array();
 				$url = "";
 				
-				if ( preg_match('/<a href=\"([^"]*)">(.*)<\/a>/', $data, $matches) )
+				if ( preg_match('/<a href=\"([^"]*)"[^>]*>(.*)<\/a>/', $data, $matches) )
 				{
 					$data = $matches[2];
 					$url = $matches[1];
@@ -659,6 +659,13 @@ class Innopac implements AvailabilityInterface
 				}
 				
 				$x++;
+			}
+			
+			// no database name, no mas, likely a header row
+			
+			if ( $record->database == "")
+			{
+				continue;
 			}
 			
 			array_push($final_array,$record);
