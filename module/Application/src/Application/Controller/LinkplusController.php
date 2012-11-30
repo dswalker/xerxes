@@ -2,11 +2,20 @@
 
 namespace Application\Controller;
 
-use Application\Model\Search\Availability\Innopac\Config;
-use Zend\Mvc\Controller\ActionController;
+use Application\Model\Search\Availability\Innopac\Config,
+	Zend\Mvc\MvcEvent;
 
 class LinkplusController extends SolrController
 {
+	protected $server;
+	
+	protected function init(MvcEvent $e)
+	{
+		parent::init($e);
+		
+		$this->server = $this->config->getConfig('INNREACH_HOST', false, 'csul.iii.com');
+	}
+	
 	public function recordAction()
 	{
 		$model = parent::recordAction();
@@ -25,7 +34,7 @@ class LinkplusController extends SolrController
 		
 		$title = urlencode($record->getXerxesRecord()->getTitle());
 		
-		$url = "http://csul.iii.com/search/z?9$library+$id&title=$title";
+		$url = 'http://' . $this->server . "/search/z?9$library+$id&title=$title";
 		
 		return $this->redirect()->toUrl($url);
 	}
@@ -44,8 +53,7 @@ class LinkplusController extends SolrController
 			case "author": $index = "a"; break;
 		}
 		
-		
-		$url = "http://csul.iii.com/search/$index?SEARCH=" . urlencode($query);
+		$url = 'http://' . $this->server . "/search/$index?SEARCH=" . urlencode($query);
 		
 		return $this->redirect()->toUrl($url);		
 	}

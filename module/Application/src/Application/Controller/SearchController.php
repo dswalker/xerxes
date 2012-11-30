@@ -2,11 +2,8 @@
 
 namespace Application\Controller;
 
-use Application\Model\Search\Engine;
-
-use Zend\View\Model\ViewModel;
-
 use Application\View\Helper\Search as SearchHelper,
+	Application\Model\Search\Engine,
 	Application\Model\Search\Query,
 	Application\Model\Search\Result,
 	Application\Model\DataMap\SavedRecords,
@@ -14,7 +11,8 @@ use Application\View\Helper\Search as SearchHelper,
 	Xerxes\Utility\Parser,
 	Xerxes\Utility\Registry,
 	Zend\Mvc\Controller\ActionController,
-	Zend\Mvc\MvcEvent;
+	Zend\Mvc\MvcEvent,
+	Zend\View\Model\ViewModel;
 
 abstract class SearchController extends ActionController
 {
