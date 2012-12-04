@@ -1340,6 +1340,8 @@
 				
 			</xsl:for-each>
 			
+			<input type="hidden" name="sort" value="{//request/sort}" />
+			
 		</xsl:if>
 		
 		<xsl:for-each select="//query/limits/limit">
