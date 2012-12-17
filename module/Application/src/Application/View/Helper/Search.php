@@ -478,6 +478,8 @@ class Search
 			
 			foreach ( $search->xpath("//option") as $option )
 			{
+				$id = (string) $option["id"] . '_' . $this->query->getHash();
+				
 				// format the number
 				
 				// is this the current tab?
@@ -485,20 +487,35 @@ class Search
 				if ( $controller_map->getControllerName() == (string) $option["id"] 
 				     && ( $this->request->getParam('source') == (string) $option["source"] 
 				     	|| (string) $option["source"] == '') )
-				    {
-				    	$option->addAttribute('current', "1");	
-				    }
+				{
+				   	// mark as current
+					
+					$option->addAttribute('current', "1");
+				    	
+				   	// keep the current url, too, minus the start #
+				    	
+				   	$params = $this->request->getParams();
+				   	$params['start'] = null;
+				    	
+				   	$this->request->setSessionData("url-$id", $this->request->url_for($params));
+				    	
+				}
 				
 				// url
 				
-				$params = $query->extractSearchParams();
-				
-				$params['controller'] = $controller_map->getUrlAlias((string) $option["id"]);
-				$params['action'] = "results";
-				$params['source'] = (string) $option["source"];
-				$params['sort'] = $this->request->getParam('sort');
-				
-				$url = $this->request->url_for($params);
+				$url = $this->request->getSessionData("url-$id"); // already cached, so use it
+
+				if ( $url == null ) // create one based on the search terms only!
+				{
+					$params = $query->extractSearchParams();
+					
+					$params['controller'] = $controller_map->getUrlAlias((string) $option["id"]);
+					$params['action'] = "results";
+					$params['source'] = (string) $option["source"];
+					$params['sort'] = $this->request->getParam('sort');
+					
+					$url = $this->request->url_for($params);
+				}
 				
 				$option->addAttribute('url', $url);
 				

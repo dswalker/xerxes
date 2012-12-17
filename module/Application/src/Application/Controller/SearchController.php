@@ -220,12 +220,11 @@ abstract class SearchController extends ActionController
 			// mark we've saved this search log
 			
 			$this->request->setSessionData("stat-$id", (string) $total);
-		
-			// cache it
-			
-			$this->request->setSessionData($id, (string) $total);
 		}
 		
+		// always cache the total based on the last action
+			
+		$this->request->setSessionData($id, (string) $total);
 		
 		// add links
 		
