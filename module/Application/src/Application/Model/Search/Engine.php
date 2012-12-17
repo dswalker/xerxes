@@ -131,6 +131,13 @@ abstract class Engine
 	
 	public function getCachedResults($query)
 	{
+		// if cache is turned off, then don't bother looking up cache
+		
+		if ( $this->config->getConfig('CACHE_RESULTS', false, true) == false )
+		{
+			return null;
+		}
+		
 		$id = $this->getCacheID($query);
 		
 		$results = $this->cache->get($id);
@@ -147,6 +154,13 @@ abstract class Engine
 	
 	public function setCachedResults(ResultSet $results, $query)
 	{
+		// if cache is turned off, then don't bother caching
+		
+		if ( $this->config->getConfig('CACHE_RESULTS', false, true) == false )
+		{
+			return null;
+		}		
+		
 		$id = $this->getCacheID($query);
 		
 		$this->cache->set($id, serialize($results));
