@@ -139,11 +139,20 @@ class Engine extends Search\Engine
 	 * @param string $sort							[optional] sort order
 	 * @param bool $include_facets					[optional] whether to include facets or not
 	 * 
-	 * @return string
+	 * @return ResultSet
 	 */		
 	
 	protected function doSearch( $search, $start, $max = 10, $sort = null, $include_facets = true)
 	{
+		// already cached
+		
+		$results = $this->getCachedResults($search);
+		
+		if ( $results instanceof Search\ResultSet )
+		{
+			return $results;
+		}
+		
 		// start
 		
 		if ( $start > 0)
@@ -237,6 +246,10 @@ class Engine extends Search\Engine
 		// extract facets
 		
 		$results->setFacets($this->extractFacets($xml));
+		
+		// cache it for later
+		
+		$this->setCachedResults($results, $search);
 		
 		return $results;
 	}

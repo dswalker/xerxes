@@ -72,7 +72,15 @@ class Engine extends Search\Engine
 	
 	public function searchRetrieve( Search\Query $search, $start = 1, $max = 10, $sort = "")
 	{
-		$results = $this->doSearch( $search, $start, $max, $sort);
+		// cache
+		
+		$results = $this->getCachedResults($search);
+		
+		if ( $results == null )
+		{
+			$results = $this->doSearch( $search, $start, $max, $sort);
+			$this->setCachedResults($results, $search);
+		}
 		
 		if ( $this->config->getConfig('mark_fulltext_using_export', false, false ) )
 		{
@@ -187,12 +195,16 @@ class Engine extends Search\Engine
 		{
 			$this->summon_client->limitToHoldings();
 		}
-		
-		
+
 		// limits
 		
 		foreach ( $search->getLimits(true) as $limit )
 		{
+			if ( $limit->field == 'newspapers')
+			{
+				continue; // we'll handle you later
+			}
+			
 			// holdings only
 			
 			if ( $limit->field == 'holdings' )
@@ -275,7 +287,21 @@ class Engine extends Search\Engine
 			}
 		}
 
-		// filter out formats
+		// format filters
+		
+		// newspapers are a special case, i.e., they can be optional
+		
+		if ( $this->config->getConfig('NEWSPAPERS_OPTIONAL', false) )
+		{
+			 $news_limit = $search->getLimit('facet.newspapers');
+			
+			if ( $news_limit->value != 'true' )
+			{
+				$this->formats_exclude[] = 'Newspaper Article';
+			}
+		}
+
+		// always exclude these
 		
 		foreach ( $this->formats_exclude as $format )
 		{
