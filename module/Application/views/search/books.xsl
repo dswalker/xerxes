@@ -122,11 +122,20 @@
 				<dt><xsl:copy-of select="$text_results_author" />:</dt>
 				<dd>
 					<a href="{authors/author/url}">
-						<xsl:value-of select="authors/author[@type = 'personal' and not(@additional)]/aufirst" />
-						<xsl:text> </xsl:text>
-						<xsl:value-of select="authors/author[@type = 'personal' and not(@additional)]/auinit" />
-						<xsl:text> </xsl:text>
-						<xsl:value-of select="authors/author[@type = 'personal' and not(@additional)]/aulast" />
+						<xsl:for-each select="authors/author[@type = 'personal' and not(@additional)]">
+							<xsl:choose>
+								<xsl:when test="display">
+									<xsl:value-of select="display" />							
+								</xsl:when>
+								<xsl:when test="@type = 'personal'">
+									<xsl:value-of select="aufirst" />
+									<xsl:text> </xsl:text>
+									<xsl:value-of select="auinit" />
+									<xsl:text> </xsl:text>
+									<xsl:value-of select="aulast" />								
+								</xsl:when>
+							</xsl:choose>
+						</xsl:for-each>
 					</a>
 				</dd>
 			</div>
