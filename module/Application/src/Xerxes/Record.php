@@ -403,6 +403,11 @@ class Record
 			{
 				$this_author = $objXerxesAuthor->getAllFields();
 				
+				if ( $objXerxesAuthor->display != '' )
+				{
+					$this_author = $objXerxesAuthor->display;
+				}
+				
 				for ( $a = 0; $a < count($author_other); $a++ )
 				{
 					if ( $a != $x ) // compare all other authors in the array
@@ -412,11 +417,15 @@ class Record
 						if ( $objThatAuthor instanceof Author ) // just in case
 						{
 							$that_author = $objThatAuthor->getAllFields();
+
+							if ( $objThatAuthor->display != '' )
+							{
+								$that_author = $objThatAuthor->display;
+							}							
 							
 							if ( $this_author == $that_author)
 							{
 								// remove the dupe
-								
 								$author_original[$a] = null;
 							}
 						}
