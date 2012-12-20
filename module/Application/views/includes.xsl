@@ -790,6 +790,13 @@
 	<img src="{$base_url}/images/phone.png" alt="{$alt}" title="{$title}" class="{$class}" />
 </xsl:template>
 
+<xsl:template name="img_hold">
+	<xsl:param name="alt" />
+	<xsl:param name="title" />
+	<xsl:param name="class" />
+	<img src="{$base_url}/images/famfamfam/accept.png" alt="{$alt}" title="{$title}" class="{$class}" />
+</xsl:template>
+
 <xsl:template name="img_search">
 	<xsl:param name="alt" />
 	<xsl:param name="title" />
