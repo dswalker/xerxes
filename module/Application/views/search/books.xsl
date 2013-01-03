@@ -707,7 +707,7 @@
 			
 				<!-- Recall -->
 		
-				<xsl:when test="not(//item/availability = '1') and //config/enable_recall = 'true'">
+				<xsl:when test="not(//item/availability = '1') and //config/enable_recall = 'true' and ../holdings/hold_url">
 				
 					<div class="results-hold">
 						<a href="{../holdings/hold_url}" target="{$link_target}" class="record-action" data-role="button">
@@ -723,7 +723,7 @@
 				
 				<!-- Hold -->
 				
-				<xsl:when test="//config/enable_holds = 'true'">			
+				<xsl:when test="//config/enable_holds = 'true' and ../holdings/hold_url">			
 					
 					<div class="results-hold">
 						<a href="{../holdings/hold_url}" target="{$link_target}" class="record-action" data-role="button">
