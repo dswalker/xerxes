@@ -754,7 +754,7 @@
 		
 		<xsl:if test="count(../holdings/items/item)">
 		
-			<xsl:if test="../url_open_redirect">
+			<xsl:if test="../url_open_redirect and not(//config/no_link_resolver)">
 		
 				<div class="results-availability">
 					<a target="{$link_target}" href="{../url_open_redirect}" class="record-action" data-role="button">
