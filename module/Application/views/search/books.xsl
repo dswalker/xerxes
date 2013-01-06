@@ -671,46 +671,42 @@
 	-->	
 	
 	<xsl:template name="availability_hold">
+				
+		<xsl:choose>
 		
-		<xsl:if test="//request/action = 'record'">
+			<!-- Recall -->
+	
+			<xsl:when test="//config/enable_recall = 'true' and not(../holdings//item/availability = '1') and ../holdings/hold_url">
 			
-			<xsl:choose>
+				<div class="results-hold">
+					<a href="{../holdings/hold_url}" target="{$link_target}" class="record-action" data-role="button">
+						<xsl:call-template name="img_hold">
+							<xsl:with-param name="class">mini-icon link-resolver-link</xsl:with-param>
+						</xsl:call-template>
+						<xsl:text> </xsl:text>
+						<xsl:copy-of select="$text_results_record_recall" />
+					</a>
+				</div>
+				
+			</xsl:when>
 			
-				<!-- Recall -->
-		
-				<xsl:when test="not(//item/availability = '1') and //config/enable_recall = 'true' and ../holdings/hold_url">
-				
-					<div class="results-hold">
-						<a href="{../holdings/hold_url}" target="{$link_target}" class="record-action" data-role="button">
-							<xsl:call-template name="img_hold">
-								<xsl:with-param name="class">mini-icon link-resolver-link</xsl:with-param>
-							</xsl:call-template>
-							<xsl:text> </xsl:text>
-							<xsl:copy-of select="$text_results_record_recall" />
-						</a>
-					</div>
-					
-				</xsl:when>
-				
-				<!-- Hold -->
-				
-				<xsl:when test="//config/enable_holds = 'true' and ../holdings/hold_url">			
-					
-					<div class="results-hold">
-						<a href="{../holdings/hold_url}" target="{$link_target}" class="record-action" data-role="button">
-							<xsl:call-template name="img_hold">
-								<xsl:with-param name="class">mini-icon link-resolver-link</xsl:with-param>
-							</xsl:call-template>
-							<xsl:text> </xsl:text>
-							<xsl:copy-of select="$text_results_record_hold" />
-						</a>
-					</div>
-					
-				</xsl:when>
-				
-			</xsl:choose>
+			<!-- Hold (only appears on the full record) -->
 			
-		</xsl:if>
+			<xsl:when test="//config/enable_holds = 'true' and ../holdings/hold_url and //request/action = 'record'">			
+				
+				<div class="results-hold">
+					<a href="{../holdings/hold_url}" target="{$link_target}" class="record-action" data-role="button">
+						<xsl:call-template name="img_hold">
+							<xsl:with-param name="class">mini-icon link-resolver-link</xsl:with-param>
+						</xsl:call-template>
+						<xsl:text> </xsl:text>
+						<xsl:copy-of select="$text_results_record_hold" />
+					</a>
+				</div>
+				
+			</xsl:when>
+			
+		</xsl:choose>
 	
 	</xsl:template>
 	
