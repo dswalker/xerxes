@@ -4,6 +4,7 @@ namespace Xerxes\Record;
 
 use Xerxes\Record,
 	Xerxes\Record\Author,
+	Xerxes\Record\Bibliographic\LinkedItem,
 	Xerxes\Marc\ControlField,
 	Xerxes\Marc\DataField,
 	Xerxes\Marc\DataFieldList,
@@ -877,16 +878,15 @@ class Bibliographic extends Record
 
 		// continues and continued by
 		
-		foreach ( $this->marc->fieldArray("780") as $continues )
+		foreach ( $this->marc->datafield("780") as $continues )
 		{
-			$this->journal_title_continues[] = (string) $continues;
+			$this->journal_title_continues[] = new LinkedItem($continues);
 		}
 		
 		foreach ( $this->marc->datafield("785") as $continued )
 		{
-			$this->journal_title_continued_by = (string) $continued;
+			$this->journal_title_continued_by[] = new LinkedItem($continued);
 		}
-		
 		
 		### volume, issue, pagination
 		
@@ -949,7 +949,7 @@ class Bibliographic extends Record
 			$this->format->setFormat("Book Chapter"); // @todo set normalized as well
 		}
 	}
-
+	
 	/**
 	 * Best-guess regular expression for extracting volume, issue, pagination,
 	 * broken out here for clarity 
