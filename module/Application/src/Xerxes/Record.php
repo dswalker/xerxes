@@ -1756,6 +1756,16 @@ class Record
 		return $properties;
 	}
 	
+	public function getPrecedingTitles()
+	{
+		return $this->journal_title_continues;
+	}
+	
+	public function getSucceedingTitles()
+	{
+		return $this->journal_title_continued_by;
+	}	
+	
 	public function setProperties($arguments)
 	{
 		foreach ( $arguments as $key => $value )

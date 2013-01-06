@@ -9,6 +9,7 @@ use Application\Model\Search\Engine,
 	Application\Model\Search\Spelling\Suggestion,
 	Xerxes\Record,
 	Xerxes\Record\Author,
+	Xerxes\Record\Bibliographic\LinkedItem,
 	Xerxes\Record\Subject,
 	Xerxes\Utility\Parser,
 	Xerxes\Utility\Request,
@@ -280,6 +281,18 @@ class Search
 			foreach ( $xerxes_record->getSubjects() as $subject )
 			{
 				$subject->url = $this->linkSubject($subject);
+			}
+
+			// related titles link
+			
+			foreach ( $xerxes_record->getPrecedingTitles() as $title )
+			{
+				$title->url = $this->linkRelatedTitle($title);
+			}
+
+			foreach ( $xerxes_record->getSucceedingTitles() as $title )
+			{
+				$title->url = $this->linkRelatedTitle($title);
 			}			
 			
 			// full-record link
@@ -696,6 +709,29 @@ class Search
 			return null;
 		}
 	}
+	
+	/**
+	 * URL for related title
+	 *
+	 * @param LinkedItem $item
+	 * @return string url
+	 */
+	
+	public function linkRelatedTitle( LinkedItem $item )
+	{
+		if ( $item->title != '')
+		{
+			$arrParams = $this->lateralLink();
+			$arrParams['field'] = 'title';
+			$arrParams['query'] = $item->title;
+	
+			return $this->request->url_for($arrParams);
+		}
+		else
+		{
+			return null;
+		}
+	}	
 	
 	/**
 	 * URL for Subject

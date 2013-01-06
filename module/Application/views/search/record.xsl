@@ -659,8 +659,15 @@
 
 			<h2>Continues</h2>
 			<ul>
-				<xsl:for-each select="journal_title_continues">
-					<li><xsl:value-of select="journal_title_continue" /></li>
+				<xsl:for-each select="journal_title_continues/journal_title_continue">
+					<li>
+						<a href="{url}"><xsl:value-of select="title" /></a>
+						<xsl:text> -- </xsl:text>
+						<xsl:for-each select="notes/note">
+							<xsl:value-of select="text()" />
+							<xsl:text> </xsl:text>
+						</xsl:for-each>
+					</li>
 				</xsl:for-each>
 			</ul>
 
@@ -671,8 +678,15 @@
 
 			<h2>Continued by</h2>
 			<ul>
-				<xsl:for-each select="journal_title_continued_by/journal_title_continued_by">
-					<li><xsl:value-of select="text()" /></li>
+				<xsl:for-each select="journal_title_continued_by/linkeditem">
+					<li>
+						<a href="{url}"><xsl:value-of select="title" /></a>
+						<xsl:text> -- </xsl:text>
+						<xsl:for-each select="notes/note">
+							<xsl:value-of select="text()" />
+							<xsl:text> </xsl:text>
+						</xsl:for-each>
+					</li>
 				</xsl:for-each>
 			</ul>
 
