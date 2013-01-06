@@ -222,6 +222,17 @@ abstract class SearchController extends ActionController
 			$this->request->setSessionData("stat-$id", (string) $total);
 		}
 		
+		// include original record
+		
+		if ( $this->config->getConfig('INCLUDE_ORIGINAL_RECORD_IN_BRIEF_RESULTS', false) )
+		{
+			foreach ( $results->getRecords() as $record )
+			{
+				$record->includeOriginalRecord();
+			}
+		}	
+		
+		
 		// always cache the total based on the last action
 			
 		$this->request->setSessionData($id, (string) $total);
