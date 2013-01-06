@@ -2,6 +2,8 @@
 
 namespace Xerxes;
 
+use Xerxes\Record\Bibliographic\LinkedItem;
+
 use Xerxes\Record\Author,
 	Xerxes\Record\Format,
 	Xerxes\Utility\Languages,
@@ -117,6 +119,10 @@ class Record
 		$this->utility[] = "serialized";
 	}
 	
+	/**
+	 * Serialize
+	 */
+	
 	public function __sleep()
 	{
 		// save only the xml
@@ -124,6 +130,10 @@ class Record
 		$this->serialized = $this->document->saveXML();
 		return array("serialized");
 	}
+	
+	/**
+	 * De-serialize
+	 */
 	
 	public function __wakeup()
 	{
@@ -1144,6 +1154,9 @@ class Record
 		return $arrReferant;
 	}
 	
+	
+	
+	
 	public static function decode($item)
 	{
 		if (  is_string($item) )
@@ -1194,6 +1207,12 @@ class Record
 		return $results;
 	}	
 	
+	/**
+	 * Extract four digit year from string
+	 * 
+	 * @param string $strYear
+	 */
+	
 	protected function extractYear($strYear)
 	{
 		$arrYear = array();
@@ -1207,6 +1226,12 @@ class Record
 			return null;
 		}
 	}
+	
+	/**
+	 * Convert string to title case
+	 * 
+	 * @param string $strInput
+	 */
 	
 	protected function toTitleCase($strInput)
 	{
@@ -1305,6 +1330,12 @@ class Record
 	
 	### PROPERTIES ###
 	
+	/**
+	 * Whether this item has full-text
+	 *
+	 * @return bool
+	 */	
+	
 	public function hasFullText()
 	{
 		foreach ( $this->links as $link )
@@ -1317,6 +1348,13 @@ class Record
 		
 		return false;
 	}
+	
+	/**
+	 * Links associated with this item
+	 *
+	 * @param bool $bolFullText		true = resrtict to full-text links only
+	 * @return string
+	 */	
 	
 	public function getLinks($bolFullText = false)
 	{
@@ -1344,6 +1382,13 @@ class Record
 		}
 	}
 	
+	/**
+	 * Primary Author
+	 *
+	 * @param bool $bolReverse	whether author should be return as last,first
+	 * @return string
+	 */	
+	
 	public function getPrimaryAuthor($bolReverse = false)
 	{
 		$arrPrimaryAuthor = $this->getAuthors( true, true, $bolReverse );
@@ -1359,7 +1404,9 @@ class Record
 	}
 	
 	/**
-	 * Return authors.  Authors will return as array, with each author name optionally formatted
+	 * Authors
+	 * 
+	 * authors will return as array, with each author name optionally formatted
 	 * as a string ('first last' or 'last, first') or objects
 	 *
 	 * @param bool $bolPrimary		[optional] return just the primary author, default false
@@ -1405,6 +1452,13 @@ class Record
 		return $arrFinal;
 	}
 	
+	/**
+	 * Title
+	 *
+	 * @param bool $bolTitleCase	whether title should be in title case
+	 * @return string
+	 */	
+	
 	public function getTitle($bolTitleCase = false)
 	{
 		$strTitle = "";
@@ -1429,6 +1483,13 @@ class Record
 		return $strTitle;
 	}
 	
+	/**
+	 * Book Title, if this is a book chapter
+	 *
+	 * @param bool $bolTitleCase	whether title should be in title case
+	 * @return string
+	 */	
+	
 	public function getBookTitle($bolTitleCase = false)
 	{
 		if ( $bolTitleCase == true )
@@ -1440,6 +1501,13 @@ class Record
 			return $this->book_title;
 		}
 	}
+	
+	/**
+	 * Journal title
+	 * 
+	 * @param bool $bolTitleCase	whether title should be in title case
+	 * @return string
+	 */	
 	
 	public function getJournalTitle($bolTitleCase = false)
 	{
@@ -1453,6 +1521,12 @@ class Record
 		}
 	}
 	
+	/**
+	 * ISSN
+	 *
+	 * @return array
+	 */	
+	
 	public function getISSN()
 	{
 		if ( count( $this->issns ) > 0 )
@@ -1465,6 +1539,12 @@ class Record
 		}
 	}
 	
+	/**
+	 * ISBN
+	 *
+	 * @return array
+	 */	
+	
 	public function getISBN()
 	{
 		if ( count( $this->isbns ) > 0 )
@@ -1476,106 +1556,232 @@ class Record
 			return null;
 		}
 	}
+
+	/**
+	 * All ISSN's for this item
+	 *
+	 * @return array
+	 */	
 	
 	public function getAllISSN()
 	{
 		return $this->issns;
 	}
 	
+	/**
+	 * All ISBN's for this item
+	 *
+	 * @return array
+	 */	
+	
 	public function getAllISBN()
 	{
 		return $this->isbns;
 	}
+	
+	/**
+	 * Main title
+	 *
+	 * @return string
+	 */	
 	
 	public function getMainTitle()
 	{
 		return $this->title;
 	}
 	
+	/**
+	 * Edition of the item
+	 *
+	 * @return string
+	 */	
+	
 	public function getEdition()
 	{
 		return $this->edition;
 	}
+	
+	/**
+	 * Control number
+	 *
+	 * @return string
+	 */	
 	
 	public function getControlNumber()
 	{
 		return $this->control_number;
 	}
 	
+	/**
+	 * Whether item has an editor
+	 *
+	 * @return bool
+	 */	
+	
 	public function isEditor()
 	{
 		return $this->editor;
 	}
+	
+	/**
+	 * Place of publication
+	 *
+	 * @return string
+	 */	
 	
 	public function format()
 	{
 		return $this->format;
 	}
 	
+	/**
+	 * System/format of item
+	 *
+	 * @return string
+	 */	
+	
 	public function getTechnology()
 	{
 		return $this->technology;
 	}
+	
+	/**
+	 * Non-sorting portion of title (e.g., 'a' 'the')
+	 *
+	 * @return string
+	 */	
 	
 	public function getNonSort()
 	{
 		return $this->non_sort;
 	}
 	
+	/**
+	 * Sub-title
+	 *
+	 * @return string
+	 */	
+	
 	public function getSubTitle()
 	{
 		return $this->sub_title;
 	}
+	
+	/**
+	 * Title of series this item is a part of
+	 *
+	 * @return string
+	 */	
 	
 	public function getSeriesTitle()
 	{
 		return $this->series_title;
 	}
 	
+	/**
+	 * Short title
+	 *
+	 * @return string
+	 */	
+	
 	public function getShortTitle()
 	{
 		return $this->short_title;
 	}
+	
+	/**
+	 * Abstract
+	 *
+	 * @return string
+	 */	
 	
 	public function getAbstract()
 	{
 		return $this->abstract;
 	}
 	
+	/**
+	 * Summary of the item
+	 *
+	 * @return string
+	 */	
+	
 	public function getSummary()
 	{
 		return $this->summary;
 	}
+	
+	/**
+	 * Description of item
+	 *
+	 * @return string
+	 */	
 	
 	public function getDescription()
 	{
 		return $this->description;
 	}
 	
+	/**
+	 * Language of item
+	 *
+	 * @return string
+	 */	
+	
 	public function getLanguage()
 	{
 		return $this->language;
 	}
+	
+	/**
+	 * Table of contents
+	 *
+	 * @return array
+	 */	
 	
 	public function getTOC()
 	{
 		return $this->toc;
 	}
 	
+	/**
+	 * Place of publication
+	 *
+	 * @return string
+	 */	
+	
 	public function getPlace()
 	{
 		return $this->place;
 	}
+	
+	/**
+	 * Publisher
+	 *
+	 * @return string
+	 */	
 	
 	public function getPublisher()
 	{
 		return $this->publisher;
 	}
 	
+	/**
+	 * Year of publication
+	 *
+	 * @return string
+	 */	
+	
 	public function getYear()
 	{
 		return $this->year;
 	}
+	
+	/**
+	 * Full (if known) publication date for item
+	 * 
+	 * @param string $format	date format
+	 */
 	
 	public function getPublicationDate($format = 'j F Y')
 	{
@@ -1600,30 +1806,66 @@ class Record
 		return $this->year;		
 	}
 	
+	/**
+	 * Full journal information
+	 *
+	 * @return string
+	 */	
+	
 	public function getJournal()
 	{
 		return $this->journal;
 	}
+	
+	/**
+	 * The volume the article is published in
+	 *
+	 * @return string
+	 */	
 	
 	public function getVolume()
 	{
 		return $this->volume;
 	}
 	
+	/**
+	 * The issue article is published in
+	 *
+	 * @return string
+	 */	
+	
 	public function getIssue()
 	{
 		return $this->issue;
 	}
+	
+	/**
+	 * Start page of article
+	 *
+	 * @return string
+	 */	
 	
 	public function getStartPage()
 	{
 		return $this->start_page;
 	}
 	
+	/**
+	 * End page of article
+	 *
+	 * @return string
+	 */	
+	
 	public function getEndPage()
 	{
 		return $this->end_page;
 	}
+	
+	/**
+	 * Page range of article
+	 *
+	 * @return string
+	 */	
 	
 	public function getPages()
 	{
@@ -1637,80 +1879,243 @@ class Record
 		return $pages;
 	}
 	
+	/**
+	 * Extent (pages, etc.) of the item
+	 *
+	 * @return string
+	 */	
+	
 	public function getExtent()
 	{
 		return $this->extent;
 	}
 	
+	/**
+	 * Price of the item
+	 *
+	 * @return string
+	 */	
+	
 	public function getPrice()
 	{
 		return $this->price;
 	}
+	
+	/**
+	 * Notes
+	 *
+	 * @return array
+	 */	
 		
 	public function getNotes()
 	{
 		return $this->notes;
 	}
-		
+	
+	/**
+	 * Get Digital Object Identifier this item
+	 *
+	 * @return string
+	 */	
+	
 	public function getSubjects() 
 	{
 		return $this->subjects;
 	}
-		
+	
+	/**
+	 * Granting institution for thesis
+	 *
+	 * @return string
+	 */	
+	
 	public function getInstitution()
 	{
 		return $this->institution;
 	}
+	
+	/**
+	 * Degree type for thesis
+	 *
+	 * @return string
+	 */
 		
 	public function getDegree()
 	{
 		return $this->degree;
 	}
-		
+	
+	/**
+	 * (Main) Call Number this item
+	 *
+	 * @return string
+	 */	
+	
 	public function getCallNumber()
 	{
 		return $this->call_number;
 	}
+	
+	/**
+	 * OCLC Number for this item
+	 *
+	 * @return string
+	 */	
 		
 	public function getOCLCNumber()
 	{
 		return $this->oclc_number;
 	}
-		
+	
+	/**
+	 * Digital Object Identifier this item
+	 *
+	 * @return string
+	 */	
+	
 	public function getDOI()
 	{
 		return $this->doi;
 	}
+
+	/**
+	 * Source (search engine) for this item
+	 *
+	 * @return string
+	 */	
 	
 	public function getSource()
 	{
 		return $this->source;
 	}
+	
+	/**
+	 * Set source (search engine) for this item
+	 *
+	 * @param string $source
+	 */	
 
 	public function setSource($source)
 	{
 		$this->source = $source;
-	}	
+	}
+	
+	/**
+	 * Set whether article is peer reviewed
+	 *
+	 * @param bool $bool
+	 */	
 	
 	public function setRefereed($bool)
 	{
 		$this->refereed = (bool) $bool;
 	}
 	
+	/**
+	 * Whether article is peer reviewed
+	 * 
+	 * @return bool
+	 */	
+	
 	public function getRefereed()
 	{
 		return $this->refereed;
 	}
+	
+	/**
+	 * Set whether library subscribe to this item
+	 * 
+	 * @param bool $bool
+	 */
 	
 	public function setSubscription($bool)
 	{
 		$this->subscription = (bool) $bool;
 	}
 	
+	/**
+	 * Whether library subscribe to this item
+	 *
+	 * @return bool
+	 */
+	
 	public function getSubscription()
 	{
 		return $this->subscription;
 	}
+	
+	/**
+	 * Record ID
+	 * 
+	 * @return string
+	 */
+	
+	public function getRecordID()
+	{
+		return $this->record_id;
+	}
+	
+	/**
+	 * Set the record ID
+	 * 
+	 * @param string $id
+	 */
+	
+	public function setRecordID($id)
+	{
+		return $this->record_id = $id;
+	}
+	
+	/**
+	 * Whether the item has physical holdings
+	 * 
+	 * @return bool
+	 */
+	
+	public function hasPhysicalHoldings()
+	{
+		return $this->physical_holdings;
+	}
+	
+	/**
+	 * Set the records score in a result set
+	 * 
+	 * @param string $score
+	 */
+	
+	public function setScore($score)
+	{
+		$this->score = $score;
+	}
+	
+	/**
+	 * (Periodical) titles this record continues
+	 * 
+	 * @return array of LinkedItem's
+	 */
+	
+	public function getPrecedingTitles()
+	{
+		return $this->journal_title_continues;
+	}
+
+	/**
+	 * (Periodical) titles this record is continued by
+	 *
+	 * @return array of LinkedItem's
+	 */	
+	
+	public function getSucceedingTitles()
+	{
+		return $this->journal_title_continued_by;
+	}
+	
+	/**
+	 * Get the original XML
+	 * 
+	 * @param bool $bolString	true = return as string
+	 * @return string|\DOMDocument
+	 */
 	
 	public function getOriginalXML($bolString = false)
 	{
@@ -1722,27 +2127,13 @@ class Record
 		{
 			return $this->document;
 		}
-	}
+	}	
 	
-	public function getRecordID()
-	{
-		return $this->record_id;
-	}
-	
-	public function setRecordID($id)
-	{
-		return $this->record_id = $id;
-	}
-	
-	public function hasPhysicalHoldings()
-	{
-		return $this->physical_holdings;
-	}
-	
-	public function setScore($score)
-	{
-		$this->score = $score;
-	}
+	/**
+	 * Get all properties as array
+	 * 
+	 * @return array
+	 */
 	
 	public function getProperties()
 	{
@@ -1756,17 +2147,13 @@ class Record
 		return $properties;
 	}
 	
-	public function getPrecedingTitles()
-	{
-		return $this->journal_title_continues;
-	}
+	/**
+	 * Set all properties from the given array
+	 * 
+	 * @param array $arguments	key must match property name
+	 */
 	
-	public function getSucceedingTitles()
-	{
-		return $this->journal_title_continued_by;
-	}	
-	
-	public function setProperties($arguments)
+	public function setProperties(array $arguments)
 	{
 		foreach ( $arguments as $key => $value )
 		{
