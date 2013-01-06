@@ -121,22 +121,9 @@
 			<div>
 				<dt><xsl:copy-of select="$text_results_author" />:</dt>
 				<dd>
-					<a href="{authors/author/url}">
-						<xsl:for-each select="authors/author[@type = 'personal' and not(@additional)]">
-							<xsl:choose>
-								<xsl:when test="display">
-									<xsl:value-of select="display" />							
-								</xsl:when>
-								<xsl:when test="@type = 'personal'">
-									<xsl:value-of select="aufirst" />
-									<xsl:text> </xsl:text>
-									<xsl:value-of select="auinit" />
-									<xsl:text> </xsl:text>
-									<xsl:value-of select="aulast" />								
-								</xsl:when>
-							</xsl:choose>
-						</xsl:for-each>
-					</a>
+					<xsl:for-each select="authors/author[@type = 'personal' and not(@additional)]">
+						<xsl:call-template name="record_author_display" />
+					</xsl:for-each>
 				</dd>
 			</div>
 		</xsl:if>
@@ -156,23 +143,7 @@
 			<ul>
 				<xsl:for-each select="authors/author[@additional='true']">
 					<li>
-						<a href="{url}">
-							<xsl:choose>
-								<xsl:when test="display">
-									<xsl:value-of select="display" />							
-								</xsl:when>
-								<xsl:when test="@type = 'personal'">
-									<xsl:value-of select="aufirst" />
-									<xsl:text> </xsl:text>
-									<xsl:value-of select="auinit" />
-									<xsl:text> </xsl:text>
-									<xsl:value-of select="aulast" />								
-								</xsl:when>
-								<xsl:otherwise>
-									<xsl:value-of select="aucorp" />
-								</xsl:otherwise>
-							</xsl:choose>
-						</a>
+						<xsl:call-template name="record_author_display" />
 					</li>
 				</xsl:for-each>
 			</ul>
@@ -180,7 +151,7 @@
 		</xsl:if>
 	
 	</xsl:template>
-
+	
 	<!-- 
 		TEMPLATE: BRIEF RESULTS
 		override and choose book

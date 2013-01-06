@@ -184,11 +184,7 @@
 			<dd>
 				<xsl:for-each select="authors/author[@type = 'personal']">
 									
-					<a href="{url}">
-						<xsl:value-of select="aufirst" /><xsl:text> </xsl:text>
-						<xsl:value-of select="auinit" /><xsl:text> </xsl:text>
-						<xsl:value-of select="aulast" /><xsl:text> </xsl:text>
-					</a>
+					<xsl:call-template name="record_author_display" />
 					
 					<xsl:if test="following-sibling::author[@type = 'personal']">
 						<xsl:text> ; </xsl:text>
@@ -246,6 +242,39 @@
 			</div>
 		</xsl:if>
 	</xsl:template>
+
+	<!--
+		TEMPLATE: RECORD AUTHOR DISPLAY
+	-->		
+	
+	<xsl:template name="record_author_display">
+	
+		<a href="{url}">
+			<xsl:choose>
+				<xsl:when test="display">
+					<xsl:value-of select="display" />							
+				</xsl:when>
+				<xsl:when test="@type = 'personal'">
+					<xsl:value-of select="aufirst" />
+					<xsl:text> </xsl:text>
+					<xsl:value-of select="auinit" />
+					<xsl:text> </xsl:text>
+					<xsl:value-of select="aulast" />								
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="aucorp" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</a>
+		
+		<xsl:if test="title">
+
+			<xsl:text>, </xsl:text>
+			<a href="{url_title}"><xsl:value-of select="title" /></a>		
+
+		</xsl:if>
+		
+	</xsl:template>	
 
 	<!--
 		TEMPLATE: RECORD FORMAT
