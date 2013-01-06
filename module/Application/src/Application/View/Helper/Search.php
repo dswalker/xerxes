@@ -272,7 +272,7 @@ class Search
 			foreach ( $xerxes_record->getAuthors() as $author )
 			{
 				$author->url = $this->linkAuthor($author);
-				$author->title_url = $this->linkAuthorTitle($author);
+				$author->url_title = $this->linkAuthorTitle($author);
 			}
 			
 			// subject links
