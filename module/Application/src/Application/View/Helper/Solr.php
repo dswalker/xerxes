@@ -7,18 +7,20 @@ use Xerxes\Record\Author;
 class Solr extends Search
 {
 	/**
-	 * Make sure author names are based on full (display) field and quoted
+	 * Take a defined searchable string for the author over the reguar name 
 	 * 
 	 * @see Application\View\Helper.Search::linkAuthor()
 	 */
 	
 	public function linkAuthor( Author $author )
 	{
-		$query = $author->getName();
+		$query = $author->getName(); // regular author name
 		
-		if ( $author->display != "" )
+		// we've defined a specific searchable string for this author, so take that instead
+		
+		if ( $author->search_string != "" )
 		{
-			$query = $author->display;
+			$query = $author->search_string;
 		}
 		
 		$arrParams = $this->lateralLink();

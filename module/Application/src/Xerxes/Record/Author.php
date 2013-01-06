@@ -19,8 +19,11 @@ class Author
 	public $last_name;
 	public $init;
 	public $name;
+	
 	public $type;
 	public $additional;
+	
+	public $search_string;
 	public $display;
 	
 	const PERSONAL = 'personal';
