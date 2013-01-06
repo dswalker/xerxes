@@ -1755,4 +1755,25 @@ class Record
 		
 		return $properties;
 	}
+	
+	public function setProperties($arguments)
+	{
+		foreach ( $arguments as $key => $value )
+		{
+			if ( property_exists($this, $key) )
+			{
+				if ( is_array($value) )
+				{
+					if (count($value) > 0 )
+					{
+						$this->$key = $value;
+					}
+				}
+				elseif ($value != "")
+				{
+					$this->$key = $value;
+				}
+			}
+		}
+	}
 }
