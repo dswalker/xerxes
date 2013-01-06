@@ -49,6 +49,23 @@ class Record
 			
 			$this->document = Parser::convertToDOMDocument($node);
 			
+			// we got passed a marc record inside a collection (or some other wrapper)
+			// so find and take the first actual marc record we find
+			
+			if ( $this->document->nodeName != 'record' )
+			{
+				$record = $this->document->getElementsByTagName("record");
+				
+				if ( $record != null )
+				{
+					$this->document = Parser::convertToDOMDocument($record->item(0));
+				}
+				else
+				{
+					throw new \Exception("Could not find MARC record in supplied node");
+				}
+			}
+			
 			// extract the three data types
 			
 			$leader = $this->document->getElementsByTagName("leader");
