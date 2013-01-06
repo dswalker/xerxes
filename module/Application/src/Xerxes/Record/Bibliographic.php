@@ -461,14 +461,18 @@ class Bibliographic extends Record
 	{
 		$author_string = "";
 		$author_display = "";
-		$author_search_string = "";		
+		$author_search_string = "";
+		$title = "";
 		
 		// author can be string or data field
 		
 		if ($author instanceof DataField || $author instanceof DataFieldList)
 		{
 			$author_string = (string) $author->subfield($subfields);
-			$author_display = (string) $author;
+			
+			$author_display = (string) $author->subfield('abcdefghijklmnopqrsuvwxyz1234567890'); // all fields but 't'
+			
+			$title = (string) $author->subfield('t');
 			
 			if ( $searchable_fields != null )
 			{
@@ -482,6 +486,7 @@ class Bibliographic extends Record
 		
 		$author_obj = new Author($author_string, $author_display, $type, $bolAdditional);
 		$author_obj->search_string = $author_search_string;
+		$author_obj->title = $title;
 		
 		return $author_obj;
 	}

@@ -272,6 +272,7 @@ class Search
 			foreach ( $xerxes_record->getAuthors() as $author )
 			{
 				$author->url = $this->linkAuthor($author);
+				$author->title_url = $this->linkAuthorTitle($author);
 			}
 			
 			// subject links
@@ -657,10 +658,44 @@ class Search
 	{
 		$arrParams = $this->lateralLink();
 		$arrParams['field'] = 'author';
-		$arrParams['query'] = $author->getName();
+		
+		// we've defined a specific searchable string for this author,
+		// so take that instead and make it quoted for exactness
+		
+		if ( $author->search_string != "" )
+		{
+			$arrParams['query'] = '"' . $author->search_string . '"';
+		}
+		else // just the regular author name, no quotes
+		{		
+			$arrParams['query'] = $author->getName();
+		}
 
 		return $this->request->url_for($arrParams);
-	}	
+	}
+	
+	/**
+	 * URL for author/title
+	 *
+	 * @param Author $author
+	 * @return string url
+	 */
+	
+	public function linkAuthorTitle( Author $author )
+	{
+		if ( $author->title != '')
+		{
+			$arrParams = $this->lateralLink();
+			$arrParams['field'] = 'title';
+			$arrParams['query'] = $author->title;
+		
+			return $this->request->url_for($arrParams);
+		}
+		else
+		{
+			return null;
+		}
+	}
 	
 	/**
 	 * URL for Subject

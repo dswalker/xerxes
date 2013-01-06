@@ -15,16 +15,17 @@ namespace Xerxes\Record;
 
 class Author
 {
-	public $first_name;
-	public $last_name;
-	public $init;
-	public $name;
+	public $first_name; // first name
+	public $last_name; // surname
+	public $init; // middle initial
+	public $name; // full form of name (esp for corporate author)
 	
-	public $type;
-	public $additional;
+	public $type; // personal or otherwise
+	public $additional; // additional (i.e., not main) author
 	
-	public $search_string;
-	public $display;
+	public $title; // title (of work) for this author (from MARC standards, yuck!)
+	public $search_string; // searchable form of the name
+	public $display; // full display of the name
 	
 	const PERSONAL = 'personal';
 	

@@ -405,7 +405,7 @@ class Record
 				
 				if ( $objXerxesAuthor->display != '' )
 				{
-					$this_author = $objXerxesAuthor->display;
+					$this_author = $objXerxesAuthor->display . $objXerxesAuthor->title;
 				}
 				
 				for ( $a = 0; $a < count($author_other); $a++ )
@@ -420,7 +420,7 @@ class Record
 
 							if ( $objThatAuthor->display != '' )
 							{
-								$that_author = $objThatAuthor->display;
+								$that_author = $objThatAuthor->display . $objThatAuthor->title;
 							}							
 							
 							if ( $this_author == $that_author)
