@@ -3,19 +3,11 @@
 namespace Application\Controller;
 
 use Application\Model\Solr\Engine,
-	Application\View\Helper\Solr as SearchHelper,
 	Zend\Mvc\MvcEvent;
 
 class SolrController extends SearchController
 {
 	protected $id = "solr";
-	
-	protected function init(MvcEvent $e)
-	{
-		parent::init($e);
-	
-		$this->helper = new SearchHelper($e, $this->id, $this->engine);
-	}	
 	
 	protected function getEngine()
 	{
