@@ -149,7 +149,7 @@ class Engine extends Search\Engine
 	 * @return Results
 	 */		
 	
-	protected function doSearch( $search, $database, $start, $max, $sort = "relevance")
+	protected function doSearch( $search, $database_selected, $start, $max, $sort = "relevance")
 	{
 		// default for sort
 		
@@ -177,9 +177,9 @@ class Engine extends Search\Engine
 		
 		// we asked for this database specifically
 		
-		if ( $database != "" )
+		if ( $database_selected != "" )
 		{
-			$databases = array($database);
+			$databases = array($database_selected);
 		}
 
 		// no database specifically defined, so ...
@@ -309,7 +309,7 @@ class Engine extends Search\Engine
 				$this->deincrementing++;
 				$new_start = $start - $max;
 				
-				return $this->doSearch($query, $databases, $new_start, $max, $sort);
+				return $this->doSearch($search, $database_selected, $new_start, $max, $sort);
 			}
 		}
 		

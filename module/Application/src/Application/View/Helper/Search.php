@@ -69,6 +69,13 @@ class Search
 			$stop = $total;
 		}
 		
+		// weird boundary case introduced by ebsco hacks
+		
+		if ( $start > $stop )
+		{
+			$start = $stop - $max;
+		}
+		
 		return array ( 
 			"range" => "$start-$stop",
 			"total" => Parser::number_format( $total )
