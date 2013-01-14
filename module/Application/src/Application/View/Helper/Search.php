@@ -849,10 +849,8 @@ class Search
 	{
 		$params = $this->currentParams();
 		
-		// remove the current sort, since we'll add the new
-		// sort explicitly to the url
-		
-		unset($params["sort"]);
+		unset($params["sort"]); // remove the current sort
+		unset($params["start"]); // send us back to the first page
 		
 		return $params;
 	}
