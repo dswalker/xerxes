@@ -128,7 +128,7 @@
 			</div>
 		</xsl:if>
 		
-	</xsl:template>	
+	</xsl:template>
 	
 	<!-- 
 		TEMPLATE RECORD AUTHORS BOTTOM
@@ -151,6 +151,22 @@
 		</xsl:if>
 	
 	</xsl:template>
+
+	<!-- 
+		TEMPLATE RECORD EDITION
+		additional authors only 
+	-->
+	
+	<xsl:template name="record_edition">
+			
+		<xsl:if test="edition">
+			<div>
+				<dt><xsl:copy-of select="$text_record_edition" />:</dt>
+				<dd><xsl:value-of select="edition" /></dd>
+			</div>
+		</xsl:if>
+		
+	</xsl:template>		
 	
 	<!-- 
 		TEMPLATE: BRIEF RESULTS

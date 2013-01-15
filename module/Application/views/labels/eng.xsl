@@ -278,6 +278,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_record_contents">Contents</xsl:variable>
 	<xsl:variable name="text_record_database">Database</xsl:variable>
 	<xsl:variable name="text_record_degree">Degree</xsl:variable>
+	<xsl:variable name="text_record_edition">Edition</xsl:variable>
 	<xsl:variable name="text_record_format_label">Format</xsl:variable>
 	<xsl:variable name="text_record_inst">Institution</xsl:variable>
 	<xsl:variable name="text_record_language_label">Language</xsl:variable>

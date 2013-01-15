@@ -109,6 +109,7 @@
 			<xsl:call-template name="additional_full_record_data_main_top" />
 			<xsl:call-template name="record_uniform-title" /> <!-- uniform title -->
 			<xsl:call-template name="record_authors_top" /> <!-- author wrapper -->
+			<xsl:call-template name="record_edition" /> <!-- edition (not available in articles) -->
 			<xsl:call-template name="record_conference" /> <!-- Conference -->
 			<xsl:call-template name="record_format" /> <!-- Format -->
 			<xsl:call-template name="record_year" /> <!-- Year -->
@@ -721,7 +722,7 @@
 <xsl:template name="additional_full_record_data_main_bottom" />
 <xsl:template name="additional_full_record_actions" />
 <xsl:template name="record_authors_bottom" />
-
+<xsl:template name="record_edition" />
 
 
 
