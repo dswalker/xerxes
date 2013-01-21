@@ -24,15 +24,14 @@ class ControllerMap
 	
 	/**
 	 * Create a Controller Map
-	 * 
-	 * @param string $distro_dir	path to distro map.xml file
-	 * @throws \Exception
 	 */
 	
-	public function __construct($distro_dir)
+	public function __construct()
 	{
 		// distro map.xml
-			
+
+		$distro_dir = dirname(__DIR__ . '/../../../../'); // application directory
+		
 		$this->xml = simplexml_load_file($distro_dir . '/' . $this->file);
 		$this->version = (string) $this->xml["version"];
 
@@ -201,7 +200,7 @@ class ControllerMap
 			}
 		}		
 		
-		return 'Application\\Controller\\' . strtoupper(substr($controller, 0, 1)) . substr($controller,1) . 'Controller';		
+		return 'Application\\Controller\\' . ucfirst($controller) . 'Controller';		
 	}
 	
 	/**
