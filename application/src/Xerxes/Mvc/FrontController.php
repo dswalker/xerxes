@@ -17,8 +17,6 @@ use Xerxes\Utility\Registry;
 
 class FrontController
 {
-	private function __construct(); // singleton
-	
 	/**
 	 * Do it
 	 */
