@@ -19,8 +19,8 @@ if ( ! include_once("$root/vendor/autoload.php") )
 
 // application config
 
-$configuration = include "$root/application/config.php";
+$config = include "$root/application/config/config.php";
 
 // run the application
 
-FrontController::execute($configuration);
+FrontController::execute($config);
