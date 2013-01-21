@@ -1,22 +1,23 @@
 {
-    "name": "dswalker/xerxes",
-    "description": "Xerxes 2",
-    "homepage": "http://library.csuprojects.org",
-    "repositories": [
-        {
-            "type": "pear",
-            "url": "http://pear.php.net"
-        }
-    ],
-    "require": {
-        "php": ">=5.3.3",
-        "zendframework/zendframework": "dev-master#c1273a4ea7ab16ecb0be1f53c211c80a27ffee9a",
-        "pear-pear/File_MARC": "*"
-    },
-    "autoload": {
-        "psr-0": {
-            "Application": "module/Application/src",
-            "Xerxes": "module/Application/src"
-        }
-    }
+	"name": "dswalker/xerxes",
+	"description": "Xerxes 2",
+	"homepage": "http://library.csuprojects.org",
+	"repositories": [
+		{
+			"type": "pear",
+			"url": "http://pear.php.net"
+		}
+	],
+	
+	"require": {
+		"symfony/http-foundation": "2.1.*",
+		"guzzle/guzzle": "3.0.*"
+	}
+	
+	"autoload": {
+		"psr-0": {
+			"Application": "application/src",
+			"Xerxes": "application/src"
+		}
+	}
 }
