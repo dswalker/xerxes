@@ -50,14 +50,12 @@ class MvcEvent
 	
 	public function __construct(array $config)
 	{
-		$this->bootstrap = new Bootstrap($config);
+		$this->bootstrap = new Bootstrap($config); // application config
 		$this->registry = Registry::getInstance(); // global config
-		$this->request = new Request(); // incoming request
-		$this->response = new Response(); // outgoing response
-		$this->controller_map = new ControllerMap(); // controller instructions
 		
-		$this->request->setControllerMap($this->controller_map);
-		$this->request->setSession(new Session());
+		$this->controller_map = new ControllerMap(); 
+		$this->request = new Request($this->controller_map); // incoming request
+		$this->response = new Response(); // outgoing response
 	}
 	
 	/**

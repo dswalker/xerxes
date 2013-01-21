@@ -40,36 +40,23 @@ class Request extends HttpFoundation\Request
 	 */
 	private $user;
 	
-    /**
-     * Constructor.
-     *
-     * @param array  $query      The GET parameters
-     * @param array  $request    The POST parameters
-     * @param array  $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
-     * @param array  $cookies    The COOKIE parameters
-     * @param array  $files      The FILES parameters
-     * @param array  $server     The SERVER parameters
-     * @param string $content    The raw body data
-     */
+   /**
+    * Create new Xerxes Request
+    */
 	
-    public function __construct(array $query = array(), array $request = array(), array $attributes = array(), array $cookies = array(), array $files = array(), array $server = array(), $content = null)
+    public function __construct(ControllerMap $controller_map)
     {
-		parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
+		parent::__construct();
 
+		// register these mo-fo's
+		
 		$this->registry = Registry::getInstance();
-		$this->extractQueryParams();
 		$this->setSession(new Session());
-	}
-	
-	/**
-	 * Add the Controller Map
-	 *
-	 * @param ControllerMap $controller_map
-	 */
-	
-	public function setControllerMap(ControllerMap $controller_map )
-	{
 		$this->controller_map = $controller_map;
+
+		// do our special mapping
+		
+		$this->extractQueryParams();
 	}
 	
 	/**
@@ -92,53 +79,47 @@ class Request extends HttpFoundation\Request
 	/**
 	 * Add value to Session
 	 * 
-	 * @param string $key
+	 * @param string $name
 	 * @param mixed $value
 	 */
 	
-	public function setSessionData($key, $value)
+	public function setSessionData($name, $value)
 	{
-		$_SESSION[$key] = $value;
+		$this->session->set($name, $value);
 	}
 	
 	/**
 	 * Unset a value in Session
 	 *
-	 * @param string $key
+	 * @param string $name
 	 */
 	
-	public function unsetSessionData($key)
+	public function unsetSessionData($name)
 	{
-		if ( $this->existsInSessionData($key) )
-		{
-			unset($_SESSION[$key]);
-		}
+		$this->session->remove($name);
 	}	
 	
 	/**
 	 * Check if a key is set in Session
 	 *
-	 * @param string $key
+	 * @param string $name
 	 */
 	
-	public function existsInSessionData($key)
+	public function existsInSessionData($name)
 	{
-		return array_key_exists($key, $_SESSION);
+		$this->session->has($name);
 	}	
 	
 	/**
 	 * Get session value
 	 * 
-	 * @param string $key
+	 * @param string $name
 	 * @return mixed 		value, if key exists, otherwise null
 	 */
 	
-	public function getSessionData($key)
+	public function getSessionData($name)
 	{
-		if ( $this->existsInSessionData($key) )
-		{
-			return $_SESSION[$key];
-		}
+		$this->session->get($name);
 	}
 	
 	/**
@@ -149,7 +130,7 @@ class Request extends HttpFoundation\Request
 	
 	public function getAllSessionData()
 	{
-		return $_SESSION;
+		return $this->session->all();
 	}
 	
 	/**
