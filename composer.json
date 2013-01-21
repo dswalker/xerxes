@@ -10,7 +10,7 @@
 	],
 	
 	"require": {
-		"symfony/http-foundation": "2.1.*",
+		"symfony/symfony": "2.1.*",
 		"guzzle/guzzle": "3.0.*"
 	}
 	
