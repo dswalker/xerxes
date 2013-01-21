@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xerxes>
+
+	<configuration>
+	
+		<config name="summon_id"></config>
+		<config name="summon_key"></config>
+		
+		<config name="facet_multiple" pass="true">true</config>
+		<config name="show_database_recommendations" pass="true">true</config>
+
+		<config name="facet_fields" xml="true" pass="true">
+			<facet public="Scholarly" internal="IsScholarly" type="choice" max="2">
+				<choice public="Scholarly" internal="true" />
+				<choice public="Non-scholarly" internal="false" />
+			</facet>
+			<facet public="Format" internal="ContentType" max="100" />
+			<facet public="Topics" internal="SubjectTerms" max="30" />
+		</config>
+		
+		<config name="sort_options" xml="true" pass="true">
+			<option id="relevance" public="relevance" internal="" />
+			<option id="date" public="newest first" internal="PublicationDate:desc" type="year"/>
+			<option id="date-old" public="oldest first" internal="PublicationDate:asc" type="year"/>
+		</config>
+
+		<config name="basic_search_fields" xml="true" pass="true">
+			<field id="keyword" public="all fields" internal="" />
+			<field id="title" public="title" internal="Title" />
+			<field id="author" public="author" internal="Author" />
+			<field id="subject" public="subject" internal="SubjectTerms" />
+		</config>
+		
+	</configuration>
+	
+</xerxes>

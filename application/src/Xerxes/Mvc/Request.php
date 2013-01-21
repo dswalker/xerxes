@@ -1,0 +1,755 @@
+<?php
+
+namespace Xerxes\Mvc;
+
+use Symfony\Component\HttpFoundation,
+	Symfony\Component\HttpFoundation\Session\Session,
+	Xerxes\Utility\Parser,
+	Xerxes\Utility\Registry,
+	Xerxes\Utility\User;
+
+/**
+ * Process HTTP and CLI requests, as well as Session
+ * 
+ * @author David Walker
+ * @copyright 2013 California State University
+ * @link http://xerxes.calstate.edu
+ * @license
+ * @version
+ * @package Xerxes_Utility
+ */
+
+class Request extends HttpFoundation\Request
+{
+	private $controller_name; // controller name
+	private $commandline = false; // did this request originate from the command line?
+	private $params = array(); // request params
+
+	/**
+	 * @var Registry
+	 */
+	private $registry;
+
+	/**
+	 * @var ControllerMap
+	 */
+	private $controller_map;	
+	
+	/**
+	 * @var User
+	 */
+	private $user;
+	
+    /**
+     * Constructor.
+     *
+     * @param array  $query      The GET parameters
+     * @param array  $request    The POST parameters
+     * @param array  $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
+     * @param array  $cookies    The COOKIE parameters
+     * @param array  $files      The FILES parameters
+     * @param array  $server     The SERVER parameters
+     * @param string $content    The raw body data
+     */
+	
+    public function __construct(array $query = array(), array $request = array(), array $attributes = array(), array $cookies = array(), array $files = array(), array $server = array(), $content = null)
+    {
+		parent::__construct($query, $request, $attributes, $cookies, $files, $server, $content);
+
+		$this->registry = Registry::getInstance();
+		$this->extractQueryParams();
+		$this->setSession(new Session());
+	}
+	
+	/**
+	 * Add the Controller Map
+	 *
+	 * @param ControllerMap $controller_map
+	 */
+	
+	public function setControllerMap(ControllerMap $controller_map )
+	{
+		$this->controller_map = $controller_map;
+	}
+	
+	/**
+	 * Get the Controller Map
+	 *
+	 * @throws \Exception		if no controller map previous set
+	 * @return ControllerMap
+	 */
+	
+	public function getControllerMap()
+	{
+		if ( ! $this->controller_map instanceof ControllerMap )
+		{
+			throw new \Exception("No controller map set");
+		}
+	
+		return $this->controller_map;
+	}	
+	
+	/**
+	 * Add value to Session
+	 * 
+	 * @param string $key
+	 * @param mixed $value
+	 */
+	
+	public function setSessionData($key, $value)
+	{
+		$_SESSION[$key] = $value;
+	}
+	
+	/**
+	 * Unset a value in Session
+	 *
+	 * @param string $key
+	 */
+	
+	public function unsetSessionData($key)
+	{
+		if ( $this->existsInSessionData($key) )
+		{
+			unset($_SESSION[$key]);
+		}
+	}	
+	
+	/**
+	 * Check if a key is set in Session
+	 *
+	 * @param string $key
+	 */
+	
+	public function existsInSessionData($key)
+	{
+		return array_key_exists($key, $_SESSION);
+	}	
+	
+	/**
+	 * Get session value
+	 * 
+	 * @param string $key
+	 * @return mixed 		value, if key exists, otherwise null
+	 */
+	
+	public function getSessionData($key)
+	{
+		if ( $this->existsInSessionData($key) )
+		{
+			return $_SESSION[$key];
+		}
+	}
+	
+	/**
+	 * Get all session values
+	 * 
+	 * @return array
+	 */
+	
+	public function getAllSessionData()
+	{
+		return $_SESSION;
+	}
+	
+	/**
+	 * Process the incoming request paramaters
+	 */
+	
+	protected function extractQueryParams()
+	{
+		// coming from http
+			
+		if ( isset( $_SERVER['QUERY_STRING']) )
+		{
+			// controller and action in the path
+			
+			$path = explode('/', $this->getPathInfo());
+			
+			$controller = null;
+			$action = null;
+			
+			if ( array_key_exists(0, $path) )
+			{
+				$controller = $path[0];
+				$this->setParam( 'controller', $controller);
+			}
+			
+			if ( array_key_exists(1, $path) )
+			{
+				$action = $path[1];
+				$this->setParam( 'action', $action);
+			}
+			
+			// defined routes for the path
+			
+			foreach ( $this->controller_map->getRouteInfo($controller, $action) as $index => $param_name )
+			{
+				if ( array_key_exists($index, $path) )
+				{
+					$this->setParam($param_name, $path[$index]);
+				}
+			}
+			
+			// got a query string? 
+				
+			if ( $_SERVER['QUERY_STRING'] != "" )
+			{
+				// querystring can be delimited either with ampersand
+				// or semicolon
+					
+				$params = preg_split( "/&|;/", $_SERVER['QUERY_STRING'] );
+					
+				foreach ( $params as $strParam )
+				{
+					// split out key and value on equal sign
+						
+					$iEqual = strpos( $strParam, "=" );
+						
+					if ( $iEqual !== false )
+					{
+						$strKey = substr( $strParam, 0, $iEqual );
+						$strValue = substr( $strParam, $iEqual + 1 );
+						
+						$this->setParam( $strKey, urldecode( $strValue ) );
+					}
+				}
+			}
+			
+			// post request parameters
+			
+			foreach ( $_POST as $key => $value )
+			{
+				$this->setParam( $key, $value );
+			}
+			
+			// set mobile
+				
+			if ( $this->getSessionData('is_mobile') == null )
+			{
+				$this->setSessionData('is_mobile', (string) $this->isMobileDevice());
+			}
+				
+			// troubleshooting mobile
+				
+			if ( $this->getParam("is_mobile") != "" )
+			{
+				$this->setSessionData('is_mobile', $this->getParam("is_mobile"));
+			}
+		} 
+		else
+		{
+			// request has come in from the command line
+				
+			$this->commandline = true;
+				
+			foreach ( $_SERVER['argv'] as $arg )
+			{
+				if ( strpos( $arg, "=" ) )
+				{
+					list ( $key, $val ) = explode( "=", $arg );
+					$this->setParam( $key, $val );
+				}
+			}
+		}
+			
+		// reverse proxy
+			
+		if ( $this->registry->getConfig("REVERSE_PROXIES", false ) )
+		{
+			self::$trustProxy = true;
+			self::$trustedProxies = explode(',',  $this->registry->getConfig("REVERSE_PROXIES"));
+		}
+	}
+	
+	/**
+	 * Get the (internal) controller name for this request
+	 * 
+	 * @param string $default
+	 * @return string
+	 */
+	
+	public function getControllerName($default = 'index')
+	{
+		if ( $this->controller_name == '')
+		{
+			// swap any alias for the internal controller name
+				
+			$this->controller_name = $this->controller_map->getControllerName($this->getParam('controller', $default));
+		}
+		
+		return $this->controller_name;
+	}
+	
+	/**
+	 * Whether the request came in on the command line
+	 *
+	 * @return bool
+	 */
+	
+	public function isCommandLine()
+	{
+		return $this->commandline;
+	}
+	
+	/**
+	 * Simple function to detect if the user has a mobile device
+	 */
+	
+	public function isMobileDevice()
+	{
+		require_once( __DIR__ . '/mobile/mobile_device_detect.php');		
+		$is_mobile = @mobile_device_detect(true, false); // supress errors because this library is goofy
+		return $is_mobile[0];
+	}
+	
+	/**
+	 * Add a parameter to the request
+	 *
+	 * @param string $key			key to identify the value
+	 * @param mixed $value			value to add
+	 * @param bool $is_array		[optional] set to true will ensure property is set as array
+	 * @param bool $override		[optional] replace any existing values
+	 */
+	
+	public function setParam( $key, $value, $is_array = false, $override = false )
+	{
+		if ( ! is_array($value) )
+		{
+			$value = trim($value);
+		}
+		
+		if ( array_key_exists( $key, $this->params ) && $override == false )
+		{
+			// if there is an existing element, then we always push in the
+			// the new value into an array, first converting the exising value
+			// to an array if it is not already one 
+			
+			if ( ! is_array( $this->params[$key] ) )
+			{
+				$this->params[$key] = array ($this->params[$key] );
+			}
+			
+			array_push( $this->params[$key], $value );
+		} 
+		elseif ( $is_array == true )
+		{
+			// no existing value in property, but the calling code says 
+			// this *must* be added as an array, so make it an array, if not one already
+			
+			if ( ! is_array( $value ) )
+			{
+				$value = array ($value );
+			}
+			
+			$this->params[$key] = $value;
+		} 
+		else
+		{
+			$this->params[$key] = $value;
+		}
+	}
+	
+	/**
+	 * Replace a parameter with supplied value
+	 *
+	 * @param string $key			key to identify the value
+	 * @param mixed $value			value to add
+	 * @param bool $is_array		[optional] set to true will ensure property is set as array
+	 */	
+	
+	public function replaceParam( $key, $value, $is_array = false )
+	{
+		$this->setParam( $key, $value, $is_array, true );
+	}
+	
+	/**
+	 * Replace all params
+	 * 
+	 * @param array $params
+	 */
+	
+	public function setParams(array $params)
+	{
+		$this->params = $params;
+	}
+	
+	/**
+	 * Retrieve a value from the request parameters
+	 *
+	 * @param string $key		key that identify the value
+	 * @param string $default	[optional] a default value to return if no param supplied
+	 * @param bool $is_array	[optional] whether value should be returned as an array, even if only one value
+	 * 
+	 * @return string|array 	returns value if available, otherwise default
+	 */
+	
+	public function getParam( $key, $default = null, $is_array = false )
+	{
+		if ( array_key_exists( $key, $this->params ) )
+		{
+			// if the value is requested as array, but is not array, make it one!
+			
+			if ( $is_array == true && ! is_array( $this->params[$key] ) )
+			{
+				return array ($this->params[$key] );
+			} 
+			
+			// the opposite: if the the value is not requested as array but is,
+			// take just the first value in the array
+			
+			elseif ( $is_array == false && is_array( $this->params[$key] ) )
+			{
+				return $this->params[$key][0];
+			} 
+			else
+			{
+				return $this->params[$key];
+			}
+		} 
+		else
+		{
+			return $default;
+		}
+	}
+
+	/**
+	 * Get all parameters, or a group of parameters using regular expression
+	 * 
+	 * @param string $regex			[optional] regular expression for properties to get
+	 * @param bool $shrink			[optional] whether to collapse properties stored as 
+	 *   array into simple element, default false
+	 * @param string $shrink_del 	[optional] if $shrink is true, then separate multiple 
+	 *   elements by this character, default comma
+	 * 
+	 * @return array
+	 */
+	
+	public function getParams( $regex = "", $shrink = false, $shrink_del = "," )
+	{
+		$arrFinal = array();
+		
+		// no filter supplied, so return all params
+		
+		if ( $regex == "")
+		{
+			return $this->params;
+		}
+		
+		foreach ( $this->params as $key => $value )
+		{
+			$key = urldecode($key);
+			
+			// find specific params
+			
+			if ( preg_match("/" . $regex . "/", $key) )
+			{
+				// slip empty fields
+				
+				if ( is_array($value) )
+				{
+					$check = implode("", array_values($value));
+					
+					if ( $check == "" )
+					{
+						continue;
+					}
+				}
+				
+				if ( $value == "")
+				{
+					continue;
+				}
+				
+				if ( is_array($value) && $shrink == true )
+				{
+					$concated = "";
+					
+					foreach ( $value as $data )
+					{
+						if ( $data != "" )
+						{
+							if ($concated == "")
+							{
+								$concated = $data;
+							}
+							else
+							{
+								$concated .= $shrink_del . $data;
+							}
+						}
+					}
+					
+					if ( $concated == "" )
+					{
+						continue;
+					}
+				
+					$value = $concated;
+				}
+				
+				$arrFinal[$key] = $value;
+			}
+		}
+		
+		return $arrFinal;
+	}
+	
+	/**
+	 * See if the request contains the corresponding param and value
+	 * 
+	 * @param string $param
+	 * @param string $value
+	 */
+	
+	public function hasParamValue($param, $value)
+	{
+		foreach ( $this->getParam($param, array(), true) as $param_value )
+		{
+			if ( $param_value == $value)
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Construct a URL, taking into account routes, based on supplied parameters
+	 * 
+	 * @param array $params				the elements of the url
+	 * @param bool $full				[optional] should be full url
+	 * @param bool $force_secure		[optional] should be https://
+	 */
+	
+	public function url_for(array $params, $full = false, $force_secure = false )
+	{
+		$controller = null;
+		$action = null;
+		$route = array();
+		
+		// controller
+		
+		if ( array_key_exists('controller', $params) )
+		{
+			$controller = $params['controller'];
+			
+			// swap internal controller name for alias
+			
+			$controller = $this->controller_map->getUrlAlias($controller);
+			
+			$route[] = $controller;
+			unset($params['controller']);
+		}
+		
+		// action
+		
+		if ( array_key_exists('action', $params) )
+		{
+			$action = $params['action'];
+			$route[] = $action;
+			unset($params['action']);
+		}
+		
+		// config defined route information
+		
+		foreach ( $this->controller_map->getRouteInfo($controller, $action) as $param_name )
+		{
+			if ( array_key_exists($param_name, $params) )
+			{
+				$route[] = $params[$param_name];
+				unset($params[$param_name]);
+			}
+		}
+		
+		// assemble it as the route
+		
+		$url = '/' . implode('/', $route);
+		
+		// take anything remaining as the query string
+		
+		if ( count($params) > 0 )
+		{
+			$url .= "?";
+			
+			$x = 0;
+			
+			foreach ( $params as $name => $value )
+			{
+				if ( $value == "" )
+				{
+					continue;
+				}
+				
+				if ( $x > 0 ) // first param doesn't need & prefix
+				{
+					$url .= '&';
+				}
+				
+				// value is array
+				
+				if ( is_array( $value ) )
+				{
+					foreach( $value as $v )
+					{
+						$url .= $name . '=' . urlencode($v) . '&';
+					} 
+				}
+				else // single value
+				{
+					$url .= $name . '=' . urlencode($value);
+				}				
+				
+				$x++;
+			}
+		}
+		
+		// is it supposed to be a full url?
+		
+		if ( $full == true )
+		{
+			$base = $this->getServerUrl($force_secure);
+			$url = $base .= $url;
+		}
+		
+		return $url;
+	}
+	
+	/**
+	 * Get the current server URL, including scheme, hostname, port
+	 * 
+	 * @param bool $force_secure		[optional] should be https://
+	 */
+	
+	public function getServerUrl($force_secure = false )
+	{
+		if ( $force_secure == true )
+		{
+			$scheme = "https";
+		}
+		else
+		{
+			$scheme = $this->getScheme();
+		}
+		
+		return $scheme . '://' . $this->getHttpHost();
+	}
+	
+	/**
+	 * Associate User with this Request
+	 * 
+	 * @param User $user
+	 */
+	
+	public function setUser(User $user)
+	{
+		$this->user = $user;
+	}
+	
+	/**
+	 * Get the User making this Request
+	 * 
+	 * @throws \Exception
+	 */
+	
+	public function getUser()
+	{
+		if ( ! $this->user instanceof User )
+		{
+			throw new \Exception("No User has been set");
+		}
+		
+		return $this->user;
+	}
+	
+	/**
+	 * Serialize to xml
+	 * 
+	 * @param bool $should_hide_server	[optional]	exclude the server variables from the response
+	 *
+	 * @return DOMDocument
+	 */
+	
+	public function toXML($should_hide_server = false)
+	{
+		// add the url parameters and session and server global arrays
+		// to the master xml document
+		
+		$xml = new \DOMDocument( );
+		$xml->loadXML( "<request />" );
+		
+		// session and server global arrays will have parent elements
+		// but querystring will be at the root of request
+		
+		$this->addElement( $xml, $xml->documentElement, $this->params );
+		
+		// add the session global array
+		
+		$session = $xml->createElement( "session" );
+		$xml->documentElement->appendChild( $session );
+		$this->addElement( $xml, $session, $this->getAllSessionData() );
+		
+		// add the server global array
+		// but only if the request asks for it, for security purposes
+		
+		if ( $should_hide_server == true )
+		{
+			$server = $xml->createElement( "server" );
+			$xml->documentElement->appendChild( $server );
+			$this->addElement( $xml, $server, $_SERVER );
+		}
+		
+		return $xml;
+	}
+	
+	/**
+	 * Add global array as xml to request xml document
+	 *
+	 * @param DOMDocument $xml			[by reference] request xml document
+	 * @param DOMNode $objAppend		[by reference] node to append values to
+	 * @param array $arrValues			global array
+	 */
+	
+	private function addElement(&$xml, &$objAppend, $arrValues)
+	{
+		foreach ( $arrValues as $key => $value )
+		{
+			// need to make sure the xml element has a valid name
+			// and not something crazy with spaces or commas, etc.
+			
+			$strSafeKey = Parser::strtolower( preg_replace( '/\W/', '_', $key ) );
+			
+			if ( is_array( $value ) )
+			{
+				foreach ( $value as $strKey => $strValue )
+				{
+					$objElement = $xml->createElement( $strSafeKey );
+					$objElement->setAttribute('original_key', $key);
+					
+					$objElement->setAttribute( "key", $strKey );
+					$objAppend->appendChild( $objElement );
+					
+					if ( is_array( $strValue ) )
+					{
+						// multi-dimensional arrays will be recursively added
+						$this->addElement($xml, $objElement, $strValue);
+					}
+					else
+					{
+						$objElement->nodeValue = Parser::escapeXml( $strValue );
+					}
+				}
+			}
+			else
+			{
+				$objElement = $xml->createElement( $strSafeKey, Parser::escapeXml( $value ) );
+				$objElement->setAttribute('original_key', $key);
+				
+				$objAppend->appendChild( $objElement );
+			}
+			
+			
+		}
+	}
+}

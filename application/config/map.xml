@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xerxes version="2.0.beta.2">
+
+	<default>summon</default>
+	
+	<global_action controller="navigation" action="menu" />
+	
+	<controller name="databases">
+		<action name="subject">
+			<path index="2" param="subject" />
+		</action>	
+	</controller>
+	<controller name="ebsco">
+		<action name="results" restricted="true" />
+		<action name="record" restricted="true" />
+	</controller>
+	<controller name="worldcat">
+		<action name="results" restricted="true" />
+		<action name="record" restricted="true" />
+	</controller>
+</xerxes>

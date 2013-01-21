@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xerxes>
+
+	<!-- 
+	
+	BEFORE YOU GET STARTED
+	
+	Consult the Xerxes wiki, which contains more information about each config below
+	http://code.google.com/p/xerxes-portal/w/list
+	
+	 -->
+	 
+	<configuration>
+			
+	<!-- METALIB CONFIGURATION -->
+		
+		<!-- location, username, password, institute, & portal for Metalib X-Server:
+		
+			* do *NOT* include the /X in the metalib address.
+			* username and password must correspond to a valid /M interface user.
+			* institute and portal are usually the same as username. -->
+			
+		<config name="metalib_address"></config>
+		<config name="metalib_username"></config>
+		<config name="metalib_password"></config>
+		<config name="metalib_institute"></config>
+		<config name="metalib_portal"></config>
+		
+	<!-- SEARCH FIELDS -->
+	
+		<config name="basic_search_fields" xml="true" pass="true">
+			<field id="keyword" public="all fields" internal="WRD" />
+			<field id="title" public="title" internal="WTI" />
+			<field id="author" public="author" internal="WAU" />
+			<field id="subject" public="subject" internal="WSU" />
+		</config>
+		
+		
+	<!-- METASEARCH DISPLAY -->		
+
+		<!-- limit context urls to specified domains; left blank means allow all -->
+		
+		<config name="limit_context_url"></config>
+		
+		<!-- suppress full-text links in the specified databases. -->
+		
+		<config name="fulltext_ignore_sources"></config> 
+		
+		<!-- show link to catalog for holdings when present -->
+		
+		<config name="show_all_holdings_links" pass="true">true</config>
+		
+		<!-- show holdings links only for specific catalogs
+			enter as xml inside this config, like <database metalib_id="JHU0001" /> -->
+		
+		<config name="holdings_links" pass="true" xml="true"></config>
+		
+		<!-- include link back to database's native interface, when present and no full text is availble 
+			enter as xml inside this config, like <database metalib_id="JHU0001" /> -->
+			
+		<config name="original_record_links" pass="true" xml="true"></config>
+		
+		<!-- this should correspond to the search limit in metalib -->
+		
+		<config name="search_limit" pass="true">10</config>
+		
+		<!-- normalize query; this is experimental, only set this to true after reading the wiki! -->
+		
+		<config name="normalize_query">false</config>
+		
+		<!-- number of seconds before xerxes stops the search and merges available records. 
+			Note that this will not automatically change the animated search progress image, setting this higher 
+			will require a change in that display -->
+		
+		<config name="search_progress_cap">34</config>
+		
+		<!-- whether to immediately show the merged results from a search (true) or show the user the search hits
+		results with links to the merged set and individual databases -->
+		
+		<config name="immediately_show_merged_results">true</config>
+		
+		<!-- whether to create and show facets -->
+		
+		<config name="facets">false</config>
+		
+		<!-- initial and secondary sort orders for merged results, this will be the default sort order when the user 
+		is first dropped into the merged results; valid values for both include:
+			 
+		 	* 'rank'
+			* 'title'
+			* 'author'
+			* 'year'
+			* 'database'
+		 -->
+		
+		<config name="sort_order_primary">rank</config>
+		<config name="sort_order_secondary">title</config>
+
+	</configuration>
+	
+</xerxes>
