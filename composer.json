@@ -11,7 +11,8 @@
 	
 	"require": {
 		"symfony/http-foundation": "2.1.*",
-		"guzzle/guzzle": "3.0.*"
+		"guzzle/guzzle": "3.0.*",
+		"pear-pear/File_MARC": "*"
 	},
 	
 	"autoload": {
