@@ -44,20 +44,44 @@ class Request extends HttpFoundation\Request
     * Create new Xerxes Request
     */
 	
-    public function __construct(ControllerMap $controller_map)
+    public static function createFromGlobals(ControllerMap $controller_map)
     {
-		parent::__construct();
+		$request = parent::createFromGlobals();
 
 		// register these mo-fo's
 		
-		$this->registry = Registry::getInstance();
-		$this->setSession(new Session());
-		$this->controller_map = $controller_map;
+		$request->setRegistry(Registry::getInstance());
+		$request->setSession(new Session());
+		$request->setControllerMap($controller_map);
 
 		// do our special mapping
 		
-		$this->extractQueryParams();
+		$request->extractQueryParams();
+		
+		return $request;
 	}
+
+	/**
+	 * Set Registry
+	 *
+	 * @param Registry $map;
+	 */
+	
+	public function setRegistry(Registry $registry)
+	{
+		return $this->registry = $registry;
+	}	
+	
+	/**
+	 * Set the Controller Map
+	 *
+	 * @param ControllerMap $map;
+	 */
+	
+	public function setControllerMap(ControllerMap $map)
+	{
+		return $this->controller_map = $map;
+	}	
 	
 	/**
 	 * Get the Controller Map
@@ -137,7 +161,7 @@ class Request extends HttpFoundation\Request
 	 * Process the incoming request paramaters
 	 */
 	
-	protected function extractQueryParams()
+	public function extractQueryParams()
 	{
 		// coming from http
 			
@@ -150,16 +174,24 @@ class Request extends HttpFoundation\Request
 			$controller = null;
 			$action = null;
 			
-			if ( array_key_exists(0, $path) )
-			{
-				$controller = $path[0];
-				$this->setParam( 'controller', $controller);
-			}
-			
 			if ( array_key_exists(1, $path) )
 			{
-				$action = $path[1];
-				$this->setParam( 'action', $action);
+				$controller = $path[1];
+				
+				if ( $controller != '')
+				{
+					$this->setParam( 'controller', $controller);
+				}
+			}
+			
+			if ( array_key_exists(2, $path) )
+			{
+				$action = $path[2];
+				
+				if ( $action != '')
+				{
+					$this->setParam( 'action', $action);
+				}
 			}
 			
 			// defined routes for the path
@@ -246,17 +278,16 @@ class Request extends HttpFoundation\Request
 	/**
 	 * Get the (internal) controller name for this request
 	 * 
-	 * @param string $default
 	 * @return string
 	 */
 	
-	public function getControllerName($default = 'index')
+	public function getControllerName()
 	{
 		if ( $this->controller_name == '')
 		{
 			// swap any alias for the internal controller name
 				
-			$this->controller_name = $this->controller_map->getControllerName($this->getParam('controller', $default));
+			$this->controller_name = $this->controller_map->getControllerName($this->getParam('controller', 'index'));
 		}
 		
 		return $this->controller_name;
@@ -618,17 +649,6 @@ class Request extends HttpFoundation\Request
 	}
 	
 	/**
-	 * Associate User with this Request
-	 * 
-	 * @param User $user
-	 */
-	
-	public function setUser(User $user)
-	{
-		$this->user = $user;
-	}
-	
-	/**
 	 * Get the User making this Request
 	 * 
 	 * @throws \Exception
@@ -638,7 +658,7 @@ class Request extends HttpFoundation\Request
 	{
 		if ( ! $this->user instanceof User )
 		{
-			throw new \Exception("No User has been set");
+			$this->user = new User();
 		}
 		
 		return $this->user;

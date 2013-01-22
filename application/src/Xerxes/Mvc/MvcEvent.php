@@ -54,7 +54,7 @@ class MvcEvent
 		$this->registry = Registry::getInstance(); // global config
 		
 		$this->controller_map = new ControllerMap(); 
-		$this->request = new Request($this->controller_map); // incoming request
+		$this->request = Request::createFromGlobals($this->controller_map); // incoming request
 		$this->response = new Response(); // outgoing response
 	}
 	
