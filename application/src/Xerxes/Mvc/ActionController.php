@@ -186,7 +186,7 @@ abstract class ActionController
 		
 		if ( is_array($location) )
 		{
-			$url = $this->request->url_for( $location );
+			$url = $this->request->url_for( $location, true );
 		}
 		
 		return new RedirectResponse($url);
