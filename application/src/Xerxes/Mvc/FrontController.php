@@ -64,13 +64,11 @@ class FrontController
 				}
 			}
 			
-			exit;
-			
 			// apply the view to the data 
 			
 			if ( $response instanceof Response )
 			{
-				$response->render();
+				$response->render($event->request->getParam('format'));
 			}
 			
 			// send it to browser
