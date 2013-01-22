@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Model\Search\Availability;
+namespace Application\Model\Availability;
 
 /**
  * Availability factory
@@ -23,7 +23,7 @@ class AvailabilityFactory
 		
 		// main class
 		
-		$class_name = 'Application\Model\Search\Availability' . '\\' . $upper_name . '\\' . $upper_name;
+		$class_name = 'Application\Model\Availability' . '\\' . $upper_name . '\\' . $upper_name;
 		
 		// local custom version
 		

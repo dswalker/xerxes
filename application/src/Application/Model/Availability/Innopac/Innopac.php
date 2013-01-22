@@ -1,8 +1,8 @@
 <?php
 
-namespace Application\Model\Search\Availability\Innopac;
+namespace Application\Model\Availability\Innopac;
 
-use Application\Model\Search\Availability\AvailabilityInterface,
+use Application\Model\Availability\AvailabilityInterface,
 	Application\Model\Search,
 	Xerxes\Utility\Parser,
 	Zend\Http\Client;

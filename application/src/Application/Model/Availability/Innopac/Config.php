@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Model\Search\Availability\Innopac;
+namespace Application\Model\Availability\Innopac;
 
 use Xerxes\Utility\Registry;
 

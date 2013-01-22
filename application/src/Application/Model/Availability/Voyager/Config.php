@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Model\Search\Availability\Voyager;
+namespace Application\Model\Availability\Voyager;
 
 use Xerxes\Utility\Registry;
 

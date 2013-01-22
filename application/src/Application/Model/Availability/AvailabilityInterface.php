@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Model\Search\Availability;
+namespace Application\Model\Availability;
 
 /**
  * Availability interface

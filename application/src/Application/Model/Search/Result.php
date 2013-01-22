@@ -5,7 +5,7 @@ namespace Application\Model\Search;
 use Xerxes\Utility\Email;
 
 use Application\Model\Bx\Engine as BxEngine,
-	Application\Model\Search\Availability\AvailabilityFactory,
+	Application\Model\Availability\AvailabilityFactory,
 	Xerxes\Record,
 	Xerxes\Utility\Cache,
 	Xerxes\Utility\Parser,
