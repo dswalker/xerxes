@@ -35,7 +35,7 @@ abstract class SearchController extends ActionController
 		
 		$this->query = $this->engine->getQuery($this->request);
 		
-		$this->helper = new SearchHelper($this->request, $this->id, $this->engine);
+		$this->helper = new SearchHelper($this->event, $this->id, $this->engine);
 	}
 	
 	/**

@@ -14,7 +14,7 @@ use Application\Model\Search\Engine,
 	Xerxes\Utility\Parser,
 	Xerxes\Mvc\Request,
 	Xerxes\Utility\Registry,
-	Zend\Mvc\MvcEvent;
+	Xerxes\Mvc\MvcEvent;
 
 class Search
 {
