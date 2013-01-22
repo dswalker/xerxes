@@ -3,18 +3,17 @@
 namespace Application\Controller;
 
 use Application\Model\Ebsco\Engine,
-	Application\View\Helper\Ebsco as SearchHelper,
-	Zend\Mvc\MvcEvent;
+	Application\View\Helper\Ebsco as SearchHelper;
 
 class EbscoController extends SearchController
 {
 	protected $id = "ebsco";
 
-	protected function init(MvcEvent $e)
+	protected function init()
 	{
-		parent::init($e);
-	
-		$this->helper = new SearchHelper($e, $this->id, $this->engine);
+		parent::init();
+		
+		$this->helper = new SearchHelper($this->event, $this->id, $this->engine);
 	}	
 	
 	protected function getEngine()
