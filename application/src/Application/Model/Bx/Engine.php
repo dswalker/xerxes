@@ -4,8 +4,7 @@ namespace Application\Model\Bx;
 
 use Xerxes\Utility\Factory,
 	Xerxes\Utility\Parser,
-	Xerxes,
-	Zend\Http\Client;
+	Xerxes;
 
 /**
  * Search Engine
@@ -55,10 +54,7 @@ class Engine
 		try 
 		{
 			$client = Factory::getHttpClient();
-			$client->setUri($url);
-			$client->setOptions(array('timeout' => 4));
-			
-			$xml = $client->send()->getBody();
+			$xml = $client->getUrl($url, 4);
 			
 			if ( $xml == "" )
 			{

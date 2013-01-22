@@ -237,9 +237,8 @@ class Engine extends Search\Engine
 		// get the xml from ebsco
 		
 		$client = Factory::getHttpClient();
-		$client->setUri($this->url);
-		$response = $client->send()->getBody();		
-		
+		$response = $client->getUrl($this->url, 10);
+
 		// testing
 		// echo "<pre>$this->url<hr>$response</pre>"; exit;
 		

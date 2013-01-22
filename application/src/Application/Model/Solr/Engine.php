@@ -218,8 +218,7 @@ class Engine extends Search\Engine
 		// get the data
 		
 		$client = Factory::getHttpClient();
-		$client->setUri($this->url);
-		$response = $client->send()->getBody();
+		$response = $client->getUrl($this->url);
 		
 		$xml = simplexml_load_string($response);
 		

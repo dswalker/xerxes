@@ -5,7 +5,7 @@ namespace Application\Model\Availability\Innopac;
 use Application\Model\Availability\AvailabilityInterface,
 	Application\Model\Search,
 	Xerxes\Utility\Parser,
-	Zend\Http\Client;
+	Xerxes\Utility\Factory;
 
 /**
  * Retrieve item, holdings, and electonic resource information from an Innovative Millennium system
@@ -36,7 +36,7 @@ class Innopac implements AvailabilityInterface
 	 * @param string $server		server address
 	 */
 	
-	public function __construct( Client $client = null )
+	public function __construct()
 	{
 		$this->config = Config::getInstance(); 
 		
@@ -61,14 +61,7 @@ class Innopac implements AvailabilityInterface
 			$this->locations_to_ignore[] = trim($location);
 		}		
 		
-		if ( $client != null )
-		{
-			$this->client = $client;
-		}
-		else
-		{
-			$this->client = new Client();
-		}
+		$this->client = Factory::getHttpClient();
 	}
 	
 	/**
@@ -91,7 +84,7 @@ class Innopac implements AvailabilityInterface
 		
 		$this->url = $this->server . $query;
 		
-		$response = $this->fetch( $this->url );
+		$response = $this->client->getUrl( $this->url );
 		
 		// parse record
 		
@@ -140,21 +133,6 @@ class Innopac implements AvailabilityInterface
 		}
 		
 		return $holdings;
-	}
-	
-	/**
-	 * Fetch URL
-	 * 
-	 * @param string $url
-	 * @return string 
-	 */
-	
-	protected function fetch( $url )
-	{
-		$this->client->setUri($url);
-		$this->client->setOptions(array('timeout' => 4));
-
-		return $this->client->send()->getBody();
 	}
 	
 	/**
@@ -246,7 +224,7 @@ class Innopac implements AvailabilityInterface
 			
 			// get the full response page now and redo the function call
 			
-			$response = $this->fetch($holdings_url);
+			$response = $this->client->getUrl($holdings_url);
 			
 			return $this->extractItemRecords($response, true);
 		}
