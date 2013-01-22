@@ -43,7 +43,7 @@ class FrontController
 			
 			// add current controller/action
 			
-			$current_controller = $event->request->getControllerName('index');
+			$current_controller = $event->request->getParam('controller', 'index');
 			$current_action = $event->request->getParam('action', 'index');
 			$actions[$current_controller] = $current_action;
 			
@@ -64,6 +64,8 @@ class FrontController
 				}
 			}
 			
+			exit;
+			
 			// apply the view to the data 
 			
 			if ( $response instanceof Response )
@@ -77,6 +79,7 @@ class FrontController
 		}
 		catch ( \Exception $e )
 		{
+			header("Content-type: text/plain");
 			throw $e; exit; // @todo: catch errors
 		}		
 	}
