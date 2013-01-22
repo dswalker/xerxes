@@ -5,28 +5,28 @@ namespace Xerxes\Utility;
 use Guzzle\Http\Client;
 
 /**
- * Utility class
+ * Wrapper on Guzzle Http Client
  * 
  * @author David Walker
- * @copyright 2008 California State University
+ * @copyright 2013 California State University
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license
  * @version
- * @package  Xerxes_Framework
+ * @package
  */ 
 
-class HttpClient
+class HttpClient extends Client
 {
-	private $client;
-	
-	public function __construct()
+	public function getUrl($url, $timeout = 5)
 	{
-		$this->client = new Client();
-	}
-	
-	public function get($url)
-	{
-		$request = $this->client->get($url);
+		$config = array
+		(
+			'curl.options' => array(CURLOPT_TIMEOUT => $timeout),
+		);
+		
+		$this->setConfig($config);
+		
+		$request = $this->get($url);
 		$request->getQuery()->setAggregateFunction(array($request->getQuery(), 'aggregateUsingDuplicates'));
 		$response = $request->send();
 		
