@@ -78,10 +78,6 @@ abstract class SearchController extends ActionController
 			}
 		}
 		
-		// construct the actual url and redirect
-
-		$url = $this->request->url_for($params);
-		
 		// keep search refinements if user says so
 		
 		if ( $this->request->getParam('clear-facets') != '' )
@@ -89,7 +85,9 @@ abstract class SearchController extends ActionController
 			$this->request->setSessionData('clear_facets', $this->request->getParam('clear-facets'));
 		}
 		
-		return $this->redirect()->toUrl($url);
+		// redirect
+		
+		return $this->redirect($params);
 	}
 	
 	public function hitsAction()
@@ -287,7 +285,7 @@ abstract class SearchController extends ActionController
 			throw new \Exception("Could not create OpenURL");
 		}
 
-		return $this->redirect()->toUrl($record->url_open);
+		return $this->redirect($record->url_open);
 	}
 	
 	public function lookupAction()
