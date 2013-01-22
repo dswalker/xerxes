@@ -50,12 +50,24 @@ class MvcEvent
 	
 	public function __construct(array $config)
 	{
-		$this->bootstrap = new Bootstrap($config); // application config
-		$this->registry = Registry::getInstance(); // global config
+		// framework config
 		
-		$this->controller_map = new ControllerMap(); 
-		$this->request = Request::createFromGlobals($this->controller_map); // incoming request
-		$this->response = new Response(); // outgoing response
+		$this->bootstrap = new Bootstrap($config); 
+		$app_dir = $this->bootstrap->get('application_dir', true);
+		
+		// application config
+		
+		$this->registry = Registry::getInstance(); 
+		
+		// incoming request
+		
+		$this->controller_map = new ControllerMap($app_dir); 
+		$this->request = Request::createFromGlobals($this->controller_map); 
+		
+		// outgoing response
+		
+		$this->response = new Response(); 
+		$this->response->setViewDirectory("$app_dir/views");
 	}
 	
 	/**

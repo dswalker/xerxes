@@ -26,13 +26,18 @@ class ControllerMap
 	 * Create a Controller Map
 	 */
 	
-	public function __construct()
+	public function __construct($app_dir)
 	{
 		// distro map.xml
-
-		$distro_dir = dirname(__DIR__ . '/../../../../'); // application directory
 		
-		$this->xml = simplexml_load_file($distro_dir . '/' . $this->file);
+		$distro_file = $app_dir . '/' . $this->file;
+		
+		if ( ! file_exists($distro_file) )
+		{
+			throw new \InvalidArgumentException("Could not find file '$distro_file'");
+		}
+
+		$this->xml = simplexml_load_file($distro_file);
 		$this->version = (string) $this->xml["version"];
 
 		// local map.xml overrides, if any
