@@ -137,9 +137,9 @@ abstract class ActionController
 		
 		// add event objects to response
 		
-		if ( $this->response->getVariable('base_url') != '') // unless already set
+		if ( $this->response->getVariable('base_url') == '') // unless already set
 		{
-			$this->response->setVariable('base_url', $this->request->getBasePath());
+			$this->response->setVariable('base_url', $this->request->getServerUrl() . $this->request->getBasePath());
 			$this->response->setVariable('request', $this->request);
 			$this->response->setVariable('config', $this->registry);
 		}
