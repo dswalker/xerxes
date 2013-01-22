@@ -6,7 +6,7 @@ use Application\Model\Search,
 	Xerxes\Summon,
 	Xerxes\Utility\Factory,
 	Xerxes\Utility\Parser,
-	Xerxes\Utility\Request;
+	Xerxes\Mvc\Request;
 
 /**
  * Summon Search Engine

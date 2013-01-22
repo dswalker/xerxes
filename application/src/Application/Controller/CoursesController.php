@@ -8,7 +8,7 @@ use Application\Model\DataMap\ReadingList,
 	Xerxes\Lti,
 	Xerxes\Utility\Parser,
 	Xerxes\Utility\Registry,
-	Zend\Mvc\Controller\ActionController;
+	Xerxes\Mvc\ActionController;
 
 class CoursesController extends ActionController
 {

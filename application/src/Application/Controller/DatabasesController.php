@@ -2,16 +2,14 @@
 
 namespace Application\Controller;
 
-use Zend\Mvc\Controller\ActionController;
+use Xerxes\Mvc\ActionController;
 
 class DatabasesController extends ActionController
 {
-	public function index()
+	public function indexAction()
 	{
-		$params = array('databases');
+		$this->response->setVariable('hello', 'world');
 		
-		$url = $this->request->url_for($params);
-		
-		return $this->redirect()->toUrl($url);
+		return $this->response;
 	}
 }

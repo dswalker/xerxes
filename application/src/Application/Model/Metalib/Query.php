@@ -3,7 +3,7 @@
 namespace Application\Model\Metalib;
 
 use Application\Model\Search,
-	Xerxes\Utility\Request;
+	Xerxes\Mvc\Request;
 
 /**
  * Search Query

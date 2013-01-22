@@ -4,7 +4,7 @@ namespace Application\Model\Solr;
 
 use Application\Model\Search,
 	Xerxes\Utility\Factory,
-	Xerxes\Utility\Request;
+	Xerxes\Mvc\Request;
 
 /**
  * Solr Search Engine

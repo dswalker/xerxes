@@ -12,7 +12,7 @@ use Application\Model\Search\Engine,
 	Xerxes\Record\Bibliographic\LinkedItem,
 	Xerxes\Record\Subject,
 	Xerxes\Utility\Parser,
-	Xerxes\Utility\Request,
+	Xerxes\Mvc\Request,
 	Xerxes\Utility\Registry,
 	Zend\Mvc\MvcEvent;
 

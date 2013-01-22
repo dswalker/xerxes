@@ -6,7 +6,7 @@ use Application\Model\Authentication\AuthenticationFactory,
 	Application\Model\Authentication\Scheme,
 	Xerxes\Utility\Registry,
 	Zend\Mvc\MvcEvent,
-	Zend\Mvc\Controller\ActionController;
+	Xerxes\Mvc\ActionController;
 
 class AuthenticateController extends ActionController
 {

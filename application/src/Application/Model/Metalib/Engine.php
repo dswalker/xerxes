@@ -7,7 +7,7 @@ use Application\Model\KnowledgeBase\KnowledgeBase,
  	Xerxes\Metalib,
  	Xerxes\Utility\Cache,
 	Xerxes\Utility\Factory,
-	Xerxes\Utility\Request;
+	Xerxes\Mvc\Request;
 
 /**
  * Metalib Search Engine

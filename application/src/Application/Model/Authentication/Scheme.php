@@ -5,7 +5,7 @@ namespace Application\Model\Authentication;
 use Application\Model\Authentication\User,
 	Application\Model\DataMap\Users, 
 	Application\Model\DataMap\SavedRecords,
-	Xerxes\Utility\Request,
+	Xerxes\Mvc\Request,
 	Xerxes\Utility\Registry,
 	Zend\Mvc\MvcEvent;
 

@@ -160,7 +160,7 @@ abstract class ActionController
 	 * Tasks to perform before the action
 	 */
 	
-	public function init()
+	protected function init()
 	{
 		return null;
 	}
@@ -169,7 +169,7 @@ abstract class ActionController
 	 * Tasks to perform after the action
 	 */
 	
-	public function shutdown()
+	protected function shutdown()
 	{
 		return null;
 	}	
@@ -180,7 +180,7 @@ abstract class ActionController
 	 * @param array|string $location	location to redirect to
 	 */
 	
-	public function redirect($location)
+	protected function redirect($location)
 	{
 		$url = $location;
 		

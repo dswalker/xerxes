@@ -2,9 +2,7 @@
 
 namespace Application\Controller;
 
-use Zend\View\Model\ViewModel;
-
-use Zend\Mvc\Controller\ActionController,
+use Xerxes\Mvc\ActionController,
 	Xerxes\Utility\Labels;
 
 class AssetController extends ActionController

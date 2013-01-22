@@ -2,7 +2,7 @@
 
 namespace Application\Controller;
 
-use Zend\Mvc\Controller\ActionController;
+use Xerxes\Mvc\ActionController;
 
 class ErrorController extends ActionController
 {

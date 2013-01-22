@@ -3,14 +3,14 @@
 namespace Application\View\Helper;
 
 use Xerxes\Utility\Registry,
-	Zend\View\ViewEvent;
+	Xerxes\Mvc\MvcEvent;
 
 class Navigation
 {
 	protected $request; // request
 	protected $registry; // reistry
 	
-	public function __construct( ViewEvent $e )
+	public function __construct( MvcEvent $e )
 	{
 		$this->request = $e->getRequest();
 		$this->registry = Registry::getInstance();
@@ -30,7 +30,7 @@ class Navigation
 	{
 		$params = array(
 			'controller' => 'folder',
-			'return' => $this->request->server()->get( 'REQUEST_URI' ),
+			'return' => $this->request->server->get( 'REQUEST_URI' ),
 			'userid' => $this->request->getUser()->username // @todo x1 trans hack
 		);
 		
@@ -49,7 +49,7 @@ class Navigation
 		$params = array(
 			'controller' => 'authenticate', 
 			'action' => 'login', 
-			'return' => $this->request->server()->get('REQUEST_URI') 
+			'return' => $this->request->server->get('REQUEST_URI') 
 		);
 		
 		return $this->request->url_for($params, true, $force_secure_login);		
@@ -60,7 +60,7 @@ class Navigation
 		$params = array(
 			'controller' => 'authenticate', 
 			'action' => 'logout', 
-			'return' => $this->request->server()->get('REQUEST_URI')
+			'return' => $this->request->server->get('REQUEST_URI')
 		); 
 		
 		return $this->request->url_for($params);			
@@ -71,7 +71,7 @@ class Navigation
 		$params = array(
 			'controller' => 'databases',
 			'action' => 'accessible',
-			'return' => $this->request->server()->get('REQUEST_URI')
+			'return' => $this->request->server->get('REQUEST_URI')
 		);
 
 		return $this->request->url_for($params);	

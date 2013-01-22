@@ -6,7 +6,7 @@ use Application\Model\Search,
 	Xerxes\Worldcat,
 	Xerxes\Marc,
 	Xerxes\Utility\Factory,
-	Xerxes\Utility\Request;
+	Xerxes\Mvc\Request;
 
 /**
  * Worldcat Search Engine

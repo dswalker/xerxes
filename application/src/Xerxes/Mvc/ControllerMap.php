@@ -162,9 +162,14 @@ class ControllerMap
 	 * @return ActionController;
 	 */
 	
-	public function getControllerObject($controller, Event $event)
+	public function getControllerObject($controller, MvcEvent $event)
 	{
 		$class_name = $this->getControllerClassName($controller);
+		
+		if ( ! class_exists($class_name) )
+		{
+			throw new \Exception("Could not find class $class_name");
+		}
 	
 		$controller = new $class_name($event);
 			
