@@ -55,6 +55,7 @@ abstract class ActionController
 	
 	public function __construct(MvcEvent $event)
 	{
+		$this->event = $event;
 		$this->registry = $event->registry;
 		$this->request = $event->request;
 		$this->response = $event->response;
@@ -67,7 +68,12 @@ abstract class ActionController
 		
 		$this->id = get_class($this); 
 		$this->id = str_replace('Controller~', '', $this->id . '~');
+		
+		$parts = explode('\\', $this->id);
+		$this->id = array_pop($parts);
+		
 		$this->id = strtolower($this->id);
+		
 	}
 	
 	/**
@@ -108,9 +114,25 @@ abstract class ActionController
 		
 		$response = $this->$action_name();
 		
-		if ( $response instanceof HttpFoundation\Response && ! $response instanceof Response )
+		// make sure we got a response
+		
+		if ( ! $response instanceof HttpFoundation\Response )
 		{
-			return $response; // this was a redirect or something
+			// nope, but see if we still have the original
+			
+			$response = $this->response;
+			
+			if ( ! $response instanceof HttpFoundation\Response )
+			{
+				throw new \Exception("Action '$action' returned no Response");
+			}
+		}
+		
+		// this was a redirect or something
+		
+		if ( ! $response instanceof Response )
+		{
+			return $response; 
 		}
 		
 		// add event objects to response
@@ -128,7 +150,7 @@ abstract class ActionController
 		
 		if ( $shutdown instanceof HttpFoundation\Response )
 		{
-			return $init;
+			return $shutdown;
 		}
 		
 		return $response;
