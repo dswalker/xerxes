@@ -2,8 +2,6 @@
 
 namespace Xerxes\Utility;
 
-use Zend\Http\Client;
-
 /**
  * Utility class
  * 
@@ -17,8 +15,12 @@ use Zend\Http\Client;
 
 class Factory
 {
+	/**
+	 * @return HttpClient
+	 */
+	
 	public static function getHttpClient()
 	{						
-		return new Client();
+		return new HttpClient();
 	}
 }
