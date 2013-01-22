@@ -22,7 +22,12 @@ class Search
 	protected $query;
 	protected $config;
 	
-	protected $request; // request
+	/**
+	 * @var Request
+	 */
+	
+	protected $request;
+	
 	protected $registry; // reistry
 	
 	public function __construct(MvcEvent $e, $id, Engine $engine)
@@ -505,7 +510,7 @@ class Search
 				
 				// is this the current tab?
 
-				if ( $controller_map->getControllerName() == (string) $option["id"] 
+				if ( $this->request->getControllerName() == (string) $option["id"] 
 				     && ( $this->request->getParam('source') == (string) $option["source"] 
 				     	|| (string) $option["source"] == '') )
 				{
