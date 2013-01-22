@@ -320,7 +320,7 @@ abstract class SearchController extends ActionController
 	
 		$model = $this->resultsAction();
 	
-		$model->setTemplate('search/facet.xsl');
+		$model->setView('search/facet.xsl');
 	
 		return $model;
 	}

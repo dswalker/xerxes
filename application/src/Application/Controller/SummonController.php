@@ -15,12 +15,12 @@ class SummonController extends SearchController
 	
 	public function indexAction()
 	{
-		$data = parent::indexAction();
+		$response = parent::indexAction();
 		
 		// set view template
 	
-		$data->setTemplate('summon/index.xsl');
+		$response->setView('summon/index.xsl');
 	
-		return $data;
+		return $response;
 	}	
 }

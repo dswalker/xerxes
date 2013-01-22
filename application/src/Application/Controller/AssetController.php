@@ -16,7 +16,7 @@ class AssetController extends ActionController
 		
 		$model = new ViewModel();
 		$model->setVariable('labels', $labels);
-		$model->setTemplate('asset/labels.phtml');
+		$model->setView('asset/labels.phtml');
 		
 		return $model;
 	}
