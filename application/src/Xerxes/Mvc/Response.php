@@ -22,7 +22,7 @@ class Response extends HttpFoundation\Response
 {
 	private $_vars = array(); // variables
 	private $_script_path; // path to the distro script
-	private $_format = "html"; // output format type
+	private $_view_dir; // view directory
 	private $_view; // view file
 	
 	/**
@@ -52,6 +52,17 @@ class Response extends HttpFoundation\Response
 	}
 	
 	/**
+	 * Set location of view script
+	 *
+	 * @param string $dir
+	 */
+	
+	public function setViewDirectory($dir)
+	{
+		$this->_view_dir = $dir;
+	}	
+	
+	/**
 	 * Set the view script
 	 * 
 	 * @param string $view
@@ -66,11 +77,11 @@ class Response extends HttpFoundation\Response
 	 * Processes the view script against the data.
 	 */
 	
-	public function render()	
+	public function render($format)	
 	{
 		// internal xml
 		
-		if ( $this->_format == "xml" )
+		if ( $format == "xerxes" )
 		{
 			$this->headers->set('Content-type', 'text/xml');
 			$this->setContent($this->toXML()->saveXML());
@@ -78,17 +89,17 @@ class Response extends HttpFoundation\Response
 		
 		// no view set
 		
-		elseif ( $this->view == null )
+		elseif ( $this->_view == null )
 		{
 			// do nothing
 		}
 		
 		// xslt view
 			
-		elseif (strstr($this->view, '.xsl') )
+		elseif (strstr($this->_view, '.xsl') )
 		{
 			$xml = $this->toXML();
-			$html = $this->transform($xml, $this->view);
+			$html = $this->transform($xml, $this->_view);
 			$this->setContent($html);
 		}
 			
@@ -99,7 +110,7 @@ class Response extends HttpFoundation\Response
 			// buffer the output so we can catch and return it
 			
 			ob_start();
-			require_once $this->_script_path . "/" . $this->view;
+			require_once $this->_view_dir . "/" . $this->_view;
 			$html = ob_get_clean();
 			
 			$this->setContent($html);
@@ -138,7 +149,7 @@ class Response extends HttpFoundation\Response
 		
 		// the xsl lives here
 
-		$distro_xsl_dir = $this->_script_path . "/";
+		$distro_xsl_dir = $this->_view_dir . "/";
 		$local_xsl_dir = realpath(getcwd()) . "/views/";
 		
 		// language
@@ -173,6 +184,6 @@ class Response extends HttpFoundation\Response
 		
 		$xsl = new Xsl($distro_xsl_dir, $local_xsl_dir);
 		
-		return $xsl->transformToXml($xml, $path_to_xsl, $this->format, $params, $import_array);
+		return $xsl->transformToXml($xml, $path_to_xsl, 'html', $params, $import_array);
 	}
 }
