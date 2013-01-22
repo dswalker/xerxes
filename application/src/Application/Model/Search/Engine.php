@@ -4,8 +4,7 @@ namespace Application\Model\Search;
 
 use Xerxes\Utility\Cache,
 	Xerxes\Utility\Registry,
-	Xerxes\Mvc\Request,
-	Zend\Http\Client;
+	Xerxes\Mvc\Request;
 
 /**
  * Search Engine

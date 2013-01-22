@@ -5,8 +5,7 @@ namespace Application\Model\Search;
 use Application\Model\Search\Spelling\Suggestion,
 	Xerxes\Utility\Factory,
 	Xerxes\Utility\Registry,
-	Xerxes\Mvc\Request,
-	Zend\Http\Client;
+	Xerxes\Mvc\Request;
 
 /**
  * Search Query

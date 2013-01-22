@@ -9,8 +9,7 @@ use Application\Model\Bx\Engine as BxEngine,
 	Xerxes\Record,
 	Xerxes\Utility\Cache,
 	Xerxes\Utility\Parser,
-	Xerxes\Utility\Registry,
-	Zend\Http\Client;
+	Xerxes\Utility\Registry;
 
 /**
  * Search Record
