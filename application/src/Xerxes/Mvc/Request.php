@@ -577,7 +577,7 @@ class Request extends HttpFoundation\Request
 		
 		// assemble it as the route
 		
-		$url = '/' . implode('/', $route);
+		$url = implode('/', $route);
 		
 		// take anything remaining as the query string
 		
