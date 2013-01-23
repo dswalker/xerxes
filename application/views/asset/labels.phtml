@@ -11,13 +11,11 @@
  *  @license
  */
 
-header('Content-type: application/javascript');
-
 ?>
 xerxes_labels = new Array();
 <?php 
 	
-	foreach ( $this->labels->getLabels() as $name => $value )
+	foreach ( $this->getVariable('labels')->getLabels() as $name => $value )
 	{
 		$value = str_replace('"', '\\"', $value);
 		$value = str_replace("\n", " ", $value);
