@@ -14,8 +14,6 @@ use Application\View\Helper\Search as SearchHelper,
 
 abstract class SearchController extends ActionController
 {
-	protected $id = "search";
-	
 	protected $config; // local config
 	protected $query; // query object
 	protected $engine; // search engine

@@ -5,28 +5,16 @@ namespace Application\Controller;
 use Application\Model\Authentication\AuthenticationFactory,
 	Application\Model\Authentication\Scheme,
 	Xerxes\Utility\Registry,
-	Zend\Mvc\MvcEvent,
 	Xerxes\Mvc\ActionController;
 
 class AuthenticateController extends ActionController
 {
 	protected $authentication = null;
-	protected $registry;
 	
-	// @todo: figure out a better way to do this
-	
-	public function execute(MvcEvent $e)
+	public function init()
 	{
-		$this->init($e);
-		parent::execute($e);
-	}
-	
-	public function init(MvcEvent $e)
-	{
-		$this->registry = Registry::getInstance();
-		
 		$factory = new AuthenticationFactory();
-		$this->authentication = $factory->getAuthenticationObject($e->getRequest());
+		$this->authentication = $factory->getAuthenticationObject($this->request);
 	}
 		
 	public function loginAction()
@@ -38,12 +26,11 @@ class AuthenticateController extends ActionController
 	
 		// if secure login is required, then force the user back thru https
 	
-		if ( $config_https == true && $this->request->uri()->getScheme() == "http" )
+		if ( $config_https == true && $this->request->getScheme() == "http" )
 		{
-			$uri = $this->request->uri();
-			$uri->setScheme('https');
-	
-			return $this->redirect()->toUrl((string) $uri);
+			$url = $this->request->getServerUrl(true) . '/' . $this->request->getUri();
+			
+			return $this->redirect($url);
 		}
 	
 		### remote authentication
@@ -120,7 +107,7 @@ class AuthenticateController extends ActionController
 	
 	public function doRedirect()
 	{
-		return $this->redirect()->toUrl($this->authentication->getRedirect());
+		return $this->redirect($this->authentication->getRedirect());
 	}
 }
 
