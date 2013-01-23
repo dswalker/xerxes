@@ -11,13 +11,15 @@ class AssetController extends ActionController
 	{
 		$lang = $this->request->getParam("lang");
 		
-		$labels = $this->locator->get('labels');
+		$labels = new Labels();
 		$labels->setLanguage($lang);
 		
-		$model = new ViewModel();
-		$model->setVariable('labels', $labels);
-		$model->setView('asset/labels.phtml');
+		$this->response->setVariable('labels', $labels);
 		
-		return $model;
+		
+		$this->response->headers->set('Content-type', 'application/javascript');
+		$this->response->setView('asset/labels.phtml');
+		
+		return $this->response;
 	}
 }
