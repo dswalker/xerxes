@@ -51,7 +51,7 @@ class User extends DataValue
 			
 			$this->username = $request->getSessionData("username");
 			$this->role = $request->getSessionData("role");
-			$this->ip_address = $request->server()->get('REMOTE_ADDR');
+			$this->ip_address = $request->getClientIp();
 			
 			// local ip range from config
 			
@@ -134,7 +134,7 @@ class User extends DataValue
 		
 		if ( self::$request instanceof Request )
 		{
-			$session_id = self::$request->session()->getId();
+			$session_id = self::$request->getSession()->getId();
 			
 			if ( $session_id != "" )
 			{
