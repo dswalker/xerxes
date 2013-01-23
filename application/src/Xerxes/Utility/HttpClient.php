@@ -17,7 +17,16 @@ use Guzzle\Http\Client;
 
 class HttpClient extends Client
 {
-	public function getUrl($url, $timeout = 5)
+	/**
+	 * Simple method to get and return content from a ur;
+	 * @param string $url
+	 * @param int $timeout
+	 * @param array $headers
+	 * 
+	 * @return string
+	 */
+	
+	public function getUrl($url, $timeout = 5, $headers = array())
 	{
 		$config = array
 		(
@@ -26,7 +35,7 @@ class HttpClient extends Client
 		
 		$this->setConfig($config);
 		
-		$request = $this->get($url);
+		$request = $this->get($url, $headers);
 		$request->getQuery()->setAggregateFunction(array($request->getQuery(), 'aggregateUsingDuplicates'));
 		$response = $request->send();
 		
