@@ -6,7 +6,7 @@ namespace Xerxes\Utility;
  * Email
  * 
  * @author David Walker
- * @copyright 2012 California State University
+ * @copyright 2013 California State University
  * @link
  * @license
  * @version
@@ -34,7 +34,7 @@ class Email
 			
 			if ( strstr($host, ':') )
 			{
-				$parts = explode(':', $this->host);
+				$parts = explode(':', $host);
 				$port = array_pop($parts);
 				$host = implode(':', $parts);
 			}
