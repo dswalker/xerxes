@@ -111,6 +111,17 @@ class Request extends HttpFoundation\Request
 	}	
 	
 	/**
+	 * Gets the Session
+	 *
+	 * @return Session
+	 */
+	
+	public function getSession()
+	{
+		return $this->session;
+	}
+	
+	/**
 	 * Add value to Session
 	 * 
 	 * @param string $name
@@ -166,6 +177,33 @@ class Request extends HttpFoundation\Request
 	{
 		return $this->session->all();
 	}
+	
+	/**
+	 * Set a flash message
+	 * 
+	 * @param string $type
+	 * @param string $message
+	 */
+	
+	public function setFlashMessage($type, $message)
+	{
+		$flash_bag = $this->getSession()->getFlashBag();
+		$flash_bag->add($type, $message);
+	}
+	
+	/**
+	 * Get flash messages
+	 *
+	 * @param string $type
+	 * @return array
+	 */
+	
+	public function getFlashMessages()
+	{
+		$flash_bag = $this->getSession()->getFlashBag();
+		
+		return $flash_bag->all();
+	}	
 	
 	/**
 	 * Process the incoming request paramaters
@@ -530,6 +568,30 @@ class Request extends HttpFoundation\Request
 	}
 	
 	/**
+	 * Require the param be present in the request
+	 * 
+	 * will throw an Exception if not
+	 * 
+	 * @param string $name
+	 * @param string $error_message
+	 * 
+	 * @throws \Exception
+	 */
+	
+	public function requireParam($name, $error_message)
+	{
+		$value = $this->getParam($name);
+		
+		if ($value == null)
+		{
+			throw new \Exception($error_message);
+		}
+		
+		return $value;
+	}
+	
+	
+	/**
 	 * Construct a URL, taking into account routes, based on supplied parameters
 	 * 
 	 * @param array $params				the elements of the url
@@ -676,31 +738,33 @@ class Request extends HttpFoundation\Request
 	
 	public function toXML($should_hide_server = false)
 	{
-		// add the url parameters and session and server global arrays
-		// to the master xml document
-		
 		$xml = new \DOMDocument( );
 		$xml->loadXML( "<request />" );
 		
-		// session and server global arrays will have parent elements
-		// but querystring will be at the root of request
+		// querystring will be at the root of request
 		
 		$this->addElement( $xml, $xml->documentElement, $this->params );
+
+		// other data will have parent elements
 		
-		// add the session global array
+		$add = array(
+			'flash_messages' => $this->getFlashMessages(),
+			'session' => $this->getAllSessionData()
+		);
 		
-		$session = $xml->createElement( "session" );
-		$xml->documentElement->appendChild( $session );
-		$this->addElement( $xml, $session, $this->getAllSessionData() );
+		// add server global array only if the request asks for it
+		// for security purposes
 		
-		// add the server global array
-		// but only if the request asks for it, for security purposes
-		
-		if ( $should_hide_server == true )
+		if ( $should_hide_server == true ) 
 		{
-			$server = $xml->createElement( "server" );
-			$xml->documentElement->appendChild( $server );
-			$this->addElement( $xml, $server, $_SERVER );
+			$add['server'] = $_SERVER;
+		}
+		
+		foreach ( $add as $name => $values )
+		{
+			$element = $xml->createElement($name);
+			$xml->documentElement->appendChild($element);
+			$this->addElement( $xml, $element, $values );
 		}
 		
 		return $xml;
@@ -751,8 +815,6 @@ class Request extends HttpFoundation\Request
 				
 				$objAppend->appendChild( $objElement );
 			}
-			
-			
 		}
 	}
 }
