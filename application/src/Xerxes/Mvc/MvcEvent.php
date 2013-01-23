@@ -52,8 +52,7 @@ class MvcEvent
 	{
 		// framework config
 		
-		$this->bootstrap = new Bootstrap($config); 
-		$app_dir = $this->bootstrap->get('application_dir', true);
+		$this->bootstrap = Bootstrap::setConfig($config); 
 		
 		// application config
 		
@@ -61,13 +60,12 @@ class MvcEvent
 		
 		// incoming request
 		
-		$this->controller_map = new ControllerMap($app_dir); 
+		$this->controller_map = new ControllerMap(); 
 		$this->request = Request::createFromGlobals($this->controller_map); 
 		
 		// outgoing response
 		
 		$this->response = new Response(); 
-		$this->response->setViewDirectory("$app_dir/views");
 	}
 	
 	/**

@@ -3,6 +3,7 @@
 namespace Xerxes\Mvc;
 
 use Symfony\Component\HttpFoundation,
+	Xerxes\Mvc\Bootstrap,
 	Xerxes\Utility\Parser,
 	Xerxes\Utility\Registry,
 	Xerxes\Utility\Xsl;
@@ -52,17 +53,6 @@ class Response extends HttpFoundation\Response
 	}
 	
 	/**
-	 * Set location of view script
-	 *
-	 * @param string $dir
-	 */
-	
-	public function setViewDirectory($dir)
-	{
-		$this->_view_dir = $dir;
-	}	
-	
-	/**
 	 * Set the view script
 	 * 
 	 * @param string $view
@@ -79,6 +69,8 @@ class Response extends HttpFoundation\Response
 	
 	public function render($format)	
 	{
+		$this->_view_dir = Bootstrap::get('application_dir', true) . "/views/";
+		
 		// internal xml
 		
 		if ( $format == "xerxes" )
@@ -99,7 +91,7 @@ class Response extends HttpFoundation\Response
 		elseif (strstr($this->_view, '.xsl') )
 		{
 			$xml = $this->toXML();
-			$html = $this->transform($xml, $this->_view);
+			$html = $this->transform($xml, $this->_view, $format);
 			$this->setContent($html);
 		}
 			
@@ -143,13 +135,13 @@ class Response extends HttpFoundation\Response
 	 * @param array $params
 	 */
 	
-	protected function transform($xml, $path_to_xsl, array $params = array())
+	protected function transform($xml, $path_to_xsl, $format, array $params = array())
 	{
 		$import_array = array();
 		
 		// the xsl lives here
 
-		$distro_xsl_dir = $this->_view_dir . "/";
+		$distro_xsl_dir = $this->_view_dir;
 		$local_xsl_dir = realpath(getcwd()) . "/views/";
 		
 		// language
@@ -184,6 +176,6 @@ class Response extends HttpFoundation\Response
 		
 		$xsl = new Xsl($distro_xsl_dir, $local_xsl_dir);
 		
-		return $xsl->transformToXml($xml, $path_to_xsl, 'html', $params, $import_array);
+		return $xsl->transformToXml($xml, $path_to_xsl, $format, $params, $import_array);
 	}
 }

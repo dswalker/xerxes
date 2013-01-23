@@ -15,18 +15,29 @@ namespace Xerxes\Mvc;
 
 class Bootstrap
 {
-	private $config;
+	static protected $config;
+	private static $instance; // singleton pattern
 	
-	public function __construct(array $config)
+	protected function __construct()
 	{
-		$this->config = $config;
 	}
 	
-	public function get($name, $required = false)
+	public static function setConfig( array $config )
 	{
-		if ( array_key_exists($name, $this->config))
+		if ( empty( self::$instance ) )
 		{
-			return $this->config[$name];
+			self::$instance = new Bootstrap();
+			self::$config = $config;
+		}
+		
+		return self::$instance;
+	}
+	
+	public static function get($name, $required = false)
+	{
+		if ( array_key_exists($name, self::$config))
+		{
+			return self::$config[$name];
 		}
 		elseif ( $required == true )
 		{

@@ -2,7 +2,8 @@
 
 namespace Xerxes\Mvc;
 
-use Application\Controller;
+use Application\Controller,
+	Xerxes\Mvc\Bootstrap;
 
 /**
  * Controller Map
@@ -26,11 +27,11 @@ class ControllerMap
 	 * Create a Controller Map
 	 */
 	
-	public function __construct($app_dir)
+	public function __construct()
 	{
 		// distro map.xml
 		
-		$distro_file = $app_dir . '/' . $this->file;
+		$distro_file = Bootstrap::get('application_dir', true) . '/' . $this->file;
 		
 		if ( ! file_exists($distro_file) )
 		{
