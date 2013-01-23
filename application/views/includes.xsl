@@ -52,7 +52,6 @@
 		</xsl:choose>
 	</xsl:variable>
 	
-	
 	<xsl:variable name="asset_version" select="//config/asset_version" />
 
 	<xsl:variable name="link_target" select="//config/link_target" />
@@ -80,98 +79,13 @@
 	<xsl:variable name="text_extra_meta_tags" />
 	<xsl:variable name="text_extra_html_head_content" />
 	
-	
-	
-	
-	
-	
-
 	<!-- 
 		LANGUAGE VARIABLES
-		Things that only helix84 understands ;-)
+		@todo bring this back somehow
 	-->
 	
-	<xsl:variable name="language_param">
-		<xsl:if test="//request/lang">
-			<xsl:text>lang=</xsl:text><xsl:value-of select="//request/lang" />
-		</xsl:if>
-	</xsl:variable>
-	
-	<xsl:variable name="default_language">
-		<xsl:value-of select="//config/languages/language[position()=1]/@code" />
-	</xsl:variable>
-	
-	<xsl:variable name="language">
-		<xsl:choose>
-			<xsl:when test="//request/lang and //request/lang != ''"> 
-				<!-- @todo: allow only languages defined in //config/languages/language[@code] -->
-				<xsl:value-of select="//request/lang" />
-			</xsl:when>
-			<xsl:when test="$default_language"> <!-- if it's defined, use it -->
-				<xsl:value-of select="$default_language" />
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text>eng</xsl:text>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:variable>
-
-	<!--
-		For languages other than English, will add "_code" suffix, where code is language code.
-		This can be used to define language-dependent CSS classes, e.g. for buttons.
-		If you wish to turn this off, just define <xsl:variable name="language_suffix" /> in your local includes.xsl
-		
-		XSLT example: <a href='example.html' class='myclass{$language_suffix}'></a>
-		CSS example:
-			.myclass {
-				background-image:url('english-label.png')
-			}
-			.myclass_ger {
-				background-image:url('german-label.png')
-			}
-	-->
-	
-	<xsl:variable name="language_suffix">
-		<xsl:choose>
-			<xsl:when test="$language != 'eng'">
-				<xsl:text>_</xsl:text><xsl:value-of select="$language" />
-			</xsl:when>
-			<xsl:otherwise>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:variable>
-
-	<xsl:variable name="locale">
-		<xsl:value-of select="//config/languages/language[@code=$language]/@locale" />
-	</xsl:variable>
-	
-	<xsl:variable name="rfc1766">
-		<xsl:choose>
-			<xsl:when test="$locale = '' or $locale = 'C'">
-				<xsl:text>en</xsl:text>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="substring-before($locale, '_')" />
-				<!--
-				Code to generate RFC 1766 subcode (e.g. en-US, pt-BR, ...), if it ever becomes necessary in Xerxes
-				
-				<xsl:variable name="rfc1766temp"><xsl:value-of select="substring-before($locale, '.')" /></xsl:variable>
-				<xsl:variable name="rfc1766sub"><xsl:value-of select="substring-after($rfc1766temp, '_')" /></xsl:variable>
-				<xsl:if test="$rfc1766sub">
-					<xsl:text>-</xsl:text>
-					<xsl:value-of select="$rfc1766sub" />
-				</xsl:if>
-				-->
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:variable>
-	
-	
-	
-	
-	
-	
-	
+	<xsl:variable name="language_param" />
+	<xsl:variable name="language_suffix" />
 
 	<!-- 	
 		TEMPLATE: SURROUND
@@ -183,9 +97,11 @@
 		<xsl:param name="surround_template"><xsl:value-of select="//config/template" /></xsl:param>
 		<xsl:param name="sidebar" />
 		
+		<!-- doctype: html 5 -->
+		
 		<xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
 	
-		<html lang="{$rfc1766}">
+		<html lang="en">
 	
 		<xsl:call-template name="surround_head" />
 
