@@ -2,7 +2,7 @@
 
 namespace Application\Model\KnowledgeBase;
 
-use Application\Model\Authentication\User,
+use Xerxes\Utility\User,
 	Xerxes\Utility\DataValue,
 	Xerxes\Utility\Parser,
 	Xerxes\Utiltity\Restrict;

@@ -2,7 +2,7 @@
 
 namespace Application\Controller;
 
-use Application\Model\Authentication\User,
+use Xerxes\Utility\User,
 	Application\Model\Saved\Engine;
 
 class FolderController extends SearchController

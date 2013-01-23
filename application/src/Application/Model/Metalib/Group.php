@@ -2,7 +2,7 @@
 
 namespace Application\Model\Metalib;
 
-use Application\Model\Authentication\User,
+use Xerxes\Utility\User,
 	Application\Model\KnowledgeBase\Database,
 	Application\Model\KnowledgeBase\KnowledgeBase,
 	Xerxes\Metalib,

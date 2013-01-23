@@ -522,7 +522,7 @@ class Query
 	/**
 	 * Get the User performing this search
 	 * 
-	 * @return Application\Model\Authentication\User
+	 * @return Xerxes\Utility\User
 	 */
 	
 	public function getUser()

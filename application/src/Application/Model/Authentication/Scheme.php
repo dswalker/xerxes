@@ -2,7 +2,7 @@
 
 namespace Application\Model\Authentication;
 
-use Application\Model\Authentication\User,
+use Xerxes\Utility\User,
 	Application\Model\DataMap\Users, 
 	Application\Model\DataMap\SavedRecords,
 	Xerxes\Mvc\Request,

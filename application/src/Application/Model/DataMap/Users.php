@@ -2,7 +2,7 @@
 
 namespace Application\Model\DataMap;
 
-use Application\Model\Authentication\User,
+use Xerxes\Utility\User,
 	Xerxes\Utility\DataMap;
 
 /**
