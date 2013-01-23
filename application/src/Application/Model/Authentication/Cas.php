@@ -3,7 +3,8 @@
 namespace Application\Model\Authentication;
 
 use Xerxes\Utility\Factory,
-	Xerxes\Utility\Parser;
+	Xerxes\Utility\Parser,
+	Xerxes\Utility\User;
 
 /**
  * CAS authentication
@@ -80,9 +81,13 @@ class Cas extends Scheme
 			
 		$url = $configCasValidate . "?ticket=" . $ticket . "&service=" . urlencode($this->validate_url);
 		
-		$http_client = Factory::getHttpClient();
-		$http_client->setUri($url);
-		$results = $http_client->send()->getBody();
+		$client = Factory::getHttpClient();
+		$req = $client->get($url);
+		$req->getCurlOptions()->set(CURLOPT_SSL_VERIFYHOST, false);
+		$req->getCurlOptions()->set(CURLOPT_SSL_VERIFYPEER, false);
+		$response = $req->send();
+
+		$results = (string) $response->getBody();
 			
 		
 		// validate is plain text
