@@ -2,11 +2,6 @@
 
 namespace Xerxes\Utility;
 
-use Zend\Mail\Transport\Smtp;
-use Zend\Mail\Transport\SmtpOptions;
-use Zend\Mail\Transport\Sendmail;
-use Zend\Mail\Message;
-
 /**
  * Email
  * 
@@ -19,72 +14,55 @@ use Zend\Mail\Message;
 
 class Email 
 {
-	private $from;
-	private $host;
+	private $registry;
 	private $transport;
+	private $mailer;
 	
 	public function __construct()
 	{
-		$registry = Registry::getInstance();
+		$this->registry = Registry::getInstance();
 		
-		$this->from = $registry->getConfig("EMAIL_FROM", true);
-		$this->host = $registry->getConfig("SMTP_SERVER", false);
+		$host = $this->registry->getConfig("SMTP_SERVER", false);
 		
-		if ( strstr($this->host, ':') )
+		if ( $host == '' ) // use local mail
 		{
-			$parts = explode(':', $this->host);
-			$this->port = array_pop($parts);
-			$this->host = implode(':', $parts);
+			$this->transport = \Swift_MailTransport::newInstance();
+		}
+		else // use smtp
+		{
+			$port = 25;
+			
+			if ( strstr($host, ':') )
+			{
+				$parts = explode(':', $this->host);
+				$port = array_pop($parts);
+				$host = implode(':', $parts);
+			}
+			
+			$this->transport = \Swift_SmtpTransport::newInstance($host, $port);
 		}
 		
-		if ( $this->host != '' )
-		{
-			$options = new SmtpOptions();
-			$options->setHost($this->host);
-			$options->setPort($this->port);
-		
-			$this->transport = new Smtp($options);
-		}
-		else
-		{
-			$this->transport = new Sendmail();
-		}
+		$this->mailer = \Swift_Mailer::newInstance($this->transport);
 	}
 	
 	public function send($email, $subject, $body)
 	{
-		require_once __DIR__ . '/../../../../../../xerxes/lib/PHPMailer/class.phpmailer.php';
+		$from = $this->registry->getConfig("EMAIL_FROM", true);
 		
-		$registry = Registry::getInstance();
+		$message = \Swift_Message::newInstance($subject)
+			->setFrom($from)
+			->setTo($email)
+			->setBody($body);
 		
-		$mail = new \PHPMailer();
-		$mail->IsSMTP();  // telling the class to use SMTP
-		$mail->Host = "coweumx01.calstate.edu:25"; // SMTP server		
+		$numSent = $this->mailer->send($message);
 		
-		$mail->From = $registry->getConfig("EMAIL_FROM", true);
-		$mail->FromName = $subject;
-		$mail->AddAddress($email);
-			
-		$mail->Subject = $subject;
-		$mail->Body = $body;
-		$mail->WordWrap = 50;
-
-		if ( ! $mail->Send() )
+		if ( $numSent == 1 )
 		{
-			throw new \Exception("Could not send message", 2);
-		}		
-		
-		
-		/*
-		$message = new Message();
-		
-		$message->setTo($email);
-		$message->setFrom($this->from);
-		$message->setSubject($subject);
-		$message->setBody($body);
-		
-		$this->transport->send($message);
-		
-		*/
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 }
