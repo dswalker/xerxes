@@ -64,6 +64,15 @@ class Response extends HttpFoundation\Response
 	}
 	
 	/**
+	 * Unset the view script
+	 */
+	
+	public function noView()
+	{
+		$this->_view = null;
+	}	
+	
+	/**
 	 * Processes the view script against the data.
 	 */
 	

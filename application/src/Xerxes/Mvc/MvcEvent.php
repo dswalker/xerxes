@@ -66,6 +66,12 @@ class MvcEvent
 		// outgoing response
 		
 		$this->response = new Response(); 
+		
+		// set default view
+		
+		$controller = $this->request->getParam('controller', 'index');
+		$action = $this->request->getParam('action', 'index');
+		$this->response->setView("$controller/$action.xsl");
 	}
 	
 	/**
