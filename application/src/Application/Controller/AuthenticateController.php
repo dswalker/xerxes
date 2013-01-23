@@ -43,11 +43,14 @@ class AuthenticateController extends ActionController
 		}
 	
 		### local authentication
-	
+		
 		// if this is not a 'postback', then the user has not submitted the form, they are arriving
 		// for first time so stop the flow and just show the login page with form
 	
-		if ( $post_back == null ) return 1;
+		if ( $post_back == null )
+		{
+			return $this->response;
+		}
 	
 		$bolAuth = $this->authentication->onCallBack();
 	
@@ -55,7 +58,9 @@ class AuthenticateController extends ActionController
 		{
 			// failed the login, so present a message to the user
 	
-			return array("error" => "authentication");
+			$this->response->setVariable("error", "authentication");
+			
+			return $this->response;
 		}
 		else
 		{
@@ -82,14 +87,9 @@ class AuthenticateController extends ActionController
 		// perform any anuthentication scheme-specific clean-up action
 	
 		$this->authentication->onLogout();
-		
-		$this->request->session()->destroy( array(
-        	'send_expire_cookie' => true,
-        	'clear_storage'      => true,
-    	));
+		$this->request->getSession()->invalidate();
 	
-	
-		$this->redirect()->toUrl($configLogoutUrl);
+		return $this->redirect($configLogoutUrl);
 	}
 	
 	public function validateAction()
@@ -100,7 +100,7 @@ class AuthenticateController extends ActionController
 		
 		if ( $result == Scheme::SUCCESS )
 		{
-			$this->doRedirect();
+			return $this->doRedirect();
 		}
 		
 	}
