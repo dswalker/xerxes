@@ -2,7 +2,8 @@
 
 namespace Application\Controller;
 
-use Application\Model\Solr\Engine;
+use Application\Model\Solr\Engine,
+	Xerxes\Mvc\Request;
 
 class SolrController extends SearchController
 {
@@ -36,11 +37,18 @@ class SolrController extends SearchController
 		
 		// send it
 		
-		$result->textLocationTo($phone, $provider, $item_no);
+		$success = $result->textLocationTo($phone, $provider, $item_no);
 		
 		// flash
 		
-		$this->request->setFlashMessage('notice', 'Message successfully sent');
+		if ( $success == true )
+		{
+			$this->request->setFlashMessage(Request::FLASH_MESSAGE_NOTICE, 'Message successfully sent');
+		}
+		else
+		{
+			$this->request->setFlashMessage(Request::FLASH_MESSAGE_ERROR, "Sorry, we couldn't send a message at this time");
+		}
 		
 		// send back to main record page
 		

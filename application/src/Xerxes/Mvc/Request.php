@@ -24,6 +24,9 @@ class Request extends HttpFoundation\Request
 	private $controller_name; // controller name
 	private $commandline = false; // did this request originate from the command line?
 	private $params = array(); // request params
+	
+	const FLASH_MESSAGE_NOTICE = 'notice';
+	const FLASH_MESSAGE_ERROR = 'error';
 
 	/**
 	 * @var Registry
