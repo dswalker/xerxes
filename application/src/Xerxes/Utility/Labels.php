@@ -2,6 +2,8 @@
 
 namespace Xerxes\Utility;
 
+use Xerxes\Mvc\Bootstrap;
+
 /**
  * Labels Access Object
  * 
@@ -21,13 +23,11 @@ class Labels
 	
 	/**
 	 * Create Labels access object
-	 * 
-	 * @param string $language		language identifier
 	 */
 	
-	public function __construct($path)
+	public function __construct()
 	{
-		$this->path = $path;
+		$this->path = Bootstrap::get('application_dir', true);
 		$this->init();
 	}
 	
@@ -40,7 +40,7 @@ class Labels
 		// distro file
 		
 		$this->xml = new \DOMDocument();
-		$this->xml->load("$this->path/eng.xsl");
+		$this->xml->load("$this->path/views/labels/eng.xsl");
 		
 		// local file
 		
