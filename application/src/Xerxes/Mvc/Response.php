@@ -76,7 +76,7 @@ class Response extends HttpFoundation\Response
 	 * Processes the view script against the data.
 	 */
 	
-	public function render($format)	
+	public function render($format = 'html')	
 	{
 		$this->_view_dir = Bootstrap::get('application_dir', true) . "/views/";
 		

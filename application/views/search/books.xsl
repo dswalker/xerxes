@@ -37,7 +37,7 @@
 		<xsl:if test="$is_mobile = 0">
 	
 			<link href="{$base_include}/css/books.css?version={$asset_version}" rel="stylesheet" type="text/css" />
-			<script src="{$base_include}/javascript/sms.js?version={$asset_version}" language="javascript" type="text/javascript"></script>
+			<script src="{$base_include}/javascript/sms.js?version={$asset_version}"  type="text/javascript"></script>
 			
 		</xsl:if>
 		
@@ -741,7 +741,7 @@
 		
 				<div class="results-availability">
 					<a target="{$link_target}" href="{../url_open_redirect}" class="record-action" data-role="button">
-						<img src="{$image_sfx}" alt="" border="0" class="mini-icon link-resolver-link "/>
+						<img src="{$image_sfx}" alt=""  class="mini-icon link-resolver-link "/>
 						<xsl:text> </xsl:text>
 						<xsl:copy-of select="$text_link_resolver_check" /> 
 					</a>

@@ -68,7 +68,7 @@ class FrontController
 			
 			if ( $response instanceof Response )
 			{
-				$response->render($event->request->getParam('format'));
+				$response->render($event->request->getParam('format', 'html'));
 			}
 			
 			// send it to browser

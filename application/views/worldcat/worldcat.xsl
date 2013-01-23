@@ -33,7 +33,7 @@
 			</xsl:when>
 			<xsl:otherwise>
 			
-				<img src="{$image_sfx}" alt="" border="0" class="mini-icon link-resolver-link "/>
+				<img src="{$image_sfx}" alt=""  class="mini-icon link-resolver-link "/>
 				<xsl:text> </xsl:text>
 				<xsl:copy-of select="$text_link_resolver_check" /> 
 

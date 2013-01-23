@@ -182,6 +182,8 @@
 	<xsl:template name="surround">
 		<xsl:param name="surround_template"><xsl:value-of select="//config/template" /></xsl:param>
 		<xsl:param name="sidebar" />
+		
+		<xsl:text disable-output-escaping='yes'>&lt;!DOCTYPE html&gt;</xsl:text>
 	
 		<html lang="{$rfc1766}">
 	
@@ -261,7 +263,7 @@
 	
 	<xsl:template name="surround_meta">
 			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-			<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+			<!-- <meta http-equiv="X-UA-Compatible" content="IE=Edge" /> -->
 			<xsl:copy-of select="$text_extra_meta_tags" />
 	</xsl:template>
 	
@@ -582,9 +584,9 @@
 			
 		<xsl:call-template name="jslabels" />
 	
-		<script src="{$base_include}/javascript/jquery/jquery-1.6.2.min.js" language="javascript" type="text/javascript"></script>
+		<script src="{$base_include}/javascript/jquery/jquery-1.6.2.min.js"  type="text/javascript"></script>
 		
-		<script src="{$base_include}/javascript/results.js?version={$asset_version}" language="javascript" type="text/javascript"></script>
+		<script src="{$base_include}/javascript/results.js?version={$asset_version}"  type="text/javascript"></script>
 
 	</xsl:template>
 		
@@ -595,7 +597,7 @@
 	
 	<xsl:template name="jslabels">
 	
-		<script language="javascript" type="text/javascript" src="asset/labels?version={$asset_version}"></script> 
+		<script  type="text/javascript" src="asset/labels?version={$asset_version}"></script> 
 	
 	</xsl:template>
 	
@@ -661,7 +663,7 @@
 	<xsl:param name="class" />
 	<xsl:param name="alt" />
 	<xsl:param name="test" />
-	<img id="{$id}" name="{$id}" alt="{$alt}" border="0" class="{$class}">
+	<img id="{$id}" alt="{$alt}"  class="{$class}">
 		<xsl:attribute name="src">
 			<xsl:value-of select="$base_url" />
 			<xsl:text>/</xsl:text>
@@ -747,21 +749,21 @@
 	<xsl:param name="alt" />
 	<xsl:param name="title" />
 	<xsl:param name="class" />
-	<img src="{$base_url}/images/pdf.gif" width="16" height="16" border="0" alt="{$alt}" title="{$title}" class="{$class}" />
+	<img src="{$base_url}/images/pdf.gif" width="16" height="16"  alt="{$alt}" title="{$title}" class="{$class}" />
 </xsl:template>
 
 <xsl:template name="img_format_html">
 	<xsl:param name="alt" />
 	<xsl:param name="title" />
 	<xsl:param name="class" />
-	<img src="{$base_url}/images/html.gif" width="16" height="16" border="0" alt="{$alt}" title="{$title}" class="{$class}" />
+	<img src="{$base_url}/images/html.gif" width="16" height="16"  alt="{$alt}" title="{$title}" class="{$class}" />
 </xsl:template>
 
 <xsl:template name="img_format_unknown">
 	<xsl:param name="alt" />
 	<xsl:param name="title" />
 	<xsl:param name="class" />
-	<img src="{$base_url}/images/html.gif" width="16" height="16" border="0" alt="{$alt}" title="{$title}" class="{$class}" />
+	<img src="{$base_url}/images/html.gif" width="16" height="16"  alt="{$alt}" title="{$title}" class="{$class}" />
 </xsl:template>
 
 <xsl:template name="img_databases_subject_hint_restricted">
@@ -789,7 +791,7 @@
 	<xsl:param name="alt" />
 	<xsl:param name="title" />
 	<xsl:param name="class" />
-	<img src="{$base_url}/images/ill.gif" border="0" alt="{$alt}" title="{$title}" class="{$class}" />
+	<img src="{$base_url}/images/ill.gif"  alt="{$alt}" title="{$title}" class="{$class}" />
 </xsl:template>
 
 <xsl:template name="img_phone">

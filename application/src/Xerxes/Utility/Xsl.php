@@ -152,11 +152,18 @@ class Xsl
 		
 		// html 4
 		
-		if ( $output_type == "html")
+		if ( $output_type == "html4")
 		{
 			$output->setAttribute("method", "html");
 			$output->setAttribute("doctype-public", "-//W3C//DTD HTML 4.01 Transitional//EN");
 			$output->setAttribute("doctype-system", "http://www.w3.org/TR/html4/loose.dtd");
+		}
+		
+		// html 5
+		
+		elseif ( $output_type == "html")
+		{
+			$output->setAttribute("method", "html");
 		}
 		
 		// always include distro includes

@@ -37,7 +37,7 @@
 	<xsl:choose>
 		<xsl:when test="//lti/instructor = '1'">
 
-			<script src="javascript/courses.js" language="javascript" type="text/javascript"></script>
+			<script src="javascript/courses.js"  type="text/javascript"></script>
 			
 			<style type="text/css">
 				
