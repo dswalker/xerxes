@@ -210,13 +210,27 @@ class Result
 	}
 	
 	/**
-	 * Send a text message of this record to carrier using email gateway 
+	 * Send a text message of this record to carrier using email gateway
 	 * 
-	 * @param unknown_type $item_number
+	 * @param string $phone
+	 * @param string $provider
+	 * @param int $item_number
+	 * @throws \Exception
 	 */
 	
-	public function textLocationTo($email, $item_number)
+	public function textLocationTo($phone, $provider, $item_number)
 	{
+		$phone = preg_replace('/\D/', "", $phone);
+			
+		// did we get 10?
+			
+		if ( strlen($phone) != 10 )
+		{
+			throw new \Exception("Please enter a 10 digit phone number, including area code");
+		}
+		
+		$email = $phone . '@' . $provider;		
+		
 		if ( $this->holdings->length() == 0 )
 		{
 			$this->fetchHoldings();
@@ -253,9 +267,7 @@ class Result
 		$body = $title . " / " . $item_message;
 		
 		$email_client = new Email();
-		$email_client->send($email, 'library', $body);
-		
-		return $this;
+		return $email_client->send($email, 'library', $body);
 	}
 	
 	/**
