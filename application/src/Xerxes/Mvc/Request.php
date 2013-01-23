@@ -46,11 +46,21 @@ class Request extends HttpFoundation\Request
 	
     public static function createFromGlobals(ControllerMap $controller_map)
     {
+    	$registry = Registry::getInstance();
+    	
+    	// reverse proxy
+    		
+    	if ( $registry->getConfig("REVERSE_PROXIES", false ) )
+    	{
+    		self::$trustProxy = true;
+    		self::$trustedProxies = explode(',',  $registry->getConfig("REVERSE_PROXIES"));
+    	}
+    	
 		$request = parent::createFromGlobals();
 
 		// register these mo-fo's
 		
-		$request->setRegistry(Registry::getInstance());
+		$request->setRegistry($registry);
 		$request->setSession(new Session());
 		$request->setControllerMap($controller_map);
 
@@ -120,7 +130,7 @@ class Request extends HttpFoundation\Request
 	
 	public function unsetSessionData($name)
 	{
-		$this->session->remove($name);
+		return $this->session->remove($name);
 	}	
 	
 	/**
@@ -131,7 +141,7 @@ class Request extends HttpFoundation\Request
 	
 	public function existsInSessionData($name)
 	{
-		$this->session->has($name);
+		return $this->session->has($name);
 	}	
 	
 	/**
@@ -143,7 +153,7 @@ class Request extends HttpFoundation\Request
 	
 	public function getSessionData($name)
 	{
-		$this->session->get($name);
+		return $this->session->get($name);
 	}
 	
 	/**
@@ -264,14 +274,6 @@ class Request extends HttpFoundation\Request
 					$this->setParam( $key, $val );
 				}
 			}
-		}
-			
-		// reverse proxy
-			
-		if ( $this->registry->getConfig("REVERSE_PROXIES", false ) )
-		{
-			self::$trustProxy = true;
-			self::$trustedProxies = explode(',',  $this->registry->getConfig("REVERSE_PROXIES"));
 		}
 	}
 	
@@ -658,7 +660,7 @@ class Request extends HttpFoundation\Request
 	{
 		if ( ! $this->user instanceof User )
 		{
-			$this->user = new User();
+			$this->user = new User($this);
 		}
 		
 		return $this->user;
