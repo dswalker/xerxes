@@ -2,7 +2,7 @@
 
 namespace Xerxes;
 
-use Zend\Http\Client;
+use Xerxes\Utility\HttpClient as Client;
 
 /**
  * Summon Client
@@ -19,7 +19,7 @@ use Zend\Http\Client;
 
 class Summon
 {
-	protected $http_client; // zend http client
+	protected $http_client; // http client
 	protected $host; // hostname
 	protected $api_key; // summon key
 	protected $app_id; // summon application id
@@ -258,10 +258,6 @@ class Summon
 		asort($query);
 		$queryString = implode('&', $query);
 		
-		// set the url
-
-		$this->http_client->setUri($this->host . "/$service?" . $queryString);		
-		
 		// main headers
 		
 		$headers = array(
@@ -275,26 +271,22 @@ class Summon
 		$data = implode($headers, "\n") . "\n/$service\n" . urldecode($queryString) . "\n";
 		$hmacHash = $this->hmacsha1($this->api_key, $data);
 		
-		$headers["Authorization"] = "Summon " . $this->app_id . ";" . $hmacHash;
-		
-		// set them all
-		
-		$this->http_client->setHeaders($headers);
-		
+		$headers['Authorization'] = "Summon " . $this->app_id . ";" . $hmacHash;
+			
 		// keep the same session id
 		
 		if ( $this->session_id )
 		{
-			$this->http_client->setHeaders('x-summon-session-id', $this->session_id);
+			$headers['x-summon-session-id'] = $this->session_id;
 		}
-		
+			
 		// send the request
 		
-		$response = $this->http_client->send();
-		
+		$response = $this->http_client->getUrl($this->host . "/$service?$queryString", null, $headers);
+			
 		// decode the response into array
 		
-		return json_decode($response->getBody(), true);
+		return json_decode($response, true);
 	}
 	
 	/**
