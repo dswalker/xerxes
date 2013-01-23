@@ -100,6 +100,6 @@ class SolrController extends SearchController
 		);
 		
 		$url = $this->request->url_for($params);
-		return $this->redirect()->toUrl($url);
+		return $this->redirectTo($url);
 	}
 }

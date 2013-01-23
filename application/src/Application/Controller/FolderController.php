@@ -37,7 +37,7 @@ class FolderController extends SearchController
 			'username' => $this->request->getSessionData('username')
 		);
 		
-		return $this->redirect($params);
+		return $this->redirectTo($params);
 	}
 	
 	public function resultsAction()
@@ -65,7 +65,7 @@ class FolderController extends SearchController
 			
 			// redirect them out
 			
-			$this->redirect($params);
+			$this->redirectTo($params);
 		}
 		
 		return parent::resultsAction();

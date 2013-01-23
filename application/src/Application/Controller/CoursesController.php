@@ -59,7 +59,7 @@ class CoursesController extends ActionController
 		// redirect from above
 
 		$url = $this->request->url_for($params);
-		$this->redirect()->toUrl($url);
+		$this->redirectTo($url);
 	}
 	
 	public function registerAction()
@@ -97,7 +97,7 @@ class CoursesController extends ActionController
 			'action' => 'display'
 		);
 		
-		$this->redirect()->toUrl($this->request->url_for($params));
+		$this->redirectTo($this->request->url_for($params));
 	}	
 	
 	public function reorderAction()
@@ -119,7 +119,7 @@ class CoursesController extends ActionController
 				'action' => 'display'
 			);
 			
-			$this->redirect()->toUrl($this->request->url_for($params));
+			$this->redirectTo($this->request->url_for($params));
 		}
 		else
 		{
@@ -145,7 +145,7 @@ class CoursesController extends ActionController
 			'action' => 'display'
 		);
 		
-		$this->redirect()->toUrl($this->request->url_for($params));
+		$this->redirectTo($this->request->url_for($params));
 	}
 	
 	public function displayAction()

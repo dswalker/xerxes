@@ -26,7 +26,7 @@ class MetalibController extends SearchController
 			'group' => $group_id	
 		));
 		
-		return $this->redirect()->toUrl($url);
+		return $this->redirectTo($url);
 	}
 	
 	public function statusAction()
@@ -45,7 +45,7 @@ class MetalibController extends SearchController
 				'group' => $group_id	
 			));
 		
-			return $this->redirect()->toUrl($url);
+			return $this->redirectTo($url);
 		}
 		else
 		{

@@ -30,7 +30,7 @@ class AuthenticateController extends ActionController
 		{
 			$url = $this->request->getServerUrl(true) . '/' . $this->request->getUri();
 			
-			return $this->redirect($url);
+			return $this->redirectTo($url);
 		}
 	
 		### remote authentication
@@ -89,7 +89,7 @@ class AuthenticateController extends ActionController
 		$this->authentication->onLogout();
 		$this->request->getSession()->invalidate();
 	
-		return $this->redirect($configLogoutUrl);
+		return $this->redirectTo($configLogoutUrl);
 	}
 	
 	public function validateAction()
@@ -107,7 +107,7 @@ class AuthenticateController extends ActionController
 	
 	public function doRedirect()
 	{
-		return $this->redirect($this->authentication->getRedirect());
+		return $this->redirectTo($this->authentication->getRedirect());
 	}
 }
 

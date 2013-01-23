@@ -180,7 +180,7 @@ abstract class ActionController
 	 * @param array|string $location	location to redirect to
 	 */
 	
-	protected function redirect($location)
+	protected function redirectTo($location)
 	{
 		$url = $location;
 		
@@ -236,7 +236,7 @@ abstract class ActionController
 					'return' => $this->request->getRequestUri()
 				);
 				
-				return $this->redirect($params);
+				return $this->redirectTo($params);
 			}
 		}
 	}

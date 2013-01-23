@@ -36,7 +36,7 @@ class LinkplusController extends SolrController
 		
 		$url = 'http://' . $this->server . "/search/z?9$library+$id&title=$title";
 		
-		return $this->redirect()->toUrl($url);
+		return $this->redirectTo($url);
 	}
 	
 	public function resultsAction()
@@ -55,6 +55,6 @@ class LinkplusController extends SolrController
 		
 		$url = 'http://' . $this->server . "/search/$index?SEARCH=" . urlencode($query);
 		
-		return $this->redirect()->toUrl($url);		
+		return $this->redirectTo($url);		
 	}
 }

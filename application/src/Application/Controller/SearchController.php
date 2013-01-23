@@ -85,7 +85,7 @@ abstract class SearchController extends ActionController
 		
 		// redirect
 		
-		return $this->redirect($params);
+		return $this->redirectTo($params);
 	}
 	
 	public function hitsAction()
@@ -283,7 +283,7 @@ abstract class SearchController extends ActionController
 			throw new \Exception("Could not create OpenURL");
 		}
 
-		return $this->redirect($record->url_open);
+		return $this->redirectTo($record->url_open);
 	}
 	
 	public function lookupAction()
