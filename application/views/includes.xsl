@@ -295,7 +295,7 @@
 			
 				<div id="yui-main">
 					<div class="yui-b">
-						<xsl:if test="string(//flash_message)">
+						<xsl:if test="request/flash_messages/*">
 							<xsl:call-template name="message_display"/>
 						</xsl:if>
 						
@@ -429,9 +429,15 @@
 	-->
 	
 	<xsl:template name="message_display">
-		<div id="message-display">
-			<xsl:copy-of select="//flash_message"/>
-		</div>
+		
+		<xsl:for-each select="request/flash_messages/*">
+		
+			<div class="message-display message-{@original_key}">
+				<xsl:value-of select="text()" />
+			</div>
+			
+		</xsl:for-each>
+
 	</xsl:template>
 	
 	

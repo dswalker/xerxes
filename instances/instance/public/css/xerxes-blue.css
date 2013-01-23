@@ -187,11 +187,10 @@ a:hover {
 	color: #fff;
 }
 
-#message-display {
+.message-display {
 	padding: .8em;
 	margin: 2em;
 	margin-top: .7em;
-	background-color: #dbffda;
 	display: table;
 	white-space: nowrap;
 	max-width: 500px;
@@ -207,6 +206,10 @@ a:hover {
 	border-right-color: #CCCCCC;
 	border-bottom-color: #999999;
 	border-left-color: #CCCCCC;
+}
+
+.message-notice {
+	background-color: #dbffda;
 }
 
 .error {
