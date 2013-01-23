@@ -2,12 +2,11 @@
 
 namespace Application\Model\Authentication;
 
-use Xerxes\Utility\User,
-	Application\Model\DataMap\Users, 
+use Application\Model\DataMap\Users, 
 	Application\Model\DataMap\SavedRecords,
 	Xerxes\Mvc\Request,
 	Xerxes\Utility\Registry,
-	Zend\Mvc\MvcEvent;
+	Xerxes\Utility\User;
 
 /**
  * An event-based authentication framework

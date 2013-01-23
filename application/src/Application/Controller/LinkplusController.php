@@ -2,16 +2,15 @@
 
 namespace Application\Controller;
 
-use Application\Model\Availability\Innopac\Config,
-	Zend\Mvc\MvcEvent;
+use Application\Model\Availability\Innopac\Config;
 
 class LinkplusController extends SolrController
 {
 	protected $server;
 	
-	protected function init(MvcEvent $e)
+	protected function init()
 	{
-		parent::init($e);
+		parent::init();
 		
 		$this->server = $this->config->getConfig('INNREACH_HOST', false, 'csul.iii.com');
 	}

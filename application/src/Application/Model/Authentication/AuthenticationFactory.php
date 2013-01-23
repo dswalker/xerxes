@@ -3,8 +3,7 @@
 namespace Application\Model\Authentication;
 
 use Xerxes\Utility\Registry,
-	Xerxes\Mvc\Request,
-	Zend\Mvc\MvcEvent;
+	Xerxes\Mvc\Request;
 
 /**
  * Authentication factory
