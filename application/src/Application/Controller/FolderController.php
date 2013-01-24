@@ -33,6 +33,19 @@ class FolderController extends SearchController
 	
 	public function resultsAction()
 	{
+		// ensure we've got the right user
+		
+		if ( $this->request->getParam('username') != $this->request->getSessionData('username') )
+		{
+			$params = array(
+				'controller' => 'folder',
+				'action' => 'results',
+				'username' => $this->request->getSessionData('username')
+			);
+				
+			return $this->redirectTo($params);
+		}		
+		
 		$total = $this->engine->getHits($this->query)->getTotal();
 		
 		// user is not logged in, and has no temporary saved records, so nothing to show here;
