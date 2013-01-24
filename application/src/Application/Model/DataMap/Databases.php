@@ -815,7 +815,6 @@ class Databases extends DataMap
 		$arrResults = array ( );
 		$arrParams = array ( );
 		$where = false;
-		$sql_server_clean = null;
 		
 		$strSQL = "SELECT * from xerxes_databases";
 
@@ -861,7 +860,6 @@ class Databases extends DataMap
 		elseif ( $query != null )
 		{
 			$where = true;
-			$sql_server_clean = array();
 			
 			$arrTables = array(); // we'll use this to keep track of temporary tables
 			
@@ -916,7 +914,6 @@ class Databases extends DataMap
 				}
 				
 				$arrParams[":term$x"] = $term;
-				array_push($sql_server_clean, ":term$x");
 				
 				$strSQL .= " (SELECT distinct database_id AS $alias FROM xerxes_databases_search WHERE term $operator :term$x) AS table$x ";
 				
@@ -987,7 +984,7 @@ class Databases extends DataMap
 		
 		// echo $strSQL; print_r($arrParams); // exit;
 		
-		$arrResults = $this->select( $strSQL, $arrParams, $sql_server_clean );
+		$arrResults = $this->select( $strSQL, $arrParams );
 		
 		// transform to internal data objects
 		

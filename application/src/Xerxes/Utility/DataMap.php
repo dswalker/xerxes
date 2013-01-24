@@ -23,17 +23,23 @@ global $xerxes_pdo;
 
 abstract class DataMap
 {
-	private $pdo; // pdo data object
-	
 	private $connection; // database connection info
 	private $username; // username to connect with
 	private $password; // password to connect with	
-	
 	private $sql = null;	// sql statement, here for debugging
-	private $arrValues = array(); // values passed to insert or update statement, here for debugging
+	
+	/**
+	 *
+	 * @var \PDO
+	 */
+	
+	private $pdo;	
 
-	protected $registry; // registry object, here for convenience
-	protected $rdbms; // the explicit rdbms name (should be 'mysql' or 'mssql' as of 1.5.1) 
+	/**
+	 * @var Registry
+	 */
+	
+	protected $registry;
 
 	/**
 	 * Create a Data Map
@@ -46,12 +52,6 @@ abstract class DataMap
 	public function __construct($connection = null, $username = null, $password = null)
 	{
 		$this->registry = Registry::getInstance();
-		
-		// pdo can't tell us which rdbms we're using exactly, especially for 
-		// ms sql server, since we'll be using odbc driver, so we make this
-		// explicit in the config
-		
-		$this->rdbms = $this->registry->getConfig("RDBMS", false, "mysql");
 		
 		// take conn and credentials from config, unless overriden in constructor
 		
@@ -159,11 +159,9 @@ abstract class DataMap
 	 * @return array				array of results as supplied by PDO
 	 */
 	
-	public function select($sql, $arrValues = null, $arrClean = null)
+	public function select($sql, $arrValues = null )
 	{
 		$this->init();
-		
-		$this->sqlServerFix($sql, $arrValues, $arrClean);
 		
 		$this->echoSQL($sql);
 		
@@ -197,11 +195,9 @@ abstract class DataMap
 	 * @return mixed				status of the request, as set by PDO
 	 */
 	
-	public function update($sql, $arrValues = null, $arrClean = null)
+	public function update($sql, $arrValues = null )
 	{
 		$this->init();
-		
-		$this->sqlServerFix($sql, $arrValues, $arrClean);
 		
 		$this->echoSQL($sql);
 		
@@ -231,11 +227,9 @@ abstract class DataMap
 	 * 								or 'false' for a failed insert. 
 	 */
 	
-	public function insert($sql, $arrValues = null, $boolReturnPk = false, $arrClean = null)
+	public function insert($sql, $arrValues = null, $boolReturnPk = false)
 	{
 		$this->init();
-		
-		$this->sqlServerFix($sql, $arrValues, $arrClean);
 		
 		$status = $this->update($sql, $arrValues);      
 		
@@ -301,7 +295,7 @@ abstract class DataMap
 	
 	protected function doSimpleInsert($table_name, $value_object, $boolReturnPk = false)
 	{
-		$arrProperties = array ( );
+		$arrProperties = array();
 		
 		foreach ( $value_object->properties() as $key => $value )
 		{
@@ -330,38 +324,5 @@ abstract class DataMap
 	private function echoSQL($sql)
 	{
 		// echo "<p>" . $sql . "</p>";
-	}
-	
-	/**
-	 * Nasty hacks for MS SQL Server
-	 * 
-	 * @param string $sql	SQL statement
-	 * @param array $params		bound parameters
-	 * @param array $clean		parameters to clean
-	 */
-	
-	private function sqlServerFix(&$sql, &$params, $clean = null)
-	{
-		// a bug in the sql server native client makes this necessary, barf!
-		
-		if ( $this->rdbms == "mssql")
-		{
-			// these values need cleaning, likely because they are in a sub-query
-			
-			if( is_array($clean) )
-			{
-				$dirtystuff = array("\"", "\\", "/", "*", "'", "=", "#", ";", "<", ">", "+");
-				
-				foreach ( $params as $key => $value )
-				{
-					if ( in_array($key, $clean) )
-					{
-						$value = str_replace($dirtystuff, "", $value); 
-						$sql = str_replace($key, "'$value'", $sql);
-						unset($params[$key]);
-					}
-				}
-			}
-		}
 	}
 }

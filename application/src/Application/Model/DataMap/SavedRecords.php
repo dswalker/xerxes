@@ -334,43 +334,12 @@ class SavedRecords extends DataMap
 			(SELECT $strColumns FROM $strTable $strCriteria $strSort $strLimit ) as xerxes_records
 			LEFT OUTER JOIN xerxes_tags on xerxes_records.id = xerxes_tags.record_id";
 
-		// ms sql server specific code
-		
-		$sql_server_clean = null;
-		
-		if ( $this->rdbms == "mssql")
-		{
-			// mimicking the MySQL LIMIT clause
-			
-			$strMSPage = "";
-			
-			if ( $iCount != null)
-			{
-				$strMSLimit = $iStart + $iCount;
-				$strMSPage = "WHERE row > $iStart and row <= $strMSLimit";
-			}
-			
-			$strSQL = "SELECT * FROM
-				( SELECT * FROM ( SELECT $strColumns , ROW_NUMBER() OVER ( $strSort ) as row FROM $strTable $strCriteria ) 
-					as tmp $strMSPage ) as xerxes_records 
-				LEFT OUTER JOIN xerxes_tags on xerxes_records.id = xerxes_tags.record_id";
-				
-			$sql_server_clean = array(":username",":tag",":format");
-			                        
-			for ( $x = 0 ; $x < count( $arrID ) ; $x ++ )
-			{
-					$num = sprintf("%04d", $x); // pad it to keep id's unique for mssql
-			        array_push($sql_server_clean, ":id$num");
-			}
-		}
-
-		
 		#### return the objects
 		
 		$arrResults = array ( ); // results as array
 		$arrRecords = array ( ); // records as array
 		
-		$arrResults = $this->select( $strSQL, $arrParams, $sql_server_clean );
+		$arrResults = $this->select( $strSQL, $arrParams );
 		
 		if ( $arrResults != null )
 		{
@@ -397,14 +366,10 @@ class SavedRecords extends DataMap
 						{
 							$objRecord->xerxes_record = unserialize($arrResult["marc"]);
 						}
-						else // old style @todo: remove this and maybe make a conversion script or something?
+						else 
 						{
-							$xerxes_record = new \Application\Model\Metalib\Record();
-							$xerxes_record->loadXML( $arrResult["marc"] );
-							$objRecord->xerxes_record = $xerxes_record;
+							throw new \Exception('Old Metalib record, fix it!'); //  @todo: make a conversion script
 						}						
-						
-						
 					}
 				}
 				
