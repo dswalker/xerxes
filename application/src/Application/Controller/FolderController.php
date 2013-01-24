@@ -9,15 +9,6 @@ class FolderController extends SearchController
 {
 	protected $id = "folder";
 	
-	public function init()
-	{
-		// make the username the query
-		
-		$this->request->replaceParam("query", $this->request->getSessionData('username'));
-		
-		parent::init();
-	}
-	
 	protected function getEngine()
 	{
 		return new Engine();

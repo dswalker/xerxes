@@ -35,7 +35,7 @@ class QueryTerm
 	 * @param string $phrase			value
 	 */
 	
-	public function __construct($id, $boolean, $field, $field_internal, $relation, $phrase)
+	public function __construct($id = null, $boolean = null, $field = null, $field_internal = null, $relation = null, $phrase = null)
 	{
 		$this->id = $id;
 		$this->boolean = $boolean;
