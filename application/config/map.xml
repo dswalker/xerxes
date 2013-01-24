@@ -14,6 +14,9 @@
 		<action name="results" restricted="true" />
 		<action name="record" restricted="true" />
 	</controller>
+	<controller name="folder">
+		<path index="2" param="username" />
+	</controller>	
 	<controller name="worldcat">
 		<action name="results" restricted="true" />
 		<action name="record" restricted="true" />
