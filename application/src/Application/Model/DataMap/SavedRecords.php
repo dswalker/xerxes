@@ -317,7 +317,7 @@ class SavedRecords extends DataMap
 				$strSort = " ORDER BY year";
 				break;
 			case "author" :
-				$strSort = " ORDER BY author";
+				$strSort = " ORDER BY IF(ISNULL(author),1,0),author"; // nulls last
 				break;
 			case "title" :
 				$strSort = " ORDER BY title";
