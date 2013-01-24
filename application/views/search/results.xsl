@@ -304,7 +304,7 @@
 	<xsl:template name="mobile_search_box">
 		<xsl:param name="query" />
 		
-		<xsl:if test="//request/action != 'results'">
+		<xsl:if test="not(//request/action)">
 		
 			<div class="searchbox-mobile">
 				<input type="text" name="query" value="{$query}" />
