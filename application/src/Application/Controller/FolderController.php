@@ -51,9 +51,7 @@ class FolderController extends SearchController
 		{
 			// link back here, but minus any username
 			
-			$folder_link = $this->request->url_for(
-				array('controller' => 'folder')	
-				);
+			$folder_link = $this->request->url_for(	array('controller' => 'folder'), true );
 			
 			// auth link, with return back to here
 			
@@ -65,7 +63,7 @@ class FolderController extends SearchController
 			
 			// redirect them out
 			
-			$this->redirectTo($params);
+			return $this->redirectTo($params);
 		}
 		
 		return parent::resultsAction();
