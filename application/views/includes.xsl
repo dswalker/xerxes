@@ -179,7 +179,7 @@
 	
 	<xsl:template name="surround_meta">
 			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-			<!-- <meta http-equiv="X-UA-Compatible" content="IE=Edge" /> -->
+			<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
 			<xsl:copy-of select="$text_extra_meta_tags" />
 	</xsl:template>
 	
