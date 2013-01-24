@@ -11,8 +11,10 @@
 		
 		<config name="max_records_per_page">1000</config>
 		
+		<config name="sort_order">recent</config>
+		
 		<config name="sort_options" xml="true" pass="true">
-			<option id="relevance" public="date added" internal="" />
+			<option id="recent" public="date added" internal="" />
 			<option id="title" public="title" internal="title" />
 			<option id="author" public="author" internal="author" />
 			<option id="date" public="newest" internal="date:desc" type="year"/>
