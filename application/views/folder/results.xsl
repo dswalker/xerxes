@@ -21,11 +21,14 @@
 	<xsl:output method="html" />
 	
 	<xsl:template match="/*">
-		<xsl:call-template name="surround" />
+		<xsl:call-template name="surround">
+			<xsl:with-param name="surround_template">none</xsl:with-param>
+			<xsl:with-param name="sidebar">none</xsl:with-param>
+		</xsl:call-template>
 	</xsl:template>
 	
 	<xsl:template name="breadcrumb">
-		<!-- TODO: FIX THIS ?   <xsl:call-template name="breadcrumb_worldcat" /> -->
+		<xsl:call-template name="breadcrumb_search" />
 		<xsl:call-template name="page_name" />
 	</xsl:template>
 	
@@ -33,21 +36,15 @@
 		Saved Records
 	</xsl:template>
 	
-	<xsl:template name="title">
-		<xsl:value-of select="//request/query" />
-	</xsl:template>
-	
 	<xsl:template name="main">
+		<xsl:call-template name="search_page" />
+	</xsl:template>	
+	
+	<xsl:template name="searchbox" />
+	
+	<xsl:template name="brief_results">
 		
-		<h1>My Saved Records</h1>
-		
-		<xsl:call-template name="facets_applied" />
-		
-		<div class="saved-records-sort">
-			<xsl:call-template name="sort_bar" />
-		</div>
-		
-		<table id="folder_output_results">
+		<table id="folder-output-results">
 			<thead>
 				<tr>
 					<td><input type="checkbox" value="true" id="saved-select-all" /></td>
@@ -81,10 +78,6 @@
 			</xsl:for-each>
 			
 		</table>
-
-		<xsl:call-template name="paging_navigation" />
-		
-		<xsl:call-template name="hidden_tag_layers" />
 		
 	</xsl:template>
 		

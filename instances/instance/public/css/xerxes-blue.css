@@ -807,12 +807,12 @@ div.autocomplete ul li {
 
 /* MY SAVED RECORDS */
 
-table#folder_output_results td {
+table#folder-output-results td {
 	padding: .7em;
 	border-bottom: 1px solid #ccc;
 }
 
-table#folder_output_results thead {
+table#folder-output-results thead {
 	background-color: #efefef;
 	font-weight: bold;
 }
