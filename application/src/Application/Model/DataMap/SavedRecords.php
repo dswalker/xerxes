@@ -310,7 +310,11 @@ class SavedRecords extends DataMap
 		switch ( $strOrder )
 		{
 			case "date" :
+			case "date:desc" :
 				$strSort = " ORDER BY year DESC";
+				break;
+			case "date:asc" :
+				$strSort = " ORDER BY year";
 				break;
 			case "author" :
 				$strSort = " ORDER BY author";
