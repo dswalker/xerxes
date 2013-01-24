@@ -718,7 +718,7 @@ class Request extends HttpFoundation\Request
 	/**
 	 * Get the User making this Request
 	 * 
-	 * @throws \Exception
+	 * @return User
 	 */
 	
 	public function getUser()
