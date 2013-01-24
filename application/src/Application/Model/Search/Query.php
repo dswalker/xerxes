@@ -238,7 +238,7 @@ class Query
 	/**
 	 * Check the spelling of the search terms
 	 * 
-	 * @return Suggestion
+	 * @return null|Suggestion
 	 */
 	
 	public function checkSpelling()

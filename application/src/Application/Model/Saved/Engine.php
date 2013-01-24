@@ -3,7 +3,8 @@
 namespace Application\Model\Saved;
 
 use Application\Model\Search,
-	Application\Model\DataMap\SavedRecords;
+	Application\Model\DataMap\SavedRecords,
+	Xerxes\Mvc\Request;
 
 /**
  * Saved Records
@@ -11,7 +12,7 @@ use Application\Model\Search,
  * @author David Walker
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license
  * @version
  * @package Xerxes
  */
@@ -107,7 +108,7 @@ class Engine extends Search\Engine
 		return Config::getInstance();
 	}
 	
-	protected function doSearch(Search\Query $search, $start = 1, $max = 10, $sort = "")
+	protected function doSearch(Query $search, $start = 1, $max = 10, $sort = "")
 	{
 		$username = $search->getQueryTerm(0)->phrase;
 		
@@ -202,6 +203,11 @@ class Engine extends Search\Engine
 		return $results;
 	}
 	
+	/**
+	 * Create a Result from the suppled Xerxes Record
+	 * @param Record $record
+	 */
+	
 	protected function createSearchResult(Record $record)
 	{
 		// set the internal id as the record id, not the original
@@ -217,4 +223,22 @@ class Engine extends Search\Engine
 		
 		return $result;		
 	}
+	
+	/**
+	 * Return the Saved Records query object
+	 *
+	 * @return Query
+	 */
+	
+	public function getQuery(Request $request )
+	{
+		if ( $this->query instanceof Query )
+		{
+			return $this->query;
+		}
+		else
+		{
+			return new Query($request, $this->getConfig());
+		}
+	}	
 }
