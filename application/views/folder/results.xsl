@@ -33,14 +33,47 @@
 	</xsl:template>
 	
 	<xsl:template name="page_name">
-		Saved Records
+		<xsl:call-template name="folder_header_label" />
 	</xsl:template>
 	
 	<xsl:template name="main">
 		<xsl:call-template name="search_page" />
 	</xsl:template>	
 	
-	<xsl:template name="searchbox" />
+	<!-- no search modules, please -->
+	
+	<xsl:template name="search_modules" />
+		
+	<!-- 
+		TEMPLATE: SEARCH TOP
+		hijack this and show header here instead of search box
+	-->	
+	
+	<xsl:template name="searchbox">
+	
+		<h1><xsl:call-template name="folder_header_label" /></h1>
+		
+		<xsl:if test="request/session/role = 'local'">
+			<p class="temporary_login_note"><xsl:copy-of select="$text_folder_login_temp" /></p>
+		</xsl:if>	
+	
+	</xsl:template>
+	
+	<!-- 
+		TEMPLATE: FOLDER HEADER LABEL
+		whether this is 'temporary' or 'my' saved records
+	-->
+	
+	<xsl:template name="folder_header_label">
+		<xsl:choose>
+			<xsl:when test="$temporarySession = 'true'">
+				<xsl:copy-of select="$text_folder_header_temporary" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:copy-of select="$text_header_savedrecords" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>	
 	
 	<xsl:template name="brief_results">
 		
@@ -58,20 +91,20 @@
 			<xsl:for-each select="//results/records/record/xerxes_record">
 				<tr>
 					<td><input type="checkbox" name="record" value="{id}" id="record-{id}" /></td>
-					<td>
+					<td class="title-cell">
 						<label for="record-{id}">
 							<a href="{../url_full}">
 								<xsl:value-of select="title_normalized" />
 							</a>
 						</label>
 					</td>
-					<td><xsl:value-of select="primary_author" /></td> 
-					<td>
+					<td class="author-cell"><xsl:value-of select="primary_author" /></td> 
+					<td class="format-cell">
 						<xsl:call-template name="text_results_format">
 							<xsl:with-param name="format" select="format/public" />
 						</xsl:call-template>
 					</td>
-					<td>
+					<td class="year-cell">
 						<xsl:value-of select="year" />
 					</td>
 				</tr>

@@ -807,6 +807,14 @@ div.autocomplete ul li {
 
 /* MY SAVED RECORDS */
 
+table#folder-output-results {
+	width: 100%;
+}
+
+table#folder-output-results td.year-cell, table#folder-output-results td.format-cell {
+	white-space: nowrap;
+}
+
 table#folder-output-results td {
 	padding: .7em;
 	border-bottom: 1px solid #ccc;
@@ -817,11 +825,8 @@ table#folder-output-results thead {
 	font-weight: bold;
 }
 
-
-.saved-records-sort #sort {
-	padding: 1em;
-	padding-left: 1em;
-	margin-left: 0;
+.controller-folder #sort {
+	border-top: none;
 	background-color: transparent;
 }
 
