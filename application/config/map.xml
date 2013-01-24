@@ -7,7 +7,7 @@
 	
 	<controller name="databases">
 		<action name="subject">
-			<path index="2" param="subject" />
+			<path index="3" param="subject" />
 		</action>	
 	</controller>
 	<controller name="ebsco">
@@ -15,7 +15,7 @@
 		<action name="record" restricted="true" />
 	</controller>
 	<controller name="folder">
-		<path index="2" param="username" />
+		<path index="3" param="username" />
 	</controller>	
 	<controller name="worldcat">
 		<action name="results" restricted="true" />
