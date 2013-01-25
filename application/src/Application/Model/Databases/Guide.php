@@ -3,7 +3,7 @@
 namespace Application\Model\Databases;
 
 /**
- * Database
+ * Research Guide
  *
  * @author David Walker
  * @copyright 2013 California State University
@@ -13,13 +13,6 @@ namespace Application\Model\Databases;
  * @package Xerxes
  */
 
-class Database extends Resource  
+class Guide extends Resource  
 {
-	public $subscription;
-	public $proxy;
-	public $creator;
-	public $publisher;
-	public $coverage;
-	public $link_guide;
-	public $search_hints;
 }

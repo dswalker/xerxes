@@ -26,16 +26,17 @@ class Category extends DataValue
 	public $sidebars = array();
 	
 	/**
-	 * Get the name of the category, normalized (lowercase, just alpha and dashes)
-	 *
+	 * Normalize the category name (lowercase, just alpha and dashes)
+	 * 
+	 * @param string $name
 	 * @return string
 	 */
 	
-	public function getId()
+	public function getId($name)
 	{
 		// this is influenced by the setlocale() call with category LC_CTYPE
 		
-		$normalized = iconv( 'UTF-8', 'ASCII//TRANSLIT', $this->name ); 
+		$normalized = iconv( 'UTF-8', 'ASCII//TRANSLIT', $name ); 
 		$normalized = Parser::strtolower( $normalized );
 		
 		$normalized = str_replace( "&amp;", "", $normalized );
