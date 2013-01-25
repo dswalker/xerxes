@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Model\KnowledgeBase;
+namespace Application\Model\Databases;
 
 use Xerxes\Utility\User,
 	Xerxes\Utility\DataValue,

@@ -1,12 +1,11 @@
 <?php
 
-namespace Application\Model\KnowledgeBase;
+namespace Application\Model\Databases;
 
-use Xerxes\Utility\Parser,
-	Xerxes\Utility\Registry;
+use Xerxes\Utility\Registry;
 
 /**
- * Knowledgebase Config
+ * Databases Config
  *
  * @author David Walker
  * @copyright 2013 California State University

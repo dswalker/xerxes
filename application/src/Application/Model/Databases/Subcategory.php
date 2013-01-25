@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Model\KnowledgeBase;
+namespace Application\Model\Databases;
 
 use Xerxes\Utility\DataValue,
 	Xerxes\Utility\Parser;

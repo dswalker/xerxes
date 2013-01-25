@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Model\KnowledgeBase;
+namespace Application\Model\Databases;
 
 use Xerxes\Utility\DataValue,
 	Xerxes\Utility\Parser;
@@ -21,10 +21,9 @@ class Category extends DataValue
 	public $category_id;
 	public $name;
 	public $normalized;
-	public $old;
-	public $lang;
+	public $librarian;
 	public $subcategories = array();
-	public $sidebar = array();
+	public $sidebars = array();
 	
 	/**
 	 * Get the name of the category, normalized (lowercase, just alpha and dashes)

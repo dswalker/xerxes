@@ -2,10 +2,10 @@
 
 namespace Application\Model\DataMap;
 
-use Application\Model\KnowledgeBase\Category,
-	Application\Model\KnowledgeBase\Database,
-	Application\Model\KnowledgeBase\Subcategory,
-	Application\Model\KnowledgeBase\Type,
+use Application\Model\Databases\Category,
+	Application\Model\Databases\Database,
+	Application\Model\Databases\Subcategory,
+	Application\Model\Databases\Type,
 	Xerxes\Utility\DataMap,
 	Xerxes\Utility\Parser;
 
