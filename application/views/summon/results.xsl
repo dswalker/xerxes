@@ -80,9 +80,31 @@
 					 -->
 				</li>
 				
-			</xsl:for-each>
+			</xsl:for-each>	
 			
 			</ul>
+			
+			<xsl:for-each select="results/best_bets/best_bet">
+				
+				<div class="results-bestbet">
+				
+					<h2><xsl:value-of select="title" /></h2>
+					
+					<div class="description">
+					
+						<xsl:if test="description">
+							<xsl:value-of disable-output-escaping="yes" select="description" />
+						</xsl:if>
+						
+						<xsl:if test="link">
+							[ <a href="{link}">More info</a> ]
+						</xsl:if>
+						
+					</div>
+				
+				</div>
+				
+			</xsl:for-each>				
 			
 		</div>
 		

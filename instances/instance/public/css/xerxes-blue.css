@@ -372,7 +372,6 @@ a:hover {
 .results-database-recommendations {
 	font-size: 100%;
 	margin-top: 2em;
-	margin-bottom: 2.5em;
 	color: #444;
 }
 
@@ -385,12 +384,25 @@ a:hover {
 
 .results-database-recommendations ul {
 	margin-left: 1em;
+	margin-bottom: 2.5em;
 }
 
 .results-database-recommendations li {
 	margin-left: 1em;
 	margin-bottom: 1em;
 	list-style: disc;
+}
+
+.results-bestbet {
+	margin-bottom: 2.5em;
+}
+
+.results-bestbet .description {
+	margin-left: 1em;
+}
+
+.results-bestbet .description p {
+	line-height: 100%;
 }
 
 .result {
