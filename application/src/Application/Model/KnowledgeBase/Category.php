@@ -9,16 +9,16 @@ use Xerxes\Utility\DataValue,
  * Category
  *
  * @author David Walker
- * @copyright 2011 California State University
+ * @copyright 2013 California State University
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license
  * @version
  * @package Xerxes
  */
 
 class Category extends DataValue
 {
-	public $id;
+	public $category_id;
 	public $name;
 	public $normalized;
 	public $old;
@@ -27,17 +27,16 @@ class Category extends DataValue
 	public $sidebar = array();
 	
 	/**
-	 * Converts a sting to a normalized (no-spaces, non-letters) string
+	 * Get the name of the category, normalized (lowercase, just alpha and dashes)
 	 *
-	 * @param string $subject	original string
-	 * @return string			normalized string
+	 * @return string
 	 */
 	
-	public static function normalize($subject)
+	public function getId()
 	{
-		// this is influenced by the setlocale() call with category LC_CTYPE; see PopulateDatabases.php
+		// this is influenced by the setlocale() call with category LC_CTYPE
 		
-		$normalized = iconv( 'UTF-8', 'ASCII//TRANSLIT', $subject ); 
+		$normalized = iconv( 'UTF-8', 'ASCII//TRANSLIT', $this->name ); 
 		$normalized = Parser::strtolower( $normalized );
 		
 		$normalized = str_replace( "&amp;", "", $normalized );
@@ -53,20 +52,5 @@ class Category extends DataValue
 		}
 		
 		return $normalized;
-	}
-
-	public function toXML()
-	{
-		$xml = Parser::convertToDOMDocument("<category />");
-		$xml->documentElement->setAttribute("name", $this->name);
-		$xml->documentElement->setAttribute("normalized", $this->normalized);
-		
-		foreach ( $this->subcategories as $subcategory )
-		{
-			$import = $xml->importNode($subcategory->toXML()->documentElement, true);
-			$xml->documentElement->appendChild($import);
-		}
-		
-		return $xml;
 	}
 }
