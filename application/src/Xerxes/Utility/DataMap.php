@@ -18,7 +18,7 @@ global $xerxes_pdo;
  * @version
  * @package  Xerxes_Framework
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license 
  */
 
 abstract class DataMap
@@ -290,7 +290,7 @@ abstract class DataMap
 	 * @param string $table_name		table name
 	 * @param mixed $value_object		object derived from DataValue
 	 * @param boolean $boolReturnPk  	default false, return the inserted pk value?
-	 * @return false if failure. on success, true or inserted pk based on $boolReturnPk
+	 * @return bool 					false if failure. on success, true or inserted pk based on $boolReturnPk
 	 */
 	
 	protected function doSimpleInsert($table_name, $value_object, $boolReturnPk = false)

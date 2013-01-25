@@ -14,7 +14,7 @@ require_once __DIR__ . '/../OAuth/OAuth.php'; // @todo: make this not hardwired
  * @version
  * @package Xerxes
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license 
  */
 
 class Basic 

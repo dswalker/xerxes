@@ -7,7 +7,7 @@
  version: $Id$
  package: Xerxes
  link: http://xerxes.calstate.edu
- license: http://www.gnu.org/licenses/
+ license: 
  
  -->
 

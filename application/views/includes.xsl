@@ -19,7 +19,7 @@
  version: $Id: includes.xsl 1623 2011-01-21 23:23:59Z dwalker@calstate.edu $
  package: Xerxes
  link: http://xerxes.calstate.edu
- license: http://www.gnu.org/licenses/
+ license: 
  
  -->
 

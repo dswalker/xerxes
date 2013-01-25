@@ -5,7 +5,6 @@ namespace Application\Model\DataMap;
 use Application\Model\Databases\Category,
 	Application\Model\Databases\Database,
 	Application\Model\Databases\Subcategory,
-	Application\Model\Databases\Type,
 	Xerxes\Utility\DataMap,
 	Xerxes\Utility\Parser;
 
@@ -15,22 +14,18 @@ use Application\Model\Databases\Category,
  * @author David Walker
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license 
  * @version
  * @package Xerxes
  */
 
 class Databases extends DataMap
 {
-	protected $primary_language = "eng"; // primary language
-	protected $searchable_fields; // fields that can be searched on for databases
-	
-	const METALIB_MODE = 'metalib';
-	const USER_CREATE_MODE = 'user_created';
+	protected $searchable_fields = array();
 	
 	/**
-	 * Constructor
-	 * 
+	 * Create Databases object
+	 *
 	 * @param string $connection	[optional] database connection info
 	 * @param string $username		[optional] username to connect with
 	 * @param string $password		[optional] password to connect with
@@ -40,95 +35,24 @@ class Databases extends DataMap
 	{
 		parent::__construct($connection, $username, $password);
 		
-		$languages = $this->registry->getConfig("languages");
-		
-		if ( $languages != "")
-		{
-			$this->primary_language = (string) $languages->language["code"];
-		}
-		
-		// searchable fields
-		
-		$this->searchable_fields = explode(",", $this->registry->getConfig("DATABASE_SEARCHABLE_FIELDS", false, 
-			"title_display,title_full,description,keyword,alt_title"));
-	}
-
-	/**
-	 * Deletes data from the knowledgebase tables; should only be done
-	 * while using transactions
-	 */
-	
-	public function clearKB()
-	{
-		// delete main kb tables, others will cascade
-
-		$this->delete( "DELETE FROM xerxes_databases" );
-		$this->delete( "DELETE FROM xerxes_subcategories" );
-		$this->delete( "DELETE FROM xerxes_categories" );
-		$this->delete( "DELETE FROM xerxes_types" );
+		$fields = $this->registry->getConfig("DATABASE_SEARCHABLE_FIELDS", false, "title_display,title_full,description,keyword,alternate_titles");
+		$this->searchable_fields = explode(",", $fields);
 	}
 	
 	/**
-	 * Remove orphaned my saved database associations
-	 */
-	
-	public function synchUserDatabases()
-	{
-		// user saved databases sit loose to the databases table, so we use this
-		// to manually enforce an 'ON CASCADE DELETE' to ensure we don't abandon
-		// databases in the my saved databases tables
-		
-		$this->delete( "DELETE FROM xerxes_user_subcategory_databases WHERE " .
-			" database_id NOT IN ( SELECT metalib_id FROM xerxes_databases )");
-	}
-	
-	/**
-	 * Add a database to the local knowledgebase
+	 * Add a resource
 	 *
-	 * @param Database $objDatabase
+	 * @param Resource $resource
 	 */
 	
-	public function addDatabase(Database $objDatabase)
+	public function addDatabase(Resource $resource)
 	{
-		// load our data into xml object
+		// @todo add the main database entries
 		
-		$xml = simplexml_load_string($objDatabase->data);
 		
-		// these fields have boolen values in metalib
 		
-		$boolean_fields = array("proxy","searchable","guest_access",
-			"subscription","sfx_suppress","new_resource_expiry");
-
-		// normalize boolean values
 		
-		foreach ( $xml->children() as $child )
-		{
-			$name = (string) $child->getName();
-			$value = (string) $child;
-			
-			if ( in_array( $name, $boolean_fields) )
-			{
-				$xml->$name = $this->convertMetalibBool($value);
-			}
-		}
 		
-		// remove empty nodes
-		
-		$dom = Parser::convertToDOMDocument($xml->asXML());
-		
-		$xmlPath = new \DOMXPath($dom);
-		$xmlNullNodes = $xmlPath->query('//*[not(node())]');
-		
-		foreach($xmlNullNodes as $node)
-		{
-			$node->parentNode->removeChild($node);
-		}
-		
-		$objDatabase->data = $dom->saveXML();
-		
-		// add the main database entries
-		
-		$this->doSimpleInsert( "xerxes_databases", $objDatabase );
 		
 		// now also extract searchable fields so we can populate the search table
 		
@@ -165,13 +89,13 @@ class Databases extends DataMap
 				
 				// insert em
 				
-				$strSQL = "INSERT INTO xerxes_databases_search ( database_id, field, term ) " . 
-					"VALUES ( :metalib_id, :field, :term )";
+				$sql = "INSERT INTO xerxes_databases_search ( resource_id, field, term ) " . 
+					"VALUES ( :resource_id, :field, :term )";
 				
 				foreach ( $searchable_terms as $unique_term )
 				{
-					$this->insert( $strSQL, array (
-						":metalib_id" => $objDatabase->metalib_id, 
+					$this->insert( $sql, array (
+						":resource_id" => $objDatabase->resource_id, 
 						":field" => $search_field, 
 						":term" => $unique_term ) 
 					);
@@ -181,584 +105,209 @@ class Databases extends DataMap
 	}
 	
 	/**
-	 * Add a type to the local knowledgebase
-	 *
-	 * @param Type $objType
-	 * @return int status
-	 */
-	
-	public function addType(Type $objType)
-	{
-		return $this->doSimpleInsert( "xerxes_types", $objType );
-	}
-	
-	/**
-	 * Add a category to the local knowledgebase; should also include
-	 * Subcategory subcategories ( as array in subcategory property) 
-	 * and databases Database as array in subcategory property.
-	 *
-	 * @param Category $objCategory
-	 */
-	
-	public function addCategory(Category $objCategory)
-	{
-		$this->doSimpleInsert( "xerxes_categories", $objCategory );
-		
-		$s = 1;
-		
-		foreach ( $objCategory->subcategories as $objSubcategory )
-		{
-			$objSubcategory->category_id = $objCategory->id;
-			$objSubcategory->sequence = $s;
-			
-			$this->doSimpleInsert( "xerxes_subcategories", $objSubcategory );
-			
-			$d = 1;
-			
-			foreach ( $objSubcategory->databases as $objDatabase )
-			{
-				$strSQL = "INSERT INTO xerxes_subcategory_databases " .
-					"( database_id, subcategory_id, sequence ) " . 
-					"VALUES ( :database_id, :subcategory_id, :sequence )";
-				
-				$arrValues = array (
-					":database_id" => $objDatabase->metalib_id, 
-					":subcategory_id" => $objSubcategory->metalib_id, 
-					":sequence" => $d 
-				);
-				
-				$this->insert( $strSQL, $arrValues );
-				$d++;
-			}
-			
-			$s++;
-		}
-	}
-	
-	/**
-	 * Add a user-created category; Does not add subcategories or databases,
-	 * just the category. Category should not have an 'id' property, will be
-	 * supplied by auto-incremented db column.
-	 *
-	 * @param Category $objCategory
-	 */
-	
-	public function addUserCreatedCategory(Category $objCategory)
-	{
-		// We don't use metalib-id or old for user-created categories
-		unset( $objCategory->metalib_id );
-		unset( $objCategory->old );
-		
-		$new_pk = $this->doSimpleInsert( "xerxes_user_categories", $objCategory, true );
-		
-		$objCategory->id = $new_pk;
-		return $objCategory;
-	}
-	
-	/**
-	 * Does not update subcategory assignments, only the actual category
-	 * values, at present. Right now, just name and normalized!
+	 * Add a category
 	 * 
-	 * @param Category $objCategory 	a category object
+	 * @param Category $category
 	 */
-
-	public function updateUserCategoryProperties(Category $objCategory)
+	
+	public function addCategory(Category $category)
 	{
-		$objCategory->normalized = Category::normalize( $objCategory->name );
-		
-		$sql = "UPDATE xerxes_user_categories " .
-			"SET name = :name, normalized = :normalized, published = :published " .
-			"WHERE id = " . $objCategory->id;
-		
-		return $this->update( $sql, 
-			array (
-				":name" => $objCategory->name, 
-				":normalized" => $objCategory->normalized, 
-				":published" => $objCategory->published 
-				) 
-			);
+		$this->doSimpleInsert( "xerxes_categories", $category );
 	}
 	
 	/**
-	 * Add a user-created subcategory; Does not add databases joins,
-	 * just the subcategory. Category should not have an 'id' property, will be
-	 * supplied by auto-incremented db column.
-	 *
-	 * @param Subcategory $objSubcat
-	 * @return Subcategory subcategory
-	 */
-	
-	public function addUserCreatedSubcategory(Subcategory $objSubcat)
-	{
-		//We don't use metalib-id, we use id instead, sorry. 
-		unset( $objSubcat->metalib_id );
-		
-		$new_pk = $this->doSimpleInsert( "xerxes_user_subcategories", $objSubcat, true );
-		$objSubcat->id = $new_pk;
-		return $objSubcat;
-	}
-	
-	/**
-	 * Delete a user subcategory
-	 *
-	 * @param Subcategory $objSubcat	subcategort oject
-	 * @return int 									delete status
-	 */
-	
-	public function deleteUserCreatedSubcategory(Subcategory $objSubcat)
-	{
-		$sql = "DELETE FROM xerxes_user_subcategories WHERE ID = :subcategory_id";
-		return $this->delete( $sql, array (":subcategory_id" => $objSubcat->id ) );
-	}
-	
-	/**
-	 * Delete a user created category
-	 *
-	 * @param Category $objCat		category object
-	 * @return int 								detelete status
-	 */
-	
-	public function deleteUserCreatedCategory(Category $objCat)
-	{
-		$sql = "DELETE FROM xerxes_user_categories WHERE ID = :category_id";
-		return $this->delete( $sql, array (":category_id" => $objCat->id ) );
-	}
-	
-	/**
-	 * Add a database to a user-created subcategory; 
-	 *
-	 * @param String $databaseID the metalib_id of a Xerxes database object
-	 * @param Subcategory $objSubcat object representing user created subcat
-	 * @param int sequence optional, will default to end of list if null. 
-	 */
-
-	public function addDatabaseToUserCreatedSubcategory($databaseID, Subcategory $objSubcat, $sequence = null)
-	{
-		if ( $sequence == null )
-			$sequence = count( $objSubcat->databases ) + 1;
-		
-		$strSQL = "INSERT INTO xerxes_user_subcategory_databases ( database_id, subcategory_id, sequence ) " . 
-			"VALUES ( :database_id, :subcategory_id, :sequence )";
-		
-		$arrValues = array (
-			":database_id" => $databaseID, 
-			":subcategory_id" => $objSubcat->id, 
-			":sequence" => $sequence
-		);
-		
-		$this->insert( $strSQL, $arrValues );
-	}
-	
-	/**
-	 * Does not update database assignments, only the actual subcat values. 
-	 * Right now, just name and sequence!
-	 *
-	 * @param Subcategory $objSubcat	subcatgeory object
-	 * @return int 									update status
-	 */
-	
-	public function updateUserSubcategoryProperties(Subcategory $objSubcat)
-	{
-		$sql = "UPDATE xerxes_user_subcategories " .
-			"SET name = :name, sequence = :sequence " .
-			"WHERE id = " . $objSubcat->id;
-			
-		return $this->update( $sql, 
-			array (
-				":name" => $objSubcat->name, 
-				":sequence" => $objSubcat->sequence 
-				) 
-			);
-	}
-	
-	/**
-	 * Remove database from user created subcategory
-	 *
-	 * @param string $databaseID					database id		
-	 * @param Subcategory $objSubcat	subcategory object
-	 */
-	
-	public function removeDatabaseFromUserCreatedSubcategory($databaseID, Subcategory $objSubcat)
-	{
-		$strDeleteSql = "DELETE from xerxes_user_subcategory_databases " .
-			"WHERE database_id = :database_id AND subcategory_id = :subcategory_id";
-			
-		$this->delete( $strDeleteSql, 
-			array (
-				":database_id" => $databaseID, 
-				":subcategory_id" => $objSubcat->id 
-				) 
-			);
-	}
-	
-	/**
-	 * Update the 'sequence' number of a database in a user created category
-	 *
-	 * @param Database $objDb			database object 
-	 * @param Subcategory $objSubcat	subcategory
-	 * @param int $sequence							sequence number
-	 */
-	
-	public function updateUserDatabaseOrder(Database $objDb, Subcategory $objSubcat, $sequence)
-	{
-		$this->beginTransaction();
-		
-		//first delete an existing join object.
-		$this->removeDatabaseFromUserCreatedSubcategory( $objDb->metalib_id, $objSubcat );
-		
-		// Now create our new one with desired sequence. 
-		$this->addDatabaseToUserCreatedSubcategory( $objDb->metalib_id, $objSubcat, $sequence );
-		
-		$this->commit(); //commit transaction
-	}
-	
-	/**
-	 * Convert metalib boolean values to 1 or 0
-	 *
-	 * @param string $strValue	'yes' or 'Y' will become 1. "no" or "N" will become 0. All others null. 
-	 * @return int				1 or 0 or null
-	 */
-	
-	private function convertMetalibBool($strValue)
-	{
-		if ( $strValue == "yes" || $strValue == "Y" )
-		{
-			return 1;
-		} 
-		elseif ( $strValue == "no" || $strValue == "N" )
-		{
-			return 0;
-		} 
-		else
-		{
-			return null;
-		}
-	}
-	
-	/**
-	 * Get the top level categories (subjects) from the knowledgebase
-	 *
-	 * @return array		array of Category objects
-	 */
-	
-	public function getCategories($lang = "")
-	{
-		if ( $lang == "" )
-		{
-			$lang = $this->primary_language;
-		}
-				
-		$arrCategories = array ( );
-		
-		$strSQL = "SELECT * from xerxes_categories WHERE lang = :lang ORDER BY UPPER(name) ASC";
-		
-		$arrResults = $this->select( $strSQL, array(":lang" => $lang) );
-		
-		foreach ( $arrResults as $arrResult )
-		{
-			$objCategory = new Category( );
-			$objCategory->load( $arrResult );
-			
-			array_push( $arrCategories, $objCategory );
-		}
-		
-		return $arrCategories;
-	}
-	
-	/**
-	 * Get user-created categories for specified user. 
-	 * @param string $username
-	 * @return array		array of Category objects
-	 */
-	
-	public function getUserCreatedCategories($username)
-	{
-		if ( ! $username )
-		{
-			throw new \Exception( "Must supply a username argument" );
-		}
-		
-		$arrCategories = array ( );
-		$strSQL = "SELECT * from xerxes_user_categories WHERE username = :username ORDER BY UPPER(name) ASC";
-		$arrResults = $this->select( $strSQL, array (":username" => $username ) );
-		
-		foreach ( $arrResults as $arrResult )
-		{
-			$objCategory = new Category( );
-			$objCategory->load( $arrResult );
-			
-			array_push( $arrCategories, $objCategory );
-		}
-		
-		return $arrCategories;
-	}
-	
-	/**
-	 * ->getSubject can be used in two modes, metalib-imported  categories, or user created categories. 
-	 * We take from different db tables depending
-	 *
-	 * @param string $mode		'metalib' or 'user_created' mode 
+	 * Get all categories
+	 * 
 	 * @return array
 	 */
 	
-	protected function schema_map_by_mode($mode)
+	public function getCategories()
 	{
-		if ( $mode == self::METALIB_MODE )
+		$categories = array();
+		
+		$sql = "SELECT * from xerxes_categories ORDER BY UPPER(name) ASC";
+		
+		$results = $this->select($sql);
+		
+		foreach ( $results as $result )
 		{
-			return array (
-				"categories_table" => "xerxes_categories", 
-				"subcategories_table" => "xerxes_subcategories", 
-				"database_join_table" => "xerxes_subcategory_databases", 
-				"subcategories_pk" => "metalib_id", 
-				"extra_select" => "", 
-				"extra_where" => " AND lang = :lang " 
-			);
-		} 
-		elseif ( $mode == self::USER_CREATE_MODE )
-		{
-			return array (
-				"categories_table" => "xerxes_user_categories", 
-				"subcategories_table" => "xerxes_user_subcategories", 
-				"database_join_table" => "xerxes_user_subcategory_databases", 
-				"subcategories_pk" => "id", 
-				"extra_select" => ", xerxes_user_categories.published AS published, " .
-					"xerxes_user_categories.username AS username", 
-				"extra_where" => " AND xerxes_user_categories.username = :username "
-			);
-		} 
-		else
-		{
-			throw new \Exception( "unrecognized mode" );
+			$category = new Category();
+			$category->load( $result );
+			
+			array_push( $categories, $category );
 		}
+		
+		return $categories;
 	}
 	
 	/**
-	 * Get an inlined set of subcategories and databases for a subject. In
-	 * METALIB_MODE, empty subcategories are not included. In USER_CREATE_MODE,
-	 * they are. 
+	 * Get catergory
 	 *
 	 * @param string $normalized		normalized category name
-	 * @param string $lang 			language code, can be empty string
-	 * @param string $mode  		one of constants METALIB_MODE or USER_CREATE_MODE, 
-	 * 					for metalib-imported categories or user-created categories, 
-	 * 					using different tables.
-	 * @param string $username 		only used in USER_CREATE_MODE, the particular user must be specified, 
-	 * 					becuase normalized subject names are only unique within a user. 
-	 * @return Category		a Category object, filled out with subcategories and databases. 
+	 * @return Category
 	 */
 	
-	public function getSubject($normalized, $lang = "", $mode = self::METALIB_MODE, $username = null )
+	public function getCategory($normalized)
 	{
-		if ( $mode == self::USER_CREATE_MODE && $username == null )
-		{
-			throw new \Exception( "a username argument must be supplied in USER_CREATE_MODE" );
-		}
+		$sql = "SELECT * FROM xerxes_categories WHERE normalized = :normalized
+			LEFT OUTER JOIN xerxes_subcategories ON xerxes_categories.category_id = xerxes_subcategories.category_id
+			LEFT OUTER JOIN xerxes_subcategory_resources ON xerxes_subcategory_resources.subcategory_id = xerxes_subcategories.subcategory_id
+			LEFT OUTER JOIN xerxes_resources ON xerxes_subcategory_resources.resouce_id = xerxes_resources.resource_id";	
 		
-		$lang_query = $lang;	
+		$results = $this->select( $sql, array(':normalized' => $normalized) );
 		
-		if ( $lang_query == "" )
+		if ( $results != null )
 		{
-			$lang_query = $this->primary_language;
-		}
+			$category = new Category();
+			$category->id = $results[0]["category_id"];
+			$category->name = $results[0]["category"];
+			$category->normalized = $normalized;
 			
-		// This can be used to fetch personal or metalib-fetched data. We get
-		// from different tables depending. 
+			// we create these initially as the starting point in our comparison
+			
+			$sub_category = $this->createSubcategoryObject($results[0]);
+			$database = $this->createResourceObject($results[0]);
+			
+			foreach ( $results as $result )
+			{
+				// if the current row's subcategory id does not match the previous one, 
+				// then push the previous subcategory obj onto category obj and make a new subcategory obj
+				// otherwise these are values from the outer join
 
-		$schema_map = $this->schema_map_by_mode( $mode );
-		
-		$strSQL = "SELECT $schema_map[categories_table].id as category_id, 
-			$schema_map[categories_table].name as category,
-			$schema_map[subcategories_table].$schema_map[subcategories_pk] as subcat_id,
-			$schema_map[subcategories_table].sequence as subcat_seq, 
-			$schema_map[subcategories_table].name as subcategory, 
-			$schema_map[database_join_table].sequence as sequence,
-			xerxes_databases.*
-			$schema_map[extra_select]
-			FROM $schema_map[categories_table]
-			LEFT OUTER JOIN $schema_map[subcategories_table] ON $schema_map[categories_table].id = $schema_map[subcategories_table].category_id
-			LEFT OUTER JOIN $schema_map[database_join_table] ON $schema_map[database_join_table].subcategory_id = $schema_map[subcategories_table].$schema_map[subcategories_pk]
-			LEFT OUTER JOIN xerxes_databases ON $schema_map[database_join_table].database_id = xerxes_databases.metalib_id
-			WHERE $schema_map[categories_table].normalized = :value
-			AND 
-			($schema_map[subcategories_table].name NOT LIKE UPPER('All%') OR
-			$schema_map[subcategories_table].name is NULL)
-			$schema_map[extra_where]
-			ORDER BY subcat_seq, sequence";
-		  
-		$args = array (":value" => $normalized );
-		
-		if ( $username )
-		{
-			$args[":username"] = $username;
-		}
-		else
-		{
-			$args[":lang"] = $lang_query;
-		}
-		
-		$arrResults = $this->select( $strSQL, $args );
-		
-		if ( $arrResults != null )
-		{
-			$objCategory = new Category();
-			$objCategory->id = $arrResults[0]["category_id"];
-			$objCategory->name = $arrResults[0]["category"];
-			$objCategory->normalized = $normalized;
-			
-			// these two only for user-created categories, will be nil otherwise.
-			
-			if ( array_key_exists( "username", $arrResults[0] ) )
-			{
-				$objCategory->owned_by_user = $arrResults[0]["username"];
-			}
-			
-			if ( array_key_exists( "published", $arrResults[0] ) )
-			{
-				$objCategory->published = $arrResults[0]["published"];
-			}
-			
-			$objSubcategory = new Subcategory( );
-			$objSubcategory->id = $arrResults[0]["subcat_id"];
-			$objSubcategory->name = $arrResults[0]["subcategory"];
-			$objSubcategory->sequence = $arrResults[0]["subcat_seq"];
-			
-			$objDatabase = new Database( );
-			
-			foreach ( $arrResults as $arrResult )
-			{
-				// if the current row's subcategory name does not match the previous
-				// one, then push the previous one onto category obj and make a new one
-
-				if ( $arrResult["subcat_id"] != $objSubcategory->id )
+				if ( $result["subcat_id"] != $sub_category->id )
 				{
-					// get the last db in this subcategory first too.
+					// get the last db in this subcategory first
 					
-					if ( $objDatabase->metalib_id != null )
+					if ( $database->resource_id != null )
 					{
-						array_push( $objSubcategory->databases, $objDatabase );
+						array_push( $sub_category->databases, $database );
 					}
 					
-					$objDatabase = new Database( );
+					$database = new Database(); // dummy for now, we'll create it for realz below
 					
-					// only add subcategory if it actually has databases, to
-					// maintain consistency with previous semantics.
+					// create new subcategory
 					
-					if ( ($mode == self::USER_CREATE_MODE && 
-						$objSubcategory->id) || ! empty( $objSubcategory->databases ) )
-					{
-						array_push( $objCategory->subcategories, $objSubcategory );
-					}
-					
-					$objSubcategory = new Subcategory();
-					$objSubcategory->id = $arrResult["subcat_id"];
-					$objSubcategory->name = $arrResult["subcategory"];
-					$objSubcategory->sequence = $arrResult["subcat_seq"];
+					$sub_category = $this->createSubcategoryObject($result);
 				}
 				
-				// if the previous row has a different id, then we've come 
-				// to a new database, otherwise these are values from the outer join
+				// if the current row's database id does not match the previous one, 
+				// then push the previous database obj onto subcategory obj and make a new database obj
+				// otherwise these are values from the outer join
 
-				if ( $arrResult["metalib_id"] != $objDatabase->metalib_id )
+				if ( $result["resource_id"] != $database->resource_id )
 				{
 					// existing one that isn't empty? save it.
 					
-					if ( $objDatabase->metalib_id != null )
+					if ( $database->resource_id != null )
 					{
-						array_push( $objSubcategory->databases, $objDatabase );
+						array_push( $sub_category->databases, $database );
 					}
 					
-					$objDatabase = new Database( );
-					$objDatabase->load( $arrResult );
+					$database = $this->createResourceObject($result);
 				}
-				
-				// if the current row's outter join value is not already stored,
-				// then we've come to a unique value, so add it
-
-				$arrColumns = array ("usergroup" => "group_restrictions" );
-				
-				foreach ( $arrColumns as $column => $identifier )
-				{
-					if ( array_key_exists( $column, $arrResult ) && ! is_null( $arrResult[$column] ) )
-					{
-						if ( ! in_array( $arrResult[$column], $objDatabase->$identifier ) )
-						{
-							array_push( $objDatabase->$identifier, $arrResult[$column] );
-						}
-					}
-				}
-			
 			}
 			
-			// last ones
+			// last one?
 			
-			if ( $objDatabase->metalib_id != null )
+			if ( $database->resource_id != null )
 			{
-				array_push( $objSubcategory->databases, $objDatabase );
+				array_push( $sub_category->databases, $database );
 			}
 			
-			if ( ($mode == self::USER_CREATE_MODE && $objSubcategory->id) || ! empty( $objSubcategory->databases ) )
-			{
-				array_push( $objCategory->subcategories, $objSubcategory );
-			}
-			
-			// subcategories excluded by config
-			
-			$strSubcatInclude = $this->registry->getConfig( "SUBCATEGORIES_INCLUDE", false, null, $lang );
-			
-			if ( $strSubcatInclude != "" && $mode == self::METALIB_MODE)
-			{							
-				// this is kind of funky, but if we simply unset the subcategory, the array keys get out
-				// of order, and the first one may therefore not be 0, which is a problem in higher parts of 
-				// the system where we look for the first subcategory as $category->subcategories[0], so
-				// we take them all out and put them all back in, including only the ones we want
-				
-				$arrInclude = explode(",", $strSubcatInclude);
-				
-				$arrSubjects =  $objCategory->subcategories;
-				$objCategory->subcategories = null;
-				
-				foreach ( $arrSubjects as $subcat )
-				{
-					foreach ( $arrInclude as $strInclude )
-					{
-						$strInclude = trim($strInclude);
-						
-						if ( stristr($subcat->name, $strInclude) )
-						{
-							$objCategory->subcategories[] = $subcat;
-							break;
-						}
-					}
-				}
-			}
-			
-			return $objCategory;
+			return $category;
 		} 
 		else
 		{
 			return null;
 		}
-	
 	}
 	
 	/**
-	 * Get a single database from the knowledgebase
+	 * Create Subcategory object from sql result
 	 *
-	 * @param string $id				metalib id
+	 * @param array $result
+	 * @return Subcategory
+	 */
+	
+	private function createSubcategoryObject(array $result)
+	{
+		$sub_category = new Subcategory();
+		$sub_category->id = $result["subcat_id"];
+		$sub_category->name = $result["subcategory"];
+		$sub_category->sequence = $result["subcat_seq"];
+	
+		return $sub_category;
+	}
+	
+	/**
+	 * Create Database object from sql result
+	 *
+	 * @param array $result
 	 * @return Database
+	 */	
+	
+	private function createResourceObject(array $result)
+	{
+		
+	}
+	
+	/**
+	 * Get database(s) by ID
+	 * 
+	 * you supply an array, you get back an array
+	 *
+	 * @param string|array $id
+	 * @return Database|array of Database's
 	 */
 	
 	public function getDatabase($id)
 	{
-		$arrResults = $this->getDatabases( $id );
+		$params = array();
 		
-		if ( count( $arrResults ) > 0 )
+		$sql = "SELECT * from xerxes_databases";
+		
+		// single database
+		
+		if ( ! is_array( $id ) )
 		{
-			return $arrResults[0];
-		} 
+			$sql .= " WHERE xerxes_databases.resource_id = :id ";
+			$params[":id"] = $id;
+		} 		
+		else // databases specified by an array of ids
+		{
+			$sql .= " WHERE ";
+			
+			for ( $x = 0 ; $x < count( $id ) ; $x ++ )
+			{
+				if ( $x > 0 )
+				{
+					$sql .= " OR ";
+				}
+				
+				$sql .= "xerxes_databases.resource_id = :id$x ";
+				$params[":id$x"] = $id[$x];
+			}
+		}
+		
+		$results = $this->select($sql, $params);
+		
+		if ( count($results) == 0 )
+		{
+			throw new \Exception("Could not find a database with id '$id'");
+		}
+		
+		if ( ! is_array( $id ) )
+		{
+			$final = array();
+			
+			foreach ( $results as $result )
+			{
+				array_push($final, $this->createResourceObject($result));
+			}
+		}
 		else
 		{
-			return null;
+			return $this->createResourceObject($results[0]);
 		}
 	}
 	
@@ -770,12 +319,13 @@ class Databases extends DataMap
 	
 	public function getDatabaseAlpha()
 	{
-		$strSQL = "SELECT DISTINCT alpha FROM " .
+		$letters = array();
+		
+		$sql = "SELECT DISTINCT alpha FROM " .
 			"(SELECT SUBSTRING(UPPER(title_display),1,1) AS alpha FROM xerxes_databases) AS TEMP " .
 			"ORDER BY alpha";
 			
-		$letters = array();
-		$results = $this->select( $strSQL );
+		$results = $this->select($sql);
 		
 		foreach ( $results as $result )
 		{
@@ -788,79 +338,35 @@ class Databases extends DataMap
 	/**
 	 * Get databases that start with a particular letter
 	 *
-	 * @param string $alpha letter to start with 
-	 * @return array of Database objects
+	 * @param string $alpha 	letter to start with 
+	 * @return array 			of Database objects
 	 */	
 
 	public function getDatabasesStartingWith($alpha)
 	{
-		return $this->getDatabases(null, null, $alpha);	
+		$sql = "SELECT * from xerxes_databases WHERE UPPER(title_display) LIKE :alpha";
+		
+		$results = $this->select($sql, array(':alpha' => "$alpha%"));
+		
 	}
 	
 	/**
-	 * Get one or a set of databases from the knowledgebase
+	 * Get databases from the knowledgebase
 	 *
-	 * @param mixed $id			[optional] null returns all database, array returns a list of databases by id, 
-	 * 							string id returns single id
-	 * @param string $query   user-entered query to search for dbs. 
-	 * @return array			array of Database objects
+	 * @param string $query		[optional] query to search for dbs. 
+	 * @return array 			of Database objects
 	 */
 	
-	public function getDatabases($id = null, $query = null, $alpha = null)
+	public function getDatabases($query = null)
 	{
-		$configDatabaseTypesExclude = $this->registry->getConfig("DATABASES_TYPE_EXCLUDE_AZ", false);
 		$configAlwaysTruncate = $this->registry->getConfig("DATABASES_SEARCH_ALWAYS_TRUNCATE", false, false);		
 		
-		$arrDatabases = array ( );
-		$arrResults = array ( );
-		$arrParams = array ( );
-		$where = false;
-		
-		$strSQL = "SELECT * from xerxes_databases";
-
-		// single database
-		
-		if ( $id != null && ! is_array( $id ) )
-		{
-			$strSQL .= " WHERE xerxes_databases.metalib_id = :id ";
-			$arrParams[":id"] = $id;
-			$where = true;
-		} 		
-		
-		// databases specified by an array of ids
-		
-		elseif ( $id != null && is_array( $id ) )
-		{
-			$strSQL .= " WHERE ";
-			$where = true;
-			
-			for ( $x = 0 ; $x < count( $id ) ; $x ++ )
-			{
-				if ( $x > 0 )
-				{
-					$strSQL .= " OR ";
-				}
-				
-				$strSQL .= "xerxes_databases.metalib_id = :id$x ";
-				$arrParams[":id$x"] = $id[$x];
-			}
-		} 
-		
-		// alpha query
-		
-		elseif ( $alpha != null )
-		{
-			$strSQL .= " WHERE UPPER(title_display) LIKE :alpha ";
-			$arrParams[":alpha"] = "$alpha%";
-			$where = true;
-		}
+		$sql = "SELECT * from xerxes_databases";
 		
 		// user-supplied query
 		
-		elseif ( $query != null )
+		if ( $query != null )
 		{
-			$where = true;
-			
 			$arrTables = array(); // we'll use this to keep track of temporary tables
 			
 			// we'll deal with quotes later, for now 
@@ -870,8 +376,8 @@ class Databases extends DataMap
 			
 			// grab databases that meet our query
 			
-			$strSQL .= " WHERE metalib_id IN  (
-				SELECT database_id FROM ";
+			$sql .= " WHERE resource_id IN  (
+				SELECT resource_id FROM ";
 			
 			// by looking for each term in the xerxes_databases_search table 
 			// making each result a temp table
@@ -886,7 +392,7 @@ class Databases extends DataMap
 				
 				// do this to reduce the results of the inner table to just one column
 				
-				$alias = "database_id";
+				$alias = "resource_id";
 				
 				if ( $x > 0 )
 				{
@@ -913,15 +419,15 @@ class Databases extends DataMap
 					$operator = "LIKE";					
 				}
 				
-				$arrParams[":term$x"] = $term;
+				$params[":term$x"] = $term;
 				
-				$strSQL .= " (SELECT distinct database_id AS $alias FROM xerxes_databases_search WHERE term $operator :term$x) AS table$x ";
+				$sql .= " (SELECT distinct resource_id AS $alias FROM xerxes_databases_search WHERE term $operator :term$x) AS table$x ";
 				
 				// if there is another one, we need to add a comma between them
 				
 				if ( $x + 1 < count($arrTerms))
 				{
-					$strSQL .= ", ";
+					$sql .= ", ";
 				}
 				
 				// this essentially AND's the query by requiring results from all tables
@@ -934,7 +440,7 @@ class Databases extends DataMap
 						
 						if ( $y == 0 )
 						{
-							$column = "database_id";
+							$column = "resource_id";
 						}
 						
 						array_push($arrTables, "table$y.$column = table" . ($y + 1 ). ".db");
@@ -946,45 +452,17 @@ class Databases extends DataMap
 			
 			if ( count($arrTables) > 0 )
 			{
-				$strSQL .= " WHERE " . implode(" AND ", $arrTables);
+				$sql .= " WHERE " . implode(" AND ", $arrTables);
 			}
 			
-			$strSQL .= ")";
+			$sql .= ")";
 		}
 		
-		// remove certain databases based on type(s), if so configured
-		// unless we're asking for specific id's, yo	
-	
-		if ( $configDatabaseTypesExclude != null && $id == null )
-		{
-			$arrTypes = explode(",", $configDatabaseTypesExclude);
-			$arrTypeQuery = array();
-			
-			// specify that the type NOT be one of these
+		$sql .= " ORDER BY UPPER(title_display)";
 		
-			for ( $q = 0; $q < count($arrTypes); $q++ )
-			{
-				array_push($arrTypeQuery, "xerxes_databases.type != :type$q");
-				$arrParams[":type$q"] = trim($arrTypes[$q]);
-			}
-				
-			// AND 'em but then also catch the case where type is null
-			
-			$joiner = "WHERE";
-			
-			if ( $where == true )
-			{
-				$joiner = "AND";
-			}
-			
-			$strSQL .= " $joiner ( (" . implode (" AND ", $arrTypeQuery) . ") OR xerxes_databases.type IS NULL )";
-		}
-			
-		$strSQL .= " ORDER BY UPPER(title_display)";
+		// echo $sql; print_r($params); // exit;
 		
-		// echo $strSQL; print_r($arrParams); // exit;
-		
-		$arrResults = $this->select( $strSQL, $arrParams );
+		$arrResults = $this->select( $sql, $params );
 		
 		// transform to internal data objects
 		
@@ -992,9 +470,7 @@ class Databases extends DataMap
 		{
 			foreach ( $arrResults as $arrResult )
 			{
-				$objDatabase = new Database();
-				$objDatabase->load( $arrResult );
-				array_push($arrDatabases, $objDatabase);
+				array_push($arrDatabases, $this->createResourceObject($arrResult));
 			}
 		}
 		
@@ -1047,32 +523,6 @@ class Databases extends DataMap
 			}
 		}
 		
-		
 		return $arrDatabases;
-	}
-	
-	/**
-	 * Get the list of types
-	 *
-	 * @return array	array of Type objects
-	 */
-	
-	public function getTypes()
-	{
-		$arrTypes = array ( );
-		
-		$strSQL = "SELECT * from xerxes_types ORDER BY UPPER(name) ASC";
-		
-		$arrResults = $this->select( $strSQL );
-		
-		foreach ( $arrResults as $arrResult )
-		{
-			$objType = new Type( );
-			$objType->load( $arrResult );
-			
-			array_push( $arrTypes, $objType );
-		}
-		
-		return $arrTypes;
 	}
 }

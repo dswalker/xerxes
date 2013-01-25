@@ -12,7 +12,7 @@ use Xerxes\Mvc\Request;
  * @version
  * @package Xerxes
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license 
  */
 
 class User extends DataValue

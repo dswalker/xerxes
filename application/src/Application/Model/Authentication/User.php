@@ -12,7 +12,7 @@ use Xerxes\Utility;
  * @version
  * @package Xerxes
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license 
  */
 
 class User extends Utility\User

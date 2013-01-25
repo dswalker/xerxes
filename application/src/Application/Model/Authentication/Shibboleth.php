@@ -10,7 +10,7 @@ namespace Application\Model\Authentication;
  * @version
  * @package Xerxes
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license 
  */
 
 class Shibboleth extends Scheme 

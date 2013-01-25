@@ -14,7 +14,7 @@ use Application\Model\Search,
  * @author David Walker
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license 
  * @version
  * @package Solr
  */
@@ -392,12 +392,12 @@ class Engine extends Search\Engine
 	 * Parse out database recommendations
 	 * 
 	 * @param array $summon_results
-	 * @return array of Database's
+	 * @return array of Database's or Resource's
 	 */
 	
 	protected function extractRecommendations($summon_results)
 	{
-		$databases = array();
+		$recommend = array();
 		
 		$recommendations = $summon_results['recommendationLists'];
 		
@@ -405,11 +405,19 @@ class Engine extends Search\Engine
 		{
 			foreach ( $recommendations['database'] as $database_array )
 			{
-				$databases[] = new Database($database_array);
+				$recommend[] = new Database($database_array);
+			}
+		}
+		
+		if ( array_key_exists('bestBet', $recommendations) )
+		{
+			foreach ( $recommendations['bestBet'] as $database_array )
+			{
+				$recommend[] = new Resource($database_array);
 			}
 		}		
 		
-		return $databases;
+		return $recommend;
 	}
 	
 	/**

@@ -12,7 +12,7 @@ use Application\Model\Search\Query,
  * @author David Walker
  * @copyright 2012 California State University
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license 
  * @version
  * @package Xerxes
  */

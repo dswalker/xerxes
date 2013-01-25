@@ -7,7 +7,7 @@
  version: $Id: worldcat_lookup.xsl 1460 2010-10-26 21:00:20Z dwalker@calstate.edu $
  package: Worldcat
  link: http://xerxes.calstate.edu
- license: http://www.gnu.org/licenses/
+ license: 
  
  -->
  

@@ -11,7 +11,7 @@ use Xerxes\Utility\Parser,
  * @author David Walker
  * @copyright 2008 California State University
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license 
  * @version
  * @package Xerxes
  */

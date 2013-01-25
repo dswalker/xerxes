@@ -3,7 +3,7 @@
 namespace Xerxes\Utility;
 
 /**
- * Provides basic helper function for instatiated Value Objects
+ * Provides basic helper function for instatiated DataValue Objects
  *
  * @abstract
  * @author David Walker
@@ -11,7 +11,7 @@ namespace Xerxes\Utility;
  * @version
  * @package  Xerxes_Framework
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license 
  */
 
 abstract class DataValue

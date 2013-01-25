@@ -21,9 +21,8 @@ class Category extends DataValue
 	public $category_id;
 	public $name;
 	public $normalized;
-	public $librarian;
 	public $subcategories = array();
-	public $sidebars = array();
+	public $related_resources = array();
 	
 	/**
 	 * Normalize the category name (lowercase, just alpha and dashes)

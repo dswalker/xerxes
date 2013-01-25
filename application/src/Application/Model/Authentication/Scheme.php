@@ -14,7 +14,7 @@ use Application\Model\DataMap\Users,
  * @author David Walker
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license 
  * @version
  * @package Xerxes
  */

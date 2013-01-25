@@ -14,7 +14,7 @@ use Xerxes\Utility\Factory,
  * @version
  * @package Xerxes
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license 
  */
 
 class Cas extends Scheme 
