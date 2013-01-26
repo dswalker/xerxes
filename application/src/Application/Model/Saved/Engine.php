@@ -9,7 +9,7 @@ use Xerxes\Mvc\Request;
 /**
  * Saved Records
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Engine extends Search\Engine 

@@ -5,7 +5,7 @@ namespace Xerxes\Record;
 /**
  * Record Subject
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Subject

@@ -7,7 +7,7 @@ use Xerxes\Record\ContextObject;
 /**
  * Bx Record
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Record extends ContextObject

@@ -7,7 +7,7 @@ use Application\Model\Search;
 /**
  * Ebsco Config
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Config extends Search\Config

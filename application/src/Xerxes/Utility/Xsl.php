@@ -5,7 +5,7 @@ namespace Xerxes\Utility;
 /**
  * Utility class for XSLT to allow distro/local overriding
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  * @author Jonathan Rochkind
  */ 
 

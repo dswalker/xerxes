@@ -12,7 +12,7 @@ global $xerxes_pdo;
  * Basic functions for selecting, instering, updating, and deleting data from a 
  * database, including transactions; basically a convenience wrapper around PDO
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 abstract class DataMap

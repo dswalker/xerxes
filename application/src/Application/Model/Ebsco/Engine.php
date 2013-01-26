@@ -10,7 +10,7 @@ use Xerxes\Mvc\Request;
 /**
  * Ebsco Search Engine
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Engine extends Search\Engine 

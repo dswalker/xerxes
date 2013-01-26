@@ -14,7 +14,7 @@ use Xerxes\Utility\Registry;
 /**
  * Search Record
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Result

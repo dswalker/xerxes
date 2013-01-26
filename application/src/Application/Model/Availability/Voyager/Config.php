@@ -7,7 +7,7 @@ use Xerxes\Utility\Registry;
 /**
  * Solr Config
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Config extends Registry

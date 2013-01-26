@@ -8,7 +8,7 @@ use Xerxes\Utility\DataValue;
 /**
  * Saved Result
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Result extends Search\Result

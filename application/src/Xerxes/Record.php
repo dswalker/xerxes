@@ -12,7 +12,7 @@ use Xerxes\Utility\Parser;
 /**
  * Properties for books, media, articles, and dissertations
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Record

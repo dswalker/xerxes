@@ -7,7 +7,7 @@ use Application\Model\Search;
 /**
  * Spelling Suggestion
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Suggestion

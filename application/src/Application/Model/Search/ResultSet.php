@@ -10,7 +10,7 @@ use Xerxes\Utility\Cache;
 /**
  * Search Results
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class ResultSet

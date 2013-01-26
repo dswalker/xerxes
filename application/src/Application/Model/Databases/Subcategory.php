@@ -8,7 +8,7 @@ use Xerxes\Utility\Parser;
 /**
  * Metalib SubCategory
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Subcategory extends DataValue

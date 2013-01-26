@@ -8,7 +8,7 @@ use Xerxes\Utility\Parser;
 /**
  * Category
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Category extends DataValue

@@ -10,7 +10,7 @@ use Xerxes\Utility\Factory;
 /**
  * Retrieve item, holdings, and electonic resource information from an Innovative Millennium system
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Innopac implements AvailabilityInterface

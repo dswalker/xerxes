@@ -8,7 +8,7 @@ use Xerxes\Utility\DataMap;
 /**
  * Database access mapper for peer-reviewed data
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Refereed extends DataMap

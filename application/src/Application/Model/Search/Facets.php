@@ -5,7 +5,7 @@ namespace Application\Model\Search;
 /**
  * Search Facets
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 /**

@@ -7,7 +7,7 @@ use Xerxes\Utility\Parser;
 /**
  * Search Item
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Item

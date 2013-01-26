@@ -11,7 +11,7 @@ use Xerxes\Mvc\Request;
  * 
  * Based on the functions originally developed by John Blyberg
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Innovative extends Scheme 

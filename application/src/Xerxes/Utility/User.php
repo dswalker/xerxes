@@ -7,7 +7,7 @@ use Xerxes\Mvc\Request;
 /**
  * User
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class User extends DataValue

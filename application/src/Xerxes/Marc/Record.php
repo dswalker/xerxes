@@ -7,7 +7,7 @@ use Xerxes\Utility\Parser;
 /**
  * Parse single MARC-XML record
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Record

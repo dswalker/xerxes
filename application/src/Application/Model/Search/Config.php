@@ -7,7 +7,7 @@ use Xerxes\Utility\Registry;
 /**
  * Search Config
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 abstract class Config extends Registry

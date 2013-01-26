@@ -2,7 +2,7 @@
 
 <!--
 
- author: David Walker
+ author: David Walker <dwalker@calstate.edu>
  
 -->
 <xsl:stylesheet version="1.0"

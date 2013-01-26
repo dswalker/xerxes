@@ -11,7 +11,7 @@ use Xerxes\Utility\Registry;
 /**
  * Action Controller
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 abstract class ActionController

@@ -7,7 +7,7 @@ use Xerxes\Utility\Parser;
 /**
  * Search Facet Group
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class FacetGroup

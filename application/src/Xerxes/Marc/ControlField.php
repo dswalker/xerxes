@@ -5,7 +5,7 @@ namespace Xerxes\Marc;
 /**
  * MARC Control Field
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class ControlField extends Field 

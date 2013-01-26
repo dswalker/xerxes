@@ -5,7 +5,7 @@ namespace Application\Model\Authentication;
 /**
  * Guest Authentication
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Guest extends Scheme 

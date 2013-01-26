@@ -5,7 +5,7 @@ namespace Xerxes\Utility;
 /**
  * Email
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Email 

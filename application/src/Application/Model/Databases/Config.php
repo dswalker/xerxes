@@ -7,7 +7,7 @@ use Xerxes\Utility\Registry;
 /**
  * Databases Config
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Config extends Registry

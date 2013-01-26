@@ -8,7 +8,7 @@ use Xerxes\Utility\Parser;
 /**
  * Primo Record
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Record extends Xerxes\Record

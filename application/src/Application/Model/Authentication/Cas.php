@@ -9,7 +9,7 @@ use Xerxes\Utility\User;
 /**
  * CAS authentication
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Cas extends Scheme 

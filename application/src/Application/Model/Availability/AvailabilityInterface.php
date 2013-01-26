@@ -5,7 +5,7 @@ namespace Application\Model\Availability;
 /**
  * Availability interface
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 interface AvailabilityInterface

@@ -7,7 +7,7 @@ use Application\Model\Search;
 /**
  * Solr Search Query
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Query extends Search\Query

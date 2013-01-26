@@ -9,7 +9,7 @@ use Xerxes\Utility\Registry;
 /**
  * Bing Spell Checker
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Bing

@@ -5,7 +5,7 @@ namespace Application\Model\Authentication;
 /**
  * Sibboleth Authentication
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Shibboleth extends Scheme 

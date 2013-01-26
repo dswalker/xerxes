@@ -7,7 +7,7 @@ use Xerxes\Mvc\Bootstrap;
 /**
  * Labels Access Object
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Labels

@@ -11,7 +11,7 @@ use Xerxes\Mvc\Request;
 /**
  * Summon Search Engine
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Engine extends Search\Engine 

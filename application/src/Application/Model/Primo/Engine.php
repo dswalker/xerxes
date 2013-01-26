@@ -9,7 +9,7 @@ use Xerxes\Utility\Parser;
 /**
  * Primo Search Engine
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Engine extends Search\Engine 

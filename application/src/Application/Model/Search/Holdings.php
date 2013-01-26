@@ -5,7 +5,7 @@ namespace Application\Model\Search;
 /**
  * Result Holdings
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Holdings

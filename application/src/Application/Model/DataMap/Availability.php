@@ -8,7 +8,7 @@ use Application\Model\Search\Fulltext;
 /**
  * Database access mapper for sfx institutioanl holdings (google scholar) full-text cache
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Availability extends DataMap

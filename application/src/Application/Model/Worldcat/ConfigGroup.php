@@ -5,7 +5,7 @@ namespace Application\Model\Worldcat;
 /**
  * Worldcat group config
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class ConfigGroup

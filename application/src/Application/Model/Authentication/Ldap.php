@@ -5,7 +5,8 @@ namespace Application\Model\Authentication;
 /**
  * Authenticate users against an LDAP-enabled directory server
  * 
- * @author David Walker, Ivan Masar
+ * @author David Walker <dwalker@calstate.edu>
+ * @author Ivan Masar
  */
 
 class Ldap extends Scheme 

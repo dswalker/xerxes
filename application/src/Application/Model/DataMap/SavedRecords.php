@@ -12,7 +12,7 @@ use Application\Model\Summon;
 /**
  * Database access mapper for saved records
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class SavedRecords extends DataMap

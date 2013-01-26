@@ -12,7 +12,7 @@ use Xerxes\Utility\User;
 /**
  * An event-based authentication framework
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 abstract class Scheme

@@ -8,7 +8,7 @@ use Xerxes\Utility\DataMap;
 /**
  * Database access mapper for users
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Users extends DataMap

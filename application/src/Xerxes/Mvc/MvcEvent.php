@@ -9,7 +9,7 @@ use Xerxes\Utility\Registry;
 /**
  * MVC Event
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  * @package  Xerxes
  */
 

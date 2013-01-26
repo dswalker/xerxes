@@ -7,7 +7,7 @@ use Application\Model\Search;
 /**
  * Primo Config
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Config extends Search\Config

@@ -7,7 +7,7 @@ use Xerxes\Utility\DataValue;
 /**
  * Resource
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Resource extends DataValue  

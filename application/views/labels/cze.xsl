@@ -2,7 +2,7 @@
 
 <!--
 
- author: David Walker
+ author: David Walker <dwalker@calstate.edu>
  author: Ivan Masár
  
  -->

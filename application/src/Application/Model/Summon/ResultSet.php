@@ -7,7 +7,7 @@ use Application\Model\Search;
 /**
  * Search Results
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class ResultSet extends Search\ResultSet

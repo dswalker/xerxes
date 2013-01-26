@@ -5,7 +5,7 @@ namespace Application\Model\Authentication;
 /**
  * Authenticate users against the 'demo_users' list in configuration file
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Demo extends Scheme 

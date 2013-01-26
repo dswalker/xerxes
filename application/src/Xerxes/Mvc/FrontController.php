@@ -7,7 +7,7 @@ use Xerxes\Utility\Registry;
 /**
  * Front Controller
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class FrontController

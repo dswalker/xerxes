@@ -5,7 +5,7 @@ namespace Xerxes\Utility;
 /**
  * Parses and holds basic configuration information from the config
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Registry implements \Serializable

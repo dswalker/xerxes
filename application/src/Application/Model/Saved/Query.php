@@ -8,7 +8,7 @@ use Xerxes\Mvc\Request;
 /**
  * Saved Records Query
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Query extends Search\Query

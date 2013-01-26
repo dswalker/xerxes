@@ -7,7 +7,7 @@ use Xerxes\Utility\DataValue;
 /**
  * Database Value Full Text
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 

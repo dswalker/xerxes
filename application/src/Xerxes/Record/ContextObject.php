@@ -8,7 +8,7 @@ use Xerxes\Utility\Parser;
 /**
  * Extract properties from OpenURL context object
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class ContextObject extends Record

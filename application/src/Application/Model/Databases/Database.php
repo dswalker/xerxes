@@ -5,7 +5,7 @@ namespace Application\Model\Databases;
 /**
  * Database
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Database extends Resource  

@@ -9,7 +9,7 @@ use Xerxes\Utility\Parser;
 /**
  * Extract properties for books, articles, and dissertations from SolrMarc implementation
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Record extends Bibliographic

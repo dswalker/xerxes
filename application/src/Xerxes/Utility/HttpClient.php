@@ -7,7 +7,7 @@ use Guzzle\Http\Client;
 /**
  * Wrapper on Guzzle Http Client
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */ 
 
 class HttpClient extends Client

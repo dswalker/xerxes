@@ -5,7 +5,7 @@ namespace Xerxes\Mvc;
 /**
  * Bootstrap
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  * @package  Xerxes
  */
 

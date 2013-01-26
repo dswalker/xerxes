@@ -10,7 +10,7 @@ use Zend\Http\Client;
 /**
  * Retrieve item and holdings information from an Ex Libris Voyager system
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Voyager implements AvailabilityInterface

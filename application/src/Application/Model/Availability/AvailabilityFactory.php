@@ -5,7 +5,7 @@ namespace Application\Model\Availability;
 /**
  * Availability factory
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class AvailabilityFactory

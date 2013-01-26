@@ -5,7 +5,7 @@ namespace Application\Model\Databases;
 /**
  * Librarian
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Librarian extends Resource  

@@ -9,7 +9,7 @@ use Xerxes\Mvc\Request;
 /**
  * Solr Search Engine
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  * @package Solr
  */
 

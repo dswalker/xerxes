@@ -7,7 +7,7 @@ use Xerxes\Record\Bibliographic;
 /**
  * Extract bibliographic properties from Worldcat
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Record extends Bibliographic

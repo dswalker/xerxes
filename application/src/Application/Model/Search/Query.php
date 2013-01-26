@@ -10,7 +10,7 @@ use Xerxes\Mvc\Request;
 /**
  * Search Query
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Query

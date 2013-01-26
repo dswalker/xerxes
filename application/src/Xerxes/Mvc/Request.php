@@ -11,7 +11,7 @@ use Xerxes\Utility\User;
 /**
  * Process HTTP and CLI requests, as well as Session
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Request extends HttpFoundation\Request

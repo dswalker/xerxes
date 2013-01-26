@@ -9,7 +9,7 @@ use Xerxes\Utility\Parser;
  * 
  * @todo: merge this with Databases\Database?
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class ElectronicResource

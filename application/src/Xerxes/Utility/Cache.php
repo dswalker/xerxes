@@ -5,7 +5,7 @@ namespace Xerxes\Utility;
 /**
  * Application-wide Cache
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Cache extends DataMap

@@ -7,7 +7,7 @@ use Xerxes\Utility\HttpClient as Client;
 /**
  * Summon Client
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  * @author based on the work of Andrew Nagy
  */
 

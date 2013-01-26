@@ -7,7 +7,7 @@ use Xerxes\Utility\Parser;
 /**
  * MARC Document
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Document

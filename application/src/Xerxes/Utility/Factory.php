@@ -5,7 +5,7 @@ namespace Xerxes\Utility;
 /**
  * Utility class
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */ 
 
 class Factory

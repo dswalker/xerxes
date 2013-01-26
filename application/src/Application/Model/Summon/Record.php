@@ -10,7 +10,7 @@ use Xerxes\Utility\Parser;
 /**
  * Extract properties for books, articles, and dissertations from Summon
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Record extends Xerxes\Record

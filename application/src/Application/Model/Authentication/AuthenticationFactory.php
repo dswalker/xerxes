@@ -8,7 +8,7 @@ use Xerxes\Mvc\Request;
 /**
  * Authentication factory
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class AuthenticationFactory

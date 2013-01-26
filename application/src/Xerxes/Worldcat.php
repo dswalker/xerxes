@@ -8,7 +8,7 @@ use Zend\Http\Client;
 /**
  * Search and retrieve records from worldcat api
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Worldcat

@@ -7,7 +7,7 @@ use Xerxes\Utility\Parser;
 /**
  * Search Holding
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Holding

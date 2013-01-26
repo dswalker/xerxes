@@ -10,7 +10,7 @@ use Xerxes\Utility\Registry;
 /**
  * Summon Spell Checker
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Summon

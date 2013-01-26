@@ -7,7 +7,7 @@ use Application\Model\Search;
 /**
  * Solr Config
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Config extends Search\Config

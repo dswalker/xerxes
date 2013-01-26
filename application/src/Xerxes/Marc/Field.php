@@ -5,7 +5,7 @@ namespace Xerxes\Marc;
 /**
  *  Abstract field object
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 abstract class Field

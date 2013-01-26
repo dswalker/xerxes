@@ -5,7 +5,7 @@ namespace Xerxes\Marc;
 /**
  * MARC Leader
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Leader extends ControlField 

@@ -8,7 +8,7 @@ use Xerxes\Mvc\Bootstrap;
 /**
  * Controller Map
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  * @version 
  * @package  Xerxes
  */

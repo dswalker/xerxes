@@ -11,7 +11,7 @@ use Xerxes\Utility\Xsl;
 /**
  * Response
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Response extends HttpFoundation\Response

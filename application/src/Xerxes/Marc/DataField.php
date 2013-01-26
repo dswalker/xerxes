@@ -5,7 +5,7 @@ namespace Xerxes\Marc;
 /**
  * MARC Data Field
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class DataField extends Field

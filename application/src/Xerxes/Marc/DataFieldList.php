@@ -5,7 +5,7 @@ namespace Xerxes\Marc;
 /**
  * MARC DatafieldList
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class DataFieldList extends FieldList 

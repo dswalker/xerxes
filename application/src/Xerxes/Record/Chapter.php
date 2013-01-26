@@ -5,7 +5,7 @@ namespace Xerxes\Record;
 /**
  * Table of Contents Chapter
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Chapter

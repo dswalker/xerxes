@@ -9,7 +9,7 @@ use Xerxes\Utility\DataMap;
 /**
  * Search Stats
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Stats extends DataMap

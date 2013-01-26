@@ -9,7 +9,7 @@ use Zend\Http\Client;
  *
  * based on code written by Scott Jungling <sjungling@csuchico.edu>
  *
- * @author David Walker 
+ * @author David Walker <dwalker@calstate.edu> 
  *
  */
 

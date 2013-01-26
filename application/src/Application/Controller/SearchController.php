@@ -18,7 +18,7 @@ use Xerxes\Utility\Registry;
  * 
  * Defines the basic actions for a search engine
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 abstract class SearchController extends ActionController

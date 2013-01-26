@@ -7,7 +7,7 @@ use Xerxes\Utility\Parser;
 /**
  * Record Format
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Format

@@ -14,7 +14,7 @@ use Xerxes\Utility\Parser;
 /**
  * Extract properties for books, articles, and dissertations from MARC
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Bibliographic extends Record

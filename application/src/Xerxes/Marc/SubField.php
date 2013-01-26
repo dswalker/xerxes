@@ -5,7 +5,7 @@ namespace Xerxes\Marc;
 /**
  * MARC Sub Field
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class SubField extends Field 
