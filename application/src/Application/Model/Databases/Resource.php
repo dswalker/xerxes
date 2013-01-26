@@ -15,7 +15,7 @@ use Xerxes\Utility\DataValue;
 
 class Resource extends DataValue  
 {
-	public $database_id;
+	public $resource_id;
 	public $title_full;
 	public $title_display;
 	public $link;
