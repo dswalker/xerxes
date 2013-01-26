@@ -26,7 +26,6 @@ abstract class Scheme
 	protected $role = "named"; // users role as named or guest
 	protected $return_url; // the return url to get the user back to where they are in Xerxes
 	protected $validate_url; // the url to return for a validate request, for external auths
-	protected $redirect; // the url to redirect to
 
 	/**
 	 * @var User
@@ -44,11 +43,10 @@ abstract class Scheme
 	 * @var Request
 	 */	
 	
-	protected $request; // request object
+	protected $request;
 	
 	const FAILED = 0;
 	const SUCCESS = 1;
-	const REDIRECT = 3;
 	
 	/**
 	 * Create Authentication Scheme
