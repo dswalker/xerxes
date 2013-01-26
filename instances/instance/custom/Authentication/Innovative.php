@@ -9,9 +9,6 @@ use Application\Model\Authentication\Exception\AccessDeniedException;
  * Custom authentication for III patron api
  * 
  * @author David Walker
- * @copyright 2013 California State University
- * @link http://xerxes.calstate.edu
- * @license
  */
 
 class Innovative extends Authentication\Innovative

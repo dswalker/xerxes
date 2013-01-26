@@ -10,9 +10,6 @@ use Xerxes\Utility\Registry;
  * Bing Spell Checker
  *
  * @author David Walker
- * @copyright 2012 California State University
- * @link http://xerxes.calstate.edu
- * @license
  */
 
 class Bing

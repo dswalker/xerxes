@@ -8,9 +8,6 @@ use Xerxes\Utility\Registry;
  * Databases Config
  *
  * @author David Walker
- * @copyright 2013 California State University
- * @link http://xerxes.calstate.edu
- * @license
  */
 
 class Config extends Registry

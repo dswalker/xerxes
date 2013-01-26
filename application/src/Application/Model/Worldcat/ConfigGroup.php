@@ -6,9 +6,6 @@ namespace Application\Model\Worldcat;
  * Worldcat group config
  *
  * @author David Walker
- * @copyright 2011 California State University
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 class ConfigGroup

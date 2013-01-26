@@ -6,9 +6,6 @@ namespace Application\Model\Worldcat;
  * Worldcat Library Holdings
  * 
  * @author David Walker
- * @copyright 2011 California State University
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 class Library

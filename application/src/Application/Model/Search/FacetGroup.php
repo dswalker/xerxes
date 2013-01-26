@@ -8,9 +8,6 @@ use Xerxes\Utility\Parser;
  * Search Facet Group
  *
  * @author David Walker
- * @copyright 2011 California State University
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 class FacetGroup

@@ -11,9 +11,6 @@ use Xerxes\Utility\Parser;
  * Extract properties for books, articles, and dissertations from Summon
  * 
  * @author David Walker
- * @copyright 2011 California State University
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 class Record extends Xerxes\Record

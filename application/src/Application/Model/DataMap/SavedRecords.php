@@ -13,9 +13,6 @@ use Application\Model\Summon;
  * Database access mapper for saved records
  *
  * @author David Walker
- * @copyright 2011 California State University
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 class SavedRecords extends DataMap

@@ -6,9 +6,6 @@ namespace Xerxes\Marc;
  *  Abstract field object
  * 
  * @author David Walker
- * @copyright 2011 California State University
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 abstract class Field

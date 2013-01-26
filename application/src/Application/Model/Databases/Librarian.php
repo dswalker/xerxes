@@ -6,9 +6,6 @@ namespace Application\Model\Databases;
  * Librarian
  *
  * @author David Walker
- * @copyright 2013 California State University
- * @link http://xerxes.calstate.edu
- * @license
  */
 
 class Librarian extends Resource  

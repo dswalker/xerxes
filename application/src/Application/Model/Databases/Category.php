@@ -9,9 +9,6 @@ use Xerxes\Utility\Parser;
  * Category
  *
  * @author David Walker
- * @copyright 2013 California State University
- * @link http://xerxes.calstate.edu
- * @license
  */
 
 class Category extends DataValue

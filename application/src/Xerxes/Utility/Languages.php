@@ -6,9 +6,6 @@ namespace Xerxes\Utility;
  * Translate language codes and names
  *
  * @author Ivan Masar
- * @copyright 2010 Ivan Masar
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 class Languages

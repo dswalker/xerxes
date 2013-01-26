@@ -6,9 +6,6 @@ namespace Application\Model\Authentication;
  * Authenticate users against the 'demo_users' list in configuration file
  * 
  * @author David Walker
- * @copyright 2013 California State University
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 class Demo extends Scheme 

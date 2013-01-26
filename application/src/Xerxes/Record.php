@@ -13,9 +13,6 @@ use Xerxes\Utility\Parser;
  * Properties for books, media, articles, and dissertations
  * 
  * @author David Walker
- * @copyright 2011 California State University
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 class Record

@@ -11,9 +11,6 @@ use Xerxes\Utility\Cache;
  * Search Results
  *
  * @author David Walker
- * @copyright 2011 California State University
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 class ResultSet

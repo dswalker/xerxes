@@ -6,9 +6,6 @@ namespace Xerxes\Marc;
  * A generic class for MARC fields, implemented by datafield and subfield list objects
  * 
  * @author David Walker
- * @copyright 2011 California State University
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 class FieldList implements \Iterator 

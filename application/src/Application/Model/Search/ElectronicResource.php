@@ -10,9 +10,6 @@ use Xerxes\Utility\Parser;
  * @todo: merge this with Databases\Database?
  *
  * @author David Walker
- * @copyright 2012 California State University
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 class ElectronicResource

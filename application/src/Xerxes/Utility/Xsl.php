@@ -7,9 +7,6 @@ namespace Xerxes\Utility;
  * 
  * @author David Walker
  * @author Jonathan Rochkind
- * @copyright 2011 California State University
- * @link http://xerxes.calstate.edu
- * @license
  */ 
 
 class Xsl

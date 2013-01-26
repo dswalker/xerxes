@@ -12,9 +12,6 @@ use Xerxes\Utility\Parser;
  * Database access mapper for Metalib KB
  *
  * @author David Walker
- * @copyright 2011 California State University
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 class Databases extends DataMap

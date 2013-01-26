@@ -6,9 +6,6 @@ namespace Xerxes\Utility;
  * Email
  * 
  * @author David Walker
- * @copyright 2013 California State University
- * @link
- * @license
  */
 
 class Email 

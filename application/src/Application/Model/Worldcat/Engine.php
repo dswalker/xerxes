@@ -12,9 +12,6 @@ use Xerxes\Mvc\Request;
  * Worldcat Search Engine
  * 
  * @author David Walker
- * @copyright 2011 California State University
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 class Engine extends Search\Engine 

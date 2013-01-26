@@ -6,9 +6,6 @@ namespace Application\Model\Databases;
  * Database
  *
  * @author David Walker
- * @copyright 2013 California State University
- * @link http://xerxes.calstate.edu
- * @license
  */
 
 class Database extends Resource  

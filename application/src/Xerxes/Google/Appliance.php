@@ -10,9 +10,6 @@ use Zend\Http\Client;
  * based on code written by Scott Jungling <sjungling@csuchico.edu>
  *
  * @author David Walker 
- * @copyright 2012 California State University
- * @link http://xerxes.calstate.edu
- * @license
  *
  */
 

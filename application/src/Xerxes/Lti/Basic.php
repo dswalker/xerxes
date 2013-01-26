@@ -10,9 +10,6 @@ require_once __DIR__ . '/../OAuth/OAuth.php'; // @todo: make this not hardwired
  * Convenience class for verifying and accessing properties of basic lti launch request
  *
  * @author David Walker
- * @copyright 2011 California State University
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 class Basic 

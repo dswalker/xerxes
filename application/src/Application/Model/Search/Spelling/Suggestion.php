@@ -8,9 +8,6 @@ use Application\Model\Search;
  * Spelling Suggestion
  *
  * @author David Walker
- * @copyright 2012 California State University
- * @link http://xerxes.calstate.edu
- * @license
  */
 
 class Suggestion

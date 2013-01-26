@@ -6,9 +6,6 @@ namespace Xerxes\Utility;
  * Provides basic helper function for instatiated DataValue Objects
  *
  * @author David Walker
- * @copyright 2008 California State University
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 abstract class DataValue

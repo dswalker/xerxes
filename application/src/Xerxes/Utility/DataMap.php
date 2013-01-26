@@ -13,9 +13,6 @@ global $xerxes_pdo;
  * database, including transactions; basically a convenience wrapper around PDO
  *
  * @author David Walker
- * @copyright 2008 California State University
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 abstract class DataMap

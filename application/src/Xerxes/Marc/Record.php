@@ -8,9 +8,6 @@ use Xerxes\Utility\Parser;
  * Parse single MARC-XML record
  * 
  * @author David Walker
- * @copyright 2011 California State University
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 class Record

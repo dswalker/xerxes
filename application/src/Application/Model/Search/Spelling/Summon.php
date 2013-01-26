@@ -11,9 +11,6 @@ use Xerxes\Utility\Registry;
  * Summon Spell Checker
  *
  * @author David Walker
- * @copyright 2012 California State University
- * @link http://xerxes.calstate.edu
- * @license
  */
 
 class Summon

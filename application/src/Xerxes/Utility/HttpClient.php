@@ -8,9 +8,6 @@ use Guzzle\Http\Client;
  * Wrapper on Guzzle Http Client
  * 
  * @author David Walker
- * @copyright 2013 California State University
- * @link http://xerxes.calstate.edu
- * @license
  */ 
 
 class HttpClient extends Client

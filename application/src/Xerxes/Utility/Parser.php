@@ -6,9 +6,6 @@ namespace Xerxes\Utility;
  * Utility class for basic parsing functions
  * 
  * @author David Walker
- * @copyright 2012 California State University
- * @link http://xerxes.calstate.edu
- * @license
  */ 
 
 class Parser

@@ -6,9 +6,6 @@ namespace Application\Model\Authentication;
  * Guest Authentication
  * 
  * @author David Walker
- * @copyright 2013 California State University
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 class Guest extends Scheme 

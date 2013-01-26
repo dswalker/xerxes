@@ -10,9 +10,6 @@ use Application\Model\Authentication\Exception\AccessDeniedException;
  * 
  * @author Jonathan Rochkind
  * @author David Walker
- * @copyright 2013 California State University
- * @link http://xerxes.calstate.edu
- * @license
  */
 
 class Shibboleth extends Authentication\Shibboleth

@@ -9,9 +9,6 @@ use Zend\Http\Client;
  * Search and retrieve records from worldcat api
  *
  * @author David Walker
- * @copyright 2008 California State University
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 class Worldcat

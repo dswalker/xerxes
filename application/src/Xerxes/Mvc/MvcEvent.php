@@ -10,10 +10,7 @@ use Xerxes\Utility\Registry;
  * MVC Event
  *
  * @author David Walker
- * @copyright 2013 California State University
  * @package  Xerxes
- * @link http://xerxes.calstate.edu
- * @license
  */
 
 class MvcEvent

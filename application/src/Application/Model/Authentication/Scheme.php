@@ -13,9 +13,6 @@ use Xerxes\Utility\User;
  * An event-based authentication framework
  *
  * @author David Walker
- * @copyright 2011 California State University
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 abstract class Scheme

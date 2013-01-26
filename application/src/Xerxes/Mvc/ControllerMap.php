@@ -9,11 +9,8 @@ use Xerxes\Mvc\Bootstrap;
  * Controller Map
  * 
  * @author David Walker
- * @copyright 2013 California State University
  * @version 
  * @package  Xerxes
- * @link
- * @license 
  */
 
 class ControllerMap

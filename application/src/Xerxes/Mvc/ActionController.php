@@ -12,9 +12,6 @@ use Xerxes\Utility\Registry;
  * Action Controller
  *
  * @author David Walker
- * @copyright 2013 California State University
- * @link http://xerxes.calstate.edu
- * @license
  */
 
 abstract class ActionController

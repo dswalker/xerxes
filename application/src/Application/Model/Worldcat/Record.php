@@ -8,9 +8,6 @@ use Xerxes\Record\Bibliographic;
  * Extract bibliographic properties from Worldcat
  * 
  * @author David Walker
- * @copyright 2011 California State University
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 class Record extends Bibliographic

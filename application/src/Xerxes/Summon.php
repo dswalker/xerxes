@@ -7,12 +7,8 @@ use Xerxes\Utility\HttpClient as Client;
 /**
  * Summon Client
  * 
- * Based on the work of Andrew Nagy
- *
  * @author David Walker
- * @copyright 2012 California State University
- * @link http://xerxes.calstate.edu
- * @license
+ * @author based on the work of Andrew Nagy
  */
 
 class Summon

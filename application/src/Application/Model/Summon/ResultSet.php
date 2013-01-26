@@ -8,9 +8,6 @@ use Application\Model\Search;
  * Search Results
  *
  * @author David Walker
- * @copyright 2011 California State University
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 class ResultSet extends Search\ResultSet

@@ -8,9 +8,6 @@ use Xerxes\Utility\DataValue;
  * Resource
  *
  * @author David Walker
- * @copyright 2013 California State University
- * @link http://xerxes.calstate.edu
- * @license
  */
 
 class Resource extends DataValue  

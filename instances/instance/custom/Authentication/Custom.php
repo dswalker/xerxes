@@ -8,9 +8,6 @@ use Application\Model\Authentication;
  * Custom authentication
  * 
  * @author David Walker
- * @copyright 2008 California State University
- * @link http://xerxes.calstate.edu
- * @license 
  */
 
 class Custom extends Authentication\Scheme
