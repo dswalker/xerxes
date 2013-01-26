@@ -418,12 +418,22 @@ abstract class SearchController extends ActionController
 				
 			$this->markSaved( $original_id, $inserted_id );
 			
+			// set this for the response
+			
 			$this->response->setVariable('savedRecordID', $inserted_id);
+			$this->response->setVariable('return_url', $this->request->headers->get('referer'));
 		} 
 		
-		// view template
+		// view based on request
 		
-		$this->response->setView('search/save-ajax.xsl');
+		if ( $this->request->getParam('format') == 'json')
+		{
+			$this->response->setView('search/save-ajax.xsl');
+		}
+		else
+		{
+			$this->response->setView('search/save.xsl');
+		}
 		
 		return $this->response;
 	}

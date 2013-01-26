@@ -32,9 +32,7 @@
 </xsl:template>
 
 <xsl:template name="main">
-	
-	<xsl:variable name="back" select="request/server/http_referer" />
-	
+		
 	<h1>
 	<xsl:choose>
 		<xsl:when test="delete = '1'">Record successfully removed from saved records</xsl:when>
@@ -42,7 +40,7 @@
 	</xsl:choose>
 	</h1>
 	
-	<p>Return to <a href="{$back}">results page</a></p>	
+	<p>Return to <a href="{return_url}">results page</a></p>	
 	
 </xsl:template>
 </xsl:stylesheet>
