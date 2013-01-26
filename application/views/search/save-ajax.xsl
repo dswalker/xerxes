@@ -13,7 +13,7 @@
 <!--
 
  Save ajax view
- author: Jonathan Rochkind
+ author: Jonathan Rochkind <rochkind@jhu.edu>
  
 -->
 <xsl:stylesheet version="1.0"
