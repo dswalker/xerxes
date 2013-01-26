@@ -14,7 +14,7 @@
 
 <!--
 
- This file is part of the Xerxes project.
+ This file is part of Xerxes.
 
  (c) California State University <library@calstate.edu>
 

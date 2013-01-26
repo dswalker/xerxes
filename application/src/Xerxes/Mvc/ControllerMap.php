@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the Xerxes project.
+ * This file is part of Xerxes.
  *
  * (c) California State University <library@calstate.edu>
  *
@@ -18,8 +18,6 @@ use Xerxes\Mvc\Bootstrap;
  * Controller Map
  * 
  * @author David Walker <dwalker@calstate.edu>
- * @version 
- * @package  Xerxes
  */
 
 class ControllerMap
@@ -211,11 +209,19 @@ class ControllerMap
 		
 		if ( $controller_classes !== false )
 		{
+			$class_name = '';
+			
+			// last one always overrides
+			
 			foreach ( $controller_classes as $controller_class )
 			{
-				$controller = (string) $controller_class;
+				$class_name = (string) $controller_class;
 			}
-		}		
+			
+			return $class_name;
+		}
+		
+		// based on convention
 		
 		return 'Application\\Controller\\' . ucfirst($controller) . 'Controller';		
 	}
