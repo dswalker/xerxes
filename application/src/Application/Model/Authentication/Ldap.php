@@ -9,7 +9,6 @@ namespace Application\Model\Authentication;
  * @copyright 2011 California State University, 2010 Ivan Masar
  * @link http://xerxes.calstate.edu
  * @license 
- * @package Xerxes
  */
 
 class Ldap extends Scheme 

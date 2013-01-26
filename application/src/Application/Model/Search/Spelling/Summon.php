@@ -14,7 +14,6 @@ use Application\Model\Summon\Config,
  * @copyright 2012 California State University
  * @link http://xerxes.calstate.edu
  * @license
- * @package Xerxes
  */
 
 class Summon

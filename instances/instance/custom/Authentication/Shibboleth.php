@@ -13,7 +13,6 @@ use Application\Model\Authentication,
  * @copyright 2013 California State University
  * @link http://xerxes.calstate.edu
  * @license
- * @package Xerxes
  */
 
 class Shibboleth extends Authentication\Shibboleth

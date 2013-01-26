@@ -11,7 +11,6 @@ use Xerxes\Utility\DataValue;
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
  * @license 
- * @package Xerxes
  */
 
 class Tag extends DataValue

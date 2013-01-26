@@ -12,7 +12,6 @@ use Xerxes\Utility\Parser,
  * @copyright 2008 California State University
  * @link http://xerxes.calstate.edu
  * @license 
- * @package Xerxes
  */
 
 class Worldcat

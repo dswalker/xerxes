@@ -13,7 +13,6 @@ use Application\Model\Search,
  * @copyright 2010 California State University
  * @link http://xerxes.calstate.edu
  * @license 
- * @package Primo
  */
 
 class Engine extends Search\Engine 

@@ -7,14 +7,13 @@ use Zend\Http\Client;
 /**
  * Search and retrieve records Google search appliance
  *
- * @author David Walker
- * @author based on code written by Scott Jungling <sjungling@csuchico.edu>
- * 
+ * based on code written by Scott Jungling <sjungling@csuchico.edu>
+ *
+ * @author David Walker 
  * @copyright 2012 California State University
  * @link http://xerxes.calstate.edu
  * @license
  *
- * @package Xerxes
  */
 
 class Appliance 

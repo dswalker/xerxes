@@ -14,7 +14,6 @@ use Xerxes\Utility\Parser,
  * @author David Walker
  * @link http://xerxes.calstate.edu
  * @license 
- * @package Xerxes
  */
 
 class Innovative extends Scheme 

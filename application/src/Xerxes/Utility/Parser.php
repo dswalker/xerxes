@@ -8,8 +8,7 @@ namespace Xerxes\Utility;
  * @author David Walker
  * @copyright 2012 California State University
  * @link http://xerxes.calstate.edu
- * @license 
- * @package  Xerxes
+ * @license
  */ 
 
 class Parser

@@ -12,7 +12,6 @@ use Xerxes\Utility\Registry,
  * @copyright 2013 California State University
  * @link http://xerxes.calstate.edu
  * @license 
- * @package Xerxes
  */
 
 class AuthenticationFactory

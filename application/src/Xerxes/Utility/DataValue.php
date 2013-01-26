@@ -5,10 +5,8 @@ namespace Xerxes\Utility;
 /**
  * Provides basic helper function for instatiated DataValue Objects
  *
- * @abstract
  * @author David Walker
  * @copyright 2008 California State University
- * @package  Xerxes_Framework
  * @link http://xerxes.calstate.edu
  * @license 
  */

@@ -12,7 +12,6 @@ use Application\Model\Search\Refereed as RefereedValue,
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
  * @license 
- * @package Xerxes
  */
 
 class Refereed extends DataMap

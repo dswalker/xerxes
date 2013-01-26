@@ -13,7 +13,6 @@ use Xerxes\Utility\Parser;
  * @copyright 2012 California State University
  * @link http://xerxes.calstate.edu
  * @license 
- * @package Xerxes
  */
 
 class ElectronicResource

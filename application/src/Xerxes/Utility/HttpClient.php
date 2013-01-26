@@ -11,7 +11,6 @@ use Guzzle\Http\Client;
  * @copyright 2013 California State University
  * @link http://xerxes.calstate.edu
  * @license
- * @package
  */ 
 
 class HttpClient extends Client

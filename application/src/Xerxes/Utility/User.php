@@ -9,7 +9,6 @@ use Xerxes\Mvc\Request;
  * 
  * @author David Walker
  * @copyright 2011 California State University
- * @package Xerxes
  * @link http://xerxes.calstate.edu
  * @license 
  */

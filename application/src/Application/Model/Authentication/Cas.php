@@ -11,7 +11,6 @@ use Xerxes\Utility\Factory,
  * 
  * @author David Walker
  * @copyright 2013 California State University
- * @package Xerxes
  * @link http://xerxes.calstate.edu
  * @license 
  */

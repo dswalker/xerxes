@@ -14,7 +14,6 @@ use Application\Model\Search\Spelling\Suggestion,
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
  * @license
- * @package Xerxes
  */
 
 class Query

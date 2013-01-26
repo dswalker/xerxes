@@ -8,7 +8,7 @@ namespace Xerxes\Mvc;
  * @author David Walker
  * @copyright 2013 California State University
  * @package  Xerxes
- * @link
+ * @link http://xerxes.calstate.edu
  * @license
  */
 

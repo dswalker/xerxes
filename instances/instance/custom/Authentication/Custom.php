@@ -5,13 +5,12 @@ namespace Local\Authentication;
 use Application\Model\Authentication;
 
 /**
- * custom authentication
+ * Custom authentication
  * 
  * @author David Walker
  * @copyright 2008 California State University
  * @link http://xerxes.calstate.edu
  * @license 
- * @package Xerxes
  */
 
 class Custom extends Authentication\Scheme

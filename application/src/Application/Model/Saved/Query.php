@@ -12,7 +12,6 @@ use Application\Model\Search,
  * @copyright 2013 California State University
  * @link http://xerxes.calstate.edu
  * @license
- * @package Xerxes
  */
 
 class Query extends Search\Query
