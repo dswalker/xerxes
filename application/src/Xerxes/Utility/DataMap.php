@@ -15,7 +15,6 @@ global $xerxes_pdo;
  * @abstract
  * @author David Walker
  * @copyright 2008 California State University
- * @version
  * @package  Xerxes_Framework
  * @link http://xerxes.calstate.edu
  * @license 

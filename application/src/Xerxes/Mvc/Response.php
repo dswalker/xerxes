@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation,
  * @copyright 2013 California State University
  * @link http://xerxes.calstate.edu
  * @license 
- * @version
  * @package Xerxes
  */
 

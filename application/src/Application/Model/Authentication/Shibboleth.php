@@ -7,7 +7,6 @@ namespace Application\Model\Authentication;
  * 
  * @author David Walker
  * @copyright 2011 California State University
- * @version
  * @package Xerxes
  * @link http://xerxes.calstate.edu
  * @license 

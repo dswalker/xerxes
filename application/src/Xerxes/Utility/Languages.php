@@ -9,7 +9,6 @@ namespace Xerxes\Utility;
  * @copyright 2010 Ivan Masar
  * @link http://xerxes.calstate.edu
  * @license 
- * @version
  * @package  Xerxes_Framework
  */
 

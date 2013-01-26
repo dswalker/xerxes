@@ -9,7 +9,6 @@ namespace Application\Model\Search;
  * @copyright 2011 California State University
  * @link http://xerxes.calstate.edu
  * @license 
- * @version
  * @package Xerxes
  */
 

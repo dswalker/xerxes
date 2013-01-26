@@ -9,7 +9,6 @@ namespace Xerxes\Utility;
  * @copyright 2013 California State University
  * @link
  * @license
- * @version
  */
 
 class Email 

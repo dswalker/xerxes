@@ -13,7 +13,6 @@ use Zend\Http\Client;
  * @copyright 2012 California State University
  * @link http://xerxes.calstate.edu
  * @license
- * @version
  *
  * @package Xerxes
  */

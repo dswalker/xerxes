@@ -11,7 +11,6 @@ require_once __DIR__ . '/../OAuth/OAuth.php'; // @todo: make this not hardwired
  *
  * @author David Walker
  * @copyright 2011 California State University
- * @version
  * @package Xerxes
  * @link http://xerxes.calstate.edu
  * @license 

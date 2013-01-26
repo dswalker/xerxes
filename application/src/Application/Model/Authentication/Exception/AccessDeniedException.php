@@ -9,7 +9,6 @@ namespace Application\Model\Authentication\Exception;
  * @copyright 2012 California State University
  * @link http://xerxes.calstate.edu
  * @license 
- * @version
  * @package Xerxes
  */
 

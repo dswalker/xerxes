@@ -7,10 +7,8 @@ namespace Application\Model\Authentication;
  * 
  * @author David Walker, Ivan Masar
  * @copyright 2011 California State University, 2010 Ivan Masar
- * 
  * @link http://xerxes.calstate.edu
  * @license 
- * @version
  * @package Xerxes
  */
 

@@ -13,7 +13,6 @@ use Application\Model\Availability\AvailabilityInterface,
  * @author David Walker
  * @copyright 2012 California State University
  * @link http://xerxes.calstate.edu
- * @version
  * @license
  */
 
