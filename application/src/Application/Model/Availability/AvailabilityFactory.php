@@ -15,6 +15,13 @@ namespace Application\Model\Availability;
 
 class AvailabilityFactory
 {
+	/**
+	 * Create Availability object
+	 * 
+	 * @param string $name
+	 * @return AvailabilityInterface
+	 */
+	
 	public function getAvailabilityObject($name)
 	{	
 		$name = preg_replace('/\W/', '', $name);
