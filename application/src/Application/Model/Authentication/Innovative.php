@@ -23,6 +23,10 @@ class Innovative extends Scheme
 	protected $server;
 	protected $user_data;
 	
+	/*
+	 * Create new Innovative authentication
+	 */
+	
 	public function __construct(Request $request)
 	{
 		parent::__construct($request);
@@ -30,6 +34,10 @@ class Innovative extends Scheme
 		$this->server = $this->registry->getConfig( "INNOVATIVE_PATRON_API", true );
 		$this->server = rtrim($this->server, '/');
 	}
+	
+	/**
+	 * Authenticate the user against the III Patron API
+	 */
 	
 	public function onCallBack()
 	{
@@ -61,7 +69,7 @@ class Innovative extends Scheme
 
 				if ( ! in_array( (int) $this->user_data["P TYPE"], $arrTypes) )
 				{
-					throw new AccessDeniedException("text_authentication_error_not_authorized");
+					throw new AccessDeniedException("User is not authorized to use this service");
 				}
 			}
 			

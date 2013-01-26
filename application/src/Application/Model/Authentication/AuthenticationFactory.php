@@ -9,7 +9,7 @@ use Xerxes\Utility\Registry,
  * Authentication factory
  *
  * @author David Walker
- * @copyright 2011 California State University
+ * @copyright 2013 California State University
  * @link http://xerxes.calstate.edu
  * @license 
  * @version
@@ -18,6 +18,13 @@ use Xerxes\Utility\Registry,
 
 class AuthenticationFactory
 {
+	/**
+	 * Creat an authentication object
+	 * 
+	 * @param Request $request
+	 * @return Scheme
+	 */
+	
 	public function getAuthenticationObject(Request $request)
 	{
 		$registry = Registry::getInstance();

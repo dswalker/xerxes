@@ -8,9 +8,9 @@ use Application\Model\Authentication;
  * custom authentication for iii patron api
  * 
  * @author David Walker
- * @copyright 2008 California State University
+ * @copyright 2013 California State University
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license
  * @version
  * @package Xerxes
  */
@@ -22,6 +22,13 @@ class Innovative extends Authentication\Innovative
 	 * the user's informtion from the Patron API
 	 * 
 	 * User has already been authenticated when this function is called. 
+	 * 
+	 * This function may:
+	 * 
+	 * 1) Throw an Authentication\AccessDeniedException exception if you want to deny user 
+	 *    access to logging into Xerxes at all. The message should explain why. 
+	 * 
+	 * 2) Set various propertes in $this->user if you want to fill out some more user properties
 	 */
 	
 	protected function mapUserData()

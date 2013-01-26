@@ -6,7 +6,7 @@ namespace Application\Model\Authentication;
  * Authenticate users against the 'demo_users' list in configuration file
  * 
  * @author David Walker
- * @copyright 2011 California State University
+ * @copyright 2013 California State University
  * @link http://xerxes.calstate.edu
  * @license 
  * @version
@@ -16,7 +16,7 @@ namespace Application\Model\Authentication;
 class Demo extends Scheme 
 {
 	/**
-	* Authenticates the user against the directory server
+	* Authenticate the user against the local config user list
 	*/
 	
 	public function onCallBack()

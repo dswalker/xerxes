@@ -10,7 +10,7 @@ use Xerxes\Utility\Factory,
  * CAS authentication
  * 
  * @author David Walker
- * @copyright 2008 California State University
+ * @copyright 2013 California State University
  * @version
  * @package Xerxes
  * @link http://xerxes.calstate.edu
@@ -36,6 +36,10 @@ class Cas extends Scheme
 		return self::REDIRECT;
 	}
 	
+	/**
+	 * Validate the login
+	 */
+	
 	public function onCallBack()
 	{
 		// validate the request
@@ -57,8 +61,8 @@ class Cas extends Scheme
 	 * Parses a validation response from a CAS server to see if the returning CAS request is valid
 	 *
 	 * @param string $results		xml or plain text response from cas server
-	 * @return bool						true if valid, false otherwise
-	 * @exception 						throws exception if cannot parse response or invalid version
+	 * @return bool					true if valid, false otherwise
+	 * @exception 					throws exception if cannot parse response or invalid version
 	 */
 	
 	private function isValid()

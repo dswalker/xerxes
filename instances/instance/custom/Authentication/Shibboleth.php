@@ -5,12 +5,13 @@ namespace Local\Authentication;
 use Application\Model\Authentication;
 
 /**
- * custom authentication for shibboleth
+ * Custom authentication for shibboleth
  * 
+ * @author Jonathan Rochkind
  * @author David Walker
- * @copyright 2008 California State University
+ * @copyright 2013 California State University
  * @link http://xerxes.calstate.edu
- * @license http://www.gnu.org/licenses/
+ * @license
  * @version
  * @package Xerxes
  */
@@ -23,25 +24,22 @@ class Shibboleth extends Authentication\Shibboleth
 	 * 
 	 * User has already been authenticated when this function is called. 
 	 * 
-	 * HTTP headers are available via $this->request->server()->get("header_name");
+	 * HTTP headers are available via $this->request->server->get("header_name");
 	 * 
 	 * This function may:
 	 * 
-	 * 1) Throw an AccessDenied exception if, based on attributes, you want to deny user 
+	 * 1) Throw an Authentication\AccessDeniedException exception if you want to deny user 
 	 *    access to logging into Xerxes at all. The message should explain why. 
 	 * 
-	 * 2) Set various propertes in $this->user (a Xerxes_Model_Authentication_User) object if you want
-	 *    to fill out some more user properties  based on attributes in headers 
-	 *    set by Shib. You could even pick a new username, if you so choose.
+	 * 2) Set various propertes in $this->user if you want to fill out some more user properties
 	 */
 	
 	protected function mapUserData()
 	{
 		/* Example:
 		
-		$this->user->email = $this->request->getServer("email"); 
+		$this->user->email = $this->request->server->get("email"); 
 		
 		*/
-
 	}
 }

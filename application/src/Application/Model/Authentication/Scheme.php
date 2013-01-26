@@ -22,16 +22,28 @@ use Application\Model\DataMap\Users,
 abstract class Scheme
 {
 	public $id; // the id of this auth scheme, set by the factory method invoking it
-	
-	protected $user; // user object
 	protected $role = "named"; // users role as named or guest
 	protected $return_url; // the return url to get the user back to where they are in Xerxes
 	protected $validate_url; // the url to return for a validate request, for external auths
-	protected $redirect;
+	protected $redirect; // the url to redirect to
+
+	/**
+	 * @var User
+	 */
 	
-	protected $registry; // config object
+	protected $user;
+	
+	/**
+	 * @var Registry
+	 */
+	
+	protected $registry;
+	
+	/**
+	 * @var Request
+	 */	
+	
 	protected $request; // request object
-	protected $response; // response object	
 	
 	const FAILED = 0;
 	const SUCCESS = 1;
@@ -129,8 +141,11 @@ abstract class Scheme
 	}
 	
 	/**
-	 * This gets called on every request, so logic can be run to time-out a login,
-	 * check with SSO system, etc.; beware of performance issues, yo!
+	 * This gets called on every request
+	 * 
+	 * Place here logic to time-out a login,check with SSO system, etc.; 
+	 * beware of performance issues, yo!  You'll also  need to create a contoller
+	 * and register an action to run on every request
 	 */
 	
 	public function onEveryRequest()
@@ -139,7 +154,7 @@ abstract class Scheme
 	}
 	
 	/**
-	 * Registers the user in session and with the user tables in the database
+	 * Register the user in session and with the user tables in the database
 	 * and then forwards them to the return url
 	 */
 
@@ -194,10 +209,22 @@ abstract class Scheme
 		return self::SUCCESS;
 	}
 	
+	/**
+	 * Set the redirect URL
+	 * 
+	 * @param string $url
+	 */
+	
 	public function setRedirect($url)
 	{
 		$this->redirect = $url;
 	}
+	
+	/**
+	 * Get redirect URL
+	 * 
+	 * @return string
+	 */
 	
 	public function getRedirect()
 	{

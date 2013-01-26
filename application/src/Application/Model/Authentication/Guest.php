@@ -6,7 +6,7 @@ namespace Application\Model\Authentication;
  * Guest Authentication
  * 
  * @author David Walker
- * @copyright 2011 California State University
+ * @copyright 2013 California State University
  * @version
  * @package Xerxes
  * @link http://xerxes.calstate.edu

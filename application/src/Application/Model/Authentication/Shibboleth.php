@@ -16,31 +16,8 @@ namespace Application\Model\Authentication;
 class Shibboleth extends Scheme 
 {
 	/**
-	 *  HTTP header that the username will be found in. Subclass can over-ride
-	 *  if different. 
-	 */
-	
-	public function usernameHeader()
-	{
-		// apache might have this one if you are using mod_rewrite
-		
-		if ( $this->request->getServer("REDIRECT_REMOTE_USER") != "" )
-		{
-			return "REDIRECT_REMOTE_USER";
-		}
-		elseif ( $this->request->getServer("HTTP_REMOTE_USER") != "" )
-		{
-			// apache might have this if so configured; iis will always have this
-			
-			return "HTTP_REMOTE_USER";
-		}
-		else
-		{
-			return "REMOTE_USER";
-		}
-	}
-  
-	/**
+	 * Register the user after authentication
+	 * 
 	 * For shibboleth, if user got this far, we should have authentication
 	 * params in header already from the Shib SP and apache config, just read 
 	 * what's been provided. 
@@ -49,7 +26,7 @@ class Shibboleth extends Scheme
 	public function onLogin()
 	{
 		// get username header from proper psuedo-HTTP header set by apache
-		$strUsername = $this->request->getServer( $this->usernameHeader() );
+		$strUsername = $this->request->getServer( $this->getUsernameHeader() );
 		
 		if ( $strUsername != null )
 		{
@@ -75,10 +52,40 @@ class Shibboleth extends Scheme
 	}
 	
 	/**
-	 * Shibboleth_Local class defines this
+	 *  HTTP header that the username will be found in
+	 *
+	 *  Subclass can over-ride if different.
+	 *
+	 *  @return string
 	 */
 	
-	protected function mapHeaders()
+	protected function getUsernameHeader()
+	{
+		// apache might have this one if you are using mod_rewrite
+	
+		if ( $this->request->getServer("REDIRECT_REMOTE_USER") != "" )
+		{
+			return "REDIRECT_REMOTE_USER";
+		}
+		elseif ( $this->request->getServer("HTTP_REMOTE_USER") != "" )
+		{
+			// apache might have this if so configured; iis will always have this
+				
+			return "HTTP_REMOTE_USER";
+		}
+		else
+		{
+			return "REMOTE_USER";
+		}
+	}	
+	
+	/**
+	 * Map headers to user object
+	 * 
+	 * Local Shibboleth class defines this
+	 */
+	
+	protected function mapUserData()
 	{
 		
 	}
