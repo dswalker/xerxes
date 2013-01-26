@@ -2,9 +2,9 @@
 
 namespace Application\Model\Search\Spelling;
 
-use Xerxes\Utility\Factory,
-	Xerxes\Utility\Parser,
-	Xerxes\Utility\Registry;
+use Xerxes\Utility\Factory;
+use Xerxes\Utility\Parser;
+use Xerxes\Utility\Registry;
 
 /**
  * Bing Spell Checker

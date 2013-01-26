@@ -2,12 +2,12 @@
 
 namespace Application\Model\Authentication;
 
-use Application\Model\DataMap\Users, 
-	Application\Model\DataMap\SavedRecords,
-	Symfony\Component\HttpFoundation\RedirectResponse,
-	Xerxes\Mvc\Request,
-	Xerxes\Utility\Registry,
-	Xerxes\Utility\User;
+use Application\Model\DataMap\Users;
+use Application\Model\DataMap\SavedRecords;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Xerxes\Mvc\Request;
+use Xerxes\Utility\Registry;
+use Xerxes\Utility\User;
 
 /**
  * An event-based authentication framework

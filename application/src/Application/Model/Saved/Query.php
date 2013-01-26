@@ -2,8 +2,8 @@
 
 namespace Application\Model\Saved;
 
-use Application\Model\Search,
-	Xerxes\Mvc\Request;
+use Application\Model\Search;
+use Xerxes\Mvc\Request;
 
 /**
  * Saved Records Query

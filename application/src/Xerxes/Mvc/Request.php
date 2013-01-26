@@ -2,11 +2,11 @@
 
 namespace Xerxes\Mvc;
 
-use Symfony\Component\HttpFoundation,
-	Symfony\Component\HttpFoundation\Session\Session,
-	Xerxes\Utility\Parser,
-	Xerxes\Utility\Registry,
-	Xerxes\Utility\User;
+use Symfony\Component\HttpFoundation;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Xerxes\Utility\Parser;
+use Xerxes\Utility\Registry;
+use Xerxes\Utility\User;
 
 /**
  * Process HTTP and CLI requests, as well as Session

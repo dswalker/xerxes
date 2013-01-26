@@ -2,12 +2,12 @@
 
 namespace Application\Model\DataMap;
 
-use Xerxes\Utility\DataMap,
-	Xerxes\Record,
-	Application\Model\Saved\Record as SavedRecord,
-	Application\Model\Saved\Record\Format,
-	Application\Model\Saved\Record\Tag,
-	Application\Model\Summon;
+use Xerxes\Utility\DataMap;
+use Xerxes\Record;
+use Application\Model\Saved\Record as SavedRecord;
+use Application\Model\Saved\Record\Format;
+use Application\Model\Saved\Record\Tag;
+use Application\Model\Summon;
 
 /**
  * Database access mapper for saved records

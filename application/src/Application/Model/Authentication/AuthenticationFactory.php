@@ -2,8 +2,8 @@
 
 namespace Application\Model\Authentication;
 
-use Xerxes\Utility\Registry,
-	Xerxes\Mvc\Request;
+use Xerxes\Utility\Registry;
+use Xerxes\Mvc\Request;
 
 /**
  * Authentication factory

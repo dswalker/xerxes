@@ -2,8 +2,8 @@
 
 namespace Application\Controller;
 
-use Xerxes\Mvc\ActionController,
-	Xerxes\Utility\Labels;
+use Xerxes\Mvc\ActionController;
+use Xerxes\Utility\Labels;
 
 class AssetController extends ActionController
 {

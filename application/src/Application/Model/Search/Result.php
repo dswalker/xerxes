@@ -4,12 +4,12 @@ namespace Application\Model\Search;
 
 use Xerxes\Utility\Email;
 
-use Application\Model\Bx\Engine as BxEngine,
-	Application\Model\Availability\AvailabilityFactory,
-	Xerxes\Record,
-	Xerxes\Utility\Cache,
-	Xerxes\Utility\Parser,
-	Xerxes\Utility\Registry;
+use Application\Model\Bx\Engine as BxEngine;
+use Application\Model\Availability\AvailabilityFactory;
+use Xerxes\Record;
+use Xerxes\Utility\Cache;
+use Xerxes\Utility\Parser;
+use Xerxes\Utility\Registry;
 
 /**
  * Search Record

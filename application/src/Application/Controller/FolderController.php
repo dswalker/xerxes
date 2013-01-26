@@ -2,8 +2,8 @@
 
 namespace Application\Controller;
 
-use Xerxes\Utility\User,
-	Application\Model\Saved\Engine;
+use Xerxes\Utility\User;
+use Application\Model\Saved\Engine;
 
 class FolderController extends SearchController
 {

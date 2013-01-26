@@ -2,10 +2,10 @@
 
 namespace Application\Model\Availability\Voyager;
 
-use Application\Model\Availability\AvailabilityInterface,
-	Application\Model\Search,
-	Xerxes\Utility\Parser,
-	Zend\Http\Client;
+use Application\Model\Availability\AvailabilityInterface;
+use Application\Model\Search;
+use Xerxes\Utility\Parser;
+use Zend\Http\Client;
 
 /**
  * Retrieve item and holdings information from an Ex Libris Voyager system

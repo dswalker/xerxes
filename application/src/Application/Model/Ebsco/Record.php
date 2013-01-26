@@ -2,9 +2,8 @@
 
 namespace Application\Model\Ebsco;
 
-use Xerxes\Utility\Registry;
-
 use Xerxes;
+use Xerxes\Utility\Registry;
 
 class Record extends Xerxes\Record
 {

@@ -2,9 +2,9 @@
 
 namespace Xerxes\Mvc;
 
-use Symfony\Component\HttpFoundation,
-	Symfony\Component\HttpFoundation\Session\Session,
-	Xerxes\Utility\Registry;
+use Symfony\Component\HttpFoundation;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Xerxes\Utility\Registry;
 
 /**
  * MVC Event

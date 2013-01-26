@@ -2,8 +2,8 @@
 
 namespace Application\Controller;
 
-use Application\View\Helper\Navigation,
-	Xerxes\Mvc\ActionController;
+use Application\View\Helper\Navigation;
+use Xerxes\Mvc\ActionController;
 
 class NavigationController extends ActionController
 {

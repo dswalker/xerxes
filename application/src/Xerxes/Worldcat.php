@@ -2,8 +2,8 @@
 
 namespace Xerxes;
 
-use Xerxes\Utility\Parser,
-	Zend\Http\Client;
+use Xerxes\Utility\Parser;
+use Zend\Http\Client;
 
 /**
  * Search and retrieve records from worldcat api

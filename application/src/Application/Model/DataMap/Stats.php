@@ -2,9 +2,9 @@
 
 namespace Application\Model\DataMap;
 
-use Application\Model\Search\Query,
-	Application\Model\Search\ResultSet,
-	Xerxes\Utility\DataMap;
+use Application\Model\Search\Query;
+use Application\Model\Search\ResultSet;
+use Xerxes\Utility\DataMap;
 
 /**
  * Search Stats

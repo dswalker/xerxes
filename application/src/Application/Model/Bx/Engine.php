@@ -2,9 +2,9 @@
 
 namespace Application\Model\Bx;
 
-use Xerxes\Utility\Factory,
-	Xerxes\Utility\Parser,
-	Xerxes;
+use Xerxes;
+use Xerxes\Utility\Factory;
+use Xerxes\Utility\Parser;
 
 /**
  * Search Engine

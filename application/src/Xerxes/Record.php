@@ -4,10 +4,10 @@ namespace Xerxes;
 
 use Xerxes\Record\Bibliographic\LinkedItem;
 
-use Xerxes\Record\Author,
-	Xerxes\Record\Format,
-	Xerxes\Utility\Languages,
-	Xerxes\Utility\Parser;
+use Xerxes\Record\Author;
+use Xerxes\Record\Format;
+use Xerxes\Utility\Languages;
+use Xerxes\Utility\Parser;
 
 /**
  * Properties for books, media, articles, and dissertations

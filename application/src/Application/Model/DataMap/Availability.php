@@ -2,8 +2,8 @@
 
 namespace Application\Model\DataMap;
 
-use Xerxes\Utility\DataMap,
-	Application\Model\Search\Fulltext;
+use Xerxes\Utility\DataMap;
+use Application\Model\Search\Fulltext;
 
 /**
  * Database access mapper for sfx institutioanl holdings (google scholar) full-text cache

@@ -2,10 +2,10 @@
 
 namespace Application\Model\Ebsco;
 
-use Application\Model\Search,
-	Xerxes\Utility\Factory,
-	Xerxes\Utility\Parser,
-	Xerxes\Mvc\Request;
+use Application\Model\Search;
+use Xerxes\Utility\Factory;
+use Xerxes\Utility\Parser;
+use Xerxes\Mvc\Request;
 
 /**
  * Ebsco Search Engine

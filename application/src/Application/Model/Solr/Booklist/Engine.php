@@ -2,12 +2,10 @@
 
 namespace Application\Model\Solr\Booklist;
 
+use Application\Model\Solr;
+use Xerxes;
 use Xerxes\Record\Subject;
-
 use Xerxes\Record\Author;
-
-use Application\Model\Solr,
-	Xerxes;
 
 class Engine extends Solr\Engine 
 {

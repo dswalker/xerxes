@@ -2,19 +2,19 @@
 
 namespace Application\View\Helper;
 
-use Application\Model\Search\Engine,
-	Application\Model\Search\Result,
-	Application\Model\Search\ResultSet,
-	Application\Model\Search\Query,
-	Application\Model\Search\Spelling\Suggestion,
-	Xerxes\Record,
-	Xerxes\Record\Author,
-	Xerxes\Record\Bibliographic\LinkedItem,
-	Xerxes\Record\Subject,
-	Xerxes\Utility\Parser,
-	Xerxes\Mvc\Request,
-	Xerxes\Utility\Registry,
-	Xerxes\Mvc\MvcEvent;
+use Application\Model\Search\Engine;
+use Application\Model\Search\Result;
+use Application\Model\Search\ResultSet;
+use Application\Model\Search\Query;
+use Application\Model\Search\Spelling\Suggestion;
+use Xerxes\Record;
+use Xerxes\Record\Author;
+use Xerxes\Record\Bibliographic\LinkedItem;
+use Xerxes\Record\Subject;
+use Xerxes\Utility\Parser;
+use Xerxes\Mvc\Request;
+use Xerxes\Utility\Registry;
+use Xerxes\Mvc\MvcEvent;
 
 class Search
 {

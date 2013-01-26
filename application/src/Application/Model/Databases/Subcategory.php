@@ -2,8 +2,8 @@
 
 namespace Application\Model\Databases;
 
-use Xerxes\Utility\DataValue,
-	Xerxes\Utility\Parser;
+use Xerxes\Utility\DataValue;
+use Xerxes\Utility\Parser;
 
 /**
  * Metalib SubCategory

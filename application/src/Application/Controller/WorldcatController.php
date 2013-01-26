@@ -2,8 +2,8 @@
 
 namespace Application\Controller;
 
-use Application\Model\Worldcat\Engine,
-	Application\View\Helper\Worldcat as SearchHelper;
+use Application\Model\Worldcat\Engine;
+use Application\View\Helper\Worldcat as SearchHelper;
 
 class WorldcatController extends SearchController
 {

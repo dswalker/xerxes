@@ -2,9 +2,9 @@
 
 namespace Application\Model\Primo;
 
-use Application\Model\Search,
-	Xerxes\Utility\Factory,
-	Xerxes\Utility\Parser;
+use Application\Model\Search;
+use Xerxes\Utility\Factory;
+use Xerxes\Utility\Parser;
 
 /**
  * Primo Search Engine

@@ -2,8 +2,8 @@
 
 namespace Application\View\Helper;
 
-use Xerxes\Utility\Registry,
-	Xerxes\Mvc\MvcEvent;
+use Xerxes\Utility\Registry;
+use Xerxes\Mvc\MvcEvent;
 
 class Navigation
 {

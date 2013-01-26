@@ -2,14 +2,14 @@
 
 namespace Xerxes\Record;
 
-use Xerxes\Record,
-	Xerxes\Record\Author,
-	Xerxes\Record\Bibliographic\LinkedItem,
-	Xerxes\Marc\ControlField,
-	Xerxes\Marc\DataField,
-	Xerxes\Marc\DataFieldList,
-	Xerxes\Marc\Record as MarcRecord,
-	Xerxes\Utility\Parser;
+use Xerxes\Record;
+use Xerxes\Record\Author;
+use Xerxes\Record\Bibliographic\LinkedItem;
+use Xerxes\Marc\ControlField;
+use Xerxes\Marc\DataField;
+use Xerxes\Marc\DataFieldList;
+use Xerxes\Marc\Record as MarcRecord;
+use Xerxes\Utility\Parser;
 
 /**
  * Extract properties for books, articles, and dissertations from MARC

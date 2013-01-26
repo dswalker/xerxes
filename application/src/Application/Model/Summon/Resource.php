@@ -2,9 +2,9 @@
 
 namespace Application\Model\Summon;
 
-use Xerxes,
-	Xerxes\Record\Format,
-	Xerxes\Utility\Parser;
+use Xerxes;
+use Xerxes\Record\Format;
+use Xerxes\Utility\Parser;
 
 // @todo get rid of this for new kb model 
 

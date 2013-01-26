@@ -2,11 +2,11 @@
 
 namespace Application\Model\Summon;
 
-use Application\Model\Search,
-	Xerxes\Summon,
-	Xerxes\Utility\Factory,
-	Xerxes\Utility\Parser,
-	Xerxes\Mvc\Request;
+use Application\Model\Search;
+use Xerxes\Summon;
+use Xerxes\Utility\Factory;
+use Xerxes\Utility\Parser;
+use Xerxes\Mvc\Request;
 
 /**
  * Summon Search Engine

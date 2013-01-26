@@ -2,10 +2,10 @@
 
 namespace Application\Model\Summon;
 
-use Xerxes,
-	Xerxes\Record\Format,
-	Xerxes\Record\Link,
-	Xerxes\Utility\Parser;
+use Xerxes;
+use Xerxes\Record\Format;
+use Xerxes\Record\Link;
+use Xerxes\Utility\Parser;
 
 /**
  * Extract properties for books, articles, and dissertations from Summon

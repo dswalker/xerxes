@@ -15,7 +15,7 @@ use Xerxes\Utility\Parser;
 
 class Item
 {
-	public $bib_id; // the bibliographic record ID
+    public $bib_id; // the bibliographic record ID
     public $availability; // boolean: is this item available for checkout?
     public $status; // string describing the status of the item
     public $location; // string describing the physical location of the item

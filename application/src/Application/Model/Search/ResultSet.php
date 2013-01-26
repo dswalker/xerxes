@@ -2,10 +2,10 @@
 
 namespace Application\Model\Search;
 
-use Application\Model\DataMap\Availability,
-	Application\Model\DataMap\Refereed as DataMapRefereed,
-	Xerxes\Record,
-	Xerxes\Utility\Cache;
+use Application\Model\DataMap\Availability;
+use Application\Model\DataMap\Refereed as DataMapRefereed;
+use Xerxes\Record;
+use Xerxes\Utility\Cache;
 
 /**
  * Search Results

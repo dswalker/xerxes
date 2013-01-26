@@ -2,10 +2,10 @@
 
 namespace Application\Model\Search;
 
-use Application\Model\Search\Spelling\Suggestion,
-	Xerxes\Utility\Factory,
-	Xerxes\Utility\Registry,
-	Xerxes\Mvc\Request;
+use Application\Model\Search\Spelling\Suggestion;
+use Xerxes\Utility\Factory;
+use Xerxes\Utility\Registry;
+use Xerxes\Mvc\Request;
 
 /**
  * Search Query

@@ -2,11 +2,11 @@
 
 namespace Xerxes\Mvc;
 
-use Symfony\Component\HttpFoundation,
-	Xerxes\Mvc\Bootstrap,
-	Xerxes\Utility\Parser,
-	Xerxes\Utility\Registry,
-	Xerxes\Utility\Xsl;
+use Symfony\Component\HttpFoundation;
+use Xerxes\Mvc\Bootstrap;
+use Xerxes\Utility\Parser;
+use Xerxes\Utility\Registry;
+use Xerxes\Utility\Xsl;
 
 /**
  * Response

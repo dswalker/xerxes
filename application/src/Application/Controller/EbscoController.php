@@ -2,8 +2,8 @@
 
 namespace Application\Controller;
 
-use Application\Model\Ebsco\Engine,
-	Application\View\Helper\Ebsco as SearchHelper;
+use Application\Model\Ebsco\Engine;
+use Application\View\Helper\Ebsco as SearchHelper;
 
 class EbscoController extends SearchController
 {

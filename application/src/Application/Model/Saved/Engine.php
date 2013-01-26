@@ -2,9 +2,9 @@
 
 namespace Application\Model\Saved;
 
-use Application\Model\Search,
-	Application\Model\DataMap\SavedRecords,
-	Xerxes\Mvc\Request;
+use Application\Model\Search;
+use Application\Model\DataMap\SavedRecords;
+use Xerxes\Mvc\Request;
 
 /**
  * Saved Records

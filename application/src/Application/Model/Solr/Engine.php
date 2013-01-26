@@ -2,9 +2,9 @@
 
 namespace Application\Model\Solr;
 
-use Application\Model\Search,
-	Xerxes\Utility\Factory,
-	Xerxes\Mvc\Request;
+use Application\Model\Search;
+use Xerxes\Utility\Factory;
+use Xerxes\Mvc\Request;
 
 /**
  * Solr Search Engine

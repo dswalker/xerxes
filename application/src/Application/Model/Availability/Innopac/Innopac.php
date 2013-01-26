@@ -2,10 +2,10 @@
 
 namespace Application\Model\Availability\Innopac;
 
-use Application\Model\Availability\AvailabilityInterface,
-	Application\Model\Search,
-	Xerxes\Utility\Parser,
-	Xerxes\Utility\Factory;
+use Application\Model\Availability\AvailabilityInterface;
+use Application\Model\Search;
+use Xerxes\Utility\Parser;
+use Xerxes\Utility\Factory;
 
 /**
  * Retrieve item, holdings, and electonic resource information from an Innovative Millennium system

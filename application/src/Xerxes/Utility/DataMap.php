@@ -80,22 +80,7 @@ abstract class DataMap
 			// options to ensure utf-8
 			
 			$arrDriverOptions = array();
-			
-			if ( $this->rdbms == "mysql" )
-			{
-				// php 5.3.0 and 5.3.1 have a bug where this is not defined
-				
-				if ( ! defined("PDO::MYSQL_ATTR_INIT_COMMAND") )
-				{
-					$init_command = 1002;
-				}
-				else
-				{
-					$init_command = \PDO::MYSQL_ATTR_INIT_COMMAND;
-				}
-				
-				$arrDriverOptions[$init_command] = "SET NAMES 'utf8'";
-			}
+			$arrDriverOptions[\PDO::MYSQL_ATTR_INIT_COMMAND] = "SET NAMES 'utf8'";
 			
 			// data access object
 			

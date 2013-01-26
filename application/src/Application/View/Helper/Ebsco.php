@@ -2,8 +2,8 @@
 
 namespace Application\View\Helper;
 
-use Application\Model\Search\ResultSet,
-	Application\Model\Search\FacetGroup;
+use Application\Model\Search\ResultSet;
+use Application\Model\Search\FacetGroup;
 
 class Ebsco extends Search
 {

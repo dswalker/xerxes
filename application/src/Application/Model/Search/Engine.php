@@ -2,9 +2,9 @@
 
 namespace Application\Model\Search;
 
-use Xerxes\Utility\Cache,
-	Xerxes\Utility\Registry,
-	Xerxes\Mvc\Request;
+use Xerxes\Utility\Cache;
+use Xerxes\Utility\Registry;
+use Xerxes\Mvc\Request;
 
 /**
  * Search Engine

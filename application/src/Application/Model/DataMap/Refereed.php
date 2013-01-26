@@ -2,8 +2,8 @@
 
 namespace Application\Model\DataMap;
 
-use Application\Model\Search\Refereed as RefereedValue,
-	Xerxes\Utility\DataMap;
+use Application\Model\Search\Refereed as RefereedValue;
+use Xerxes\Utility\DataMap;
 
 /**
  * Database access mapper for peer-reviewed data

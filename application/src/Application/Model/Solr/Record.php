@@ -2,9 +2,9 @@
 
 namespace Application\Model\Solr;
 
-use Xerxes\Marc\Record as MarcRecord,
-	Xerxes\Record\Bibliographic,
-	Xerxes\Utility\Parser;
+use Xerxes\Marc\Record as MarcRecord;
+use Xerxes\Record\Bibliographic;
+use Xerxes\Utility\Parser;
 
 /**
  * Extract properties for books, articles, and dissertations from SolrMarc implementation

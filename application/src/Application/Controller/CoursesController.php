@@ -2,13 +2,13 @@
 
 namespace Application\Controller;
 
-use Application\Model\DataMap\ReadingList,
-	Application\Model\Saved\Engine,
-	Application\Model\Search\Query,
-	Xerxes\Lti,
-	Xerxes\Utility\Parser,
-	Xerxes\Utility\Registry,
-	Xerxes\Mvc\ActionController;
+use Application\Model\DataMap\ReadingList;
+use Application\Model\Saved\Engine;
+use Application\Model\Search\Query;
+use Xerxes\Lti;
+use Xerxes\Utility\Parser;
+use Xerxes\Utility\Registry;
+use Xerxes\Mvc\ActionController;
 
 class CoursesController extends ActionController
 {

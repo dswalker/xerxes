@@ -2,11 +2,11 @@
 
 namespace Xerxes\Mvc;
 
-use Symfony\Component\HttpFoundation,
-	Symfony\Component\HttpFoundation\RedirectResponse,
-	Xerxes\Mvc\Exception\NotFoundException,
-	Xerxes\Mvc\Response,
-	Xerxes\Utility\Registry;
+use Symfony\Component\HttpFoundation;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Xerxes\Mvc\Exception\NotFoundException;
+use Xerxes\Mvc\Response;
+use Xerxes\Utility\Registry;
 
 /**
  * Action Controller

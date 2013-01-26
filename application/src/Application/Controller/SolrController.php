@@ -2,8 +2,8 @@
 
 namespace Application\Controller;
 
-use Application\Model\Solr\Engine,
-	Xerxes\Mvc\Request;
+use Application\Model\Solr\Engine;
+use Xerxes\Mvc\Request;
 
 class SolrController extends SearchController
 {

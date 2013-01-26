@@ -2,11 +2,11 @@
 
 namespace Application\Model\DataMap;
 
-use Application\Model\Databases\Category,
-	Application\Model\Databases\Database,
-	Application\Model\Databases\Subcategory,
-	Xerxes\Utility\DataMap,
-	Xerxes\Utility\Parser;
+use Application\Model\Databases\Category;
+use Application\Model\Databases\Database;
+use Application\Model\Databases\Subcategory;
+use Xerxes\Utility\DataMap;
+use Xerxes\Utility\Parser;
 
 /**
  * Database access mapper for Metalib KB

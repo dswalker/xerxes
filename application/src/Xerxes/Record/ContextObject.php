@@ -2,8 +2,8 @@
 
 namespace Xerxes\Record;
 
-use Xerxes\Record,
-	Xerxes\Utility\Parser;
+use Xerxes\Record;
+use Xerxes\Utility\Parser;
 
 /**
  * Extract properties from OpenURL context object

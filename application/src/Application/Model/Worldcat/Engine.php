@@ -2,11 +2,11 @@
 
 namespace Application\Model\Worldcat;
 
-use Application\Model\Search,
-	Xerxes\Worldcat,
-	Xerxes\Marc,
-	Xerxes\Utility\Factory,
-	Xerxes\Mvc\Request;
+use Application\Model\Search;
+use Xerxes\Worldcat;
+use Xerxes\Marc;
+use Xerxes\Utility\Factory;
+use Xerxes\Mvc\Request;
 
 /**
  * Worldcat Search Engine

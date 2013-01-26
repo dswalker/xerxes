@@ -2,8 +2,8 @@
 
 namespace Application\Model\Primo;
 
-use Xerxes,
-	Xerxes\Utility\Parser;
+use Xerxes;
+use Xerxes\Utility\Parser;
 
 /**
  * Primo Record

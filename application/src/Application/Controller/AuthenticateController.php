@@ -2,11 +2,11 @@
 
 namespace Application\Controller;
 
-use Application\Model\Authentication\AuthenticationFactory,
-	Application\Model\Authentication\Scheme,
-	Symfony\Component\HttpFoundation\RedirectResponse,
-	Xerxes\Utility\Registry,
-	Xerxes\Mvc\ActionController;
+use Application\Model\Authentication\AuthenticationFactory;
+use Application\Model\Authentication\Scheme;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Xerxes\Utility\Registry;
+use Xerxes\Mvc\ActionController;
 
 class AuthenticateController extends ActionController
 {
