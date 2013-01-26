@@ -3,11 +3,6 @@
 <!--
 
  author: Jonathan Rochkind
- copyright: 2009 Johns Hopkins University
- version: $Id: metasearch_save-delete_ajax.xsl 976 2009-11-02 14:22:56Z dwalker@calstate.edu $
- package: Xerxes
- link: http://xerxes.calstate.edu
- license: 
  
 -->
 <xsl:stylesheet version="1.0"

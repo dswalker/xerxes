@@ -15,11 +15,6 @@
 <!--
 
  author: David Walker
- copyright: 2012 California State University
- version:
- package: Xerxes
- link: http://xerxes.calstate.edu
- license:
  
  -->
 

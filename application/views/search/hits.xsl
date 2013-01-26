@@ -3,11 +3,6 @@
 <!--
 
  author: David Walker
- copyright: 2010 California State University
- version: $Id$
- package: Xerxes
- link: http://xerxes.calstate.edu
- license: 
  
 -->
 <xsl:stylesheet version="1.0"
