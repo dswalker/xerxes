@@ -14,7 +14,7 @@ namespace Application\Model\Saved;
 use Application\Model\Search;
 
 /**
- * Primo Config
+ * Saved Records Config
  * 
  * @author David Walker <dwalker@calstate.edu>
  */

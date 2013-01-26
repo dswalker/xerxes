@@ -14,7 +14,7 @@ namespace Application\Model\Availability\Voyager;
 use Xerxes\Utility\Registry;
 
 /**
- * Solr Config
+ * Voyager Availability Config
  *
  * @author David Walker <dwalker@calstate.edu>
  */

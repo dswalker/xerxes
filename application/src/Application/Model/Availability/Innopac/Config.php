@@ -14,7 +14,7 @@ namespace Application\Model\Availability\Innopac;
 use Xerxes\Utility\Registry;
 
 /**
- * Solr Config
+ * Innopac Availability Config
  *
  * @author David Walker <dwalker@calstate.edu>
  */

@@ -14,7 +14,7 @@ namespace Application\Model\Worldcat;
 use Application\Model\Search;
 
 /**
- * Summon Config
+ * Worldcat Config
  *
  * @author David Walker <dwalker@calstate.edu>
  */
