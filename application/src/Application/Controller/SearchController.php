@@ -2,15 +2,27 @@
 
 namespace Application\Controller;
 
-use Application\View\Helper\Search as SearchHelper,
-	Application\Model\Search\Engine,
-	Application\Model\Search\Query,
-	Application\Model\Search\Result,
-	Application\Model\DataMap\SavedRecords,
-	Xerxes\Mvc\ActionController,
-	Xerxes\Record,
-	Xerxes\Utility\Parser,
-	Xerxes\Utility\Registry;
+use Application\Model\DataMap\Stats;
+use Application\Model\Search\Engine;
+use Application\Model\Search\Query;
+use Application\Model\Search\Result;
+use Application\Model\DataMap\SavedRecords;
+use Application\View\Helper\Search as SearchHelper;
+use Xerxes\Mvc\ActionController;
+use Xerxes\Record;
+use Xerxes\Utility\Parser;
+use Xerxes\Utility\Registry;
+
+/**
+ * Search controller
+ * 
+ * Defines the basic actions for a search engine
+ *
+ * @author David Walker
+ * @copyright 2013 California State University
+ * @link http://xerxes.calstate.edu
+ * @license
+ */
 
 abstract class SearchController extends ActionController
 {
@@ -22,6 +34,11 @@ abstract class SearchController extends ActionController
 	protected $max; // default records per page
 	protected $max_allowed; // upper-limit per page
 	protected $sort; // default sort
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see Xerxes\Mvc.ActionController::init()
+	 */
 	
 	protected function init()
 	{
@@ -44,6 +61,10 @@ abstract class SearchController extends ActionController
 	
 	abstract protected function getEngine();
 	
+	/**
+	 * Search home page
+	 */
+	
 	public function indexAction()
 	{
 		// set view template
@@ -52,6 +73,12 @@ abstract class SearchController extends ActionController
 		
 		return $this->response;
 	}
+	
+	/**
+	 * Check spelling, reset search refinements and redirect to results
+	 * 
+	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
+	 */
 	
 	public function searchAction()
 	{
@@ -88,6 +115,10 @@ abstract class SearchController extends ActionController
 		return $this->redirectTo($params);
 	}
 	
+	/**
+	 * Return total number of hits for search (usually for ajax)
+	 */
+	
 	public function hitsAction()
 	{
 		// create an identifier for this search
@@ -123,6 +154,10 @@ abstract class SearchController extends ActionController
 		
 		return $this->response;
 	}
+	
+	/**
+	 * Fetch search results, log it, check spelling (if necessary) 
+	 */
 	
 	public function resultsAction()
 	{
@@ -169,7 +204,7 @@ abstract class SearchController extends ActionController
 		
 		$total = $results->getTotal();
 		
-		// check spelling
+		// display spelling suggestion
 		
 		if ( $start <= 1 ) // but only on page 1
 		{
@@ -189,7 +224,7 @@ abstract class SearchController extends ActionController
 			
 			try
 			{
-				$log = new \Application\Model\DataMap\Stats();
+				$log = new Stats();
 				$log->logSearch($this->id, $this->query, $results);
 			}
 			catch ( \Exception $e ) // make it a warning so we don't stop the search
@@ -241,6 +276,10 @@ abstract class SearchController extends ActionController
 		return $this->response;
 	}
 	
+	/**
+	 * Individual record
+	 */
+	
 	public function recordAction()
 	{
 		$id = $this->request->getParam('id');
@@ -269,6 +308,12 @@ abstract class SearchController extends ActionController
 		return $this->response;
 	}
 	
+	/**
+	 * Fetch the record (again), create openurl, and redirect
+	 * 
+	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
+	 */
+	
 	public function openurlAction()
 	{
 		$id = $this->request->getParam('id');
@@ -285,6 +330,10 @@ abstract class SearchController extends ActionController
 
 		return $this->redirectTo($record->url_open);
 	}
+	
+	/**
+	 * Check availability of the item (with ILS)
+	 */
 	
 	public function lookupAction()
 	{
@@ -310,6 +359,10 @@ abstract class SearchController extends ActionController
 		return $this->response;
 	}
 	
+	/**
+	 * Return just the facets
+	 */
+	
 	public function facetAction()
 	{
 		$this->request->setParam('max', 1);
@@ -320,6 +373,10 @@ abstract class SearchController extends ActionController
 	
 		return $model;
 	}
+	
+	/**
+	 * Save or delete a record by id
+	 */
 
 	public function saveAction()
 	{
@@ -397,7 +454,9 @@ abstract class SearchController extends ActionController
 	
 	########################
 	#  SAVED RECORD STATE  #
-	########################	
+	########################
+	
+	// @todo move these somewhere else!
 	
 	
 	/**
