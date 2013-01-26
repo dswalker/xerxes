@@ -1,21 +1,21 @@
 # author: David Walker
-# copyright: 2009 California State University
-# version: $Id: create-kb.sql 1612 2011-01-11 17:22:13Z dwalker@calstate.edu $
+# copyright: 2013 California State University
 # package: Xerxes
 # link: http://xerxes.calstate.edu
-# license: http://www.gnu.org/licenses/
+# license:
 
 CREATE DATABASE IF NOT EXISTS xerxes DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
 USE xerxes;
 
 SET storage_engine = INNODB;
 
-DROP TABLE IF EXISTS xerxes_databases_search;
-DROP TABLE IF EXISTS xerxes_subcategory_databases;
+DROP TABLE IF EXISTS xerxes_resources_search;
+DROP VIEW IF EXISTS xerxes_databases_search;
+DROP TABLE IF EXISTS xerxes_subcategory_resources;
 DROP TABLE IF EXISTS xerxes_subcategories;
-DROP TABLE IF EXISTS xerxes_databases;
+DROP VIEW IF EXISTS xerxes_databases;
+DROP TABLE IF EXISTS xerxes_resources;
 DROP TABLE IF EXISTS xerxes_categories;
-DROP TABLE IF EXISTS xerxes_types;
 DROP TABLE IF EXISTS xerxes_reading_list;
 DROP TABLE IF EXISTS xerxes_search_stats;
 DROP TABLE IF EXISTS xerxes_user_usergroups;
@@ -25,65 +25,60 @@ DROP TABLE IF EXISTS xerxes_sfx;
 DROP TABLE IF EXISTS xerxes_refereed;
 DROP TABLE IF EXISTS xerxes_users;
 DROP TABLE IF EXISTS xerxes_records;
-DROP TABLE IF EXISTS xerxes_user_subcategory_databases;
-DROP TABLE IF EXISTS xerxes_user_subcategories;
-DROP TABLE IF EXISTS xerxes_user_categories;
 
-CREATE TABLE xerxes_databases(
-	database_id    		VARCHAR(10),
+CREATE TABLE xerxes_resources(
+	resource_id    		MEDIUMINT NOT NULL AUTO_INCREMENT,
+	source_id		VARCHAR(50),
 	title_display		VARCHAR(100),
 	type                    VARCHAR(50),
+	object_type		VARCHAR(50),
 	data			MEDIUMTEXT,
-	PRIMARY KEY (database_id)
+	PRIMARY KEY (resource_id)
 );
 
-CREATE TABLE xerxes_databases_search (
-	database_id     	VARCHAR(10),
+CREATE VIEW xerxes_databases AS SELECT * FROM xerxes_resources WHERE object_type = 'database';
+
+CREATE TABLE xerxes_resources_search (
+	resource_id     	MEDIUMINT NOT NULL,
+	object_type		VARCHAR(50),
 	field			VARCHAR(50),
 	term			VARCHAR(50),
 
-	FOREIGN KEY (database_id) REFERENCES xerxes_databases(database_id)	 ON DELETE CASCADE
+	FOREIGN KEY (resource_id) REFERENCES xerxes_resources(resource_id) ON DELETE CASCADE
 );
 
-CREATE INDEX xerxes_databases_search_field_idx ON xerxes_databases_search(field);
-CREATE INDEX xerxes_databases_search_term_idx ON xerxes_databases_search(term);
+CREATE INDEX xerxes_resources_search_field_idx ON xerxes_resources_search(field);
+CREATE INDEX xerxes_resources_search_term_idx ON xerxes_resources_search(term);
+
+CREATE VIEW xerxes_databases_search AS SELECT * FROM xerxes_resources_search WHERE object_type = 'database';
 
 CREATE TABLE xerxes_categories(
-	id 			MEDIUMINT NOT NULL AUTO_INCREMENT,
-	name     		VARCHAR(255),
-	old			VARCHAR(255),
+	category_id		MEDIUMINT NOT NULL AUTO_INCREMENT,
+	category_name		VARCHAR(255),
 	normalized		VARCHAR(255),
 	lang			VARCHAR(5),
 
-	PRIMARY KEY (id)
+	PRIMARY KEY (category_id)
 );
 
 CREATE TABLE xerxes_subcategories(
-	metalib_id	VARCHAR(20),
-	name     	VARCHAR(255),
-	sequence	MEDIUMINT NOT NULL,
-  	category_id	MEDIUMINT NOT NULL,
+	subcategory_id		MEDIUMINT NOT NULL AUTO_INCREMENT,
+	subcategory_name	VARCHAR(255),
+	sequence		MEDIUMINT NOT NULL,
+  	category_id		MEDIUMINT NOT NULL,
 
-	PRIMARY KEY (metalib_id),
- 	FOREIGN KEY (category_id) REFERENCES xerxes_categories(id) ON DELETE CASCADE
+	PRIMARY KEY (subcategory_id),
+ 	FOREIGN KEY (category_id) REFERENCES xerxes_categories(category_id) ON DELETE CASCADE
 );
 
-CREATE TABLE xerxes_subcategory_databases(
+CREATE TABLE xerxes_subcategory_resources(
 
-	database_id	VARCHAR(10),
-  	subcategory_id	VARCHAR(20),
+	resource_id	MEDIUMINT NOT NULL,
+  	subcategory_id	MEDIUMINT NOT NULL,
     	sequence 	MEDIUMINT,
 
- 	FOREIGN KEY (database_id) REFERENCES xerxes_databases(database_id)	 ON DELETE CASCADE,
-	FOREIGN KEY (subcategory_id) REFERENCES xerxes_subcategories(metalib_id) ON DELETE CASCADE
-);
-
-CREATE TABLE xerxes_types(
-	id 			MEDIUMINT NOT NULL AUTO_INCREMENT,
-	name     		VARCHAR(255),
-	normalized		VARCHAR(255),
-
-	PRIMARY KEY (id)
+ 	FOREIGN KEY (resource_id) REFERENCES xerxes_resources(resource_id) ON DELETE CASCADE,
+	FOREIGN KEY (subcategory_id) REFERENCES xerxes_subcategories(subcategory_id) ON DELETE CASCADE
 );
 
 CREATE TABLE xerxes_users (
@@ -165,37 +160,6 @@ CREATE TABLE xerxes_cache (
 	expiry		INTEGER,
 
 	PRIMARY KEY (source,id)
-);
-
-CREATE TABLE xerxes_user_categories(
-	id 		MEDIUMINT NOT NULL AUTO_INCREMENT,
-	name		VARCHAR(255),
-	username	VARCHAR(50),
-	published	INTEGER(1) NOT NULL DEFAULT 0, 
-	normalized	VARCHAR(255),
-	
-	PRIMARY KEY (id)
-);
-
-CREATE INDEX xerxes_user_categories_normalized_idx ON xerxes_user_categories(username, normalized);
-
-CREATE TABLE xerxes_user_subcategories(
-	id		MEDIUMINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	name		VARCHAR(255),
-	sequence	MEDIUMINT NOT NULL,
-	category_id	MEDIUMINT NOT NULL,
-
-	FOREIGN KEY (category_id) REFERENCES xerxes_user_categories(id) ON DELETE CASCADE
-);
-
-CREATE TABLE xerxes_user_subcategory_databases(
-
-	database_id	VARCHAR(10),
-	subcategory_id	MEDIUMINT,
-	sequence 	MEDIUMINT,
-
-	PRIMARY KEY(database_id, subcategory_id),
-	FOREIGN KEY (subcategory_id) REFERENCES xerxes_user_subcategories (id) ON DELETE CASCADE
 );
 
 CREATE TABLE xerxes_reading_list (

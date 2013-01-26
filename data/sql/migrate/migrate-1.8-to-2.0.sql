@@ -1,3 +1,7 @@
+DROP TABLE IF EXISTS xerxes_types;
+DROP TABLE IF EXISTS xerxes_user_subcategory_databases;
+DROP TABLE IF EXISTS xerxes_user_subcategories;
+DROP TABLE IF EXISTS xerxes_user_categories;
 DROP TABLE IF EXISTS xerxes_reading_list;
 DROP TABLE IF EXISTS xerxes_search_stats;
 
