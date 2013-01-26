@@ -17,15 +17,35 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Xerxes\Utility\Registry;
 use Xerxes\Mvc\ActionController;
 
+/**
+ * Authentication Controller
+ * 
+ * Framework for handling login and logout of the system
+ *
+ * @author David Walker <dwalker@calstate.edu>
+ */
+
 class AuthenticateController extends ActionController
 {
-	protected $authentication = null;
+	/**
+	 * @var Scheme
+	 */
+	protected $authentication = null; // authentication object
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see Xerxes\Mvc.ActionController::init()
+	 */
 	
 	public function init()
 	{
 		$factory = new AuthenticationFactory();
 		$this->authentication = $factory->getAuthenticationObject($this->request);
 	}
+	
+	/**
+	 * The action triggered when the user logs in
+	 */
 		
 	public function loginAction()
 	{
@@ -81,6 +101,10 @@ class AuthenticateController extends ActionController
 		}
 	}
 	
+	/**
+	 * The action triggered when the user logs out
+	 */
+	
 	public function logoutAction()
 	{
 		// values from the request
@@ -95,7 +119,7 @@ class AuthenticateController extends ActionController
 			return $this->response;
 		}
 	
-		// configuration settings
+		// logout url
 	
 		$configBaseURL = $this->request->getBaseUrl();
 		$configLogoutUrl = $this->registry->getConfig("LOGOUT_URL", false, $configBaseURL);
@@ -103,10 +127,17 @@ class AuthenticateController extends ActionController
 		// perform any anuthentication scheme-specific clean-up action
 	
 		$this->authentication->onLogout();
+		
+		// destroy the session
+		
 		$this->request->getSession()->invalidate();
 	
 		return $this->redirectTo($configLogoutUrl);
 	}
+	
+	/**
+	 * Handle user coming back from SSO service
+	 */
 	
 	public function validateAction()
 	{
