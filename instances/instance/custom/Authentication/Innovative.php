@@ -17,7 +17,7 @@ use Application\Model\Authentication\Exception\AccessDeniedException;
 /**
  * Custom authentication for III patron api
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Innovative extends Authentication\Innovative

@@ -17,7 +17,7 @@
  Use this file to override English labels in the interface.  Simply copy and paste the variable
  from the application views/labels/eng.xsl file and change the value here.
  
- author: David Walker
+ author: David Walker <dwalker@calstate.edu>
  
  -->
 

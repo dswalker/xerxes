@@ -18,7 +18,7 @@ use Application\Model\Authentication\Exception\AccessDeniedException;
  * Custom authentication for shibboleth
  * 
  * @author Jonathan Rochkind
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Shibboleth extends Authentication\Shibboleth

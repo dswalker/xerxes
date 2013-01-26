@@ -1,7 +1,7 @@
 /**
  * books record page
  *
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
  
  $(document).ready(prepareSMS);

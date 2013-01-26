@@ -16,7 +16,7 @@ use Application\Model\Authentication;
 /**
  * Custom authentication
  * 
- * @author David Walker
+ * @author David Walker <dwalker@calstate.edu>
  */
 
 class Custom extends Authentication\Scheme
