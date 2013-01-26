@@ -4,6 +4,7 @@ namespace Application\Controller;
 
 use Application\Model\Authentication\AuthenticationFactory,
 	Application\Model\Authentication\Scheme,
+	Symfony\Component\HttpFoundation\RedirectResponse,
 	Xerxes\Utility\Registry,
 	Xerxes\Mvc\ActionController;
 
@@ -19,12 +20,9 @@ class AuthenticateController extends ActionController
 		
 	public function loginAction()
 	{
-		// values from the request and configuration
-	
-		$post_back = $this->request->getParam( "postback" );
-		$config_https = $this->registry->getConfig( "SECURE_LOGIN", false, false );
-	
 		// if secure login is required, then force the user back thru https
+		
+		$config_https = $this->registry->getConfig( "SECURE_LOGIN", false, false );
 	
 		if ( $config_https == true && $this->request->getScheme() == "http" )
 		{
@@ -37,24 +35,26 @@ class AuthenticateController extends ActionController
 	
 		$result = $this->authentication->onLogin();
 	
-		if ( $result == Scheme::REDIRECT )
+		if ( $result instanceof RedirectResponse )
 		{
-			return $this->doRedirect();
+			return $result; // redirect to remote auth server
 		}
 	
 		### local authentication
 		
 		// if this is not a 'postback', then the user has not submitted the form, they are arriving
 		// for first time so stop the flow and just show the login page with form
-	
+
+		$post_back = $this->request->getParam('postback');
+		
 		if ( $post_back == null )
 		{
 			return $this->response;
 		}
 	
-		$bolAuth = $this->authentication->onCallBack();
+		$result = $this->authentication->onCallBack();
 	
-		if ( $bolAuth == Scheme::FAILED )
+		if ( $result == Scheme::FAILED )
 		{
 			// failed the login, so present a message to the user
 	
@@ -62,9 +62,13 @@ class AuthenticateController extends ActionController
 			
 			return $this->response;
 		}
+		elseif ( $result instanceof RedirectResponse )
+		{
+			return $result; // success, send the user back
+		}
 		else
 		{
-			return $this->doRedirect();
+			throw new \Exception('onCallBack function must return Scheme::FAILED or register user');
 		}
 	}
 	
@@ -77,7 +81,10 @@ class AuthenticateController extends ActionController
 		// if this is not a 'postback', then the user has not
 		// submitted the form, thus confirming logout
 	
-		if ( $post_back == null ) return 1;
+		if ( $post_back == null )
+		{
+			return $this->response;
+		}
 	
 		// configuration settings
 	
@@ -98,18 +105,9 @@ class AuthenticateController extends ActionController
 	
 		$result = $this->authentication->onCallBack();
 		
-		if ( $result == Scheme::SUCCESS )
+		if ( $result instanceof RedirectResponse )
 		{
-			return $this->doRedirect();
+			return $result;
 		}
-		
-	}
-	
-	public function doRedirect()
-	{
-		return $this->redirectTo($this->authentication->getRedirect());
 	}
 }
-
-
-

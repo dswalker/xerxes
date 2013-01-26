@@ -31,9 +31,7 @@ class Cas extends Scheme
 		
 		$url = $configCasLogin . "?service=" . urlencode($this->validate_url);
 		
-		$this->setRedirect( $url );
-		
-		return self::REDIRECT;
+		return $this->redirectTo( $url );
 	}
 	
 	/**

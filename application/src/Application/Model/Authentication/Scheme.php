@@ -4,6 +4,7 @@ namespace Application\Model\Authentication;
 
 use Application\Model\DataMap\Users, 
 	Application\Model\DataMap\SavedRecords,
+	Symfony\Component\HttpFoundation\RedirectResponse,
 	Xerxes\Mvc\Request,
 	Xerxes\Utility\Registry,
 	Xerxes\Utility\User;
@@ -126,7 +127,6 @@ abstract class Scheme
 	
 	public function onCallBack()
 	{
-		return false;
 	}
 	
 	/**
@@ -204,37 +204,24 @@ abstract class Scheme
 		
 		// now forward them to the return url
 		
-		$this->setRedirect($this->return_url);
+		return $this->redirectTo($this->return_url);
+	}
+	
+	/**
+	 * Redirect to a new URL
+	 * 
+	 * @param array|string $location	location to redirect to
+	 */
+	
+	protected function redirectTo($location)
+	{
+		$url = $location;
 		
-		return self::SUCCESS;
-	}
-	
-	/**
-	 * Set the redirect URL
-	 * 
-	 * @param string $url
-	 */
-	
-	public function setRedirect($url)
-	{
-		$this->redirect = $url;
-	}
-	
-	/**
-	 * Get redirect URL
-	 * 
-	 * @return string
-	 */
-	
-	public function getRedirect()
-	{
-		if ( $this->redirect != "" )
+		if ( is_array($location) )
 		{
-			return $this->redirect;
+			$url = $this->request->url_for( $location, true );
 		}
-		else
-		{
-			return $this->return_url;
-		}
+		
+		return new RedirectResponse($url);
 	}
 }

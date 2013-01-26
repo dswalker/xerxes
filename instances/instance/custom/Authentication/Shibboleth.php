@@ -2,7 +2,8 @@
 
 namespace Local\Authentication;
 
-use Application\Model\Authentication;
+use Application\Model\Authentication,
+	Application\Model\Authentication\Exception\AccessDeniedException;
 
 /**
  * Custom authentication for shibboleth
@@ -26,12 +27,10 @@ class Shibboleth extends Authentication\Shibboleth
 	 * 
 	 * HTTP headers are available via $this->request->server->get("header_name");
 	 * 
-	 * This function may:
+	 * This function may either:
 	 * 
-	 * 1) Throw an Authentication\AccessDeniedException exception if you want to deny user 
-	 *    access to logging into Xerxes at all. The message should explain why. 
-	 * 
-	 * 2) Set various propertes in $this->user if you want to fill out some more user properties
+	 * 1) Throw an AccessDeniedException exception to deny user access 
+	 * 2) Set various propertes in $this->user to fill out user information
 	 */
 	
 	protected function mapUserData()

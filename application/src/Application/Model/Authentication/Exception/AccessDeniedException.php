@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Model\Authentication;
+namespace Application\Model\Authentication\Exception;
 
 /**
  * Access Denied Exception

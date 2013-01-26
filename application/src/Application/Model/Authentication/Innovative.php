@@ -4,7 +4,7 @@ namespace Application\Model\Authentication;
 
 use Xerxes\Utility\Parser,
 	Xerxes\Mvc\Request,
-	Application\Model\Authentication\AccessDeniedException;
+	Application\Model\Authentication\Exception\AccessDeniedException;
 
 /**
  * Authenticates users and downloads data from the Innovative Patron API

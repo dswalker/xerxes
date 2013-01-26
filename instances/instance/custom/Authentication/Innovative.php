@@ -2,10 +2,11 @@
 
 namespace Local\Authentication;
 
-use Application\Model\Authentication;
+use Application\Model\Authentication,
+	Application\Model\Authentication\Exception\AccessDeniedException;
 
 /**
- * custom authentication for iii patron api
+ * Custom authentication for III patron api
  * 
  * @author David Walker
  * @copyright 2013 California State University
@@ -23,12 +24,8 @@ class Innovative extends Authentication\Innovative
 	 * 
 	 * User has already been authenticated when this function is called. 
 	 * 
-	 * This function may:
-	 * 
-	 * 1) Throw an Authentication\AccessDeniedException exception if you want to deny user 
-	 *    access to logging into Xerxes at all. The message should explain why. 
-	 * 
-	 * 2) Set various propertes in $this->user if you want to fill out some more user properties
+	 * 1) Throw an AccessDeniedException exception to deny user access 
+	 * 2) Set various propertes in $this->user to fill out user information
 	 */
 	
 	protected function mapUserData()
