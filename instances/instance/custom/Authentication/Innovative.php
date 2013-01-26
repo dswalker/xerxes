@@ -2,8 +2,8 @@
 
 namespace Local\Authentication;
 
-use Application\Model\Authentication,
-	Application\Model\Authentication\Exception\AccessDeniedException;
+use Application\Model\Authentication;
+use Application\Model\Authentication\Exception\AccessDeniedException;
 
 /**
  * Custom authentication for III patron api
