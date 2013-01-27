@@ -42,7 +42,7 @@ class User extends DataValue
 	/**
 	 * Create a User
 	 * 
-	 * @param Request $request		[optional] create user from existing session
+	 * @param Request $request		[optional] create user from current Request
 	 */
 
 	public function __construct(Request $request = null)
@@ -191,6 +191,10 @@ class User extends DataValue
 			return false;
 		}
 	}
+	
+	/**
+	 * Get remote IP address of user
+	 */
 	
 	public function getIpAddress()
 	{
