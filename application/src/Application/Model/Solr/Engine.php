@@ -19,7 +19,6 @@ use Xerxes\Mvc\Request;
  * Solr Search Engine
  * 
  * @author David Walker <dwalker@calstate.edu>
- * @package Solr
  */
 
 class Engine extends Search\Engine 
