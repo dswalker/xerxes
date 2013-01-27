@@ -11,7 +11,6 @@
 
 namespace Xerxes\Mvc;
 
-use Composer\Autoload\ClassLoader;
 use Symfony\Component\HttpFoundation;
 use Xerxes\Utility\Registry;
 
@@ -65,15 +64,6 @@ class MvcEvent
 		
 		$app_dir = $bootstrap->getApplicationDir();
 		
-		// register local namespaces
-		
-		$loader = new ClassLoader();
-
-		foreach ( $bootstrap->getLocalNamespaces() as $namespace => $path )
-		{
-			$loader->add($namespace, $path);
-		}
-		
 		// application config
 		
 		$this->registry = Registry::getInstance();
@@ -125,7 +115,7 @@ class MvcEvent
 	 * @param Bootstrap $bootstrap
 	 */
 	
-	public function setBootstrap($bootstrap)
+	public function setBootstrap(Bootstrap $bootstrap)
 	{
 		$this->bootstrap = $bootstrap;
 	}	

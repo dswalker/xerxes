@@ -63,18 +63,11 @@ class AuthenticationFactory
 		
 		// local custom version
 		
-		$local_file = "custom/Authentication/" . ucfirst($name) . ".php";
+		$local_class_name = 'Custom\Authentication' . '\\' . ucfirst($name);
 		
-		if ( file_exists($local_file) )
+		if ( class_exists($local_class_name) )
 		{
-			require_once($local_file);
-			
-			$class_name = 'Local\Authentication' . '\\' . ucfirst($name);
-			
-			if ( ! class_exists($class_name) )
-			{
-				throw new \Exception("the custom authentication scheme '$name' should have a class called '$class_name'");
-			}
+			$class_name = $local_class_name;
 		}
 
 		// make it

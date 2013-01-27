@@ -11,6 +11,8 @@
 
 namespace Xerxes\Mvc;
 
+use Composer\Autoload\ClassLoader;
+
 /**
  * Bootstrap
  *
@@ -19,19 +21,33 @@ namespace Xerxes\Mvc;
 
 class Bootstrap
 {
+	/**
+	 * @var string
+	 */
+	
 	private $app_dir; // path to application root
-	private $namespaces = array(); // local instance defined namespace/path mapping
+
+	/**
+	 * @var ClassLoader
+	 */
+	
+	private $class_loader;
 	
 	/**
 	 * Bootsrap
 	 */
 	
-	public function __construct()
+	public function __construct(ClassLoader $class_loader)
 	{
-		// default values by convention
+		$this->class_loader = $class_loader;
+		
+		// app dir
 		
 		$this->app_dir = dirname(dirname(dirname(__DIR__))); // three dir's up
-		$this->namespaces = array('Local' => realpath(getcwd()). '/custom'); // working (instance) directory custom dir
+		
+		// working (instance) directory custom dir
+		
+		$this->class_loader->add('Local', getcwd() . '/custom');
 	}
 	
 	/**
@@ -57,28 +73,6 @@ class Bootstrap
 	}	
 	
 	/**
-	 * Local instance defined namespace/path mapping
-	 *
-	 * @return array
-	 */	
-	
-	public function getLocalNamespaces()
-	{
-		return $this->namespaces;
-	}
-	
-	/**
-	 * Set all local namespace/path mappings
-	 *
-	 * @return array
-	 */
-	
-	public function setLocalNamespaces(array $mapping)
-	{
-		$this->namespaces = $mapping;
-	}	
-	
-	/**
 	 * Add a local namepspace
 	 * 
 	 * @param string $namespace
@@ -87,6 +81,17 @@ class Bootstrap
 	
 	public function addLocalNamespace($namespace, $path)
 	{
-		$this->namespaces[$namespace] = $path;
+		$this->class_loader->add($namespace, $path);
+	}
+	
+	/**
+	 * Get the Class Loader
+	 * 
+	 * @return ClassLoader
+	 */
+	
+	public function getClassLoader()
+	{
+		return $this->class_loader;
 	}
 }

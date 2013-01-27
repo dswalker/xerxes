@@ -22,14 +22,16 @@ $root = dirname(dirname(__DIR__));
 
 // composer autoloading
 
-if ( ! include_once("$root/vendor/autoload.php") ) 
+$autoloader = include_once("$root/vendor/autoload.php");
+
+if ( ! $autoloader ) 
 {
 	throw new \Exception("$root/vendor/autoload.php could not be found. Did you run `php composer.phar install`?");
 }
 
 // bootstrap
 
-$bootstrap = new Bootstrap();
+$bootstrap = new Bootstrap($autoloader);
 
 // run the application
 
