@@ -9,6 +9,7 @@
  * file that was distributed with this source code.
  */ 
 
+use Xerxes\Mvc\Bootstrap;
 use Xerxes\Mvc\FrontController;
 
 // working directory is the instance
@@ -26,10 +27,10 @@ if ( ! include_once("$root/vendor/autoload.php") )
 	throw new \Exception("$root/vendor/autoload.php could not be found. Did you run `php composer.phar install`?");
 }
 
-// application config
+// bootstrap
 
-$config = include "$root/application/config/config.php";
+$bootstrap = new Bootstrap();
 
 // run the application
 
-FrontController::execute($config);
+FrontController::execute($bootstrap);

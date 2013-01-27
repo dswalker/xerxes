@@ -11,15 +11,14 @@
 
 namespace Xerxes\Mvc;
 
+use Composer\Autoload\ClassLoader;
 use Symfony\Component\HttpFoundation;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Xerxes\Utility\Registry;
 
 /**
  * MVC Event
  *
  * @author David Walker <dwalker@calstate.edu>
- * @package  Xerxes
  */
 
 class MvcEvent
@@ -51,26 +50,46 @@ class MvcEvent
 	
 	/**
 	 * Create a new Mvc Event
+	 * 
+	 * This wires-up the various Mvc classes and makes them
+	 * available as a convenient package to the application
 	 */
 	
-	public function __construct(array $config)
+	public function __construct(Bootstrap $bootstrap)
 	{
 		// framework config
 		
-		$this->bootstrap = Bootstrap::setConfig($config); 
+		$this->bootstrap = $bootstrap;
+		
+		// path to application root
+		
+		$app_dir = $bootstrap->getApplicationDir();
+		
+		// register local namespaces
+		
+		$loader = new ClassLoader();
+
+		foreach ( $bootstrap->getLocalNamespaces() as $namespace => $path )
+		{
+			$loader->add($namespace, $path);
+		}
 		
 		// application config
 		
-		$this->registry = Registry::getInstance(); 
+		$this->registry = Registry::getInstance();
 		
 		// incoming request
 		
-		$this->controller_map = new ControllerMap(); 
+		$this->controller_map = new ControllerMap($app_dir); 
 		$this->request = Request::createFromGlobals($this->controller_map); 
 		
 		// outgoing response
 		
-		$this->response = new Response(); 
+		$this->response = new Response();
+		
+		// set view dir
+		
+		$this->response->setViewDir("$app_dir/views/");
 		
 		// set default view
 		
@@ -106,7 +125,7 @@ class MvcEvent
 	 * @param Bootstrap $bootstrap
 	 */
 	
-	public function setBootstrap($bootstrap) 
+	public function setBootstrap($bootstrap)
 	{
 		$this->bootstrap = $bootstrap;
 	}	
@@ -119,6 +138,14 @@ class MvcEvent
 	{
 		return $this->registry;
 	}
+	
+	/**
+	 * @param Registry $registry
+	 */
+	public function setRegistry(Registry $registry)
+	{
+		$this->registry = $registry;
+	}	
 
 	/**
 	 * @return Request
@@ -128,6 +155,14 @@ class MvcEvent
 	{
 		return $this->request;
 	}
+	
+	/**
+	 * @param HttpFoundation\Request $request
+	 */
+	public function setRequest(HttpFoundation\Request $request)
+	{
+		$this->request = $request;
+	}	
 
 	/**
 	 * @return Response
@@ -136,6 +171,14 @@ class MvcEvent
 	{
 		return $this->response;
 	}
+	
+	/**
+	 * @param HttpFoundation\Response $response
+	 */
+	public function setResponse(HttpFoundation\Response $response)
+	{
+		$this->response = $response;
+	}	
 
 	/**
 	 * @return ControllerMap
@@ -144,31 +187,7 @@ class MvcEvent
 	{
 		return $this->controller_map;
 	}
-
-	/**
-	 * @param Registry $registry
-	 */
-	public function setRegistry(Registry $registry) 
-	{
-		$this->registry = $registry;
-	}
-
-	/**
-	 * @param HttpFoundation\Request $request
-	 */
-	public function setRequest(HttpFoundation\Request $request) 
-	{
-		$this->request = $request;
-	}
-
-	/**
-	 * @param HttpFoundation\Response $response
-	 */
-	public function setResponse(HttpFoundation\Response $response) 
-	{
-		$this->response = $response;
-	}
-
+	
 	/**
 	 * @param ControllerMap $controller_map
 	 */

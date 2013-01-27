@@ -11,8 +11,6 @@
 
 namespace Xerxes\Utility;
 
-use Xerxes\Mvc\Bootstrap;
-
 /**
  * Labels Access Object
  * 
@@ -27,11 +25,13 @@ class Labels
 	
 	/**
 	 * Create Labels access object
+	 * 
+	 * @param string $path to application directory
 	 */
 	
-	public function __construct()
+	public function __construct($path)
 	{
-		$this->path = Bootstrap::get('application_dir', true);
+		$this->path = $path;
 		$this->init();
 	}
 	

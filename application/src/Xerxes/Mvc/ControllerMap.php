@@ -29,13 +29,15 @@ class ControllerMap
 	
 	/**
 	 * Create a Controller Map
+	 * 
+	 * @param $app_dir   application dir
 	 */
 	
-	public function __construct()
+	public function __construct($app_dir)
 	{
 		// distro map.xml
 		
-		$distro_file = Bootstrap::get('application_dir', true) . '/' . $this->file;
+		$distro_file = $app_dir . '/' . $this->file;
 		
 		if ( ! file_exists($distro_file) )
 		{
@@ -178,7 +180,7 @@ class ControllerMap
 		
 		if ( ! class_exists($class_name) )
 		{
-			throw new \Exception("Could not find class $class_name");
+			throw new \Exception("Could not find class '$class_name'");
 		}
 	
 		$controller = new $class_name($event);
@@ -209,16 +211,19 @@ class ControllerMap
 		
 		if ( $controller_classes !== false )
 		{
-			$class_name = '';
-			
-			// last one always overrides
-			
-			foreach ( $controller_classes as $controller_class )
+			if ( count($controller_classes) > 0 )
 			{
-				$class_name = (string) $controller_class;
+				$class_name = '';
+				
+				// last one always overrides
+				
+				foreach ( $controller_classes as $controller_class )
+				{
+					$class_name = (string) $controller_class;
+				}
+				
+				return $class_name;
 			}
-			
-			return $class_name;
 		}
 		
 		// based on convention

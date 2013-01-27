@@ -15,42 +15,78 @@ namespace Xerxes\Mvc;
  * Bootstrap
  *
  * @author David Walker <dwalker@calstate.edu>
- * @package  Xerxes
  */
 
 class Bootstrap
 {
-	static protected $config;
-	private static $instance; // singleton pattern
+	private $app_dir; // path to application root
+	private $namespaces = array(); // local instance defined namespace/path mapping
 	
-	protected function __construct()
-	{
-	}
+	/**
+	 * Bootsrap
+	 */
 	
-	public static function setConfig( array $config )
+	public function __construct()
 	{
-		if ( empty( self::$instance ) )
-		{
-			self::$instance = new Bootstrap();
-			self::$config = $config;
-		}
+		// default values by convention
 		
-		return self::$instance;
+		$this->app_dir = dirname(dirname(dirname(__DIR__))); // three dir's up
+		$this->namespaces = array('Local' => realpath(getcwd()). '/custom'); // working (instance) directory custom dir
 	}
 	
-	public static function get($name, $required = false)
+	/**
+	 * Path to application root
+	 * 
+	 * @return string
+	 */
+	
+	public function getApplicationDir()
 	{
-		if ( array_key_exists($name, self::$config))
-		{
-			return self::$config[$name];
-		}
-		elseif ( $required == true )
-		{
-			throw new \Exception("Could not find '$name' in application config");
-		}
-		else
-		{
-			return null;
-		}
+		return $this->app_dir;
+	}
+	
+	/**
+	 * Set application root path
+	 *
+	 * @return string
+	 */
+	
+	public function setApplicationDir($dir)
+	{
+		return $this->app_dir = $dir;
+	}	
+	
+	/**
+	 * Local instance defined namespace/path mapping
+	 *
+	 * @return array
+	 */	
+	
+	public function getLocalNamespaces()
+	{
+		return $this->namespaces;
+	}
+	
+	/**
+	 * Set all local namespace/path mappings
+	 *
+	 * @return array
+	 */
+	
+	public function setLocalNamespaces(array $mapping)
+	{
+		$this->namespaces = $mapping;
+	}	
+	
+	/**
+	 * Add a local namepspace
+	 * 
+	 * @param string $namespace
+	 * @param string $path
+	 */
+	
+	public function addLocalNamespace($namespace, $path)
+	{
+		$this->namespaces[$namespace] = $path;
 	}
 }

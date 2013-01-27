@@ -12,7 +12,6 @@
 namespace Xerxes\Mvc;
 
 use Symfony\Component\HttpFoundation;
-use Xerxes\Mvc\Bootstrap;
 use Xerxes\Utility\Parser;
 use Xerxes\Utility\Registry;
 use Xerxes\Utility\Xsl;
@@ -57,6 +56,17 @@ class Response extends HttpFoundation\Response
 	}
 	
 	/**
+	 * Set (distro) view dir
+	 *
+	 * @param string $path
+	 */
+	
+	public function setViewDir($path)
+	{
+		$this->_view_dir = $path;
+	}	
+	
+	/**
 	 * Set the view script
 	 * 
 	 * @param string $view
@@ -82,7 +92,12 @@ class Response extends HttpFoundation\Response
 	
 	public function render($format = 'html')	
 	{
-		$this->_view_dir = Bootstrap::get('application_dir', true) . "/views/";
+		// do we have a path to the view?
+		
+		if ( $this->_view_dir == '')
+		{
+			throw new \Exception('No view directory has been set');
+		}
 		
 		// internal xml
 		

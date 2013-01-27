@@ -25,11 +25,11 @@ class FrontController
 	 * Do it
 	 */
 	
-	public static function execute(array $config)
+	public static function execute(Bootstrap $bootstrap)
 	{
 		// this creates/bundles the request, response, registry, & controller map objects
 		
-		$event = new MvcEvent($config);
+		$event = new MvcEvent($bootstrap);
 		
 		try
 		{
