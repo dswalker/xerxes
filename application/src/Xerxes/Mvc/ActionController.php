@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Xerxes\Mvc\Exception\NotFoundException;
 use Xerxes\Mvc\Response;
+use Xerxes\Utility\Labels;
 use Xerxes\Utility\Registry;
 
 /**
@@ -54,11 +55,18 @@ abstract class ActionController
 	protected $controller_map;
 	
 	/**
+	 * @var Labels
+	 */
+	private $labels;	
+	
+	/**
 	 * Create Action Controller
 	 */
 	
 	public function __construct(MvcEvent $event)
 	{
+		// set Mvc objects for convenience
+		
 		$this->event = $event;
 		$this->registry = $event->registry;
 		$this->request = $event->request;
@@ -67,16 +75,13 @@ abstract class ActionController
 		
 		// controller id
 		
-		// get_class() always returns the child class name
-		// ~ here makes sure we get only the last occurance of Controller
+		$this->id = get_class($this); // always returns the child class name
 		
-		$this->id = get_class($this); 
-		$this->id = str_replace('Controller~', '', $this->id . '~');
+		$parts = explode('\\', $this->id); // break out the namespace
+		$this->id = array_pop($parts); // get just the class name
 		
-		$parts = explode('\\', $this->id);
-		$this->id = array_pop($parts);
-		
-		$this->id = strtolower($this->id);
+		$this->id = str_replace('Controller~', '', $this->id . '~'); // remove last occurance of Controller
+		$this->id = strtolower($this->id); // and lowercase it
 		
 	}
 	
@@ -244,4 +249,23 @@ abstract class ActionController
 			}
 		}
 	}
+	
+	/**
+	 * @return Labels
+	 */
+	public function getLabels()
+	{
+		if ( ! $this->labels instanceof Labels )
+		{
+			$path = $this->event->getBootstrap()->getApplicationDir();
+			$this->labels = new Labels($path);
+				
+			// @todo need a proper language grabber
+				
+			$lang = $this->request->getParam("lang");
+			$this->labels->setLanguage($lang);
+		}
+	
+		return $this->labels;
+	}	
 }

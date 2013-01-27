@@ -12,12 +12,11 @@
 namespace Application\Controller;
 
 use Xerxes\Mvc\ActionController;
-use Xerxes\Utility\Labels;
 
 /**
  * Asset Controller
  * 
- * Special processing of assets, e.g., images, javascript, etc.
+ * Special processing of assets (i.e., images, css, javascript)
  * 
  * @author David Walker <dwalker@calstate.edu>
  */
@@ -25,17 +24,13 @@ use Xerxes\Utility\Labels;
 class AssetController extends ActionController
 {
 	/**
-	 * Convert the label file into a Javascript 
+	 * Convert the label file into a Javascript array
 	 * so we can use it in JS messages
 	 */
 	
 	public function labelsAction()
 	{
-		$lang = $this->request->getParam("lang"); // @todo need a proper language grabber
-		
-		$labels = new Labels();
-		$labels->setLanguage($lang);
-		
+		$labels = $this->getLabels();
 		$this->response->setVariable('labels', $labels);
 		
 		// this is a javascript file
