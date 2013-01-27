@@ -22,14 +22,32 @@ use Xerxes\Utility\Registry;
 class FrontController
 {
 	/**
+	 * @var Bootstrap
+	 */
+	
+	protected $bootstrap;
+	
+	/**
+	 * Set the bootstrapper
+	 * 
+	 * @param Bootstrap $bootstrap
+	 */
+	
+	public function setBootstrap(Bootstrap $bootstrap)
+	{
+		$this->bootstrap = $bootstrap;
+		return $this;
+	}
+	
+	/**
 	 * Do it
 	 */
 	
-	public static function execute(Bootstrap $bootstrap)
+	public function execute()
 	{
 		// this creates/bundles the request, response, registry, & controller map objects
 		
-		$event = new MvcEvent($bootstrap);
+		$event = new MvcEvent($this->bootstrap);
 		
 		try
 		{
