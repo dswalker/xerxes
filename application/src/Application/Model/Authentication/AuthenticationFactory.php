@@ -63,7 +63,7 @@ class AuthenticationFactory
 		
 		// local custom version
 		
-		$local_class_name = 'Custom\Authentication' . '\\' . ucfirst($name);
+		$local_class_name = 'Local\Authentication' . '\\' . ucfirst($name);
 		
 		if ( class_exists($local_class_name) )
 		{
