@@ -24,7 +24,7 @@ class Registry implements \Serializable
 	private $authentication_sources = array();
 	private $default_language = null;
 	private $arrConfig = null; // configuration settings
-	private $arrPass = array ( ); // values to pass on to the view
+	private $arrPass = array(); // values to pass on to the view
 	private static $instance; // singleton pattern
 
 	
@@ -282,9 +282,10 @@ class Registry implements \Serializable
 	}
 
 	/**
-	 * Gets an authentication source by id. If id is null or no such
-	 * source can be found, returns first authentication source in config file.
-	 * If not even that, returns "demo"
+	 * Gets an authentication source by id. 
+	 * 
+	 * If id is null or no such source can be found, returns first authentication 
+	 * source in config file. If not even that, returns "demo"
 	 * 
 	 * @param $id		authentication identifier
 	 * @return string	authentication source
@@ -368,8 +369,10 @@ class Registry implements \Serializable
 			{
 				if ( $language["code"] == $lang )
 				{
-					foreach ($language->attributes() as $name => $value) {
-						if ( $name == "locale" ) {
+					foreach ($language->attributes() as $name => $value) 
+					{
+						if ( $name == "locale" ) 
+						{
 							return (string) $value;
 						}
 					}
@@ -385,7 +388,7 @@ class Registry implements \Serializable
 	/**
 	 * Get the config file as XML
 	 * 
-	 * @return simplexml
+	 * @return \SimpleXMLElement
 	 */
 	
 	public function getXML()
