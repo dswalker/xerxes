@@ -14,8 +14,18 @@ namespace Application\Controller;
 use Application\View\Helper\Navigation;
 use Xerxes\Mvc\ActionController;
 
+/**
+ * Navigation controller
+ *
+ * @author David Walker <dwalker@calstate.edu>
+ */
+
 class NavigationController extends ActionController
 {
+	/**
+	 * Add the navigation menu to the response
+	 */
+	
 	public function menuAction()
 	{
 		$nav = new Navigation($this->event);
