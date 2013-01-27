@@ -4,10 +4,6 @@
 	<!-- 
 	<controller name="databases" class="Application\Controller\DatabasesController">	
 		
-		<action name="example">
-			<view>databases/example.xsl</view>
-		</action>
-	
 	</controller>
 	-->
 
