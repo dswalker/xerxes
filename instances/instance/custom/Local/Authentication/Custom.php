@@ -30,8 +30,7 @@ class Custom extends Authentication\Scheme
 		/* Example:
 		
 		$url = "https://some.example.edu/login?return=" . $this->validate_url;
-		$this->setRedirect($url);
-		return self::REDIRECT;
+		$this->redirectTo($url);
 		*/
 	}
 	
@@ -56,7 +55,7 @@ class Custom extends Authentication\Scheme
 		// that the login was successful (if necessary), and register the user; If the request
 		// is bad, throw an Exception with details, do _not_ simply return self::FAILURE
 		
-		
+
 		// REGISTRATION:
 		//
 		// If the user passed the authentication challenge, then assign values to the properties
@@ -69,10 +68,10 @@ class Custom extends Authentication\Scheme
 
 		// on success:
 		
-		return $this->register(); 
+		// return $this->register(); 
 		
 		// on failure: 
 		
-		// return self::FAILURE
+		return self::FAILED;
 	}
 }
