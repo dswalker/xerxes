@@ -35,17 +35,19 @@ class Query extends Search\Query
 		
 		foreach ( $this->getQueryTerms() as $term )
 		{
-			$term->toLower()
-			     ->andAllTerms();
+			$local_term = clone $term;
+			
+			$local_term->toLower()
+			           ->andAllTerms();
 			
 			$query .= ' ' . $term->boolean . ' (';
 
-			if ( $term->field_internal != "" )
+			if ( $local_term->field_internal != "" )
 			{
 				$query .= ' ' . $term->field_internal;
 			}
 			
-			$query .= ' ' . $term->phrase;
+			$query .= ' ' . $local_term->phrase;
 			
 			$query .= ' )';
 		}
