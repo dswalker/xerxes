@@ -23,14 +23,45 @@ use Xerxes\Mvc\Request;
 
 abstract class Engine
 {
-	public $id; // identifier of this search engine
+	/**
+	 * identifier of this search engine
+	 * 
+	 * @var string
+	 */
 	
-	protected $url; // url to the search service
-	protected $registry; // xerxes application config
-	protected $config; // local search engine config
-	protected $query; // search query
+	public $id;
 	
-	private $cache; // cache object
+	/**
+	 * url to the search service
+	 * 
+	 * @var string
+	 */
+	
+	protected $url;
+	
+	/**
+	 * @var Registry
+	 */
+	
+	protected $registry;
+	
+	/**
+	 * @var Config
+	 */
+	
+	protected $config;
+	
+	/**
+	 * @var Query
+	 */
+	
+	protected $query;
+	
+	/**
+	 * @var Cache
+	 */
+	
+	protected $cache;
 	
 	/**
 	 * Constructor
@@ -141,7 +172,7 @@ abstract class Engine
 			return null;
 		}
 		
-		$id = $this->getCacheID($query);
+		$id = $this->getResultsID($query);
 		
 		$results = $this->cache->get($id);
 		
@@ -164,7 +195,7 @@ abstract class Engine
 			return null;
 		}		
 		
-		$id = $this->getCacheID($query);
+		$id = $this->getResultsID($query);
 		
 		$this->cache->set($id, serialize($results));
 	}
@@ -175,7 +206,7 @@ abstract class Engine
 	 * @param string|Query $query
 	 */
 	
-	protected function getCacheID($query)
+	protected function getResultsID($query)
 	{
 		if ( $query == '' )
 		{
