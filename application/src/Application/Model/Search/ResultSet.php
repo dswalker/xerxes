@@ -24,11 +24,31 @@ use Xerxes\Utility\Cache;
 
 class ResultSet
 {
-	public $total = 0; // total number of hits
-	public $records = array(); // result objects
-	public $facets; // facet object
+	/**
+	 * total number of hits
+	 * @var int
+	 */
 	
-	protected $config; // local config
+	public $total = 0;
+	
+	/**
+	 * array of Result objects
+	 * @var array
+	 */
+	
+	public $records = array();
+	
+	/**
+	 * @var Facets
+	 */
+	
+	public $facets; 
+	
+	/**
+	 * @var Config
+	 */
+	
+	protected $config;
 	
 	/**
 	 * Create Search Result Set
@@ -389,10 +409,8 @@ class ResultSet
 			
 			$cache_array = $cache->get($ids);
 			
-			foreach ( $cache_array as $id => $data )
-			{
-				$holdings = unserialize($data);
-				
+			foreach ( $cache_array as $id => $holdings )
+			{				
 				if ( ! $holdings instanceof Holdings   )
 				{
 					throw new \Exception("cached item ($id) is not an instance of Holdings");

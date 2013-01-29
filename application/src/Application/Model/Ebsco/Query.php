@@ -35,6 +35,9 @@ class Query extends Search\Query
 		
 		foreach ( $this->getQueryTerms() as $term )
 		{
+			// clone this otherwise the original is updated
+			// which updates the user interface search box
+			
 			$local_term = clone $term;
 			
 			$local_term->toLower()

@@ -534,6 +534,14 @@ class Query
 		return $this->request->getUser();
 	}
 	
+	/**
+	 * Create URL parameter from limit term parts
+	 * 
+	 * @param string $field
+	 * @param string $key
+	 * @param bool $excluded
+	 */
+	
 	public static function getParamFromParts($field, $key, $excluded)
 	{
 		$param_name = 'facet';

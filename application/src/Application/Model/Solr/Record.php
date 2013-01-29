@@ -41,13 +41,13 @@ class Record extends Bibliographic
 			{
 				$marc = trim( (string) $str );
 		
-				// marc-xml or marc-y marc -- come on, come on, feel it, feel it!
+				// marc-xml
 		
 				if ( substr($marc, 0, 5) == '<?xml')
 				{
 					$xml_data = $marc;
 				}
-				else
+				else // marc-y marc -- come on, come on, feel it, feel it!
 				{
 					$marc = preg_replace('/#31;/', "\x1F", $marc);
 					$marc = preg_replace('/#30;/', "\x1E", $marc);

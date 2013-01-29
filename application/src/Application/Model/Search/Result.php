@@ -28,18 +28,77 @@ use Xerxes\Utility\Registry;
 
 class Result
 {
-	public $url_open; // open url
-	public $openurl_kev_co;	 // just the key-encoded-values of the openurl
-	public $xerxes_record; // record
-	public $original_record; // original xml
-	public $holdings; // holdings from an ils
-	public $recommendations = array(); // recommendation objects	
-	public $reviews; // reviews
+	/**
+	 * @var string
+	 */
 	
-	protected $registry; // global config
-	protected $config; // local config
-	protected $sid; // open url sid
-	protected $link_resolver; // link resolver
+	public $url_open;
+	
+	/**
+	 * just the key-encoded-values of the openurl
+	 * 
+	 * @var string
+	 */
+	
+	public $openurl_kev_co;
+	
+	/**
+	 * @var Record
+	 */
+	
+	public $xerxes_record;
+	
+	/**
+	 * @var \DOMDocument
+	 */
+	
+	public $original_record;
+	
+	/**
+	 * @var Holdings
+	 */
+	
+	public $holdings;
+	
+	/**
+	 * array of Bx Records
+	 * 
+	 * @var array
+	 */
+	
+	public $recommendations = array();
+	
+	/**
+	 * @var \DOMDocument
+	 */	
+	
+	public $reviews;
+	
+	/**
+	 * @var Registry
+	 */
+	
+	protected $registry;
+	
+	/**
+	 * @var Config
+	 */
+	
+	protected $config;
+	
+	/**
+	 * OpenURL sid
+	 * 
+	 * @var string
+	 */
+	
+	protected $sid;
+	
+	/**
+	 * @var string
+	 */
+	
+	protected $link_resolver;
 	
 	/**
 	 * Constructor
@@ -128,6 +187,8 @@ class Result
 	
 	/**
 	 * Add holdings to this result
+	 * 
+	 * @param Holdings $holdings
 	 */
 	
 	public function setHoldings( Holdings $holdings )
@@ -136,9 +197,9 @@ class Result
 	}
 	
 	/**
-	 * Return item records
+	 * Return holdings
 	 * 
-	 * @return array of Item
+	 * @return Holdings
 	 */
 	
 	public function getHoldings()
@@ -208,7 +269,7 @@ class Result
 		$expiry = $this->config->getConfig("HOLDINGS_CACHE_EXPIRY", false, 2 * 60 * 60); // expiry set for two hours
 		$expiry += time(); 
 		
-		$cache->set($this->getCacheId(), serialize($this->holdings), $expiry);
+		$cache->set($this->getCacheId(), $this->holdings, $expiry);
 		
 		return $this;
 	}
