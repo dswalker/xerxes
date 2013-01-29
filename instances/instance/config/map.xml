@@ -4,5 +4,8 @@
 	<controller name="example" class="Local\Controller\ExampleController">	
 		
 	</controller>
+	
+	<url_alias name="articles" controller="summon" />
+	<url_alias name="books" controller="solr" />	
 
 </xerxes>
