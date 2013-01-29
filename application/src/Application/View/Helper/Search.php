@@ -11,6 +11,7 @@
 
 namespace Application\View\Helper;
 
+use Application\Model\Search\Config;
 use Application\Model\Search\Engine;
 use Application\Model\Search\Result;
 use Application\Model\Search\ResultSet;
@@ -27,8 +28,22 @@ use Xerxes\Mvc\MvcEvent;
 
 class Search
 {
+	/**
+	 * @var string
+	 */
+	
 	protected $id;
+	
+	/**
+	 * @var Query
+	 */
+	
 	protected $query;
+	
+	/**
+	 * @var Config
+	 */
+	
 	protected $config;
 	
 	/**
@@ -37,7 +52,19 @@ class Search
 	
 	protected $request;
 	
-	protected $registry; // reistry
+	/**
+	 * @var Registry
+	 */
+	
+	protected $registry;
+	
+	/**
+	 * Create new Search Helper
+	 * 
+	 * @param MvcEvent $e
+	 * @param string $id
+	 * @param Engine $engine
+	 */
 	
 	public function __construct(MvcEvent $e, $id, Engine $engine)
 	{
@@ -513,7 +540,14 @@ class Search
 			
 			foreach ( $search->xpath("//option") as $option )
 			{
-				$id = (string) $option["id"] . '_' . $this->query->getHash();
+				$id = (string) $option["id"];
+				
+				if ( (string) $option["source"] != '' )
+				{
+					$id .=  '_' . (string) $option["source"];
+				}
+				
+				$id .=  '_' . $this->query->getHash();
 				
 				// format the number
 				
@@ -587,6 +621,12 @@ class Search
 			$limit->remove_url = $this->request->url_for($params);
 		}
 	}
+	
+	/**
+	 * Add link to Suggestion object
+	 * 
+	 * @param Suggestion $spelling
+	 */
 	
 	public function addSpellingLink( Suggestion $spelling = null )
 	{
