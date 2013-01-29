@@ -734,56 +734,61 @@
 
 <!-- 	
 	TEMPLATE: CITATION
-	record cited in all available citation styles
-	for inclusion on record pages (where xerxes_record is available)
+	Wrapper around the citations
 -->
 
 <xsl:template name="citation">
 	<div id="citation1" class="box">
     
-		<xsl:for-each select="//records/record/xerxes_record">
+		<h2><xsl:copy-of select="$text_record_cite_this" /></h2>	
+	
+		<xsl:call-template name="citation_render" />
 		
-			<h2>
-				<xsl:copy-of select="$text_record_cite_this" /><xsl:text> </xsl:text>
-				<xsl:call-template name="text_results_format">
-					<xsl:with-param name="format" select="format/public" />
-				</xsl:call-template>
-				<xsl:text> :</xsl:text>
-			</h2>
+		<p id="citation-note">
+			<xsl:copy-of select="$text_record_citation_note" />
+		</p>		
+	</div>
+</xsl:template>
+
+<!-- 	
+	TEMPLATE: CITATION RENDER
+	record cited in all available citation styles
+	for inclusion on record pages (where xerxes_record is available)
+-->
+
+<xsl:template name="citation_render">
+
+	<xsl:for-each select="//records/record/xerxes_record">
 			
-			<div class="citation" id="citation-apa">
-			
-				<h3><xsl:value-of select="$text_citation_apa" /></h3>
-				<p class="citation-style">
-					<xsl:call-template name="apa" />
-				</p>
-				
-			</div>
-			
-			<div class="citation" id="citation-mla">
-				
-				<h3><xsl:value-of select="$text_citation_mla" /></h3>
-				<p class="citation-style">
-					<xsl:call-template name="mla" />
-				</p>
-				
-			</div>
-			
-			<div class="citation" id="citation-turabian">
-				
-				<h3><xsl:value-of select="$text_citation_turabian" /></h3>
-				<p class="citation-style">
-					<xsl:call-template name="turabian" />
-				</p>
+		<div class="citation" id="citation-apa">
 		
-			</div>
-		
-			<p id="citation-note">
-				<xsl:copy-of select="$text_record_citation_note" />
+			<h3><xsl:value-of select="$text_citation_apa" /></h3>
+			<p class="citation-style">
+				<xsl:call-template name="apa" />
 			</p>
 			
-		</xsl:for-each>
-	</div>
+		</div>
+		
+		<div class="citation" id="citation-mla">
+			
+			<h3><xsl:value-of select="$text_citation_mla" /></h3>
+			<p class="citation-style">
+				<xsl:call-template name="mla" />
+			</p>
+			
+		</div>
+		
+		<div class="citation" id="citation-turabian">
+			
+			<h3><xsl:value-of select="$text_citation_turabian" /></h3>
+			<p class="citation-style">
+				<xsl:call-template name="turabian" />
+			</p>
+	
+		</div>
+				
+	</xsl:for-each>
+
 </xsl:template>
 
 
