@@ -620,31 +620,38 @@
 	
 	<xsl:template name="facet_dates">
 	
-		<form id="form-{group_id}" action="{//request/controller}/search" method="get">
-		
-			<xsl:variable name="start_date" select="concat(param_name,'.start')" />
-			<xsl:variable name="end_date" select="concat(param_name,'.end')" />
-
-
-			<xsl:call-template name="hidden_search_inputs">
-				<xsl:with-param name="exclude_limit" select="param_name" />
-			</xsl:call-template>
+		<div class="facet-date">
 	
-			<label for="facet-date-start">From: </label>
-			<input type="text" name="{$start_date}" id="facet-date-start" value="{//request/*[@original_key = $start_date]}" 
-				maxlength="4" size="4" />
+			<form id="form-{group_id}" action="{//request/controller}/search" method="get">
 			
-			<br />
+				<xsl:variable name="start_date" select="concat(param_name,'.start')" />
+				<xsl:variable name="end_date" select="concat(param_name,'.end')" />
+	
+	
+				<xsl:call-template name="hidden_search_inputs">
+					<xsl:with-param name="exclude_limit" select="param_name" />
+				</xsl:call-template>
+				
+				<div>
+		
+				<label for="facet-date-start">From: </label>
+				<input type="text" name="{$start_date}" id="facet-date-start" value="{//request/*[@original_key = $start_date]}" 
+					maxlength="4" size="4" />
+				
+				</div>
+				<div>
+				
+				<label for="facet-date-end">To: </label>
+				<input type="text" name="{$end_date}" id="facet-date-end" value="{//request/*[@original_key = $end_date]}" 
+					maxlength="4" size="4" />
+				
+				</div>
+				
+				<input type="submit" value="Update" />
+				
+			</form>
 			
-			<label for="facet-date-end">To: </label>
-			<input type="text" name="{$end_date}" id="facet-date-end" value="{//request/*[@original_key = $end_date]}" 
-				maxlength="4" size="4" />
-			
-			<br />
-			
-			<input type="submit" value="Update" />
-			
-		</form>
+		</div>
 		
 	</xsl:template>	
 	
