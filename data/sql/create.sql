@@ -154,7 +154,7 @@ CREATE TABLE xerxes_tags (
 
 CREATE TABLE xerxes_cache (
 	id 		VARCHAR(80),
-	data		BLOB,
+	data		MEDIUMBLOB,
 	timestamp	INTEGER,
 	expiry		INTEGER,
 

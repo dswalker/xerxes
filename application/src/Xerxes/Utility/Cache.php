@@ -68,8 +68,6 @@ class Cache extends DataMap
 		
 		$strSQL = "REPLACE INTO xerxes_cache (id, data, timestamp, expiry) VALUES (:id, :data, :timestamp, :expiry)";
 		$this->insert($strSQL, $arrParams);
-		
-		$this->commit();
 	}
 	
 	/**
