@@ -153,13 +153,12 @@ CREATE TABLE xerxes_tags (
 );
 
 CREATE TABLE xerxes_cache (
-	source		VARCHAR(20),
 	id 		VARCHAR(80),
-	data		MEDIUMTEXT,
+	data		BLOB,
 	timestamp	INTEGER,
 	expiry		INTEGER,
 
-	PRIMARY KEY (source,id)
+	PRIMARY KEY (id)
 );
 
 CREATE TABLE xerxes_reading_list (

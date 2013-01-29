@@ -174,9 +174,7 @@ abstract class Engine
 		
 		$id = $this->getResultsID($query);
 		
-		$results = $this->cache->get($id);
-		
-		return unserialize($results);
+		return $this->cache->get($id);
 	}
 	
 	/**
@@ -197,7 +195,7 @@ abstract class Engine
 		
 		$id = $this->getResultsID($query);
 		
-		$this->cache->set($id, serialize($results));
+		$this->cache->set($id, $results);
 	}
 	
 	/**

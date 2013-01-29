@@ -56,25 +56,17 @@ class Cache extends DataMap
 		
 		// now add it to the database too
 		
-		$this->beginTransaction(); // wrap this in a transaction
-		
 		// set-up the data
 		
 		$arrParams = array();
 		$arrParams[":id"] = $id;
-
-		// delete any previously stored value under this id		
-		
-		$strSQL = "DELETE FROM xerxes_cache WHERE id = :id";
-		$this->delete( $strSQL, $arrParams );
-		
-		// now insert the new value
-
-		$arrParams[":data"] = $data;
+		$arrParams[":data"] = serialize($data); // we always serialize the value
 		$arrParams[":timestamp"] = time();
-		$arrParams[":expiry"] = $expiry;		
+		$arrParams[":expiry"] = $expiry;
 		
-		$strSQL = "INSERT INTO xerxes_cache (id, data, timestamp, expiry) VALUES (:id, :data, :timestamp, :expiry)";
+		// insert or replace any previous value
+		
+		$strSQL = "REPLACE INTO xerxes_cache (id, data, timestamp, expiry) VALUES (:id, :data, :timestamp, :expiry)";
 		$this->insert($strSQL, $arrParams);
 		
 		$this->commit();
@@ -159,7 +151,7 @@ class Cache extends DataMap
 		
 		foreach ( $arrResults as $arrResult )
 		{
-			$arrCache[$arrResult['id']] = $arrResult['data'];
+			$arrCache[$arrResult['id']] = unserialize($arrResult['data']); // always unserialize it
 		}
 		
 		// you supply array, we return array
