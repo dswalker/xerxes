@@ -499,7 +499,14 @@ class Search
 			
 			foreach ( $search->xpath("//option") as $option )
 			{
-				$id = (string) $option["id"] . '_' . $this->query->getHash();
+				$id = (string) $option["id"];
+				
+				if ( (string) $option["source"] != '' )
+				{
+					$id .=  '_' . (string) $option["source"];
+				}
+				
+				$id .=  '_' . $this->query->getHash();
 				
 				// format the number
 				
