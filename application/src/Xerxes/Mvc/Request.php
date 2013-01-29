@@ -63,12 +63,27 @@ class Request extends HttpFoundation\Request
     		self::$trustedProxies = explode(',',  $registry->getConfig("REVERSE_PROXIES"));
     	}
     	
+    	// request
+    	
 		$request = parent::createFromGlobals();
+		
+		// session id
+		
+		$id = strtolower($request->getBasePath());
+		$id = preg_replace('/\W/', '', $id);
+		$id = str_replace('_', '', $id);
+		$id = 'xerxes-' . $id;
+		
+		// session
+		
+		$session = new Session();
+		$session->setId($id);
+		$session->start();
 
 		// register these mo-fo's
 		
 		$request->setRegistry($registry);
-		$request->setSession(new Session());
+		$request->setSession($session);
 		$request->setControllerMap($controller_map);
 
 		// do our special mapping
