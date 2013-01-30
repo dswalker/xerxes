@@ -21,17 +21,77 @@ use Xerxes\Utility\Parser;
 
 class Item
 {
-    public $bib_id; // the bibliographic record ID
-    public $availability; // boolean: is this item available for checkout?
-    public $status; // string describing the status of the item
-    public $location; // string describing the physical location of the item
-    public $reserve; // string indicating “on reserve” status – legal values: 'Y' or 'N'
-    public $callnumber; // the call number of this item
-    public $duedate; // string showing due date of checked out item (null if not checked out)
-    public $number; 	// the copy number for this item (note: although called “number”, 
-    					// this may actually be a string if individual items are named rather than numbered)
-    public $barcode; // the barcode number for this item
-    public $request_url; // automated storage or hold request
+	/**
+	 * The bibliographic record ID
+	 * @var string
+	 */
+	
+    public $bib_id;
+    
+    /**
+     * Is this item available for checkout?
+     * @var bool
+     */
+    
+    public $availability;
+    
+    /**
+     * Status of the item
+     * @var string
+     */
+    
+    public $status;
+    
+    /**
+     * Physical location of the item
+     * @var string
+     */
+    
+    public $location;
+    
+    /**
+     * "on reserve" status
+     * @var string
+     */
+    
+    public $reserve;
+    
+    /**
+     * the call number of this item
+     * @var string
+     */
+    
+    public $callnumber;
+    
+    /**
+     * Due date of checked out item (null if not checked out)
+     * @var string
+     */
+    
+    public $duedate;
+    
+    /**
+     * The copy number for this item
+     * 
+     * Although called 'number', this may actually be a string if individual items are named rather than numbered
+     * @var string
+     */
+    
+    public $number;
+    
+    /**
+     * The barcode number for this item
+     * @var string
+     */
+    
+    public $barcode;
+    
+    /**
+     * Automated storage or hold request URL
+     * @var string
+     */
+    
+    public $request_url;
 	
 	/**
 	 * Serialize to Array

@@ -19,13 +19,58 @@ namespace Application\Model\Search;
 
 class Holdings
 {
-	public $id; // bibliographic id
-	protected $bibliographicRecord; // bibliographic record
-	public $items = array(); // item record
-	public $holdings = array(); // periodical holdigs
-	public $electronicResources = array(); // ERM resources
-	public $none; // placeholder to show there are no holdings
-	public $hold_url; // link to place a hold
+	/**
+	 *  bibliographic id
+	 * 
+	 * @var string
+	 */
+	
+	public $id;
+	
+	/**
+	 * @var unknown_type
+	 */
+	protected $bibliographicRecord;
+	
+	/**
+	 * aray of Item's
+	 * 
+	 * @var array
+	 */
+	
+	public $items = array();
+	
+	/**
+	 * array of Holding's
+	 *
+	 * @var array
+	 */	
+	
+	public $holdings = array();
+	
+	/**
+	 * array of ElectronicResource's
+	 * 
+	 * @var array
+	 */
+	
+	public $electronicResources = array();
+	
+	/**
+	 * Placeholder to show there are no holdings
+	 * 
+	 * @var string
+	 */
+	
+	public $none;
+	
+	/**
+	 * Link to place a hold
+	 * 
+	 * @var string
+	 */
+	
+	public $hold_url;
 	
 	/**
 	 * Get bibliographic record

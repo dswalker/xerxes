@@ -21,6 +21,10 @@ use Xerxes\Utility\Parser;
 
 class Holding
 {
+	/**
+	 * @var array
+	 */
+	
 	private $data = array();
 	
 	/**

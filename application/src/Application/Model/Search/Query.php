@@ -24,15 +24,49 @@ use Xerxes\Mvc\Request;
 
 class Query
 {
-	public $terms = array(); // search terms
-	public $limits = array(); // limits
+	/**
+	 * array of QueryTerm's
+	 * @var array
+	 */
+	
+	public $terms = array();
+	
+	/**
+	 * array of LimitTerm's
+	 * @var array
+	 */	
+	
+	public $limits = array();
+	
+	/**
+	 * @var string
+	 */
 	
 	protected $stop_words = "";
+	
+	/**
+	 * @var string
+	 */	
+	
 	protected $search_fields_regex = '^query[0-9]{0,1}$|^field[0-9]{0,1}$|^boolean[0-9]{0,1}$';
+	
+	/**
+	 * @var string
+	 */
+	
 	protected $limit_fields_regex = '^facet.*';	
 	
-	protected $request; // xerxes request object
-	protected $config; // local config
+	/**
+	 * @var Request
+	 */
+	
+	protected $request;
+	
+	/**
+	 * @var Config
+	 */
+	
+	protected $config;
 	
 	/**
 	 * Create a Search Query
