@@ -103,8 +103,8 @@ class Result
 	/**
 	 * Constructor
 	 * 
-	 * @param Xerxes_Record $record		record
-	 * @param Config $config			local config
+	 * @param Record $record
+	 * @param Config $config
 	 */
 	
 	public function __construct(Record $record, Config $config)
