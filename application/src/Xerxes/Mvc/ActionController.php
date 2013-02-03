@@ -187,6 +187,8 @@ abstract class ActionController
 	 * Redirect to a new URL
 	 * 
 	 * @param array|string $location	location to redirect to
+	 * 
+	 * @return RedirectResponse
 	 */
 	
 	protected function redirectTo($location)
