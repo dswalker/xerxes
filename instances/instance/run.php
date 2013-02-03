@@ -36,5 +36,4 @@ $bootstrap = new Bootstrap($autoloader);
 // run the application
 
 $app = new FrontController();
-$app->setBootstrap($bootstrap)
-    ->execute(); 
+$app->execute($bootstrap); 
