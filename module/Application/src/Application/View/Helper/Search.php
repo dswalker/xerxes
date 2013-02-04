@@ -508,8 +508,6 @@ class Search
 				
 				$id .=  '_' . $this->query->getHash();
 				
-				// format the number
-				
 				// is this the current tab?
 
 				if ( $controller_map->getControllerName() == (string) $option["id"] 
@@ -548,19 +546,12 @@ class Search
 				$option->addAttribute('url', $url);
 				
 				// cached search hit count?
+				
+				$session_hits = $this->request->getSessionData($id);
 		
-				foreach ( $this->request->getAllSessionData() as $session_id => $session_value )
+				if ( $session_hits != null )
 				{
-					// does this value in the cache have the save id as our tab?
-					
-					$id = str_replace("_" . $query->getHash(), "", $session_id);
-					
-					if ( $id == (string) $option["id"] )
-					{
-						// yup, so add it
-						
-						$option->addAttribute('hits', Parser::number_format($session_value));
-					}
+					$option->addAttribute('hits', Parser::number_format($session_hits));
 				}
 			}
 			
