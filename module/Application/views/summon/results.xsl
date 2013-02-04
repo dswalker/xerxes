@@ -2,12 +2,18 @@
 
 <!--
 
- author: David Walker
- copyright: 2012 California State University
- version:
- package: Xerxes
- link: http://xerxes.calstate.edu
- license:
+ This file is part of Xerxes.
+
+ (c) California State University <library@calstate.edu>
+
+ For the full copyright and license information, please view the LICENSE
+ file that was distributed with this source code.
+
+-->
+<!--
+
+ Summon results view
+ author: David Walker <dwalker@calstate.edu>
  
  -->
  
@@ -46,45 +52,75 @@
 
 <xsl:template name="search_recommendations">
 
-	<xsl:if test="results/database_recommendations and not(//request/start) and //config/show_database_recommendations = 'true'">
+	<xsl:if test="not(//request/start)">
 	
-		<div class="results-database-recommendations">
-		
-			<h2>
-				<xsl:text>We found a </xsl:text>
+		<xsl:if test="results/database_recommendations  and //config/show_database_recommendations = 'true'">
+	
+			<div class="results-database-recommendations">
 			
-				<xsl:choose>
-					<xsl:when test="count(results/database_recommendations/database_recommendation) &gt; 1">
-						couple of specialized databases
-					</xsl:when>
-					<xsl:otherwise>
-						specialized database
-					</xsl:otherwise>
-				</xsl:choose>
+				<h2>
+					<xsl:text>We found a </xsl:text>
 				
-				<xsl:text> that might help you.</xsl:text>
-				</h2>
-	
-			<ul>
-		
-			<xsl:for-each select="results/database_recommendations/database_recommendation">
-				
-				<li>
-					<a href="{link}"><xsl:value-of select="title" /></a>
+					<xsl:choose>
+						<xsl:when test="count(results/database_recommendations/database_recommendation) &gt; 1">
+							couple of specialized databases
+						</xsl:when>
+						<xsl:otherwise>
+							specialized database
+						</xsl:otherwise>
+					</xsl:choose>
 					
-					<!--
-					<xsl:if test="description">
-					 	
-						<xsl:value-of select="description" />
-					 </xsl:if>
-					 -->
-				</li>
+					<xsl:text> that might help you.</xsl:text>
+				</h2>
+		
+				<ul>
+			
+				<xsl:for-each select="results/database_recommendations/database_recommendation">
+					
+					<li>
+						<a href="{link}"><xsl:value-of select="title" /></a>
+						
+						<xsl:if test="description">
+							
+							<p><xsl:value-of select="description" /></p>
+						
+						 </xsl:if>
+	
+					</li>
+					
+				</xsl:for-each>	
 				
-			</xsl:for-each>
+				</ul>
+				
+			</div>
 			
-			</ul>
+		</xsl:if>
+		
+		<xsl:if test="results/best_bets">
+		
+			<div class="results-database-recommendations">
 			
-		</div>
+				<xsl:for-each select="results/best_bets/best_bet">
+					
+					<div class="results-bestbet">
+					
+						<h2><a href="{link}"><xsl:value-of select="title" /></a></h2>
+						
+						<div class="description">
+						
+							<xsl:if test="description">
+								<xsl:value-of disable-output-escaping="yes" select="description" />
+							</xsl:if>
+							
+						</div>
+					
+					</div>
+					
+				</xsl:for-each>
+				
+			</div>
+			
+		</xsl:if>
 		
 	</xsl:if>
 	

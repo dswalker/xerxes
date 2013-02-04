@@ -18,9 +18,18 @@ use Application\Model\Search;
 class ResultSet extends Search\ResultSet
 {
 	public $database_recommendations;
+	public $best_bets;
 
-	public function addRecommendation(Database $database)
+	public function addRecommendation(Resource $resource)
 	{
-		$this->database_recommendations[] = $database;
+		if ( $resource instanceof Database )
+		{
+			$this->database_recommendations[] = $resource;
+		}
+		else
+		{
+			$this->best_bets[] = $resource;
+		}
 	}
 }
+
