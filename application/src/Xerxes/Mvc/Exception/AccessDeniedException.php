@@ -9,15 +9,8 @@
  * file that was distributed with this source code.
  */
 
-namespace Application\Model\Authentication\Exception;
-
-/**
- * Access Denied Exception
- * 
- * @author David Walker <dwalker@calstate.edu>
- */
+namespace Xerxes\Mvc\Exception;
 
 class AccessDeniedException extends \Exception
 {
-	
 }

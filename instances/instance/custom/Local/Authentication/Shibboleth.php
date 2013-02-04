@@ -12,7 +12,7 @@
 namespace Local\Authentication;
 
 use Application\Model\Authentication;
-use Application\Model\Authentication\Exception\AccessDeniedException;
+use Xerxes\Mvc\AccessDeniedException;
 
 /**
  * Custom authentication for shibboleth
