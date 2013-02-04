@@ -30,10 +30,10 @@ abstract class DataValue
 	
 	public function properties($prefix = null)
 	{
-		$arrReturn = array();
-		$arrProperties = get_object_vars($this);
+		$return = array();
+		$properties = get_object_vars($this);
 		
-		foreach ( $arrProperties as $key => $value )
+		foreach ( $properties as $key => $value )
 		{
 			$array_key = $prefix . $key;
 			
@@ -41,11 +41,11 @@ abstract class DataValue
 			
 			if ( ! is_array($value) )
 			{
-				$arrReturn[$array_key] = $value;
+				$return[$array_key] = $value;
 			}
 		}
 		
-		return $arrReturn;
+		return $return;
 	}
 	
 	/**
@@ -53,21 +53,21 @@ abstract class DataValue
 	 * array, where the array keys correspond to the properties, such as an
 	 * individual result array from a PDO result set
 	 *
-	 * @param array $arrResult
+	 * @param array $result
 	 */
 	
-	public function load($arrResult)
+	public function load($result)
 	{
-		$arrProperties = $this->properties();
+		$properties = $this->properties();
 		
-		foreach ( $arrResult as $key => $value )
+		foreach ( $result as $key => $value )
 		{
 			// exclude the numeric keys as these are repetitions
 			// of the data in PDO
 			
 			if ( is_string($key) )
 			{
-				if ( array_key_exists($key, $arrProperties) )
+				if ( array_key_exists($key, $properties) )
 				{
 					$this->$key = $value;
 				}
