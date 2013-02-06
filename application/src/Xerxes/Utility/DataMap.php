@@ -71,7 +71,7 @@ abstract class DataMap
 	 * @return \PDO
 	 */
 	
-	private function pdo()
+	protected function pdo()
 	{
 		global $xerxes_pdo; // global so there is only one, for efficiency
 		
@@ -92,17 +92,6 @@ abstract class DataMap
 		}
 		
 		return $xerxes_pdo;
-	}
-	
-	/**
-	 * Return the pdo object for specific handling
-	 *
-	 * @return \PDO 
-	 */
-	
-	protected function getDatabaseObject()
-	{
-		return $this->pdo();
 	}
 	
 	/**
