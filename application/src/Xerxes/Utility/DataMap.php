@@ -13,13 +13,16 @@ namespace Xerxes\Utility;
 
 /**
  * One PDO connection to rule them all
+ * @var \PDO
  */
 
 global $xerxes_pdo;
 
 /**
- * Basic functions for selecting, instering, updating, and deleting data from a 
- * database, including transactions; basically a convenience wrapper around PDO
+ * Data Map
+ * 
+ * Provides basic CRUD functions on the database; basically a convenience wrapper around PDO 
+ * for operations that require speed and efficiency; otherwise use the ORM
  *
  * @author David Walker <dwalker@calstate.edu>
  */
@@ -29,15 +32,8 @@ abstract class DataMap
 	private $connection; // database connection info
 	private $username; // username to connect with
 	private $password; // password to connect with	
-	private $sql = null;	// sql statement, here for debugging
+	protected $sql = null; // sql statement, here for debugging
 	
-	/**
-	 *
-	 * @var \PDO
-	 */
-	
-	private $pdo;	
-
 	/**
 	 * @var Registry
 	 */
@@ -47,9 +43,9 @@ abstract class DataMap
 	/**
 	 * Create a Data Map
 	 * 
-	 * @param string $connection	[optional] database connection info
-	 * @param string $username		[optional] username to connect with
-	 * @param string $password		[optional] password to connect with
+	 * @param string $connection [optional] database connection info
+	 * @param string $username   [optional] username to connect with
+	 * @param string $password   [optional] password to connect with
 	 */
 	
 	public function __construct($connection = null, $username = null, $password = null)
@@ -72,176 +68,136 @@ abstract class DataMap
 	/**
 	 * Lazy load initialization of the database object
 	 *
-	 * @param string $connection		pdo connection string
-	 * @param string $username			database username
-	 * @param string $password			database password
+	 * @return \PDO
 	 */
 	
-	protected function init()
+	private function pdo()
 	{
-		global $xerxes_pdo;
+		global $xerxes_pdo; // global so there is only one, for efficiency
 		
 		if ( ! $xerxes_pdo instanceof \PDO )
 		{
 			// options to ensure utf-8
 			
-			$arrDriverOptions = array();
-			$arrDriverOptions[\PDO::MYSQL_ATTR_INIT_COMMAND] = "SET NAMES 'utf8'";
+			$driver_options = array();
+			$driver_options[\PDO::MYSQL_ATTR_INIT_COMMAND] = "SET NAMES 'utf8'";
 			
-			// data access object
+			// make it!
 			
-			$xerxes_pdo = new \PDO($this->connection, $this->username, $this->password, $arrDriverOptions);
+			$xerxes_pdo = new \PDO($this->connection, $this->username, $this->password, $driver_options);
 			
 			// will force PDO to throw exceptions on error
 			
 			$xerxes_pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-			
-			$this->pdo = $xerxes_pdo;
 		}
 		
-		if ( ! $this->pdo instanceof \PDO )
-		{
-			$this->pdo = $xerxes_pdo;
-		}
+		return $xerxes_pdo;
 	}
 	
 	/**
 	 * Return the pdo object for specific handling
 	 *
-	 * @return PDO 
+	 * @return \PDO 
 	 */
 	
 	protected function getDatabaseObject()
 	{
-		$this->init();
-		return $this->pdo;
+		return $this->pdo();
 	}
 	
 	/**
 	 * Begin the database transaction
-	 *
 	 */
 		
 	public function beginTransaction()
 	{
-		$this->init();
-		$this->pdo->beginTransaction();
+		return $this->pdo()->beginTransaction();
 	}
 	
 	/**
 	 * Commit any outstanding database transactions
-	 *
 	 */
 
 	public function commit()
 	{
-		$this->init();
-		$this->pdo->commit();
+		return $this->pdo()->commit();
 	}
 	
 	/**
 	 * Fetch all records from a select query
 	 *
-	 * @param string $sql		SQL query
-	 * @param array $arrValues		paramaterized values
-	 * @return array				array of results as supplied by PDO
+	 * @param string $sql   SQL query
+	 * @param array $values paramaterized values
+	 * @return array        of results as supplied by PDO
 	 */
 	
-	public function select($sql, $arrValues = null )
+	public function select($sql, array $values = null )
 	{
-		$this->init();
+		$this->logSql($sql);
+
+		$statement = $this->pdo()->prepare($sql);
 		
-		$this->echoSQL($sql);
-		
-		$this->sql = $sql;
-			
-		$objStatement = $this->pdo->prepare($sql);
-		
-		if ( $arrValues != null )
+		if ( $values != null )
 		{
-			foreach ($arrValues as $key => $value )
+			foreach ($values as $key => $value )
 			{
 				if ( is_object($value) )
 				{
 					throw new \Exception('Value cannot be an object');
 				}
 				
-				$objStatement->bindValue( $key, $value);
+				$statement->bindValue( $key, $value);
 			}
 		}
 		
-		$objStatement->execute();
+		$statement->execute();
 			
-		return $objStatement->fetchAll();
+		return $statement->fetchAll();
 	}
 	
 	/**
 	 * Update rows in the database
 	 *
-	 * @param string $sql		SQL query
-	 * @param array $arrValues		paramaterized values
-	 * @return mixed				status of the request, as set by PDO
+	 * @param string $sql   SQL query
+	 * @param array $values paramaterized values
+	 * @return mixed        status of the request, as set by PDO
 	 */
 	
-	public function update($sql, $arrValues = null )
+	public function update($sql, array $values = null )
 	{
-		$this->init();
+		$this->logSql($sql);
 		
-		$this->echoSQL($sql);
+		$statement = $this->pdo()->prepare($this->sql);
 		
-		$this->sql = $sql;
-		
-		$objStatement = $this->pdo->prepare($this->sql);
-		
-		if ( $arrValues != null )
+		if ( $values != null )
 		{
-			foreach ($arrValues as $key => $value )
+			foreach ($values as $key => $value )
 			{
-				$objStatement->bindValue( $key, $value);
+				$statement->bindValue( $key, $value);
 			}
 		}
 		
-		return $objStatement->execute();      
+		return $statement->execute();      
 	}
 	
 	/**
 	 * Insert rows in the database
 	 *
-	 * @param string $sql		SQL query
-	 * @param array $arrValues		paramaterized values
-	 * @param boolean $boolReturnPk  return the inserted pk value?
-	 * @return mixed				if $boolReturnPk is false, status of the request (true or false), 
-	 * 								as set by PDO. if $boolReturnPk is true, either the last inserted pk, 
-	 * 								or 'false' for a failed insert. 
+	 * @param string $sql       SQL query
+	 * @param array $values     paramaterized values
+	 * @param bool $return_pk   return the inserted pk value?
+	 * @return mixed            if $return_pk is false, status of the request (true or false), 
+	 *                          as set by PDO. if $return_pk is true, either the last inserted pk, 
+	 *                          or 'false' for a failed insert. 
 	 */
 	
-	public function insert($sql, $arrValues = null, $boolReturnPk = false)
+	public function insert($sql, array $values = null, $return_pk = false)
 	{
-		$this->init();
+		$status = $this->update($sql, $values);      
 		
-		$status = $this->update($sql, $arrValues);      
-		
-		if ($status && $boolReturnPk)
+		if ($status && $return_pk)
 		{
-			// ms sql server specific code
-			
-			if ( $this->rdbms == "mssql" )
-			{
-				// this returns the last primary key in the 'session', per ms website,
-				// which we hope to god is the id we just inserted above and not a 
-				// different transaction; need to watch this closely for any racing conditions
-				
-				$results = $this->select("SELECT @@IDENTITY AS 'Identity'");
-				
-				if ( $results !== false )
-				{
-					return (int) $results[0][0];
-				}
-			}
-			else
-			{
-				return $this->lastInsertId();
-			}
+			return $this->lastInsertId();
 		} 
 		else
 		{
@@ -252,14 +208,14 @@ abstract class DataMap
 	/**
 	 * Delete rows in the database
 	 *
-	 * @param string $sql			SQL query
-	 * @param array $arrValues		paramaterized values
-	 * @return mixed				status of the request, as set by PDO
+	 * @param string $sql   SQL query
+	 * @param array $values paramaterized values
+	 * @return mixed        status of the request, as set by PDO
 	 */
 	
-	protected function delete($sql, $arrValues = null)
+	protected function delete($sql, $values = null)
 	{
-		return $this->update($sql, $arrValues);
+		return $this->update($sql, $values);
 	}
 	
 	/**
@@ -268,22 +224,21 @@ abstract class DataMap
 	
 	protected function lastInsertId()
 	{
-		$this->init();
-		return $this->pdo->lastInsertId();
+		return $this->pdo()->lastInsertId();
 	}
 
 	/**
 	 * A utility method for adding single-value data to a table
 	 *
-	 * @param string $table_name		table name
-	 * @param mixed $value_object		object derived from DataValue
-	 * @param boolean $boolReturnPk  	default false, return the inserted pk value?
-	 * @return bool 					false if failure. on success, true or inserted pk based on $boolReturnPk
+	 * @param string $table_name  table name
+	 * @param mixed $value_object instance of DataValue
+	 * @param bool $return_pk     default false, return the inserted pk value?
+	 * @return bool               false if failure. on success, true or inserted pk based on $return_pk
 	 */
 	
-	protected function doSimpleInsert($table_name, $value_object, $boolReturnPk = false)
+	protected function doSimpleInsert($table_name, DataValue $value_object, $return_pk = false)
 	{
-		$arrProperties = array();
+		$properties = array();
 		
 		foreach ( $value_object->properties() as $key => $value )
 		{
@@ -293,24 +248,26 @@ abstract class DataMap
 			}
 			else
 			{
-				$arrProperties[":$key"] = $value;
+				$properties[":$key"] = $value;
 			}
 		}
 		
 		$fields = implode( ",", array_keys( $value_object->properties() ) );
-		$values = implode( ",", array_keys( $arrProperties ) );
+		$values = implode( ",", array_keys( $properties ) );
 		
 		$sql = "INSERT INTO $table_name ( $fields ) VALUES ( $values )";
 		
-		return $this->insert( $sql, $arrProperties, $boolReturnPk );
+		return $this->insert( $sql, $properties, $return_pk );
 	}
 
 	/**
 	 * For debugging
 	 */
 	
-	private function echoSQL($sql)
+	private function logSql($sql)
 	{
+		$this->sql = $sql;
+		
 		// echo "<p>" . $sql . "</p>";
 	}
 }
