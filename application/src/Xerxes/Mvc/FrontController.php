@@ -35,7 +35,7 @@ class FrontController
 		{
 			// display errors
 			
-			if ( $event->registry->getConfig('DISPLAY_ERRORS') == true )
+			if ( $event->registry->getConfig('DISPLAY_ERRORS') == true || $event->request->isDevelopment() )
 			{
 				error_reporting( E_ALL );
 				ini_set('display_errors', '1');

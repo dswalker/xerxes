@@ -749,6 +749,25 @@ class Request extends HttpFoundation\Request
 		
 		return $this->user;
 	}
+
+	/**
+	 * Is this the dev server?
+	 *
+	 * @return bool
+	 */	
+	
+	public function isDevelopment()
+	{
+		if ( array_key_exists('APPLICATION_ENV', $_ENV))
+		{
+			if ( $_ENV['APPLICATION_ENV'] == 'development' )
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
 	
 	/**
 	 * Serialize to xml
