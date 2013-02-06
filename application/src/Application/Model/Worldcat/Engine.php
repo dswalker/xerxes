@@ -246,7 +246,7 @@ class Engine extends Search\Engine
 	 *
 	 * @param DOMDocument $xml
 	 * 
-	 * @return array of Record's
+	 * @return Record[]
 	 */
 	
 	protected function extractRecords(\DOMDocument $xml)
@@ -273,7 +273,7 @@ class Engine extends Search\Engine
 	 *
 	 * @param DOMDocument $xml
 	 *
-	 * @return array of Library's
+	 * @return Library[]
 	 */	
 	
 	protected function extractHoldings(\DOMDocument $xml)

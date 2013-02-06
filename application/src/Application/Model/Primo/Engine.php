@@ -305,7 +305,7 @@ class Engine extends Search\Engine
 	 * Parse records out of the response
 	 *
 	 * @param DOMDocument $dom 	Primo XML
-	 * @return array of Record's
+	 * @return Record[]
 	 */	
 	
 	protected function extractRecords(\DOMDocument $dom)

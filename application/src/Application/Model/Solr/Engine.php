@@ -261,7 +261,7 @@ class Engine extends Search\Engine
 	 * Extract records from the Solr response
 	 * 
 	 * @param simplexml	$xml	solr response
-	 * @return array of Record's
+	 * @return Record[]
 	 */	
 	
 	protected function extractRecords($xml)

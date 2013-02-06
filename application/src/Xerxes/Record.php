@@ -2095,7 +2095,7 @@ class Record
 	/**
 	 * (Periodical) titles this record continues
 	 * 
-	 * @return array of LinkedItem's
+	 * @return LinkedItem[]
 	 */
 	
 	public function getPrecedingTitles()
@@ -2106,7 +2106,7 @@ class Record
 	/**
 	 * (Periodical) titles this record is continued by
 	 *
-	 * @return array of LinkedItem's
+	 * @return LinkedItem[]
 	 */	
 	
 	public function getSucceedingTitles()

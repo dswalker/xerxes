@@ -39,7 +39,7 @@ class Facets
 	/**
 	 * Return facet groups
 	 * 
-	 * @return array of FacetGroup's
+	 * @return FacetGroup[]
 	 */	
 	
 	public function getGroups()

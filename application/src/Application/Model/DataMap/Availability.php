@@ -35,7 +35,7 @@ class Availability extends DataMap
 	 * Get a list of journals from the sfx table by issn
 	 *
 	 * @param mixed $issn		[string or array] ISSN or multiple ISSNs
-	 * @return array			array of Fulltext objects
+	 * @return Fulltext[]
 	 */
 	
 	public function getFullText($issn)

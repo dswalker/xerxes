@@ -189,7 +189,7 @@ class Innopac implements AvailabilityInterface
 	 *
 	 * @param string $html		html response from catalog
 	 * @param bool $bolRecursive	[optional] whether this is a recursive call from inside the function
-	 * @return array 				array of Item objects
+	 * @return Item[]
 	 */
 	
 	protected function extractItemRecords($html, $bolRecursive = false)
@@ -482,7 +482,7 @@ class Innopac implements AvailabilityInterface
 	 * Extracts data from the summary holdings holdings table
 	 *
 	 * @param string $html		html response from catalog
-	 * @return array 				array of Holdings objects
+	 * @return Holding[]
 	 */	
 	
 	protected function extractHoldingsRecords($html)
@@ -569,7 +569,7 @@ class Innopac implements AvailabilityInterface
 	 * Extracts data from the ERM table
 	 *
 	 * @param string $html		html response from catalog
-	 * @return array 				array of Electronic Resource objects
+	 * @return ElectronicResource[]
 	 */		
 	
 	protected function extractERMRecords($html)

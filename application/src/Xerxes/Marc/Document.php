@@ -89,7 +89,7 @@ class Document
 	/**
 	 * List of MARC Records from the Document
 	 *
-	 * @return array of Record objects
+	 * @return Record[]
 	 */
 	
 	public function records()

@@ -26,7 +26,7 @@ class Bing
 	/**
 	 * Check spelling
 	 * 
-	 * @param array of QueryTerms $query_terms
+	 * @param QueryTerms[] $query_terms
 	 */
 	
 	public function checkSpelling(array $query_terms)

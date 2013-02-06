@@ -396,7 +396,7 @@ class Engine extends Search\Engine
 	 * Parse out database recommendations
 	 * 
 	 * @param array $summon_results
-	 * @return array of Database's or Resource's
+	 * @return Database[]|Resource[]
 	 */
 	
 	protected function extractRecommendations($summon_results)
@@ -428,7 +428,7 @@ class Engine extends Search\Engine
 	 * Parse records out of the response
 	 *
 	 * @param array $summon_results
-	 * @return array of Record's
+	 * @return Record[]
 	 */
 	
 	protected function extractRecords($summon_results)

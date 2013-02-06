@@ -32,8 +32,7 @@ class ResultSet
 	public $total = 0;
 	
 	/**
-	 * array of Result objects
-	 * @var array
+	 * @var Result[]
 	 */
 	
 	public $records = array();
@@ -83,7 +82,7 @@ class ResultSet
 	/**
 	 * Return all search results
 	 * 
-	 * @return array of Result objects
+	 * @return Result[]
 	 */
 
 	public function getRecords()

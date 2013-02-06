@@ -11,12 +11,12 @@
 
 namespace Application\Model\Search;
 
-use Xerxes\Utility\Email;
-
 use Application\Model\Bx\Engine as BxEngine;
+use Application\Model\Bx\Record as Bxrecord;
 use Application\Model\Availability\AvailabilityFactory;
 use Xerxes\Record;
 use Xerxes\Utility\Cache;
+use Xerxes\Utility\Email;
 use Xerxes\Utility\Parser;
 use Xerxes\Utility\Registry;
 
@@ -61,9 +61,7 @@ class Result
 	public $holdings;
 	
 	/**
-	 * array of Bx Records
-	 * 
-	 * @var array
+	 * @var BxRecords[]
 	 */
 	
 	public $recommendations = array();

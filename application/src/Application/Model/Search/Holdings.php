@@ -41,17 +41,13 @@ class Holdings
 	public $items = array();
 	
 	/**
-	 * array of Holding's
-	 *
-	 * @var array
+	 * @var Holding[]
 	 */	
 	
 	public $holdings = array();
 	
 	/**
-	 * array of ElectronicResource's
-	 * 
-	 * @var array
+	 * @var ElectronicResource[]
 	 */
 	
 	public $electronicResources = array();

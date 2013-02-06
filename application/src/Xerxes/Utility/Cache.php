@@ -73,9 +73,8 @@ class Cache extends DataMap
 	/**
 	 * Get data from the cache
 	 *
-	 * @param string or array $id		unique id(s)
-	 * @return mixed					string of cache data if string supplied, 
-	 * 									otherwise array of data if supplied array
+	 * @param string|array $id  unique id(s)
+	 * @return string|array     you supply arrray you get back array
 	 */	
 	
 	public function get($id)

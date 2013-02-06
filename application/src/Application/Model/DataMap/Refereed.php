@@ -46,7 +46,7 @@ class Refereed extends DataMap
 	/**
 	 * Get all refereed data
 	 * 
-	 * @return array of Refereed objects
+	 * @return Refereed[]
 	 */
 	
 	public function getAllRefereed()
@@ -68,8 +68,8 @@ class Refereed extends DataMap
 	/**
 	 * Get a list of journals from the refereed table
 	 *
-	 * @param mixed $issn		[string or array] ISSN or multiple ISSNs
-	 * @return array			array of Refereed objects
+	 * @param string|array $issn
+	 * @return Refereed[]
 	 */
 	
 	public function getRefereed($issn)

@@ -94,7 +94,7 @@ class SavedRecords extends DataMap
 	 * @param int $iStart				[optional] offset to start from, defaults to 1, unless $arrID specified
 	 * @param int $iCount				[optional] number of records to return, defaults to all, unless $arrID specified
 	 * 
-	 * @return array					array of Record objects
+	 * @return Record[]
 	 */	
 	
 	public function getRecords($strUsername, $strView = null, $strOrder = null, $iStart = 1, $iCount = 20)
@@ -111,7 +111,7 @@ class SavedRecords extends DataMap
 	 * @param int $iStart				[optional] offset to start from, defaults to 1, unless $arrID specified
 	 * @param int $iCount				[optional] number of records to return, defaults to all, unless $arrID specified
 	 * 
-	 * @return array					array of Record objects
+	 * @return Record[]
 	 */		
 	
 	public function getRecordsByLabel($strUsername = null, $strLabel, $strOrder = null, $iStart = 1, $iCount = null)
@@ -128,7 +128,7 @@ class SavedRecords extends DataMap
 	 * @param int $iStart				[optional] offset to start from, defaults to 1, unless $arrID specified
 	 * @param int $iCount				[optional] number of records to return, defaults to all, unless $arrID specified
 	 * 
-	 * @return array					array of Record objects
+	 * @return Record[]
 	 */			
 	
 	public function getRecordsByFormat($strUsername = null, $strFormat, $strOrder = null, $iStart = 1, $iCount = null)
@@ -168,7 +168,7 @@ class SavedRecords extends DataMap
 	 * @param array $arrID				array of ID's
 	 * @param string $strOrder			[optional] sort order of the results" 'year', 'author' or 'title', defaults to date added (desc)
 	 * 
-	 * @return array					array of Record objects
+	 * @return Record[]
 	 */		
 	
 	public function getRecordsByID($arrID, $strOrder = null)
@@ -187,7 +187,7 @@ class SavedRecords extends DataMap
 	 * @param int $iCount				[optional] number of records to return, defaults to all, unless $arrID specified
 	 * @param string $strFormat			[optional] limit records to specific format
 	 * @param string $strLabel			[optiional] limit record to specific tag
-	 * @return array					array of Record objects
+	 * @return Record[]
 	 */
 	
 	private function returnRecords($strUsername = null, $strView = "full", $arrID = null, $strOrder = null, $iStart = 1, $iCount = null, $strFormat = null, $strLabel = null)
@@ -406,7 +406,7 @@ class SavedRecords extends DataMap
 	 * Retrive format-based record counts for saved records
 	 *
 	 * @param string $strUsername		username under which the records are saved
-	 * @return array					array of Record_Facet objects
+	 * @return Format[]
 	 */
 	
 	public function getFormats($strUsername)

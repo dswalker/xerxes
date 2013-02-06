@@ -25,15 +25,13 @@ use Xerxes\Mvc\Request;
 class Query
 {
 	/**
-	 * array of QueryTerm's
-	 * @var array
+	 * @var QueryTerm[]
 	 */
 	
 	public $terms = array();
 	
 	/**
-	 * array of LimitTerm's
-	 * @var array
+	 * @var LimitTerm[]
 	 */	
 	
 	public $limits = array();
