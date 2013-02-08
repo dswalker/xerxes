@@ -17,10 +17,13 @@ namespace Application\Model\Databases;
  * @author David Walker <dwalker@calstate.edu>
  */
 
-class Librarian extends Resource  
+class Librarian
 {
-	public $email;
-	public $phone;
-	public $office;
-	public $office_hours;
+	protected $name;
+	protected $link;
+	protected $email;
+	protected $phone;
+	protected $office;
+	protected $office_hours;
+	protected $category;
 }
