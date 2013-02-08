@@ -22,7 +22,7 @@ namespace Application\Model\Databases;
 class AlternateTitle 
 {
 	/** @Id @Column(type="integer") @GeneratedValue **/
-	protected $title_id;
+	protected $id;
 	
 	/**
 	 * @Column(type="string") 

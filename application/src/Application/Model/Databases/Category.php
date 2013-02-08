@@ -25,7 +25,7 @@ use Xerxes\Utility\Parser;
 class Category
 {
 	/** @Id @Column(type="integer") @GeneratedValue **/
-	protected $category_id;
+	protected $id;
 	
 	/**
 	 * @Column(type="string")

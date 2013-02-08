@@ -24,7 +24,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Database 
 {
 	/** @Id @Column(type="integer") @GeneratedValue **/
-	protected $database_id;
+	protected $id;
 	
 	/**
 	 * @Column(type="string")
@@ -123,7 +123,7 @@ class Database
 	protected $link_guide;
 	
 	/**
-	 * @OneToMany(targetEntity="Title", mappedBy="database")
+	 * @OneToMany(targetEntity="AlternateTitle", mappedBy="database")
 	 * @var AlternateTitle[]
 	 */
 	protected $alternate_titles;

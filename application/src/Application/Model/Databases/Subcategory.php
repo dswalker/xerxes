@@ -24,7 +24,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Subcategory
 {
 	/** @Id @Column(type="integer") @GeneratedValue **/
-	protected $subcategory_id;
+	protected $id;
 	
 	/**
 	 * @Column(type="string")
