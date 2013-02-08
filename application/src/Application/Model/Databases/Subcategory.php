@@ -11,20 +11,116 @@
 
 namespace Application\Model\Databases;
 
-use Xerxes\Utility\DataValue;
-use Xerxes\Utility\Parser;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Metalib SubCategory
+ * Subcategory
  *
  * @author David Walker <dwalker@calstate.edu>
+ * 
+ * @Entity @Table(name="subcategories")
  */
 
-class Subcategory extends DataValue
+class Subcategory
 {
-	public $subcategory_id;
-	public $name;
-	public $sequence;
-	public $category_id;
-	public $databases = array();
+	/** @Id @Column(type="integer") @GeneratedValue **/
+	protected $subcategory_id;
+	
+	/**
+	 * @Column(type="string")
+	 * @var string
+	 */
+	protected $name;
+	
+	/**
+	 * @Column(type="integer")
+	 * @var int
+	 */
+	protected $sequence;
+	
+	/**
+	 * @ManyToOne(targetEntity="Category", inversedBy="subcategories")
+	 * @var Category
+	 */
+	protected $category;
+	
+	/**
+	 * @OneToMany(targetEntity="Database", mappedBy="subcategory")
+	 * @var Database[]
+	 */	
+	protected $databases;
+	
+	/**
+	 * Create new Subcategory
+	 */
+	
+	public function __construct()
+	{
+		$this->databases = new ArrayCollection();
+	}
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	/**
+	 * @param string $name
+	 */
+	public function setName($name)
+	{
+		$this->name = $name;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getSequence()
+	{
+		return $this->sequence;
+	}
+
+	/**
+	 * @param int $sequence
+	 */
+	public function setSequence($sequence)
+	{
+		$this->sequence = $sequence;
+	}
+
+	/**
+	 * @return Category
+	 */
+	public function getCategory()
+	{
+		return $this->category;
+	}
+
+	/**
+	 * @param Category $category
+	 */
+	public function setCategory($category) 
+	{
+		$this->category = $category;
+	}
+
+	/**
+	 * @return Database[]
+	 */
+	public function getDatabases()
+	{
+		return $this->databases;
+	}
+
+	/**
+	 * @param Database $databases
+	 */
+	public function addDatabase(Database $database)
+	{
+		$database->setSubcategory($this); // Many-To-Many, Bidirectional
+		$this->databases[] = $database;
+	}
+
 }
