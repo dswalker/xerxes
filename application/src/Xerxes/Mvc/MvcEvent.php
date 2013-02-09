@@ -12,6 +12,7 @@
 namespace Xerxes\Mvc;
 
 use Symfony\Component\HttpFoundation;
+use Symfony\Component\Stopwatch\Stopwatch;
 use Xerxes\Utility\Registry;
 
 /**
@@ -22,6 +23,12 @@ use Xerxes\Utility\Registry;
 
 class MvcEvent
 {
+	/**
+	 * @var Stopwatch
+	 */
+	
+	protected $stopwatch;
+	
 	/**
 	 * @var Bootstrap
 	 */
@@ -56,6 +63,8 @@ class MvcEvent
 	
 	public function __construct(Bootstrap $bootstrap)
 	{
+		// $this->stopwatch = new Stopwatch();
+		
 		// framework config
 		
 		$this->bootstrap = $bootstrap;
@@ -68,9 +77,12 @@ class MvcEvent
 		
 		$this->registry = Registry::getInstance();
 		
+		// controller config
+			
+		$this->controller_map = new ControllerMap($app_dir);
+
 		// incoming request
 		
-		$this->controller_map = new ControllerMap($app_dir); 
 		$this->request = Request::createFromGlobals($this->controller_map); 
 		
 		// outgoing response
