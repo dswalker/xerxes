@@ -12,88 +12,16 @@
 namespace Xerxes\Utility;
 
 /**
- * One PDO connection to rule them all
- * @var \PDO
- */
-
-global $xerxes_pdo;
-
-/**
  * Data Map
  * 
  * Provides basic CRUD functions on the database; basically a convenience wrapper around PDO 
- * for operations that require speed and efficiency; otherwise use the ORM
+ * for operations that require speed and efficiency; otherwise use the ORM!
  *
  * @author David Walker <dwalker@calstate.edu>
  */
 
-abstract class DataMap
+abstract class DataMap extends DatabaseConnection
 {
-	private $connection; // database connection info
-	private $username; // username to connect with
-	private $password; // password to connect with	
-	protected $sql = null; // sql statement, here for debugging
-	
-	/**
-	 * @var Registry
-	 */
-	
-	protected $registry;
-
-	/**
-	 * Create a Data Map
-	 * 
-	 * @param string $connection [optional] database connection info
-	 * @param string $username   [optional] username to connect with
-	 * @param string $password   [optional] password to connect with
-	 */
-	
-	public function __construct($connection = null, $username = null, $password = null)
-	{
-		$this->registry = Registry::getInstance();
-		
-		// take conn and credentials from config, unless overriden in constructor
-		
-		if ( $connection == null) $connection = $this->registry->getConfig( "DATABASE_CONNECTION", true );
-		if ( $username == null ) $username = $this->registry->getConfig( "DATABASE_USERNAME", true );
-		if ( $password == null ) $password = $this->registry->getConfig( "DATABASE_PASSWORD", true );
-		
-		// assign it
-		
-		$this->connection = $connection;
-		$this->username = $username;
-		$this->password = $password;
-	}	
-	
-	/**
-	 * Lazy load initialization of the database object
-	 *
-	 * @return \PDO
-	 */
-	
-	protected function pdo()
-	{
-		global $xerxes_pdo; // global so there is only one, for efficiency
-		
-		if ( ! $xerxes_pdo instanceof \PDO )
-		{
-			// options to ensure utf-8
-			
-			$driver_options = array();
-			$driver_options[\PDO::MYSQL_ATTR_INIT_COMMAND] = "SET NAMES 'utf8'";
-			
-			// make it!
-			
-			$xerxes_pdo = new \PDO($this->connection, $this->username, $this->password, $driver_options);
-			
-			// will force PDO to throw exceptions on error
-			
-			$xerxes_pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-		}
-		
-		return $xerxes_pdo;
-	}
-	
 	/**
 	 * Begin the database transaction
 	 */
@@ -122,7 +50,7 @@ abstract class DataMap
 	
 	public function select($sql, array $values = null )
 	{
-		$this->logSql($sql);
+		$this->log($sql, $values);
 
 		$statement = $this->pdo()->prepare($sql);
 		
@@ -154,7 +82,7 @@ abstract class DataMap
 	
 	public function update($sql, array $values = null )
 	{
-		$this->logSql($sql);
+		$this->log($sql, $values);
 		
 		$statement = $this->pdo()->prepare($this->sql);
 		
@@ -219,10 +147,10 @@ abstract class DataMap
 	/**
 	 * A utility method for adding single-value data to a table
 	 *
-	 * @param string $table_name  table name
-	 * @param mixed $value_object instance of DataValue
-	 * @param bool $return_pk     default false, return the inserted pk value?
-	 * @return bool               false if failure. on success, true or inserted pk based on $return_pk
+	 * @param string $table_name       table name
+	 * @param DataValue $value_object  instance of DataValue
+	 * @param bool $return_pk          default false, return the inserted pk value?
+	 * @return bool                    false if failure. on success, true or inserted pk based on $return_pk
 	 */
 	
 	protected function doSimpleInsert($table_name, DataValue $value_object, $return_pk = false)
@@ -251,12 +179,15 @@ abstract class DataMap
 
 	/**
 	 * For debugging
+	 * 
+	 * @param string $sql
+	 * @param array $values
 	 */
 	
-	private function logSql($sql)
+	private function log($sql, array $values)
 	{
 		$this->sql = $sql;
 		
-		// echo "<p>" . $sql . "</p>";
+		// echo "<p>" . $sql . "</p>"; print_r($values);
 	}
 }
