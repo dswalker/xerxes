@@ -22,7 +22,8 @@ use Guzzle\Http\Client;
 class HttpClient extends Client
 {
 	/**
-	 * Simple method to get and return content from a ur;
+	 * Simple method to get and return content from a URL
+	 * 
 	 * @param string $url
 	 * @param int $timeout
 	 * @param array $headers
