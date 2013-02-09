@@ -67,7 +67,7 @@ class Request extends HttpFoundation\Request
     	
 		$request = parent::createFromGlobals();
 		
-		// session id
+		// @todo figure out the cookie id!
 		
 		$id = strtolower($request->getBasePath());
 		$id = preg_replace('/\W/', '', $id);
@@ -77,7 +77,6 @@ class Request extends HttpFoundation\Request
 		// session
 		
 		$session = new Session();
-		$session->setId($id);
 		$session->start();
 
 		// register these mo-fo's
