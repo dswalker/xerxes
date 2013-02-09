@@ -5,7 +5,8 @@
 		<config name="ebsco_databases" xml="true" pass="true" />	
 		<config name="ebsco_username"></config>
 		<config name="ebsco_password"></config>
-
+			
+		<config name="facet_multiple" pass="true">true</config>
 		<config name="sort_options" xml="true" pass="true">
 			<option id="relevance" public="relevance" internal="relevance" />			
 			<option id="date" public="newest first" internal="date" type="year"/>

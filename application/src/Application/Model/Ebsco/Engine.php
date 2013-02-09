@@ -345,8 +345,22 @@ class Engine extends Search\Engine
 		
 		// add clusters
 		
-		$facets = $this->extractFacets($xml);
-		$results->setFacets($facets);
+		$facets_id = 'facets' . $search->getHash();
+		
+		// cached clusters
+		
+		$cached_facets = $this->cache->get($facets_id);
+		
+		if ( $cached_facets instanceof Facets )
+		{
+			$results->setFacets($cached_facets);
+		}
+		else
+		{
+			$facets = $this->extractFacets($xml);
+			$this->cache->set($facets_id, $facets);
+			$results->setFacets($facets);
+		}
 		
 		return $results;
 	}
@@ -355,7 +369,7 @@ class Engine extends Search\Engine
 	 * Parse records out of the response
 	 *
 	 * @param DOMDocument $xml
-	 * @return array of Record's
+	 * @return Record[]
 	 */
 	
 	protected function extractRecords(\DOMDocument $xml)
@@ -397,8 +411,8 @@ class Engine extends Search\Engine
 		{
 			$databases_facet_name = $this->config->getConfig("DATABASES_FACET_NAME", false, "Databases");
 				
-			$group = new Search\FacetGroup("databases");
-			$group->name = "databases";
+			$group = new Search\FacetGroup();
+			$group->name = "database";
 			$group->public = $databases_facet_name;
 			
 			$databases_array = array();
