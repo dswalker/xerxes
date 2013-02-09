@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Application\Model\Databases;
+namespace Application\Model\Knowledgebase;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Xerxes\Utility\Parser;
@@ -38,7 +38,7 @@ class Category
 	protected $normalized;
 	
 	/**
-	 * @OneToMany(targetEntity="Subcategory", mappedBy="category")
+	 * @OneToMany(targetEntity="Subcategory", mappedBy="category", cascade={"persist"})
 	 * @var Subcategory[]
 	 */	
 	protected $subcategories;
@@ -56,11 +56,16 @@ class Category
 	 * Create a normalize category name (lowercase, just alpha and dashes) 
 	 * from supplied name
 	 * 
-	 * @param string $name
+	 * @param string $name  [optional] will otherwise use name property
 	 */
 	
-	public function setNormalizedFromName($name)
+	public function setNormalizedFromName($name = null)
 	{
+		if ( $name == null )
+		{
+			$name = $this->name;
+		}
+		
 		// convert accented character and the like to just ascii equivalent
 		// this is influenced by the setlocale() call with category LC_CTYPE
 		
@@ -88,4 +93,52 @@ class Category
 			$this->normalized = str_replace( "--", "-", $this->normalized );
 		}
 	}
+	/**
+	 * @return string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	/**
+	 * @param string $name
+	 */
+	public function setName($name)
+	{
+		$this->name = $name;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getNormalized() 
+	{
+		return $this->normalized;
+	}
+
+	/**
+	 * @param string $normalized
+	 */
+	public function setNormalized($normalized) 
+	{
+		$this->normalized = $normalized;
+	}
+
+	/**
+	 * @return Subcategory[]
+	 */
+	public function getSubcategories() 
+	{
+		return $this->subcategories;
+	}
+
+	/**
+	 * @param Subcategory $subcategory
+	 */
+	public function addSubcategory($subcategory) 
+	{
+		$this->subcategories[] = $subcategory;
+	}
+
 }

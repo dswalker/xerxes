@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Application\Model\Databases;
+namespace Application\Model\Knowledgebase;
 
 /**
  * Research Guide
@@ -17,6 +17,6 @@ namespace Application\Model\Databases;
  * @author David Walker <dwalker@calstate.edu>
  */
 
-class Guide extends Resource  
+class Guide  
 {
 }

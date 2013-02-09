@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Application\Model\Databases;
+namespace Application\Model\Knowledgebase;
 
 use Doctrine\Common\Collections\ArrayCollection;
 

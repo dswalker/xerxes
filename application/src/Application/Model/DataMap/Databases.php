@@ -11,9 +11,9 @@
 
 namespace Application\Model\DataMap;
 
-use Application\Model\Databases\Category;
-use Application\Model\Databases\Database;
-use Application\Model\Databases\Subcategory;
+use Application\Model\Knowledgebase\Category;
+use Application\Model\Knowledgebase\Database;
+use Application\Model\Knowledgebase\Subcategory;
 use Xerxes\Utility\DataMap;
 use Xerxes\Utility\Parser;
 

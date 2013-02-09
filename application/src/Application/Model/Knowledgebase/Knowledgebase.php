@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Application\Model\Databases;
+namespace Application\Model\Knowledgebase;
 
 use Doctrine\ORM\EntityManager;
 use Xerxes\Utility\Cache;
@@ -80,6 +80,16 @@ class Knowledgebase extends Doctrine
 	
 	public function addCategory(Category $category)
 	{
+		if ( $category->getNormalized() == '')
+		{
+			if ( $category->getName() != '')
+			{
+				$category->setNormalizedFromName();
+			}
+		}
+		
+		$this->entityManager->persist($category);
+		$this->entityManager->flush();
 	}
 	
 	/**
