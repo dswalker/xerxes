@@ -11,7 +11,9 @@
 
 namespace Application\Model\Databases;
 
+use Doctrine\ORM\EntityManager;
 use Xerxes\Utility\Cache;
+use Xerxes\Utility\Doctrine;
 use Xerxes\Utility\User;
 
 /**
@@ -20,13 +22,41 @@ use Xerxes\Utility\User;
  * @author David Walker <dwalker@calstate.edu>
  */
 
-class Knowledgebase
+class Knowledgebase extends Doctrine
 {
+	/**
+	 * Owner name
+	 * @var string
+	 */
+	
 	private $owner;
+	
+	/**
+	 * @var User
+	 */
+	
+	private $user;
+	
+	/**
+	 * @var EntityManager
+	 */
+	
+	protected $entityManager;
+	
+	/**
+	 * Create new Knowledgebase object
+	 * 
+	 * @param User $user
+	 */
 	
 	public function __construct(User $user)
 	{
-		$this->owner = $user->username;
+		parent::__construct();
+		
+		$this->user = $user->username;
+		$this->entityManager = $this->getEntityManager(array(__DIR__));
+		
+		$this->owner = 'admin'; // @todo: logic for local users
 	}
 	
 	/**
@@ -37,6 +67,9 @@ class Knowledgebase
 	
 	public function addDatabase(Database $database)
 	{
+		$database->setOwner($this->owner);
+		$this->entityManager->persist($database);
+		$this->entityManager->flush();
 	}
 	
 	/**
