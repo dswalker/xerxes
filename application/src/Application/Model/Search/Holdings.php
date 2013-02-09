@@ -33,9 +33,7 @@ class Holdings
 	protected $bibliographicRecord;
 	
 	/**
-	 * aray of Item's
-	 * 
-	 * @var array
+	 * @var Item[]
 	 */
 	
 	public $items = array();

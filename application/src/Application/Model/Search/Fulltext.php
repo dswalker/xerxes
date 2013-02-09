@@ -19,7 +19,6 @@ use Xerxes\Utility\DataValue;
  * @author David Walker <dwalker@calstate.edu>
  */
 
-
 class Fulltext extends DataValue
 {
 	public $issn;
