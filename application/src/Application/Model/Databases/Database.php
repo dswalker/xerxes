@@ -18,7 +18,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  *
  * @author David Walker <dwalker@calstate.edu>
  * 
- * @Entity @Table(name="databases")
+ * @Entity @Table(name="research_databases")
  */
 
 class Database 
@@ -51,7 +51,7 @@ class Database
 	protected $link;
 	
 	/**
-	 * @Column(type="text")
+	 * @Column(type="text", nullable=true)
 	 * @var string
 	 */
 	protected $description;
@@ -63,13 +63,13 @@ class Database
 	protected $active;
 	
 	/** 
-	 * @Column(type="string")
+	 * @Column(type="string", nullable=true)
 	 * @var string
 	 */
 	protected $language;
 	
 	/** 
-	 * @Column(type="text")
+	 * @Column(type="text", nullable=true)
 	 * @var string
 	 */
 	protected $notes;
@@ -81,43 +81,43 @@ class Database
 	protected $proxy;
 	
 	/**
-	 * @Column(type="date")
+	 * @Column(type="date", nullable=true)
 	 * @var DateTime
 	 */
 	protected $date_new_expiry;
 	
 	/**
-	 * @Column(type="date")
+	 * @Column(type="date", nullable=true)
 	 * @var DateTime
 	 */
 	protected $date_trial_expiry;
 	
 	/**
-	 * @Column(type="string")
+	 * @Column(type="string", nullable=true)
 	 * @var string
 	 */
 	protected $creator;
 	
 	/**
-	 * @Column(type="string")
+	 * @Column(type="string", nullable=true)
 	 * @var string
 	 */
 	protected $publisher;
 	
 	/**
-	 * @Column(type="string")
+	 * @Column(type="string", nullable=true)
 	 * @var string
 	 */
 	protected $coverage;
 	
 	/**
-	 * @Column(type="text")
+	 * @Column(type="text", nullable=true)
 	 * @var string
 	 */
 	protected $search_hints;
 	
 	/**
-	 * @Column(type="string")
+	 * @Column(type="string", nullable=true)
 	 * @var string
 	 */
 	protected $link_guide;
