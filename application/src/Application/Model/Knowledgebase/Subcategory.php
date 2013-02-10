@@ -40,12 +40,13 @@ class Subcategory
 	
 	/**
 	 * @ManyToOne(targetEntity="Category", inversedBy="subcategories")
+	 * @JoinColumn(name="category_id", referencedColumnName="id", nullable=false)
 	 * @var Category
 	 */
 	protected $category;
 	
 	/**
-	 * @OneToMany(targetEntity="Database", mappedBy="subcategory")
+	 * @OneToMany(targetEntity="Database", mappedBy="subcategory", cascade={"persist"})
 	 * @var Database[]
 	 */	
 	protected $databases;
@@ -119,8 +120,7 @@ class Subcategory
 	 */
 	public function addDatabase(Database $database)
 	{
-		$database->setSubcategory($this); // Many-To-Many, Bidirectional
+		$database->setSubcategory($this);
 		$this->databases[] = $database;
 	}
-
 }
