@@ -44,6 +44,12 @@ class Category
 	protected $subcategories;
 	
 	/**
+	 * @Column(type="string")
+	 * @var string
+	 */
+	protected $owner;
+	
+	/**
 	 * Create new Category
 	 */
 	
@@ -138,7 +144,23 @@ class Category
 	 */
 	public function addSubcategory($subcategory) 
 	{
+		$subcategory->setCategory($this);
 		$this->subcategories[] = $subcategory;
+	}
+	/**
+	 * @return string
+	 */
+	public function getOwner()
+	{
+		return $this->owner;
+	}
+
+	/**
+	 * @param string $owner
+	 */
+	public function setOwner($owner)
+	{
+		$this->owner = $owner;
 	}
 
 }

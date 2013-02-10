@@ -32,12 +32,6 @@ class Database
 	 */
 	protected $source_id;
 	
-	/**
-	 * @Column(type="string")
-	 * @var string 
-	 */
-	protected $owner;
-	
 	/** 
 	 * @Column(type="string")
 	 * @var string 
@@ -60,67 +54,67 @@ class Database
 	 * @Column(type="boolean")
 	 * @var bool
 	 */
-	protected $active;
+	protected $active = true;
 	
 	/** 
 	 * @Column(type="string", nullable=true)
 	 * @var string
 	 */
-	protected $language;
+	protected $language = null;
 	
 	/** 
 	 * @Column(type="text", nullable=true)
 	 * @var string
 	 */
-	protected $notes;
+	protected $notes = null;
 	
 	/** 
 	 * @Column(type="boolean")
 	 * @var bool
 	 */
-	protected $proxy;
+	protected $proxy = true;
 	
 	/**
 	 * @Column(type="date", nullable=true)
 	 * @var DateTime
 	 */
-	protected $date_new_expiry;
+	protected $date_new_expiry = null;
 	
 	/**
 	 * @Column(type="date", nullable=true)
 	 * @var DateTime
 	 */
-	protected $date_trial_expiry;
+	protected $date_trial_expiry = null;
 	
 	/**
 	 * @Column(type="string", nullable=true)
 	 * @var string
 	 */
-	protected $creator;
+	protected $creator = null;
 	
 	/**
 	 * @Column(type="string", nullable=true)
 	 * @var string
 	 */
-	protected $publisher;
+	protected $publisher = null;
 	
 	/**
 	 * @Column(type="string", nullable=true)
 	 * @var string
 	 */
-	protected $coverage;
+	protected $coverage = null;
 	
 	/**
 	 * @Column(type="text", nullable=true)
 	 * @var string
 	 */
-	protected $search_hints;
+	protected $search_hints = null;
 	
 	/**
 	 * @Column(type="string", nullable=true)
 	 * @var string
 	 */
-	protected $link_guide;
+	protected $link_guide = null;
 	
 	/**
 	 * @OneToMany(targetEntity="AlternateTitle", mappedBy="database")
@@ -164,22 +158,6 @@ class Database
 	public function setSourceId($source_id)
 	{
 		$this->source_id = $source_id;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getOwner()
-	{
-		return $this->owner;
-	}
-
-	/**
-	 * @param string $owner
-	 */
-	public function setOwner($owner)
-	{
-		$this->owner = $owner;
 	}
 
 	/**
