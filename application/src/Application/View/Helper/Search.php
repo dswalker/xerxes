@@ -79,11 +79,11 @@ class Search
 	/**
 	 * Displays paged information (e.g., 11-20 of 34 results)
 	 *
-	 * @param int $total 		total # of hits for query
-	 * @param int $start 		start value for the page
-	 * @param int $max 			maximum number of results to show
+	 * @param int $total  total # of hits for query
+	 * @param int $start  start value for the page
+	 * @param int $max    maximum number of results to show
 	 *
-	 * @return array or null	summary of page results 
+	 * @return array or null  summary of page results 
 	 */
 	
 	public function summary( $total, $start, $max )
@@ -126,11 +126,11 @@ class Search
 	/**
 	 * Paging element
 	 * 
-	 * @param int $total 		total # of hits for query
-	 * @param int $start 		start value for the page
-	 * @param int $max 			maximum number of results to show
+	 * @param int $total  total # of hits for query
+	 * @param int $start  start value for the page
+	 * @param int $max    maximum number of results to show
 	 * 
-	 * @return DOMDocument formatted paging navigation
+	 * @return DOMDocument  formatted paging navigation
 	 */
 	
 	public function pager( $total, $start, $max )
@@ -253,9 +253,9 @@ class Search
 	/**
 	 * Creates a sorting page element
 	 *
-	 * @param string $sort			current sort
+	 * @param string $sort  current sort
 	 *
-	 * @return DOMDocument 			sort navigation
+	 * @return DOMDocument  sort navigation
 	 */
 	
 	public function sortDisplay($sort)
@@ -483,10 +483,10 @@ class Search
 	/**
 	 * Helper function for XSLT to supress hidden limit inputs for a specific facet
 	 *
-	 * @param string $field  name of field to check if it is excluded
+	 * @param string $field     name of field to check if it is excluded
 	 * @param string $excluded  comma delimited list of fields to be exlcuded
 	 *
-	 * @return bool false if the field is in the exlcude list
+	 * @return bool  false if the field is in the exlcude list
 	 */
 	
 	public static function shouldIncludeLimit($field, $excluded)
@@ -652,7 +652,7 @@ class Search
 	/**
 	 * URL for the full record display
 	 * 
-	 * @param $result Record object
+	 * @param Record $record
 	 * @return string url
 	 */
 	
@@ -670,7 +670,7 @@ class Search
 	/**
 	 * URL for the full record display
 	 *
-	 * @param $result Record object
+	 * @param Record $record
 	 * @return string url
 	 */
 	
@@ -842,7 +842,8 @@ class Search
 	
 	
 	/**
-	 * The current search-related parameters 
+	 * The current search-related parameters
+	 * 
 	 * @return array
 	 */
 	
@@ -858,6 +859,7 @@ class Search
 	
 	/**
 	 * Parameters to construct the facet links
+	 * 
 	 * @return array
 	 */
 	
@@ -871,6 +873,7 @@ class Search
 	
 	/**
 	 * Parameters to construct the url on the search redirect
+	 * 
 	 * @return array
 	 */
 	
@@ -885,6 +888,7 @@ class Search
 	
 	/**
 	 * Parameters to construct the links for the paging element
+	 * 
 	 * @return array
 	 */
 	
@@ -896,6 +900,7 @@ class Search
 	
 	/**
 	 * Parameters to construct the links for the sort
+	 * 
 	 * @return array
 	 */
 	
@@ -911,6 +916,8 @@ class Search
 	
 	/**
 	 * Return identifier for this query = search ID + query hash
+	 * 
+	 * @return string
 	 */
 	
 	public function getQueryID()
