@@ -154,6 +154,7 @@
 							<!-- facets -->
 							
 							<xsl:call-template name="search_sidebar_facets" />
+							<xsl:call-template name="search_sidebar_additional" />
 							
 						</div>
 				
@@ -1394,5 +1395,6 @@
 	<xsl:template name="facet_narrow_results" />
 	<xsl:template name="search_promo" />
 	<xsl:template name="search_login_reminder" />
+	<xsl:template name="search_sidebar_additional" />
 	
 </xsl:stylesheet>
