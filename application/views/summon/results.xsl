@@ -212,7 +212,7 @@
 						</xsl:if>
 					</input>
 					<xsl:text> </xsl:text>
-					<label for="facet-0-3">Add newspapers</label>
+					<label for="facet-0-3">Add newspaper articles</label>
 				
 				</li>
 				
