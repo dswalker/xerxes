@@ -249,7 +249,7 @@ class Link
 			$xml->addAttribute("type", $this->getType());
 		}
 		
-		$xml->display = Parser::escapeXml($this->getDisplay());
+		$xml->display = $this->getDisplay();
 		$xml->url = $this->getURL();
 		
 		return Parser::convertToDOMDocument($xml);
