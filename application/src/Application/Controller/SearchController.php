@@ -12,6 +12,7 @@
 namespace Application\Controller;
 
 use Application\Model\DataMap\Stats;
+use Application\Model\Search\Config;
 use Application\Model\Search\Engine;
 use Application\Model\Search\Query;
 use Application\Model\Search\Result;
@@ -32,14 +33,43 @@ use Xerxes\Utility\Registry;
 
 abstract class SearchController extends ActionController
 {
-	protected $config; // local config
-	protected $query; // query object
-	protected $engine; // search engine
-	protected $helper; // search display helper
+	/**
+	 * @var Config
+	 */
+	protected $config;
+	
+	/**
+	 * @var Query
+	 */
+	protected $query;
+	
+	/**
+	 * @var SearchHelper
+	 */
+	protected $engine;
+	
+	/**
+	 * @var Search
+	 */
+	protected $helper;
+	
+	/**
+	 * default records per page
+	 * @var int
+	 */
+	protected $max;
+	
+	/**
+	 * upper-limit per page
+	 * @var int
+	 */
+	protected $max_allowed;
 
-	protected $max; // default records per page
-	protected $max_allowed; // upper-limit per page
-	protected $sort; // default sort
+	/**
+	 * default sort
+	 * @var string
+	 */
+	protected $sort;
 	
 	/**
 	 * (non-PHPdoc)
@@ -60,7 +90,7 @@ abstract class SearchController extends ActionController
 	}
 	
 	/**
-	 * Return the search engine for this sytem
+	 * Return the search engine for this system
 	 * 
 	 * @return Engine
 	 */
