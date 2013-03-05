@@ -107,7 +107,7 @@ class Query
 	}
 	
 	/**
-	 * Get a specific qury term
+	 * Get a specific query term
 	 *
 	 * @param int $id		the position of the term in the list of terms
 	 * @return QueryTerm
