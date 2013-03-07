@@ -56,6 +56,8 @@ class Summon
 		{
 			$this->http_client = new Client();
 		}
+		
+		$this->http_client->setOptions(array('timeout' => 15));
 	}
 	
 	/**
