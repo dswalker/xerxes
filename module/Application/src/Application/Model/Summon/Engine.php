@@ -291,16 +291,19 @@ class Engine extends Search\Engine
 		
 		// newspapers are a special case, i.e., they can be optional
 		
-		if ( $this->config->getConfig('NEWSPAPERS_OPTIONAL', false) )
+		$news_option = $this->config->getConfig('NEWSPAPERS_OPTIONAL', false);
+		$news_limit = $search->getLimit('facet.newspapers');
+		
+		if ( $news_option === true && $news_limit->value != 'true')
 		{
-			 $news_limit = $search->getLimit('facet.newspapers');
-			
-			if ( $news_limit->value != 'true' )
-			{
-				$this->formats_exclude[] = 'Newspaper Article';
-			}
+			$this->formats_exclude[] = 'Newspaper Article';
 		}
 
+		if ( $news_option == 'exclude' && $news_limit->value == 'false')
+		{
+			$this->formats_exclude[] = 'Newspaper Article';
+		}
+		
 		// always exclude these
 		
 		foreach ( $this->formats_exclude as $format )
