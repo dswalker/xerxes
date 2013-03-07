@@ -41,8 +41,10 @@ class Summon
 				
 			// @todo: see if we can't collapse multiple terms into a single spellcheck query
 			
-			foreach ( $query_terms as $term )
+			foreach ( $query_terms as $term_original )
 			{
+				$term = clone $term_original;
+				
 				$query = $term->phrase;
 				$query = urlencode(trim($query));
 			
