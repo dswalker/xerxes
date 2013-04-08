@@ -395,7 +395,7 @@ class Engine extends Search\Engine
 			$databases_facet_name = $this->config->getConfig("DATABASES_FACET_NAME", false, "Databases");
 				
 			$group = new Search\FacetGroup("databases");
-			$group->name = "databases";
+			$group->name = "database";
 			$group->public = $databases_facet_name;
 			
 			$databases_array = array();
