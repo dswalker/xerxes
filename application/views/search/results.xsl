@@ -599,7 +599,7 @@
 
 						<!-- only show the facets if there is more than one -->
 	
-						<xsl:if test="count(facets/facet) &gt; 1">
+						<xsl:if test="count(facets/facet) &gt; 1 or //config/facet_multiple = 'true'">
 			
 							<h3><xsl:value-of select="public" /></h3>
 							
