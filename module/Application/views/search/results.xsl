@@ -256,7 +256,7 @@
 	
 	<xsl:template name="searchbox">
 	
-		<xsl:param name="action"><xsl:value-of select="//request/controller" />/search</xsl:param>
+		<xsl:param name="action"><xsl:value-of select="$base_url" />/<xsl:value-of select="//request/controller" />/search</xsl:param>
 	
 		<form id="form-main-search" action="{$action}" method="get">	
 	
