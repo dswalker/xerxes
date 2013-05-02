@@ -22,7 +22,7 @@
 <xsl:template name="worldcat_results_availability">
 
 	<div class="record-action">
-		<a href="{../url_open}">
+		<a href="{../url_open}" target="{$link_target}">
 		<xsl:choose>
 			<xsl:when test="//config/worldcat_groups/group[@id=//request/source]/lookup/ill_text">
 

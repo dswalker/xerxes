@@ -54,7 +54,7 @@
 			<h3>Expand your search</h3>
 			
 			<ul>
-				<li><a href="{@url}"><xsl:value-of select="@public" /></a></li>
+				<li><a href="{@url}" target="{$link_target}"><xsl:value-of select="@public" /></a></li>
 			</ul>
 			
 		</div>
