@@ -96,7 +96,7 @@
 			
 		</xsl:if>
 		
-		<xsl:if test="results/best_bets">
+		<xsl:if test="results/best_bets and not(//config/best_bets = 'false')">
 		
 			<div class="results-database-recommendations">
 			
@@ -147,9 +147,7 @@
 	</xsl:variable>
 
 	<xsl:variable name="newspapers">
-		<xsl:if test="//request/*[@original_key = 'facet.newspapers'] = 'true'">
-			<xsl:text>true</xsl:text>
-		</xsl:if>
+		<xsl:value-of select="//request/*[@original_key = 'facet.newspapers']" />
 	</xsl:variable>
 	
 	<xsl:variable name="holdings">
@@ -221,6 +219,22 @@
 					</input>
 					<xsl:text> </xsl:text>
 					<label for="facet-0-3">Add newspaper articles</label>
+				
+				</li>
+				
+			</xsl:if>
+
+			<xsl:if test="//config/newspapers_optional = 'exclude'">
+	
+				<li class="facet-selection">
+				
+					<input type="checkbox" id="facet-0-3" class="facet-selection-option facet-0" name="facet.newspapers" value="false">
+						<xsl:if test="$newspapers = 'false'">
+							<xsl:attribute name="checked">checked</xsl:attribute>
+						</xsl:if>
+					</input>
+					<xsl:text> </xsl:text>
+					<label for="facet-0-3">Exclude newspaper articles</label>
 				
 				</li>
 				
