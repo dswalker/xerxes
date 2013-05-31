@@ -219,7 +219,7 @@ class Innopac implements AvailabilityInterface
 		// see if there is more than one page of item records, in which case get the
 		// expanded (holdings) page instead; performance hit, but gotta do it
 		
-		if ( stristr($html, "additional copies") )
+		if ( stristr($html, "view additional copies") )
 		{
 			if ( $bolRecursive == true )
 			{
@@ -604,7 +604,7 @@ class Innopac implements AvailabilityInterface
 		
 		$html = Parser::removeLeft( $html, "class=\"bibResource\"" );
 		$html = Parser::removeRight( $html, "</table>" );
-				
+		
 		// we'll use the table row as the delimiter of each holding
 		
 		while ( strstr( $html, "<tr" ) )
@@ -620,6 +620,7 @@ class Innopac implements AvailabilityInterface
 			$html = Parser::removeLeft( $html, "</tr>" );
 			
 			$x = 0;
+			$first_url = false;
 			
 			while ( strstr( $strERM, "<td  class=\"bibResourceEntry\">" ) )
 			{
@@ -644,19 +645,28 @@ class Innopac implements AvailabilityInterface
 				$data = preg_replace('/<[^>]*>/', '', $data);
 				$data = trim($data);
 				
-				if ( $x == 0 )
+				// if this is the first url, then this is the database information
+				
+				if ( $url != "" && $first_url == false)
 				{
 					$record->database = $data;
 					$record->link = $url;
+					$first_url = true;
 				}
-				elseif ( $x == 1 )
-				{
-					$record->coverage = $data;
-				}
-				elseif ( $x == 2 && $url != "")
+				
+				// if this is the second url, then it's a link to the package infor in the catalog
+				
+				elseif ( $url != "" && $first_url == true)
 				{
 					$record->package = $this->server . $url;
 				}
+				
+				// anything else must be coverage information
+				
+				else
+				{
+					$record->coverage = $data;
+				}				
 				
 				$x++;
 			}
