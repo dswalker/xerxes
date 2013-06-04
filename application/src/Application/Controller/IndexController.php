@@ -15,6 +15,33 @@ use Xerxes\Mvc\ActionController;
 
 class IndexController extends ActionController
 {
+	## x1 hack
+	
+	public function execute($action)
+	{
+		if ( $this->request->getParam('base') != '')
+		{
+			$params = $this->request->getParams();
+		
+			$params['controller'] = $params['base'];
+			unset($params['base']);
+		
+			$url = $this->request->url_for($params);
+		
+			// print_r($params); echo "<p>$url</p>"; exit;
+		
+			return $this->redirectTo($url);
+		}
+		else
+		{
+			return parent::execute($action);
+		}
+	}
+	
+	## end x1 hack
+	
+	
+	
 	public function indexAction()
 	{
 		// get the default controller configured in map

@@ -17,8 +17,8 @@ class DatabasesController extends ActionController
 {
 	public function indexAction()
 	{
-		$this->response->setVariable('hello', 'world');
+		$params = array('controller' => 'databases');
 		
-		return $this->response;
+		return $this->redirectTo($params);
 	}
 }

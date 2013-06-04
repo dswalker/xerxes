@@ -92,7 +92,7 @@ abstract class ActionController
 	 * @throws NotFoundException
 	 */
 	
-	final public function execute($action)
+	public function execute($action)
 	{
 		$action_name = $action . 'Action';
 		
