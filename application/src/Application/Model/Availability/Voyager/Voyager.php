@@ -14,7 +14,7 @@ namespace Application\Model\Availability\Voyager;
 use Application\Model\Availability\AvailabilityInterface;
 use Application\Model\Search;
 use Xerxes\Utility\Parser;
-use Zend\Http\Client;
+use Xerxes\Utility\Factory;
 
 /**
  * Retrieve item and holdings information from an Ex Libris Voyager system
@@ -27,14 +27,13 @@ class Voyager implements AvailabilityInterface
 	protected $url = ''; // final url
 	protected $server = ''; // server address
 	protected $ignore_locations = array();
+	protected $client; // http client
 		
 	/**
 	 * Create new Voyager availability lookup object
-	 *
-	 * @param string $server		server address
 	 */
 	
-	public function __construct( Client $client = null )
+	public function __construct()
 	{
 		$this->config = Config::getInstance(); 
 
@@ -44,14 +43,7 @@ class Voyager implements AvailabilityInterface
 		$ignore = $this->config->getConfig('ignore_locations', false);
 		$this->ignore_locations = explode(";", $ignore);
 		
-		if ( $client != null )
-		{
-			$this->client = $client;
-		}
-		else
-		{
-			$this->client = new Client();
-		}
+		$this->client = Factory::getHttpClient();
     }
     
     /**
@@ -68,10 +60,7 @@ class Voyager implements AvailabilityInterface
 		
 		$url = $this->server . "GetHoldingsService?bibId=$id";
 
-		$this->client->setUri($url);
-		$this->client->setOptions(array('timeout' => 4));
-		
-		$content = $this->client->send()->getBody();	
+		$content = $this->client->getUrl($url, 4);
 
 		// load and parse it
 		
