@@ -13,6 +13,7 @@ namespace Xerxes\Mvc;
 
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 use Xerxes\Utility\Parser;
 use Xerxes\Utility\Registry;
 use Xerxes\Utility\User;
@@ -67,16 +68,22 @@ class Request extends HttpFoundation\Request
     	
 		$request = parent::createFromGlobals();
 		
-		// @todo figure out the cookie id!
+		// set cookie path and name
 		
 		$id = strtolower($request->getBasePath());
-		$id = preg_replace('/\W/', '', $id);
-		$id = str_replace('_', '', $id);
-		$id = 'xerxes-' . $id;
+		$id = preg_replace('/\//', '_', $id);
+		$id = 'xerxessession_' . $id;
+		
+		$session_options = array(
+			'name' => $id,
+			'cookie_path' => $request->getBasePath()
+		);
+		
+		$storage = new NativeSessionStorage($session_options);
 		
 		// session
 		
-		$session = new Session();
+		$session = new Session($storage);
 		$session->start();
 
 		// register these mo-fo's
