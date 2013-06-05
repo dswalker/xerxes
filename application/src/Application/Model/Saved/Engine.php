@@ -26,7 +26,7 @@ class Engine extends Search\Engine
 	private $datamap; // data map
 	
 	/**
-	 * Constructor
+	 * New Savd Records Engine
 	 */
 	
 	public function __construct()
@@ -107,10 +107,23 @@ class Engine extends Search\Engine
 	{
 	}
 	
+	/**
+	 * (non-PHPdoc)
+	 * @see Application\Model\Search.Engine::getConfig()
+	 */
+	
 	public function getConfig()
 	{
 		return Config::getInstance();
 	}
+	
+	/**
+	 * 
+	 * @param Query $search
+	 * @param int $start
+	 * @param int $max
+	 * @param string $sort
+	 */
 	
 	protected function doSearch(Query $search, $start = 1, $max = 10, $sort = "")
 	{
