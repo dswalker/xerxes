@@ -24,6 +24,7 @@
 		"psr-0": {
 			"Application": "application/src",
 			"Xerxes": "application/src"
-		}
+		},
+		"classmap": ["application/src/Xerxes/Transition"]
 	}
 }
