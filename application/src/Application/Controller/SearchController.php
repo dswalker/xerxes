@@ -44,7 +44,7 @@ abstract class SearchController extends ActionController
 	protected $query;
 	
 	/**
-	 * @var SearchHelper
+	 * @var Engine
 	 */
 	protected $engine;
 	
