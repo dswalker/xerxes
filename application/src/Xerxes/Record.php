@@ -793,8 +793,8 @@ class Record
 	
 	public function toXML()
 	{
-		$objXml = new \DOMDocument( );
-		$objXml->loadXML( "<xerxes_record />" );
+		$xml = new \DOMDocument( );
+		$xml->loadXML( "<xerxes_record />" );
 		
 		$properties = $this->getProperties();
 		
@@ -838,12 +838,12 @@ class Record
 			
 		if ( count($this->authors) > 0 )
 		{
-			$authors_xml = $objXml->createElement("authors");
+			$authors_xml = $xml->createElement("authors");
 			$x = 1;
 			
 			foreach ( $this->authors as $author )
 			{
-				$author_xml =  $objXml->createElement("author");
+				$author_xml =  $xml->createElement("author");
 				$author_xml->setAttribute("type", $author->type);
 				
 				if ( $author->additional == true )
@@ -860,7 +860,7 @@ class Record
 				
 				foreach ( $author->toArray() as $key => $value )
 				{
-					$objNew = $objXml->createElement($key, Parser::escapeXml( $value ) );
+					$objNew = $xml->createElement($key, Parser::escapeXml( $value ) );
 					$author_xml->appendChild($objNew);
 				}
 				
@@ -869,20 +869,20 @@ class Record
 				$x++;
 			}
 			
-			$objXml->documentElement->appendChild($authors_xml);
+			$xml->documentElement->appendChild($authors_xml);
 		}		
 	
 		// standard numbers
 			
 		if ( count($this->issns) > 0 || count($this->isbns) > 0 || $this->govdoc_number != "" || $this->gpo_number != "" || $this->oclc_number != "")
 		{
-			$objStandard = $objXml->createElement("standard_numbers");
+			$objStandard = $xml->createElement("standard_numbers");
 			
 			if ( count($this->issns) > 0 )
 			{
 				foreach ( $this->issns as $strIssn )
 				{
-					$objIssn = $objXml->createElement("issn", Parser::escapeXml($strIssn));
+					$objIssn = $xml->createElement("issn", Parser::escapeXml($strIssn));
 					$objStandard->appendChild($objIssn);
 				}
 			}
@@ -891,30 +891,30 @@ class Record
 			{
 				foreach ( $this->isbns as $strIsbn )
 				{
-					$objIssn = $objXml->createElement("isbn", Parser::escapeXml($strIsbn));
+					$objIssn = $xml->createElement("isbn", Parser::escapeXml($strIsbn));
 					$objStandard->appendChild($objIssn);
 				}
 			}
 			
 			if ( $this->govdoc_number != "" )
 			{
-				$objGovDoc = $objXml->createElement("gpo", Parser::escapeXml($this->govdoc_number));
+				$objGovDoc = $xml->createElement("gpo", Parser::escapeXml($this->govdoc_number));
 				$objStandard->appendChild($objGovDoc);
 			}
 			
 			if ( $this->gpo_number != "" )
 			{
-				$objGPO = $objXml->createElement("govdoc", Parser::escapeXml($this->gpo_number));
+				$objGPO = $xml->createElement("govdoc", Parser::escapeXml($this->gpo_number));
 				$objStandard->appendChild($objGPO);
 			}
 				
 			if ( $this->oclc_number != "" )
 			{
-				$objOCLC = $objXml->createElement("oclc", Parser::escapeXml($this->oclc_number));
+				$objOCLC = $xml->createElement("oclc", Parser::escapeXml($this->oclc_number));
 				$objStandard->appendChild($objOCLC);					
 			}
 				
-			$objXml->documentElement->appendChild($objStandard);
+			$xml->documentElement->appendChild($objStandard);
 		}		
 		
 		## basic elements
@@ -942,10 +942,10 @@ class Record
 			
 			// otherwise, create a new node
 			
-			Parser::addToXML($objXml, $key, $value);
+			Parser::addToXML($xml, $key, $value);
 		}
 		
-		return $objXml;
+		return $xml;
 	}
 	
 	/**
