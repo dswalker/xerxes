@@ -316,27 +316,7 @@ class Search
 		{
 			$xerxes_record = $result->getXerxesRecord();
 			
-			// author links
-			
-			foreach ( $xerxes_record->getAuthors() as $author )
-			{
-				$author->url = $this->linkAuthor($author);
-				$author->url_title = $this->linkAuthorTitle($author);
-			}
-			
-			// subject links
-			
-			foreach ( $xerxes_record->getSubjects() as $subject )
-			{
-				$subject->url = $this->linkSubject($subject);
-			}
-
-			// related titles link
-			
-			foreach ( $xerxes_record->getPrecedingTitles() as $title )
-			{
-				$title->url = $this->linkRelatedTitle($title);
-			}
+			$this->addBibRecordLinks($xerxes_record);
 
 			foreach ( $xerxes_record->getSucceedingTitles() as $title )
 			{
@@ -365,6 +345,37 @@ class Search
 			
 			$this->linkOther($result);
 		}
+	}
+	
+	/**
+	 * Add links for author, subject, related titles
+	 * 
+	 * @param Record $xerxes_record
+	 */
+	
+	public function addBibRecordLinks(Record $xerxes_record )
+	{
+		// author links
+			
+		foreach ( $xerxes_record->getAuthors() as $author )
+		{
+			$author->url = $this->linkAuthor($author);
+			$author->url_title = $this->linkAuthorTitle($author);
+		}
+			
+		// subject links
+			
+		foreach ( $xerxes_record->getSubjects() as $subject )
+		{
+			$subject->url = $this->linkSubject($subject);
+		}
+		
+		// related titles link
+			
+		foreach ( $xerxes_record->getPrecedingTitles() as $title )
+		{
+			$title->url = $this->linkRelatedTitle($title);
+		}		
 	}
 	
 	/**

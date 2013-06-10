@@ -11,12 +11,21 @@
 
 namespace Application\Controller;
 
-use Xerxes\Utility\User;
 use Application\Model\Saved\Engine;
+use Application\Model\Solr;
+use Application\View\Helper\Folder as FolderHelper;
+use Xerxes\Utility\User;
 
 class FolderController extends SearchController
 {
 	protected $id = "folder";
+
+	protected function init()
+	{
+		parent::init();
+	
+		$this->helper = new FolderHelper($this->event, $this->id, $this->engine);
+	}	
 	
 	protected function getEngine()
 	{
