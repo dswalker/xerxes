@@ -528,16 +528,11 @@ class SavedRecords extends DataMap
 		$arrValues[":marc"] = serialize($objXerxesRecord);		
 		$arrValues[":record_type"] = "xerxes_record";
 		
-		$this->insert( $strSQL, $arrValues );
+		$database_id = $this->insert( $strSQL, $arrValues, true );
 		
-		// get the internal xerxes record id for the saved record, and fill record
-		// with it, so caller can use. 
+		// assign internal database id as primary id, and swap original to original_id
 		
-		$getIDSql = "SELECT id FROM xerxes_records WHERE original_id = :original_id";
-		$getIDParam = array (":original_id" => $id );
-		$getIDResults = $this->select( $getIDSql, $getIDParam );
-		$objXerxesRecord->id = $getIDResults[0]["id"];
-		
+		$objXerxesRecord->id = $database_id;
 		$objXerxesRecord->original_id = $id;
 		
 		return $objXerxesRecord->id;
