@@ -130,6 +130,17 @@ class Link
 	}
 	
 	/**
+	 * Set text to display
+	 *
+	 * @return string
+	 */
+	
+	public function setDisplay($display)
+	{
+		$this->display = $display;
+	}	
+	
+	/**
 	 * Get URL
 	 * 
 	 * @return string
