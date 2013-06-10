@@ -12,6 +12,7 @@
 namespace Application\Model\Saved;
 
 use Application\Model\Search;
+use Application\Model\Metalib;
 use Xerxes\Utility\DataValue;
 
 /**
@@ -27,4 +28,23 @@ class Result extends Search\Result
 	public $original_id;
 	public $timestamp;
 	public $username;
+	
+	public function __construct($record, Config $config)
+	{
+		// old metalib record from xerxes 1
+		
+		if ( $record instanceof \Xerxes_MetalibRecord )
+		{
+			$record = new Metalib\Record($record); // convert it x2 record
+		}
+		
+		// record from xerxes 1 to xerxes 2 transition (only at cal state)
+		
+		elseif ( $record instanceof \Xerxes_TransRecord )
+		{
+			$record = $record->record(); // extract the x2 record
+		}
+		
+		parent::__construct($record, $config);
+	}
 }
