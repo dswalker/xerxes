@@ -215,9 +215,10 @@
 			<dd>
 				<xsl:for-each select="authors/author[@type = 'corporate']">
 				
-					<a href="{url}">
-						<xsl:value-of select="aucorp" /><xsl:text> </xsl:text>
-					</a>
+					<xsl:call-template name="record_lateral_link">
+						<xsl:with-param name="url" select="url" />
+						<xsl:with-param name="display"><xsl:value-of select="aucorp" /><xsl:text> </xsl:text></xsl:with-param>
+					</xsl:call-template>
 					
 					<xsl:if test="following-sibling::author[@type = 'corporate']">
 						<xsl:text> ; </xsl:text>
@@ -255,33 +256,48 @@
 	-->		
 	
 	<xsl:template name="record_author_display">
-	
-		<a href="{url}">
-			<xsl:choose>
-				<xsl:when test="display">
-					<xsl:value-of select="display" />							
-				</xsl:when>
-				<xsl:when test="@type = 'personal'">
-					<xsl:value-of select="aufirst" />
-					<xsl:text> </xsl:text>
-					<xsl:value-of select="auinit" />
-					<xsl:text> </xsl:text>
-					<xsl:value-of select="aulast" />								
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="aucorp" />
-				</xsl:otherwise>
-			</xsl:choose>
-		</a>
+
+		<xsl:call-template name="record_lateral_link">
+			<xsl:with-param name="url" select="url" />
+			<xsl:with-param name="display"><xsl:call-template name="record_author_assemble" /></xsl:with-param>
+		</xsl:call-template>
 		
 		<xsl:if test="title">
 
 			<xsl:text>, </xsl:text>
-			<a href="{url_title}"><xsl:value-of select="title" /></a>		
+
+			<xsl:call-template name="record_lateral_link">
+				<xsl:with-param name="url" select="url_title" />
+				<xsl:with-param name="display"><xsl:value-of select="title" /></xsl:with-param>
+			</xsl:call-template>
 
 		</xsl:if>
 		
-	</xsl:template>	
+	</xsl:template>
+	
+	<!--
+		TEMPLATE: RECORD AUTHOR ASSEMBLE
+	-->	
+	
+	<xsl:template name="record_author_assemble">
+	
+		<xsl:choose>
+			<xsl:when test="display">
+				<xsl:value-of select="display" />							
+			</xsl:when>
+			<xsl:when test="@type = 'personal'">
+				<xsl:value-of select="aufirst" />
+				<xsl:text> </xsl:text>
+				<xsl:value-of select="auinit" />
+				<xsl:text> </xsl:text>
+				<xsl:value-of select="aulast" />								
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="aucorp" />
+			</xsl:otherwise>
+		</xsl:choose>
+		
+	</xsl:template>
 
 	<!--
 		TEMPLATE: RECORD FORMAT
@@ -526,7 +542,12 @@
 			<h2><xsl:copy-of select="$text_record_subjects" />:</h2>
 			<ul>
 				<xsl:for-each select="subjects/subject">
-					<li><a href="{url}"><xsl:value-of select="display" /></a></li>
+					<li>
+						<xsl:call-template name="record_lateral_link">
+							<xsl:with-param name="url" select="url" />
+							<xsl:with-param name="display"><xsl:value-of select="display" /></xsl:with-param>
+						</xsl:call-template>
+					</li>
 				</xsl:for-each>
 			</ul>
 		</xsl:if>
@@ -668,7 +689,11 @@
 			<ul>
 				<xsl:for-each select="journal_title_continues/journal_title_continue">
 					<li>
-						<a href="{url}"><xsl:value-of select="title" /></a>
+						<xsl:call-template name="record_lateral_link">
+							<xsl:with-param name="url" select="url" />
+							<xsl:with-param name="display"><xsl:value-of select="title" /></xsl:with-param>
+						</xsl:call-template>					
+
 						<xsl:text> -- </xsl:text>
 						<xsl:for-each select="notes/note">
 							<xsl:value-of select="text()" />
@@ -687,7 +712,11 @@
 			<ul>
 				<xsl:for-each select="journal_title_continued_by/linkeditem">
 					<li>
-						<a href="{url}"><xsl:value-of select="title" /></a>
+						<xsl:call-template name="record_lateral_link">
+							<xsl:with-param name="url" select="url" />
+							<xsl:with-param name="display"><xsl:value-of select="title" /></xsl:with-param>
+						</xsl:call-template>
+						
 						<xsl:text> -- </xsl:text>
 						<xsl:for-each select="notes/note">
 							<xsl:value-of select="text()" />
@@ -802,6 +831,21 @@
 	</xsl:for-each>
 
 </xsl:template>
+
+<xsl:template name="record_lateral_link">
+	<xsl:param name="url" />
+	<xsl:param name="display" />
+	
+	<xsl:choose>
+		<xsl:when test="url">
+			<a href="{$url}"><xsl:value-of select="$display" /></a>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:value-of select="$display" />
+		</xsl:otherwise>
+	</xsl:choose>
+	
+</xsl:template>	
 
 
 </xsl:stylesheet>
