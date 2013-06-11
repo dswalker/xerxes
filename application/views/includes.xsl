@@ -142,6 +142,11 @@
 		</div>
 		
 		<xsl:call-template name="surround_bottom" />
+
+		<!-- javascript: only when not ada or mobile -->
+		<xsl:if test="not(request/session/ada) and $is_mobile = 0">
+			<xsl:call-template name="javascript_include" />
+		</xsl:if>
 		
 		</body>
 		</html>
@@ -166,11 +171,6 @@
 		
 		<!-- css -->
 		<xsl:call-template name="css_include" />
-		
-		<!-- javascript: only when not ada or mobile -->
-		<xsl:if test="not(request/session/ada) and $is_mobile = 0">
-			<xsl:call-template name="javascript_include" />
-		</xsl:if>
 		
 		<!-- header content added by module -->
 		<xsl:call-template name="module_header" />	
@@ -514,8 +514,7 @@
 			
 		<xsl:call-template name="jslabels" />
 	
-		<script src="{$base_include}/javascript/jquery/jquery-1.6.2.min.js"  type="text/javascript"></script>
-		
+		<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>		
 		<script src="{$base_include}/javascript/results.js?version={$asset_version}"  type="text/javascript"></script>
 
 	</xsl:template>
