@@ -94,27 +94,11 @@
 			
 			<!-- results area -->
 			
-			<div class="">
-				<xsl:attribute name="class">
-					<xsl:choose>
-						<xsl:when test="$sidebar = 'right'">
-							<xsl:text>yui-ge</xsl:text>
-						</xsl:when>
-						<xsl:when test="$sidebar = 'left'">
-							<xsl:text>yui-gf</xsl:text>
-						</xsl:when>
-					</xsl:choose>
-				</xsl:attribute>
+			<div class="row-fluid">
 				
 				<!-- results -->
 		
-				<div>
-					<xsl:attribute name="class">
-						<xsl:text>yui-u</xsl:text>
-						<xsl:if test="$sidebar = 'right'">
-							<xsl:text> first</xsl:text>
-						</xsl:if>
-					</xsl:attribute>
+				<div class="span9">
 				
 					<xsl:call-template name="sort_bar" />
 					
@@ -140,14 +124,7 @@
 				
 				<xsl:if test="$sidebar != 'none' and $is_mobile = 0">
 				
-					<div>
-						<xsl:attribute name="class">
-							<xsl:text>yui-u</xsl:text>
-							<xsl:if test="$sidebar = 'left'">
-								<xsl:text> first</xsl:text>
-							</xsl:if>
-						</xsl:attribute>		
-							
+					<div class="span3">
 						
 						<div id="search-sidebar" class="sidebar {$sidebar}">	
 									
@@ -204,11 +181,11 @@
 		
 			<xsl:if test="results/total and not(results/total = '0')">
 		
-				<div class="yui-g" style="width: 100%">
-					<div class="yui-u first">
+				<div class="row-fluid">
+					<div class="span5">
 						<xsl:copy-of select="$text_metasearch_results_summary" />
 					</div>
-					<div class="yui-u">
+					<div class="span7">
 						<xsl:choose>
 							<xsl:when test="//sort_display">
 								<div id="sort-options" data-role="controlgroup" data-type="horizontal" data-mini="true">
@@ -351,12 +328,11 @@
 		
 		<div class="raised-box search-box">
 	
-			<div class="search-label">
+
+			<div class="search-row">
+
 				<label for="field">Search</label><xsl:text> </xsl:text>
-			</div>
-			
-			<div class="search-inputs">
-	
+				
 				<select id="field" name="field">
 					
 					<xsl:for-each select="config/basic_search_fields/field">
@@ -382,7 +358,7 @@
 				
 				<input id="query" name="query" type="text" size="32" value="{$query}" /><xsl:text> </xsl:text>
 				
-				<input type="submit" name="Submit" value="GO" class="submit-searchbox{$language_suffix}" />
+				<input type="submit" name="Submit" value="GO" class="btn submit-searchbox{$language_suffix}" />
 			
 			</div>
 			
@@ -402,7 +378,7 @@
 	
 		<xsl:if test="config/facet_multiple = 'true' and results/facets">
 		
-			<div style="padding-top: 1em;">
+			<div class="search-refine">
 				<input id="results-clear-facets-false" type="radio" name="clear-facets" value="false">
 					<xsl:if test="//request/session/clear_facets = 'false'">
 						<xsl:attribute name="checked">checked</xsl:attribute>
@@ -627,31 +603,38 @@
 	
 	<xsl:template name="facet_dates">
 	
-		<form id="form-{group_id}" action="{//request/controller}/search" method="get">
-		
-			<xsl:variable name="start_date" select="concat(param_name,'.start')" />
-			<xsl:variable name="end_date" select="concat(param_name,'.end')" />
-
-
-			<xsl:call-template name="hidden_search_inputs">
-				<xsl:with-param name="exclude_limit" select="param_name" />
-			</xsl:call-template>
+		<div class="facet-date">
 	
-			<label for="facet-date-start">From: </label>
-			<input type="text" name="{$start_date}" id="facet-date-start" value="{//request/*[@original_key = $start_date]}" 
-				maxlength="4" size="4" />
+			<form id="form-{group_id}" action="{//request/controller}/search" method="get">
 			
-			<br />
+				<xsl:variable name="start_date" select="concat(param_name,'.start')" />
+				<xsl:variable name="end_date" select="concat(param_name,'.end')" />
+	
+	
+				<xsl:call-template name="hidden_search_inputs">
+					<xsl:with-param name="exclude_limit" select="param_name" />
+				</xsl:call-template>
+				
+				<div>
+		
+				<label for="facet-date-start">From: </label>
+				<input type="text" name="{$start_date}" id="facet-date-start" value="{//request/*[@original_key = $start_date]}" 
+					maxlength="4" size="4" />
+				
+				</div>
+				<div>
+				
+				<label for="facet-date-end">To: </label>
+				<input type="text" name="{$end_date}" id="facet-date-end" value="{//request/*[@original_key = $end_date]}" 
+					maxlength="4" size="4" />
+				
+				</div>
+				
+				<input type="submit" value="Update" />
+				
+			</form>
 			
-			<label for="facet-date-end">To: </label>
-			<input type="text" name="{$end_date}" id="facet-date-end" value="{//request/*[@original_key = $end_date]}" 
-				maxlength="4" size="4" />
-			
-			<br />
-			
-			<input type="submit" value="Update" />
-			
-		</form>
+		</div>
 		
 	</xsl:template>	
 	

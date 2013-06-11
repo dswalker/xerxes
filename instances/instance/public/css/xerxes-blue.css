@@ -11,12 +11,15 @@
 body {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	height: 100%;
+	font-size: 12px;
+	line-height: normal;
 }
 
 h1, h2, h3, h4 {
 	font-family: Arial, Helvetica, sans-serif;
 	color: #003366;
-	margin-bottom: 1em;
+	margin-bottom: .6em;
+	font-weight: normal;
 }
 
 h1 { 
@@ -24,11 +27,11 @@ h1 {
 }
 
 h2 { 
-	font-size: 140%;
+	font-size: 150%;
 }
 
 h3 { 
-	font-size: 110%;
+	font-size: 120%;
 	font-weight: bold;
 }
 
@@ -55,6 +58,11 @@ a:hover {
 
 /** BASIC ELEMENTS ( but not for header, footer )**/
 
+#bd {
+	padding-left: 2em;
+	padding-right: 2em;
+}
+
 #bd dt, #bd dd {
 	margin-bottom: .5em;
 	display: block;
@@ -77,39 +85,31 @@ a:hover {
 	margin-bottom: 1em;
 }
 
-#bd button, #bd option, #bd input[type="text"], #bd input[type="textarea"], #bd input[type="checkbox"], #bd input[type="radio"], 
-#bd input[type="reset"], #bd input[type="submit"] {
-	padding: 1px;
+/** BOOTSTRAP OVERRIDES **/
+
+label { 
+	display: inline;
+	font-size: inherit;
 }
 
-/** YUI TEMAPLTE ADDITIONS **/
-
-
-#doc3 #bd {
-	margin-left: 1em;
-	margin-right: 1em;
+form, ul {
+	margin: 0;
 }
 
-.xer-t5 {
-	margin:auto;
-	text-align:left;
-	width:57.69em;
-	*width:56.25em;
+li {
+	list-style: none;
 }
 
-.xer-t5 #yui-main {
-	float:right;
-	margin-left:-25em;
+input, textarea, select {
+	width: inherit;
 }
 
-.xer-t5 .yui-b{
-	float:left;
-	width:18.4615em;
-	*width:18.00em;
+input[type="radio"], input[type="checkbox"] {
+	margin: inherit;
 }
-.xer-t5 #yui-main .yui-b{
-	margin-left:19.4615em;
-	*margin-left:19.125em;
+
+dd, dt, li {
+	line-height: normal;
 }
 
 /** HEADER **/
@@ -143,7 +143,7 @@ a:hover {
 
 .sidebar .box li {
 	list-style: square;
-	margin-left: 1.5em;
+	margin-left: 1em;
 }
 
 .sidebar .umlaut_section h3 {
@@ -154,7 +154,7 @@ a:hover {
 }
 
 .sidebar li {
-	padding-bottom: .5em;
+	padding-bottom: .2em;
 }
 
 .sidebar .box li {
@@ -300,21 +300,28 @@ a:hover {
 	margin-bottom: 3em;
 }
 
-.search-label {
-	float:left; 
-	padding-top: .3em;
+.search-box label, .search-box input, .search-box select {
+	margin: 0;
 }
 
-.search-inputs {
-	margin-left: 4.3em;
+.search-box input[type="submit"] {
+	padding: 4px 6px;
 }
 
-.search-input-toggle {
-	margin-top: 1em;
+.search-box label {
+	display: inline-block;
+	vertical-align: top;
+	padding: 4px 6px; 
 }
 
-.search-box-advanced-newline {
-	margin-top: .2em;
+.search-refine {
+	padding-top: 1em;
+	margin-left: 2em;
+}
+
+.search-refine label {
+	padding: 0;
+	padding-right: 1em;
 }
 
 /** AUTHENTICATION **/
@@ -353,7 +360,6 @@ a:hover {
 	padding: 1em;
 	border-top: 1px solid #ccc;	
 	margin-top: 0;
-	margin-bottom: 2em;
 	margin-left: -200px;
 	padding-left: 200px;
 	
@@ -366,7 +372,6 @@ a:hover {
 
 .results-database-recommendations {
 	font-size: 100%;
-	margin-top: 2em;
 	color: #444;
 }
 
@@ -692,7 +697,7 @@ div.autocomplete ul li {
 
 #search-sidebar ul li.facet-selection {
 	list-style: none;
-	padding-left: 15px;
+	padding-left: 8px;
 	text-indent: -22px;
 }
 
@@ -762,7 +767,7 @@ div.autocomplete ul li {
 	margin: 3em;
 }
 
-.tabs .tabsHit {
+.tabs .tabs-hit {
 	font-size: 85%;
 	padding-left: .5em;
 }

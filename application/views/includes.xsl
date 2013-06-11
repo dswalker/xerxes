@@ -217,19 +217,26 @@
 			
 				<xsl:call-template name="surround_bd_top" />
 			
-				<div id="yui-main">
-					<div class="yui-b">
+				<div class="row-fluid">
+				
+					<div>
+						<xsl:if test="$sidebar != 'none' and $is_mobile != '1'">
+							<xsl:attribute name="class">span9</xsl:attribute>
+						</xsl:if>
+						
 						<xsl:if test="request/flash_messages/*">
 							<xsl:call-template name="message_display"/>
 						</xsl:if>
 						
 						<xsl:call-template name="main" />
 					</div>
-				</div>
+
 				
-				<xsl:if test="$sidebar != 'none' and $is_mobile != '1'">
-					<xsl:call-template name="sidebar_wrapper" />
-				</xsl:if>
+					<xsl:if test="$sidebar != 'none' and $is_mobile != '1'">
+						<xsl:call-template name="sidebar_wrapper" />
+					</xsl:if>
+					
+				</div>
 	
 			</div>
 	</xsl:template>
@@ -243,8 +250,8 @@
 		
 		<div id="bd-top">
 		
-			<div class="yui-gc">
-				<div class="yui-u first">	
+			<div class="row-fluid">
+				<div class="span6">	
 	
 					<!-- breadcrumbs -->
 	
@@ -254,7 +261,7 @@
 	
 				</div>
 				
-				<div class="yui-u">
+				<div class="span6">
 				
 					<!-- my account -->
 				
@@ -337,9 +344,10 @@
 			</xsl:when>
 			<xsl:otherwise>
 				
-				<link href="{$base_include}/css/reset-fonts-grids.css?version={$asset_version}" rel="stylesheet" type="text/css" />
+				<link href="{$base_include}/css/bootstrap/bootstrap.min.css" rel="stylesheet" media="screen" />
+				<link href="{$base_include}/css/bootstrap/bootstrap-responsive.min.css" rel="stylesheet" media="screen" />
 				<link href="{$base_include}/css/xerxes-blue.css?version={$asset_version}" rel="stylesheet" type="text/css" />
-				<link href="css/local.css?version={$asset_version}" rel="stylesheet" type="text/css" />	
+				<link href="css/local.css?version={$asset_version}" rel="stylesheet" type="text/css" />
 				
 			</xsl:otherwise>
 		</xsl:choose>
@@ -387,7 +395,7 @@
 	-->
 	
 	<xsl:template name="sidebar_wrapper">
-		<div class="yui-b">
+		<div class="span3">
 			<div class="sidebar">
 				<xsl:call-template name="sidebar" />
 				<xsl:call-template name="sidebar_additional" />
