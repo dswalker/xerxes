@@ -43,7 +43,9 @@
 	</xsl:template>
 	
 	<xsl:template name="main">
-		<xsl:call-template name="search_page" />
+		<xsl:call-template name="search_page">
+			<xsl:with-param name="sidebar_width">2</xsl:with-param>
+		</xsl:call-template>
 	</xsl:template>	
 	
 	<!-- no search modules, please -->

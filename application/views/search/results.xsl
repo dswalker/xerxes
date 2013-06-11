@@ -68,6 +68,10 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:param>
+		
+		<xsl:param name="sidebar_width">3</xsl:param>
+		
+		<xsl:variable name="results_width" select="floor(12 - $sidebar_width)" />
 	
 		<!-- search box area -->
 		
@@ -92,64 +96,96 @@
 				
 			</xsl:if>
 			
-			<!-- results area -->
+			<!-- results -->
 			
 			<div class="row-fluid">
-				
-				<!-- results -->
-		
-				<div class="span9">
-				
-					<xsl:call-template name="sort_bar" />
-					
-					<xsl:call-template name="facets_applied" />
-														
-					<xsl:call-template name="spell_suggest" />
-					
-					<xsl:call-template name="no_hits" />
-					
-					<xsl:call-template name="search_login_reminder" />
-					
-					<xsl:call-template name="search_recommendations" />
 			
-					<xsl:call-template name="brief_results" />
-	
-					<xsl:call-template name="paging_navigation" />
-					
-					<!-- <xsl:call-template name="hidden_tag_layers" /> -->
-		
-				</div>
-				
-				<!-- sidebar -->
-				
-				<xsl:if test="$sidebar != 'none' and $is_mobile = 0">
-				
-					<div class="span3">
+				<xsl:choose>
+					<xsl:when test="$sidebar = 'right'">
 						
-						<div id="search-sidebar" class="sidebar {$sidebar}">	
-									
-							<!-- modules -->
-							
-							<xsl:if test="not(config/use_tabs = 'true')">
-								<xsl:call-template name="search_modules" />
-							</xsl:if>
-											
-							<!-- facets -->
-							
-							<xsl:call-template name="search_sidebar_facets" />
-							<xsl:call-template name="search_sidebar_additional" />
-							
+						<div class="span{$results_width}">
+							<xsl:call-template name="search_results_area" />
 						</div>
-				
-					</div>
+						<div class="span{$sidebar_width}">
+							<xsl:call-template name="search_sidebar_area">
+								<xsl:with-param name="sidebar" select="$sidebar" />
+							</xsl:call-template>
+						</div>
+						
+					</xsl:when>
+					<xsl:when test="$sidebar = 'left'">
 					
-				</xsl:if>
+						<div class="span{$sidebar_width}">
+							<xsl:call-template name="search_sidebar_area">
+								<xsl:with-param name="sidebar" select="$sidebar" />
+							</xsl:call-template>
+						</div>
+						<div class="span{$results_width}">
+							<xsl:call-template name="search_results_area" />
+						</div>
+											
+					</xsl:when>
+					<xsl:when test="$sidebar = 'none' or $is_mobile = 1">
+					
+						<xsl:call-template name="search_results_area" />
+						
+					</xsl:when>
+				</xsl:choose>		
+
 			</div>
 		</div>
 		
-		
 		<xsl:call-template name="results_loader" />
 		
+	</xsl:template>
+
+	<!--
+		TEMPLATE: SEARCH RESULTS AREA
+	-->	
+	
+	<xsl:template name="search_results_area">
+		
+		<xsl:call-template name="sort_bar" />
+		
+		<xsl:call-template name="facets_applied" />
+											
+		<xsl:call-template name="spell_suggest" />
+		
+		<xsl:call-template name="no_hits" />
+		
+		<xsl:call-template name="search_login_reminder" />
+		
+		<xsl:call-template name="search_recommendations" />
+
+		<xsl:call-template name="brief_results" />
+
+		<xsl:call-template name="paging_navigation" />
+
+
+	</xsl:template>
+
+	<!--
+		TEMPLATE: SEARCH RESULTS SIDEBAR AREA
+	-->	
+	
+	<xsl:template name="search_sidebar_area">
+		<xsl:param name="sidebar" />
+			
+		<div id="search-sidebar" class="sidebar {$sidebar}">	
+					
+			<!-- modules -->
+			
+			<xsl:if test="not(config/use_tabs = 'true')">
+				<xsl:call-template name="search_modules" />
+			</xsl:if>
+							
+			<!-- facets -->
+			
+			<xsl:call-template name="search_sidebar_facets" />
+			<xsl:call-template name="search_sidebar_additional" />
+			
+		</div>
+			
 	</xsl:template>
 	
 	<!--
