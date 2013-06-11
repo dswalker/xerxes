@@ -90,4 +90,33 @@ class FolderController extends SearchController
 		
 		return parent::resultsAction();
 	}
+
+	public function recordAction()
+	{
+		$response = parent::recordAction();
+	
+		$resultset = $response->getVariable('results');
+		$result = $resultset->getRecord(0);
+		$record = $result->getXerxesRecord();
+	
+		// if a solr record, fetch holdings
+	
+		if ( $record instanceof Solr\Record )
+		{
+			try
+			{
+				$engine = new Solr\Engine;
+	
+				$solr_results = $engine->getRecord($result->original_id);
+				$holdings = $solr_results->getRecord(0)->getHoldings();
+				$result->setHoldings($holdings);
+			}
+			catch ( \Exception $e )
+			{
+				trigger_error('saved records holdings lookup: ' . $e->getMessage(), E_USER_WARNING);
+			}
+		}
+	
+		return $response;
+	}
 }
