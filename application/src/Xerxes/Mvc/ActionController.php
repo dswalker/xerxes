@@ -14,6 +14,7 @@ namespace Xerxes\Mvc;
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Xerxes\Mvc\Exception\NotFoundException;
+use Xerxes\Mvc\Request;
 use Xerxes\Mvc\Response;
 use Xerxes\Utility\Labels;
 use Xerxes\Utility\Registry;
@@ -82,7 +83,6 @@ abstract class ActionController
 		
 		$this->id = str_replace('Controller~', '', $this->id . '~'); // remove last occurance of Controller
 		$this->id = strtolower($this->id); // and lowercase it
-		
 	}
 	
 	/**
