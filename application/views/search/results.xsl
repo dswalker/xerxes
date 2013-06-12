@@ -767,9 +767,9 @@
 		</ul>
 				
 		<p id="facet-more-{group_id}" class="facet-option-more"> 
-			[ <a id="facet-more-link-{group_id}" href="{url}" class="facet-more-launch"> 
+			<a id="facet-more-link-{group_id}" href="{url}" class="btn btn-small facet-more-launch"> 
 				More Options
-			</a> ] 
+			</a>
 		</p>
 		
 		</form>
@@ -1239,11 +1239,7 @@
 
 	<!--
 		TEMPLATE: TAG INPUT
-		tab/label input form used to enter labels/tags for saved record, on both folder page and search results
-		page (for saved records only) one of record (usually) or id (unusually) are required. 
-		parameter: record  =>  XSL node representing a savedRecord with a child <id> and optional children <tags>
-		parameter: id => pass a string id instead of a record in nodeset. Used for the 'template' form for ajax 
-		label input adder. 
+		tab/label input form used to enter labels/tags for saved record
 	-->
 	
 	<xsl:template name="tag_input">
