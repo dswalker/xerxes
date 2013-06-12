@@ -107,7 +107,7 @@
 		<table id="folder-output-results">
 			<thead>
 				<tr>
-					<td><input type="checkbox" value="true" id="folder-select-all" onclick="checkAll" /></td>
+					<td><input type="checkbox" value="true" id="folder-select-all" /></td>
 					<td>Title</td>
 					<td>Author</td>
 					<td>Tags</td>
