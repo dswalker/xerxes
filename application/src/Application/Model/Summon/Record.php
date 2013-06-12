@@ -141,6 +141,11 @@ class Record extends Xerxes\Record
 		$this->snippet = $this->extractValue($document, "Snippet/0");
 		$this->abstract = $this->extractValue($document, "Abstract/0");
 		
+		if ( ord($this->abstract) == 194 ) // weird character at the front
+		{
+			$this->abstract = substr($this->abstract, 2); // so strip it and the adjoining character
+		}
+		
 		// books
 		
 		$this->edition = $this->extractValue($document, "Edition/0");
