@@ -794,11 +794,7 @@
 	<xsl:for-each select="//records/record/xerxes_record">
 	
 		<h2>
-			<xsl:copy-of select="$text_record_cite_this" /><xsl:text> </xsl:text>
-			<xsl:call-template name="text_results_format">
-				<xsl:with-param name="format" select="format/public" />
-			</xsl:call-template>
-			<xsl:text> :</xsl:text>
+			<xsl:copy-of select="$text_record_cite_this" /><xsl:text>: </xsl:text>
 		</h2>
 		
 		<div class="citation" id="citation-apa">
