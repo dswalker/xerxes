@@ -372,21 +372,6 @@
 
 	</xsl:template>
 	
-	
-	<!-- 	
-		TEMPLATES THAT SHOULD BE OVERRIDEN IN PAGES OR LOCAL INCLUDES.XSL
-		Defined here in case they are not, so as not to stop the proceedings
-	-->
-	
-	<xsl:template name="surround_top" />
-	<xsl:template name="header_div" />
-	<xsl:template name="footer_div" />
-	<xsl:template name="page_name" />
-	<xsl:template name="breadcrumb" />
-	<xsl:template name="sidebar" />
-	<xsl:template name="sidebar_additional" />
-	<xsl:template name="module_header" />
-	
 	<!--
 		TEMPLATE: SIDEBAR WRAPPER
 		This defines the overarching sidebar element.  Pages normally will use sidebar template, which 
@@ -516,6 +501,8 @@
 	
 		<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>		
 		<script src="{$base_include}/javascript/results.js?version={$asset_version}"  type="text/javascript"></script>
+		
+		<xsl:call-template name="module_javascript" />
 
 	</xsl:template>
 		
@@ -531,8 +518,20 @@
 	</xsl:template>
 	
 	
+	<!-- 	
+		TEMPLATES THAT SHOULD BE OVERRIDEN IN PAGES OR LOCAL INCLUDES.XSL
+		Defined here in case they are not, so as not to stop the proceedings
+	-->
 	
-	
+	<xsl:template name="surround_top" />
+	<xsl:template name="header_div" />
+	<xsl:template name="footer_div" />
+	<xsl:template name="page_name" />
+	<xsl:template name="breadcrumb" />
+	<xsl:template name="sidebar" />
+	<xsl:template name="sidebar_additional" />
+	<xsl:template name="module_header" />	
+	<xsl:template name="module_javascript" />
 	
 	
 	
