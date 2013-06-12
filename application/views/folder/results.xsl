@@ -48,6 +48,10 @@
 		</xsl:call-template>
 	</xsl:template>	
 	
+	<xsl:template name="module_javascript">
+		<script src="{$base_include}/javascript/folder.js?version={$asset_version}"  type="text/javascript"></script>
+	</xsl:template>
+	
 	<!-- no search modules, please -->
 	
 	<xsl:template name="search_modules" />
@@ -84,13 +88,29 @@
 	</xsl:template>	
 	
 	<xsl:template name="brief_results">
+	
+		<form action="folder">
+	
+		<div class="folder-export-options">
+			<select name="action">
+			  <option>Export options</option>
+			  <option value="email"><xsl:value-of select="$text_folder_email_pagename" /></option>
+			  <option value="refworks"><xsl:value-of select="$text_folder_refworks_pagename" /></option>
+			  <option value="endnote"><xsl:value-of select="$text_folder_endnote_pagename" /></option>
+			  <option value="endnoteweb">Export to Endote Web</option>
+  			  <option value="text"><xsl:value-of select="$text_folder_file_pagename" /></option>
+			</select>
+			
+			<input type="submit" value="Export" />
+		</div>
 		
 		<table id="folder-output-results">
 			<thead>
 				<tr>
-					<td><input type="checkbox" value="true" id="saved-select-all" /></td>
+					<td><input type="checkbox" value="true" id="folder-select-all" onclick="checkAll" /></td>
 					<td>Title</td>
 					<td>Author</td>
+					<td>Tags</td>
 					<td>Format</td>
 					<td>Year</td>
 				</tr>
@@ -98,15 +118,20 @@
 			
 			<xsl:for-each select="//results/records/record/xerxes_record">
 				<tr>
-					<td><input type="checkbox" name="record" value="{id}" id="record-{id}" /></td>
+					<td><input type="checkbox" name="record" value="{../id}" id="record-{../id}" class="folder-output-checkbox" /></td>
 					<td class="title-cell">
-						<label for="record-{id}">
+						<label for="record-{../id}">
 							<a href="{../url_full}">
 								<xsl:value-of select="title_normalized" />
 							</a>
 						</label>
 					</td>
-					<td class="author-cell"><xsl:value-of select="primary_author" /></td> 
+					<td class="author-cell">
+						<xsl:value-of select="authors/author/aulast" />
+					</td>
+					<td class="tag-cell">
+						tags!
+					</td> 
 					<td class="format-cell">
 						<xsl:call-template name="text_results_format">
 							<xsl:with-param name="format" select="format/public" />
@@ -119,6 +144,8 @@
 			</xsl:for-each>
 			
 		</table>
+		
+		</form>
 		
 	</xsl:template>
 		
