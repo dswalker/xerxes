@@ -12,6 +12,8 @@
 namespace Application\Model\Saved;
 
 use Application\Model\Search;
+use Application\Model\Search\ResultSet;
+use Application\Model\Solr;
 use Application\Model\DataMap\SavedRecords;
 use Xerxes\Mvc\Request;
 
@@ -88,10 +90,43 @@ class Engine extends Search\Engine
 		
 		$results->total = 1;
 		
-		// add it to the results
-		
 		$result = $this->createSearchResult($record);
+		
+		// if a catalog record, fetch holdings
+		
+		if ( $record->xerxes_record instanceof Solr\Record )
+		{
+			try
+			{
+				$engine = new Solr\Engine;
+		
+				$solr_results = $engine->getRecord($result->original_id);
+				$holdings = $solr_results->getRecord(0)->getHoldings();
+				$result->setHoldings($holdings);
+			}
+			catch ( \Exception $e )
+			{
+				trigger_error('saved records holdings lookup: ' . $e->getMessage(), E_USER_WARNING);
+			}
+		}
+
 		$results->addResult($result);
+		
+		return $results;
+	}
+	
+	public function getRecords(array $ids)
+	{
+		$results = new Search\ResultSet($this->config);
+		$records = $this->datamap->getRecordsByID($ids);
+		
+		$results->total = count($records);
+		
+		foreach ( $records as $record )
+		{
+			$result = $this->createSearchResult($record);
+			$results->addResult($result);
+		}
 		
 		return $results;
 	}
@@ -257,5 +292,15 @@ class Engine extends Search\Engine
 		{
 			return new Query($request, $this->getConfig());
 		}
+	}
+	
+	public function emailRecords(ResultSet $resultset)
+	{
+		
+	}
+	
+	public function convertToRis(ResultSet $resultset)
+	{
+	
 	}	
 }

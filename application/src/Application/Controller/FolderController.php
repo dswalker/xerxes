@@ -18,7 +18,13 @@ use Xerxes\Utility\User;
 
 class FolderController extends SearchController
 {
-	protected $id = "folder";
+	protected $id = 'folder';
+	
+	/**
+	 * @var Engine
+	 */
+	
+	protected $engine;
 
 	protected function init()
 	{
@@ -36,7 +42,7 @@ class FolderController extends SearchController
 	{
 		// register the return url in session so we can send the user back
 		
-		$this->request->setSessionData("return", $this->request->getParam("return"));
+		$this->request->setSessionData('return', $this->request->getParam('return'));
 		
 		// redirect to the results page
 		
@@ -91,32 +97,51 @@ class FolderController extends SearchController
 		return parent::resultsAction();
 	}
 
-	public function recordAction()
+	public function endnotewebAction()
 	{
-		$response = parent::recordAction();
+		// get address for refworks
+			
+		$url = $this->registry->getConfig('ENDNOTE_ADDRESS', false, 'https://www.myendnoteweb.com/EndNoteWeb.html');
+		$name = $this->registry->getConfig('APPLICATION_NAME', false, 'Xerxes');
+			
+		// get the ids that were selected for export
+			
+		$id_array = $this->request->requireParam('record', 'You must select one or more records', true);
+			
+		// construct return url back to the fetch action
+			
+		$params = array (
+			'controller' => 'folder',
+			'action' => 'fetch',
+			'format' => 'ris',
+			'records' => implode(',', $id_array)
+		);
+			
+		$return = $this->request->url_for($params, true);
+			
+		// construct full url to endnote
+			
+		$url .= '?partnerName=' . urlencode($name);
+		$url .= '&dataRequestUrl=' . urlencode($return);
+		$url .= '&func=directExport&dataIdentifier=1&Init=Yes&SrcApp=CR&returnCode=ROUTER.Unauthorized';
+			
+		return $this->redirectTo($url);
+	}
 	
-		$resultset = $response->getVariable('results');
-		$result = $resultset->getRecord(0);
-		$record = $result->getXerxesRecord();
-	
-		// if a solr record, fetch holdings
-	
-		if ( $record instanceof Solr\Record )
+	public function fetchAction()
+	{
+		$format = $this->request->requireParam('format', 'You must specify an export format');
+		
+		$record_ids = $this->request->requireParam('records', 'You must specify records by id');
+		$id_array = explode(',', $record_ids);
+		
+		$results = $this->engine->getRecords($id_array);
+		
+		$this->response->setVariable('results',$results);
+		
+		if ( $format == 'ris')
 		{
-			try
-			{
-				$engine = new Solr\Engine;
-	
-				$solr_results = $engine->getRecord($result->original_id);
-				$holdings = $solr_results->getRecord(0)->getHoldings();
-				$result->setHoldings($holdings);
-			}
-			catch ( \Exception $e )
-			{
-				trigger_error('saved records holdings lookup: ' . $e->getMessage(), E_USER_WARNING);
-			}
+			$this->response->setView('export/ris.xsl');
 		}
-	
-		return $response;
 	}
 }
