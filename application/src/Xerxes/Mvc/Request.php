@@ -600,15 +600,16 @@ class Request extends HttpFoundation\Request
 	 * 
 	 * will throw an Exception if not
 	 * 
-	 * @param string $name
-	 * @param string $error_message
+	 * @param string $name           parameter name
+	 * @param string $error_message  error message if param not present
+	 * @param bool $is_array	     [optional] whether value should be returned as an array, even if only one value
 	 * 
 	 * @throws \Exception
 	 */
 	
-	public function requireParam($name, $error_message)
+	public function requireParam($name, $error_message, $is_array = false)
 	{
-		$value = $this->getParam($name);
+		$value = $this->getParam($name, null, $is_array);
 		
 		if ($value == null)
 		{
