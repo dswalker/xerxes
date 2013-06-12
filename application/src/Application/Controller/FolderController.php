@@ -25,18 +25,31 @@ class FolderController extends SearchController
 	 */
 	
 	protected $engine;
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see Application\Controller.SearchController::init()
+	 */
 
 	protected function init()
 	{
 		parent::init();
 	
 		$this->helper = new FolderHelper($this->event, $this->id, $this->engine);
-	}	
+	}
+	
+	/**
+	 * @return Engine
+	 */
 	
 	protected function getEngine()
 	{
 		return new Engine();
 	}
+	
+	/**
+	 * Register return url and redirect to results page
+	 */
 	
 	public function indexAction()
 	{
@@ -54,6 +67,10 @@ class FolderController extends SearchController
 		
 		return $this->redirectTo($params);
 	}
+	
+	/**
+	 * Main page of results
+	 */
 	
 	public function resultsAction()
 	{
@@ -89,14 +106,16 @@ class FolderController extends SearchController
 					'return' => $folder_link
 			);
 			
-			// redirect them out
-			
-			return $this->redirectTo($params);
+			return $this->redirectTo($params); // redirect them out
 		}
 		
 		return parent::resultsAction();
 	}
-
+	
+	/**
+	 * Redirect the user to Endnote Web with return URL
+	 */
+	
 	public function endnotewebAction()
 	{
 		// get address for refworks
@@ -128,6 +147,46 @@ class FolderController extends SearchController
 		return $this->redirectTo($url);
 	}
 	
+	/**
+	 * Redirect the user to Refworks with return URL
+	 */	
+	
+	public function refworksAction()
+	{
+		// get address for refworks
+			
+		$url = $this->registry->getConfig('REFWORKS_ADDRESS', false, 'http://www.refworks.com/express/ExpressImport.asp');
+		$name = $this->registry->getConfig('APPLICATION_NAME', false, 'Xerxes');
+			
+		// get the ids that were selected for export
+			
+		$id_array = $this->request->requireParam('record', 'You must select one or more records', true);
+			
+		// construct return url back to the fetch action
+			
+		$params = array (
+			'controller' => 'folder',
+			'action' => 'fetch',
+			'format' => 'ris',
+			'records' => implode(',', $id_array)
+		);
+			
+		$return = $this->request->url_for($params, true);
+			
+		// construct full url to refworks
+			
+		$url .= '?vendor=' . urlencode($name);
+		$url .= '&filter=RIS+Format';
+		$url .= '&encoding=65001';
+		$url .= '&url=' . urlencode($return);
+			
+		return $this->redirectTo($url);		
+	}
+	
+	/**
+	 * Fetch and display the metadata of records by id
+	 */
+	
 	public function fetchAction()
 	{
 		$format = $this->request->requireParam('format', 'You must specify an export format');
@@ -141,7 +200,7 @@ class FolderController extends SearchController
 		
 		if ( $format == 'ris')
 		{
-			$this->response->setView('export/ris.xsl');
+			$this->response->setView('citation/ris.xsl');
 		}
 	}
 }
