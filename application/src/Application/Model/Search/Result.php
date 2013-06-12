@@ -259,10 +259,9 @@ class Result
 			}
 		}
 		
-		
 		// cache it for the future
 		
-		$cache = new Cache(); // @todo: zend\cache
+		$cache = new Cache();
 		
 		$expiry = $this->config->getConfig("HOLDINGS_CACHE_EXPIRY", false, 2 * 60 * 60); // expiry set for two hours
 		$expiry += time(); 
