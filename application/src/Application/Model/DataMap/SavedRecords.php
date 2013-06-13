@@ -366,14 +366,18 @@ class SavedRecords extends DataMap
 					
 					if ( array_key_exists( "marc", $arrResult ) )
 					{
-						if ( $arrResult["record_type"] == "xerxes_record") // new-style saved record
+						// new record type
+						
+						if ( $arrResult["record_type"] == "xerxes_record")
 						{
 							$objRecord->xerxes_record = unserialize($arrResult["marc"]);
 						}
-						else 
+						else // old ass metalib record from early in version 1
 						{
-							throw new \Exception('Old Metalib record, fix it!'); //  @todo: make a conversion script
-						}						
+							$objXerxes_Record = new \Xerxes_MetalibRecord();
+							$objXerxes_Record->loadXML( $arrResult["marc"] );
+							$objRecord->xerxes_record = $objXerxes_Record;
+						}
 					}
 				}
 				
