@@ -779,12 +779,10 @@ class Request extends HttpFoundation\Request
 	/**
 	 * Serialize to xml
 	 * 
-	 * @param bool $should_hide_server	[optional]	exclude the server variables from the response
-	 *
 	 * @return DOMDocument
 	 */
 	
-	public function toXML($should_hide_server = false)
+	public function toXML()
 	{
 		$xml = new \DOMDocument( );
 		$xml->loadXML( "<request />" );
@@ -800,10 +798,9 @@ class Request extends HttpFoundation\Request
 			'session' => $this->getAllSessionData()
 		);
 		
-		// add server global array only if the request asks for it
-		// for security purposes
+		// don't add server global array if request is for internal xerxes xml
 		
-		if ( $should_hide_server == true ) 
+		if ( $this->getParam('format') != 'xerxes' ) 
 		{
 			$add['server'] = $_SERVER;
 		}
