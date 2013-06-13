@@ -153,12 +153,12 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_error_not_found">Not Found</xsl:variable>
 	<xsl:variable name="text_error_search_expired">Your search appears to have expired</xsl:variable>
 	
-	<xsl:variable name="text_folder_email_address">email address</xsl:variable>
-	<xsl:variable name="text_folder_email_notes">notes</xsl:variable>
+	<xsl:variable name="text_folder_email_address">Email address:</xsl:variable>
+	<xsl:variable name="text_folder_email_notes">Notes:</xsl:variable>
 	<xsl:variable name="text_folder_email_options">Email Options</xsl:variable>
 	<xsl:variable name="text_folder_email_pagename">Email records to yourself</xsl:variable>
 	<xsl:variable name="text_folder_email_success">Email successfully sent</xsl:variable>
-	<xsl:variable name="text_folder_email_subject">subject</xsl:variable>
+	<xsl:variable name="text_folder_email_subject">Subject:</xsl:variable>
 
 	<xsl:variable name="text_folder_endnote_direct">directly into Endnote, Zotero, or other citation management application</xsl:variable>
 	<xsl:variable name="text_folder_endnote_file">to a file I will import myself</xsl:variable>

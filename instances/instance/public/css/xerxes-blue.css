@@ -24,6 +24,7 @@ h1, h2, h3, h4 {
 
 h1 { 
 	font-size: 200%;
+	line-height: inherit;
 }
 
 h2 { 
@@ -83,6 +84,14 @@ a:hover {
 
 #bd p {
 	margin-bottom: 1em;
+}
+
+.inline-modal {
+	position: relative;
+	top: auto;
+	left: auto;
+	z-index: auto;
+	margin-left: 2em;
 }
 
 /** BOOTSTRAP OVERRIDES **/
@@ -748,7 +757,7 @@ div.autocomplete ul li {
 	margin-left: .5em;
 }
 
-#search-sidebar ul li {
+#search-sidebar ul li, #search-sidebar .btn {
 	font-size: 87%;
 }
 

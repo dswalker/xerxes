@@ -15,6 +15,8 @@ use Application\Model\Saved\Engine;
 use Application\Model\Solr;
 use Application\View\Helper\Folder as FolderHelper;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Xerxes\Mvc\Request;
+use Xerxes\Utility\Email;
 use Xerxes\Utility\User;
 
 class FolderController extends SearchController
@@ -114,16 +116,28 @@ class FolderController extends SearchController
 	}
 	
 	/**
+	 * Master output function, ultimately calls the functions below
+	 */
+	
+	public function outputAction()
+	{
+		$output = $this->request->getParam('output');
+		$method = $output . 'Action';
+		
+		$this->request->setSessionData('last_output', $output);
+		
+		if ( method_exists($this, $method))
+		{
+			return $this->$method();
+		}
+	}
+	
+	/**
 	 * Redirect the user to Endnote Web with return URL
 	 */
 	
 	public function endnotewebAction()
 	{
-		// get address for refworks
-			
-		$url = $this->registry->getConfig('ENDNOTE_ADDRESS', false, 'https://www.myendnoteweb.com/EndNoteWeb.html');
-		$name = $this->registry->getConfig('APPLICATION_NAME', false, 'Xerxes');
-			
 		// get the ids that were selected for export
 			
 		$id_array = $this->request->requireParam('record', 'You must select one or more records', true);
@@ -138,6 +152,13 @@ class FolderController extends SearchController
 		);
 			
 		$return = $this->request->url_for($params, true);
+		
+		
+		// @todo abstract this out to search?
+		// get address for refworks
+			
+		$url = $this->registry->getConfig('ENDNOTE_ADDRESS', false, 'https://www.myendnoteweb.com/EndNoteWeb.html');
+		$name = $this->registry->getConfig('APPLICATION_NAME', false, 'Xerxes');
 			
 		// construct full url to endnote
 			
@@ -154,11 +175,6 @@ class FolderController extends SearchController
 	
 	public function refworksAction()
 	{
-		// get address for refworks
-			
-		$url = $this->registry->getConfig('REFWORKS_ADDRESS', false, 'http://www.refworks.com/express/ExpressImport.asp');
-		$name = $this->registry->getConfig('APPLICATION_NAME', false, 'Xerxes');
-			
 		// get the ids that were selected for export
 			
 		$id_array = $this->request->requireParam('record', 'You must select one or more records', true);
@@ -172,7 +188,14 @@ class FolderController extends SearchController
 			'records' => implode(',', $id_array)
 		);
 			
-		$return = $this->request->url_for($params, true);
+		$return = $this->request->url_for($params, true);		
+		
+		
+		// @todo abstract this out to search?
+		// get address for refworks
+			
+		$url = $this->registry->getConfig('REFWORKS_ADDRESS', false, 'http://www.refworks.com/express/ExpressImport.asp');
+		$name = $this->registry->getConfig('APPLICATION_NAME', false, 'Xerxes');
 			
 		// construct full url to refworks
 			
@@ -182,6 +205,59 @@ class FolderController extends SearchController
 		$url .= '&url=' . urlencode($return);
 			
 		return $this->redirectTo($url);		
+	}
+	
+	/**
+	 * Email records to specified account
+	 */
+	
+	public function emailAction()
+	{
+		$id_array = $this->request->requireParam('record', 'You must select one or more records', true);
+		$return = $this->request->requireParam('return', 'Request must include return URL');
+		
+		$email = $this->request->getParam('email');
+		$subject = $this->request->getParam('subject', 'Saved Records');
+		$notes = $this->request->getParam('notes');
+		
+		// user hasn't entered email, so show that page
+		
+		if ( $email == null )
+		{
+			$this->response->setView('folder/email.xsl');
+			return $this->response;
+		}
+		
+		// save it for later, for convenience
+		
+		$this->request->setSessionData('email', $email);
+		
+		// get the records
+		
+		$this->response = $this->fetchAction();
+		
+		// convert to simple text
+		
+		$this->response->setView('citation/basic.xsl');
+		$body = $notes . "\r\n\r\n\r\n" . $this->response->render('text')->getContent();
+		
+		// email it!
+		
+		$email_client = new Email();
+		$result = $email_client->send($email, $subject, $body);
+		
+		// notify user and send them back
+		
+		if ( $result == true )
+		{
+			$this->request->setFlashMessage(Request::FLASH_MESSAGE_NOTICE, 'Email successfully sent');
+		}
+		else
+		{
+			$this->request->setFlashMessage(Request::FLASH_MESSAGE_ERROR, "Sorry, we couldn't send an email at this time");
+		}
+		
+		return $this->redirectTo($return);
 	}
 	
 	/**

@@ -30,7 +30,7 @@ class Request extends HttpFoundation\Request
 	private $commandline = false; // did this request originate from the command line?
 	private $params = array(); // request params
 	
-	const FLASH_MESSAGE_NOTICE = 'notice';
+	const FLASH_MESSAGE_NOTICE = 'success';
 	const FLASH_MESSAGE_ERROR = 'error';
 
 	/**

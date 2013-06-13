@@ -89,19 +89,46 @@
 	
 	<xsl:template name="brief_results">
 	
-		<form action="folder">
+		<form action="folder/output">
 	
 		<div class="folder-export-options">
-			<select name="action">
-			  <option>Export options</option>
-			  <option value="email"><xsl:value-of select="$text_folder_email_pagename" /></option>
-			  <option value="refworks"><xsl:value-of select="$text_folder_refworks_pagename" /></option>
-			  <option value="endnote"><xsl:value-of select="$text_folder_endnote_pagename" /></option>
-			  <option value="endnoteweb">Export to Endote Web</option>
-  			  <option value="text"><xsl:value-of select="$text_folder_file_pagename" /></option>
-			</select>
+		
+		<select name="output">
+			<option>Export options</option>
+			<option value="email">
+				<xsl:if test="request/session/last_output = 'email'">
+					<xsl:attribute name="selected">selected</xsl:attribute>
+				</xsl:if>
+				<xsl:value-of select="$text_folder_email_pagename" />
+			</option>
+			<option value="refworks">
+				<xsl:if test="request/session/last_output = 'refworks'">
+					<xsl:attribute name="selected">selected</xsl:attribute>
+				</xsl:if>
+				<xsl:value-of select="$text_folder_refworks_pagename" />
+			</option>
+			<option value="endnote">
+				<xsl:if test="request/session/last_output = 'endnote'">
+					<xsl:attribute name="selected">selected</xsl:attribute>
+				</xsl:if>
+				<xsl:value-of select="$text_folder_endnote_pagename" />
+			</option>
+			<option value="endnoteweb">
+				<xsl:if test="request/session/last_output = 'endnoteweb'">
+					<xsl:attribute name="selected">selected</xsl:attribute>
+				</xsl:if>
+				Export to Endote Web
+			</option>
+			<option value="text">
+				<xsl:if test="request/session/last_output = 'text'">
+					<xsl:attribute name="selected">selected</xsl:attribute>
+				</xsl:if>
+				<xsl:value-of select="$text_folder_file_pagename" />
+			</option>
+		</select>
+		
+		<input type="submit" value="Export" />
 			
-			<input type="submit" value="Export" />
 		</div>
 		
 		<table id="folder-output-results">
@@ -145,8 +172,11 @@
 			
 		</table>
 		
+		<input type="hidden" name="return" value="{//request/server/request_uri}" />
+		
 		</form>
 		
 	</xsl:template>
+	
 		
 </xsl:stylesheet>
