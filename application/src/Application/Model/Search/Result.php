@@ -329,7 +329,7 @@ class Result
 		$body = $title . " / " . $item_message;
 		
 		$email_client = new Email();
-		return $email_client->send($email, 'library', $body);
+		return $email_client->send($email, 'library', $body); // @todo l18n this
 	}
 	
 	/**
