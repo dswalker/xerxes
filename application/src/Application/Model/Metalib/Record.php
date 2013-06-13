@@ -48,6 +48,11 @@ class Record extends Xerxes\Record\Bibliographic
 			$name = $metalib_prop->getName();
 			$value = $metalib_prop->getValue($record);
 			
+			if ( $value == "")
+			{
+				continue;
+			}
+			
 			// objects
 			
 			if ( $name == 'authors')
@@ -68,6 +73,11 @@ class Record extends Xerxes\Record\Bibliographic
 			}
 			elseif ( $name == 'subjects' )
 			{
+				if ( ! is_array($value) )
+				{
+					$value = array($value);
+				}
+				
 				foreach ( $value as $metalib_subject )
 				{
 					$subject = new Xerxes\Record\Subject();
@@ -110,7 +120,7 @@ class Record extends Xerxes\Record\Bibliographic
 						case 'original_record': $type = Xerxes\Record\Link::ORIGINAL_RECORD; break;
 						case 'pdf': $type = Xerxes\Record\Link::PDF; break;
 						case 'html': $type = Xerxes\Record\Link::HTML; break;
-						case 'none': $type = Xerxes\Record\Link::NONE; break;
+						case 'none': $type = Xerxes\Record\Link::INFORMATIONAL; break;
 						case 'online': $type = Xerxes\Record\Link::ONLINE; break;
 					}
 					
