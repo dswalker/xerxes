@@ -14,6 +14,7 @@ namespace Application\Controller;
 use Application\Model\Saved\Engine;
 use Application\Model\Solr;
 use Application\View\Helper\Folder as FolderHelper;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Xerxes\Utility\User;
 
 class FolderController extends SearchController
@@ -101,9 +102,9 @@ class FolderController extends SearchController
 			// auth link, with return back to here
 			
 			$params = array(
-					'controller' => 'authenticate',
-					'action' => 'login',
-					'return' => $folder_link
+				'controller' => 'authenticate',
+				'action' => 'login',
+				'return' => $folder_link
 			);
 			
 			return $this->redirectTo($params); // redirect them out
@@ -184,15 +185,59 @@ class FolderController extends SearchController
 	}
 	
 	/**
+	 * Download records to a text file
+	 */	
+	
+	public function textAction()
+	{
+		$response = $this->fetchAction();
+		
+		$response->headers->set('Content-Type', 'text/plain');
+		$disposition = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'download.txt');
+		$response->headers->set('Content-Disposition', $disposition);
+
+		$response->setView('citation/basic.xsl');
+		
+		return $response;
+	}
+	
+	/**
+	 * Download records to a citation management tool, endnote, zotero, etc.
+	 */
+	
+	public function endnoteAction()
+	{
+		$response = $this->fetchAction();
+	
+		$response->headers->set('Content-Type', 'application/x-research-info-systems');
+		$response->setView('citation/ris.xsl');
+	
+		return $response;
+	}	
+	
+	/**
 	 * Fetch and display the metadata of records by id
 	 */
 	
 	public function fetchAction()
 	{
-		$format = $this->request->requireParam('format', 'You must specify an export format');
+		$format = $this->request->getParam('format');
 		
-		$record_ids = $this->request->requireParam('records', 'You must specify records by id');
-		$id_array = explode(',', $record_ids);
+		// id's can either come in as a series of 'record' params 
+		// or a single 'records' param containing id's separated by comma
+		
+		$id_array = $this->request->getParam('record', null, true);
+		
+		if ( count($id_array) == 0 )
+		{
+			$record_ids = $this->request->getParam('records');
+			$id_array = explode(',', $record_ids);
+		}
+		
+		if ( count($id_array) == 0 )
+		{
+			throw new \Exception('You must specify record ids');
+		}
 		
 		$results = $this->engine->getRecords($id_array);
 		
@@ -202,5 +247,7 @@ class FolderController extends SearchController
 		{
 			$this->response->setView('citation/ris.xsl');
 		}
+		
+		return $this->response;
 	}
 }
