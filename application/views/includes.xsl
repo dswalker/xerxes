@@ -303,56 +303,7 @@
 	
 	<xsl:template name="surround_bottom" />
 	
-	<!-- 
-		TEMPLATE: surround google analytics
-		Google analytics script
-	-->
-	<xsl:template name="surround_google_analytics">
-		<xsl:if test="//config/google_analytics">
-			<script type="text/javascript">
-				var _gaq = _gaq || [];
-				_gaq.push(['_setAccount', '<xsl:value-of select="//config/google_analytics"/>']);
-				_gaq.push(['_trackPageview']);
-	
-				(function() {
-				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-				})();
-			</script>
-		</xsl:if>
-	</xsl:template>
-	
-	<!-- 
-		TEMPLATE: CSS INCLUDE 
-	-->
-	
-	<xsl:template name="css_include">
-				
-		<xsl:choose>
-			<xsl:when test="$is_mobile = '1'">
 
-				<meta name="viewport" content="width=device-width, initial-scale=1" /> 
-				
-				<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.css" />
-				<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-				<script src="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.js"></script>
-				
-				<link href="{$base_include}/css/xerxes-mobile.css?version={$asset_version}" rel="stylesheet" type="text/css" />	
-				<link href="{$base_url}/css/local-mobile.css?version={$asset_version}" rel="stylesheet" type="text/css" />	
-
-			</xsl:when>
-			<xsl:otherwise>
-				
-				<link href="{$base_include}/css/bootstrap/bootstrap.min.css" rel="stylesheet" media="screen" />
-				<link href="{$base_include}/css/bootstrap/bootstrap-responsive.min.css" rel="stylesheet" media="screen" />
-				<link href="{$base_include}/css/xerxes-blue.css?version={$asset_version}" rel="stylesheet" type="text/css" />
-				<link href="css/local.css?version={$asset_version}" rel="stylesheet" type="text/css" />
-				
-			</xsl:otherwise>
-		</xsl:choose>
-		
-	</xsl:template>
 	
 	<!-- 
 		TEMPLATE: MESSAGE_DISPLAY
@@ -515,6 +466,56 @@
 	
 		<script  type="text/javascript" src="asset/labels?version={$asset_version}"></script> 
 	
+	</xsl:template>
+
+	<!-- 
+		TEMPLATE: surround google analytics
+		Google analytics script
+	-->
+	<xsl:template name="surround_google_analytics">
+		<xsl:if test="//config/google_analytics">
+			<script type="text/javascript">
+				var _gaq = _gaq || [];
+				_gaq.push(['_setAccount', '<xsl:value-of select="//config/google_analytics"/>']);
+				_gaq.push(['_trackPageview']);
+	
+				(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+				})();
+			</script>
+		</xsl:if>
+	</xsl:template>
+	
+	<!-- 
+		TEMPLATE: CSS INCLUDE 
+	-->
+	
+	<xsl:template name="css_include">
+				
+		<xsl:choose>
+			<xsl:when test="$is_mobile = '1'">
+
+				<meta name="viewport" content="width=device-width, initial-scale=1" /> 
+				
+				<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.css" />
+				<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+				<script src="http://code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.js"></script>
+				
+				<link href="{$base_include}/css/xerxes-mobile.css?version={$asset_version}" rel="stylesheet" type="text/css" />	
+				<link href="{$base_url}/css/local-mobile.css?version={$asset_version}" rel="stylesheet" type="text/css" />	
+
+			</xsl:when>
+			<xsl:otherwise>
+				
+				<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet" />
+				<link href="{$base_include}/css/xerxes-blue.css?version={$asset_version}" rel="stylesheet" type="text/css" />
+				<link href="css/local.css?version={$asset_version}" rel="stylesheet" type="text/css" />
+				
+			</xsl:otherwise>
+		</xsl:choose>
+		
 	</xsl:template>
 	
 	
