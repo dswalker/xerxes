@@ -2,12 +2,18 @@
 
 <!--
 
- author: David Walker
- copyright: 2007 California State University
- version: $Id: basic.xsl 976 2009-11-02 14:22:56Z dwalker@calstate.edu $
- package: Xerxes
- link: http://xerxes.calstate.edu
- license: http://www.gnu.org/licenses/
+ This file is part of Xerxes.
+
+ (c) California State University <library@calstate.edu>
+
+ For the full copyright and license information, please view the LICENSE
+ file that was distributed with this source code.
+
+-->
+<!--
+
+ Xerxes Record to basic text
+ author: David Walker <dwalker@calstate.edu>
  
  -->
 
@@ -127,8 +133,6 @@
 			<xsl:text>&#013;&#010;</xsl:text>
 		</xsl:if>
 
-    <xsl:variable name="link_resolver_allowed" select="not(//database_links/database[@metalib_id = $metalib_db_id]/sfx_suppress = '1')" />		
-
 		<xsl:for-each select="links/link[@type != 'none' and @type != 'original_record' and @type != 'holdings']">
 			<xsl:choose>
 				<xsl:when test="@type = 'html'">			
@@ -142,14 +146,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			
-			<xsl:call-template name="fulltext">
-				<xsl:with-param name="rewrite"><xsl:value-of select="$rewrite" /></xsl:with-param>
-				<xsl:with-param name="type"><xsl:value-of select="@type" /></xsl:with-param>
-				<xsl:with-param name="id"><xsl:value-of select="../../../id" /></xsl:with-param>
-				<xsl:with-param name="base_url"><xsl:value-of select="$base_url" /></xsl:with-param>
-        <xsl:with-param name="url"><xsl:value-of select="../../../url" /></xsl:with-param>
-				
-			</xsl:call-template>
+			<!-- full-text -->
 			
 			<xsl:text>&#013;&#010;</xsl:text>
 		</xsl:for-each>
@@ -165,27 +162,17 @@
 			</xsl:for-each>
 		</xsl:if>
 
-    <xsl:if test="$link_resolver_allowed">
-      <xsl:choose>
-        <xsl:when test="full_text_bool">
-          <xsl:text>Check for additional availability: </xsl:text>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:text>Check for availability: </xsl:text>
-        </xsl:otherwise>
-      </xsl:choose>
-  
-      <xsl:call-template name="fulltext">
-        <xsl:with-param name="rewrite"><xsl:value-of select="$rewrite" /></xsl:with-param>
-        <xsl:with-param name="type">openurl</xsl:with-param>
-        <xsl:with-param name="id"><xsl:value-of select="../id" /></xsl:with-param>
-        <xsl:with-param name="base_url"><xsl:value-of select="$base_url" /></xsl:with-param>
-        
-      </xsl:call-template>
-    </xsl:if>
-    
-    <!-- todo: export should include holdings and original_records links somehow, for resources configured to include, where appropriate (like no other links are available. -->
-    
+		<xsl:choose>
+			<xsl:when test="full_text_bool">
+				<xsl:text>Check for additional availability: </xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>Check for availability: </xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+		
+		<!-- full-text -->
+		
 		<xsl:text>&#013;&#010;</xsl:text>
 		<xsl:text>&#013;&#010;</xsl:text>
 		<xsl:text>&#013;&#010;</xsl:text>

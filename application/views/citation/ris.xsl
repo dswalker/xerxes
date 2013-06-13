@@ -2,12 +2,18 @@
 
 <!--
 
- author: David Walker
- copyright: 2007 California State University
- version: $Id: ris.xsl 1221 2010-06-24 15:10:13Z dwalker@calstate.edu $
- package: Xerxes
- link: http://xerxes.calstate.edu
- license: http://www.gnu.org/licenses/
+ This file is part of Xerxes.
+
+ (c) California State University <library@calstate.edu>
+
+ For the full copyright and license information, please view the LICENSE
+ file that was distributed with this source code.
+
+-->
+<!--
+
+ Xerxes Record to RIS mapping
+ author: David Walker <dwalker@calstate.edu>
  
  -->
 
@@ -21,21 +27,7 @@
 <xsl:template match="/">
 
 	<xsl:for-each select="//xerxes_record">
-		<xsl:text>&#013;&#010;</xsl:text><xsl:text>TY  - </xsl:text>
-		<xsl:choose>
-			<xsl:when test="format = 'Article' or format/normalized = 'JOUR'">
-				<xsl:text>JOUR</xsl:text>
-			</xsl:when>
-			<xsl:when test="format = 'Book' or format/normalized = 'BOOK'">
-				<xsl:text>BOOK</xsl:text>
-			</xsl:when>
-			<xsl:when test="format = 'Thesis' or format = 'Dissertation' or format/normalized = 'THES'">
-				<xsl:text>THES</xsl:text>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text>GEN</xsl:text>
-			</xsl:otherwise>
-		</xsl:choose>
+		<xsl:text>&#013;&#010;</xsl:text><xsl:text>TY  - </xsl:text><xsl:value-of select="format/normalized" />
 		<xsl:text>&#013;&#010;</xsl:text><xsl:text>T1  - </xsl:text><xsl:value-of select="title_normalized" />
 		<xsl:text>&#013;&#010;</xsl:text><xsl:text>T3  - </xsl:text><xsl:value-of select="series_title" />
 		
