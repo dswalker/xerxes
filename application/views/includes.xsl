@@ -3,6 +3,7 @@
 	<!ENTITY nbsp   "&#160;">
 	<!ENTITY copy   "&#169;">
 	<!ENTITY reg    "&#174;">
+	<!ENTITY times  "&#215;">
 	<!ENTITY trade  "&#8482;">
 	<!ENTITY mdash  "&#8212;">
 	<!ENTITY ldquo  "&#8220;">
@@ -315,7 +316,8 @@
 		
 		<xsl:for-each select="request/flash_messages/*">
 		
-			<div class="message-display message-{@original_key}">
+			<div class="alert alert-{@original_key}">
+				<button type="button" class="close" data-dismiss="alert">&times;</button>
 				<xsl:value-of select="text()" />
 			</div>
 			
@@ -451,6 +453,7 @@
 		<xsl:call-template name="jslabels" />
 	
 		<script src="//code.jquery.com/jquery-1.7.1.min.js"></script>		
+		<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 		<script src="{$base_include}/javascript/results.js?version={$asset_version}"  type="text/javascript"></script>
 		
 		<xsl:call-template name="module_javascript" />
