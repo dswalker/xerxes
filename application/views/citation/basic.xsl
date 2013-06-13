@@ -132,24 +132,6 @@
 			</xsl:for-each>
 			<xsl:text>&#013;&#010;</xsl:text>
 		</xsl:if>
-
-		<xsl:for-each select="links/link[@type != 'none' and @type != 'original_record' and @type != 'holdings']">
-			<xsl:choose>
-				<xsl:when test="@type = 'html'">			
-					<xsl:text>Full-text in HTML: </xsl:text>
-				</xsl:when>	
-				<xsl:when test="@type = 'pdf'">			
-					<xsl:text>Full-text in PDF: </xsl:text>
-				</xsl:when>	
-				<xsl:otherwise>
-					<xsl:text>Full-text: </xsl:text>
-				</xsl:otherwise>
-			</xsl:choose>
-			
-			<!-- full-text -->
-			
-			<xsl:text>&#013;&#010;</xsl:text>
-		</xsl:for-each>
 		
 		<xsl:if test="items/item">
 			<xsl:text>Items: </xsl:text>
@@ -162,14 +144,7 @@
 			</xsl:for-each>
 		</xsl:if>
 
-		<xsl:choose>
-			<xsl:when test="full_text_bool">
-				<xsl:text>Check for additional availability: </xsl:text>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:text>Check for availability: </xsl:text>
-			</xsl:otherwise>
-		</xsl:choose>
+		<xsl:text>Link: </xsl:text><xsl:value-of select="$base_url" />/folder/record?id=<xsl:value-of select="../id" />
 		
 		<!-- full-text -->
 		
