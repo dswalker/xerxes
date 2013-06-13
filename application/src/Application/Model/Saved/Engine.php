@@ -293,14 +293,4 @@ class Engine extends Search\Engine
 			return new Query($request, $this->getConfig());
 		}
 	}
-	
-	public function emailRecords(ResultSet $resultset)
-	{
-		
-	}
-	
-	public function convertToRis(ResultSet $resultset)
-	{
-	
-	}	
 }
