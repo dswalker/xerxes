@@ -25,6 +25,7 @@ h1, h2, h3, h4 {
 h1 { 
 	font-size: 200%;
 	line-height: inherit;
+	margin-bottom: 1em;
 }
 
 h2 { 
@@ -830,6 +831,14 @@ div.autocomplete ul li {
 
 
 /* MY SAVED RECORDS */
+
+.folder-export-options {
+	margin: 1em;
+}
+
+.output-export {
+	margin-left: 1em;
+}
 
 table#folder-output-results {
 	width: 100%;
