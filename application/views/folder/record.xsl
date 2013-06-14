@@ -35,4 +35,7 @@
 	<xsl:call-template name="record" />
 	
 </xsl:template>
+
+<xsl:template name="save_record" />
+
 </xsl:stylesheet>
