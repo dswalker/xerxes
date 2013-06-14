@@ -13,6 +13,8 @@ $(document).ready(showHitCounts);
 $(window).load(setNoImage);
 $(document).ready(fillAvailability);
 $(document).ready(addSaveLinks);
+$(document).ready(function(){ $('.selectpicker').selectpicker(); });
+
 
 
 function addFacetMoreLinks()

@@ -46,7 +46,7 @@
 		<xsl:call-template name="search_page">
 			<xsl:with-param name="sidebar_width">2</xsl:with-param>
 		</xsl:call-template>
-	</xsl:template>	
+	</xsl:template>
 	
 	<xsl:template name="module_javascript">
 		<script src="{$base_include}/javascript/folder.js?version={$asset_version}"  type="text/javascript"></script>
@@ -93,7 +93,7 @@
 	
 		<div class="folder-export-options">
 		
-		<select name="output">
+		<select name="output" class="selectpicker">
 			<option>Export options</option>
 			<option value="email">
 				<xsl:if test="request/session/last_output = 'email'">
@@ -127,7 +127,7 @@
 			</option>
 		</select>
 		
-		<input type="submit" value="Export" />
+		<input type="submit" class="btn btn-primary output-export" name="Submit" value="Export" />
 			
 		</div>
 		

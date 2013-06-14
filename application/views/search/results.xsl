@@ -369,7 +369,7 @@
 
 				<label for="field">Search</label><xsl:text> </xsl:text>
 				
-				<select id="field" name="field">
+				<select id="field" name="field" class="selectpicker">
 					
 					<xsl:for-each select="config/basic_search_fields/field">
 					
