@@ -44,7 +44,7 @@
 	
 	<xsl:template name="main">
 		<xsl:call-template name="search_page">
-			<xsl:with-param name="sidebar_width">2</xsl:with-param>
+			<xsl:with-param name="sidebar">right</xsl:with-param>
 		</xsl:call-template>
 	</xsl:template>
 	
@@ -87,49 +87,81 @@
 		</xsl:choose>
 	</xsl:template>	
 	
-	<xsl:template name="brief_results">
-	
-		<form action="folder/output">
-	
-		<div class="folder-export-options">
+	<xsl:template name="search_results_area">
 		
-		<select name="output" class="selectpicker">
-			<option>Export options</option>
-			<option value="email">
-				<xsl:if test="request/session/last_output = 'email'">
-					<xsl:attribute name="selected">selected</xsl:attribute>
-				</xsl:if>
-				<xsl:value-of select="$text_folder_email_pagename" />
-			</option>
-			<option value="refworks">
-				<xsl:if test="request/session/last_output = 'refworks'">
-					<xsl:attribute name="selected">selected</xsl:attribute>
-				</xsl:if>
-				<xsl:value-of select="$text_folder_refworks_pagename" />
-			</option>
-			<option value="endnote">
-				<xsl:if test="request/session/last_output = 'endnote'">
-					<xsl:attribute name="selected">selected</xsl:attribute>
-				</xsl:if>
-				<xsl:value-of select="$text_folder_endnote_pagename" />
-			</option>
-			<option value="endnoteweb">
-				<xsl:if test="request/session/last_output = 'endnoteweb'">
-					<xsl:attribute name="selected">selected</xsl:attribute>
-				</xsl:if>
-				Export to Endote Web
-			</option>
-			<option value="text">
-				<xsl:if test="request/session/last_output = 'text'">
-					<xsl:attribute name="selected">selected</xsl:attribute>
-				</xsl:if>
-				<xsl:value-of select="$text_folder_file_pagename" />
-			</option>
-		</select>
-		
-		<input type="submit" class="btn btn-primary output-export" name="Submit" value="Export" />
+		<xsl:call-template name="facets_applied" />
+	
+		<form action="folder">
+	
+		<div class="folder-options">
+			
+			<!--
+
+			<div class="folder-records-selected">
+			
+				Records: <xsl:text> </xsl:text>
+	
+				<input type="radio" name="records-selected" value="selected" /> <label>Selected</label>
+				<xsl:text> </xsl:text>
+				<input type="radio" name="records-selected" value="page" /> <label>This page</label>
+				<xsl:text> </xsl:text>
+				<input type="radio" name="records-selected" value="all"/> <label>All records</label>
+				
+			</div>
+			
+			-->
+						
+			<div class="export">
+			
+				Export options: <xsl:text> </xsl:text>
+				
+				<select name="output" class="selectpicker">
+					<option value="email" data-icon="icon-envelope">
+						<xsl:value-of select="$text_folder_email_pagename" />
+					</option>
+					<option value="refworks" data-icon="icon-share">
+						<xsl:value-of select="$text_folder_refworks_pagename" />
+					</option>
+					<option value="endnoteweb" data-icon="icon-share">
+						Export to Endote Web
+					</option>						
+					<option value="endnote" data-icon="icon-download">
+						<xsl:value-of select="$text_folder_endnote_pagename" />
+					</option>
+					<option value="text" data-icon="icon-download-alt">
+						<xsl:value-of select="$text_folder_file_pagename" />
+					</option>
+				</select>
+				
+				<xsl:text> </xsl:text>
+				<button type="submit" class="btn btn-primary output-export" name="action" value="export">Export</button>
+				
+			</div>
+			<div class="assign">
+				
+				Add records to folder: 
+				
+				<select name="folder" class="selectpicker">
+				
+					<xsl:for-each select="//facets/groups/group[name='label']/facets/facet">
+						<option value="{name}"><xsl:value-of select="name" /></option>
+					</xsl:for-each>
+					
+				</select>
+				
+				<button type="submit" class="btn btn-primary output-export" name="action" value="label">Add</button>
+				
+			</div>
+
+			<div>
+				<button type="submit" class="btn" name="action" value="delete">
+					<i class="icon-trash"></i><xsl:text> </xsl:text>Delete
+				</button>
+			</div>
 			
 		</div>
+		
+		<xsl:call-template name="sort_bar" />
 		
 		<table id="folder-output-results">
 			<thead>
@@ -137,7 +169,6 @@
 					<td><input type="checkbox" value="true" id="folder-select-all" /></td>
 					<td>Title</td>
 					<td>Author</td>
-					<td>Tags</td>
 					<td>Format</td>
 					<td>Year</td>
 				</tr>
@@ -156,9 +187,6 @@
 					<td class="author-cell">
 						<xsl:value-of select="authors/author/aulast" />
 					</td>
-					<td class="tag-cell">
-						tags!
-					</td> 
 					<td class="format-cell">
 						<xsl:call-template name="text_results_format">
 							<xsl:with-param name="format" select="format/public" />
@@ -176,7 +204,42 @@
 		
 		</form>
 		
+		<xsl:call-template name="paging_navigation" />
+		
 	</xsl:template>
+
+	<xsl:template name="search_sidebar_facets">
+			
+			<div class="box">
+				
+				<h2>Limit your saved records</h2>
+			
+				<xsl:call-template name="facet_narrow_results" />
+				
+				<xsl:for-each select="//facets/groups/group[not(display)]">
+
+					<h3><xsl:value-of select="public" /></h3>
+						
+					<ul>
+					<xsl:for-each select="facets/facet">
+						<xsl:call-template name="facet_option" />
+					</xsl:for-each>
+					</ul>
+					
+					<xsl:if test="name = 'label'">
+					
+						<div style="margin-top: 2em">
+							<a href="#myModal" role="button" class="btn" data-toggle="modal">
+								<i class="icon-folder-close"></i><xsl:text> </xsl:text>Create new folder
+							</a>							
+						</div>
+					
+					</xsl:if>
 	
+				</xsl:for-each>
+							
+			</div>
+	
+	</xsl:template>	
 		
 </xsl:stylesheet>
