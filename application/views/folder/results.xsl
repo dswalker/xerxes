@@ -139,15 +139,20 @@
 			</div>
 			<div class="assign">
 				
-				Add records to folder: 
+				Add label to records: 
 				
-				<select name="folder" class="selectpicker">
-				
-					<xsl:for-each select="//facets/groups/group[name='label']/facets/facet">
-						<option value="{name}"><xsl:value-of select="name" /></option>
-					</xsl:for-each>
-					
-				</select>
+				<input type="text" name="label" data-provide="typeahead">
+					<xsl:attribute name="data-source">				
+						<xsl:text>[</xsl:text>
+						<xsl:for-each select="//facets/groups/group[name='label']/facets/facet">
+							<xsl:text>"</xsl:text><xsl:value-of select="name"  /><xsl:text>"</xsl:text>
+							<xsl:if test="following-sibling::facet">
+								<xsl:text>,</xsl:text>
+							</xsl:if>
+						</xsl:for-each>
+						<xsl:text>]</xsl:text>
+					</xsl:attribute>
+				</input>
 				
 				<button type="submit" class="btn btn-primary output-export" name="action" value="label">Add</button>
 				
@@ -210,35 +215,25 @@
 
 	<xsl:template name="search_sidebar_facets">
 			
-			<div class="box">
-				
-				<h2>Limit your saved records</h2>
+		<div class="box">
 			
-				<xsl:call-template name="facet_narrow_results" />
-				
-				<xsl:for-each select="//facets/groups/group[not(display)]">
+			<h2>Limit your saved records</h2>
+		
+			<xsl:call-template name="facet_narrow_results" />
+			
+			<xsl:for-each select="//facets/groups/group[not(display)]">
 
-					<h3><xsl:value-of select="public" /></h3>
-						
-					<ul>
-					<xsl:for-each select="facets/facet">
-						<xsl:call-template name="facet_option" />
-					</xsl:for-each>
-					</ul>
+				<h3><xsl:value-of select="public" /></h3>
 					
-					<xsl:if test="name = 'label'">
-					
-						<div style="margin-top: 2em">
-							<a href="#myModal" role="button" class="btn" data-toggle="modal">
-								<i class="icon-folder-close"></i><xsl:text> </xsl:text>Create new folder
-							</a>							
-						</div>
-					
-					</xsl:if>
-	
+				<ul>
+				<xsl:for-each select="facets/facet">
+					<xsl:call-template name="facet_option" />
 				</xsl:for-each>
-							
-			</div>
+				</ul>
+
+			</xsl:for-each>
+						
+		</div>
 	
 	</xsl:template>	
 		
