@@ -455,44 +455,80 @@ class SavedRecords extends DataMap
 	}
 	
 	/**
-	 * Associate tags with a saved record
+	 * Add tag to records
 	 *
-	 * @param string $strUsername		username 
-	 * @param array $arrTags			array of tags supplied by user
-	 * @param int $iRecord				record id tags are associated with
+	 * @param string $username    username
+	 * @param string $tag         tag supplied by user
+	 * @param int|array $records  record(s) to associate with tag
 	 */
 	
-	public function assignTags($strUsername, $arrTags, $iRecord)
+	public function addTag($username, $tag, $records)
+	{
+		$this->updateTag('add', $username, $tag, $records);
+	}
+
+	/**
+	 * Remove tags from a saved record
+	 *
+	 * @param string $username    username
+	 * @param string $tag         tag supplied by user
+	 * @param int|array $records  record(s) to associate with tag
+	 */
+	
+	public function deleteTag( $username, $tag, $records )
+	{
+		$this->updateTag('delete', $username, $tag, $records);
+	}	
+	
+	/**
+	 * Update tags with a saved record
+	 *
+	 * @param string $action      'add' or 'delete' 
+	 * @param string $username    username
+	 * @param string $tag         tag supplied by user
+	 * @param int|array $records  record(s) to associate with tag
+	 */
+	
+	protected function updateTag($action, $username, $tag, $records)
 	{
 		// data check
-
-		if ( $strUsername == "" ) throw new \Exception( "param 1 'username' must not be null" );
-		if ( ! is_array( $arrTags ) ) throw new \Exception( "param 2 'tags' must be of type array" );
-		if ( $iRecord == "" ) throw new \Exception( "param 3 'record' must not be null" );
-			
-		// wrap it in a transaction, yo!
-
-		$this->beginTransaction();
-		
-		// first clear any old tags associated with the record, so 
-		// we can 'edit' and 'add' on the same action
-
-		$strSQL = "DELETE FROM xerxes_tags WHERE record_id = :record_id AND username = :username";
-		$this->delete( $strSQL, array (":record_id" => $iRecord, ":username" => $strUsername ) );
-		
-		// now assign the new ones to the database
-		
-		foreach ( $arrTags as $strTag )
+	
+		if ( $username == "" ) throw new \Exception( "'username' must not be null" );
+		if ( $tag == "" ) throw new \Exception( "'tag' must not be null" );
+		if ( $records == "" ) throw new \Exception( "'records' must not be null" );
+	
+		if ( ! is_array($records))
 		{
-			if ( $strTag != "" )
-			{
-				$strSQL = "INSERT INTO xerxes_tags (username, record_id, tag) VALUES (:username, :record_id, :tag)";
-				$this->insert( $strSQL, array (":username" => $strUsername, ":record_id" => $iRecord, ":tag" => $strTag ) );
-			}
+			$records = array($records);
 		}
 		
+		// add the tag to supplied record
+	
+		$this->beginTransaction();
+	
+		foreach ( $records as $record)
+		{
+			
+			$params = array (
+				":username" => $username,
+				":record_id" => $record,
+				":tag" => $tag
+			);
+			
+			if ( $action == 'delete')
+			{
+				$sql = "DELETE FROM xerxes_tags WHERE username = :username and record_id = :record_id and tag = :tag)";
+				$this->delete($sql, $params);
+			}
+			elseif ( $action == 'add')
+			{
+				$sql = "INSERT INTO xerxes_tags (username, record_id, tag) VALUES (:username, :record_id, :tag)";
+				$this->insert($sql, $params);				
+			}
+		}
+	
 		$this->commit();
-	}
+	}	
 	
 	/**
 	 * Add a record to the user's saved record space. $objXerxesRecord will be
