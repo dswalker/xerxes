@@ -124,13 +124,20 @@ class FolderController extends SearchController
 	{
 		$id_array = $this->request->requireParam('record', 'You must select one or more records', true);
 		$tag = $this->request->requireParam('tag', 'You must supply a label');
-		$username = $this->request->getSessionData('username');
 		$return = $this->request->requireParam('return', 'Request must include return URL');
-		
-		// assign the tag
+		$remove = $this->request->getParam('remove');
+		$username = $this->request->getSessionData('username');
 		
 		$datamap = new SavedRecords();
-		$datamap->addTag($username, $tag, $id_array);
+		
+		if ( $remove != null )
+		{
+			$datamap->deleteTag($username, $tag, $id_array);
+		}
+		else // assign tag
+		{
+			$datamap->addTag($username, $tag, $id_array);
+		}
 		
 		// redirect out with message
 		
@@ -377,6 +384,6 @@ class FolderController extends SearchController
 		$this->request->setFlashMessage(Request::FLASH_MESSAGE_NOTICE, "Records deleted");
 		return $this->redirectTo($return);
 		
-		// $this->unmarkSaved( $original_id );
+		// @todo unmark saved
 	}
 }
