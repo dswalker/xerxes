@@ -554,15 +554,48 @@ class SavedRecords extends DataMap
 	/**
 	 * Delete record by the local internal id
 	 *
-	 * @param string $username			username under which the record is saved
-	 * @param int $id					internal id number
-	 * @return int status
+	 * @param string $username  username under which the record is saved
+	 * @param int|array $id     internal id number
+	 * 
+	 * @return array original id for records deleted
 	 */
 	
 	public function deleteRecordByID($username, $id)
 	{
-		$strSQL = "DELETE FROM xerxes_records WHERE username = :username AND id = :id";
+		$params = array (":username" => $username);
 		
-		return $this->delete( $strSQL, array (":username" => $username, ":original_id" => "$id" ) );
+		if ( ! is_array($id) )
+		{
+			$id = array($id);		
+		}
+		
+		$strCriteria = '';
+		
+		for ( $x = 0 ; $x < count( $id ) ; $x ++ )
+		{
+			if ( $x > 0 )
+			{
+				$strCriteria .= " OR";
+			}
+		
+			$num = sprintf("%04d", $x); // pad it to keep id's unique
+		
+			$strCriteria .= " id = :id$x ";
+			$params[":id$x"] = $id[$x];
+		}
+		
+		// get the original id's first
+		
+		$sql = "SELECT source, original_id FROM xerxes_records WHERE username = :username AND ($strCriteria)";
+		$original_array = $this->select($sql, $params);
+		
+		// do the actual delete
+		
+		$sql = "DELETE FROM xerxes_records WHERE username = :username AND ($strCriteria)";
+		$this->delete( $sql, $params );
+		
+		// return original id's
+		
+		return $original_array;
 	}
 }
