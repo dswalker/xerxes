@@ -517,7 +517,7 @@ class SavedRecords extends DataMap
 			
 			if ( $action == 'delete')
 			{
-				$sql = "DELETE FROM xerxes_tags WHERE username = :username and record_id = :record_id and tag = :tag)";
+				$sql = "DELETE FROM xerxes_tags WHERE username = :username AND record_id = :record_id AND tag = :tag";
 				$this->delete($sql, $params);
 			}
 			elseif ( $action == 'add')
