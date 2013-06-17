@@ -11,6 +11,7 @@
 
 namespace Application\Controller;
 
+use Application\Model\DataMap\SavedRecords;
 use Application\Model\Saved\Engine;
 use Application\Model\Solr;
 use Application\View\Helper\Folder as FolderHelper;
@@ -322,7 +323,7 @@ class FolderController extends SearchController
 		
 		if ( count($id_array) == 0 )
 		{
-			throw new \Exception('You must specify record ids');
+			throw new \Exception('Request must specify record ids');
 		}
 		
 		$results = $this->engine->getRecords($id_array);
@@ -335,5 +336,25 @@ class FolderController extends SearchController
 		}
 		
 		return $this->response;
+	}
+	
+	/**
+	 * Delete records
+	 */
+	
+	public function deleteAction()
+	{
+		$id_array = $this->request->requireParam('record', 'Request must specify record ids', true);
+		$return = $this->request->requireParam('return', 'Request must include return URL');
+		$username = $this->request->getSessionData('username');
+		
+		$datamap = new SavedRecords();
+		$result = $datamap->deleteRecordByID($username, $id_array);
+		
+		
+		$this->request->setFlashMessage(Request::FLASH_MESSAGE_NOTICE, "Records deleted");
+		return $this->redirectTo($return);
+		
+		// $this->unmarkSaved( $original_id );
 	}
 }
