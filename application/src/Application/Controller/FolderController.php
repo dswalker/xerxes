@@ -117,6 +117,28 @@ class FolderController extends SearchController
 	}
 	
 	/**
+	 * Assign label to a record
+	 */
+	
+	public function labelAction()
+	{
+		$id_array = $this->request->requireParam('record', 'You must select one or more records', true);
+		$tag = $this->request->requireParam('tag', 'You must supply a label');
+		$username = $this->request->getSessionData('username');
+		$return = $this->request->requireParam('return', 'Request must include return URL');
+		
+		// assign the tag
+		
+		$datamap = new SavedRecords();
+		$datamap->addTag($username, $tag, $id_array);
+		
+		// redirect out with message
+		
+		$this->request->setFlashMessage(Request::FLASH_MESSAGE_NOTICE, "Records updated");
+		return $this->redirectTo($return);
+	}
+	
+	/**
 	 * Master output function, ultimately calls the functions below
 	 */
 	
