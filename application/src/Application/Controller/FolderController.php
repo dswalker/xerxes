@@ -119,9 +119,19 @@ class FolderController extends SearchController
 	 * Master output function, ultimately calls the functions below
 	 */
 	
-	public function outputAction()
+	public function exportAction()
 	{
-		$output = $this->request->getParam('output');
+		$output = $this->request->requireParam('output', 'Request must include output option');
+		$return = $this->request->requireParam('return', 'Request must include return URL');
+		
+		// no records selected, so send them back
+		
+		if ( $this->request->getParam('record') == null )
+		{
+			$this->request->setFlashMessage(Request::FLASH_MESSAGE_ERROR, 'Please select records to export');
+			return $this->redirectTo($return);
+		}
+		
 		$method = $output . 'Action';
 		
 		$this->request->setSessionData('last_output', $output);
