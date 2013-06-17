@@ -536,22 +536,6 @@ class SavedRecords extends DataMap
 	}
 	
 	/**
-	 * Remove a record from the user's saved record space by the source and id
-	 *
-	 * @param string $username			username under which the record is saved
-	 * @param string $source			source from which the record came
-	 * @param string $id				id of the record
-	 * @return int status
-	 */
-	
-	public function deleteRecordBySource($username, $source, $id)
-	{
-		$strSQL = "DELETE FROM xerxes_records WHERE username = :username AND source = :source AND original_id = :original_id";
-		
-		return $this->delete( $strSQL, array (":username" => $username, ":source" => $source, ":original_id" => "$id" ) );
-	}
-	
-	/**
 	 * Delete record by the local internal id
 	 *
 	 * @param string $username			username under which the record is saved
