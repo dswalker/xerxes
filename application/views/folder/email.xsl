@@ -12,7 +12,7 @@
 -->
 <!--
 
- Login view
+ Email Records
  author: David Walker <dwalker@calstate.edu>
  
  -->
@@ -40,7 +40,7 @@
 	
 	<div class="container">
 	
-		<form class="form-horizontal" name="login" method="get" action="folder/output">
+		<form class="form-horizontal" name="email" method="get" action="folder/export">
 		
 			<input name="return" type="hidden" value="{$return}" />
 			<input name="output" type="hidden" value="email" />
