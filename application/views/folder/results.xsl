@@ -295,7 +295,7 @@
 							</a>
 							
 							<xsl:if test="../tags/tag">
-								<a href="{../url_full}" rel="tooltip" data-toggle="tooltip" data-placement="top" title="" style="padding-left: 1em">
+								<a href="{../url_full}" class="folder-tags" rel="tooltip" data-toggle="tooltip" data-placement="top" title="">
 									<xsl:attribute name="data-original-title">
 										<xsl:for-each select="../tags/tag">
 											<xsl:value-of select="text()" />

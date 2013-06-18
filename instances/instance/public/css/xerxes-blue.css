@@ -475,8 +475,9 @@ a.record-action {
 	margin-bottom: 2em;
 }
 
-.folder-labels {
-	margin: .4em;
+a.folder-tags {
+	padding-left: 1em;
+	color: #999; !important;
 }
 
 /* pager */
