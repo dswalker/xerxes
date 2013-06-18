@@ -122,6 +122,10 @@ dd, dt, li {
 	line-height: normal;
 }
 
+.bootstrap-select.btn-group, .bootstrap-select.btn-group[class*="span"] {
+	margin-bottom: 0;
+}
+
 /** HEADER **/
 
 #hd-banner {
@@ -832,12 +836,18 @@ div.autocomplete ul li {
 
 /* MY SAVED RECORDS */
 
-.folder-export-options {
-	margin: 1em;
+.folder-options {
+	margin-bottom: 1em;
+}
+
+
+.folder-options div {
+	margin-left: 2em;
+	margin-top: 1em;
 }
 
 .output-export {
-	margin-left: 1em;
+	margin-left: .7em;
 }
 
 table#folder-output-results {
