@@ -502,13 +502,12 @@ class SavedRecords extends DataMap
 			$records = array($records);
 		}
 		
-		// add the tag to supplied record
+		// update records
 	
 		$this->beginTransaction();
 	
 		foreach ( $records as $record)
 		{
-			
 			$params = array (
 				":username" => $username,
 				":record_id" => $record,
@@ -593,7 +592,7 @@ class SavedRecords extends DataMap
 	 * @param string $username  username under which the record is saved
 	 * @param int|array $id     internal id number
 	 * 
-	 * @return array original id for records deleted
+	 * @return array            original id for records deleted
 	 */
 	
 	public function deleteRecordByID($username, $id)
@@ -632,6 +631,13 @@ class SavedRecords extends DataMap
 		
 		// return original id's
 		
-		return $original_array;
+		$return = array();
+		
+		foreach ( $original_array as $original )
+		{
+			$return[] = $original['original_id'];
+		}
+		
+		return $return;
 	}
 }

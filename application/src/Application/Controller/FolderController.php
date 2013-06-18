@@ -377,13 +377,19 @@ class FolderController extends SearchController
 		$return = $this->request->requireParam('return', 'Request must include return URL');
 		$username = $this->request->getSessionData('username');
 		
-		$datamap = new SavedRecords();
-		$result = $datamap->deleteRecordByID($username, $id_array);
+		// remove saved records from database
 		
+		$datamap = new SavedRecords();
+		$original_ids = $datamap->deleteRecordByID($username, $id_array);
+		
+		// remove any saved record state for these
+		
+		foreach ( $original_ids as $original_id )
+		{
+			$this->unmarkSaved($original_id);
+		}
 		
 		$this->request->setFlashMessage(Request::FLASH_MESSAGE_NOTICE, "Records deleted");
 		return $this->redirectTo($return);
-		
-		// @todo unmark saved
 	}
 }
