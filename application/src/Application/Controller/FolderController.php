@@ -122,11 +122,24 @@ class FolderController extends SearchController
 	
 	public function labelAction()
 	{
-		$id_array = $this->request->requireParam('record', 'You must select one or more records', true);
-		$tag = $this->request->requireParam('tag', 'You must supply a label');
-		$return = $this->request->requireParam('return', 'Request must include return URL');
+		$missing = $this->checkRequiredParams();
+		
+		if ( $missing != null )
+		{
+			return $missing;
+		}
+		
+		$id_array = $this->request->getParam('record', null, true);
+		$return = $this->request->getParam('return');
+		$tag = $this->request->getParam('tag');
 		$remove = $this->request->getParam('remove');
 		$username = $this->request->getSessionData('username');
+		
+		if ( $tag == null )
+		{
+			$this->request->setFlashMessage(Request::FLASH_MESSAGE_ERROR, 'Please provide a label.');
+			return $this->redirectTo($return);
+		}
 		
 		$datamap = new SavedRecords();
 		
@@ -146,20 +159,51 @@ class FolderController extends SearchController
 	}
 	
 	/**
+	 * Delete records
+	 */
+	
+	public function deleteAction()
+	{
+		$missing = $this->checkRequiredParams();
+		
+		if ( $missing != null )
+		{
+			return $missing;
+		}
+		
+		$id_array = $this->request->getParam('record', null, true);
+		$return = $this->request->getParam('return');
+		$username = $this->request->getSessionData('username');
+	
+		// remove saved records from database
+	
+		$datamap = new SavedRecords();
+		$original_ids = $datamap->deleteRecordByID($username, $id_array);
+	
+		// remove any saved record state for these
+	
+		foreach ( $original_ids as $original_id )
+		{
+			$this->unmarkSaved($original_id);
+		}
+	
+		$this->request->setFlashMessage(Request::FLASH_MESSAGE_NOTICE, "Records deleted");
+		return $this->redirectTo($return);
+	}	
+	
+	/**
 	 * Master output function, ultimately calls the functions below
 	 */
 	
 	public function exportAction()
 	{
 		$output = $this->request->requireParam('output', 'Request must include output option');
-		$return = $this->request->requireParam('return', 'Request must include return URL');
+
+		$missing = $this->checkRequiredParams();
 		
-		// no records selected, so send them back
-		
-		if ( $this->request->getParam('record') == null )
+		if ( $missing != null )
 		{
-			$this->request->setFlashMessage(Request::FLASH_MESSAGE_ERROR, 'Please select records to export');
-			return $this->redirectTo($return);
+			return $missing;
 		}
 		
 		$method = $output . 'Action';
@@ -180,7 +224,7 @@ class FolderController extends SearchController
 	{
 		// get the ids that were selected for export
 			
-		$id_array = $this->request->requireParam('record', 'You must select one or more records', true);
+		$id_array = $this->request->getParam('record', null, true);
 			
 		// construct return url back to the fetch action
 			
@@ -217,7 +261,7 @@ class FolderController extends SearchController
 	{
 		// get the ids that were selected for export
 			
-		$id_array = $this->request->requireParam('record', 'You must select one or more records', true);
+		$id_array = $this->request->getParam('record', null, true);
 			
 		// construct return url back to the fetch action
 			
@@ -251,7 +295,7 @@ class FolderController extends SearchController
 	{
 		// get the ids that were selected for export
 		
-		$id_array = $this->request->requireParam('record', 'You must select one or more records', true);
+		$id_array = $this->request->getParam('record', null, true);
 		
 		// construct return url back to the fetch action
 		
@@ -283,8 +327,8 @@ class FolderController extends SearchController
 	
 	public function emailAction()
 	{
-		$id_array = $this->request->requireParam('record', 'You must select one or more records', true);
-		$return = $this->request->requireParam('return', 'Request must include return URL');
+		$id_array = $this->request->getParam('record', null, true);
+		$return = $this->request->getParam('return');
 		
 		$email = $this->request->getParam('email');
 		$subject = $this->request->getParam('subject', 'Saved Records');
@@ -398,28 +442,23 @@ class FolderController extends SearchController
 	}
 	
 	/**
-	 * Delete records
+	 * Make sure request has records and a return url
 	 */
 	
-	public function deleteAction()
+	protected function checkRequiredParams()
 	{
-		$id_array = $this->request->requireParam('record', 'Request must specify record ids', true);
 		$return = $this->request->requireParam('return', 'Request must include return URL');
-		$username = $this->request->getSessionData('username');
 		
-		// remove saved records from database
+		// no records selected, so send them back
 		
-		$datamap = new SavedRecords();
-		$original_ids = $datamap->deleteRecordByID($username, $id_array);
-		
-		// remove any saved record state for these
-		
-		foreach ( $original_ids as $original_id )
+		if ( $this->request->getParam('record') == null )
 		{
-			$this->unmarkSaved($original_id);
+			$this->request->setFlashMessage(Request::FLASH_MESSAGE_ERROR, 'Please select records.');
+			return $this->redirectTo($return);
 		}
-		
-		$this->request->setFlashMessage(Request::FLASH_MESSAGE_NOTICE, "Records deleted");
-		return $this->redirectTo($return);
+		else
+		{
+			return null;
+		}
 	}
 }
