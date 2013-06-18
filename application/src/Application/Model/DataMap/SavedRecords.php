@@ -514,12 +514,12 @@ class SavedRecords extends DataMap
 				":tag" => $tag
 			);
 			
-			if ( $action == 'delete')
-			{
-				$sql = "DELETE FROM xerxes_tags WHERE username = :username AND record_id = :record_id AND tag = :tag";
-				$this->delete($sql, $params);
-			}
-			elseif ( $action == 'add')
+			// even if this is an add request, we always delete existing entires
+			
+			$sql = "DELETE FROM xerxes_tags WHERE username = :username AND record_id = :record_id AND tag = :tag";
+			$this->delete($sql, $params);
+			
+			if ( $action == 'add')
 			{
 				$sql = "INSERT INTO xerxes_tags (username, record_id, tag) VALUES (:username, :record_id, :tag)";
 				$this->insert($sql, $params);				
