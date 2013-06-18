@@ -16,7 +16,6 @@ $(document).ready(addSaveLinks);
 $(document).ready(function(){ $('.selectpicker').selectpicker(); });
 
 
-
 function addFacetMoreLinks()
 {
 	$(".facet-more-option").click(function() {
