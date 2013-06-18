@@ -1,4 +1,6 @@
 $(document).ready(addSelectAll);
+$(document).ready(function(){ $("[rel='tooltip']").tooltip(); });
+
 
 function addSelectAll()
 {

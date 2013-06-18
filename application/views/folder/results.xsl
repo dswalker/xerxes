@@ -293,6 +293,21 @@
 							<a href="{../url_full}">
 								<xsl:value-of select="title_normalized" />
 							</a>
+							
+							<xsl:if test="../tags/tag">
+								<a href="{../url_full}" rel="tooltip" data-toggle="tooltip" data-placement="top" title="" style="padding-left: 1em">
+									<xsl:attribute name="data-original-title">
+										<xsl:for-each select="../tags/tag">
+											<xsl:value-of select="text()" />
+											<xsl:if test="following-sibling::tag">
+												<xsl:text>, </xsl:text>
+											</xsl:if>
+										</xsl:for-each>
+									</xsl:attribute>
+									<i class="icon-tags" />
+								</a>
+							</xsl:if>
+						
 						</label>
 					</td>
 					<td class="author-cell">
