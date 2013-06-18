@@ -191,24 +191,14 @@
 			Export options: <xsl:text> </xsl:text>
 			
 			<select name="output" class="selectpicker">
-				<option value="email" data-icon="icon-envelope">
-					<xsl:value-of select="$text_folder_email_pagename" />
-				</option>
-				<option value="refworks" data-icon="icon-share-alt">
-					<xsl:value-of select="$text_folder_refworks_pagename" />
-				</option>
-				<option value="endnoteweb" data-icon="icon-share-alt">
-					Export to Endote Web
-				</option>
-				<option value="blackboard" data-icon="icon-share-alt">
-					Export to Blackboard
-				</option>
-				<option value="endnote" data-icon="icon-download">
-					<xsl:value-of select="$text_folder_endnote_pagename" />
-				</option>
-				<option value="text" data-icon="icon-download-alt">
-					<xsl:value-of select="$text_folder_file_pagename" />
-				</option>
+			
+				<xsl:for-each select="config/export_options/option">
+				
+					<option value="{@id}" data-icon="{@icon}">
+						<xsl:value-of select="@public" />
+					</option>
+				
+				</xsl:for-each>
 			</select>
 			
 			<xsl:text> </xsl:text>

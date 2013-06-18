@@ -19,7 +19,16 @@
 			<option id="author" public="author" internal="author" />
 			<option id="date" public="newest" internal="date:desc" type="year"/>
 			<option id="date-old" public="oldest" internal="date:asc" type="year"/>
-		</config>		
+		</config>	
+		
+		<config name="export_options" xml="true" pass="true">
+			<option id="email" icon="icon-envelope" public="Email records to yourself" />
+			<option id="refworks" icon="icon-share-alt" public="Export to Refworks" />
+			<option id="endnoteweb" icon="icon-share-alt" public="Export to Endnote Web" />
+			<option id="blackboard" icon="icon-share-alt" public="Export to Blackboard" />
+			<option id="endnote" icon="icon-download" public="Download to Endnote, Zotero, etc." />
+			<option id="text" icon="icon-download-alt" public="Download to text file" />
+		</config>			
 		
 	</configuration>
 	
