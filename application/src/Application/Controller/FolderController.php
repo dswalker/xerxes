@@ -247,6 +247,36 @@ class FolderController extends SearchController
 		return $this->redirectTo($url);		
 	}
 	
+	public function blackboardAction()
+	{
+		// get the ids that were selected for export
+		
+		$id_array = $this->request->requireParam('record', 'You must select one or more records', true);
+		
+		// construct return url back to the fetch action
+		
+		$arrProperties = array (
+			"controller" => "folder",
+			"action" => "fetch",
+			"format" => "ris",
+			"records" => implode(',', $id_array)
+		);
+		
+		$return = $this->request->url_for($arrProperties, true);
+		
+		
+		// @todo abstract this out to search?
+		// get address for blackboard
+		
+		$url = $this->registry->getConfig("BB_ADDRESS", false, 'http://bb91.verbenaconsultant.com/webapps/csu-citation-BBLEARN/citations/ExpressImport.jsp');
+		
+		// construct full url to bb
+		
+		$url .= "?url=" . urlencode($return);
+		
+		return $this->redirectTo($url);		
+	}
+	
 	/**
 	 * Email records to specified account
 	 */
