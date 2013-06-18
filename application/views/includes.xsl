@@ -515,7 +515,8 @@
 			<xsl:otherwise>
 				
 				<link rel="stylesheet" type="text/css" href="{$base_include}/css/bootstrap-select.min.css" />
-				<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet" />
+				<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet" />
+				<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet" />
 				<link href="{$base_include}/css/xerxes-blue.css?version={$asset_version}" rel="stylesheet" type="text/css" />
 				<link href="css/local.css?version={$asset_version}" rel="stylesheet" type="text/css" />
 				
