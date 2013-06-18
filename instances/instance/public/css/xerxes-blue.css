@@ -873,6 +873,10 @@ table#folder-output-results thead {
 	background-color: transparent;
 }
 
+td.title-cell {
+	width: 100%;
+}
+
 /** temp fixes **/
 
 .facet-date {
