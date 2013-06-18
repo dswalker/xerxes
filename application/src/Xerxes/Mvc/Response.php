@@ -28,6 +28,7 @@ class Response extends HttpFoundation\Response
 	private $_script_path; // path to the distro script
 	private $_view_dir; // view directory
 	private $_view; // view file
+	public $cache = true; // cache response
 	
 	/**
 	 * Set variable
@@ -86,15 +87,6 @@ class Response extends HttpFoundation\Response
 		$this->_view = null;
 	}
 	
-	public function noCache()
-	{
-		$this->headers->addCacheControlDirective('no-store', true);
-		$this->headers->addCacheControlDirective('no-cache', true);
-		$this->headers->addCacheControlDirective('must-revalidate', true);
-		$this->headers->addCacheControlDirective('post-check', 0);
-		$this->headers->addCacheControlDirective('pre-check', 0);
-	}
-	
 	/**
 	 * Processes the view script against the data.
 	 */
@@ -143,6 +135,11 @@ class Response extends HttpFoundation\Response
 			$html = ob_get_clean();
 			
 			$this->setContent($html);
+		}
+		
+		if ( $this->cache == false )
+		{
+			$this->noCache();
 		}
 		
 		return $this;
@@ -215,4 +212,17 @@ class Response extends HttpFoundation\Response
 		
 		return $xsl->transformToXml($xml, $path_to_xsl, $format, $params, $import_array);
 	}
+	
+	/**
+	 * Make sure no caching of page
+	 */
+	
+	protected function noCache()
+	{
+		$this->headers->addCacheControlDirective('no-store', true);
+		$this->headers->addCacheControlDirective('no-cache', true);
+		$this->headers->addCacheControlDirective('must-revalidate', true);
+		$this->headers->addCacheControlDirective('post-check', 0);
+		$this->headers->addCacheControlDirective('pre-check', 0);
+	}	
 }
