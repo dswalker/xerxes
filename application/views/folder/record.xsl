@@ -22,12 +22,18 @@
 	xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	
 <xsl:import href="../includes.xsl" />
+<xsl:import href="results.xsl" />
 <xsl:import href="../search/record.xsl" />
 
 <xsl:output method="html" />
 
 <xsl:template match="/*">
 	<xsl:call-template name="surround" />
+</xsl:template>
+
+<xsl:template name="breadcrumb">
+	<xsl:call-template name="breadcrumb_folder" />
+	Record
 </xsl:template>
 
 <xsl:template name="main">

@@ -34,8 +34,34 @@
 	</xsl:template>
 	
 	<xsl:template name="breadcrumb">
-		<xsl:call-template name="breadcrumb_search" />
+		<xsl:call-template name="breadcrumb_start" />
 		<xsl:call-template name="page_name" />
+		<xsl:call-template name="return_to_results" />
+	</xsl:template>
+	
+	<xsl:template name="breadcrumb_folder">
+			
+		<xsl:call-template name="breadcrumb_start" />
+		
+		<a href="folder">
+			My Saved Records
+		</a>
+		
+		<xsl:value-of select="$text_breadcrumb_separator" />
+	
+	</xsl:template>
+	
+	<xsl:template name="return_to_results">
+	
+		<xsl:if test="request/session/return">
+		
+			<span class="folder-return">
+				<xsl:call-template name="img_back" />
+				<a href="{request/session/return}"><xsl:copy-of select="$text_folder_return" /></a>
+			</span>
+		
+		</xsl:if>
+	
 	</xsl:template>
 	
 	<xsl:template name="page_name">
@@ -173,7 +199,10 @@
 				</option>
 				<option value="endnoteweb" data-icon="icon-share-alt">
 					Export to Endote Web
-				</option>						
+				</option>
+				<option value="blackboard" data-icon="icon-share-alt">
+					Export to Blackboard
+				</option>
 				<option value="endnote" data-icon="icon-download">
 					<xsl:value-of select="$text_folder_endnote_pagename" />
 				</option>

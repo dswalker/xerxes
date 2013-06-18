@@ -21,6 +21,7 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 <xsl:import href="../includes.xsl" />
+<xsl:import href="results.xsl" />
 <xsl:output method="html" />
 
 <xsl:template match="/*">
@@ -30,8 +31,13 @@
 	</xsl:call-template>
 </xsl:template>
 
+<xsl:template name="breadcrumb">
+	<xsl:call-template name="breadcrumb_folder" />
+	<xsl:call-template name="page_name" />
+</xsl:template>
+
 <xsl:template name="page_name">
-	<xsl:value-of select="$text_authentication_login_pagename" />
+	Email options
 </xsl:template>
 
 <xsl:template name="main">
