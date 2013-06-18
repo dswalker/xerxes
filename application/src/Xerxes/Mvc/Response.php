@@ -84,7 +84,16 @@ class Response extends HttpFoundation\Response
 	public function noView()
 	{
 		$this->_view = null;
-	}	
+	}
+	
+	public function noCache()
+	{
+		$this->headers->addCacheControlDirective('no-store', true);
+		$this->headers->addCacheControlDirective('no-cache', true);
+		$this->headers->addCacheControlDirective('must-revalidate', true);
+		$this->headers->addCacheControlDirective('post-check', 0);
+		$this->headers->addCacheControlDirective('pre-check', 0);
+	}
 	
 	/**
 	 * Processes the view script against the data.

@@ -82,6 +82,7 @@ abstract class SearchController extends ActionController
 		
 		$this->config = $this->engine->getConfig();
 		
+		$this->response->noCache();
 		$this->response->setVariable('config_local', $this->config->toXML());
 		
 		$this->query = $this->engine->getQuery($this->request);
