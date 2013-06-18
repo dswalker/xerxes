@@ -96,51 +96,60 @@
 		
 		<xsl:call-template name="facets_applied" />
 		
-		<xsl:if test="//results/records/record/xerxes_record">
-	
-			<form action="folder">
+		<xsl:choose>
+			<xsl:when test="//results/records/record/xerxes_record">
 		
-				<div class="folder-options">
+				<form action="folder">
+			
+					<div class="folder-options">
+									
+						<xsl:call-template name="folder_export_options" />
+						
+						<xsl:choose>
+							<xsl:when test="request/facet_label">
 								
-					<xsl:call-template name="folder_export_options" />
-					
-					<xsl:choose>
-						<xsl:when test="request/facet_label">
-							
-							<div>
-								<span style="margin-right: 1em">
+								<div>
+									<span style="margin-right: 1em">
+										<xsl:call-template name="folder_delete" />
+									</span>
+									<span>
+										<xsl:call-template name="folder_remove_tags" />
+									</span>
+								</div>
+								
+							</xsl:when>
+							<xsl:otherwise>
+						
+								<xsl:call-template name="folder_tag_group_assign" />
+								
+								<div>
 									<xsl:call-template name="folder_delete" />
-								</span>
-								<span>
-									<xsl:call-template name="folder_remove_tags" />
-								</span>
-							</div>
-							
-						</xsl:when>
-						<xsl:otherwise>
-					
-							<xsl:call-template name="folder_tag_group_assign" />
-							
-							<div>
-								<xsl:call-template name="folder_delete" />
-							</div>
-							
-						</xsl:otherwise>
-					</xsl:choose>
+								</div>
 								
+							</xsl:otherwise>
+						</xsl:choose>
+									
+					</div>
+					
+					<xsl:call-template name="sort_bar" />
+					
+					<xsl:call-template name="folder_records_table" />
+					
+					<input type="hidden" name="return" value="{//request/server/request_uri}" />
+				
+				</form>
+				
+				<xsl:call-template name="paging_navigation" />
+				
+			</xsl:when>
+			<xsl:otherwise>
+				
+				<div class="no-hits error">
+					Looks like you don't have any saved records.
 				</div>
 				
-				<xsl:call-template name="sort_bar" />
-				
-				<xsl:call-template name="folder_records_table" />
-				
-				<input type="hidden" name="return" value="{//request/server/request_uri}" />
-			
-			</form>
-			
-			<xsl:call-template name="paging_navigation" />
-			
-		</xsl:if>
+			</xsl:otherwise>
+		</xsl:choose>
 		
 	</xsl:template>
 
@@ -291,26 +300,30 @@
 	-->
 
 	<xsl:template name="search_sidebar_facets">
-			
-		<div class="box">
-			
-			<h2>Limit your saved records</h2>
 		
-			<xsl:call-template name="facet_narrow_results" />
+		<xsl:if test="//facets/groups">
+		
+			<div class="box">
+				
+				<h2>Limit your saved records</h2>
 			
-			<xsl:for-each select="//facets/groups/group[not(display)]">
-
-				<h3><xsl:value-of select="public" /></h3>
-					
-				<ul>
-				<xsl:for-each select="facets/facet">
-					<xsl:call-template name="facet_option" />
-				</xsl:for-each>
-				</ul>
-
-			</xsl:for-each>
+				<xsl:call-template name="facet_narrow_results" />
+				
+				<xsl:for-each select="//facets/groups/group[not(display)]">
+	
+					<h3><xsl:value-of select="public" /></h3>
 						
-		</div>
+					<ul>
+					<xsl:for-each select="facets/facet">
+						<xsl:call-template name="facet_option" />
+					</xsl:for-each>
+					</ul>
+	
+				</xsl:for-each>
+							
+			</div>
+			
+		</xsl:if>
 	
 	</xsl:template>	
 		
