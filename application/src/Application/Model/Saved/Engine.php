@@ -272,6 +272,7 @@ class Engine extends Search\Engine
 		$result->source = $record->source;
 		$result->original_id = $record->original_id;
 		$result->timestamp = $record->timestamp;
+		$result->tags = $record->tags;
 		
 		return $result;		
 	}

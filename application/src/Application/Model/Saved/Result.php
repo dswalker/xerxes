@@ -28,6 +28,7 @@ class Result extends Search\Result
 	public $original_id;
 	public $timestamp;
 	public $username;
+	public $tags = array();
 	
 	public function __construct($record, Config $config)
 	{
