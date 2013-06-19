@@ -206,24 +206,21 @@ class Search
 			{
 				if ( $page_number >= $bottom_range && $page_number <= $top_range )
 				{
+					
+					$page = $xml->createElement( "page", $page_number );
+						
 					if ( $current_page == $page_number )
-					{
-						$page = $xml->createElement( "page", $page_number );
+					{	
 						$page->setAttribute( "here", "true" );
-						$xml->documentElement->appendChild( $page );
 					} 
-					else
-					{
-						$page = $xml->createElement( "page", $page_number );
-						
-						$params = $this->currentParams();
-						$params["start"] = $base_record;
-						
-						$link = $this->request->url_for( $params );
-						
-						$page->setAttribute( "link", Parser::escapeXml( $link ) );
-						$xml->documentElement->appendChild( $page );
-					}
+
+					$params = $this->currentParams();
+					$params["start"] = $base_record;
+					
+					$link = $this->request->url_for( $params );
+					
+					$page->setAttribute( "link", Parser::escapeXml( $link ) );
+					$xml->documentElement->appendChild( $page );
 				}
 				
 				$page_number++;
