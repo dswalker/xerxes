@@ -70,6 +70,12 @@ abstract class SearchController extends ActionController
 	 * @var string
 	 */
 	protected $sort;
+
+	/**
+	 * inlcude facets
+	 * @var bool
+	 */
+	protected $include_facets = true;	
 	
 	/**
 	 * (non-PHPdoc)
@@ -78,6 +84,8 @@ abstract class SearchController extends ActionController
 	
 	protected function init()
 	{
+		// search objects
+		
 		$this->engine = $this->getEngine();
 		
 		$this->config = $this->engine->getConfig();
@@ -87,10 +95,21 @@ abstract class SearchController extends ActionController
 		$this->query = $this->engine->getQuery($this->request);
 		
 		$this->helper = new SearchHelper($this->event, $this->id, $this->engine);
+
+		// defaults
 		
-		// disable caching @todo figure out how to cache more
+		$this->max = $this->registry->getConfig("RECORDS_PER_PAGE", false, 10);
+		$this->max = $this->config->getConfig("RECORDS_PER_PAGE", false, $this->max);
 		
-		$this->response->cache = false;
+		$this->max_allowed = $this->registry->getConfig("MAX_RECORDS_PER_PAGE", false, 30);
+		$this->max_allowed = $this->config->getConfig("MAX_RECORDS_PER_PAGE", false, $this->max_allowed);
+		
+		$this->sort = $this->registry->getConfig("SORT_ORDER", false, "relevance");
+		$this->sort = $this->config->getConfig("SORT_ORDER", false, $this->sort);		
+		
+		// disable caching
+		
+		$this->response->cache = false; // @todo figure out how to cache more
 	}
 	
 	/**
@@ -201,22 +220,12 @@ abstract class SearchController extends ActionController
 	
 	public function resultsAction()
 	{
-		// defaults
-		
-		$this->max = $this->registry->getConfig("RECORDS_PER_PAGE", false, 10);
-		$this->max = $this->config->getConfig("RECORDS_PER_PAGE", false, $this->max);
-		
-		$this->max_allowed = $this->registry->getConfig("MAX_RECORDS_PER_PAGE", false, 30);
-		$this->max_allowed = $this->config->getConfig("MAX_RECORDS_PER_PAGE", false, $this->max_allowed);
-		
-		$this->sort = $this->registry->getConfig("SORT_ORDER", false, "relevance");
-		$this->sort = $this->config->getConfig("SORT_ORDER", false, $this->sort);
-		
 		// params
 		
 		$start = $this->request->getParam('start', 1);
 		$max = $this->request->getParam('max', $this->max);
 		$sort = $this->request->getParam('sort', $this->sort);
+		$include_facets = $this->request->getParam('include_facets', $this->include_facets);
 		
 		// swap for internal
 		
@@ -238,7 +247,7 @@ abstract class SearchController extends ActionController
 
 		// search
 		
-		$results = $this->engine->searchRetrieve($this->query, $start, $max, $internal_sort);
+		$results = $this->engine->searchRetrieve($this->query, $start, $max, $internal_sort, $include_facets);
 		
 		// total
 		
