@@ -91,15 +91,16 @@ abstract class Engine
 	/**
 	 * Search and return results
 	 * 
-	 * @param Query $search		search object
-	 * @param int $start							[optional] starting record number
-	 * @param int $max								[optional] max records
-	 * @param string $sort							[optional] sort order
+	 * @param Query $search  search object
+	 * @param int $start     [optional] starting record number
+	 * @param int $max       [optional] max records
+	 * @param string $sort   [optional] sort order
+	 * @param bool $facets   [optional] whether to include facets
 	 * 
 	 * @return Results
 	 */	
 	
-	abstract public function searchRetrieve( Query $search, $start = 1, $max = 10, $sort = "" );
+	abstract public function searchRetrieve( Query $search, $start = 1, $max = 10, $sort = "", $facets = true );
 	
 	/**
 	 * Return an individual record
@@ -159,8 +160,8 @@ abstract class Engine
 	/**
 	 * Check for previously cached results
 	 * 
-	 * @param string|Query $query
-	 * @return null|ResultSet     null if no previously cached results
+	 * @param string|Query $query  the search query
+	 * @return null|ResultSet      null if no previously cached results
 	 */
 	
 	public function getCachedResults($query)
@@ -202,6 +203,7 @@ abstract class Engine
 	 * calculate query identifier
 	 * 
 	 * @param string|Query $query
+	 * @return string
 	 */
 	
 	protected function getResultsID($query)

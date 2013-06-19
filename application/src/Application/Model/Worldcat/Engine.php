@@ -124,15 +124,16 @@ class Engine extends Search\Engine
 	/**
 	 * Search and return results
 	 * 
-	 * @param Query $search		search object
-	 * @param int $start							[optional] starting record number
-	 * @param int $max								[optional] max records
-	 * @param string $sort							[optional] sort order
+	 * @param Query $search  search object
+	 * @param int $start     [optional] starting record number
+	 * @param int $max       [optional] max records
+	 * @param string $sort   [optional] sort order
+	 * @param bool $facets   [optional] whether to include facets
 	 * 
 	 * @return Results
 	 */	
 	
-	public function searchRetrieve( Search\Query $search, $start = 1, $max = 10, $sort = "")
+	public function searchRetrieve( Search\Query $search, $start = 1, $max = 10, $sort = "", $facets = true)
 	{
 		return $this->doSearch( $search, $start, $max, $sort);
 	}	
