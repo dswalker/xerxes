@@ -187,6 +187,7 @@
 	<xsl:template name="surround_meta">
 			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 			<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 			<xsl:copy-of select="$text_extra_meta_tags" />
 	</xsl:template>
 	
@@ -501,8 +502,6 @@
 				
 		<xsl:choose>
 			<xsl:when test="$is_mobile = '1'">
-
-				<meta name="viewport" content="width=device-width, initial-scale=1" /> 
 				
 				<link rel="stylesheet" href="//code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.css" />
 				<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" type="text/javascript" ></script>	
