@@ -22,7 +22,7 @@ class WorldcatController extends SearchController
 	{
 		parent::init();
 	
-		$this->helper = new SearchHelper($e, $this->id, $this->engine);
+		$this->helper = new SearchHelper($this->event, $this->id, $this->engine);
 	}	
 	
 	protected function getEngine()

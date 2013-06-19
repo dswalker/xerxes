@@ -12,7 +12,7 @@
 namespace Xerxes;
 
 use Xerxes\Utility\Parser;
-use Zend\Http\Client;
+use Xerxes\Utility\HttpClient as Client;
 
 /**
  * Search and retrieve records from worldcat api
@@ -255,17 +255,14 @@ class Worldcat
 	
 	protected function fetchResults($url)
 	{
-		$this->client->setUri($url);
-		$response = $this->client->send();
+		$response = $this->client->getUrl($url);
 		
-		if ( $response->isClientError() || $response->getBody() == "")
+		if ( $response == "")
 		{
 			throw new \Exception( "Could not connect to WorldCat database." );
 		}
-		else
-		{
-			return $response->getBody();
-		}
+		
+		return $response;
 	}
 	
 	/**
