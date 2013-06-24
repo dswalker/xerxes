@@ -457,9 +457,10 @@
 		<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js" type="text/javascript" ></script>
 		
 		<script src="{$base_include}/javascript/bootstrap-select.min.js?version={$asset_version}"  type="text/javascript"></script>
-		<script src="{$base_include}/javascript/results.js?version={$asset_version}"  type="text/javascript"></script>
 		
 		<xsl:call-template name="module_javascript" />
+		
+		<script src="{$base_include}/javascript/results.js?version={$asset_version}"  type="text/javascript"></script>
 
 	</xsl:template>
 		
