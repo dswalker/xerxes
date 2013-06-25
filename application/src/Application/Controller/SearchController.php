@@ -451,7 +451,7 @@ abstract class SearchController extends ActionController
 		{
 			// get record
 			
-			$record = $this->engine->getRecord($original_id)->getRecord(0)->getXerxesRecord();
+			$record = $this->engine->getRecordForSave($original_id)->getRecord(0)->getXerxesRecord();
 			
 			// save it
 			
