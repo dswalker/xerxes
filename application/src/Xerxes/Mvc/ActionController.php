@@ -76,13 +76,16 @@ abstract class ActionController
 		
 		// controller id
 		
-		$this->id = get_class($this); // always returns the child class name
-		
-		$parts = explode('\\', $this->id); // break out the namespace
-		$this->id = array_pop($parts); // get just the class name
-		
-		$this->id = str_replace('Controller~', '', $this->id . '~'); // remove last occurance of Controller
-		$this->id = strtolower($this->id); // and lowercase it
+		if ( $this->id == "") // if not already set by child class
+		{
+			$this->id = get_class($this); // always returns the child class name
+			
+			$parts = explode('\\', $this->id); // break out the namespace
+			$this->id = array_pop($parts); // get just the class name
+			
+			$this->id = str_replace('Controller~', '', $this->id . '~'); // remove last occurance of Controller
+			$this->id = strtolower($this->id); // and lowercase it
+		}
 	}
 	
 	/**
