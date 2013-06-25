@@ -530,23 +530,22 @@ class SavedRecords extends DataMap
 	}	
 	
 	/**
-	 * Add a record to the user's saved record space. $objXerxesRecord will be
-	 * updated with internal db id and original id.. 
+	 * Add a record to the user's saved record space.
 	 *
-	 * @param string $username					username to save the record under
-	 * @param string $source					name of the source database
-	 * @param string $id						identifier for the record
-	 * @param Xerxes_Record $objXerxesRecord	xerxes record object to save
+	 * @param string $username       username to save the record under
+	 * @param string $source         name of the source database
+	 * @param string $id             identifier for the record
+	 * @param Record $xerxes_record	 xerxes record object to save
 	 * @return int  inserted id
 	 */
 	
-	public function addRecord($username, $source, $id, Record $objXerxesRecord)
+	public function addRecord($username, $source, $id, Record $xerxes_record)
 	{
-		$arrValues = array ( );
+		$arrValues = array();
 		
-		$iYear = ( int ) $objXerxesRecord->getYear();
-		$strTitle = $objXerxesRecord->getMainTitle();
-		$strSubTitle = $objXerxesRecord->getSubTitle();
+		$iYear = ( int ) $xerxes_record->getYear();
+		$strTitle = $xerxes_record->getMainTitle();
+		$strSubTitle = $xerxes_record->getSubTitle();
 		
 		if ( $strSubTitle != "" ) $strTitle .= ": " . $strSubTitle;
 			
@@ -559,12 +558,12 @@ class SavedRecords extends DataMap
 		$arrValues[":original_id"] = $id;
 		$arrValues[":timestamp"] = date( "Y-m-d H:i:s" );
 		$arrValues[":username"] = $username;
-		$arrValues[":nonsort"] = $objXerxesRecord->getNonSort();
+		$arrValues[":nonsort"] = $xerxes_record->getNonSort();
 		$arrValues[":title"] = substr($strTitle, 0, 90);
-		$arrValues[":author"] = $objXerxesRecord->getPrimaryAuthor( true );
+		$arrValues[":author"] = $xerxes_record->getPrimaryAuthor( true );
 		$arrValues[":year"] = $iYear;
-		$arrValues[":format"] = $objXerxesRecord->format()->getInternalFormat();
-		$arrValues[":marc"] = serialize($objXerxesRecord);		
+		$arrValues[":format"] = $xerxes_record->format()->getInternalFormat();
+		$arrValues[":marc"] = serialize($xerxes_record);		
 		$arrValues[":record_type"] = "xerxes_record";
 		
 		return $this->insert( $strSQL, $arrValues, true );
