@@ -129,6 +129,11 @@ class Query extends Search\Query
 	
 	private function keyValue(Search\QueryTerm $term, $neg = false)
 	{
+		if ( $term->field_internal == 'undefined' )
+		{
+			$term->field_internal = 'kw'; // @todo figure out why this hack is necessary on combined
+		}
+		
 		if ( $term->phrase == "" )
 		{
 			return "";
