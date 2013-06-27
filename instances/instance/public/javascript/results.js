@@ -136,9 +136,14 @@ function showHitCounts()
 				controller = arrElements[1];
 				source = arrElements[2];
 									
-				var url = controller + "/hits?&query=" + query + "&field=" + field;
+				var url = controller + "/hits?&query=" + query;
 				
-				if ( source != '' )
+				if ( field != '' && field != undefined )
+				{
+					url += "&field=" + field;
+				}
+				
+				if ( source != '' && source != undefined )
 				{
 					url += "&source=" +  source;
 				}
