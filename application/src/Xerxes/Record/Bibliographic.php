@@ -67,8 +67,7 @@ class Bibliographic extends Record
 	{
 		$this->marc = $marc;
 		
-		$this->map();
-		$this->cleanup();		
+		parent::loadXML($marc->getMarcXML());		
 	}
 	
 	/**
