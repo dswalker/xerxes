@@ -11,6 +11,10 @@
 
 namespace Application\Controller;
 
+use Application\Model\Solr\Config;
+
+use Xerxes\Google\Appliance;
+
 use Xerxes\Mvc\ActionController;
 
 class CombinedController extends ActionController
@@ -72,5 +76,19 @@ class CombinedController extends ActionController
 		$this->response->setView('combined/partial.xsl');
 		
 		return $this->response;
+	}
+	
+	public function googleAction()
+	{
+		$config = Config::getInstance();
+		$this->response->setVariable('config_local', $config->toXML());
+		
+		$query = $this->request->getParam('query');
+		
+		$google = new Appliance();
+		$results = $google->search("$query site:libraryguides.fullerton.edu OR site:library.fullerton.edu", 3);
+		
+		$this->response->setVariable('results', $results);
+		$this->response->setView('combined/results.xsl');
 	}
 }

@@ -11,15 +11,10 @@
 
 namespace Xerxes\Google;
 
-use Zend\Http\Client;
-
 /**
  * Search and retrieve records Google search appliance
  *
- * based on code written by Scott Jungling <sjungling@csuchico.edu>
- *
  * @author David Walker <dwalker@calstate.edu> 
- *
  */
 
 class Appliance 
@@ -27,25 +22,61 @@ class Appliance
 	private $url = "";
 	private $parameters = array();
 	
-	function __construct($host = "google.calstate.edu", $client = "csuchico-edu", $site = "csuchico")
+	function __construct($host = "google.calstate.edu")
 	{
-		$this->parameters = array(
-			"client" => $client, 
-			"site" => $site, 
-			"output" => 'xml', 
-			"oe" => 'UTF-8'
-			);
-		
 		$this->url = "http://$host/search?";
 	}
 	
-	function search($query)
+	function search($query, $limit = 10, $site = "")
 	{
+		$final = array();
+		
+		if ( $site != "")
+		{
+			$query = "$query site:$site";
+		}
+		
 		$this->url .= "&q=" . urlencode($query);
 		
-		$xml = new \DomDocument();
-		$xml->load( $this->url );
+		// this seems to send a header or something that in itself
+		// causes the google appliance to return as xml?  weird
 		
-		return $xml;		
+		$xml = simplexml_load_file($this->url);
+		
+		$x = 0;
+		
+		$results = $xml->xpath("//RES/R");
+		
+		if ( $results !== false)
+		{
+			foreach ( $results as $result )
+			{
+				if ( $x >= $limit )
+				{
+					break;
+				}
+				
+				$record = new Record();
+				
+				$record->mime_type = (string) $result["MIME"];
+				$record->url = (string) $result->U;
+				$record->title = strip_tags((string) $result->T);
+				$record->snippet = strip_tags((string) $result->S);
+				
+				$final[] = $record;
+				
+				$x++;
+			}
+		}
+		
+		return $final;		
 	}
+}
+
+class Record 
+{
+	public $mime_type;
+	public $url;
+	public $title;
+	public $snippet;
 }
