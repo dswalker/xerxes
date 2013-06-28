@@ -26,6 +26,12 @@ use Xerxes\Mvc\Request;
 use Xerxes\Utility\Registry;
 use Xerxes\Mvc\MvcEvent;
 
+/**
+ * View helper for search results
+ *
+ * @author David Walker <dwalker@calstate.edu>
+ */
+
 class Search
 {
 	/**
