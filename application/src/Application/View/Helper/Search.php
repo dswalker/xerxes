@@ -579,27 +579,18 @@ class Search
 				    	
 				   	$params = $this->request->getParams();
 				   	$params['start'] = null;
-				    	
-				   	$this->request->setSessionData("url-$id", $this->request->url_for($params));
-				    	
 				}
 				
-				// url
-				
-				$url = $this->request->getSessionData("url-$id"); // already cached, so use it
+				// create url based on the search terms only!
 
-				if ( $url == null ) // create one based on the search terms only!
-				{
-					$params = $query->extractSearchParams();
+				$params = $query->extractSearchParams();
 					
-					$params['controller'] = $controller_map->getUrlAlias((string) $option["id"]);
-					$params['action'] = "results";
-					$params['source'] = (string) $option["source"];
-					$params['sort'] = $this->request->getParam('sort');
+				$params['controller'] = $controller_map->getUrlAlias((string) $option["id"]);
+				$params['action'] = "results";
+				$params['source'] = (string) $option["source"];
+				$params['sort'] = $this->request->getParam('sort');
 					
-					$url = $this->request->url_for($params);
-				}
-				
+				$url = $this->request->url_for($params);
 				$option->addAttribute('url', $url);
 				
 				// cached search hit count?
