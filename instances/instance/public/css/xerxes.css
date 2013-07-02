@@ -62,6 +62,7 @@ a:hover {
 #bd {
 	padding-left: 2em;
 	padding-right: 2em;
+	padding-bottom: 5em;
 }
 
 #bd dt, #bd dd {
