@@ -52,67 +52,75 @@
 
 <xsl:template name="search_recommendations">
 
-	<xsl:if test="results/database_recommendations and not(//request/start) and //config/show_database_recommendations = 'true'">
+	<xsl:if test="not(//request/start)">
 	
-		<div class="results-database-recommendations">
-		
-			<h2>
-				<xsl:text>We found a </xsl:text>
+		<xsl:if test="results/database_recommendations  and //config/show_database_recommendations = 'true'">
+	
+			<div class="results-database-recommendations">
 			
-				<xsl:choose>
-					<xsl:when test="count(results/database_recommendations/database_recommendation) &gt; 1">
-						couple of specialized databases
-					</xsl:when>
-					<xsl:otherwise>
-						specialized database
-					</xsl:otherwise>
-				</xsl:choose>
+				<h2>
+					<xsl:text>We found a </xsl:text>
 				
-				<xsl:text> that might help you.</xsl:text>
+					<xsl:choose>
+						<xsl:when test="count(results/database_recommendations/database_recommendation) &gt; 1">
+							couple of specialized databases
+						</xsl:when>
+						<xsl:otherwise>
+							specialized database
+						</xsl:otherwise>
+					</xsl:choose>
+					
+					<xsl:text> that might help you.</xsl:text>
 				</h2>
-	
-			<ul>
 		
-			<xsl:for-each select="results/database_recommendations/database_recommendation">
-				
-				<li>
-					<a href="{link}"><xsl:value-of select="title" /></a>
-					
-					<!--
-					<xsl:if test="description">
-					 	
-						<xsl:value-of select="description" />
-					 </xsl:if>
-					 -->
-				</li>
-				
-			</xsl:for-each>	
+				<ul>
 			
-			</ul>
-			
-			<xsl:for-each select="results/best_bets/best_bet">
-				
-				<div class="results-bestbet">
-				
-					<h2><xsl:value-of select="title" /></h2>
+				<xsl:for-each select="results/database_recommendations/database_recommendation">
 					
-					<div class="description">
-					
+					<li>
+						<a href="{link}"><xsl:value-of select="title" /></a>
+						
 						<xsl:if test="description">
-							<xsl:value-of disable-output-escaping="yes" select="description" />
-						</xsl:if>
+							
+							<p><xsl:value-of select="description" /></p>
 						
-						<xsl:if test="link">
-							[ <a href="{link}">More info</a> ]
-						</xsl:if>
-						
-					</div>
+						 </xsl:if>
+	
+					</li>
+					
+				</xsl:for-each>	
 				
-				</div>
+				</ul>
 				
-			</xsl:for-each>				
+			</div>
 			
-		</div>
+		</xsl:if>
+		
+		<xsl:if test="results/best_bets and not(//config/best_bets = 'false')">
+		
+			<div class="results-database-recommendations">
+			
+				<xsl:for-each select="results/best_bets/best_bet">
+					
+					<div class="results-bestbet">
+					
+						<h2><a href="{link}"><xsl:value-of select="title" /></a></h2>
+						
+						<div class="description">
+						
+							<xsl:if test="description">
+								<xsl:value-of disable-output-escaping="yes" select="description" />
+							</xsl:if>
+							
+						</div>
+					
+					</div>
+					
+				</xsl:for-each>
+				
+			</div>
+			
+		</xsl:if>
 		
 	</xsl:if>
 	
@@ -139,9 +147,7 @@
 	</xsl:variable>
 
 	<xsl:variable name="newspapers">
-		<xsl:if test="//request/*[@original_key = 'facet.newspapers'] = 'true'">
-			<xsl:text>true</xsl:text>
-		</xsl:if>
+		<xsl:value-of select="//request/*[@original_key = 'facet.newspapers']" />
 	</xsl:variable>
 	
 	<xsl:variable name="holdings">
@@ -213,6 +219,22 @@
 					</input>
 					<xsl:text> </xsl:text>
 					<label for="facet-0-3">Add newspaper articles</label>
+				
+				</li>
+				
+			</xsl:if>
+
+			<xsl:if test="//config/newspapers_optional = 'exclude'">
+	
+				<li class="facet-selection">
+				
+					<input type="checkbox" id="facet-0-3" class="facet-selection-option facet-0" name="facet.newspapers" value="false">
+						<xsl:if test="$newspapers = 'false'">
+							<xsl:attribute name="checked">checked</xsl:attribute>
+						</xsl:if>
+					</input>
+					<xsl:text> </xsl:text>
+					<label for="facet-0-3">Exclude newspaper articles</label>
 				
 				</li>
 				
