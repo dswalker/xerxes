@@ -96,7 +96,7 @@ class FolderController extends SearchController
 		// user is not logged in, and has no temporary saved records, so nothing to show here;
 		// force them to login
 		
-		if ( ! $this->request->getUser()->isAuthenticated() && $total == 0 )
+		if ( ! $this->request->getUser()->isAuthenticated() && $total == 0 && $this->request->getSessionData('folder_visited') == null )
 		{
 			// link back here, but minus any username
 			
@@ -112,6 +112,8 @@ class FolderController extends SearchController
 			
 			return $this->redirectTo($params); // redirect them out
 		}
+		
+		$this->request->setSessionData('folder_visited', true);
 		
 		return parent::resultsAction();
 	}
