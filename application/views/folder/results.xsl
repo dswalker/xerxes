@@ -92,7 +92,7 @@
 		<h1><xsl:call-template name="folder_header_label" /></h1>
 		
 		<xsl:if test="request/session/role = 'local'">
-			<p class="temporary_login_note"><xsl:copy-of select="$text_folder_login_temp" /></p>
+			<p class="temporary-login-note"><xsl:copy-of select="$text_folder_login_temp" /></p>
 		</xsl:if>	
 	
 	</xsl:template>
@@ -215,26 +215,30 @@
 	
 	<xsl:template name="folder_tag_group_assign">
 	
-		<div class="assign">
+		<xsl:if test="//request/role = 'named'">
+	
+			<div class="assign">
+				
+				Add label to records: 
+				
+				<input type="text" name="tag" data-provide="typeahead" autocomplete="off">
+					<xsl:attribute name="data-source">				
+						<xsl:text>[</xsl:text>
+						<xsl:for-each select="//facets/groups/group[name='label']/facets/facet">
+							<xsl:text>"</xsl:text><xsl:value-of select="name"  /><xsl:text>"</xsl:text>
+							<xsl:if test="following-sibling::facet">
+								<xsl:text>,</xsl:text>
+							</xsl:if>
+						</xsl:for-each>
+						<xsl:text>]</xsl:text>
+					</xsl:attribute>
+				</input>
+				
+				<button type="submit" class="btn btn-primary output-export" name="action" value="label">Add</button>
+				
+			</div>
 			
-			Add label to records: 
-			
-			<input type="text" name="tag" data-provide="typeahead" autocomplete="off">
-				<xsl:attribute name="data-source">				
-					<xsl:text>[</xsl:text>
-					<xsl:for-each select="//facets/groups/group[name='label']/facets/facet">
-						<xsl:text>"</xsl:text><xsl:value-of select="name"  /><xsl:text>"</xsl:text>
-						<xsl:if test="following-sibling::facet">
-							<xsl:text>,</xsl:text>
-						</xsl:if>
-					</xsl:for-each>
-					<xsl:text>]</xsl:text>
-				</xsl:attribute>
-			</input>
-			
-			<button type="submit" class="btn btn-primary output-export" name="action" value="label">Add</button>
-			
-		</div>
+		</xsl:if>
 				
 	</xsl:template>
 
@@ -338,9 +342,7 @@
 		<xsl:if test="//facets/groups">
 		
 			<div class="box">
-				
-				<h2>Limit your saved records</h2>
-			
+							
 				<xsl:call-template name="facet_narrow_results" />
 				
 				<xsl:for-each select="//facets/groups/group[not(display)]">
