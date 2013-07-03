@@ -128,6 +128,33 @@
 			
 		</xsl:if>
 	
+		<xsl:call-template name="surround_main">
+			<xsl:with-param name="surround_template"><xsl:value-of select="$surround_template" /></xsl:with-param>
+			<xsl:with-param name="sidebar"><xsl:value-of select="$sidebar" /></xsl:with-param>
+		</xsl:call-template>
+		
+		<xsl:if test="$is_mobile = 0">
+			<xsl:call-template name="surround_bottom" />
+		</xsl:if>
+
+		<!-- javascript: only when not ada or mobile -->
+		<xsl:if test="not(request/session/ada) and $is_mobile = 0">
+			<xsl:call-template name="javascript_include" />
+		</xsl:if>
+		
+		</body>
+		</html>
+		
+	</xsl:template>
+
+	<!-- 
+		TEMPLATE: surround main
+	-->
+	
+	<xsl:template name="surround_main">
+		<xsl:param name="surround_template"><xsl:value-of select="//config/template" /></xsl:param>
+		<xsl:param name="sidebar" />
+	
 		<div data-role="page" id="{//config/document}" class="{$surround_template}">
 	
 			<!-- The main content is split into subtemplates to make customiztion of parts easier -->
@@ -140,18 +167,8 @@
 	
 			<xsl:call-template name="surround_ft" />
 	
-		</div>
-		
-		<xsl:call-template name="surround_bottom" />
-
-		<!-- javascript: only when not ada or mobile -->
-		<xsl:if test="not(request/session/ada) and $is_mobile = 0">
-			<xsl:call-template name="javascript_include" />
-		</xsl:if>
-		
-		</body>
-		</html>
-		
+		</div>	
+	
 	</xsl:template>
 
 	<!-- 
@@ -183,6 +200,10 @@
 		<xsl:call-template name="surround_google_analytics" />
 		</head>
 	</xsl:template>
+
+	<!-- 
+		TEMPLATE: surround main
+	-->
 	
 	<xsl:template name="surround_meta">
 			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
