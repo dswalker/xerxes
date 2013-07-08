@@ -11,7 +11,7 @@
 body {
 	font-family: Arial, Helvetica, sans-serif;
 	height: 100%;
-	font-size: 12px;
+	font-size: 13px;
 	line-height: normal;
 }
 
@@ -22,13 +22,13 @@ h1, h2, h3, h4 {
 }
 
 h1 { 
-	font-size: 200%;
+	font-size: 180%;
 	line-height: inherit;
 	margin-bottom: 1em;
 }
 
 h2 { 
-	font-size: 150%;
+	font-size: 140%;
 }
 
 h3 { 
