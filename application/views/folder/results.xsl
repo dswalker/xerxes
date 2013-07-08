@@ -249,7 +249,7 @@
 	
 	<xsl:template name="folder_delete">
 
-		<button type="submit" class="btn" name="action" value="delete">
+		<button id="folder-delete" type="submit" class="btn" name="action" value="delete">
 			<i class="icon-trash"></i><xsl:text> </xsl:text>Delete
 		</button>
 			

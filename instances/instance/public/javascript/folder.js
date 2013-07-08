@@ -1,4 +1,5 @@
 $(document).ready(addSelectAll);
+$(document).ready(addDeleteConfirm);
 $(document).ready(function(){ $("[rel='tooltip']").tooltip(); });
 
 
@@ -14,5 +15,13 @@ function addSelectAll()
 			$(".folder-output-checkbox").prop("checked", false);
 		}
 		return true;
+	});
+}
+
+function addDeleteConfirm()
+{
+	$('#folder-delete').click(function()
+	{
+  		return confirm("Delete these records?");
 	});
 }
