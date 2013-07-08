@@ -81,8 +81,11 @@ class FrontController
 		}
 		catch ( \Exception $e )
 		{
-			header("Content-type: text/plain");
-			throw $e; exit; // @todo: catch errors
+			$controller = $event->controller_map->getControllerObject('error', $event);
+			$response = $controller->displayError($e);
+			
+			$response->render($event->request->getParam('format', 'html'));
+			$response->send();
 		}		
 	}
 }
