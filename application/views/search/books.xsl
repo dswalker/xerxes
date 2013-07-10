@@ -35,18 +35,24 @@
 	
 	<!-- 
 		TEMPLATE: MODULE HEADER
-		add the book css and javascript to the header
+		add the book css to the header
 	-->	
 	
 	<xsl:template name="module_header">
 	
 		<xsl:if test="$is_mobile = 0">
-	
 			<link href="{$base_include}/css/books.css?version={$asset_version}" rel="stylesheet" type="text/css" />
-			<script src="{$base_include}/javascript/sms.js?version={$asset_version}"  type="text/javascript"></script>
-			
 		</xsl:if>
 		
+	</xsl:template>
+
+	<!-- 
+		TEMPLATE: MODULE JAVASCRIPT
+		add the book javascript to the footer
+	-->	
+	
+	<xsl:template name="module_javascript">
+		<script src="{$base_include}/javascript/sms.js?version={$asset_version}"  type="text/javascript"></script>	
 	</xsl:template>
 
 	<!-- 
