@@ -149,9 +149,14 @@ class FolderController extends SearchController
 		{
 			$datamap->deleteTag($username, $tag, $id_array);
 		}
-		else // assign tag
+		else // assign tag(s)
 		{
-			$datamap->addTag($username, $tag, $id_array);
+			$tags = explode(',', $tag);
+			
+			foreach ( $tags as $tag_add )
+			{
+				$datamap->addTag($username, trim($tag_add), $id_array);
+			}
 		}
 		
 		// redirect out with message
