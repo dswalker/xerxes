@@ -39,7 +39,15 @@ class ErrorController extends ActionController
     	}
     	
     	$this->response->setVariable('error', $error);
-    	$this->response->setView('error/index.xsl');
+    	
+    	if ( $this->request->isXmlHttpRequest() )
+    	{
+    		$this->response->setView('error/ajax.xsl');
+    	}
+    	else
+    	{
+	    	$this->response->setView('error/index.xsl');
+    	}
     	
     	return $this->response;
     }
