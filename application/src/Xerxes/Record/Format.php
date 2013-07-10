@@ -398,6 +398,24 @@ class Format
 	}
 	
 	/**
+	 * Return a human readable form of the normalized name
+	 */
+	
+	public function getReadableNormalizedFormat()
+	{
+		$public = $this->getReadableConstName($this->normalized);
+		
+		if ( $public != null )
+		{
+			return $public;
+		}
+		else
+		{
+			return $this->public;
+		}
+	}
+	
+	/**
 	 * Get public displayed format designation
 	 * 
 	 * @return string

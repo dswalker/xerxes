@@ -11,9 +11,8 @@
 
 namespace Xerxes;
 
-use Xerxes\Record\Bibliographic\LinkedItem;
-
 use Xerxes\Record\Author;
+use Xerxes\Record\Bibliographic\LinkedItem;
 use Xerxes\Record\Format;
 use Xerxes\Utility\Languages;
 use Xerxes\Utility\Parser;
@@ -1628,9 +1627,9 @@ class Record
 	}
 	
 	/**
-	 * Place of publication
+	 * Format
 	 *
-	 * @return string
+	 * @return Format
 	 */	
 	
 	public function format()
