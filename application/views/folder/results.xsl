@@ -215,7 +215,7 @@
 	
 	<xsl:template name="folder_tag_group_assign">
 	
-		<xsl:if test="//request/role = 'named'">
+		<xsl:if test="//request/session/role = 'named'">
 	
 			<div class="assign">
 				
