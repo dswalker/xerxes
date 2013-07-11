@@ -561,7 +561,7 @@ class Engine extends Search\Engine
 	}	
 	
 	/**
-	 * Return the Solr search query object
+	 * Return the Summon search query object
 	 *
 	 * @return Query
 	 */

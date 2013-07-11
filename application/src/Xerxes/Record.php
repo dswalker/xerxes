@@ -14,6 +14,7 @@ namespace Xerxes;
 use Xerxes\Record\Author;
 use Xerxes\Record\Bibliographic\LinkedItem;
 use Xerxes\Record\Format;
+use Xerxes\Record\Link;
 use Xerxes\Utility\Languages;
 use Xerxes\Utility\Parser;
 
@@ -1356,7 +1357,7 @@ class Record
 	 * Links associated with this item
 	 *
 	 * @param bool $bolFullText		true = resrtict to full-text links only
-	 * @return string
+	 * @return Link[]
 	 */	
 	
 	public function getLinks($bolFullText = false)
