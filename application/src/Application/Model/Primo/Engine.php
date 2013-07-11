@@ -31,7 +31,7 @@ class Engine extends Search\Engine
 	protected $url; // track the url
 
 	/**
-	 * Constructor
+	 * New Primo Search Engine
 	 */
 	
 	public function __construct( $on_campus = true, $scope = "" )
@@ -64,23 +64,6 @@ class Engine extends Search\Engine
 	}
 	
 	/**
-	 * Return the total number of hits for the search
-	 * 
-	 * @return int
-	 */	
-	
-	public function getHits( Search\Query $search )
-	{
-		// get the results, just the hit count
-		
-		$results = $this->doSearch($search, 1, 1, null);
-		
-		// return total
-		
-		return $results->getTotal();
-	}
-
-	/**
 	 * Search and return results
 	 * 
 	 * @param Query $search  search object
@@ -96,7 +79,7 @@ class Engine extends Search\Engine
 	{
 		// get the results
 		
-		$results = $this->doSearch($search, $start, $max, $sort);
+		$results = parent::searchRetrieve( $search, $start, $max, $sort, $facets);
 		
 		// enhance
 		
@@ -115,7 +98,7 @@ class Engine extends Search\Engine
 	
 	public function getRecord( $id )
 	{
-		$results = $this->doGetRecord($id);
+		$results = parent::getRecord($id);
 		
 		// enhance
 		
@@ -127,20 +110,6 @@ class Engine extends Search\Engine
 	}
 
 	/**
-	 * Get record to save
-	 * 
-	 * @param string	record identifier
-	 * @return int		internal saved id
-	 */	
-	
-	public function getRecordForSave( $id )
-	{
-		return $this->doGetRecord($id);
-	}
-	
-	/**
-	 * Return the search engine config
-	 * 
 	 * @return Config
 	 */			
 	
@@ -163,17 +132,18 @@ class Engine extends Search\Engine
 	}
 
 	/**
-	 * Do the actual search
-	 * 
-	 * @param mixed $search							string or Query, the search query
-	 * @param int $start							[optional] starting record number
-	 * @param int $max								[optional] max records
-	 * @param string $sort							[optional] sort order
-	 * 
+	 * Do the actual search and return results
+	 *
+	 * @param Query $search  search object
+	 * @param int $start     [optional] starting record number
+	 * @param int $max       [optional] max records
+	 * @param string $sort   [optional] sort order
+	 * @param bool $facets   [optional] whether to include facets
+	 *
 	 * @return Results
 	 */
 
-	protected function doSearch( $search, $start = 1, $max = 10, $sort = "" )
+	protected function doSearch( Search\Query $search, $start = 1, $max = 10, $sort = "", $facets = true )
 	{
 		// parse the query
 		
@@ -443,5 +413,33 @@ class Engine extends Search\Engine
 		}
 		
 		return $facets;
+	}
+
+	/**
+	 * @return Config
+	 */
+	
+	public function getConfig()
+	{
+		return Config::getInstance();
+	}
+	
+	/**
+	 * Primo search query object
+	 *
+	 * @param Request $request
+	 * @return Query
+	 */
+	
+	public function getQuery(Request $request )
+	{
+		if ( $this->query instanceof Query )
+		{
+			return $this->query;
+		}
+		else
+		{
+			return new Query($request, $this->getConfig());
+		}
 	}
 }

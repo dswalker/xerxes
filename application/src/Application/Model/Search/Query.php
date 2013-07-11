@@ -25,6 +25,12 @@ use Xerxes\Mvc\Request;
 class Query
 {
 	/**
+	 * @var string
+	 */
+	
+	public $simple;
+	
+	/**
 	 * @var QueryTerm[]
 	 */
 	
@@ -298,6 +304,11 @@ class Query
 	
 	public function getUrlHash()
 	{
+		if ( ! $this->request instanceof Request )
+		{
+			throw new \Exception("No Request object set");
+		}
+		
 		return md5($this->request->getRequestUri());
 	}
 	

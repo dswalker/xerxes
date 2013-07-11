@@ -47,23 +47,6 @@ class Engine extends Search\Engine
 	}
 	
 	/**
-	 * Return the total number of hits for the search
-	 * 
-	 * @return int
-	 */	
-	
-	public function getHits( Search\Query $search )
-	{
-		// get the results
-		
-		$results = $this->doSearch( $search, 1, 0 );
-
-		// return total
-		
-		return $results->getTotal();
-	}
-
-	/**
 	 * Search and return results
 	 * 
 	 * @param Query $search  search object
@@ -77,15 +60,11 @@ class Engine extends Search\Engine
 	
 	public function searchRetrieve( Search\Query $search, $start = 1, $max = 10, $sort = "", $facets = true)
 	{
-		// cache
+		// get results
 		
-		$results = $this->getCachedResults($search);
+		$results = parent::searchRetrieve($search, $start, $max, $sort, $facets);
 		
-		if ( $results == null )
-		{
-			$results = $this->doSearch( $search, $start, $max, $sort);
-			$this->setCachedResults($results, $search);
-		}
+		// enhance
 		
 		if ( $this->config->getConfig('mark_fulltext_using_export', false, false ) )
 		{
@@ -106,7 +85,9 @@ class Engine extends Search\Engine
 	{
 		// get result
 		
-		$results = $this->doGetRecord( $id );
+		$results = parent::getRecord( $id );
+		
+		// enhance
 		
 		$results->getRecord(0)->addRecommendations(); // bx
 		
@@ -118,18 +99,6 @@ class Engine extends Search\Engine
 		return $results;
 	}
 
-	/**
-	 * Get record to save
-	 * 
-	 * @param string	record identifier
-	 * @return int		internal saved id
-	 */	
-	
-	public function getRecordForSave( $id )
-	{
-		return $this->doGetRecord($id);
-	}
-	
 	/**
 	 * Do the actual fetch of an individual record
 	 * 
@@ -157,17 +126,18 @@ class Engine extends Search\Engine
 	}		
 	
 	/**
-	 * Do the actual search
-	 * 
-	 * @param Query $search		search object
-	 * @param int $start							[optional] starting record number
-	 * @param int $max								[optional] max records
-	 * @param string $sort							[optional] sort order
-	 * 
+	 * Do the actual search and return results
+	 *
+	 * @param Query $search  search object
+	 * @param int $start     [optional] starting record number
+	 * @param int $max       [optional] max records
+	 * @param string $sort   [optional] sort order
+	 * @param bool $facets   [optional] whether to include facets
+	 *
 	 * @return Results
-	 */		
+	 */	
 	
-	protected function doSearch( Search\Query $search, $start = 1, $max = 10, $sort = "")
+	protected function doSearch( Search\Query $search, $start = 1, $max = 10, $sort = "", $facets = true)
 	{
 		// limit to local users?
 		
@@ -550,8 +520,6 @@ class Engine extends Search\Engine
 	}
 	
 	/**
-	 * Return the search engine config
-	 *
 	 * @return Config
 	 */
 	
@@ -563,6 +531,7 @@ class Engine extends Search\Engine
 	/**
 	 * Return the Summon search query object
 	 *
+	 * @param Request $request
 	 * @return Query
 	 */
 	

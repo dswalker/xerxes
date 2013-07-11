@@ -44,23 +44,6 @@ class Engine extends Search\Engine
 	}
 	
 	/**
-	 * Return the total number of hits for the search
-	 * 
-	 * @return int
-	 */	
-	
-	public function getHits( Search\Query $search )
-	{
-		// get the results, just the hit count, no facets
-		
-		$results = $this->doSearch($search, 0, 0, null, false);
-		
-		// return total
-		
-		return $results->getTotal();
-	}
-
-	/**
 	 * Search and return results
 	 * 
 	 * @param Query $search  search object
@@ -76,7 +59,7 @@ class Engine extends Search\Engine
 	{
 		// get the results
 		
-		$results = $this->doSearch($search, $start, $max, $sort, $facets);
+		$results = parent::searchRetrieve( $search, $start, $max, $sort, $facets);
 		
 		// find any holding we have cached
 		
@@ -96,7 +79,8 @@ class Engine extends Search\Engine
 	{
 		// get the record
 		
-		$results = $this->doGetRecord($id);
+		$results = parent::getRecord($id);
+		
 		$record = $results->getRecord(0);
 		
 		$record->fetchHoldings(); // item availability
@@ -106,58 +90,37 @@ class Engine extends Search\Engine
 	}
 	
 	/**
-	 * Get record to save
-	 * 
-	 * @param string	record identifier
-	 * @return int		internal saved id
-	 */	
-	
-	public function getRecordForSave( $id )
-	{
-		$results = $this->doGetRecord($id);
-		$record = $results->getRecord(0);
-		
-		$record->fetchHoldings(); // item availability
-		return $results;
-	}
-	
-	/**
 	 * Do the actual fetch of an individual record
 	 * 
-	 * @param string	record identifier
+	 * @param string  record identifier
 	 * @return Results
 	 */		
 	
 	protected function doGetRecord($id)
 	{
 		$id = str_replace(':', "\\:", $id);
-		$results = $this->doSearch("id:$id", 1, 1);
+		
+		$query = new Query();
+		$query->simple = "id:$id";
+		
+		$results = $this->doSearch($query, 1, 1);
 		return $results;
 	}
 	
 	/**
 	 * Do the actual search
 	 * 
-	 * @param string|Query $search					search object or string
-	 * @param int $start							[optional] starting record number
-	 * @param int $max								[optional] max records
-	 * @param string $sort							[optional] sort order
-	 * @param bool $include_facets					[optional] whether to include facets or not
+	 * @param Search\Query $search  search object or string
+	 * @param int $start            [optional] starting record number
+	 * @param int $max              [optional] max records
+	 * @param string $sort          [optional] sort order
+	 * @param bool $facets  [optional] whether to include facets or not
 	 * 
 	 * @return ResultSet
 	 */		
 	
-	protected function doSearch( $search, $start, $max = 10, $sort = null, $include_facets = true)
+	protected function doSearch( Search\Query $search, $start = 1, $max = 10, $sort = "", $facets = true)
 	{
-		// already cached
-		
-		$results = $this->getCachedResults($search);
-		
-		if ( $results instanceof Search\ResultSet )
-		{
-			return $results;
-		}
-		
 		// start
 		
 		if ( $start > 0)
@@ -165,32 +128,26 @@ class Engine extends Search\Engine
 			$start--; // solr is 0-based
 		}
 		
-		### parse the query
+		// parse the query
 		
-		$query = "";
+		$query = '';
 		
-		// passed in a query object, so handle this
-		
-		if ( $search instanceof Search\Query )
+		if ( $search->simple != "" )
+		{
+			$query = "&q=" . urlencode($search->simple);
+		}
+		else
 		{
 			$query = $search->toQuery();
 		}
 		
-		// was just a string, so just take it straight-up
-		
-		else
-		{
-			$query = "&q=" . urlencode($search);
-		}
-		
-		
-		### now the url
+		// now the url
 		
 		$this->url = $this->server . $query;
 
 		$this->url .= "&start=$start&rows=" . $max . "&sort=" . urlencode($sort);
 		
-		if ( $include_facets == true )
+		if ( $facets == true )
 		{
 			$this->url .= "&facet=true&facet.mincount=1";
 			
@@ -250,10 +207,6 @@ class Engine extends Search\Engine
 		// extract facets
 		
 		$results->setFacets($this->extractFacets($xml));
-		
-		// cache it for later
-		
-		$this->setCachedResults($results, $search);
 		
 		return $results;
 	}
@@ -364,8 +317,6 @@ class Engine extends Search\Engine
 	}
 	
 	/**
-	 * Return the search engine config
-	 *
 	 * @return Config
 	 */
 	
@@ -377,6 +328,7 @@ class Engine extends Search\Engine
 	/**
 	 * Return the Summon search query object
 	 *
+	 * @param Request $request
 	 * @return Query
 	 */
 	

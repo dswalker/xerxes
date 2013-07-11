@@ -39,31 +39,22 @@ class Engine extends Search\Engine
 	}
 
 	/**
-	 * Return the total number of saved records
-	 * 
-	 * @return int
-	 */		
-	
-	public function getHits( Search\Query $search )
-	{
-		return $this->doSearch( $search, 0, 0 ); 
-	}
-
-	/**
 	 * Search and return results
-	 * 
+	 *
 	 * @param Query $search  search object
 	 * @param int $start     [optional] starting record number
 	 * @param int $max       [optional] max records
 	 * @param string $sort   [optional] sort order
 	 * @param bool $facets   [optional] whether to include facets
-	 * 
+	 *
 	 * @return Results
-	 */	
+	 */
 	
-	public function searchRetrieve( Search\Query $search, $start = 1, $max = 10, $sort = "", $facets = true)
+	public function searchRetrieve( Query $search, $start = 1, $max = 10, $sort = "", $facets = true)
 	{
-		return $this->doSearch( $search, $start, $max, $sort);
+		// never cache!
+	
+		return $this->doSearch( $search, $start, $max, $sort, $facets);
 	}	
 	
 	/**
@@ -73,7 +64,7 @@ class Engine extends Search\Engine
 	 * @return ResultSet
 	 */
 	
-	public function getRecord( $id )
+	protected function doGetRecord( $id )
 	{
 		$results = new Search\ResultSet($this->config);
 		
@@ -116,6 +107,13 @@ class Engine extends Search\Engine
 		return $results;
 	}
 	
+	/**
+	 * Get multiple records by id
+	 * 
+	 * @param array $ids
+	 * @return Search\ResultSet
+	 */
+	
 	public function getRecords(array $ids)
 	{
 		$results = new Search\ResultSet($this->config);
@@ -133,35 +131,18 @@ class Engine extends Search\Engine
 	}
 
 	/**
-	 * Get record to save
-	 * 
-	 * @param string	record identifier
-	 * @return int		internal saved id
-	 */	
-	
-	public function getRecordForSave( $id )
-	{
-	}
-	
-	/**
-	 * (non-PHPdoc)
-	 * @see Application\Model\Search.Engine::getConfig()
+	 * Do the actual search and return results
+	 *
+	 * @param Query $search  search object
+	 * @param int $start     [optional] starting record number
+	 * @param int $max       [optional] max records
+	 * @param string $sort   [optional] sort order
+	 * @param bool $facets   [optional] whether to include facets
+	 *
+	 * @return Results
 	 */
 	
-	public function getConfig()
-	{
-		return Config::getInstance();
-	}
-	
-	/**
-	 * 
-	 * @param Query $search
-	 * @param int $start
-	 * @param int $max
-	 * @param string $sort
-	 */
-	
-	protected function doSearch(Query $search, $start = 1, $max = 10, $sort = "")
+	protected function doSearch( Search\Query $search, $start = 1, $max = 10, $sort = "", $facets = true)
 	{
 		$username = $search->getQueryTerm(0)->phrase;
 		
@@ -237,7 +218,7 @@ class Engine extends Search\Engine
 		{
 			$group = new Search\FacetGroup();
 			$group->name = "label";
-			$group->public = "Label"; // @todo: i18n this?
+			$group->public = "Labels"; // @todo: i18n this?
 				
 			foreach ( $tags as $tag )
 			{
@@ -277,10 +258,20 @@ class Engine extends Search\Engine
 		
 		return $result;		
 	}
+
+	/**
+	 * @return Config
+	 */
+	
+	public function getConfig()
+	{
+		return Config::getInstance();
+	}	
 	
 	/**
 	 * Return the Saved Records query object
 	 *
+	 * @param Request $request
 	 * @return Query
 	 */
 	

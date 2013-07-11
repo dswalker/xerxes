@@ -30,7 +30,7 @@ class Engine extends Search\Engine
 	private $deincrementing = 0; // ebsco hack
 	
 	/**
-	 * Constructor
+	 * New Ebsco Search Engine
 	 */
 	
 	public function __construct()
@@ -41,23 +41,6 @@ class Engine extends Search\Engine
 		$this->password = $this->config->getConfig("EBSCO_PASSWORD");	
 	}
 	
-	/**
-	 * Return the total number of hits for the search
-	 * 
-	 * @return int
-	 */	
-	
-	public function getHits( Search\Query $search )
-	{
-		// get the results
-		
-		$results = $this->doSearch($search, null, 1, 1 );
-
-		// return total
-		
-		return $results->getTotal();		
-	}
-
 	/**
 	 * Search and return results
 	 * 
@@ -74,9 +57,9 @@ class Engine extends Search\Engine
 	{
 		// get the results
 		
-		$results = $this->doSearch($search, null, $start, $max, $sort);
+		$results = parent::searchRetrieve( $search, $start, $max, $sort, $facets);
 		
-		// do some stuff
+		// enhance
 		
 		$results->markRefereed();
 		$results->markFullText();
@@ -93,7 +76,7 @@ class Engine extends Search\Engine
 	
 	public function getRecord( $id )
 	{
-		$results = $this->doGetRecord($id);
+		$results = parent::getRecord($id);
 		
 		// enhance
 		
@@ -104,18 +87,6 @@ class Engine extends Search\Engine
 		return $results;
 	}
 
-	/**
-	 * Get record to save
-	 * 
-	 * @param string	record identifier
-	 * @return int		internal saved id
-	 */	
-	
-	public function getRecordForSave( $id )
-	{
-		return $this->doGetRecord($id);
-	}
-	
 	/**
 	 * Do the actual fetch of an individual record
 	 * 
@@ -137,24 +108,28 @@ class Engine extends Search\Engine
 		
 		// get results
 		
-		$results = $this->doSearch("AN $id", $database, 1, 1);
+		$query = new Query();
+		$query->simple = "AN $id";
+		$query->addLimit(null, 'database', null, $database);
+		
+		$results = $this->doSearch($query, 1, 1);
 		
 		return $results;
 	}
 
 	/**
-	 * Do the actual search
-	 * 
-	 * @param mixed $search							search object or string
-	 * @param string $database						[optional] database id
-	 * @param int $start							[optional] starting record number
-	 * @param int $max								[optional] max records
-	 * @param string $sort							[optional] sort order
-	 * 
+	 * Do the actual search and return results
+	 *
+	 * @param Query $search  search object
+	 * @param int $start     [optional] starting record number
+	 * @param int $max       [optional] max records
+	 * @param string $sort   [optional] sort order
+	 * @param bool $facets   [optional] whether to include facets
+	 *
 	 * @return Results
-	 */		
+	 */	
 	
-	protected function doSearch( $search, $database_selected, $start, $max, $sort = "relevance")
+	protected function doSearch( Search\Query $search, $start = 1, $max = 10, $sort = "", $facets = true)
 	{
 		// default for sort
 		
@@ -167,57 +142,45 @@ class Engine extends Search\Engine
 		
 		$query = "";
 		
-		if ( $search instanceof Search\Query )
+		if ( $search->simple != "")
 		{
-			$query = $search->toQuery();
+			$query = $search->simple;
 		}
 		else
 		{
-			$query = $search;
+			$query = $search->toQuery();
 		}
 		
 		// databases
 		
 		$databases = array();
 		
-		// we asked for this database specifically
+		// see if any supplied as facet limit
 		
-		if ( $database_selected != "" )
+		foreach ( $search->getLimits(true) as $limit )
 		{
-			$databases = array($database_selected);
-		}
-
-		// no database specifically defined, so ...
-		
-		else
-		{
-			// see if any supplied as facet limit
-			
-			foreach ( $search->getLimits(true) as $limit )
+			if ( $limit->field == "database")
 			{
-				if ( $limit->field == "database")
-				{
-					array_push($databases, $limit->value);
-				}
+				array_push($databases, $limit->value);
+			}
+		}
+			
+		// nope
+			
+		if ( count($databases) == 0)
+		{
+			// get 'em from config
+				
+			$databases_xml = $this->config->getConfig("EBSCO_DATABASES");
+			
+			if ( $databases_xml == "" )
+			{
+				throw new \Exception("No databases defined");
 			}
 			
-			// nope
-			
-			if ( count($databases) == 0)
+			foreach ( $databases_xml->database as $database )
 			{
-				// get 'em from config
-				
-				$databases_xml = $this->config->getConfig("EBSCO_DATABASES");
-				
-				if ( $databases_xml == "" )
-				{
-					throw new \Exception("No databases defined");
-				}
-				
-				foreach ( $databases_xml->database as $database )
-				{
-					array_push($databases, (string) $database["id"]);
-				}
+				array_push($databases, (string) $database["id"]);
 			}
 		}
 		
@@ -313,7 +276,7 @@ class Engine extends Search\Engine
 				$this->deincrementing++;
 				$new_start = $start - $max;
 				
-				return $this->doSearch($search, $database_selected, $new_start, $max, $sort);
+				return $this->doSearch($search, $new_start, $max, $sort);
 			}
 		}
 		
@@ -460,8 +423,6 @@ class Engine extends Search\Engine
 	}
 	
 	/**
-	 * Return the search engine config
-	 *
 	 * @return Config
 	 */
 	
@@ -471,8 +432,9 @@ class Engine extends Search\Engine
 	}
 	
 	/**
-	 * Return the Solr search query object
+	 * Return the Ebsco search query object
 	 *
+	 * @param Request $request
 	 * @return Query
 	 */
 	

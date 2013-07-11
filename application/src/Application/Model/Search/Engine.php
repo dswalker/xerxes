@@ -86,7 +86,16 @@ abstract class Engine
 	 * @return int
 	 */	
 	
-	abstract public function getHits( Query $search );
+	public function getHits( Query $search )
+	{
+		// get the results
+	
+		$results = $this->doSearch( $search, 1, 0 );
+	
+		// return total
+	
+		return $results->getTotal();
+	}
 	
 	/**
 	 * Search and return results
@@ -100,25 +109,69 @@ abstract class Engine
 	 * @return Results
 	 */	
 	
-	abstract public function searchRetrieve( Query $search, $start = 1, $max = 10, $sort = "", $facets = true );
+	public function searchRetrieve( Query $search, $start = 1, $max = 10, $sort = "", $facets = true)
+	{
+		// cache
+	
+		$results = $this->getCachedResults($search);
+	
+		if ( $results == null )
+		{
+			$results = $this->doSearch( $search, $start, $max, $sort, $facets);
+			$this->setCachedResults($results, $search);
+		}
+	
+		return $results;
+	}
+	
+	/**
+	 * Do the actual search and return results
+	 *
+	 * @param Query $search  search object
+	 * @param int $start     [optional] starting record number
+	 * @param int $max       [optional] max records
+	 * @param string $sort   [optional] sort order
+	 * @param bool $facets   [optional] whether to include facets
+	 *
+	 * @return Results
+	 */
+	
+	abstract protected function doSearch( Query $search, $start = 1, $max = 10, $sort = "", $facets = true);
 	
 	/**
 	 * Return an individual record
-	 * 
+	 *
 	 * @param string	record identifier
 	 * @return Results
 	 */
 	
-	abstract public function getRecord( $id );
-
+	public function getRecord( $id )
+	{
+		// get result
+	
+		return $this->doGetRecord( $id );
+	}
+	
 	/**
 	 * Get record to save
-	 * 
+	 *
 	 * @param string	record identifier
 	 * @return int		internal saved id
-	 */	
+	 */
 	
-	abstract public function getRecordForSave( $id );
+	public function getRecordForSave( $id )
+	{
+		return $this->doGetRecord($id);
+	}
+	
+	/**
+	 * Do the actual fetch of an individual record
+	 *
+	 * @param string	record identifier
+	 * @return ResultSet
+	 */
+	
+	abstract protected function doGetRecord( $id );
 	
 	/**
 	 * Return the search engine config

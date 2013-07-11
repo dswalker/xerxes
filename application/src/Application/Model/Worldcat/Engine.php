@@ -122,23 +122,6 @@ class Engine extends Search\Engine
 	}
 
 	/**
-	 * Search and return results
-	 * 
-	 * @param Query $search  search object
-	 * @param int $start     [optional] starting record number
-	 * @param int $max       [optional] max records
-	 * @param string $sort   [optional] sort order
-	 * @param bool $facets   [optional] whether to include facets
-	 * 
-	 * @return Results
-	 */	
-	
-	public function searchRetrieve( Search\Query $search, $start = 1, $max = 10, $sort = "", $facets = true)
-	{
-		return $this->doSearch( $search, $start, $max, $sort);
-	}	
-	
-	/**
 	 * Return an individual record
 	 * 
 	 * @param string	record identifier
@@ -147,11 +130,11 @@ class Engine extends Search\Engine
 	
 	public function getRecord( $id )
 	{
-		$results = $this->doGetRecord( $id );
-		
-		$record = $results->getRecord(0);
+		$results = parent::getRecord( $id );
 		
 		// add holdings
+		
+		$record = $results->getRecord(0);
 		
 		if ($this->group->libraries_include != '' && $record != null && $this->group->show_holdings == true)
 		{
@@ -166,18 +149,6 @@ class Engine extends Search\Engine
 	}
 
 	/**
-	 * Get record to save
-	 * 
-	 * @param string	record identifier
-	 * @return int		internal saved id
-	 */	
-	
-	public function getRecordForSave( $id )
-	{
-		return $this->doGetRecord( $id );
-	}
-	
-	/**
 	 * Do the actual fetch of an individual record
 	 * 
 	 * @param string	record identifier
@@ -191,17 +162,18 @@ class Engine extends Search\Engine
 	}		
 	
 	/**
-	 * Do the actual search
-	 * 
-	 * @param Query $search		search object
-	 * @param int $start							[optional] starting record number
-	 * @param int $max								[optional] max records
-	 * @param string $sort							[optional] sort order
-	 * 
+	 * Do the actual search and return results
+	 *
+	 * @param Query $search  search object
+	 * @param int $start     [optional] starting record number
+	 * @param int $max       [optional] max records
+	 * @param string $sort   [optional] sort order
+	 * @param bool $facets   [optional] whether to include facets
+	 *
 	 * @return Results
 	 */		
 	
-	protected function doSearch( Search\Query $search, $start = 1, $max = 10, $sort = "")
+	protected function doSearch( Search\Query $search, $start = 1, $max = 10, $sort = "", $facets = true)
 	{ 	
 		// convert query
 		
@@ -299,8 +271,6 @@ class Engine extends Search\Engine
 	}
 	
 	/**
-	 * Return the search engine config
-	 *
 	 * @return Config
 	 */
 	
@@ -310,8 +280,9 @@ class Engine extends Search\Engine
 	}
 	
 	/**
-	 * Return the Solr search query object
+	 * Solr search query object
 	 *
+	 * @param Request $request
 	 * @return Query
 	 */
 	

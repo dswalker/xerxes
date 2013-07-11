@@ -91,7 +91,7 @@ class FolderController extends SearchController
 			return $this->redirectTo($params);
 		}		
 		
-		$total = $this->engine->getHits($this->query)->getTotal();
+		$total = $this->engine->getHits($this->query);
 		
 		// user is not logged in, and has no temporary saved records, so nothing to show here;
 		// force them to login
