@@ -42,6 +42,23 @@ class Engine extends Search\Engine
 	}
 	
 	/**
+	 * Return the total number of hits for the search
+	 *
+	 * @return int
+	 */
+	
+	public function getHits( Query $search )
+	{
+		// get the results
+	
+		$results = $this->doSearch( $search, 1, 1 ); // must return at least one record
+	
+		// return total
+	
+		return $results->getTotal();
+	}
+	
+	/**
 	 * Search and return results
 	 * 
 	 * @param Query $search  search object
