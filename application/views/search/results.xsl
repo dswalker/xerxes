@@ -348,7 +348,14 @@
 				<xsl:call-template name="advanced_search" />
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:call-template name="simple_search" />			
+				<xsl:choose>
+					<xsl:when test="config/basic_search_fields/field">
+						<xsl:call-template name="simple_search" />
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:call-template name="simple_search_nofield" />
+					</xsl:otherwise>
+				</xsl:choose>
 			</xsl:otherwise>
 		</xsl:choose>
 	
@@ -364,7 +371,6 @@
 		
 		<div class="raised-box search-box">
 	
-
 			<div class="search-row">
 
 				<label for="field">Search</label><xsl:text> </xsl:text>
@@ -405,6 +411,33 @@
 		</div>
 	
 	</xsl:template>
+	
+	<!--
+		TEMPLATE: SIMPLE SEARCH
+	-->
+	
+	<xsl:template name="simple_search_nofield">
+	
+		<xsl:variable name="query"	select="request/query" />
+		
+		<div class="raised-box search-box">
+	
+	
+			<div class="search-row">
+				
+				<input id="query" name="query" type="text" size="52" value="{$query}" /><xsl:text> </xsl:text>
+				
+				<input type="submit" name="Submit" value="Search" class="btn submit-searchbox{$language_suffix}" />
+			
+			</div>
+			
+			<xsl:call-template name="search_refinement" />
+			
+			<xsl:call-template name="advanced_search_option" />
+			
+		</div>
+	
+	</xsl:template>	
 
 	<!-- 	
 		TEMPLATE: SEARCH REFINEMENT
