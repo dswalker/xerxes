@@ -34,6 +34,9 @@ class CombinedController extends ActionController
 	public function resultsAction()
 	{
 		$engine = $this->request->getParam('engine', 'solr');
+		
+		$this->response->setVariable('combined_engine', $engine);
+		
 		$alias = $this->controller_map->getUrlAlias($engine);
 		
 		// these so the search engine controller thinks it's not a 'combined' request
@@ -63,7 +66,10 @@ class CombinedController extends ActionController
 		
 		$this->response->setVariable('url_more', $this->request->url_for($params));
 		
-		// switch to combined view
+		$spelling = $this->response->getVariable('spelling');
+		$spelling->url = str_replace("$alias/results", $this->id . '/results', $spelling->url);
+		
+		$this->response->setVariable('spelling', $spelling);
 		
 		$this->response->setView('combined/results.xsl');
 		
@@ -74,21 +80,7 @@ class CombinedController extends ActionController
 	{
 		$this->response = $this->resultsAction();
 		$this->response->setView('combined/partial.xsl');
-		
-		return $this->response;
-	}
 	
-	public function googleAction()
-	{
-		$config = Config::getInstance();
-		$this->response->setVariable('config_local', $config->toXML());
-		
-		$query = $this->request->getParam('query');
-		
-		$google = new Appliance();
-		$results = $google->search("$query site:libraryguides.fullerton.edu OR site:library.fullerton.edu", 3);
-		
-		$this->response->setVariable('results', $results);
-		$this->response->setView('combined/results.xsl');
-	}
+		return $this->response;
+	}	
 }
