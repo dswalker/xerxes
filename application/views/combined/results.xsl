@@ -223,7 +223,17 @@
 		<xsl:for-each select="//results/records/record/xerxes_record">
 		
 			<li>
-				<a class="record-title" href="{../url_full}"><xsl:value-of select="title_normalized" /></a>
+				<a class="record-title" href="{../url_full}">
+					<xsl:choose>
+						<xsl:when test="string-length(title_normalized) &gt; 150">
+							<xsl:value-of select="substring(title_normalized,1,150)" />
+							<xsl:text>...</xsl:text>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="title_normalized" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</a>
 				
 				<div class="record-info">
 					
