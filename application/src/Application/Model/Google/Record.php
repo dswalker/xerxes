@@ -29,7 +29,7 @@ class Record extends Xerxes\Record
 	{
 		$mime_type = (string) $this->result_xml["MIME"];
 		
-		$this->title = strip_tags((string) $this->result_xml->T);
+		$this->title = strip_tags(html_entity_decode((string) $this->result_xml->T));
 		$this->snippet = strip_tags((string) $this->result_xml->S);
 		
 		$link = new Link((string) $this->result_xml->U, Link::ONLINE);
