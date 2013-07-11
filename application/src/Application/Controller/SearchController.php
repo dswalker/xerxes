@@ -49,7 +49,7 @@ abstract class SearchController extends ActionController
 	protected $engine;
 	
 	/**
-	 * @var Search
+	 * @var Application\View\Helper\Search
 	 */
 	protected $helper;
 	
@@ -490,7 +490,7 @@ abstract class SearchController extends ActionController
 	
 	protected function checkSpelling()
 	{
-		$id = $this->helper->getQueryID();
+		$id = $this->query->getHash();
 		
 		// have we checked it already?
 		
