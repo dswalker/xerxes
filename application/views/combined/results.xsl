@@ -33,6 +33,11 @@
 	</xsl:call-template>
 </xsl:template>
 
+<xsl:template name="breadcrumb">
+	<xsl:call-template name="breadcrumb_search" />
+	<xsl:value-of select="$text_search_results" />
+</xsl:template>
+
 <xsl:template name="module_header">
 
 	<style type="text/css">
