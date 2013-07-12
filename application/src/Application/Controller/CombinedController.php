@@ -12,9 +12,8 @@
 namespace Application\Controller;
 
 use Application\Model\Solr\Config;
-
+use Application\Model\Search\Query;
 use Xerxes\Google\Appliance;
-
 use Xerxes\Mvc\ActionController;
 
 class CombinedController extends ActionController
@@ -28,16 +27,28 @@ class CombinedController extends ActionController
 	
 	public function searchAction()
 	{
-		return $this->resultsAction();
+		$params = array(
+			'controller' => $this->id,
+			'action' => 'results',
+			'query' => $this->request->getParam('query'),
+		);
+		
+		return $this->redirectTo($params);
 	}
 	
 	public function resultsAction()
 	{
 		$engine = $this->request->getParam('engine', 'solr');
+		$alias = $this->controller_map->getUrlAlias($engine);
+		
+		// to help the views
 		
 		$this->response->setVariable('combined_engine', $engine);
 		
-		$alias = $this->controller_map->getUrlAlias($engine);
+		// for breadcrumbs and such
+		
+		$query = new Query($this->request);
+		$this->request->setSessionData('combined_' . $query->getHash(), $this->request->getRequestUri());
 		
 		// these so the search engine controller thinks it's not a 'combined' request
 		
@@ -55,6 +66,10 @@ class CombinedController extends ActionController
 			$this->response = $controller->execute('results');
 		}
 		
+		// set controller back
+		
+		$this->request->replaceParam('controller', $this->id);
+		
 		// construct more results url
 		
 		$params = array(
@@ -66,10 +81,24 @@ class CombinedController extends ActionController
 		
 		$this->response->setVariable('url_more', $this->request->url_for($params));
 		
-		$spelling = $this->response->getVariable('spelling');
-		$spelling->url = str_replace("$alias/results", $this->id . '/results', $spelling->url);
+		// make sure the spell check sends us back through combined 
 		
-		$this->response->setVariable('spelling', $spelling);
+		$spelling = $this->response->getVariable('spelling');
+		
+		if ( $spelling->url != "" )
+		{
+			$params = array(
+				'controller' => $this->id,
+				'action' => 'search',
+				'query' => $spelling->getTerm(0)->phrase,
+			);
+			
+			$spelling->url = $this->request->url_for($params);
+			
+			$this->response->setVariable('spelling', $spelling);
+		}
+		
+		// view
 		
 		$this->response->setView('combined/results.xsl');
 		
