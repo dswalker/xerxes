@@ -54,6 +54,10 @@ class Response extends HttpFoundation\Response
 		{
 			return $this->_vars[$name];
 		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	/**
