@@ -134,11 +134,11 @@
 	
 	<xsl:call-template name="spell_suggest" />
 	
-	<xsl:variable name="column_width" select="12 div count(//config/search_combined/column)" />
+	<xsl:variable name="column_width" select="12 div count(//config/search/column)" />
 
 	<div class="row-fluid">
 	
-		<xsl:for-each select="//config/search_combined/column">
+		<xsl:for-each select="//config/search/column">
 	
 			<div class="span{$column_width}">
 				<div>
@@ -149,21 +149,21 @@
 						</xsl:if>
 					</xsl:attribute>
 					
-					<xsl:for-each select="section">
+					<xsl:for-each select="option">
 					
 						<div class="combined-results-section">
 
 							<h2><xsl:value-of select="@public" /></h2>
 							
 							<xsl:choose>
-								<xsl:when test="//results and option/@id = //combined_engine">
+								<xsl:when test="//results and @id = //combined_engine">
 								
 									<xsl:call-template name="short_results" />
 								
 								</xsl:when>
 								<xsl:otherwise>
 							
-									<div id="{option/@id}" class="combined-engine" data-source="combined/partial?query={$query};engine={option/@id}">
+									<div id="{@id}" class="combined-engine" data-source="combined/partial?query={$query};engine={@id}">
 										<img src="images/ajax-loader.gif" alt="" />
 									</div>
 									
@@ -190,7 +190,7 @@
 											</xsl:variable>
 											
 											<li>
-												<a href="{//config/search/option[@id = $id and ( not(@source) or @source = $source)]/@url}">
+												<a href="{@url}">
 													<xsl:value-of select="@public" />
 												</a>
 												<xsl:text> </xsl:text>

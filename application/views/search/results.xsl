@@ -510,7 +510,6 @@
 				<!-- <h2>Search Options</h2> -->
 				
 				<xsl:for-each select="config/search">
-						
 					<ul>
 						<xsl:call-template name="search_module" />
 					</ul>
@@ -530,7 +529,7 @@
 	
 	<xsl:template name="search_module">
 	
-		<xsl:for-each select="option">
+		<xsl:for-each select="column/option[@tab = 'true']">
 			
 			<li id="tab-{@id}">
 			
@@ -636,6 +635,8 @@
 			
 			<div class="box">
 			
+				<xsl:call-template name="facet_expand_results" />
+			
 				<xsl:call-template name="facet_narrow_results" />
 				
 				<xsl:if test="//facets/groups[not(display)]">
@@ -669,7 +670,36 @@
 			</div>
 	
 	</xsl:template>
+
+	<!-- 
+		TEMPLATE: FACET EXPAND RESULTS
+		Additional search options in the sidebar area
+	-->
 	
+	<xsl:template name="facet_expand_results">
+	
+		<xsl:for-each select="config/search/column/option[@current = '1']/additional">
+		
+			<div id="subtab" class="box">
+				
+			<h3><xsl:value-of select="@public" /></h3>
+			<ul>
+				<xsl:for-each select="option">
+					<li>
+						<a href="{@url}">
+							<xsl:value-of select="@public" />
+						</a>
+						<xsl:text> </xsl:text>
+						<xsl:call-template name="tab_hit" />
+					</li>
+				</xsl:for-each>
+			</ul>
+			</div>
+			
+		</xsl:for-each>
+			
+	</xsl:template>	
+		
 	<xsl:template name="facet_dates">
 	
 		<div class="facet-date">

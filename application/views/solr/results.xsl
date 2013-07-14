@@ -51,24 +51,6 @@
 	<xsl:call-template name="search_page" />
 </xsl:template>
 
-<xsl:template name="facet_narrow_results">
-
-	<xsl:for-each select="config/search/option[@current = '1']/option">
-
-		<div id="subtab" class="box">
-		
-			<h3>Expand your search</h3>
-			
-			<ul>
-				<li><a href="{@url}"><xsl:value-of select="@public" /></a></li>
-			</ul>
-			
-		</div>
-		
-	</xsl:for-each>
-		
-</xsl:template>
-
 <xsl:template name="facet_dates">
 	<xsl:call-template name="facet_links" />
 </xsl:template>
