@@ -720,6 +720,19 @@ div.autocomplete ul li {
 	text-decoration:line-through;	
 }
 
+.facet-expand {
+	font-size: 110%;
+	background: #eee;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	padding: .5em;
+}
+
+#search-sidebar h3.facet-expand-header  {
+	line-height: none;
+	margin-top:0;
+}
+
 #fullscreen {
 	position: absolute; 
 	top: 0;

@@ -680,9 +680,9 @@
 	
 		<xsl:for-each select="config/search/column/option[@current = '1']/additional">
 		
-			<div id="subtab" class="box">
+			<div class="facet-expand box">
 				
-			<h3><xsl:value-of select="@public" /></h3>
+			<h3 class="facet-expand-header"><xsl:value-of select="@public" /></h3>
 			<ul>
 				<xsl:for-each select="option">
 					<li>
