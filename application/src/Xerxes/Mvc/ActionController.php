@@ -119,7 +119,7 @@ abstract class ActionController
 		
 		if ( $auth instanceof HttpFoundation\Response )
 		{
-			return $init;
+			return $auth;
 		}
 		
 		// run the action
