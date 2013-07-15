@@ -13,6 +13,7 @@ namespace Application\Model\Google;
 
 use Application\Model\Search;
 use Xerxes\Mvc\Request;
+use Xerxes\Utility\Factory;
 
 /**
  * Search and retrieve records Google search appliance
@@ -68,7 +69,10 @@ class Engine extends Search\Engine
 		
 		$this->url = $this->server . "/search?q=" . urlencode($query);
 		
-		$xml = simplexml_load_file($this->url);
+		$client = Factory::getHttpClient();
+		$results = $client->getUrl($this->url, 3);
+		
+		$xml = simplexml_load_string($results);
 		
 		// header("Content-type: text/xml"); echo $xml->saveXML(); exit;
 		
