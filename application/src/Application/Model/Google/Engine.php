@@ -70,9 +70,9 @@ class Engine extends Search\Engine
 		$this->url = $this->server . "/search?q=" . urlencode($query);
 		
 		$client = Factory::getHttpClient();
-		$results = $client->getUrl($this->url, 3);
+		$google_results = $client->getUrl($this->url, 3);
 		
-		$xml = simplexml_load_string($results);
+		$xml = simplexml_load_string($google_results);
 		
 		// header("Content-type: text/xml"); echo $xml->saveXML(); exit;
 		
