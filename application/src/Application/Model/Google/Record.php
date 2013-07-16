@@ -29,10 +29,15 @@ class Record extends Xerxes\Record
 		
 		$mime_type = (string) $xml["MIME"];
 		
-		$this->title = strip_tags(html_entity_decode((string) $xml->T));
-		$this->snippet = strip_tags((string) $xml->S);
+		$this->title = $this->getData($xml->T);
+		$this->snippet = $this->getData($xml->S);
 		
-		$link = new Link((string) $xml->U, Link::ONLINE);
+		$link = new Link($this->getData($xml->U), Link::ONLINE);
 		$this->links[] = $link;
+	}
+	
+	protected function getData($xml)
+	{
+		return strip_tags(html_entity_decode((string) $xml));
 	}
 }
