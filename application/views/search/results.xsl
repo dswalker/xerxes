@@ -706,26 +706,35 @@
 	
 			<form id="form-{group_id}" action="{//request/controller}/search" method="get">
 			
+				<div id="placeholder" style="width: 250px; height: 150px">
+					<xsl:attribute name="data-source">
+						<xsl:for-each select="facets/facet">
+							<xsl:if test="timestamp">
+								<xsl:value-of select="timestamp"/>,<xsl:value-of select="count" />
+								<xsl:if test="following-sibling::facet">
+									<xsl:text>;</xsl:text>
+								</xsl:if>
+							</xsl:if>
+						</xsl:for-each>
+					</xsl:attribute>
+				</div>
+			
 				<xsl:variable name="start_date" select="concat(param_name,'.start')" />
 				<xsl:variable name="end_date" select="concat(param_name,'.end')" />
-	
 	
 				<xsl:call-template name="hidden_search_inputs">
 					<xsl:with-param name="exclude_limit" select="param_name" />
 				</xsl:call-template>
 				
-				<div>
+				<div class="facet-date-selector">
 		
-				<label for="facet-date-start">From: </label>
-				<input type="text" name="{$start_date}" id="facet-date-start" value="{//request/*[@original_key = $start_date]}" 
-					maxlength="4" size="4" />
-				
-				</div>
-				<div>
-				
-				<label for="facet-date-end">To: </label>
-				<input type="text" name="{$end_date}" id="facet-date-end" value="{//request/*[@original_key = $end_date]}" 
-					maxlength="4" size="4" />
+					<label for="facet-date-start">From: </label>
+					<input type="text" name="{$start_date}" id="facet-date-start" value="{//request/*[@original_key = $start_date]}" 
+						maxlength="4" size="4" />
+					
+					<label for="facet-date-end">To: </label>
+					<input type="text" name="{$end_date}" id="facet-date-end" value="{//request/*[@original_key = $end_date]}" 
+						maxlength="4" size="4" />
 				
 				</div>
 				
@@ -792,7 +801,7 @@
 			</xsl:choose>
 						
 			<xsl:if test="count">			
-				&nbsp;(<xsl:value-of select="count" />)
+				&nbsp;(<xsl:value-of select="count_display" />)
 			</xsl:if>
 		</li>
 	
@@ -858,7 +867,7 @@
 			<label for="{input_id}"><xsl:value-of select="name" /></label>
 			
 			<xsl:if test="count">
-				&nbsp;(<xsl:value-of select="count" />)
+				&nbsp;(<xsl:value-of select="count_display" />)
 			</xsl:if>
 			
 		</li>

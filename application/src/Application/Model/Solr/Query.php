@@ -162,14 +162,38 @@ class Query extends Search\Query
 		
 		foreach ( $this->getLimits(true) as $facet_chosen )
 		{
+			$value = $facet_chosen->value;
+			$field = $facet_chosen->field;
+			$boolean = $facet_chosen->boolean;
+			
+			if ( ! is_array($value) )
+			{
+				$value = array($value);
+			}
+			
 			// put quotes around non-keyed terms
 								
 			if ( $facet_chosen->key != true )
 			{
-				$facet_chosen->value = '"' . $facet_chosen->value . '"';
+				for( $x =0; $x < count($value); $x++)
+				{
+					$value[$x] = '"' . $value[$x] . '"';
+				}
 			}
 			
-			$query .= "&fq=" . urlencode( $facet_chosen->field . ":" . $facet_chosen->value);
+			// boolean
+			/*
+			if ( $boolean != "")
+			{
+				$value = "$boolean $value";
+			}
+			*/
+			
+			$value = implode(" OR $field:", $value);
+			
+			$tag = urlencode( '{!tag=' . $facet_chosen->field . '}');
+			
+			$query .= '&fq=' . $tag . urlencode( "$field:$value");
 		}
 		
 		// limits set in config

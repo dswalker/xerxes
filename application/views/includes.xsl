@@ -476,6 +476,8 @@
 	
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" type="text/javascript" ></script>	
 		<script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js" type="text/javascript" ></script>
+		<script src="{$base_include}/javascript/flot/jquery.flot.min.js" type="text/javascript" ></script>
+		<script src="{$base_include}/javascript/flot/jquery.flot.time.min.js?version={$asset_version}"  type="text/javascript"></script>
 		
 		<script src="{$base_include}/javascript/bootstrap-select.min.js?version={$asset_version}"  type="text/javascript"></script>
 		

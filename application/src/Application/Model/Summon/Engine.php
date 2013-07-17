@@ -156,8 +156,34 @@ class Engine extends Search\Engine
 		{
 			if ( $facet_config['type'] == 'date' )
 			{
-				$this->summon_client->setDateRangesToInclude((string) $facet_config["ranges"]);
-			}
+				// create date ranges in groups defined in config
+				
+				$range_start = 1950; // start of the range
+				$interval = 2; // year intervals
+				
+				if ( array_key_exists('start', $facet_config) )
+				{
+					$range_start = $facet_config["start"];
+				}
+
+				if ( array_key_exists('interval', $facet_config) )
+				{
+					$interval = $facet_config["interval"];
+				}				
+				
+				$range_stop = (int) date('Y', time()); // current year
+				$range = array(); // hold them in groups
+			
+				while ( $range_start < $range_stop )
+				{
+					$range[] = $range_start . ':' . ($range_start + $interval);
+					$range_start = $range_start + $interval + 1;
+				}
+				
+				$range_string = implode(',', $range);
+				$this->summon_client->setDateRangesToInclude( $range_string );
+			}			
+			
 			else
 			{
 				$this->summon_client->includeFacet( (string) $facet_config["internal"] .",or,1," . (string) $facet_config["max"] ); 
@@ -472,17 +498,37 @@ class Engine extends Search\Engine
 						
 						if ( (string) $config["type"] == "date")
 						{
+							$first = false;
+							
 							foreach ( $facetFields["counts"] as $counts )
 							{
 								$start_date = $counts['range']['minValue'];
 								$end_date = $counts['range']['maxValue'];
+								$count = $counts["count"];
 								
+								// facet ranges come back whether there are hits or not
+								// so we exclude an inital date ranges with no hits,
+								// starting the facets from the first range with a count
+								
+								if ( $count == 0 )
+								{
+									if ( $first == false )
+									{
+										continue;
+									}
+								}
+								else
+								{
+									$first = true;
+								}
 								
 								$facet = new Search\Facet();
 								$facet->name = "$start_date-$end_date";
 								$facet->count = $counts["count"];
 								$facet->key = "$start_date:$end_date";
 								$facet->is_date = true;
+								
+								$facet->timestamp = strtotime("1/1/$start_date") * 1000;
 									
 								$group->addFacet($facet);
 							}

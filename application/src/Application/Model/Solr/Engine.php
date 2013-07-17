@@ -155,8 +155,14 @@ class Engine extends Search\Engine
 			{
 				$sort = (string) $attributes["sort"];
 				$max = (string) $attributes["max"];
+				$type = (string) $attributes["type"];
 				
-				$this->url .= "&facet.field=$facet";
+				if ( $type == 'date' )
+				{
+					$sort = 'index';
+				}
+				
+				$this->url .= "&facet.field=" . urlencode("{!ex=$facet}$facet");
 
 				if ( $sort != "" )
 				{
@@ -174,6 +180,8 @@ class Engine extends Search\Engine
 		
 		$this->url .= "&fl=*+score";
 		
+		// echo $this->url;
+		
 		
 		## get and parse the response
 
@@ -181,6 +189,8 @@ class Engine extends Search\Engine
 		
 		$client = Factory::getHttpClient();
 		$response = $client->getUrl($this->url);
+		
+		// header('Content-type: text/xml'); echo $response; echo '<!--' . $this->url . '-->'; exit;
 		
 		$xml = simplexml_load_string($response);
 		
@@ -277,35 +287,21 @@ class Engine extends Search\Engine
 				{
 					$facet_array[(string)$int["name"]] = (int) $int;
 				}
-
-				// date
-
-				$decade_display = array();
 				
 				$is_date = $this->config->isDateType($group_internal_name);
-				
-				if ( $is_date == true )
-				{
-					$date_arrays = $group->luceneDateToDecade($facet_array);
-					$decade_display = $date_arrays["display"];
-					$facet_array = $date_arrays["decades"];		
-				}
-				
+
 				foreach ( $facet_array as $key => $value )
 				{
 					$facet = new Search\Facet();
 					$facet->name = $key;
 					$facet->count = $value;
 					
-					// dates are different
-					
-					if ( $is_date == true )  
+					if ( $is_date == true )
 					{
-						$facet->name = $decade_display[$key];
 						$facet->is_date = true;
-						$facet->key = $key;
+						$facet->timestamp = strtotime("1/1/$key") * 1000;
 					}
-
+					
 					$group->addFacet($facet);
 				}
 				

@@ -50,9 +50,5 @@
 <xsl:template name="main">
 	<xsl:call-template name="search_page" />
 </xsl:template>
-
-<xsl:template name="facet_dates">
-	<xsl:call-template name="facet_links" />
-</xsl:template>
 		
 </xsl:stylesheet>
