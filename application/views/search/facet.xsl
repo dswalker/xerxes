@@ -100,7 +100,7 @@
 							</input>
 						</td>
 						<td>
-							<xsl:value-of select="name" /> &nbsp;(<xsl:value-of select="count" />)
+							<xsl:value-of select="name" /> &nbsp;(<xsl:value-of select="count_display" />)
 						</td>
 					</tr>
 				</xsl:for-each>

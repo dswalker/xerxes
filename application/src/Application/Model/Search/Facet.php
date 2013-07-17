@@ -21,8 +21,10 @@ class Facet
 {
 	public $name;
 	public $count;
+	public $count_display;
 	public $url;
 	public $key;
 	public $is_excluded;
 	public $is_date;
+	public $timestamp;
 }

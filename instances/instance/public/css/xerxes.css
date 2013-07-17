@@ -890,8 +890,7 @@ td.title-cell {
 }
 
 .facet-date label {
-	float:left;
-	width:45px;	
+	padding: .5em;
 }
 
 .facet-date div {

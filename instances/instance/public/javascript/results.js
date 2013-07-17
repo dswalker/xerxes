@@ -3,7 +3,8 @@
  *
  * @author David Walker <dwalker@calstate.edu>
  */
- 
+
+$(document).ready(drawPubGraph);
 $(document).ready(addFacetMoreLinks);
 $(document).ready(addFacetSelection);
 $(document).ready(addFacetClear);
@@ -15,6 +16,18 @@ $(document).ready(fillAvailability);
 $(document).ready(addSaveLinks);
 $(document).ready(function(){ $('.selectpicker').selectpicker(); });
 
+function drawPubGraph()
+{
+	var timedata = $("#placeholder").attr('data-source');
+	var data = timedata.split(';');
+	
+	for ( var i = 0; i < data.length; i++ )
+	{
+		data[i] = data[i].split(',');
+	}
+		
+    $.plot($("#placeholder"), [data], { xaxis: { mode: "time" } });
+}
 
 function addFacetMoreLinks()
 {
@@ -319,8 +332,7 @@ function updateRecord( record )
 	});	
 		
 	return false;
-}
-	
+}	
 
 function updateElement(url, element)
 {

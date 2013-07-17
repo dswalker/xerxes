@@ -34,7 +34,7 @@ class FacetGroup
 	
 	public function addFacet(Facet $facet)
 	{
-		$facet->count = Parser::number_format($facet->count);
+		$facet->count_display = Parser::number_format($facet->count);
 		
 		array_push($this->facets, $facet);
 	}
