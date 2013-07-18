@@ -31,4 +31,15 @@ class NavigationController extends ActionController
 		$nav = new Navigation($this->event);
 		$this->response->setVariable("navbar", $nav->getNavbar());
 	}
+	
+	/**
+	 * Set the ada flag in session for non-ajax version of site
+	 */
+	
+	public function accessibleAction()
+	{
+		$this->request->setSessionData("ada", "true");
+		
+		return $this->redirectTo($this->request->getParam("return"));
+	}
 }

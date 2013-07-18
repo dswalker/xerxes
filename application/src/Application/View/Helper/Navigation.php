@@ -77,7 +77,7 @@ class Navigation
 	public function accessibleLink()
 	{
 		$params = array(
-			'controller' => 'databases',
+			'controller' => 'navigation',
 			'action' => 'accessible',
 			'return' => $this->request->server->get('REQUEST_URI')
 		);
