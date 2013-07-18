@@ -430,9 +430,7 @@
 				<input type="submit" name="Submit" value="Search" class="btn submit-searchbox{$language_suffix}" />
 			
 			</div>
-			
-			<xsl:call-template name="search_refinement" />
-			
+						
 			<xsl:call-template name="advanced_search_option" />
 			
 		</div>
