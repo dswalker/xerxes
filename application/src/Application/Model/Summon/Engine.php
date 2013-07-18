@@ -498,29 +498,11 @@ class Engine extends Search\Engine
 						
 						if ( (string) $config["type"] == "date")
 						{
-							$first = false;
-							
 							foreach ( $facetFields["counts"] as $counts )
 							{
 								$start_date = $counts['range']['minValue'];
 								$end_date = $counts['range']['maxValue'];
 								$count = $counts["count"];
-								
-								// facet ranges come back whether there are hits or not
-								// so we exclude an inital date ranges with no hits,
-								// starting the facets from the first range with a count
-								
-								if ( $count == 0 )
-								{
-									if ( $first == false )
-									{
-										continue;
-									}
-								}
-								else
-								{
-									$first = true;
-								}
 								
 								$facet = new Search\Facet();
 								$facet->name = "$start_date-$end_date";
@@ -530,7 +512,45 @@ class Engine extends Search\Engine
 								
 								$facet->timestamp = strtotime("1/1/$start_date") * 1000;
 									
-								$group->addFacet($facet);
+								$date_facets[] = $facet;
+							}
+							
+							// since summon returns date ranges whether they get 0 hits or not
+							// we need to trim the ones at the front and end that are 0 count
+							
+							for ( $i = 0; $i < count($date_facets); $i++ )
+							{
+								$date_facet = $date_facets[$i];
+								
+								if ( (int) $date_facet->count == 0 )
+								{
+									$date_facets[$i] = null;
+								}
+								else
+								{
+									break;
+								}
+							}
+							
+							$date_facets = array_values(array_filter($date_facets));
+							
+							for ( $i = count($date_facets) - 1; $i >= 0; $i-- )
+							{
+								$date_facet = $date_facets[$i];
+
+								if ( $date_facet->count == 0 )
+								{
+									unset($date_facets[$i]);
+								}
+								else
+								{
+									break;
+								}								
+							}
+							
+							foreach ( $date_facets as $date_facet)
+							{
+								$group->addFacet($date_facet);
 							}
 						
 						}
