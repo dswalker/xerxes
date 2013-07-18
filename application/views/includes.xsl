@@ -69,6 +69,13 @@
 			<xsl:otherwise>0</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
+	
+	<xsl:variable name="is_ada">
+		<xsl:choose>
+			<xsl:when test="not(request/session/ada)">1</xsl:when>
+			<xsl:otherwise>0</xsl:otherwise>
+		</xsl:choose>
+	</xsl:variable>
 
 	<xsl:variable name="temporarySession">
 		<xsl:choose>
@@ -117,7 +124,7 @@
 		<xsl:if test="$is_mobile = 0">
 			
 			<div class="ada">
-				<xsl:if test="not(request/session/ada)">
+				<xsl:if test="$is_ada = 0">
 					<a href="{navbar/accessible_link}">
 						<xsl:copy-of select="$text_ada_version" /> 
 					</a>
@@ -138,7 +145,7 @@
 		</xsl:if>
 
 		<!-- javascript: only when not ada or mobile -->
-		<xsl:if test="not(request/session/ada) and $is_mobile = 0">
+		<xsl:if test="$is_ada = 0 and $is_mobile = 0">
 			<xsl:call-template name="javascript_include" />
 		</xsl:if>
 		

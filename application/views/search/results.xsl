@@ -736,7 +736,7 @@
 				
 				</div>
 				
-				<input type="submit" value="Update" />
+				<input type="submit" value="Update" class="btn" />
 				
 			</form>
 			
@@ -842,6 +842,8 @@
 			</a>
 		</p>
 		
+		<xsl:call-template name="facet_noscript_submit" />
+		
 		</form>
 	
 	</xsl:template>
@@ -916,7 +918,26 @@
 			</div>
 		</xsl:if>
 		
-	</xsl:template>	
+	</xsl:template>
+
+	<!-- 
+		TEMPLATE: FACET NOSCRIPT SUBMIT
+	-->
+	
+	<xsl:template name="facet_noscript_submit">
+	
+		<xsl:choose>
+			<xsl:when test="$is_ada = '1'">
+				<input type="submit" value="Update" class="btn" />
+			</xsl:when>
+			<xsl:otherwise>
+				<noscript>
+					<input type="submit" value="Update" class="btn" />
+				</noscript>
+			</xsl:otherwise>
+		</xsl:choose>
+	
+	</xsl:template>
 
 	<!-- 
 		TEMPLATE: BRIEF RESULTS

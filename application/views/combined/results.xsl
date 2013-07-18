@@ -163,9 +163,19 @@
 								</xsl:when>
 								<xsl:otherwise>
 							
-									<div id="{@id}" class="combined-engine" data-source="combined/partial?query={$query};engine={@id}">
-										<img src="images/ajax-loader.gif" alt="" />
-									</div>
+									<xsl:choose>
+										<xsl:when test="$is_ada = 0">
+											<div id="{@id}" class="combined-engine" data-source="combined/partial?query={$query};engine={@id}">
+												<img src="images/ajax-loader.gif" alt="" />
+											</div>
+											<noscript>
+												<a href="{@url}"><xsl:value-of select="more/@public" /></a>
+											</noscript>
+										</xsl:when>
+										<xsl:otherwise>
+											<a href="{@url}"><xsl:value-of select="more/@public" /></a>
+										</xsl:otherwise>
+									</xsl:choose>
 									
 								</xsl:otherwise>
 							</xsl:choose>

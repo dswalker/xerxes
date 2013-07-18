@@ -256,6 +256,8 @@
 				
 			</xsl:if>
 		</ul>
+		
+		<xsl:call-template name="facet_noscript_submit" />
 	
 	</form>
 
