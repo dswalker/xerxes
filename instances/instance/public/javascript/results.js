@@ -19,14 +19,18 @@ $(document).ready(function(){ $('.selectpicker').selectpicker(); });
 function drawPubGraph()
 {
 	var timedata = $("#placeholder").attr('data-source');
-	var data = timedata.split(';');
 	
-	for ( var i = 0; i < data.length; i++ )
+	if ( timedata != null )
 	{
-		data[i] = data[i].split(',');
-	}
+		var data = timedata.split(';');
 		
-    $.plot($("#placeholder"), [data], { xaxis: { mode: "time" } });
+		for ( var i = 0; i < data.length; i++ )
+		{
+			data[i] = data[i].split(',');
+		}
+			
+		$.plot($("#placeholder"), [data], { xaxis: { mode: "time" } });
+	}
 }
 
 function addFacetMoreLinks()
