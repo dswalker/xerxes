@@ -126,40 +126,18 @@
 			<xsl:when test="//results/records/record/xerxes_record">
 		
 				<form action="folder">
-			
-					<div class="folder-options">
-									
-						<xsl:call-template name="folder_export_options" />
-						
-						<xsl:choose>
-							<xsl:when test="request/facet_label">
-								
-								<div>
-									<span style="margin-right: 1em">
-										<xsl:call-template name="folder_delete" />
-									</span>
-									<span>
-										<xsl:call-template name="folder_remove_tags" />
-									</span>
-								</div>
-								
-							</xsl:when>
-							<xsl:otherwise>
-						
-								<xsl:call-template name="folder_tag_group_assign" />
-								
-								<div>
-									<xsl:call-template name="folder_delete" />
-								</div>
-								
-							</xsl:otherwise>
-						</xsl:choose>
-									
-					</div>
+					
+					<xsl:if test="$is_ada = '0'">
+						<xsl:call-template name="folder_options" />
+					</xsl:if>
 					
 					<xsl:call-template name="sort_bar" />
 					
 					<xsl:call-template name="folder_records_table" />
+
+					<xsl:if test="$is_ada = '1'">
+						<xsl:call-template name="folder_options" />
+					</xsl:if>
 					
 					<input type="hidden" name="return" value="{//request/server/request_uri}" />
 				
@@ -180,6 +158,45 @@
 	</xsl:template>
 
 	<!-- 
+		TEMPLATE: FOLDER OPTIONS
+		folder action controls
+	-->
+	
+	<xsl:template name="folder_options">
+	
+		<div class="folder-options">
+						
+			<xsl:call-template name="folder_export_options" />
+			
+			<xsl:choose>
+				<xsl:when test="request/facet_label">
+					
+					<div>
+						<span style="margin-right: 1em">
+							<xsl:call-template name="folder_delete" />
+						</span>
+						<span>
+							<xsl:call-template name="folder_remove_tags" />
+						</span>
+					</div>
+					
+				</xsl:when>
+				<xsl:otherwise>
+			
+					<xsl:call-template name="folder_tag_group_assign" />
+					
+					<div>
+						<xsl:call-template name="folder_delete" />
+					</div>
+					
+				</xsl:otherwise>
+			</xsl:choose>
+						
+		</div>
+	
+	</xsl:template>
+
+	<!-- 
 		TEMPLATE: FOLDER EXPORT OPTIONS
 		the export select control and button 
 	-->
@@ -188,9 +205,9 @@
 	
 		<div class="export">
 		
-			Export options: <xsl:text> </xsl:text>
+			<label for="folder-output">Export options: <xsl:text> </xsl:text></label>
 			
-			<select name="output" class="selectpicker">
+			<select id="folder-output" name="output" class="selectpicker">
 			
 				<xsl:for-each select="config/export_options/option">
 				
@@ -219,9 +236,9 @@
 	
 			<div class="assign">
 				
-				Add label to records: 
+				<label for="folder-label">Add label to records:</label>
 				
-				<input type="text" name="tag" data-provide="typeahead" autocomplete="off">
+				<input id="folder-label" type="text" name="tag" data-provide="typeahead" autocomplete="off">
 					<xsl:attribute name="data-source">				
 						<xsl:text>[</xsl:text>
 						<xsl:for-each select="//facets/groups/group[name='label']/facets/facet">

@@ -72,7 +72,7 @@
 	
 	<xsl:variable name="is_ada">
 		<xsl:choose>
-			<xsl:when test="not(request/session/ada)">1</xsl:when>
+			<xsl:when test="request/session/ada">1</xsl:when>
 			<xsl:otherwise>0</xsl:otherwise>
 		</xsl:choose>
 	</xsl:variable>
