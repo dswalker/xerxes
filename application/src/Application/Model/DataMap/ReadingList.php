@@ -28,7 +28,7 @@ class ReadingList extends DataMap
 	{
 		if ( count($record_array) > 0 )
 		{
-			$already_assigned_array = $this->getCourseRecordIDs();;
+			$already_assigned_array = $this->getRecordIDs();;
 			
 			$this->beginTransaction();
 			
@@ -53,7 +53,7 @@ class ReadingList extends DataMap
 	{
 		if ( count($reorder_array) > 0 )
 		{
-			$already_assigned_array = $this->getCourseRecordIDs();
+			$already_assigned_array = $this->getRecordIDs();
 			
 			$this->beginTransaction();
 			
@@ -85,9 +85,9 @@ class ReadingList extends DataMap
 	
 	public function getRecords()
 	{
-		if ( $this->hasCourseRecords() )
+		if ( $this->hasRecords() )
 		{
-			$ids = $this->getCourseRecordIDs();
+			$ids = $this->getRecordIDs();
 			
 			$records_datamap = new SavedRecords();
 			

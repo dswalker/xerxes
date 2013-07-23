@@ -13,21 +13,27 @@ namespace Application\Controller;
 
 use Application\Model\DataMap\ReadingList;
 use Application\Model\Saved\Engine;
-use Application\Model\Search\Query;
+use Application\Model\Saved\ReadingList\Engine as ListEngine;
 use Xerxes\Lti;
 use Xerxes\Utility\Parser;
-use Xerxes\Utility\Registry;
-use Xerxes\Mvc\ActionController;
 
-class CoursesController extends ActionController
+class CoursesController extends SearchController
 {
 	protected $registry; // registry
 	protected $reading_list; // data map
 	protected $context; // lti context object
 	
-	public function __construct()
+	public function __construct($event)
 	{
-		$this->registry = Registry::getInstance();
+		parent::__construct($event);
+		
+		// don't show the header in courses (including errors)
+		
+		$this->response->setVariable('no_header', 'true');
+		
+		//testing
+		
+		$this->response->setVariable('lti', array('instructor' => true));
 	}	
 
 	public function indexAction()
@@ -54,7 +60,7 @@ class CoursesController extends ActionController
 		{
 			$params = array(
 				'controller' => 'courses',
-				'action' => 'display',
+				'action' => 'results',
 			);
 		}
 		else
@@ -66,24 +72,26 @@ class CoursesController extends ActionController
 		}
 		
 		// redirect from above
-
-		$url = $this->request->url_for($params);
-		$this->redirectTo($url);
-	}
-	
-	public function registerAction()
-	{
-		$this->indexAction();
+		
+		return $this->redirectTo($params);
 	}
 	
 	public function selectAction()
 	{
 		$engine = new Engine();
 		
-		$query = new Query();
-		$query->addTerm('username', null, 'query', null, $this->request->getSessionData('username'));
+		$query = $engine->getQuery($this->request);
+		$username = $this->request->getSessionData('username');
+		
+		$query->addTerm('username', null, 'query', null, $username);
 		
 		$results = $engine->searchRetrieve($query, 1, 500);
+		
+		// echo '<pre>' . print_r($results) . '</pre>'; exit;
+				
+		$this->response->setVariable('results', $results);
+		
+		return $this->response;
 	}
 	
 	public function assignAction()
@@ -99,14 +107,14 @@ class CoursesController extends ActionController
 			$this->readinglist()->assignRecords($record_array);
 		}
 	
-		// construct return url back to reading list for display
+		// construct return url back to reading list for results
 	
 		$params = array(
 			'controller' => 'courses',
-			'action' => 'display'
+			'action' => 'results'
 		);
 		
-		$this->redirectTo($this->request->url_for($params));
+		return $this->redirectTo($params);
 	}	
 	
 	public function reorderAction()
@@ -121,18 +129,18 @@ class CoursesController extends ActionController
 	
 		if ( $this->request->getParam("noredirect") == "" )
 		{
-			// construct return url back to reading list for display
+			// construct return url back to reading list for results
 			
 			$params = array(
 				'controller' => 'courses',
-				'action' => 'display'
+				'action' => 'results'
 			);
 			
-			$this->redirectTo($this->request->url_for($params));
+			return $this->redirectTo($params);
 		}
 		else
 		{
-			echo "good!"; // @todo why?
+			$this->response->noView();
 		}
 	}
 	
@@ -144,29 +152,31 @@ class CoursesController extends ActionController
 	
 		if ( $record_id != "" )
 		{
-			$this->readinglist()->removeCourseRecord($record_id);
+			$this->readinglist()->removeRecord($record_id);
 		}
 	
 		// return to reading list
 	
 		$params = array(
 			'base' => 'courses',
-			'action' => 'display'
+			'action' => 'results'
 		);
 		
-		$this->redirectTo($this->request->url_for($params));
+		return $this->redirectTo($params);
 	}
 	
-	public function displayAction()
+	public function resultsAction()
 	{
-		if ( $this->readinglist()->hasCourseRecords() )
+		if ( $this->readinglist()->hasRecords() )
 		{
-			return $this->readinglist()->getCourseRecords();
+			return parent::resultsAction();
 		}
 	}	
 		
 	/**
 	 * Lazyload reading list
+	 * 
+	 * @return ReadingList
 	 */
 	
 	protected function readinglist()
@@ -182,7 +192,8 @@ class CoursesController extends ActionController
 	
 	/**
 	 * Lazyload Basic LTI 
-	 * @throws \Exception
+	 * 
+	 * @return Lti\Basic;
 	 */
 
 	protected function lti()
@@ -210,5 +221,25 @@ class CoursesController extends ActionController
 		$username = Parser::removeRight($username, '@');
 		
 		return $username;
+	}
+	
+	/**
+	 * Override: Don't check spelling, since there's nothing to check
+	 * 
+	 * (non-PHPdoc)
+	 * @see Application\Controller.SearchController::checkSpelling()
+	 */
+	
+	protected function checkSpelling()
+	{
+	}
+	
+	/**
+	 * @return Engine
+	 */
+	
+	protected function getEngine()
+	{
+		return new ListEngine($this->lti());
 	}
 }

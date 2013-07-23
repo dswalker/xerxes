@@ -11,7 +11,7 @@ function highlight()
 		});
 
 	$(".reading-list-item").mouseout(function() {
-			$(this).removeClass("list-highlight");
+			$(this).removeClass("reading-list-highlight");
 			$(this).children(".reading-list-item-action").css('visibility', 'hidden');
 		});
 }
