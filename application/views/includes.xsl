@@ -224,6 +224,9 @@
 		page header
 	-->
 	<xsl:template name="surround_hd">
+	
+		<xsl:if test="not(no_header)">
+	
 			<div id="hd" data-role="header">
 				<xsl:choose>
 					<xsl:when test="$is_mobile = '1'">
@@ -234,6 +237,9 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</div>
+			
+		</xsl:if>
+		
 	</xsl:template>
 	
 	<!-- 
@@ -278,32 +284,37 @@
 	
 	<xsl:template name="surround_bd_top">
 		
-		<div id="bd-top">
 		
-			<div class="row-fluid">
-				<div class="span6">	
-	
-					<!-- breadcrumbs -->
-	
-					<div class="trail">
-						<xsl:call-template name="breadcrumb" />
-					</div>
-	
-				</div>
-				
-				<div class="span6">
-				
-					<!-- my account -->
-				
-					<div class="account">
-						<xsl:call-template name="account_options" />
+		<xsl:if test="not(no_header)">
+		
+			<div id="bd-top">
+			
+				<div class="row-fluid">
+					<div class="span6">	
+		
+						<!-- breadcrumbs -->
+		
+						<div class="trail">
+							<xsl:call-template name="breadcrumb" />
+						</div>
+		
 					</div>
 					
+					<div class="span6">
+					
+						<!-- my account -->
+					
+						<div class="account">
+							<xsl:call-template name="account_options" />
+						</div>
+						
+					</div>
+		
 				</div>
-	
+				
 			</div>
 			
-		</div>
+		</xsl:if>
 	
 	</xsl:template>
 	
