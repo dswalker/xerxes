@@ -63,10 +63,7 @@
 				</xsl:choose>
 				
 			</xsl:for-each>
-				
-			<!-- tag input -->
 			
-			<xsl:call-template name="hidden_tag_layers" />
 		</div>
 	</xsl:template>
 	

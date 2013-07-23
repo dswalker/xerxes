@@ -413,7 +413,7 @@
 	</xsl:template>
 	
 	<!--
-		TEMPLATE: SIMPLE SEARCH
+		TEMPLATE: SIMPLE SEARCH NO FIELD
 	-->
 	
 	<xsl:template name="simple_search_nofield">
@@ -425,7 +425,7 @@
 	
 			<div class="search-row">
 				
-				<input id="query" name="query" type="text" size="52" value="{$query}" /><xsl:text> </xsl:text>
+				<input id="query" name="query" type="text" size="52" value="{$query}" title="enter search terms" /><xsl:text> </xsl:text>
 				
 				<input type="submit" name="Submit" value="Search" class="btn submit-searchbox{$language_suffix}" />
 			
