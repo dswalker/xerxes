@@ -17,13 +17,25 @@ use Application\Model\Saved\ReadingList\Engine as ListEngine;
 use Xerxes\Lti;
 use Xerxes\Utility\Parser;
 
+/**
+ * Actions for creating and editing a reading list
+ *
+ * @author David Walker <dwalker@calstate.edu>
+ */
+
 class CoursesController extends SearchController
 {
 	protected $registry; // registry
 	protected $reading_list; // data map
 	protected $context; // lti context object
 	
-	public function __construct($event)
+	/**
+	 * New Courses Controller
+	 * 
+	 * @param MvcEvent $event
+	 */
+	
+	public function __construct(MvcEvent $event)
 	{
 		parent::__construct($event);
 		
@@ -34,8 +46,12 @@ class CoursesController extends SearchController
 		//testing
 		
 		$this->response->setVariable('lti', array('instructor' => true));
-	}	
-
+	}
+	
+	/**
+	 * Register the LTI request in session and authenticate the user
+	 */
+	
 	public function indexAction()
 	{
 		$key = $this->registry->getConfig('BLTI_KEY', true);
@@ -76,6 +92,10 @@ class CoursesController extends SearchController
 		return $this->redirectTo($params);
 	}
 	
+	/**
+	 * Select previously saved records for inclusion in the reading list
+	 */
+	
 	public function selectAction()
 	{
 		$engine = new Engine();
@@ -93,6 +113,10 @@ class CoursesController extends SearchController
 		
 		return $this->response;
 	}
+	
+	/**
+	 * Assign saved records to the reading list
+	 */
 	
 	public function assignAction()
 	{
@@ -117,6 +141,10 @@ class CoursesController extends SearchController
 		return $this->redirectTo($params);
 	}	
 	
+	/**
+	 * Reorder records in the reading list
+	 */
+	
 	public function reorderAction()
 	{
 		// get the ids that were selected for export
@@ -140,14 +168,22 @@ class CoursesController extends SearchController
 		}
 		else
 		{
-			$this->response->noView();
+			$this->response->noView(); // ajax action, no need for a view
 		}
 	}
+	
+	/**
+	 * Alias for remove action
+	 */
 	
 	public function saveAction()
 	{
 		return $this->removeAction();
 	}
+	
+	/**
+	 * Remove the selected record from the reading list
+	 */
 	
 	public function removeAction()
 	{
@@ -169,6 +205,10 @@ class CoursesController extends SearchController
 		
 		return $this->redirectTo($params);
 	}
+	
+	/**
+	 * Records that are in this reading list
+	 */
 	
 	public function resultsAction()
 	{
