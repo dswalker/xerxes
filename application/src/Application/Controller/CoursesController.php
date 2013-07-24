@@ -15,6 +15,7 @@ use Application\Model\DataMap\ReadingList;
 use Application\Model\Saved\Engine;
 use Application\Model\Saved\ReadingList\Engine as ListEngine;
 use Xerxes\Lti;
+use Xerxes\Mvc\MvcEvent;
 use Xerxes\Utility\Parser;
 
 /**
@@ -54,15 +55,6 @@ class CoursesController extends SearchController
 	
 	public function indexAction()
 	{
-		$key = $this->registry->getConfig('BLTI_KEY', true);
-		$secret = $this->registry->getConfig('BLTI_SECRET', true);
-	
-		$lti = new Lti\Basic($key, $secret);
-	
-		// save the data in session
-	
-		$this->request->setSessionData('blti', serialize($lti));
-		
 		// save username in session
 		
 		// @todo: this needs to be folded into the authentication framework or something
@@ -245,11 +237,25 @@ class CoursesController extends SearchController
 	{
 		if ( ! $this->context instanceof Lti\Basic )
 		{
+			// we already saved it previously
+			
 			$this->context = unserialize($this->request->getSessionData("blti"));
 			
 			if ( ! $this->context instanceof Lti\Basic )
 			{
-				throw new \Exception("no course session");
+				$key = $this->registry->getConfig('BLTI_KEY', true);
+				$secret = $this->registry->getConfig('BLTI_SECRET', true);
+					
+				$this->context = new Lti\Basic($key, $secret);
+					
+				// save the data in session
+					
+				$this->request->setSessionData('blti', serialize($this->context));
+				
+				if ( ! $this->context instanceof Lti\Basic )
+				{
+					throw new \Exception("no course session");
+				}
 			}
 		}
 		
