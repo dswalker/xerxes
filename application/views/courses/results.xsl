@@ -92,6 +92,7 @@
 		
 	<xsl:if test="//lti/instructor = '1'">
 		<div class="reading-list-header">
+
 			<img src="{$base_url}/images/famfamfam/add.png" alt="" /> <xsl:text> </xsl:text>
 			<a href="courses/select">Add records</a>
 		</div>
@@ -112,7 +113,7 @@
 					<div class="reading-list-item-action">
 						<img src="{$base_url}/images/famfamfam/arrow_out.png" alt="" />
 						<div style="position: absolute; top: 0px; right: 10px">
-							<a href="{../url_delete}"><img src="{$base_url}/images/delete.gif" alt="" /><xsl:text> </xsl:text>Remove</a>
+							<a href="{../url_save_delete}"><img src="{$base_url}/images/delete.gif" alt="" /><xsl:text> </xsl:text>Remove</a>
 						</div>
 					</div>
 				
@@ -130,7 +131,7 @@
 				<div>
 					<xsl:value-of select="journal" />
 				</div>
-				<div style="color: #444; font-size: 90%; margin: 1em">
+				<div style="color: #555; font-size: 95%; margin-top: 1em">
 					<xsl:value-of select="abstract" />
 				</div>				
 				

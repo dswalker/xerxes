@@ -144,11 +144,16 @@ class CoursesController extends SearchController
 		}
 	}
 	
+	public function saveAction()
+	{
+		return $this->removeAction();
+	}
+	
 	public function removeAction()
 	{
 		// get the ids that were selected for export
 	
-		$record_id = $this->request->getParam("record");
+		$record_id = $this->request->getParam("id");
 	
 		if ( $record_id != "" )
 		{
@@ -158,7 +163,7 @@ class CoursesController extends SearchController
 		// return to reading list
 	
 		$params = array(
-			'base' => 'courses',
+			'controller' => 'courses',
 			'action' => 'results'
 		);
 		
