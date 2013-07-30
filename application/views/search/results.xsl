@@ -40,10 +40,29 @@
 	<xsl:template name="breadcrumb_search">
 
 		<xsl:call-template name="breadcrumb_start" />
+		
+		<xsl:choose>
+			<xsl:when test="config/search/combined_url">
+			
+				<a href="{config/search/combined_url}">
+					<xsl:value-of select="$text_search_combined" />
+				</a>
+				
+				<xsl:value-of select="$text_breadcrumb_separator" />
+				
+				<a href="{request/controller}">
+					<xsl:value-of select="//option[@current=1]/@public" />
+				</a>
+			
+			</xsl:when>
+			<xsl:otherwise>
 	
-		<a href="{//request/controller}">
-			<xsl:value-of select="$text_search_module" />
-		</a>
+				<a href="{request/controller}">
+					<xsl:value-of select="$text_search_module" />
+				</a>
+				
+			</xsl:otherwise>
+		</xsl:choose>
 		
 		<xsl:value-of select="$text_breadcrumb_separator" />
 		

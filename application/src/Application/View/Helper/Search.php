@@ -552,6 +552,23 @@ class Search
 		{
 			$controller_map = $this->request->getControllerMap();
 			
+			// combined results
+			
+			$combined  = $controller_map->getUrlAlias('combined');
+			$combined_id = $combined . '_' . $query->getHash();
+			
+			if ( $this->request->getSessionData($combined_id) != null )
+			{
+				$params = $query->extractSearchParams();
+					
+				$params['controller'] = $combined;
+				$params['action'] = "results";
+					
+				$search->combined_url = $this->request->url_for($params);
+			}
+			
+			// individual search options
+			
 			foreach ( $search->xpath("//option") as $option )
 			{
 				$id = (string) $option["id"];
@@ -574,11 +591,6 @@ class Search
 				   	// mark as current
 					
 					$option->addAttribute('current', "1");
-				    	
-				   	// keep the current url, too, minus the start #
-				    	
-				   	$params = $this->request->getParams();
-				   	$params['start'] = null;
 				}
 				
 				// create url based on the search terms only!
@@ -609,6 +621,8 @@ class Search
 					}
 				}
 			}
+			
+			// header('Content-type: text/xml'); echo $search->asXML(); exit;
 			
 			$this->registry->setConfig('search', $search);
 		}

@@ -34,8 +34,15 @@
 </xsl:template>
 
 <xsl:template name="breadcrumb">
-	<xsl:call-template name="breadcrumb_search" />
+	
+	<a href="{request/controller}">
+		<xsl:value-of select="$text_search_module" />
+	</a>
+	
+	<xsl:value-of select="$text_breadcrumb_separator" />
+	
 	<xsl:value-of select="$text_search_results" />
+	
 </xsl:template>
 
 <xsl:template name="module_header">

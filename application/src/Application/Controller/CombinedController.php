@@ -48,7 +48,7 @@ class CombinedController extends ActionController
 		// for breadcrumbs and such
 		
 		$query = new Query($this->request);
-		$this->request->setSessionData('combined_' . $query->getHash(), $this->request->getRequestUri());
+		$this->request->setSessionData( $this->id . '_' . $query->getHash(), true);
 		
 		// these so the search engine controller thinks it's not a 'combined' request
 		
