@@ -13,7 +13,7 @@ namespace Application\Controller;
 
 use Application\Model\Availability\Innopac\Config;
 
-class LinkplusController extends SolrController
+class InnovativeController extends SolrController
 {
 	protected $server;
 	
