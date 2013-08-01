@@ -11,58 +11,36 @@
 
 namespace Application\Controller;
 
-use Application\Model\Availability\Innopac\Config;
+use Application\Model\Solr\Engine;
 
-class InnovativeController extends SolrController
+use Application\Model\Innovative\Link;
+
+class InnovativeController extends LinkController
 {
-	protected $server;
-	
-	protected function init()
+	protected function getEngine()
 	{
-		parent::init();
+		$server = $this->registry->getConfig('INNREACH_HOST');
 		
-		$this->server = $this->config->getConfig('INNREACH_HOST', false, 'csul.iii.com');
+		return new Link($server);
 	}
 	
 	public function recordAction()
 	{
-		$model = parent::recordAction();
+		$library = $this->request->getParam("library");
+		$id = $this->request->getParam("id");
 		
-		$results = $model->results;
-		
-		$record = $results->getRecord(0);
+		$solr = new Engine();
+		$record = $solr->getRecord($id);
 		
 		if ( $record == null )
 		{
 			throw new \Exception('Could not fetch record');
 		}
 		
-		$library = $this->request->getParam("library");
-		$id = $this->request->getParam("id");
-		
 		$title = urlencode($record->getXerxesRecord()->getTitle());
 		
 		$url = 'http://' . $this->server . "/search/z?9$library+$id&title=$title";
 		
 		return $this->redirectTo($url);
-	}
-	
-	public function resultsAction()
-	{
-		$field = $this->request->getParam("field");
-		$query = $this->request->getParam("query");
-		
-		$index = "X";
-		
-		switch($field)
-		{
-			case "title": $index = "t"; break;
-			case "subject": $index = "d"; break;
-			case "author": $index = "a"; break;
-		}
-		
-		$url = 'http://' . $this->server . "/search/$index?SEARCH=" . urlencode($query);
-		
-		return $this->redirectTo($url);		
 	}
 }
