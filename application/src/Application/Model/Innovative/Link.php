@@ -13,7 +13,7 @@ namespace Application\Model\Innovative;
 
 use Application\Model\Search\LinkInterface;
 use Application\Model\Search\Query;
-use Xerxes\Utility\HttpClient;
+use Xerxes\Utility\Factory;
 
 /**
  * Innovative link search engine
@@ -35,7 +35,7 @@ class Link implements LinkInterface
 		$total = 0;
 		$url = $this->getUrl($query);
 		
-		$client = new HttpClient();
+		$client = Factory::getHttpClient();
 		$response = $client->getUrl($url);
 		
 		// extract the total number of hits in the results page;
