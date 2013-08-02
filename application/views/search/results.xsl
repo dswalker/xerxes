@@ -120,6 +120,13 @@
 			<div class="row-fluid">
 			
 				<xsl:choose>
+				
+					<xsl:when test="$sidebar = 'none' or $is_mobile = 1">
+					
+						<xsl:call-template name="search_results_area" />
+						
+					</xsl:when>				
+				
 					<xsl:when test="$sidebar = 'right'">
 						
 						<div class="span{$results_width}">
@@ -144,11 +151,7 @@
 						</div>
 											
 					</xsl:when>
-					<xsl:when test="$sidebar = 'none' or $is_mobile = 1">
-					
-						<xsl:call-template name="search_results_area" />
-						
-					</xsl:when>
+
 				</xsl:choose>		
 
 			</div>
