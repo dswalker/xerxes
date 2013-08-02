@@ -40,14 +40,9 @@ class Query extends Search\Query
 		
 		if ( $sites != null )
 		{
-			$limit = '';
+			$limit = str_replace(',', ' OR ', $sites);
 			
-			foreach ( explode(',', $sites) as $site )
-			{
-				$limit .= "site:$site ";
-			}
-			
-			$query .= "$query ($limit)";
+			$query .= "($limit)";
 		}
 		
 		return trim($query);
