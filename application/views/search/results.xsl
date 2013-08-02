@@ -233,7 +233,7 @@
 		TEMPLATE: SORT BAR
 	-->
 
-	<xsl:template name="sort_bar">	
+	<xsl:template name="sort_bar">
 	
 		<div id="sort">
 		
@@ -243,9 +243,10 @@
 					<div class="span5">
 						<xsl:copy-of select="$text_metasearch_results_summary" />
 					</div>
+					
 					<div class="span7">
 						<xsl:choose>
-							<xsl:when test="//sort_display">
+							<xsl:when test="//sort_display and $is_mobile = '0'">
 								<div id="sort-options" data-role="controlgroup" data-type="horizontal" data-mini="true">
 									<xsl:copy-of select="$text_results_sort_by" /><xsl:text>: </xsl:text>
 									<xsl:for-each select="//sort_display/option">
