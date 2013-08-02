@@ -222,10 +222,6 @@
 		<div id="loading" style="display:none">
 			<img src="{$base_url}/images/ajax-loader.gif" alt="" /> Updating results . . . 
 		</div>
-		
-		<div id="facet-selector" style="display:none; position:absolute; background-color: #fff">
-			<iframe id="facet-selector-page" style="width: 100%; height: 100%" />
-		</div>			
 	
 	</xsl:template>
 
@@ -1303,26 +1299,6 @@
 			<xsl:call-template name="tags_display" />
 		</div>
 		
-		<xsl:call-template name="safari_tag_fix" />
-		
-	</xsl:template>
-
-	<!-- 
-		TEMPLATE: SAFARI TAG FIX
-		This hidden iframe essentially thwarts the Safari backforward cache so that
-		tags don't get wacky
-	-->
-	
-	<xsl:template name="safari_tag_fix">
-		
-		<xsl:if test="contains(//server/http_user_agent,'Safari')">
-		
-			<iframe style="height:0px;width:0px;visibility:hidden" src="about:blank">
-				<!-- this frame prevents back-forward cache for safari -->
-			</iframe>
-			
-		</xsl:if>
-	
 	</xsl:template>
 
 	<!-- 
