@@ -268,7 +268,7 @@
 					</div>
 
 				
-					<xsl:if test="$sidebar != 'none' and $is_mobile != '1'">
+					<xsl:if test="$sidebar != 'none' and $is_mobile = '0'">
 						<xsl:call-template name="sidebar_wrapper" />
 					</xsl:if>
 					
