@@ -118,6 +118,22 @@ class FolderController extends SearchController
 		return parent::resultsAction();
 	}
 	
+	public function recordAction()
+	{
+		$response = parent::recordAction();
+		
+		$results = $this->response->getVariable('results');
+		
+		if ( $results->getRecord(0)->getXerxesRecord() instanceof Solr\Record )
+		{
+			$response->setView('folder/books/record.xsl');
+			
+			$response->setVariable('folder_config', Solr\Config::getInstance());
+		}
+		
+		return $response;
+	}
+	
 	/**
 	 * Assign label to a record
 	 */

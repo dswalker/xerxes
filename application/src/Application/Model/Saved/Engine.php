@@ -90,7 +90,7 @@ class Engine extends Search\Engine
 		{
 			try
 			{
-				$engine = new Solr\Engine;
+				$engine = new Solr\Engine();
 		
 				$solr_results = $engine->getRecord($result->original_id);
 				$holdings = $solr_results->getRecord(0)->getHoldings();
