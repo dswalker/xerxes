@@ -545,9 +545,9 @@
 		<xsl:choose>
 			<xsl:when test="$is_mobile = '1'">
 				
-				<link rel="stylesheet" href="//code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.css" />
-				<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js" type="text/javascript" ></script>	
-				<script src="//code.jquery.com/mobile/1.1.0-rc.1/jquery.mobile-1.1.0-rc.1.min.js"></script>
+				<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.css" />
+				<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+				<script src="http://code.jquery.com/mobile/1.3.2/jquery.mobile-1.3.2.min.js"></script>
 				
 				<link href="{$base_include}/css/xerxes-mobile.css?version={$asset_version}" rel="stylesheet" type="text/css" />	
 				<link href="{$base_url}/css/local-mobile.css?version={$asset_version}" rel="stylesheet" type="text/css" />	
