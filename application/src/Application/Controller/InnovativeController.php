@@ -19,7 +19,7 @@ class InnovativeController extends LinkController
 {
 	protected function getEngine()
 	{
-		$server = $this->registry->getConfig('INNREACH_HOST');
+		$server = $this->registry->getConfig('INNREACH_HOST', false, 'csul.iii.com');
 		
 		return new Link($server);
 	}
