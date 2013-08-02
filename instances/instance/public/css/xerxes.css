@@ -19,12 +19,15 @@ h1, h2, h3, h4 {
 	color: #000;
 	margin-bottom: .6em;
 	font-weight: normal;
+	margin-bottom: 1.2em;
+	margin-top: 1.5em;
+	line-height: normal;
 }
 
 h1 { 
 	font-size: 180%;
 	line-height: inherit;
-	margin-bottom: 1em;
+	margin-top: 0;
 }
 
 h2 { 
@@ -726,11 +729,6 @@ div.autocomplete ul li {
 	border: 1px solid #ccc;
 	border-radius: 8px;
 	padding: .5em;
-}
-
-#search-sidebar h3.facet-expand-header  {
-	line-height: none;
-	margin-top:0;
 }
 
 #fullscreen {
