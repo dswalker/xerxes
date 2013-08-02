@@ -712,7 +712,7 @@ class Request extends HttpFoundation\Request
 		
 		// is it supposed to be a full url?
 		
-		if ( $full == true )
+		if ( $full == true || $this->getSessionData('is_mobile') == '1') // always do full url for mobile
 		{
 			$base = $this->getServerUrl($force_secure) . $this->getBasePath() . '/';
 			$url = $base .= $url;
