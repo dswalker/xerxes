@@ -315,11 +315,6 @@ function updateRecord( record )
 			}
 			
 			$(record).addClass("saved");
-			
-			if ( ! isTemporarySession && savedID )
-			{
-				// @todo: add tag input?
-			}
 		}
 		
 		$(record).removeClass("disabled");
