@@ -33,7 +33,7 @@ class Xerxes_TransRecord
 		$this->record()->setRecordID($id);
 	}
 	
-	protected function record()
+	public function record()
 	{
 		if ( ! is_object($this->record) )
 		{

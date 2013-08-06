@@ -13,6 +13,7 @@ namespace Application\Model\Saved;
 
 use Application\Model\Search;
 use Application\Model\Metalib;
+use Xerxes;
 use Xerxes\Utility\DataValue;
 
 /**
@@ -44,6 +45,12 @@ class Result extends Search\Result
 		elseif ( $record instanceof \Xerxes_TransRecord )
 		{
 			$record = $record->record(); // extract the x2 record
+		}
+		
+		if ( ! $record instanceof Xerxes\Record )
+		{
+			$record = new Xerxes\Record();
+			$record->setProperties(array('title' => '[Sorry, this record is corrupted]'));
 		}
 		
 		parent::__construct($record, $config);

@@ -15,6 +15,7 @@ use Application\Model\Search;
 use Application\Model\Search\ResultSet;
 use Application\Model\Solr;
 use Application\Model\DataMap\SavedRecords;
+use Xerxes;
 use Xerxes\Mvc\Request;
 
 /**
@@ -244,11 +245,12 @@ class Engine extends Search\Engine
 	
 	protected function createSearchResult(Record $record)
 	{
+		$result = new Result($record->xerxes_record, $this->config);
+		
 		// set the internal id as the record id, not the original
 		
-		$record->xerxes_record->setRecordID($record->id);
+		$result->xerxes_record->setRecordID($record->id);
 		
-		$result = new Result($record->xerxes_record, $this->config);
 		$result->id = $record->id;
 		$result->username = $record->username;
 		$result->source = $record->source;
