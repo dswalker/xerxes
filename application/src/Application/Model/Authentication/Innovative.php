@@ -11,7 +11,8 @@
 
 namespace Application\Model\Authentication;
 
-use Xerxes\Mvc\AccessDeniedException;
+use Xerxes\Mvc\Exception\AccessDeniedException;
+use Xerxes\Utility\Factory;
 use Xerxes\Utility\Parser;
 use Xerxes\Mvc\Request;
 
@@ -179,7 +180,9 @@ class Innovative extends Scheme
 		
 		// get the data and strip out html tags
 		
-		$strResponse = Parser::request($url);
+		$client = Factory::getHttpClient();
+		
+		$strResponse = $client->getUrl($url);
 		$strResponse = trim(strip_tags($strResponse));
 		
 		if ( $strResponse == "" )

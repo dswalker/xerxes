@@ -35,7 +35,10 @@ class HttpClient extends Client
 	{
 		$config = array
 		(
-			'curl.options' => array(CURLOPT_TIMEOUT => $timeout),
+			'curl.options' => array(
+				CURLOPT_TIMEOUT => $timeout,
+				CURLOPT_SSL_VERIFYPEER => false
+			),
 		);
 		
 		$this->setConfig($config);
