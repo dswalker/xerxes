@@ -511,31 +511,40 @@
 	-->
 	
 	<xsl:template name="search_modules">
-		
-		<xsl:if test="config/search">
-		
-			<div>
-				<xsl:choose>
-					<xsl:when test="config/use_tabs = 'true'">
-						<xsl:attribute name="id">tabnav</xsl:attribute>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:attribute name="id">search-modules</xsl:attribute>
-					</xsl:otherwise>
-				</xsl:choose>
+	
+		<xsl:choose>
+			<xsl:when test="config/search and config/search/column/option[@tab = 'true' and @current = '1']">
 			
-				<!-- <h2>Search Options</h2> -->
+				<div>
+					<xsl:choose>
+						<xsl:when test="config/use_tabs = 'true'">
+							<xsl:attribute name="id">tabnav</xsl:attribute>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:attribute name="id">search-modules</xsl:attribute>
+						</xsl:otherwise>
+					</xsl:choose>
 				
-				<xsl:for-each select="config/search">
-					<ul>
-						<xsl:call-template name="search_module" />
-					</ul>
-					<div style="clear:both"></div>
-				</xsl:for-each>
+					<!-- <h2>Search Options</h2> -->
+					
+					<xsl:for-each select="config/search">
+						<ul>
+							<xsl:call-template name="search_module" />
+						</ul>
+						<div style="clear:both"></div>
+					</xsl:for-each>
+					
+				</div>
+			
+			</xsl:when>
+			<xsl:when test="config/search">
 				
-			</div>
+				<h2><xsl:value-of select="//option[@current = '1']/@public" /></h2>
+				
+			</xsl:when>	
+			
+		</xsl:choose>
 		
-		</xsl:if>
 	</xsl:template>
 	
 
