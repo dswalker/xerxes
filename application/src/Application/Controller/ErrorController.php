@@ -32,7 +32,7 @@ class ErrorController extends ActionController
     	
     	// only include location and trace if reporting is turned on
     	
-    	if ( error_reporting() == E_ALL )
+    	if ( ini_get('display_errors') ==  1 )
     	{
     		$error['line'] = $line;
     		$error['trace'] = $trace;
