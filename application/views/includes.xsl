@@ -497,6 +497,12 @@
 		<script src="{$base_include}/javascript/flot/jquery.flot.min.js" type="text/javascript" ></script>
 		<script src="{$base_include}/javascript/flot/jquery.flot.time.min.js?version={$asset_version}"  type="text/javascript"></script>
 		
+		<xsl:comment><![CDATA[[if lte IE 8]>]]>
+		
+			&lt;script language="javascript" type="text/javascript" src="<xsl:value-of select="$base_include"/>/javascript/flot/excanvas.min.js"&gt;&lt;/script&gt;
+			
+		<![CDATA[[endif]>]]></xsl:comment>
+		
 		<script src="{$base_include}/javascript/bootstrap-select.min.js?version={$asset_version}"  type="text/javascript"></script>
 		
 		<xsl:call-template name="module_javascript" />
