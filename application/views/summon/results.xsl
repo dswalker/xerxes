@@ -136,6 +136,12 @@
 		</xsl:if>		
 	</xsl:variable>
 
+	<xsl:variable name="peer">
+		<xsl:if test="//request/*[@original_key = 'facet.IsPeerReviewed']">
+			<xsl:text>true</xsl:text>
+		</xsl:if>		
+	</xsl:variable>
+
 	<xsl:variable name="fulltext">
 		<xsl:if test="//request/*[@original_key = 'facet.IsFullText']">
 			<xsl:text>true</xsl:text>
@@ -159,7 +165,7 @@
 	<form id="form-facet-0" action="{//request/controller}/search" method="get">
 
 		<xsl:call-template name="hidden_search_inputs">
-			<xsl:with-param name="exclude_limit">facet.IsScholarly,facet.IsFullText,facet.holdings,facet.newspapers</xsl:with-param>
+			<xsl:with-param name="exclude_limit">facet.IsScholarly,facet.IsPeerReviewed,facet.IsFullText,facet.holdings,facet.newspapers</xsl:with-param>
 		</xsl:call-template>
 		
 		<ul>
@@ -180,29 +186,49 @@
 				
 			</xsl:if>		
 			
-			<li class="facet-selection">
+			<xsl:if test="not(//config/show_scholarly_limit) or //config/show_scholarly_limit = 'true'">
 			
-				<input type="checkbox" id="facet-0-1" class="facet-selection-option facet-0" name="facet.IsScholarly" value="true">
-					<xsl:if test="$scholarly = 'true'">
-						<xsl:attribute name="checked">checked</xsl:attribute>
-					</xsl:if>
-				</input>
-				<xsl:text> </xsl:text>
-				<label for="facet-0-1">Scholarly only</label>
+				<li class="facet-selection">
+				
+					<input type="checkbox" id="facet-0-1" class="facet-selection-option facet-0" name="facet.IsScholarly" value="true">
+						<xsl:if test="$scholarly = 'true'">
+							<xsl:attribute name="checked">checked</xsl:attribute>
+						</xsl:if>
+					</input>
+					<xsl:text> </xsl:text>
+					<label for="facet-0-1">Scholarly only</label>
+				
+				</li>
 			
-			</li>
+			</xsl:if>
+
+			<xsl:if test="//config/show_peer_reviewed_limit = 'true'">
+	
+				<li class="facet-selection">
+				
+					<input type="checkbox" id="facet-0-2" class="facet-selection-option facet-0" name="facet.IsPeerReviewed" value="true">
+						<xsl:if test="$peer = 'true'">
+							<xsl:attribute name="checked">checked</xsl:attribute>
+						</xsl:if>
+					</input>
+					<xsl:text> </xsl:text>
+					<label for="facet-0-2">Peer-reviewed only</label>
+				
+				</li>
+				
+			</xsl:if>
 			
 			<xsl:if test="not(//config/show_fulltext_limit) or //config/show_fulltext_limit = 'true'">
 		
 				<li class="facet-selection">
 				
-					<input type="checkbox" id="facet-0-2" class="facet-selection-option facet-0" name="facet.IsFullText" value="true">
+					<input type="checkbox" id="facet-0-3" class="facet-selection-option facet-0" name="facet.IsFullText" value="true">
 						<xsl:if test="$fulltext = 'true'">
 							<xsl:attribute name="checked">checked</xsl:attribute>
 						</xsl:if>
 					</input>
 					<xsl:text> </xsl:text>
-					<label for="facet-0-2">Full-text only</label>
+					<label for="facet-0-3">Full-text only</label>
 				
 				</li>
 			
@@ -212,13 +238,13 @@
 	
 				<li class="facet-selection">
 				
-					<input type="checkbox" id="facet-0-3" class="facet-selection-option facet-0" name="facet.newspapers" value="true">
+					<input type="checkbox" id="facet-0-4" class="facet-selection-option facet-0" name="facet.newspapers" value="true">
 						<xsl:if test="$newspapers = 'true'">
 							<xsl:attribute name="checked">checked</xsl:attribute>
 						</xsl:if>
 					</input>
 					<xsl:text> </xsl:text>
-					<label for="facet-0-3">Add newspaper articles</label>
+					<label for="facet-0-4">Add newspaper articles</label>
 				
 				</li>
 				
@@ -228,13 +254,13 @@
 	
 				<li class="facet-selection">
 				
-					<input type="checkbox" id="facet-0-3" class="facet-selection-option facet-0" name="facet.newspapers" value="false">
+					<input type="checkbox" id="facet-0-5" class="facet-selection-option facet-0" name="facet.newspapers" value="false">
 						<xsl:if test="$newspapers = 'false'">
 							<xsl:attribute name="checked">checked</xsl:attribute>
 						</xsl:if>
 					</input>
 					<xsl:text> </xsl:text>
-					<label for="facet-0-3">Exclude newspaper articles</label>
+					<label for="facet-0-5">Exclude newspaper articles</label>
 				
 				</li>
 				
@@ -244,13 +270,13 @@
 	
 				<li class="facet-selection">
 				
-					<input type="checkbox" id="facet-0-4" class="facet-selection-option facet-0" name="facet.holdings" value="false">
+					<input type="checkbox" id="facet-0-6" class="facet-selection-option facet-0" name="facet.holdings" value="false">
 						<xsl:if test="$holdings = 'true'">
 							<xsl:attribute name="checked">checked</xsl:attribute>
 						</xsl:if>
 					</input>
 					<xsl:text> </xsl:text>
-					<label for="facet-0-4">Add results beyond the library's collection</label>
+					<label for="facet-0-6">Add results beyond the library's collection</label>
 				
 				</li>
 				
