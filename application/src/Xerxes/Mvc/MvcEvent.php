@@ -24,6 +24,12 @@ use Xerxes\Utility\Registry;
 class MvcEvent
 {
 	/**
+	 * @var string
+	 */
+	
+	protected $app_dir;
+	
+	/**
 	 * @var Stopwatch
 	 */
 	
@@ -71,7 +77,7 @@ class MvcEvent
 		
 		// path to application root
 		
-		$app_dir = $bootstrap->getApplicationDir();
+		$this->app_dir = $bootstrap->getApplicationDir();
 		
 		// application config
 		
@@ -79,7 +85,7 @@ class MvcEvent
 		
 		// controller config
 			
-		$this->controller_map = new ControllerMap($app_dir);
+		$this->controller_map = new ControllerMap($this->app_dir);
 
 		// incoming request
 		
@@ -87,11 +93,7 @@ class MvcEvent
 		
 		// outgoing response
 		
-		$this->response = new Response();
-		
-		// set view dir
-		
-		$this->response->setViewDir("$app_dir/views/");
+		$this->response = $this->getNewResponse();
 		
 		// set default view
 		
@@ -164,7 +166,21 @@ class MvcEvent
 	public function setRequest(HttpFoundation\Request $request)
 	{
 		$this->request = $request;
-	}	
+	}
+	
+	/**
+	 * @return Response
+	 */
+	public function getNewResponse()
+	{
+		$response = new Response();
+		
+		// set view dir
+		
+		$response->setViewDir($this->app_dir . '/views/');
+		
+		return $response;
+	}
 
 	/**
 	 * @return Response
