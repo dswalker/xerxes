@@ -731,6 +731,21 @@ div.autocomplete ul li {
 	padding: .5em;
 }
 
+.facet-date {
+	margin-bottom: 2em;
+}
+
+.facet-date label {
+	display: block;
+	float: left;
+	width: 50px;
+	padding: .5em;
+}
+
+.facet-date div {
+	margin-bottom: .7em;
+}
+
 #fullscreen {
 	position: absolute; 
 	top: 0;
@@ -878,21 +893,6 @@ table#folder-output-results thead {
 
 td.title-cell {
 	width: 100%;
-}
-
-/** temp fixes **/
-
-.facet-date {
-	margin-left: 1em;
-	margin-bottom: 2em;
-}
-
-.facet-date label {
-	padding: .5em;
-}
-
-.facet-date div {
-	margin-bottom: .7em;
 }
 
 

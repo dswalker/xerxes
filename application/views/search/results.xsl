@@ -754,13 +754,17 @@
 				
 				<div class="facet-date-selector">
 		
-					<label for="facet-date-start">From: </label>
-					<input type="text" name="{$start_date}" id="facet-date-start" value="{//request/*[@original_key = $start_date]}" 
-						maxlength="4" size="4" />
+					<div>
+						<label for="facet-date-start">From: </label>
+						<input type="text" name="{$start_date}" id="facet-date-start" value="{//request/*[@original_key = $start_date]}" 
+							maxlength="4" size="4" />
+					</div>
 					
-					<label for="facet-date-end">To: </label>
-					<input type="text" name="{$end_date}" id="facet-date-end" value="{//request/*[@original_key = $end_date]}" 
-						maxlength="4" size="4" />
+					<div>					
+						<label for="facet-date-end">To: </label>
+						<input type="text" name="{$end_date}" id="facet-date-end" value="{//request/*[@original_key = $end_date]}" 
+							maxlength="4" size="4" />
+					</div>
 				
 				</div>
 				
