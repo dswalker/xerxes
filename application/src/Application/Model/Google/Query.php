@@ -36,13 +36,11 @@ class Query extends Search\Query
 			$query .= ' ' . $term->phrase;
 		}
 		
-		$sites = $this->config->getConfig('site', false);
+		$limit = $this->config->getConfig('limit', false);
 		
-		if ( $sites != null )
+		if ( $limit != null )
 		{
-			$limit = str_replace(',', ' OR ', $sites);
-			
-			$query .= "($limit)";
+			$query .= ' ' . $limit;
 		}
 		
 		return trim($query);

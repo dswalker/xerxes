@@ -69,6 +69,16 @@ class Engine extends Search\Engine
 		
 		$this->url = $this->server . "/search?q=" . urlencode($query);
 		
+		if ( $this->config->getConfig('client') )
+		{
+			$this->url .= '&client=' . urlencode($this->config->getConfig('client'));
+		}
+		
+		if ( $this->config->getConfig('site') )
+		{
+			$this->url .= '&site=' . urlencode($this->config->getConfig('site'));
+		}
+		
 		$client = Factory::getHttpClient();
 		$google_results = $client->getUrl($this->url, 3);
 		
