@@ -23,7 +23,7 @@
 
 <xsl:template name="availability">
 	<xsl:call-template name="worldcat_results_availability" />
-</xsl:template>	
+</xsl:template>
 
 <xsl:template name="worldcat_results_availability">
 
@@ -47,6 +47,12 @@
 		</xsl:choose>
 		</a>
 	</div>
+
+</xsl:template>
+
+<xsl:template name="searchbox_hidden_fields_module">
+
+	<input type="hidden" name="source" value="{//request/source}" />
 
 </xsl:template>
 		
