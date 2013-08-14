@@ -302,6 +302,11 @@
 			</div>
 		
 		</xsl:when>
+		<xsl:when test="/*/login_message">
+			<p class="no-results">
+				<a href="{/*/url_more}"><xsl:value-of select="/*/login_message" /></a>
+			</p>
+		</xsl:when>
 		<xsl:when test="not(//results/total)">
 			<p class="no-results">No results found.</p>
 		</xsl:when>
