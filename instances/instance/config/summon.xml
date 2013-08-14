@@ -7,10 +7,16 @@
 		<config name="summon_key"></config>
 		
 		<config name="facet_multiple" pass="true">true</config>
+		
 		<config name="show_database_recommendations" pass="true">true</config>
-		<config name="newspapers_optional" pass="true">true</config>		
+		<config name="show_peer_reviewed_limit" pass="true">true</config>
+		<config name="show_scholarly_limit" pass="true">false</config>
+		<config name="show_fulltext_limit" pass="true">true</config>
+		<config name="newspapers_optional" pass="true">true</config>
 		<config name="limit_to_holdings" pass="true">true</config>
+		
 		<config name="direct_linking">true</config>
+		<config name="mark_fulltext_using_export">false</config>
 
 		<config name="facet_fields" xml="true" pass="true">
 			<facet public="Scholarly" internal="IsScholarly" display="false" />
