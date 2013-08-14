@@ -13,8 +13,10 @@ namespace Application\Controller;
 
 use Application\Model\Solr\Config;
 use Application\Model\Search\Query;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Xerxes\Google\Appliance;
 use Xerxes\Mvc\ActionController;
+use Xerxes\Mvc\Response;
 
 class CombinedController extends ActionController
 {
@@ -79,23 +81,35 @@ class CombinedController extends ActionController
 			'field' => $this->request->getParam('field')
 		);
 		
-		$this->response->setVariable('url_more', $this->request->url_for($params));
+		// not authenticated (controller is redirecting to authentication)
+		// so tell the user they need to login to see results
 		
-		// make sure the spell check sends us back through combined 
-		
-		$spelling = $this->response->getVariable('spelling');
-		
-		if ( $spelling->url != "" )
+		if ( $this->response instanceof RedirectResponse )
 		{
-			$params = array(
-				'controller' => $this->id,
-				'action' => 'search',
-				'query' => $spelling->getTerm(0)->phrase,
-			);
+			$this->response = $this->event->getNewResponse();
+			$this->response->setVariable('login_message', 'Login for results');
+			$this->response->setVariable('url_more', $this->request->url_for($params));
+		}
+		else
+		{
+			$this->response->setVariable('url_more', $this->request->url_for($params));
 			
-			$spelling->url = $this->request->url_for($params);
+			// make sure the spell check sends us back through combined 
 			
-			$this->response->setVariable('spelling', $spelling);
+			$spelling = $this->response->getVariable('spelling');
+			
+			if ( $spelling->url != "" )
+			{
+				$params = array(
+					'controller' => $this->id,
+					'action' => 'search',
+					'query' => $spelling->getTerm(0)->phrase,
+				);
+				
+				$spelling->url = $this->request->url_for($params);
+				
+				$this->response->setVariable('spelling', $spelling);
+			}
 		}
 		
 		// view
