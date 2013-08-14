@@ -103,7 +103,7 @@ class Knowledgebase extends Doctrine
 	}
 	
 	/**
-	 * Get catergory
+	 * Get category
 	 *
 	 * @param string $normalized normalized category name
 	 * @return Category

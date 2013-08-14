@@ -77,7 +77,7 @@ class Databases extends DataMap
 					$term = preg_replace('/[^a-zA-Z0-9]/', '', $term);
 					$term = strtolower($term);
 					
-					// anything over 50 chars is likley a URL or something
+					// anything over 50 chars is likely a URL or something
 					
 					if ( strlen($term) > 50 )
 					{
@@ -145,7 +145,7 @@ class Databases extends DataMap
 	}
 	
 	/**
-	 * Get catergory
+	 * Get category
 	 *
 	 * @param string $normalized		normalized category name
 	 * @return Category
