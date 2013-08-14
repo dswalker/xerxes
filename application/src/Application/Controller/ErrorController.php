@@ -11,6 +11,7 @@
 
 namespace Application\Controller;
 
+use Guzzle\Http\Exception\BadResponseException;
 use Xerxes\Mvc\ActionController;
 
 class ErrorController extends ActionController
@@ -25,6 +26,17 @@ class ErrorController extends ActionController
     	// send the error to the log
     	
     	trigger_error("Xerxes Error ($line): $message");
+    	
+    	// handle PDO and Guzzle errors differently
+    	
+    	if ( $e instanceof BadResponseException )
+    	{
+    		$message = 'Could not connect to search engine';
+    	}
+    	elseif ($e instanceof \PDOException )
+    	{
+    		$message = 'There was a problem with the database';
+    	}
     	
     	$error = array();
     	$error['code'] = $code;
