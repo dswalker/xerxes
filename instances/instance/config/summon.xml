@@ -8,14 +8,17 @@
 		
 		<config name="facet_multiple" pass="true">true</config>
 		<config name="show_database_recommendations" pass="true">true</config>
+		<config name="newspapers_optional" pass="true">true</config>		
+		<config name="limit_to_holdings" pass="true">true</config>
+		<config name="direct_linking">true</config>
 
 		<config name="facet_fields" xml="true" pass="true">
-			<facet public="Scholarly" internal="IsScholarly" type="choice" max="2">
-				<choice public="Scholarly" internal="true" />
-				<choice public="Non-scholarly" internal="false" />
-			</facet>
+			<facet public="Scholarly" internal="IsScholarly" display="false" />
 			<facet public="Format" internal="ContentType" max="100" />
 			<facet public="Topics" internal="SubjectTerms" max="30" />
+			<facet public="Subject Area" internal="Discipline" max="60" />
+			<facet public="Publication Date" internal="PublicationDate" max="30" type="date" />
+			<facet public="Language" internal="Language" max="30" />
 		</config>
 		
 		<config name="sort_options" xml="true" pass="true">
