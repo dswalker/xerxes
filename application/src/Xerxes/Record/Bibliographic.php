@@ -297,19 +297,18 @@ class Bibliographic extends Record
 
 	protected function parseThesis()
 	{
-		// @todo mapping for the new 502 subfields
-		
 		$thesis = (string) $this->marc->datafield("502")->subfield("a");
+		$new_thesis = (string) $this->marc->datafield("502")->subfield("b");
 		
-		### thesis
-
-		// most 502 fields follow the following pattern, which we will use to
-		// match and extract individual elements:
-		// Thesis (M.F.A.)--University of California, San Diego, 2005
-		// Thesis (Ph. D.)--Queen's University, Kingston, Ont., 1977.
+		### old thesis
 
 		if ( $thesis != "" )
 		{
+			// most 502|a fields follow the following pattern, which we will use to
+			// match and extract individual elements:
+			// Thesis (M.F.A.)--University of California, San Diego, 2005
+			// Thesis (Ph. D.)--Queen's University, Kingston, Ont., 1977.
+			
 			// extract degree conferred
 
 			$arrDegree = array();
@@ -345,7 +344,16 @@ class Bibliographic extends Record
 			// extract year conferred
 
 			$this->year = $this->extractYear( $thesis );
-		}		
+		}
+		
+		### new thesis
+		
+		elseif ( $new_thesis != "" )
+		{
+			$this->degree = (string) $this->marc->datafield("502")->subfield("b");
+			$this->institution = (string) $this->marc->datafield("502")->subfield("c");
+			$this->year = $this->extractYear( (string) $this->marc->datafield("502")->subfield("d") );
+		}
 	}
 	
 	/**
