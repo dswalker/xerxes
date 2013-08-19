@@ -732,18 +732,22 @@
 	
 			<form id="form-{group_id}" action="{//request/controller}/search" method="get">
 			
-				<div id="placeholder" style="width: 250px; height: 150px">
-					<xsl:attribute name="data-source">
-						<xsl:for-each select="facets/facet">
-							<xsl:if test="timestamp">
-								<xsl:value-of select="timestamp"/>,<xsl:value-of select="count" />
-								<xsl:if test="following-sibling::facet">
-									<xsl:text>;</xsl:text>
+				<xsl:if test="not(//config/show_date_graph) or //config/show_date_graph = 'true'">
+			
+					<div id="placeholder" style="width: 250px; height: 150px">
+						<xsl:attribute name="data-source">
+							<xsl:for-each select="facets/facet">
+								<xsl:if test="timestamp">
+									<xsl:value-of select="timestamp"/>,<xsl:value-of select="count" />
+									<xsl:if test="following-sibling::facet">
+										<xsl:text>;</xsl:text>
+									</xsl:if>
 								</xsl:if>
-							</xsl:if>
-						</xsl:for-each>
-					</xsl:attribute>
-				</div>
+							</xsl:for-each>
+						</xsl:attribute>
+					</div>
+					
+				</xsl:if>
 			
 				<xsl:variable name="start_date" select="concat(param_name,'.start')" />
 				<xsl:variable name="end_date" select="concat(param_name,'.end')" />
