@@ -3,8 +3,9 @@
 
 	<configuration>
 	
-		<config name="summon_id"></config>
+		<config name="summon_id" pass="true"></config>
 		<config name="summon_key"></config>
+		<config name="client_id" pass="true"></config>
 		
 		<config name="facet_multiple" pass="true">true</config>
 		
