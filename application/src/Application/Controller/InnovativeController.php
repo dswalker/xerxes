@@ -17,11 +17,13 @@ use Application\Model\Innovative\Link;
 
 class InnovativeController extends LinkController
 {
+	protected $server;
+	
 	protected function getEngine()
 	{
-		$server = $this->registry->getConfig('INNREACH_HOST', false, 'csul.iii.com');
+		$this->server = $this->registry->getConfig('INNREACH_HOST', false, 'csul.iii.com');
 		
-		return new Link($server);
+		return new Link($this->server);
 	}
 	
 	public function recordAction()
@@ -30,14 +32,14 @@ class InnovativeController extends LinkController
 		$id = $this->request->getParam("id");
 		
 		$solr = new Engine();
-		$record = $solr->getRecord($id);
+		$results = $solr->getRecord($id);
 		
-		if ( $record == null )
+		if ( $results == null )
 		{
 			throw new \Exception('Could not fetch record');
 		}
 		
-		$title = urlencode($record->getXerxesRecord()->getTitle());
+		$title = urlencode($results->getRecord(0)->getXerxesRecord()->getTitle());
 		
 		$url = 'http://' . $this->server . "/search/z?9$library+$id&title=$title";
 		
