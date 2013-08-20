@@ -335,7 +335,7 @@ class FolderController extends SearchController
 		// @todo abstract this out to search?
 		// get address for blackboard
 		
-		$url = $this->registry->getConfig("BB_ADDRESS", false, 'http://bb91.verbenaconsultant.com/webapps/csu-citation-BBLEARN/citations/ExpressImport.jsp');
+		$url = $this->registry->getConfig("BB_ADDRESS", false, 'https://216.121.76.85/webapps/csu-citation-BBLEARN/citations/ExpressImport.jsp');
 		
 		// construct full url to bb
 		
