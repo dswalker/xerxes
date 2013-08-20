@@ -724,7 +724,11 @@
 			
 		</xsl:for-each>
 			
-	</xsl:template>	
+	</xsl:template>
+
+	<!-- 
+		TEMPLATE: FACET DATES
+	-->
 		
 	<xsl:template name="facet_dates">
 	
@@ -734,7 +738,7 @@
 			
 				<xsl:if test="not(//config/show_date_graph) or //config/show_date_graph = 'true'">
 			
-					<div id="placeholder" style="width: 250px; height: 150px">
+					<div id="placeholder" style="width: 210px; height: 120px">
 						<xsl:attribute name="data-source">
 							<xsl:for-each select="facets/facet">
 								<xsl:if test="timestamp">
