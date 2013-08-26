@@ -47,7 +47,11 @@
 </xsl:template>
 
 <xsl:template name="main">
-	<xsl:call-template name="search_page" />
+
+	<xsl:call-template name="search_page">
+		<xsl:with-param name="sidebar">none</xsl:with-param>
+	</xsl:call-template>
+	
 </xsl:template>
 
 <!-- 
