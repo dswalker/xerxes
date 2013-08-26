@@ -94,7 +94,11 @@
 		<div class="reading-list-header">
 
 			<img src="{$base_url}/images/famfamfam/add.png" alt="" /> <xsl:text> </xsl:text>
-			<a href="courses/select">Add records</a>
+			<a href="{course_nav/url_search}">Search for new records</a> <xsl:text> </xsl:text>
+			
+			<img src="{$base_url}/images/famfamfam/add.png" alt="" /> <xsl:text> </xsl:text>
+			<a href="{course_nav/url_previously_saved}">Add previously saved records</a> <xsl:text> </xsl:text>			
+			
 		</div>
 	</xsl:if>
 
@@ -102,7 +106,7 @@
 	
 		<div id="reading-list-content">
 		
-		<ul>
+		<ul data-source="{//request/course_id}">
 		
 		<xsl:for-each select="results/records/record/xerxes_record">
 		

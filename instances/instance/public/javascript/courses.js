@@ -21,8 +21,9 @@ function highlight()
 function resort()
 {	
 	$("#reading-list-content ul").sortable({ opacity: 0.6, cursor: 'move', update: function() {
-
-		var order = $(this).sortable("serialize") + "&noredirect=1"; 
+		
+		var course = $(this).attr('data-source')
+		var order = $(this).sortable("serialize") + "&noredirect=1&course_id=" + course; 
 
 		$.post("courses/reorder", order, function(theResponse){
 			

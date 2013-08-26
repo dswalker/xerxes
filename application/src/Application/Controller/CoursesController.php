@@ -14,6 +14,7 @@ namespace Application\Controller;
 use Application\Model\DataMap\ReadingList;
 use Application\Model\Saved\Engine;
 use Application\Model\Saved\ReadingList\Engine as ListEngine;
+use Application\View\Helper\ReadingList as ListHelper;
 use Xerxes\Lti;
 use Xerxes\Mvc\MvcEvent;
 use Xerxes\Utility\Parser;
@@ -26,9 +27,10 @@ use Xerxes\Utility\Parser;
 
 class CoursesController extends SearchController
 {
+	protected $id = 'courses';
 	protected $registry; // registry
-	protected $reading_list; // data map
-	protected $context; // lti context object
+	protected $reading_list; // reading list
+	protected $course_id; // course id
 	
 	/**
 	 * New Courses Controller
@@ -44,10 +46,21 @@ class CoursesController extends SearchController
 		
 		$this->response->setVariable('no_header', 'true');
 		
+		$this->course_id = $this->request->getParam('course_id');
+		
 		//testing
 		
 		$this->response->setVariable('lti', array('instructor' => true));
 	}
+	
+	protected function init()
+	{
+		parent::init();
+	
+		$this->helper = new ListHelper($this->event, $this->id, $this->engine);
+		
+		$this->response->setVariable('course_nav', $this->helper->getNavigation());
+	}	
 	
 	/**
 	 * Register the LTI request in session and authenticate the user
@@ -55,27 +68,34 @@ class CoursesController extends SearchController
 	
 	public function indexAction()
 	{
-		// save username in session
+		// @todo: this needs to be folded into the authentication framework or something?
 		
-		// @todo: this needs to be folded into the authentication framework or something
+		$key = $this->registry->getConfig('BLTI_KEY', true);
+		$secret = $this->registry->getConfig('BLTI_SECRET', true);
+			
+		$context = new Lti\Basic($key, $secret);
 		
-		$this->request->setSessionData('username', $this->extractUsername());
+		$this->request->setSessionData('username', $this->extractUsername($context));
 		$this->request->setSessionData("role", "named");
+		
+		$this->course_id = $context->getID();
 		
 		// see if we have records already stored
 	
 		if ( $this->readinglist()->hasRecords() )
 		{
 			$params = array(
-				'controller' => 'courses',
+				'controller' => $this->id,
 				'action' => 'results',
+				'course_id' => $this->course_id
 			);
 		}
 		else
 		{
 			$params = array(
-				'controller' => 'courses',
-				'action' => 'select'
+				'controller' => $this->id,
+				'action' => 'select',
+				'course_id' => $this->course_id
 			);
 		}
 		
@@ -127,7 +147,8 @@ class CoursesController extends SearchController
 	
 		$params = array(
 			'controller' => 'courses',
-			'action' => 'results'
+			'action' => 'results',
+			'course_id' => $this->course_id
 		);
 		
 		return $this->redirectTo($params);
@@ -153,7 +174,8 @@ class CoursesController extends SearchController
 			
 			$params = array(
 				'controller' => 'courses',
-				'action' => 'results'
+				'action' => 'results',
+				'course_id' => $this->course_id
 			);
 			
 			return $this->redirectTo($params);
@@ -192,7 +214,8 @@ class CoursesController extends SearchController
 	
 		$params = array(
 			'controller' => 'courses',
-			'action' => 'results'
+			'action' => 'results',
+			'course_id' => $this->course_id
 		);
 		
 		return $this->redirectTo($params);
@@ -220,55 +243,20 @@ class CoursesController extends SearchController
 	{
 		if ( ! $this->reading_list instanceof ReadingList )
 		{
-			$context_id = $this->lti()->getID();
-			$this->reading_list = new ReadingList($context_id);
+			$this->reading_list = new ReadingList($this->course_id);
 		}
 	
 		return $this->reading_list;
 	}
 	
-	/**
-	 * Lazyload Basic LTI 
-	 * 
-	 * @return Lti\Basic;
-	 */
-
-	protected function lti()
-	{
-		if ( ! $this->context instanceof Lti\Basic )
-		{
-			// we already saved it previously
-			
-			$this->context = unserialize($this->request->getSessionData("blti"));
-			
-			if ( ! $this->context instanceof Lti\Basic )
-			{
-				$key = $this->registry->getConfig('BLTI_KEY', true);
-				$secret = $this->registry->getConfig('BLTI_SECRET', true);
-					
-				$this->context = new Lti\Basic($key, $secret);
-					
-				// save the data in session
-					
-				$this->request->setSessionData('blti', serialize($this->context));
-				
-				if ( ! $this->context instanceof Lti\Basic )
-				{
-					throw new \Exception("no course session");
-				}
-			}
-		}
-		
-		return $this->context;
-	}
 	
 	/**
 	 * Map username from LMS to local Xerxes user
 	 */
 	
-	protected function extractUsername()
+	protected function extractUsername(Lti\Basic $lti)
 	{
-		$username = $this->lti()->getParam('lis_person_contact_email_primary');
+		$username = $lti->getParam('lis_person_contact_email_primary');
 		$username = Parser::removeRight($username, '@');
 		
 		return $username;
@@ -291,6 +279,6 @@ class CoursesController extends SearchController
 	
 	protected function getEngine()
 	{
-		return new ListEngine($this->lti());
+		return new ListEngine($this->course_id);
 	}
 }

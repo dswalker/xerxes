@@ -679,15 +679,15 @@ class Search
 	{
 		$arrParams = array(
 			'controller' => $this->request->getParam('controller'),
-			"action" => "record",
-			"id" => $record->getRecordID()
+			'action' => 'record',
+			'id' => $record->getRecordID()
 		);
 		
 		return $this->request->url_for($arrParams);
 	}
 	
 	/**
-	 * URL for the full record display
+	 * URL for Open URL
 	 *
 	 * @param Record $record
 	 * @return string url
@@ -697,15 +697,15 @@ class Search
 	{
 		$arrParams = array(
 			'controller' => $this->request->getParam('controller'),
-			"action" => "openurl",
-			"id" => $record->getRecordID()
+			'action' => 'openurl',
+			'id' => $record->getRecordID()
 		);
 	
 		return $this->request->url_for($arrParams);
 	}	
 	
 	/**
-	 * URL for the full record display
+	 * URL for save/delete action
 	 * 
 	 * @param Record $record
 	 * @return string url
@@ -715,8 +715,8 @@ class Search
 	{
 		$arrParams = array(
 			'controller' => $this->request->getParam('controller'),
-			"action" => "save",
-			"id" => $record->getRecordID()
+			'action' => 'save',
+			'id' => $record->getRecordID()
 		);
 		
 		return $this->request->url_for($arrParams);
@@ -733,8 +733,8 @@ class Search
 	{
 		$arrParams = array(
 			'controller' => $this->request->getParam('controller'),
-			"action" => "sms",
-			"id" => $record->getRecordID()
+			'action' => 'sms',
+			'id' => $record->getRecordID()
 		);
 		
 		return $this->request->url_for($arrParams);	

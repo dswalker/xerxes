@@ -14,7 +14,6 @@ namespace Application\Model\Saved\ReadingList;
 use Application\Model\Saved;
 use Application\Model\Search;
 use Application\Model\DataMap\ReadingList;
-use Xerxes\Lti\Basic;
 
 /**
  * Reading List
@@ -30,13 +29,13 @@ class Engine extends Saved\Engine
 	/**
 	 * New reading list search engine
 	 * 
-	 * @param Basic $basic_lti
+	 * @param string $id  course id
 	 */
 	
-	public function __construct(Basic $basic_lti)
+	public function __construct($id)
 	{
-		$this->context_id = $basic_lti->getID();
-		$this->reading_list = new ReadingList($this->context_id);
+		$this->context_id = $id;
+		$this->reading_list = new ReadingList($id);
 		
 		parent::__construct();
 	}
