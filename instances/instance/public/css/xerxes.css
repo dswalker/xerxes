@@ -406,14 +406,16 @@ dd, dt, li {
 
 .results-bestbet {
 	margin-bottom: 2.5em;
+	margin-left: 1.5em;
 }
 
-.results-bestbet .description {
-	margin-left: 1em;
+.results-bestbet a {
+	font-weight: bold;
 }
 
 .results-bestbet .description p {
 	line-height: 100%;
+	margin-top: .5em;
 }
 
 .result {
