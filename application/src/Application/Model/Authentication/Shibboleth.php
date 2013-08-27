@@ -30,7 +30,8 @@ class Shibboleth extends Scheme
 	public function onLogin()
 	{
 		// get username header from proper psuedo-HTTP header set by apache
-		$strUsername = $this->request->getServer( $this->getUsernameHeader() );
+		
+		$strUsername = $this->request->server->get($this->getUsernameHeader());
 		
 		if ( $strUsername != null )
 		{
@@ -67,11 +68,11 @@ class Shibboleth extends Scheme
 	{
 		// apache might have this one if you are using mod_rewrite
 	
-		if ( $this->request->getServer("REDIRECT_REMOTE_USER") != "" )
+		if ( $this->request->server->get("REDIRECT_REMOTE_USER") != "" )
 		{
 			return "REDIRECT_REMOTE_USER";
 		}
-		elseif ( $this->request->getServer("HTTP_REMOTE_USER") != "" )
+		elseif ( $this->request->server->get("HTTP_REMOTE_USER") != "" )
 		{
 			// apache might have this if so configured; iis will always have this
 				
