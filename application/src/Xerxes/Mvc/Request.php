@@ -160,6 +160,18 @@ class Request extends HttpFoundation\Request
 	{
 		$this->session->set($name, $value);
 	}
+
+	/**
+	 * Add object to Session
+	 *
+	 * @param string $name
+	 * @param mixed $value
+	 */
+	
+	public function setSessionObject($name, $object)
+	{
+		$this->session->set($name, serialize($object));
+	}	
 	
 	/**
 	 * Unset a value in Session
@@ -194,6 +206,17 @@ class Request extends HttpFoundation\Request
 	{
 		return $this->session->get($name);
 	}
+	
+	/**
+	 * Get object from Session
+	 *
+	 * @param string $name
+	 */
+	
+	public function getSessionObject($name)
+	{
+		return unserialize($this->session->get($name));
+	}	
 	
 	/**
 	 * Get all session values

@@ -46,7 +46,18 @@ class CoursesController extends SearchController
 		
 		$this->response->setVariable('no_header', 'true');
 		
+		// course information
+		
 		$this->course_id = $this->request->getParam('course_id');
+
+		$session_id = 'lti_' . $this->course_id;
+		
+		if ( $this->request->existsInSessionData($session_id) )
+		{
+			$lti = $this->request->getSessionObject('lti_' . $this->course_id);
+			$this->response->setVariable('resource_link_title', $lti->getParam('resource_link_title'));
+			$this->response->setVariable('resource_link_description', $lti->getParam('resource_link_description'));
+		}
 		
 		//testing
 		
@@ -72,13 +83,16 @@ class CoursesController extends SearchController
 		
 		$key = $this->registry->getConfig('BLTI_KEY', true);
 		$secret = $this->registry->getConfig('BLTI_SECRET', true);
-			
-		$context = new Lti\Basic($key, $secret);
 		
-		$this->request->setSessionData('username', $this->extractUsername($context));
+		$lti = new Lti\Basic($key, $secret);
+		
+		$this->request->setSessionData('username', $this->extractUsername($lti));
 		$this->request->setSessionData("role", "named");
 		
-		$this->course_id = $context->getID();
+		$this->course_id = $lti->getID();
+		$this->request->setParam('course_id', $this->course_id);
+		
+		$this->request->setSessionObject("lti_" . $this->course_id, $lti);
 		
 		// see if we have records already stored
 	
@@ -94,14 +108,19 @@ class CoursesController extends SearchController
 		{
 			$params = array(
 				'controller' => $this->id,
-				'action' => 'select',
+				'action' => 'home',
 				'course_id' => $this->course_id
 			);
 		}
 		
-		// redirect from above
+		// redirectout
 		
 		return $this->redirectTo($params);
+	}
+	
+	public function homeAction()
+	{
+		return $this->response;
 	}
 	
 	/**
