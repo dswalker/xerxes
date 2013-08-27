@@ -25,15 +25,15 @@ use Xerxes\Utility\Parser;
  * @author David Walker <dwalker@calstate.edu>
  */
 
-class CoursesController extends SearchController
+class ReadinglistController extends SearchController
 {
-	protected $id = 'courses';
+	protected $id = 'readinglist';
 	protected $registry; // registry
 	protected $reading_list; // reading list
 	protected $course_id; // course id
 	
 	/**
-	 * New Courses Controller
+	 * New Readinglist Controller
 	 * 
 	 * @param MvcEvent $event
 	 */
@@ -165,7 +165,7 @@ class CoursesController extends SearchController
 		// construct return url back to reading list for results
 	
 		$params = array(
-			'controller' => 'courses',
+			'controller' => $this->request->getParam('controller'),
 			'action' => 'results',
 			'course_id' => $this->course_id
 		);
@@ -192,7 +192,7 @@ class CoursesController extends SearchController
 			// construct return url back to reading list for results
 			
 			$params = array(
-				'controller' => 'courses',
+				'controller' => $this->request->getParam('controller'),
 				'action' => 'results',
 				'course_id' => $this->course_id
 			);
@@ -232,7 +232,7 @@ class CoursesController extends SearchController
 		// return to reading list
 	
 		$params = array(
-			'controller' => 'courses',
+			'controller' => $this->request->getParam('controller'),
 			'action' => 'results',
 			'course_id' => $this->course_id
 		);

@@ -36,7 +36,7 @@
 
 	<div id="export">
 
-		<form action="courses/assign" method="get">
+		<form action="{request/controller}/assign" method="get">
 			<input type="hidden" name="course_id" value="{//request/course_id}" />
 			
 			<h1><xsl:call-template name="page_name" /></h1>	
