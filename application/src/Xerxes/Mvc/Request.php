@@ -162,7 +162,7 @@ class Request extends HttpFoundation\Request
 	}
 
 	/**
-	 * Add object to Session
+	 * Set object in Session
 	 *
 	 * @param string $name
 	 * @param mixed $value
@@ -206,9 +206,9 @@ class Request extends HttpFoundation\Request
 	{
 		return $this->session->get($name);
 	}
-	
+
 	/**
-	 * Get object from Session
+	 * Get object from session
 	 *
 	 * @param string $name
 	 */
@@ -216,6 +216,38 @@ class Request extends HttpFoundation\Request
 	public function getSessionObject($name)
 	{
 		return unserialize($this->session->get($name));
+	}
+	
+	/**
+	 * Require session value
+	 *
+	 * @param string $name     session key
+	 * @param string $message  [optional] error text
+	 * @param bool $is_object  [optional] whether session value is an object
+	 * 
+	 * @return mixed 		   value, if key exists
+	 * @throws \OutOfBoundsException
+	 */
+	
+	public function requireSessionData($name, $message = null, $is_object = false)
+	{
+		$value = null;
+		
+		if ( $is_object == true )
+		{
+			$value = $this->getSessionObject($name);
+		}
+		else
+		{
+			$value = $this->getSessionData($name);
+		}
+		
+		if ( $value == null )
+		{
+			throw new \OutOfBoundsException($message);
+		}
+		
+		return $value;
 	}	
 	
 	/**
@@ -627,7 +659,7 @@ class Request extends HttpFoundation\Request
 	 * @param string $error_message  error message if param not present
 	 * @param bool $is_array	     [optional] whether value should be returned as an array, even if only one value
 	 * 
-	 * @throws \Exception
+	 * @throws \OutOfBoundsException
 	 */
 	
 	public function requireParam($name, $error_message, $is_array = false)
@@ -636,7 +668,7 @@ class Request extends HttpFoundation\Request
 		
 		if ($value == null)
 		{
-			throw new \Exception($error_message);
+			throw new \OutOfBoundsException($error_message);
 		}
 		
 		return $value;
