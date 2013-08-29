@@ -25,23 +25,26 @@ class ReadingList extends Search
 	{
 		$final = array();
 		
+		// previously saved records
+		
 		$params = array(
 			'controller' => $this->request->getParam('controller'),
+			'action' => 'select',
 			'course_id' => $this->request->getParam('course_id'),
 		);
 		
-		// previously saved records
-		
-		$params['action'] = 'select';
 		$final['url_previously_saved'] = $this->request->url_for($params);
 
 		// search for new records
+
+		$params = array(
+			'controller' => 'reading',
+			'course_id' => $this->request->getParam('course_id'),
+		);		
 		
-		$params['action'] = 'search';
 		$final['url_search'] = $this->request->url_for($params);
 		
 		return $final;
-		
 	}
 
 	/**

@@ -284,37 +284,32 @@
 	
 	<xsl:template name="surround_bd_top">
 		
+		<div id="bd-top">
 		
-		<xsl:if test="not(no_header)">
-		
-			<div id="bd-top">
-			
-				<div class="row-fluid">
-					<div class="span6">	
-		
-						<!-- breadcrumbs -->
-		
-						<div class="trail">
-							<xsl:call-template name="breadcrumb" />
-						</div>
-		
+			<div class="row-fluid">
+				<div class="span6">	
+	
+					<!-- breadcrumbs -->
+	
+					<div class="trail">
+						<xsl:call-template name="breadcrumb" />
 					</div>
-					
-					<div class="span6">
-					
-						<!-- my account -->
-					
-						<div class="account">
-							<xsl:call-template name="account_options" />
-						</div>
-						
-					</div>
-		
+	
 				</div>
 				
+				<div class="span6">
+				
+					<!-- my account -->
+				
+					<div class="account">
+						<xsl:call-template name="account_options" />
+					</div>
+					
+				</div>
+	
 			</div>
 			
-		</xsl:if>
+		</div>
 	
 	</xsl:template>
 	

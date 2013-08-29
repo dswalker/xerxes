@@ -42,21 +42,54 @@ class ReadinglistController extends SearchController
 	{
 		parent::__construct($event);
 		
-		// don't show the header in courses (including errors)
-		
+		// don't show the header in readinglist 
+		// (including errors, which is why it's here in the constructor)
+	
 		$this->response->setVariable('no_header', 'true');
 		
-		// course information
 		
-		$this->course_id = $this->request->getParam('course_id');
-
-		$session_id = 'lti_' . $this->course_id;
+		// inital oauth request
+		// @todo: this needs to be folded into the authentication framework or something?
 		
-		if ( $this->request->existsInSessionData($session_id) )
+		if ( $this->request->getParam("oauth_consumer_key") )
 		{
-			$lti = $this->request->getSessionObject('lti_' . $this->course_id);
-			$this->response->setVariable('resource_link_title', $lti->getParam('resource_link_title'));
-			$this->response->setVariable('resource_link_description', $lti->getParam('resource_link_description'));
+			$key = $this->registry->getConfig('BLTI_KEY', true);
+			$secret = $this->registry->getConfig('BLTI_SECRET', true);
+			
+			$lti = new Lti\Basic($key, $secret);
+			
+			// extract course id
+			
+			$this->course_id = $lti->getID();
+			$this->request->setParam('course_id', $this->course_id);
+			
+			// save in session for subsequent actions
+			
+			$this->request->setSessionData('username', $this->extractUsername($lti));
+			$this->request->setSessionData("role", "named");
+			
+			$this->request->setSessionData('course_id', $this->course_id);
+			$this->request->setSessionObject("lti_" . $this->course_id, $lti);		
+		}
+		
+		// subsequent requests with course_id in URL
+		
+		$course_id = $this->request->getParam('course_id');
+		
+		if ( $course_id != "")
+		{
+			$this->course_id = $course_id;
+			
+			// add value from saved lti session @todo make this universal or something
+			
+			$session_id = 'lti_' . $course_id;
+			
+			if ( $this->request->existsInSessionData($session_id) )
+			{
+				$lti = $this->request->getSessionObject($session_id);
+				$this->response->setVariable('resource_link_title', $lti->getParam('resource_link_title'));
+				$this->response->setVariable('resource_link_description', $lti->getParam('resource_link_description'));
+			}
 		}
 		
 		//testing
@@ -79,21 +112,6 @@ class ReadinglistController extends SearchController
 	
 	public function indexAction()
 	{
-		// @todo: this needs to be folded into the authentication framework or something?
-		
-		$key = $this->registry->getConfig('BLTI_KEY', true);
-		$secret = $this->registry->getConfig('BLTI_SECRET', true);
-		
-		$lti = new Lti\Basic($key, $secret);
-		
-		$this->request->setSessionData('username', $this->extractUsername($lti));
-		$this->request->setSessionData("role", "named");
-		
-		$this->course_id = $lti->getID();
-		$this->request->setParam('course_id', $this->course_id);
-		
-		$this->request->setSessionObject("lti_" . $this->course_id, $lti);
-		
 		// see if we have records already stored
 	
 		if ( $this->readinglist()->hasRecords() )
@@ -101,7 +119,7 @@ class ReadinglistController extends SearchController
 			$params = array(
 				'controller' => $this->id,
 				'action' => 'results',
-				'course_id' => $this->course_id
+				'course_id' => $this->getCourseID()
 			);
 		}
 		else
@@ -109,11 +127,11 @@ class ReadinglistController extends SearchController
 			$params = array(
 				'controller' => $this->id,
 				'action' => 'home',
-				'course_id' => $this->course_id
+				'course_id' => $this->getCourseID()
 			);
 		}
 		
-		// redirectout
+		// redirect out
 		
 		return $this->redirectTo($params);
 	}
@@ -167,7 +185,7 @@ class ReadinglistController extends SearchController
 		$params = array(
 			'controller' => $this->request->getParam('controller'),
 			'action' => 'results',
-			'course_id' => $this->course_id
+			'course_id' => $this->getCourseID()
 		);
 		
 		return $this->redirectTo($params);
@@ -194,7 +212,7 @@ class ReadinglistController extends SearchController
 			$params = array(
 				'controller' => $this->request->getParam('controller'),
 				'action' => 'results',
-				'course_id' => $this->course_id
+				'course_id' => $this->getCourseID()
 			);
 			
 			return $this->redirectTo($params);
@@ -234,7 +252,7 @@ class ReadinglistController extends SearchController
 		$params = array(
 			'controller' => $this->request->getParam('controller'),
 			'action' => 'results',
-			'course_id' => $this->course_id
+			'course_id' => $this->getCourseID()
 		);
 		
 		return $this->redirectTo($params);
@@ -262,7 +280,7 @@ class ReadinglistController extends SearchController
 	{
 		if ( ! $this->reading_list instanceof ReadingList )
 		{
-			$this->reading_list = new ReadingList($this->course_id);
+			$this->reading_list = new ReadingList($this->getCourseID());
 		}
 	
 		return $this->reading_list;
@@ -298,6 +316,15 @@ class ReadinglistController extends SearchController
 	
 	protected function getEngine()
 	{
-		return new ListEngine($this->course_id);
+		return new ListEngine($this->getCourseID());
+	}
+	
+	/**
+	 * Get the course ID
+	 */
+	
+	protected function getCourseID()
+	{
+		return $this->request->requireSessionData('course_id', 'Session has expired');
 	}
 }

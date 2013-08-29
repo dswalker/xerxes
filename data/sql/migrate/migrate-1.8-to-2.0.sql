@@ -2,14 +2,15 @@ DROP TABLE IF EXISTS xerxes_types;
 DROP TABLE IF EXISTS xerxes_user_subcategory_databases;
 DROP TABLE IF EXISTS xerxes_user_subcategories;
 DROP TABLE IF EXISTS xerxes_user_categories;
-DROP TABLE IF EXISTS xerxes_reading_list;
 DROP TABLE IF EXISTS xerxes_search_stats;
+DROP TABLE IF EXISTS xerxes_reading_list;
 
 CREATE TABLE xerxes_reading_list (
 	id 		MEDIUMINT NOT NULL AUTO_INCREMENT,
 	context_id	VARCHAR(20),
 	record_id	MEDIUMINT,
 	record_order	INTEGER,
+	description	MEDIUMTEXT,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (record_id) REFERENCES xerxes_records(id) ON DELETE CASCADE

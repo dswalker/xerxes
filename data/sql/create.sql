@@ -166,6 +166,7 @@ CREATE TABLE xerxes_reading_list (
 	context_id	VARCHAR(20),
 	record_id	MEDIUMINT,
 	record_order	INTEGER,
+	description	MEDIUMTEXT,
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (record_id) REFERENCES xerxes_records(id) ON DELETE CASCADE
