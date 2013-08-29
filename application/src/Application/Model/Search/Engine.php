@@ -221,7 +221,7 @@ abstract class Engine
 	{
 		// if cache is turned off, then don't bother looking up cache
 		
-		if ( $this->config->getConfig('CACHE_RESULTS', false, $this->registry->getConfig('CACHE_RESULTS', false, true)) == false )
+		if ( $this->config->getConfig('CACHE_RESULTS', false, $this->registry->getConfig('CACHE_RESULTS', false, false)) == false )
 		{
 			return null;
 		}
@@ -242,7 +242,7 @@ abstract class Engine
 	{
 		// if cache is turned off, then don't bother caching
 		
-		if ( $this->config->getConfig('CACHE_RESULTS', false, $this->registry->getConfig('CACHE_RESULTS', false, true)) == false )
+		if ( $this->config->getConfig('CACHE_RESULTS', false, $this->registry->getConfig('CACHE_RESULTS', false, false)) == false )
 		{
 			return null;
 		}		
