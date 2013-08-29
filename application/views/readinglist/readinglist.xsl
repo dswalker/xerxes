@@ -21,6 +21,73 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 
+	<xsl:template name="module_header"><style type="text/css">
+			.account {
+				visibility: hidden;
+			}
+			.action- h1 {
+				display: none;
+			}
+		.courses-search-options li {
+			margin: 2em;
+		}			
+			
+		</style>
+
+		<xsl:choose>
+			<xsl:when test="//lti/instructor = '1'">
+				
+				<style type="text/css">
+					
+					.reading-list-header {
+						margin-bottom: 2em; 
+						margin-top: 2em; 
+						padding: 1em; 
+						background-color: #efefef; 
+						border: 1px solid #ccc;
+					}
+					
+					.reading-list-item {
+						padding: .5em;
+						border: 1px solid #fff; 
+					}
+					
+					.reading-list-highlight { 
+						border: 1px solid #ccc; 
+					}
+					
+					.reading-list-item-action {
+						background-color: #eee; 
+						padding: 10px; 
+						margin: -6px; 
+						margin-bottom: 10px;
+						position: relative; 
+						visibility: hidden;
+					}
+
+					.courses-search-options li {
+						margin: 2em;
+					}
+								
+				</style>
+				
+			</xsl:when>
+			<xsl:otherwise>
+	
+				<style type="text/css">
+						
+					.reading-list-item {
+						padding: .5em;
+						margin-bottom: .5em;
+					}
+								
+				</style>		
+			
+			</xsl:otherwise>
+		</xsl:choose>
+	
+	</xsl:template>
+
 	<xsl:template name="save_record">
 
 		<xsl:variable name="source" select="source" />
@@ -57,6 +124,10 @@
 			
 		</div>
 			
+	</xsl:template>
+	
+	<xsl:template name="breadcrumb">
+		Return to reading list!
 	</xsl:template>
 			
 </xsl:stylesheet>

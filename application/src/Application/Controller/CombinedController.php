@@ -98,17 +98,20 @@ class CombinedController extends ActionController
 			
 			$spelling = $this->response->getVariable('spelling');
 			
-			if ( $spelling->url != "" )
+			if ( $spelling != "")
 			{
-				$params = array(
-					'controller' => $this->id,
-					'action' => 'search',
-					'query' => $spelling->getTerm(0)->phrase,
-				);
-				
-				$spelling->url = $this->request->url_for($params);
-				
-				$this->response->setVariable('spelling', $spelling);
+				if ( $spelling->url != "" )
+				{
+					$params = array(
+						'controller' => $this->id,
+						'action' => 'search',
+						'query' => $spelling->getTerm(0)->phrase,
+					);
+					
+					$spelling->url = $this->request->url_for($params);
+					
+					$this->response->setVariable('spelling', $spelling);
+				}
 			}
 		}
 		

@@ -22,6 +22,8 @@
 	xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	
 <xsl:import href="../includes.xsl" />
+<xsl:import href="readinglist.xsl" />
+
 <xsl:output method="html"/>
 
 <xsl:template match="/*">
@@ -29,58 +31,6 @@
 		<xsl:with-param name="surround_template">none</xsl:with-param>
 		<xsl:with-param name="sidebar">none</xsl:with-param>
 	</xsl:call-template>
-</xsl:template>
-
-<xsl:template name="module_header">
-
-	<xsl:choose>
-		<xsl:when test="//lti/instructor = '1'">
-			
-			<style type="text/css">
-				
-				.reading-list-header {
-					margin-bottom: 2em; 
-					margin-top: 2em; 
-					padding: 1em; 
-					background-color: #efefef; 
-					border: 1px solid #ccc;
-				}
-				
-				.reading-list-item {
-					padding: .5em;
-					border: 1px solid #fff; 
-				}
-				
-				.reading-list-highlight { 
-					border: 1px solid #ccc; 
-				}
-				
-				.reading-list-item-action {
-					background-color: #eee; 
-					padding: 10px; 
-					margin: -6px; 
-					margin-bottom: 10px;
-					position: relative; 
-					visibility: hidden;
-				}
-							
-			</style>
-			
-		</xsl:when>
-		<xsl:otherwise>
-
-			<style type="text/css">
-				
-				.reading-list-item {
-					padding: .5em;
-					margin-bottom: .5em;
-				}
-							
-			</style>		
-		
-		</xsl:otherwise>
-	</xsl:choose>
-
 </xsl:template>
 
 <xsl:template name="module_javascript">

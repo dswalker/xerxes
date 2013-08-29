@@ -22,6 +22,8 @@
 	xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	
 <xsl:import href="../includes.xsl" />
+<xsl:import href="readinglist.xsl" />
+
 <xsl:output method="html"/>
 
 <xsl:template match="/*">
@@ -31,25 +33,7 @@
 	</xsl:call-template>
 </xsl:template>
 
-<xsl:template name="breadcrumb">
-</xsl:template>
-
-<xsl:template name="page_name">
-
-</xsl:template>
-
-<xsl:template name="module_header">
-
-	<script src="javascript/courses.js"  type="text/javascript"></script>
-	
-	<style type="text/css">
-		.courses-search-options li {
-			margin: 2em;
-		}
-	</style>	
-
-
-</xsl:template>
+<xsl:template name="page_name" />
 
 <xsl:template name="main">
 		

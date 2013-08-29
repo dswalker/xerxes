@@ -53,7 +53,7 @@ class ReadingController extends ActionController
 	{
 		$response = $this->controller->execute('index');
 	
-		$response->setView('summon/index.xsl');
+		$response->setView('readinglist/search/index.xsl');
 	
 		return $response;
 	}

@@ -22,6 +22,7 @@
 	xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 
 <xsl:import href="../folder/results.xsl" />
+<xsl:import href="readinglist.xsl" />
 
 <xsl:output method="html" />
 
