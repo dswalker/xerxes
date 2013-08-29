@@ -94,8 +94,6 @@
 	
 		<!-- search box area -->
 		
-		<xsl:call-template name="search_promo" />
-		
 		<xsl:call-template name="searchbox" />
 		
 		<div style="clear:both"></div>
@@ -295,6 +293,8 @@
 	<xsl:template name="searchbox">
 	
 		<xsl:param name="action"><xsl:value-of select="$base_url" />/<xsl:value-of select="//request/controller" />/search</xsl:param>
+
+		<xsl:call-template name="search_promo" />
 	
 		<form id="form-main-search" action="{$action}" method="get">	
 	
