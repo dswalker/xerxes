@@ -160,40 +160,67 @@ class Query extends Search\Query
 		
 		// facets selected
 		
+		$start_date = '*';
+		$end_date = '*';
+		
 		foreach ( $this->getLimits(true) as $facet_chosen )
 		{
 			$value = $facet_chosen->value;
 			$field = $facet_chosen->field;
-			$boolean = $facet_chosen->boolean;
 			
-			if ( ! is_array($value) )
+			$boolean = 'OR';
+						
+			if ( $field == 'publishDate')
 			{
-				$value = array($value);
-			}
-			
-			// put quotes around non-keyed terms
-								
-			if ( $facet_chosen->key != true )
-			{
-				for( $x =0; $x < count($value); $x++)
+				if ( $value == 'start')
 				{
-					$value[$x] = '"' . $value[$x] . '"';
+					$start_date = $facet_chosen->display;
+				}
+				elseif ( $value == 'end')
+				{
+					$end_date = $facet_chosen->display;
+				}
+				
+				continue;
+			}
+			else
+			{
+				if ( $facet_chosen->boolean == "NOT")
+				{
+					$boolean = ' -';
+				}
+				
+				if ( ! is_array($value) )
+				{
+					$value = array($value);
+				}
+				
+				// put quotes around non-keyed terms
+									
+				if ( $facet_chosen->key != true )
+				{
+					for( $x =0; $x < count($value); $x++)
+					{
+						$value[$x] = '"' . $value[$x] . '"';
+					}
 				}
 			}
 			
-			// boolean
-			/*
-			if ( $boolean != "")
-			{
-				$value = "$boolean $value";
-			}
-			*/
-			
-			$value = implode(" OR $field:", $value);
+			$value = implode(" $boolean $field:", $value);
 			
 			$tag = urlencode( '{!tag=' . $facet_chosen->field . '}');
 			
 			$query .= '&fq=' . $tag . urlencode( "$field:$value");
+		}
+		
+		if ( $start_date != '*' || $end_date != '*')
+		{
+			$value = "[$start_date TO $end_date]";
+				
+			$tag = urlencode( '{!tag=publishDate}');
+				
+			$query .= '&fq=' . $tag . urlencode( "$field:$value");
+				
 		}
 		
 		// limits set in config
