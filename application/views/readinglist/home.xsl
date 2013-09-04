@@ -36,23 +36,9 @@
 <xsl:template name="page_name" />
 
 <xsl:template name="main">
-		
-	<xsl:if test="//lti/instructor = '1'">
-	
-		<ul class="courses-search-options">
-			<li>
-				<a href="{course_nav/url_search}" class="btn btn-large">
-					<i class="icon-search"></i><xsl:text> </xsl:text>Search for new records
-				</a>
-			</li>
-			<li>
-				<a href="{course_nav/url_previously_saved}" class="btn btn-large">
-					<i class="icon-folder-open-alt"></i><xsl:text> </xsl:text>Add previously saved records
-				</a>
-			</li>
-		</ul>
-		
-	</xsl:if>
+
+	<xsl:call-template name="instructor_search_options" />
 
 </xsl:template>
+
 </xsl:stylesheet>

@@ -439,6 +439,12 @@ class Engine extends Search\Engine
 		return $facets;
 	}
 	
+	public function getDatabases()
+	{
+		$url = 'http://eit.ebscohost.com/Services/SearchService.asmx/Info?prof=' . 
+			$this->username  . '&pwd=' . $this->password;
+	}
+	
 	/**
 	 * @return Config
 	 */

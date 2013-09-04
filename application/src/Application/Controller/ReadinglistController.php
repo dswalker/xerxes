@@ -92,9 +92,10 @@ class ReadinglistController extends SearchController
 			}
 		}
 		
-		//testing
+		// save lti in the response
 		
-		$this->response->setVariable('lti', array('instructor' => true));
+		$lti = $this->request->getSessionObject("lti_" . $this->course_id);
+		$this->response->setVariable('lti', $lti);
 	}
 	
 	protected function init()

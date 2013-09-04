@@ -23,7 +23,20 @@ require_once __DIR__ . '/../OAuth/OAuth.php'; // @todo: make this not hardwired
 
 class Basic 
 {
+	/**
+	 * @var OAuthRequest
+	 */
+	
 	protected $request;
+	
+	/**
+	 * Create new Basic LTI access object
+	 * 
+	 * @param string $key
+	 * @param string $secret
+	 * 
+	 * @throws \Exception
+	 */
 	
 	public function __construct( $key, $secret )
 	{
@@ -56,17 +69,37 @@ class Basic
 		$this->request = $request;
 	}
 	
+	/**
+	 * Get request parameter
+	 * 
+	 * @param string $name
+	 */
+	
 	public function getParam($name)
 	{
 		return $this->request->get_parameter($name);
 	}
 	
+	/**
+	 * Create a unique identifier for this LTI context
+	 * 
+	 * oauth_consumer_key + context_id + resource_link_id
+	 * 
+	 * @return string
+	 */
+	
 	public function getID()
 	{
-		return $this->getParam("oauth_consumer_key") . ":" 
-			. $this->getParam('context_id') . ":" 
+		return $this->getParam("oauth_consumer_key") . "-" 
+			. $this->getParam('context_id') . "-" 
 			. $this->getParam('resource_link_id');		
 	}
+	
+	/**
+	 * Whether the user is an Instructor
+	 * 
+	 * @return bool
+	 */
 	
 	public function isInstructor()
 	{
@@ -82,6 +115,10 @@ class Basic
 		}
 	}
 	
+	/**
+	 * Serialize the objet to XML
+	 */
+	
 	public function toXML()
 	{
 		$xml = Parser::convertToDOMDocument("<lti />");
@@ -96,6 +133,14 @@ class Basic
 		
 		return $xml;
 	}
+	
+	/**
+	 * Append an item to the xml
+	 * 
+	 * @param DOMDocument $xml
+	 * @param string $id
+	 * @param mixed $value
+	 */
 	
 	private function appendElement(&$xml, $id, $value)
 	{

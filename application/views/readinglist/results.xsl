@@ -41,15 +41,17 @@
 <xsl:template name="main">
 		
 	<xsl:if test="//lti/instructor = '1'">
+	
 		<div class="reading-list-header">
-
-			<img src="{$base_url}/images/famfamfam/add.png" alt="" /> <xsl:text> </xsl:text>
-			<a href="{course_nav/url_search}">Search for new records</a> <xsl:text> </xsl:text>
-			
-			<img src="{$base_url}/images/famfamfam/add.png" alt="" /> <xsl:text> </xsl:text>
-			<a href="{course_nav/url_previously_saved}">Add previously saved records</a> <xsl:text> </xsl:text>			
-			
+			<a href="{course_nav/url_search}" class="btn ">
+				<i class="icon-search"></i><xsl:text> </xsl:text>Search for new records
+			</a>
+			<xsl:text> </xsl:text>
+			<a href="{course_nav/url_previously_saved}" class="btn">
+				<i class="icon-folder-open-alt"></i><xsl:text> </xsl:text>Add previously saved records
+			</a>
 		</div>
+		
 	</xsl:if>
 
 	<xsl:if test="results/records/record/xerxes_record">
@@ -80,12 +82,9 @@
 					<xsl:text> </xsl:text>
 				</div>
 				<div>
-					<xsl:value-of select="format/public" />
-				</div>
-				<div>
 					<xsl:value-of select="journal" />
 				</div>
-				<div style="color: #555; font-size: 95%; margin-top: 1em">
+				<div style="color: #555; margin-top: 1em">
 					<xsl:value-of select="abstract" />
 				</div>				
 				

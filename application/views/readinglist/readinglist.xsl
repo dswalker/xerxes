@@ -41,7 +41,6 @@
 					
 					.reading-list-header {
 						margin-bottom: 2em; 
-						margin-top: 2em; 
 						padding: 1em; 
 						background-color: #efefef; 
 						border: 1px solid #ccc;
@@ -49,7 +48,8 @@
 					
 					.reading-list-item {
 						padding: .5em;
-						border: 1px solid #fff; 
+						border: 1px solid #fff;
+						max-width: 650px;
 					}
 					
 					.reading-list-highlight { 
@@ -77,8 +77,9 @@
 				<style type="text/css">
 						
 					.reading-list-item {
-						padding: .5em;
-						margin-bottom: .5em;
+						padding: 1em;
+						margin-bottom: 1em;
+						max-width: 650px;
 					}
 								
 				</style>		
@@ -128,6 +129,27 @@
 	
 	<xsl:template name="breadcrumb">
 		Return to reading list!
+	</xsl:template>
+	
+	<xsl:template name="instructor_search_options">
+	
+		<xsl:if test="//lti/instructor = '1'">
+		
+			<ul class="courses-search-options">
+				<li>
+					<a href="{course_nav/url_search}" class="btn btn-large">
+						<i class="icon-search"></i><xsl:text> </xsl:text>Search for new records
+					</a>
+				</li>
+				<li>
+					<a href="{course_nav/url_previously_saved}" class="btn btn-large">
+						<i class="icon-folder-open-alt"></i><xsl:text> </xsl:text>Add previously saved records
+					</a>
+				</li>
+			</ul>
+			
+		</xsl:if>	
+	
 	</xsl:template>
 			
 </xsl:stylesheet>

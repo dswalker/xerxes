@@ -11,6 +11,7 @@
 
 namespace Application\Model\DataMap;
 
+use Application\Model\Saved\ReadingList\Result;
 use Xerxes\Utility\DataMap;
 
 class ReadingList extends DataMap
@@ -28,7 +29,7 @@ class ReadingList extends DataMap
 	{
 		if ( count($record_array) > 0 )
 		{
-			$already_assigned_array = $this->getRecordIDs();;
+			$already_assigned_array = $this->getRecordIDs();
 			
 			$this->beginTransaction();
 			
@@ -87,10 +88,22 @@ class ReadingList extends DataMap
 	{
 		if ( $this->hasRecords() )
 		{
-			$ids = $this->getRecordIDs();
+			// get full reading list record data
+			
+			$record_data = $this->getRecordData();
+			
+			// get just the id's
+			
+			$ids = array();
+			
+			foreach ( $record_data as $record_data_item )
+			{
+				$ids[] = $record_data_item->record_id;
+			}
+			
+			// get the full Xerxes records
 			
 			$records_datamap = new SavedRecords();
-			
 			$records = $records_datamap->getRecordsByID($ids);
 			
 			// reorder them here -- hacky sack! @todo: find a better way!
@@ -99,12 +112,16 @@ class ReadingList extends DataMap
 			
 			$final = array();
 			
-			foreach ( $ids as $id )
+			foreach ( $record_data as $record_data_item )
 			{
 				foreach ( $records as $record )
 				{
-					if ( $record->id == $id )
+					if ( $record->id == $record_data_item->record_id )
 					{
+						// substitute any user-supplied data with 
+						
+						// add them in this order
+						
 						$final[] = $record;
 						break;
 					}
@@ -134,10 +151,9 @@ class ReadingList extends DataMap
 	
 	protected function getRecordIDs()
 	{
-		$sql = "SELECT record_id FROM xerxes_reading_list WHERE context_id = :context_id ORDER BY record_order";
-		$results = $this->select( $sql, array (":context_id" => $this->id) );
-			
 		$ids = array();
+		
+		$results = $this->getRecordQuery();
 			
 		foreach ( $results as $result )
 		{
@@ -145,5 +161,25 @@ class ReadingList extends DataMap
 		}
 			
 		return $ids;
+	}
+	
+	protected function getRecordData()
+	{
+		$ids = array();
+		
+		$results = $this->getRecordQuery();
+			
+		foreach ( $results as $result )
+		{		
+			$ids[] = new Result($result);
+		}
+		
+		return $ids;
+	}
+	
+	protected function getRecordQuery()
+	{
+		$sql = "SELECT * FROM xerxes_reading_list WHERE context_id = :context_id ORDER BY record_order";
+		return $this->select( $sql, array (":context_id" => $this->id) );
 	}
 }
