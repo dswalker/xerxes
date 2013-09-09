@@ -145,7 +145,7 @@
 		</xsl:if>
 
 		<!-- javascript: only when not ada or mobile -->
-		<xsl:if test="$is_ada = 0 and $is_mobile = 0">
+		<xsl:if test="$is_ada = 0">
 			<xsl:call-template name="javascript_include" />
 		</xsl:if>
 		
@@ -496,7 +496,7 @@
 		
 			&lt;script language="javascript" type="text/javascript" src="<xsl:value-of select="$base_include"/>/javascript/flot/excanvas.min.js"&gt;&lt;/script&gt;
 			
-		<![CDATA[[endif]>]]></xsl:comment>
+		<![CDATA[<![endif]]]></xsl:comment>
 		
 		<script src="{$base_include}/javascript/bootstrap-select.min.js?version={$asset_version}"  type="text/javascript"></script>
 		
@@ -513,7 +513,7 @@
 	
 	<xsl:template name="jslabels">
 	
-		<script  type="text/javascript" src="asset/labels?version={$asset_version}"></script> 
+		<script  type="text/javascript" src="{$base_url}/asset/labels?version={$asset_version}"></script> 
 	
 	</xsl:template>
 
