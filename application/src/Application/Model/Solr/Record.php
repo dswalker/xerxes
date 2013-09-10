@@ -107,7 +107,15 @@ class Record extends Bibliographic
 		$this->setScore($score);
 		
 		$this->format()->setInternalFormat($format);
-		$this->format()->setPublicFormat($format);		
+		$this->format()->setPublicFormat($format);
+		
+		// custom mappings
+		
+		if ( class_exists('Local\\Model\\Solr\\Record') )
+		{
+			$local = new \Local\Model\Solr\Record();
+			$local->map($this, $this->marc);
+		}		
 	}
 	
 	public function __sleep()
