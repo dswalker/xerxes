@@ -141,6 +141,26 @@ class Query
 	}
 	
 	/**
+	 * Return search terms
+	 * 
+	 * Just the phrase of each query term, as a string
+	 * 
+	 * @return string
+	 */
+	
+	public function getSearchTerms()
+	{
+		$final = array();
+		
+		foreach ( $this->getQueryTerms() as $term )
+		{
+			$final[] = $term->phrase;
+		}
+		
+		return implode(' ', $final);
+	}
+	
+	/**
 	 * Get a specific limit
 	 *
 	 * @param string $id		the limit name
@@ -285,6 +305,8 @@ class Query
 	
 	public function checkSpelling()
 	{
+		return null;
+		
 		$registry = Registry::getInstance();
 		$spell_type = $registry->getConfig('SPELL_CHECKER');
 		
