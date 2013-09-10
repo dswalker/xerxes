@@ -449,4 +449,48 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 		<xsl:value-of select="$option" />
 	</xsl:template>
 	
+	<xsl:variable name="text_citation_basic_title">Title: </xsl:variable>
+	<xsl:variable name="text_citation_basic_format">Format: </xsl:variable>
+	<xsl:variable name="text_citation_basic_author">Author: </xsl:variable>
+	<xsl:variable name="text_citation_basic_citation">Original Citation: </xsl:variable>
+	<xsl:variable name="text_citation_basic_journal-title">Journal Title: </xsl:variable>
+	<xsl:variable name="text_citation_basic_volume">Volume: </xsl:variable>
+	<xsl:variable name="text_citation_basic_issue">Issue: </xsl:variable>
+	<xsl:variable name="text_citation_basic_spage">Start Page: </xsl:variable>
+	<xsl:variable name="text_citation_basic_epage">End Page: </xsl:variable>
+	<xsl:variable name="text_citation_basic_place">Place: </xsl:variable>
+	<xsl:variable name="text_citation_basic_publisher">Publisher: </xsl:variable>
+	<xsl:variable name="text_citation_basic_year">Year: </xsl:variable>
+	<xsl:variable name="text_citation_basic_summary">Summary: </xsl:variable>
+	<xsl:variable name="text_citation_basic_subjects">Subjects: </xsl:variable>
+	<xsl:variable name="text_citation_basic_language">Language: </xsl:variable>
+	<xsl:variable name="text_citation_basic_notes">Notes: </xsl:variable>
+	<xsl:variable name="text_citation_basic_items">Items: </xsl:variable>
+	<xsl:variable name="text_citation_basic_link">Link: </xsl:variable>
+	
+	<xsl:variable name="text_summon_recommendation">
+		<xsl:text>We found a </xsl:text>
+		<xsl:choose>
+		<xsl:when test="count(results/database_recommendations/database_recommendation) &gt; 1">
+			couple of specialized databases
+		</xsl:when>
+		<xsl:otherwise>
+			specialized database
+		</xsl:otherwise>
+		</xsl:choose>
+		<xsl:text> that might help you.</xsl:text>
+	</xsl:variable>
+	<xsl:variable name="text_summon_facets_refine">Refine your search</xsl:variable>
+	<xsl:variable name="text_summon_facets_all">All results</xsl:variable>
+	<xsl:variable name="text_summon_facets_scholarly">Scholarly only</xsl:variable>
+	<xsl:variable name="text_summon_facets_refereed">Peer-reviewed only</xsl:variable>
+	<xsl:variable name="text_summon_facets_fulltext">Full-text only</xsl:variable>
+	<xsl:variable name="text_summon_facets_newspaper-add">Add newspaper articles</xsl:variable>
+	<xsl:variable name="text_summon_facets_newspaper-exclude">Exclude newspaper articles</xsl:variable>
+	<xsl:variable name="text_summon_facets_beyond-holdings">Add results beyond the library's collection</xsl:variable>
+<!--
+	<xsl:variable name="text_summon_facets_"></xsl:variable>
+	<xsl:variable name="text_summon_facets_"></xsl:variable>
+	<xsl:variable name="text_summon_facets_"></xsl:variable>
+-->
 </xsl:stylesheet>

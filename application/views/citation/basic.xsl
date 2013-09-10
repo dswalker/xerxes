@@ -31,12 +31,12 @@
 
 	
 		<xsl:if test="title_normalized">
-			<xsl:text>Title: </xsl:text>
+			<xsl:copy-of select="$text_citation_basic_title" />
 			<xsl:value-of select="title_normalized" />
 			<xsl:text>&#013;&#010;</xsl:text>
 		</xsl:if>
 		<xsl:if test="format">
-			<xsl:text>Format: </xsl:text>
+			<xsl:copy-of select="$text_citation_basic_format" />
 			<xsl:choose>
 				<xsl:when test="format/public">
 					<xsl:value-of select="format/public" />
@@ -48,7 +48,7 @@
 			<xsl:text>&#013;&#010;</xsl:text>
 		</xsl:if>
 		<xsl:if test="authors/author">
-			<xsl:text>Authors: </xsl:text>
+			<xsl:copy-of select="$text_citation_basic_author" />
 			<xsl:for-each select="authors/author">
 				<xsl:call-template name="author"><xsl:with-param name="type" value="last" /></xsl:call-template>
 				<xsl:if test="following-sibling::author">
@@ -58,57 +58,57 @@
 			<xsl:text>&#013;&#010;</xsl:text>
 		</xsl:if>
 		<xsl:if test="journal">
-			<xsl:text>Original Citation: </xsl:text>
+			<xsl:copy-of select="$text_citation_basic_citation" />
 			<xsl:value-of select="journal" />
 			<xsl:text>&#013;&#010;</xsl:text>
 		</xsl:if>
 		<xsl:if test="journal_title">
-			<xsl:text>Journal Title: </xsl:text>
+			<xsl:copy-of select="$text_citation_basic_journal-title" />
 			<xsl:value-of select="journal_title" />
 			<xsl:text>&#013;&#010;</xsl:text>
 		</xsl:if>
 		<xsl:if test="volume">
-			<xsl:text>Volume: </xsl:text>
+			<xsl:copy-of select="$text_citation_basic_volume" />
 			<xsl:value-of select="volume" />
 			<xsl:text>&#013;&#010;</xsl:text>
 		</xsl:if>
 		<xsl:if test="issue">
-			<xsl:text>Issue: </xsl:text>
+			<xsl:copy-of select="$text_citation_basic_issue" />
 			<xsl:value-of select="issue" />
 			<xsl:text>&#013;&#010;</xsl:text>
 		</xsl:if>
 		<xsl:if test="start_page">
-			<xsl:text>Start Page: </xsl:text>
+			<xsl:copy-of select="$text_citation_basic_spage" />
 			<xsl:value-of select="start_page" />
 			<xsl:text>&#013;&#010;</xsl:text>
 		</xsl:if>
 		<xsl:if test="end_page">
-			<xsl:text>End Page: </xsl:text>
+			<xsl:copy-of select="$text_citation_basic_epage" />
 			<xsl:value-of select="end_page" />
 			<xsl:text>&#013;&#010;</xsl:text>
 		</xsl:if>
 		<xsl:if test="place">
-			<xsl:text>Place: </xsl:text>
+			<xsl:copy-of select="$text_citation_basic_place" />
 			<xsl:value-of select="place" />
 			<xsl:text>&#013;&#010;</xsl:text>
 		</xsl:if>
 		<xsl:if test="publisher">
-			<xsl:text>Publisher: </xsl:text>
+			<xsl:copy-of select="$text_citation_basic_publisher" />
 			<xsl:value-of select="publisher" />
 			<xsl:text>&#013;&#010;</xsl:text>
 		</xsl:if>
 		<xsl:if test="year">
-			<xsl:text>Year: </xsl:text>
+			<xsl:copy-of select="$text_citation_basic_year" />
 			<xsl:value-of select="year" />
 			<xsl:text>&#013;&#010;</xsl:text>
 		</xsl:if>
 		<xsl:if test="abstract">
-			<xsl:text>Summary: </xsl:text>
+			<xsl:copy-of select="$text_citation_basic_abstract" />
 			<xsl:value-of select="abstract" />
 			<xsl:text>&#013;&#010;</xsl:text>
 		</xsl:if>
 		<xsl:if test="subjects/subject">
-			<xsl:text>Subjects: </xsl:text>
+			<xsl:copy-of select="$text_citation_basic_subjects" />
 			<xsl:for-each select="subjects/subject">
 				<xsl:value-of select="display|text()" />
 				<xsl:if test="following-sibling::subject">
@@ -118,12 +118,12 @@
 			<xsl:text>&#013;&#010;</xsl:text>
 		</xsl:if>	
 		<xsl:if test="language">
-			<xsl:text>Language: </xsl:text>
+			<xsl:copy-of select="$text_citation_basic_language" />
 			<xsl:value-of select="language" />
 			<xsl:text>&#013;&#010;</xsl:text>
 		</xsl:if>
 		<xsl:if test="note">
-			<xsl:text>Notes: </xsl:text>
+			<xsl:copy-of select="$text_citation_basic_notes" />
 			<xsl:for-each select="note">
 				<xsl:value-of select="text()" />
 				<xsl:if test="following-sibling::subject">
@@ -134,7 +134,7 @@
 		</xsl:if>
 		
 		<xsl:if test="items/item">
-			<xsl:text>Items: </xsl:text>
+			<xsl:copy-of select="$text_citation_basic_items" />
 			<xsl:text>&#013;&#010;</xsl:text>
 			
 			<xsl:for-each select="items/item">
@@ -144,7 +144,7 @@
 			</xsl:for-each>
 		</xsl:if>
 
-		<xsl:text>Link: </xsl:text><xsl:value-of select="$base_url" />/folder/record?id=<xsl:value-of select="../id" />
+		<xsl:copy-of select="$text_citation_basic_link" /><xsl:value-of select="$base_url" />/folder/record?id=<xsl:value-of select="../id" />
 		
 		<!-- full-text -->
 		
