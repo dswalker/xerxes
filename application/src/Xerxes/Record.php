@@ -1387,6 +1387,17 @@ class Record
 	}
 	
 	/**
+	 * Add a link
+	 * 
+	 * @param Link $link
+	 */
+	
+	public function addLink(Link $link)
+	{
+		$this->links[] = $link;
+	}
+	
+	/**
 	 * Primary Author
 	 *
 	 * @param bool $bolReverse	whether author should be return as last,first
