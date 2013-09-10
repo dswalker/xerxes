@@ -810,6 +810,10 @@ div.autocomplete ul li {
 	margin-bottom: 15px;
 }
 
+.tab-left #tabnav {
+	padding-left: 23%;
+}
+
 #tabnav ul {
 	margin: 0;
 	padding: 10px 10px 0;
