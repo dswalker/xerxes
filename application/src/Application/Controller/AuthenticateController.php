@@ -83,7 +83,7 @@ class AuthenticateController extends ActionController
 	
 		$result = $this->authentication->onCallBack();
 	
-		if ( $result == Scheme::FAILED )
+		if ( $result === Scheme::FAILED )
 		{
 			// failed the login, so present a message to the user
 	
