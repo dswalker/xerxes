@@ -129,6 +129,8 @@ class Ldap extends Scheme
 								$strBindDN = $objEntries[0]['dn'];
 							}
 						}
+					} else {
+						throw new \Exception("LDAP initial bind failed (error message: ".ldap_error($objConn).")");
 					}
 				}
 				
@@ -136,6 +138,11 @@ class Ldap extends Scheme
 				if ($strBindDN != 'USER_NOT_FOUND')
 				{
 					$bolAuth = ldap_bind($objConn, $strBindDN, $strPassword);
+					
+					// for anything else than "invalid credentials" throw an exception
+					if ( !$bolAuth && ( ldap_errno($objConn) != 49 ) ) {
+						throw new \Exception("LDAP bind failed (error ".ldap_errno($objConn).": ".ldap_error($objConn).")");
+					}
 					
 					// search again (in case we didn't do the initial bind) to retrieve name, surname and email
 					
