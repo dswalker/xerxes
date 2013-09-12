@@ -59,18 +59,7 @@
 			<div class="results-database-recommendations">
 			
 				<h2>
-					<xsl:text>We found a </xsl:text>
-				
-					<xsl:choose>
-						<xsl:when test="count(results/database_recommendations/database_recommendation) &gt; 1">
-							couple of specialized databases
-						</xsl:when>
-						<xsl:otherwise>
-							specialized database
-						</xsl:otherwise>
-					</xsl:choose>
-					
-					<xsl:text> that might help you.</xsl:text>
+					<xsl:copy-of select="$text_summon_recommendation" />
 				</h2>
 		
 				<ul>
@@ -128,7 +117,7 @@
 
 <xsl:template name="facet_narrow_results">
 
-	<h3>Refine your search</h3>
+	<h3><xsl:copy-of select="$text_summon_facets_refine" /></h3>
 
 	<xsl:variable name="scholarly">
 		<xsl:if test="//request/*[@original_key = 'facet.IsScholarly']">
@@ -180,7 +169,7 @@
 						</xsl:if>
 					</input>
 					<xsl:text> </xsl:text>
-					<label for="facet-0">All results</label>
+					<label for="facet-0"><xsl:copy-of select="$text_summon_facets_all" /></label>
 					
 				</li>		
 				
@@ -196,7 +185,7 @@
 						</xsl:if>
 					</input>
 					<xsl:text> </xsl:text>
-					<label for="facet-0-1">Scholarly only</label>
+					<label for="facet-0-1"><xsl:copy-of select="$text_summon_facets_scholarly" /></label>
 				
 				</li>
 			
@@ -212,7 +201,7 @@
 						</xsl:if>
 					</input>
 					<xsl:text> </xsl:text>
-					<label for="facet-0-2">Peer-reviewed only</label>
+					<label for="facet-0-2"><xsl:copy-of select="$text_summon_facets_refereed" /></label>
 				
 				</li>
 				
@@ -228,7 +217,7 @@
 						</xsl:if>
 					</input>
 					<xsl:text> </xsl:text>
-					<label for="facet-0-3">Full-text only</label>
+					<label for="facet-0-3"><xsl:copy-of select="$text_summon_facets_fulltext" /></label>
 				
 				</li>
 			
@@ -244,7 +233,7 @@
 						</xsl:if>
 					</input>
 					<xsl:text> </xsl:text>
-					<label for="facet-0-4">Add newspaper articles</label>
+					<label for="facet-0-4"><xsl:copy-of select="$text_summon_facets_newspaper-add" /></label>
 				
 				</li>
 				
@@ -260,7 +249,7 @@
 						</xsl:if>
 					</input>
 					<xsl:text> </xsl:text>
-					<label for="facet-0-5">Exclude newspaper articles</label>
+					<label for="facet-0-5"><xsl:copy-of select="$text_summon_facets_newspaper-exclude" /></label>
 				
 				</li>
 				
@@ -276,7 +265,7 @@
 						</xsl:if>
 					</input>
 					<xsl:text> </xsl:text>
-					<label for="facet-0-6">Add results beyond the library's collection</label>
+					<label for="facet-0-6"><xsl:copy-of select="$text_summon_facets_beyond-holdings" /></label>
 				
 				</li>
 				
