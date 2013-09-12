@@ -407,7 +407,7 @@
 					
 						<option value="{$internal}">
 							<xsl:if test="//request/field = $internal">
-								<xsl:attribute name="selected">seleted</xsl:attribute>
+								<xsl:attribute name="selected">selected</xsl:attribute>
 							</xsl:if>
 							<xsl:value-of select="@public" />
 						</option>
@@ -1348,7 +1348,7 @@
 			
 				<!-- note that if this event is fired with ajax, the javascript changes
 				the action element here to 'tags_edit_ajax' so the server knows to display a 
-				different view, which the javascript captures and uses to updates the totals above. -->
+				different view, which the javascript captures and uses to update the totals above. -->
 				
 				<input type="hidden" name="lang" value="{//request/lang}" />
 				<input type="hidden" name="record" value="{$id}" />

@@ -44,7 +44,7 @@ abstract class DataMap extends DatabaseConnection
 	 * Fetch all records from a select query
 	 *
 	 * @param string $sql   SQL query
-	 * @param array $values paramaterized values
+	 * @param array $values parametrized values
 	 * @return array        of results as supplied by PDO
 	 */
 	
@@ -76,7 +76,7 @@ abstract class DataMap extends DatabaseConnection
 	 * Update rows in the database
 	 *
 	 * @param string $sql   SQL query
-	 * @param array $values paramaterized values
+	 * @param array $values parametrized values
 	 * @return mixed        status of the request, as set by PDO
 	 */
 	
@@ -101,7 +101,7 @@ abstract class DataMap extends DatabaseConnection
 	 * Insert rows in the database
 	 *
 	 * @param string $sql       SQL query
-	 * @param array $values     paramaterized values
+	 * @param array $values     parametrized values
 	 * @param bool $return_pk   return the inserted pk value?
 	 * @return mixed            if $return_pk is false, status of the request (true or false), 
 	 *                          as set by PDO. if $return_pk is true, either the last inserted pk, 
@@ -126,7 +126,7 @@ abstract class DataMap extends DatabaseConnection
 	 * Delete rows in the database
 	 *
 	 * @param string $sql   SQL query
-	 * @param array $values paramaterized values
+	 * @param array $values parametrized values
 	 * @return mixed        status of the request, as set by PDO
 	 */
 	
