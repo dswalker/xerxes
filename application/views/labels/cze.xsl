@@ -13,8 +13,7 @@
 <!--
 
  Czech labels
- author: David Walker <dwalker@calstate.edu>
- author: Ivan Masár
+ author: Ivan Masár <helix84@centrum.sk>
  
  -->
 
@@ -177,7 +176,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_folder_limit_format">Formát</xsl:variable>
 	<xsl:variable name="text_folder_limit_tag">Štítek</xsl:variable>
 	<xsl:variable name="text_folder_login_temp">
-		( <a href="{//navbar/login_link}">Přihlaste se</a>, abyste mohli své výsledky uložit a použít i po ukončení této relace. )
+		( <a href="{//navbar/element[@id='login']/url}">Přihlaste se</a>, abyste mohli své výsledky uložit a použít i po ukončení této relace. )
 	</xsl:variable>
 	<xsl:variable name="text_folder_no_records">Momentálně nemáte uložené žádné záznamy</xsl:variable>
 	<xsl:variable name="text_folder_no_records_for">z</xsl:variable>
@@ -199,7 +198,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_header_logout">
 		<xsl:text>Odhlásit </xsl:text>
 		<xsl:choose>
-			<xsl:when test="//session/role = 'named'">
+			<xsl:when test="//request/authorization_info/affiliated[@user_account = 'true']">
 				<xsl:text>uživatele </xsl:text><xsl:value-of select="//request/session/username" />
 			</xsl:when>
 			<xsl:when test="//session/role = 'guest'">
@@ -278,12 +277,14 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_record_chapters">Kapitoly</xsl:variable>
 	<xsl:variable name="text_record_cite_this">Citovat</xsl:variable>
 	<xsl:variable name="text_record_citation_note">
-		Tyto citace vytvořil software a mohou obsahovat chyby. Pro ověření přesnosti si nastudujte příslušnou citační normu nebo příručku.
+		Tyto citace vytvořil software a mohou obsahovat chyby.
+		Pro ověření přesnosti si nastudujte příslušnou citační normu nebo příručku.
 	</xsl:variable>	
 	<xsl:variable name="text_record_conf">Konference</xsl:variable>
 	<xsl:variable name="text_record_contents">Obsah</xsl:variable>
 	<xsl:variable name="text_record_database">Databáze</xsl:variable>
-	<xsl:variable name="text_record_degree">Degree</xsl:variable> <!-- TODO -->
+	<xsl:variable name="text_record_degree">Stupeň</xsl:variable>
+	<xsl:variable name="text_record_edition">Vydání</xsl:variable>
 	<xsl:variable name="text_record_format_label">Formát</xsl:variable>
 	<xsl:variable name="text_record_inst">Instituce</xsl:variable>
 	<xsl:variable name="text_record_language_label">Jazyk</xsl:variable>
@@ -308,6 +309,8 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_results_hint_remove_limit">odstranit limit</xsl:variable>
 	<xsl:variable name="text_results_no_title">[ Bez názvu ]</xsl:variable>
 	<xsl:variable name="text_results_published_in">Publikováno v</xsl:variable>
+	<xsl:variable name="text_results_record_hold">Rezervovat tuto položku</xsl:variable>
+	<xsl:variable name="text_results_record_recall">Požádat o vrácení této položky</xsl:variable>
 	<xsl:variable name="text_results_record_saved">Záznam uložen</xsl:variable>
 	<xsl:variable name="text_results_record_saved_temp">Dočasně uložen</xsl:variable>
 	<xsl:variable name="text_results_record_save_it">Uložit tento záznam</xsl:variable>
@@ -321,6 +324,11 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_results_sort_by">řadit dle</xsl:variable>
 	<xsl:variable name="text_results_year">Rok</xsl:variable>
 	<xsl:variable name="text_results_next">Další</xsl:variable>
+	
+	<xsl:variable name="text_search_combined">Všechny výsledky</xsl:variable>
+	<xsl:variable name="text_search_record">Záznam</xsl:variable>
+	<xsl:variable name="text_search_module">Hledat knihy a články</xsl:variable>
+	<xsl:variable name="text_search_results">Výsledky vyhledávání</xsl:variable>
 	
 	<xsl:variable name="text_searchbox_ada_boolean">Booleovský operátor: </xsl:variable>
 	<xsl:variable name="text_searchbox_boolean_and">a</xsl:variable>
@@ -368,7 +376,8 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_snippet_refresh">Obnovit</xsl:variable>	
 	<xsl:variable name="text_snippet_show_css">Vložit CSS?</xsl:variable>
 	<xsl:variable name="text_snippet_show_css_explain">
-		Vložení CSS souboru funguje nedokonale. Vhodnější je definovat CSS styly kódu na samotné externí stránce.
+		Vložení souboru CSS funguje nedokonale.
+		Vhodnější je definovat CSS styly kódu na samotné externí stránce.
 	</xsl:variable>
 	<xsl:variable name="text_snippet_show_databases">Zobrazit databáze?</xsl:variable>
 	<xsl:variable name="text_snippet_show_info_button">Zobrazit tlačítko info?</xsl:variable>
@@ -379,14 +388,14 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_snippet_show_title">Zobrazit název?</xsl:variable>
   
 	<xsl:template name="text_recommendation_header">
-		Lidé, kteří čtou tento <xsl:value-of select="php:function('Xerxes\Utility\Parser::strtolower', string(format/public))"/> čtou také	
+		Lidé, kteří čtou tento <xsl:value-of select="php:function('Xerxes_Framework_Parser::strtolower', string(format))"/> čtou také	
 	</xsl:template>
 
 	<xsl:template name="text_number_to_words">
 		<xsl:param name="number" />
 		<xsl:choose>
 			<xsl:when test="$number = 1">jednu</xsl:when>
-				<xsl:when test="$number = 2">dvě</xsl:when>
+			<xsl:when test="$number = 2">dvě</xsl:when>
 			<xsl:when test="$number = 3">tři</xsl:when>
 			<xsl:when test="$number = 4">čtyři</xsl:when>
 			<xsl:when test="$number = 5">pět</xsl:when>
@@ -416,8 +425,8 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	-->
 	
 	<xsl:template name="text_results_language">
-		<xsl:if test="language and language != 'angličtina' and format/internal != 'VIDEO'">
-			<span>, </span><span class="results-language">jazyk: <xsl:value-of select="language" /></span>
+		<xsl:if test="language and language != 'angličtina' and format != 'VIDEO'">
+			<span>, </span><span class="resultsLanguage">jazyk: <xsl:value-of select="language" /></span>
 		</xsl:if>
 	</xsl:template>
 	
