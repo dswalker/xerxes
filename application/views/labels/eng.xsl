@@ -300,9 +300,9 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_records_tags_updated">Updated</xsl:variable>
 	<xsl:variable name="text_records_tags_update_err">Sorry, there was an error, your labels could not be updated.</xsl:variable>
 	
-	<xsl:variable name="text_records_fulltext_pdf">Full-Text in PDF</xsl:variable>
-	<xsl:variable name="text_records_fulltext_html">Full-Text in HTML</xsl:variable>
-	<xsl:variable name="text_records_fulltext_available">Full-Text Available</xsl:variable>	
+	<xsl:variable name="text_records_fulltext_pdf">Full text in PDF</xsl:variable>
+	<xsl:variable name="text_records_fulltext_html">Full text in HTML</xsl:variable>
+	<xsl:variable name="text_records_fulltext_available">Full text available</xsl:variable>	
 	
 	<xsl:variable name="text_results_author">By</xsl:variable>
 	<xsl:variable name="text_results_breadcrumb">Results</xsl:variable>

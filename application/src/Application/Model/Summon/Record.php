@@ -28,8 +28,7 @@ class Record extends Xerxes\Record
 	
 	private $original_array; // main data from summon
 	private $config; // summon config
-	
-	protected $direct_link; // summon direct link
+	protected $open_url; // summon-generated openurl
 
 	public function __sleep()
 	{
@@ -82,14 +81,7 @@ class Record extends Xerxes\Record
 	
 	public function getOpenURL($resolver, $referer = null, $para_delimiter = '&')
 	{
-		if ( $this->config()->getConfig('direct_linking', false, false ) )
-		{
-			return $this->direct_link;
-		}
-		else
-		{
-			return parent::getOpenURL($resolver, $referer, $para_delimiter);
-		}
+		return $resolver . '?' . $this->open_url;
 	}
 	
 	/**
@@ -98,10 +90,13 @@ class Record extends Xerxes\Record
 	
 	protected function map($document)
 	{
+		// print_r($document); exit;
+		
 		$this->database_name = $this->extractValue($document, "Source/0");
 		
 		$this->record_id = $this->extractValue($document, "ID/0");
 		$this->score = $this->extractValue($document, "Score/0");
+		$this->open_url = $this->extractValue($document, "openUrl");
 		
 		// title
 		
@@ -163,7 +158,16 @@ class Record extends Xerxes\Record
 		
 		// direct link
 		
-		$this->direct_link = $this->extractValue($document, "link");
+		if ( $this->config()->getConfig('direct_linking', false, false ) )
+		{
+			$direct_link = $this->extractValue($document, "link");
+			$model = $this->extractValue($document, "LinkModel/0");
+			
+			if ( $model == 'DirectLink')
+			{
+				$this->links[] = new Link($direct_link, Link::ONLINE);
+			}
+		}
 		
 		// original record link
 		

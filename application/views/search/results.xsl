@@ -1186,7 +1186,7 @@
 				
 				<!-- link resolver, full-text predetermined -->
 				
-				<xsl:when test="$link_resolver_allowed = 'true' and subscription = 1">
+				<xsl:when test="$link_resolver_allowed = 'true' and subscription = 1 and not(links/link[@type = 'full'])">
 						<a href="{../url_open}" target="{$link_target}" class="record-action link-resolver-link" data-role="button">
 							<xsl:call-template name="img_format_html">
 								<xsl:with-param name="class">mini-icon link-resolver-link</xsl:with-param>
