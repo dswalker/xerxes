@@ -353,6 +353,10 @@
 		
 		<config name="logout_url" />
 		
+		<!-- Where the search sidebar should appear. Allowed values are "left", "right" or empty (in
+			which case the default position on the left will be used) -->
+		<config name="search_sidebar" pass="true"></config>
+		
 	</configuration>
 	
 </xerxes>
