@@ -305,8 +305,6 @@ class Query
 	
 	public function checkSpelling()
 	{
-		return null;
-		
 		$registry = Registry::getInstance();
 		$spell_type = $registry->getConfig('SPELL_CHECKER');
 		
