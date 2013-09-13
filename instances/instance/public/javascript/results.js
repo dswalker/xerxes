@@ -15,6 +15,7 @@ $(window).load(setNoImage);
 $(document).ready(fillAvailability);
 $(document).ready(addSaveLinks);
 $(document).ready(function(){ $('.selectpicker').selectpicker(); });
+$(document).ready(focusInputField);
 
 function drawPubGraph()
 {
@@ -340,3 +341,10 @@ function updateElement(url, element)
 	});
 	//.error(function() { $(hitID).html("error") });
 }
+
+function focusInputField()
+{
+	if ($('#form-main-search')) if ($('#form-main-search #query')) $('#form-main-search #query').focus();
+	if ($('form#login')) if ($('form#login #username')) $('form#login #username').focus();
+}	
+
