@@ -59,7 +59,7 @@ class Languages
 	
 	public function init($lang = null)
 	{
-		// first, see if Getttext functions are installed
+		// first, see if Gettext functions are installed
 		
 		if ( function_exists( 'bindtextdomain' ) )
 		{

@@ -17,7 +17,7 @@ use Xerxes\Mvc\MvcEvent;
 class Navigation
 {
 	protected $request; // request
-	protected $registry; // reistry
+	protected $registry; // registry
 	
 	public function __construct( MvcEvent $e )
 	{
