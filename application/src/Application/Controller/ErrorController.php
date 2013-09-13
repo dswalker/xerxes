@@ -11,7 +11,7 @@
 
 namespace Application\Controller;
 
-use Guzzle\Http\Exception\BadResponseException;
+use Guzzle\Http\Exception\RequestException;
 use Xerxes\Mvc\ActionController;
 
 class ErrorController extends ActionController
@@ -29,7 +29,7 @@ class ErrorController extends ActionController
     	
     	// handle PDO and Guzzle errors differently
     	
-    	if ( $e instanceof BadResponseException )
+    	if ( $e instanceof RequestException )
     	{
     		$message = 'Could not connect to search engine';
     	}
