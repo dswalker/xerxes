@@ -1043,87 +1043,16 @@
 	-->
 	
 	<xsl:template name="brief_result_info">
-
+		
 		<div class="results-info">
 		
-			<div class="results-type">
+			<xsl:call-template name="brief_result_info-type" />
+			<xsl:call-template name="brief_result_info-abstract" />
+			<xsl:call-template name="brief_result_info-primary_author" />
+			<xsl:call-template name="brief_result_info-publication_year" />
+			<xsl:call-template name="brief_result_info-journal_info" />
 			
-				<!-- format -->
-			
-				<xsl:call-template name="text_results_format">
-					<xsl:with-param name="format" select="format/public" />
-				</xsl:call-template>
-				
-				<!-- language note -->
-				
-				<xsl:call-template name="text_results_language" />
-				
-				<!-- peer reviewed -->
-				
-				<xsl:if test="refereed">
-					<xsl:text> </xsl:text><xsl:call-template name="img_refereed" />
-					<xsl:text> </xsl:text><xsl:copy-of select="$text_results_refereed" />
-				</xsl:if>
-			</div>
-			
-			<!-- abstract -->
-			
-			<div class="results-abstract">
-			
-				<xsl:choose>
-					<xsl:when test="summary_type = 'toc'">
-						<xsl:value-of select="$text_record_summary_toc" /><xsl:text>: </xsl:text>
-					</xsl:when>
-					<xsl:when test="summary_type = 'subjects'">
-						<xsl:value-of select="$text_record_summary_subjects" /><xsl:text>: </xsl:text>
-					</xsl:when>					
-				</xsl:choose>
-			
-				<xsl:choose>
-					<xsl:when test="string-length(summary) &gt; 300">
-						<xsl:value-of select="substring(summary, 1, 300)" /> . . .
-					</xsl:when>
-					<xsl:when test="summary">
-						<xsl:value-of select="summary" />
-					</xsl:when>
-					
-				</xsl:choose>
-			</div>
-			
-			<!-- primary author -->
-			
-			<xsl:if test="primary_author">
-				<span class="results-author">
-					<strong><xsl:copy-of select="$text_results_author" />: </strong><xsl:value-of select="primary_author" />
-				</span>
-			</xsl:if>
-			
-			<!-- publication year -->
-			
-			<xsl:if test="year">
-				<span class="results-year">
-					<strong><xsl:copy-of select="$text_results_year" />: </strong>
-					<xsl:value-of select="year" />
-				</span>
-			</xsl:if>
-			
-			<!-- journal info -->
-			
-			<xsl:if test="journal or journal_title">
-				<span class="results-publishing">
-					<strong><xsl:copy-of select="$text_results_published_in" />: </strong>
-					<xsl:choose>
-						<xsl:when test="journal_title">
-							<xsl:value-of select="journal_title" />
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="journal" />
-						</xsl:otherwise>
-					</xsl:choose>
-				</span>
-			</xsl:if>
-			
-			<!-- custom area for local implementatin to add junk -->
+			<!-- custom area for local implementation to add junk -->
 			
 			<xsl:call-template name="additional_brief_record_data" />
 			
@@ -1150,7 +1079,86 @@
 		</div>
 	
 	</xsl:template>
-
+	
+	<xsl:template name="brief_result_info-type">
+		<div class="results-type">
+		
+			<!-- format -->
+		
+			<xsl:call-template name="text_results_format">
+				<xsl:with-param name="format" select="format/public" />
+			</xsl:call-template>
+			
+			<!-- language note -->
+			
+			<xsl:call-template name="text_results_language" />
+			
+			<!-- peer reviewed -->
+			
+			<xsl:if test="refereed">
+				<xsl:text> </xsl:text><xsl:call-template name="img_refereed" />
+				<xsl:text> </xsl:text><xsl:copy-of select="$text_results_refereed" />
+			</xsl:if>
+		</div>
+	</xsl:template>
+	
+	<xsl:template name="brief_result_info-abstract">
+		<div class="results-abstract">
+		
+			<xsl:choose>
+				<xsl:when test="summary_type = 'toc'">
+					<xsl:value-of select="$text_record_summary_toc" /><xsl:text>: </xsl:text>
+				</xsl:when>
+				<xsl:when test="summary_type = 'subjects'">
+					<xsl:value-of select="$text_record_summary_subjects" /><xsl:text>: </xsl:text>
+				</xsl:when>					
+			</xsl:choose>
+		
+			<xsl:choose>
+				<xsl:when test="string-length(summary) &gt; 300">
+					<xsl:value-of select="substring(summary, 1, 300)" /> . . .
+				</xsl:when>
+				<xsl:when test="summary">
+					<xsl:value-of select="summary" />
+				</xsl:when>
+				
+			</xsl:choose>
+		</div>
+	</xsl:template>
+	
+	<xsl:template name="brief_result_info-primary_author">
+		<xsl:if test="primary_author">
+			<span class="results-author">
+				<strong><xsl:copy-of select="$text_results_author" />: </strong><xsl:value-of select="primary_author" />
+			</span>
+		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template name="brief_result_info-publication_year">
+		<xsl:if test="year">
+			<span class="results-year">
+				<strong><xsl:copy-of select="$text_results_year" />: </strong>
+				<xsl:value-of select="year" />
+			</span>
+		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template name="brief_result_info-journal_info">
+			<xsl:if test="journal or journal_title">
+				<span class="results-publishing">
+					<strong><xsl:copy-of select="$text_results_published_in" />: </strong>
+					<xsl:choose>
+						<xsl:when test="journal_title">
+							<xsl:value-of select="journal_title" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="journal" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</span>
+			</xsl:if>
+	</xsl:template>
+	
 	<!-- 
 		TEMPLATE: FULL TEXT OPTIONS
 		Logic for determining which full-text links to show
