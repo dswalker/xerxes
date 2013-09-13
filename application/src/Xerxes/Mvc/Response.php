@@ -12,6 +12,7 @@
 namespace Xerxes\Mvc;
 
 use Symfony\Component\HttpFoundation;
+use Xerxes\Mvc\Response;
 use Xerxes\Utility\Parser;
 use Xerxes\Utility\Registry;
 use Xerxes\Utility\Xsl;
@@ -28,7 +29,24 @@ class Response extends HttpFoundation\Response
 	private $_script_path; // path to the distro script
 	private $_view_dir; // view directory
 	private $_view; // view file
+	
 	public $cache = true; // cache response
+	
+	/**
+	 * @var Request
+	 */
+	
+	protected $request;
+	
+	/**
+	 * Set the request
+	 * @param Request $request
+	 */
+	
+	public function setRequest(Request $request)
+	{
+		$this->request = $request;
+	}
 	
 	/**
 	 * Set variable
@@ -188,9 +206,9 @@ class Response extends HttpFoundation\Response
 		
 		array_push($import_array, "labels/eng.xsl");
 		
-		/*
-		$request = new Request();
-		$language = $request->getParam("lang");
+		$language = $this->request->getParam("lang");
+		
+		$registry = Registry::getInstance();
 		
 		if ( $language == "" )
 		{
@@ -204,7 +222,6 @@ class Response extends HttpFoundation\Response
 		{
 			array_push($import_array, "labels/$language.xsl");
 		}
-		*/
 		
 		// make sure we've got a reference to the local includes too
 		

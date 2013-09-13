@@ -175,6 +175,11 @@ class MvcEvent
 	{
 		$response = new Response();
 		
+		if ( $this->request instanceof Request )
+		{
+			$response->setRequest($this->request);
+		}
+		
 		// set view dir
 		
 		$response->setViewDir($this->app_dir . '/views/');
