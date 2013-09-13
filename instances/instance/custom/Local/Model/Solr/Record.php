@@ -11,7 +11,7 @@
 
 namespace Local\Model\Solr;
 
-use Application\Model\Solr\Record;
+use Application\Model\Solr\Record as SolrRecord;
 use Xerxes\Marc\Record as MarcRecord;
 
 /**
@@ -22,7 +22,7 @@ use Xerxes\Marc\Record as MarcRecord;
 
 class Record
 {
-	public function map(Record $record, MarcRecord $marc)
+	public function map(SolrRecord $record, MarcRecord $marc)
 	{
 	}
 }
