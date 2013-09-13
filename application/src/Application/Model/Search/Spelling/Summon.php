@@ -34,46 +34,40 @@ class Summon
 	{
 		$config = Config::getInstance();
 
-		$id = $config->getConfig("SUMMON_ID", false);
-		$key = $config->getConfig("SUMMON_KEY", false);
+		$id = $config->getConfig("SUMMON_ID", true);
+		$key = $config->getConfig("SUMMON_KEY", true);
 		
 		$suggestion = new Suggestion();
 		
-		if ( $id != null && $key != null )
-		{
-			$client = new SummonClient($id, $key, Factory::getHttpClient());	
+		$client = new SummonClient($id, $key, Factory::getHttpClient());	
 				
-			// @todo: see if we can't collapse multiple terms into a single spellcheck query
+		// @todo: see if we can't collapse multiple terms into a single spellcheck query
 			
-			foreach ( $query_terms as $term )
+		foreach ( $query_terms as $term )
+		{
+			$query = $term->phrase;
+			$query = urlencode(trim($query));
+		
+			$correction = null;
+		
+			// get spell suggestion
+			
+			try
 			{
-				$query = $term->phrase;
-				$query = urlencode(trim($query));
+				$correction = $client->checkSpelling($query);
+			}
+			catch (\Exception $e)
+			{
+				trigger_error('Could not process spelling suggestion: ' . $e->getTraceAsString(), E_USER_WARNING);
+			}
 			
-				$correction = null;
+			// got one
 			
-				// get spell suggestion
-			
-				try
-				{
-					$correction = $client->checkSpelling($query);
-						
-				}
-				catch (\Exception $e)
-				{
-					throw $e; // @todo: remove after testing
-						
-					trigger_error('Could not process spelling suggestion: ' . $e->getTraceAsString(), E_USER_WARNING);
-				}
-			
-				// got one
-			
-				if ( $correction != null )
-				{
-					$term->phrase = $correction;
-					
-					$suggestion->addTerm($term);
-				}
+			if ( $correction != null )
+			{
+				$term->phrase = $correction;
+				
+				$suggestion->addTerm($term);
 			}
 		}
 		
