@@ -723,6 +723,13 @@ class Request extends HttpFoundation\Request
 			}
 		}
 		
+		// always include the lang if it was supplied, and not overriden by the code
+		
+		if ( $this->getParam('lang') != null && ! array_key_exists('lang', $params) )
+		{
+			$params['lang'] = $this->getParam('lang');
+		}
+		
 		// assemble it as the route
 		
 		$url = implode('/', $route);
