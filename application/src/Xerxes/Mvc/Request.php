@@ -70,13 +70,14 @@ class Request extends HttpFoundation\Request
 		
 		// set cookie path and name
 		
-		$id = strtolower($request->getBasePath());
+		$basepath = $request->getBasePath();
+		$id = strtolower($basepath);
 		$id = preg_replace('/\//', '_', $id);
 		$id = 'xerxessession_' . $id;
 		
 		$session_options = array(
 			'name' => $id,
-			'cookie_path' => $request->getBasePath()
+			'cookie_path' => ($basepath == '' ? '/' : $basepath)
 		);
 		
 		$storage = new NativeSessionStorage($session_options);
