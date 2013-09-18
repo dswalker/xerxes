@@ -205,7 +205,7 @@
 	
 		<div class="export">
 		
-			<label for="folder-output">Export options: <xsl:text> </xsl:text></label>
+			<label for="folder-output"><xsl:value-of select="$text_folder_export_options" /><xsl:text> </xsl:text></label>
 			
 			<select id="folder-output" name="output" class="selectpicker">
 			
@@ -219,7 +219,7 @@
 			</select>
 			
 			<xsl:text> </xsl:text>
-			<button type="submit" class="btn btn-primary output-export" name="action" value="export">Export</button>
+			<button type="submit" class="btn btn-primary output-export" name="action" value="export"><xsl:value-of select="$text_folder_export_export" /></button>
 			
 		</div>
 	
@@ -236,7 +236,7 @@
 	
 			<div class="assign">
 				
-				<label for="folder-label">Add label to records:</label>
+				<label for="folder-label"><xsl:value-of select="$text_folder_tags_add" /></label>
 				
 				<input id="folder-label" type="text" name="tag" data-provide="typeahead" autocomplete="off">
 					<xsl:attribute name="data-source">				
@@ -251,7 +251,7 @@
 					</xsl:attribute>
 				</input>
 				
-				<button type="submit" class="btn btn-primary output-export" name="action" value="label">Add</button>
+				<button type="submit" class="btn btn-primary output-export" name="action" value="label"><xsl:value-of select="$text_folder_export_add" /></button>
 				
 			</div>
 			
@@ -267,7 +267,7 @@
 	<xsl:template name="folder_delete">
 
 		<button id="folder-delete" type="submit" class="btn" name="action" value="delete">
-			<i class="icon-trash"></i><xsl:text> </xsl:text>Delete
+			<i class="icon-trash"></i><xsl:text> </xsl:text><xsl:value-of select="$text_folder_export_delete" />
 		</button>
 			
 	</xsl:template>
@@ -299,10 +299,10 @@
 			<thead>
 				<tr>
 					<td><input type="checkbox" value="true" id="folder-select-all" /></td>
-					<td>Title</td>
-					<td>Author</td>
-					<td>Format</td>
-					<td>Year</td>
+					<td><xsl:value-of select="$text_folder_output_results_title" /></td>
+					<td><xsl:value-of select="$text_folder_output_results_author" /></td>
+					<td><xsl:value-of select="$text_folder_output_results_format" /></td>
+					<td><xsl:value-of select="$text_folder_output_results_year" /></td>
 				</tr>
 			</thead>
 			

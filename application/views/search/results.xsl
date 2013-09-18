@@ -471,7 +471,7 @@
 					</xsl:if>
 				</input>
 				<xsl:text> </xsl:text>
-				<label for="results-clear-facets-false"> Keep search refinements</label>
+				<label for="results-clear-facets-false"><xsl:value-of select="$text_results_clear_facets_false" /></label>
 				<xsl:text> </xsl:text>
 				<input id="results-clear-facets-true" type="radio" name="clear-facets" value="true">
 					<xsl:if test="not(//request/session/clear_facets) or //request/session/clear_facets != 'false'">
@@ -479,7 +479,7 @@
 					</xsl:if>				
 				</input>
 				<xsl:text> </xsl:text>
-				<label for="results-clear-facets-true"> New search</label>
+				<label for="results-clear-facets-true"><xsl:value-of select="$text_results_clear_facets_false" /></label>
 			</div>
 			
 			<xsl:call-template name="hidden_search_inputs">

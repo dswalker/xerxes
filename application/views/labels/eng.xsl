@@ -448,6 +448,9 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 		<xsl:param name="option" />
 		<xsl:value-of select="$option" />
 	</xsl:template>
+
+	<xsl:variable name="text_results_clear_facets_false"> Keep search refinements</xsl:variable>
+	<xsl:variable name="text_results_clear_facets_true"> New search</xsl:variable>
 	
 	<xsl:variable name="text_citation_basic_title">Title: </xsl:variable>
 	<xsl:variable name="text_citation_basic_format">Format: </xsl:variable>
@@ -488,9 +491,14 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_summon_facets_newspaper-add">Add newspaper articles</xsl:variable>
 	<xsl:variable name="text_summon_facets_newspaper-exclude">Exclude newspaper articles</xsl:variable>
 	<xsl:variable name="text_summon_facets_beyond-holdings">Add results beyond the library's collection</xsl:variable>
-<!--
-	<xsl:variable name="text_summon_facets_"></xsl:variable>
-	<xsl:variable name="text_summon_facets_"></xsl:variable>
-	<xsl:variable name="text_summon_facets_"></xsl:variable>
--->
+	
+	<xsl:variable name="text_folder_output_results_title">Title</xsl:variable>
+	<xsl:variable name="text_folder_output_results_author">Author</xsl:variable>
+	<xsl:variable name="text_folder_output_results_format">Format</xsl:variable>
+	<xsl:variable name="text_folder_output_results_year">Year</xsl:variable>
+	<xsl:variable name="text_folder_tags_add">Add label to records: </xsl:variable>
+	<xsl:variable name="text_folder_export_options">Export options: </xsl:variable>
+	<xsl:variable name="text_folder_export_add">Add</xsl:variable>
+	<xsl:variable name="text_folder_export_delete">Delete</xsl:variable>
+	
 </xsl:stylesheet>

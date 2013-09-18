@@ -447,6 +447,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 			<xsl:when test="$format = 'Book'">Kniha</xsl:when>
 			<xsl:when test="$format = 'Pamphlet'">Brožura</xsl:when>
 			<xsl:when test="$format = 'Essay'">Esej</xsl:when>
+			<xsl:when test="$format = 'Magazine Article'">Článek v časopise</xsl:when>
 			<xsl:when test="$format = 'Microfilm'">Mikrofilm</xsl:when>
 			<xsl:when test="$format = 'Microfiche'">Mikrofiš</xsl:when>
 			<xsl:when test="$format = 'Micropaque'">Mikrotisk</xsl:when>
@@ -505,5 +506,57 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 		<xsl:param name="option" />
 		<xsl:value-of select="$option" />
 	</xsl:template>
+	
+	<xsl:variable name="text_results_clear_facets_false"> Zachovat upřesnění hledání</xsl:variable>
+	<xsl:variable name="text_results_clear_facets_true"> Nnové hledání</xsl:variable>
+	
+	<xsl:variable name="text_citation_basic_title">Název: </xsl:variable>
+	<xsl:variable name="text_citation_basic_format">Formát: </xsl:variable>
+	<xsl:variable name="text_citation_basic_author">Autor: </xsl:variable>
+	<xsl:variable name="text_citation_basic_citation">Původní citace: </xsl:variable>
+	<xsl:variable name="text_citation_basic_journal-title">Název časopisu: </xsl:variable>
+	<xsl:variable name="text_citation_basic_volume">Svazek: </xsl:variable>
+	<xsl:variable name="text_citation_basic_issue">Číslo: </xsl:variable>
+	<xsl:variable name="text_citation_basic_spage">První stránka: </xsl:variable>
+	<xsl:variable name="text_citation_basic_epage">Poslední stránka: </xsl:variable>
+	<xsl:variable name="text_citation_basic_place">Místo: </xsl:variable>
+	<xsl:variable name="text_citation_basic_publisher">Vydavatel: </xsl:variable>
+	<xsl:variable name="text_citation_basic_year">Rok: </xsl:variable>
+	<xsl:variable name="text_citation_basic_summary">Shrnutí: </xsl:variable>
+	<xsl:variable name="text_citation_basic_subjects">Klíčová slova: </xsl:variable>
+	<xsl:variable name="text_citation_basic_language">Jazyk: </xsl:variable>
+	<xsl:variable name="text_citation_basic_notes">Poznámky: </xsl:variable>
+	<xsl:variable name="text_citation_basic_items">Jednotky: </xsl:variable>
+	<xsl:variable name="text_citation_basic_link">Odkaz: </xsl:variable>
+	
+	<xsl:variable name="text_summon_recommendation">
+		<xsl:text>Nalezli jsme </xsl:text>
+		<xsl:choose>
+		<xsl:when test="count(results/database_recommendations/database_recommendation) &gt; 1">
+			několik specializovaných databází
+		</xsl:when>
+		<xsl:otherwise>
+			specializovanou databázi
+		</xsl:otherwise>
+		</xsl:choose>
+		<xsl:text>, která by vám mohla pomoct.</xsl:text>
+	</xsl:variable>
+	<xsl:variable name="text_summon_facets_refine">Upřesnit vaše hledání</xsl:variable>
+	<xsl:variable name="text_summon_facets_all">Všechny výsledky</xsl:variable>
+	<xsl:variable name="text_summon_facets_scholarly">Pouze akademické</xsl:variable>
+	<xsl:variable name="text_summon_facets_refereed">Pouze recenzované</xsl:variable>
+	<xsl:variable name="text_summon_facets_fulltext">Pouze s plným textem online</xsl:variable>
+	<xsl:variable name="text_summon_facets_newspaper-add">Přidat novinové články</xsl:variable>
+	<xsl:variable name="text_summon_facets_newspaper-exclude">Vyjmout novinové články</xsl:variable>
+	<xsl:variable name="text_summon_facets_beyond-holdings">Vyhledávat i mimo vaši knihovnu</xsl:variable>
+	
+	<xsl:variable name="text_folder_output_results_title">Název</xsl:variable>
+	<xsl:variable name="text_folder_output_results_author">Autor</xsl:variable>
+	<xsl:variable name="text_folder_output_results_format">Formiát</xsl:variable>
+	<xsl:variable name="text_folder_output_results_year">Rok</xsl:variable>
+	<xsl:variable name="text_folder_tags_add">Přidat záznamům štítek: </xsl:variable>
+	<xsl:variable name="text_folder_export_options">Možnosti exportu: </xsl:variable>
+	<xsl:variable name="text_folder_export_add">Přidat</xsl:variable>
+	<xsl:variable name="text_folder_export_delete">Smazat</xsl:variable>
 	
 </xsl:stylesheet>
