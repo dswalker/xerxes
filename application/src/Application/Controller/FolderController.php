@@ -18,6 +18,7 @@ use Application\View\Helper\Folder as FolderHelper;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Xerxes\Mvc\Request;
 use Xerxes\Utility\Email;
+use Xerxes\Utility\Labels;
 use Xerxes\Utility\User;
 
 class FolderController extends SearchController
@@ -155,7 +156,10 @@ class FolderController extends SearchController
 		
 		if ( $tag == null )
 		{
-			$this->request->setFlashMessage(Request::FLASH_MESSAGE_ERROR, 'Please provide a label.');
+			$lang = $this->request->getParam("lang");
+			$labels = $this->getLabels($lang);
+			
+			$this->request->setFlashMessage(Request::FLASH_MESSAGE_ERROR, $labels->getLabel('text_folder_export_error_missing_label'));
 			return $this->redirectTo($return);
 		}
 		
@@ -177,7 +181,10 @@ class FolderController extends SearchController
 		
 		// redirect out with message
 		
-		$this->request->setFlashMessage(Request::FLASH_MESSAGE_NOTICE, "Records updated");
+		$lang = $this->request->getParam("lang");
+		$labels = $this->getLabels($lang);
+		
+		$this->request->setFlashMessage(Request::FLASH_MESSAGE_NOTICE, $labels->getLabel('text_folder_export_updated'));
 		return $this->redirectTo($return);
 	}
 	
@@ -210,7 +217,10 @@ class FolderController extends SearchController
 			$this->unmarkSaved($original_id);
 		}
 	
-		$this->request->setFlashMessage(Request::FLASH_MESSAGE_NOTICE, "Records deleted");
+		$lang = $this->request->getParam("lang");
+		$labels = $this->getLabels($lang);
+		
+		$this->request->setFlashMessage(Request::FLASH_MESSAGE_NOTICE, $labels->getLabel('text_folder_export_deleted'));
 		return $this->redirectTo($return);
 	}	
 	
@@ -385,13 +395,16 @@ class FolderController extends SearchController
 		
 		// notify user and send them back
 		
+		$lang = $this->request->getParam("lang");
+		$labels = $this->getLabels($lang);
+			
 		if ( $result == true )
 		{
-			$this->request->setFlashMessage(Request::FLASH_MESSAGE_NOTICE, 'Email successfully sent');
+			$this->request->setFlashMessage(Request::FLASH_MESSAGE_NOTICE, $labels->getLabel('text_folder_export_email_sent'));
 		}
 		else
 		{
-			$this->request->setFlashMessage(Request::FLASH_MESSAGE_ERROR, "Sorry, we couldn't send an email at this time");
+			$this->request->setFlashMessage(Request::FLASH_MESSAGE_NOTICE, $labels->getLabel('text_folder_export_email_error'));
 		}
 		
 		return $this->redirectTo($return);
@@ -476,7 +489,10 @@ class FolderController extends SearchController
 		
 		if ( $this->request->getParam('record') == null )
 		{
-			$this->request->setFlashMessage(Request::FLASH_MESSAGE_ERROR, 'Please select records.');
+			$lang = $this->request->getParam("lang");
+			$labels = $this->getLabels($lang);
+			
+			$this->request->setFlashMessage(Request::FLASH_MESSAGE_ERROR, $labels->getLabel('text_folder_export_error_missing_label'));
 			return $this->redirectTo($return);
 		}
 		else

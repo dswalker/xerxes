@@ -266,11 +266,14 @@ abstract class ActionController
 			$this->labels = new Labels($path);
 				
 			// @todo need a proper language grabber
-				
+			
+//			$lang = $this->registry->defaultLanguage();
+			
 			$lang = $this->request->getParam("lang");
+			
 			$this->labels->setLanguage($lang);
 		}
-	
+		
 		return $this->labels;
 	}	
 }

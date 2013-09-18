@@ -51,7 +51,7 @@
 				<xsl:value-of select="$text_breadcrumb_separator" />
 				
 				<a href="{request/controller}">
-					<xsl:value-of select="//option[@current=1]/@public" />
+					<xsl:value-of select="//option[@current=1]/@id" />
 				</a>
 			
 			</xsl:when>
@@ -218,7 +218,7 @@
 		</div>
 		
 		<div id="loading" style="display:none">
-			<img src="{$base_url}/images/ajax-loader.gif" alt="" /> Updating results . . . 
+			<img src="{$base_url}/images/ajax-loader.gif" alt="" /><xsl:text> </xsl:text><xsl:value-of select="$text_search_loading" />
 		</div>
 	
 	</xsl:template>
@@ -246,11 +246,17 @@
 									<xsl:for-each select="//sort_display/option">
 										<xsl:choose>
 											<xsl:when test="@active = 'true'">
-												<strong data-role="button" data-theme="b"><xsl:value-of select="text()" /></strong>
+												<strong data-role="button" data-theme="b">
+													<xsl:call-template name="text_results_sort_by">
+														<xsl:with-param name="option" select="text()" />
+													</xsl:call-template>
+												</strong>
 											</xsl:when>
 											<xsl:otherwise>
 												<a href="{@link}" data-role="button">
-													<xsl:value-of select="text()" />
+													<xsl:call-template name="text_results_sort_by">
+														<xsl:with-param name="option" select="text()" />
+													</xsl:call-template>
 												</a>
 											</xsl:otherwise>
 										</xsl:choose>
@@ -392,7 +398,7 @@
 	
 			<div class="search-row">
 
-				<label for="field">Search</label><xsl:text> </xsl:text>
+				<label for="field"><xsl:value-of select="$text_searchbox_search" /></label><xsl:text> </xsl:text>
 				
 				<select id="field" name="field">
 					
@@ -409,7 +415,9 @@
 							<xsl:if test="//request/field = $internal">
 								<xsl:attribute name="selected">selected</xsl:attribute>
 							</xsl:if>
-							<xsl:value-of select="@public" />
+							<xsl:call-template name="text_search_fields">
+								<xsl:with-param name="option" select="$internal" />
+							</xsl:call-template>
 						</option>
 						
 					</xsl:for-each>
@@ -419,7 +427,7 @@
 				
 				<input id="query" name="query" type="text" size="32" value="{$query}" /><xsl:text> </xsl:text>
 				
-				<input type="submit" name="Submit" value="GO" class="btn submit-searchbox{$language_suffix}" />
+				<input type="submit" name="Submit" value="{$text_searchbox_go}" class="btn submit-searchbox{$language_suffix}" />
 			
 			</div>
 			
@@ -633,9 +641,7 @@
 												<xsl:attribute name="class">results-pager-link</xsl:attribute>
 											</xsl:otherwise>
 										</xsl:choose>
-										<xsl:call-template name="text_results_sort_options">
-											<xsl:with-param name="option" select="text()" />
-										</xsl:call-template>
+										<xsl:value-of select="text()" />
 									</a>
 								</xsl:otherwise>
 							</xsl:choose>
@@ -661,7 +667,6 @@
 			
 			<div class="box">
 			
-				<xsl:call-template name="facet_expand_results" />
 			
 				<xsl:call-template name="facet_narrow_results" />
 				
@@ -672,8 +677,12 @@
 						<!-- only show the facets if there is more than one -->
 	
 						<xsl:if test="count(facets/facet) &gt; 1 or //config/facet_multiple = 'true'">
-			
-							<h3><xsl:value-of select="public" /></h3>
+								
+							<h3>
+								<xsl:call-template name="text_facet_fields">
+									<xsl:with-param name="option" select="name" />
+								</xsl:call-template>
+							</h3>
 							
 							<xsl:choose>
 								<xsl:when test="facets/facet/is_date">
@@ -708,12 +717,26 @@
 		
 			<div class="facet-expand box">
 				
-			<h3 class="facet-expand-header"><xsl:value-of select="@public" /></h3>
+			<h3 class="facet-expand-header">
+				<xsl:call-template name="text_facet_fields">
+					<xsl:with-param name="option" select="@internal" />
+				</xsl:call-template>
+AAA
+<!--
+				<xsl:value-of select="@public" />
+-->
+			</h3>
 			<ul>
 				<xsl:for-each select="option">
 					<li>
 						<a href="{@url}">
+							<xsl:call-template name="text_facet_fields">
+								<xsl:with-param name="option" select="@internal" />
+							</xsl:call-template>
+BBB
+<!--
 							<xsl:value-of select="@public" />
+-->
 						</a>
 						<xsl:text> </xsl:text>
 						<xsl:call-template name="tab_hit" />
@@ -763,20 +786,22 @@
 				<div class="facet-date-selector">
 		
 					<div>
-						<label for="facet-date-start">From: </label>
+						<label for="facet-date-start"><xsl:value-of select="$text_facets_from"/> </label>
 						<input type="text" name="{$start_date}" id="facet-date-start" value="{//request/*[@original_key = $start_date]}" 
 							maxlength="4" size="4" />
 					</div>
 					
 					<div>					
-						<label for="facet-date-end">To: </label>
+						<label for="facet-date-end"><xsl:value-of select="$text_facets_to"/> </label>
 						<input type="text" name="{$end_date}" id="facet-date-end" value="{//request/*[@original_key = $end_date]}" 
 							maxlength="4" size="4" />
 					</div>
 				
 				</div>
 				
-				<input type="submit" value="Update" class="btn" />
+				<input type="submit" class="btn">
+					<xsl:attribute name="value"><xsl:value-of select="$text_facets_update"/></xsl:attribute>
+				</input>
 				
 			</form>
 			
@@ -831,10 +856,16 @@
 		<li>
 			<xsl:choose>
 				<xsl:when test="url">
-					<a href="{url}"><xsl:value-of select="name" /></a>
+					<a href="{url}">
+						<xsl:call-template name="facet_name">
+							<xsl:with-param name="name" select="name" />
+						</xsl:call-template>
+					</a>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="name" />
+					<xsl:call-template name="facet_name">
+						<xsl:with-param name="name" select="name" />
+					</xsl:call-template>
 				</xsl:otherwise>
 			</xsl:choose>
 						
@@ -865,7 +896,7 @@
 					</xsl:if>
 				</input>
 				<xsl:text> </xsl:text>
-				<label for="{group_id}">Any</label>
+				<label for="{group_id}"><xsl:value-of select="$text_facets_multiple_any" /></label>
 			</li>
 			
 			<xsl:for-each select="facets/facet[(position() &lt;= 7 or selected or count(../facet) &lt;= 9) and not(is_excluded)]">
@@ -878,7 +909,7 @@
 				
 		<p id="facet-more-{group_id}" class="facet-option-more"> 
 			<a id="facet-more-link-{group_id}" href="{url}" class="btn btn-small facet-more-launch"> 
-				More Options
+				<xsl:value-of select="$text_searchbox_options_more" />
 			</a>
 		</p>
 		
@@ -886,6 +917,43 @@
 		
 		</form>
 	
+	</xsl:template>
+
+	<!-- 
+		TEMPLATE: FACET NAME
+	-->
+	
+	<xsl:template name="facet_name">
+		<xsl:param name="name" />
+		<xsl:choose>
+			<xsl:when test="../../name = 'ContentType'">
+				<xsl:call-template name="text_results_format">
+					<xsl:with-param name="format" select="name" />
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:when test="../../name = 'SubjectTerms'">
+				<xsl:call-template name="text_facet_subject">
+					<xsl:with-param name="option" select="name" />
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:when test="../../name = 'Discipline'">
+				<xsl:call-template name="text_facet_discipline">
+					<xsl:with-param name="option" select="name" />
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:when test="../../name = 'Language'">
+				<!-- @todo -->
+				<xsl:value-of select="name" />
+			</xsl:when>
+			<xsl:when test="../../name = 'format'">
+				<xsl:call-template name="text_results_format">
+					<xsl:with-param name="format" select="name" />
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="name" />
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 
 	<!-- 
@@ -904,7 +972,11 @@
 			
 			<xsl:text> </xsl:text>	
 			
-			<label for="{input_id}"><xsl:value-of select="name" /></label>
+			<label for="{input_id}">
+				<xsl:call-template name="facet_name">
+					<xsl:with-param name="name" select="name" />
+				</xsl:call-template>
+			</label>
 			
 			<xsl:if test="count">
 				&nbsp;(<xsl:value-of select="count_display" />)
@@ -947,11 +1019,12 @@
 							<div class="remove">
 								<a href="{remove_url}">
 									<xsl:call-template name="img_facet_remove">
-										<xsl:with-param name="alt">remove limit</xsl:with-param>
+										<xsl:with-param name="alt"><xsl:value-of select="$text_results_hint_remove_limit" /></xsl:with-param>
+										<xsl:with-param name="title"><xsl:value-of select="$text_results_hint_remove_limit" /></xsl:with-param>
 									</xsl:call-template>
 								</a>
 							</div> 
-							Limited to: <xsl:value-of select="value" /> 
+							<xsl:value-of select="$text_folder_tags_limit" /><xsl:text> </xsl:text><xsl:value-of select="value" /> 
 						</li>
 					</xsl:for-each>
 				</ul>
@@ -968,11 +1041,15 @@
 	
 		<xsl:choose>
 			<xsl:when test="$is_ada = '1'">
-				<input type="submit" value="Update" class="btn" />
+				<input type="submit" class="btn">
+					<xsl:attribute name="value"><xsl:value-of select="$text_records_tags_update" /></xsl:attribute>
+				</input>
 			</xsl:when>
 			<xsl:otherwise>
 				<noscript>
-					<input type="submit" value="Update" class="btn" />
+					<input type="submit" class="btn">
+						<xsl:attribute name="value"><xsl:value-of select="$text_records_tags_update" /></xsl:attribute>
+					</input>
 				</noscript>
 			</xsl:otherwise>
 		</xsl:choose>
@@ -1239,11 +1316,12 @@
 
 		<xsl:variable name="source" select="source" />
 		<xsl:variable name="record_id" select="record_id" />
+		<xsl:variable name="lang_param" select="substring(concat('&amp;lang=', //request/lang), 1 div (//request/lang))" /> <!-- XPath idiom for "IF exists //request/lang THEN '&amp;lang='+//request/lang ELSE ''" -->
 		
 		<!-- @todo: move this to the controller? -->
 		
 		<xsl:variable name="is_already_saved" select="//request/session/resultssaved[@key = $record_id]" />
-	
+		
 		<div id="save-record-option-{$source}-{$record_id}" class="record-action save-record-action">
 			
 			<xsl:call-template name="img_save_record">
@@ -1254,7 +1332,7 @@
 						
 			<xsl:text> </xsl:text>	
 			
-			<a id="link-{$source}-{$record_id}" href="{../url_save_delete}">
+			<a id="link-{$source}-{$record_id}" href="{../url_save_delete}{$lang_param}">
 				
 				<xsl:attribute name="class">save-record
 				

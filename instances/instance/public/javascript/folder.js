@@ -22,6 +22,6 @@ function addDeleteConfirm()
 {
 	$('#folder-delete').click(function()
 	{
-  		return confirm("Delete these records?");
+  		return confirm(xerxes_labels['text_folder_export_delete_confirm']);
 	});
 }

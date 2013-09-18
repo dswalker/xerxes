@@ -44,7 +44,7 @@
 		<xsl:call-template name="breadcrumb_start" />
 		
 		<a href="folder">
-			My Saved Records
+			<xsl:value-of select="$text_header_savedrecords" />
 		</a>
 		
 		<xsl:value-of select="$text_breadcrumb_separator" />
@@ -140,6 +140,7 @@
 					</xsl:if>
 					
 					<input type="hidden" name="return" value="{//request/server/request_uri}" />
+					<input type="hidden" name="lang" value="{//request/lang}" />
 				
 				</form>
 				
@@ -149,7 +150,7 @@
 			<xsl:otherwise>
 				
 				<div class="no-hits error">
-					Looks like you don't have any saved records.
+					<xsl:value-of select="$text_folder_no_records" />
 				</div>
 				
 			</xsl:otherwise>
@@ -212,7 +213,9 @@
 				<xsl:for-each select="config/export_options/option">
 				
 					<option value="{@id}" data-icon="{@icon}">
-						<xsl:value-of select="@public" />
+						<xsl:call-template name="text_folder_export_options_list">
+							<xsl:with-param name="option" select="@id" />
+						</xsl:call-template>
 					</option>
 				
 				</xsl:for-each>
@@ -280,7 +283,7 @@
 	<xsl:template name="folder_remove_tags">
 		
 		<button type="submit" class="btn" name="action" value="label">
-			<i class="icon-remove"></i><xsl:text> </xsl:text>Remove  from label
+			<i class="icon-remove"></i><xsl:text> </xsl:text><xsl:value-of select="$text_folder_tags_remove" />
 		</button>
 		
 		<input type="hidden" name="remove" value="true" />
@@ -364,8 +367,12 @@
 				
 				<xsl:for-each select="//facets/groups/group[not(display)]">
 	
-					<h3><xsl:value-of select="public" /></h3>
-						
+					<h3>
+						<xsl:call-template name="text_facet_groups">
+							<xsl:with-param name="option" select="name" />
+						</xsl:call-template>
+					</h3>
+					
 					<ul>
 					<xsl:for-each select="facets/facet">
 						<xsl:call-template name="facet_option" />

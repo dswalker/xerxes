@@ -306,7 +306,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	
 	<xsl:variable name="text_results_author">Autor</xsl:variable>
 	<xsl:variable name="text_results_breadcrumb">Výsledky</xsl:variable>
-	<xsl:variable name="text_results_hint_remove_limit">odstranit limit</xsl:variable>
+	<xsl:variable name="text_results_hint_remove_limit">odstranit omezení</xsl:variable>
 	<xsl:variable name="text_results_no_title">[ Bez názvu ]</xsl:variable>
 	<xsl:variable name="text_results_published_in">Publikováno v</xsl:variable>
 	<xsl:variable name="text_results_record_hold">Rezervovat tuto položku</xsl:variable>
@@ -433,45 +433,48 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:template name="text_results_format">
 		<xsl:param name="format" />
 		<xsl:choose>
-			<xsl:when test="$format = 'Thesis'">Kvalifikační práce</xsl:when>
-			<xsl:when test="$format = 'Dissertation'">Dizertační práce</xsl:when>
+			<xsl:when test="$format = 'Archive'">Archiv</xsl:when>
+			<xsl:when test="$format = 'Article'">Článek</xsl:when>
+			<xsl:when test="$format = 'Audio Book'">Zvuková kniha</xsl:when>
+			<xsl:when test="$format = 'Book--Braille'">Kniha--Braillovo písmo</xsl:when>
+			<xsl:when test="$format = 'Book Chapter'">Kapitola knihy</xsl:when>
+			<xsl:when test="$format = 'Book'">Kniha</xsl:when>
+			<xsl:when test="$format = 'Book--Large print'">Kniha--velký formát</xsl:when>
+			<xsl:when test="$format = 'Book Review'">Recenze knihy</xsl:when>
+			<xsl:when test="$format = 'Computer File'">Počítačový soubor</xsl:when>
 			<xsl:when test="$format = 'Conference Paper'">Příspěvek do konference</xsl:when>
 			<xsl:when test="$format = 'Conference Proceeding'">Sborník z konference</xsl:when>
-			<xsl:when test="$format = 'Hearing'"></xsl:when>
-			<xsl:when test="$format = 'Working Paper'"></xsl:when>
-			<xsl:when test="$format = 'Book Review'">Recenze knihy</xsl:when>
-			<xsl:when test="$format = 'Film Review'">Recenze filmu</xsl:when>
-			<xsl:when test="$format = 'Review'">Recenze</xsl:when>
-			<xsl:when test="$format = 'Book Chapter'">Kapitola knihy</xsl:when>
-			<xsl:when test="$format = 'Article'">Článek</xsl:when>
-			<xsl:when test="$format = 'Book'">Kniha</xsl:when>
-			<xsl:when test="$format = 'Pamphlet'">Brožura</xsl:when>
-			<xsl:when test="$format = 'Essay'">Esej</xsl:when>
-			<xsl:when test="$format = 'Magazine Article'">Článek v časopise</xsl:when>
-			<xsl:when test="$format = 'Microfilm'">Mikrofilm</xsl:when>
-			<xsl:when test="$format = 'Microfiche'">Mikrofiš</xsl:when>
-			<xsl:when test="$format = 'Micropaque'">Mikrotisk</xsl:when>
-			<xsl:when test="$format = 'Book--Large print'">Kniha--velký formát</xsl:when>
-			<xsl:when test="$format = 'Book--Braille'">Kniha--Braillovo písmo</xsl:when>
+			<xsl:when test="$format = 'Dissertation'">Dizertační práce</xsl:when>
 			<xsl:when test="$format = 'eBook'">Elektronická kniha</xsl:when>
-			<xsl:when test="$format = 'Archive'">Archiv</xsl:when>
+			<xsl:when test="$format = 'Essay'">Esej</xsl:when>
+			<xsl:when test="$format = 'Film Review'">Recenze filmu</xsl:when>
+			<xsl:when test="$format = 'Hearing'"></xsl:when>
+			<xsl:when test="$format = 'Journal'">Časopis</xsl:when>
+			<xsl:when test="$format = 'Journal or Newspaper'">Časopis nebo noviny</xsl:when>
+			<xsl:when test="$format = 'Journal Article'">Článek v časopise</xsl:when>
+			<xsl:when test="$format = 'Magazine Article'">Článek v časopise</xsl:when>
 			<xsl:when test="$format = 'Map'">Mapa</xsl:when>
-			<xsl:when test="$format = 'Printed Music'">Tištěná hudebnina</xsl:when>
-			<xsl:when test="$format = 'Audio Book'">Zvuková kniha</xsl:when>
-			<xsl:when test="$format = 'Sound Recording'">Zvukový záznam</xsl:when>
+			<xsl:when test="$format = 'Microfiche'">Mikrofiš</xsl:when>
+			<xsl:when test="$format = 'Microfilm'">Mikrofilm</xsl:when>
+			<xsl:when test="$format = 'Micropaque'">Mikrotisk</xsl:when>
+			<xsl:when test="$format = 'Newspaper Article'">Článek v novinách</xsl:when>
+			<xsl:when test="$format = 'Pamphlet'">Brožura</xsl:when>
+			<xsl:when test="$format = 'Patent'">Patent</xsl:when>
 			<xsl:when test="$format = 'Photograph or Slide'">Snímek</xsl:when>
+			<xsl:when test="$format = 'Printed Music'">Tištěná hudebnina</xsl:when>
+			<xsl:when test="$format = 'Review'">Recenze</xsl:when>
+			<xsl:when test="$format = 'Report'">Zpráva</xsl:when>
+			<xsl:when test="$format = 'Sound Recording'">Zvukový záznam</xsl:when>
+			<xsl:when test="$format = 'Thesis'">Kvalifikační práce</xsl:when>
 			<xsl:when test="$format = 'Video'">Video</xsl:when>
 			<xsl:when test="$format = 'Website'">Webová stránka</xsl:when>
-			<xsl:when test="$format = 'Computer File'">Počítačový soubor</xsl:when>
-			<xsl:when test="$format = 'Journal or Newspaper'">Časopis nebo noviny</xsl:when>
-			<xsl:when test="$format = 'Patent'">Patent</xsl:when>
+			<xsl:when test="$format = 'Working Paper'"></xsl:when>
 
 			<xsl:when test="$format = 'Unknown'">Neznámý formát</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="$format" />
 			</xsl:otherwise>
 		</xsl:choose>
-		<!--xsl:value-of select="$format" /-->
 	</xsl:template>
 	
 	<xsl:template name="text_facet_group">
@@ -492,23 +495,512 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 		<xsl:param name="option" />
 		<xsl:choose>
 			<xsl:when test="$option = 'relevance'">relevance</xsl:when>
-			<xsl:when test="$option = 'date'">data</xsl:when>
-			<xsl:when test="$option = 'title'">názvu</xsl:when>
-			<xsl:when test="$option = 'author'">autora</xsl:when>
-			<xsl:when test="$option = 'most recently added'">naposledy přidané</xsl:when>
+			<xsl:when test="$option = 'recent'">datum přidání</xsl:when>
+			<xsl:when test="$option = 'title'">název</xsl:when>
+			<xsl:when test="$option = 'author'">autor</xsl:when>
+			<xsl:when test="$option = 'date'">nejnovější</xsl:when>
+			<xsl:when test="$option = 'date-old'">nejstarší</xsl:when>
+
 			<xsl:otherwise>
 				<xsl:value-of select="$option" />
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 	
-	<xsl:template name="text_results_sort_options">
+	<xsl:template name="text_facet_fields">
 		<xsl:param name="option" />
-		<xsl:value-of select="$option" />
+		<xsl:choose>
+			<xsl:when test="$option = 'IsScholarly'">Vědecké</xsl:when>
+			<xsl:when test="$option = 'ContentType'">Formát</xsl:when>
+			<xsl:when test="$option = 'SubjectTerms'">Téma</xsl:when>
+			<xsl:when test="$option = 'Discipline'">Oblast</xsl:when>
+			<xsl:when test="$option = 'PublicationDate'">Datum publikace</xsl:when>
+			<xsl:when test="$option = 'Language'">Jazyk</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$option" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template name="text_facet_groups">
+		<xsl:param name="option" />
+		<xsl:choose>
+			<xsl:when test="$option = 'format'">Formát</xsl:when>
+			<xsl:when test="$option = 'label'">Štítky</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$option" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template name="text_facet_subject">
+		<xsl:param name="option" />
+		<xsl:choose>
+			<xsl:when test="$option = 'accounting'">účetnictví</xsl:when>
+			<xsl:when test="$option = 'acoustics'">akustika</xsl:when>
+			<xsl:when test="$option = 'adult'">dospělý</xsl:when>
+			<xsl:when test="$option = 'agriculture'">zemědělství</xsl:when>
+			<xsl:when test="$option = 'agronomy'">agronomie</xsl:when>
+			<xsl:when test="$option = 'algorithms'">algoritmy</xsl:when>
+			<xsl:when test="$option = 'analysis'">analýza</xsl:when>
+			<xsl:when test="$option = 'animals'">zvířata</xsl:when>
+			<xsl:when test="$option = 'anthropology'">antropologie</xsl:when>
+			<xsl:when test="$option = 'antibodies'">protilátky</xsl:when>
+			<xsl:when test="$option = 'apoptosis'">apoptóza</xsl:when>
+			<xsl:when test="$option = 'applied sciences'">aplikované vědy</xsl:when>
+			<xsl:when test="$option = 'architecture'">architektura</xsl:when>
+			<xsl:when test="$option = 'article'">článek</xsl:when>
+			<xsl:when test="$option = 'artificial intelligence'">umělá inteligence</xsl:when>
+			<xsl:when test="$option = 'arts &amp; humanities, general'">umění a humanitní obory, obecné</xsl:when>
+			<xsl:when test="$option = 'art'">umění</xsl:when>
+			<xsl:when test="$option = 'asia'">Ázie</xsl:when>
+			<xsl:when test="$option = 'astronomy &amp; astrophysics'">astronomie a astrofyzika</xsl:when>
+			<xsl:when test="$option = 'astronomy &amp; astrophysics'">astronomie a astrofyzika</xsl:when>
+			<xsl:when test="$option = 'astronomy'">astronomie</xsl:when>
+			<xsl:when test="$option = 'astrophysics'">astrofyzika</xsl:when>
+			<xsl:when test="$option = 'automation &amp; control systems'">automatizační a řídicí systémy</xsl:when>
+			<xsl:when test="$option = 'automation'">automatizace</xsl:when>
+			<xsl:when test="$option = 'banking industry'">bankovní sektor</xsl:when>
+			<xsl:when test="$option = 'banks'">banky</xsl:when>
+			<xsl:when test="$option = 'behavioral sciences'">behaviorální vědy</xsl:when>
+			<xsl:when test="$option = 'behavior'">chování</xsl:when>
+			<xsl:when test="$option = 'biochemistry &amp; molecular biology'">biochemie a molekulární biologie</xsl:when>
+			<xsl:when test="$option = 'biochemistry'">biochemie</xsl:when>
+			<xsl:when test="$option = 'biological sciences'">biologické vědy</xsl:when>
+			<xsl:when test="$option = 'biology'">biologie</xsl:when>
+			<xsl:when test="$option = 'biomechanics'">biomechanika</xsl:when>
+			<xsl:when test="$option = 'biomedical engineering'">biomedicínské inženýrství</xsl:when>
+			<xsl:when test="$option = 'biophysics'">biofyzika</xsl:when>
+			<xsl:when test="$option = 'biotechnology &amp; applied microbiology'">biotechnologie a aplikovaná mikrobiologie</xsl:when>
+			<xsl:when test="$option = 'biotechnology &amp; applied microbiology'">výživa a dietetika</xsl:when>
+			<xsl:when test="$option = 'bone'">kost</xsl:when>
+			<xsl:when test="$option = 'book reviews'">knižní recenze</xsl:when>
+			<xsl:when test="$option = 'books'">knihy</xsl:when>
+			<xsl:when test="$option = 'brain'">mozek</xsl:when>
+			<xsl:when test="$option = 'breast cancer'">rakovina prsu</xsl:when>
+			<xsl:when test="$option = 'business conditions'">obchodní podmínky</xsl:when>
+			<xsl:when test="$option = 'business, finance'">podnikání, finance</xsl:when>
+			<xsl:when test="$option = 'business'">podnikání</xsl:when>
+			<xsl:when test="$option = 'canada'">Kanada</xsl:when>
+			<xsl:when test="$option = 'cancer'">rakovina</xsl:when>
+			<xsl:when test="$option = 'carbon nanotubes'">uhlíkové nanotrubičky</xsl:when>
+			<xsl:when test="$option = 'carcinoma'">karcinom</xsl:when>
+			<xsl:when test="$option = 'cardiac &amp; cardiovascular systems'">srdeční a kardiovaskulární systém</xsl:when>
+			<xsl:when test="$option = 'care and treatment'">péče a léčba</xsl:when>
+			<xsl:when test="$option = 'case studies'">případové studie</xsl:when>
+			<xsl:when test="$option = 'cell biology'">buněčná biologie</xsl:when>
+			<xsl:when test="$option = 'cells'">buňky</xsl:when>
+			<xsl:when test="$option = 'chemicals'">chemikálie</xsl:when>
+			<xsl:when test="$option = 'chemistry, analytical'">chemie, analytická</xsl:when>
+			<xsl:when test="$option = 'chemistry, applied'">chemie, aplikovaná</xsl:when>
+			<xsl:when test="$option = 'chemistry'">chemie</xsl:when>
+			<xsl:when test="$option = 'chemistry, inorganic &amp; nuclear'">chemie, anorganická a nukleární</xsl:when>
+			<xsl:when test="$option = 'chemistry, multidisciplinary'">chemie, multidisciplinární</xsl:when>
+			<xsl:when test="$option = 'chemistry, organic'">chemie, organická</xsl:when>
+			<xsl:when test="$option = 'chemistry, physical'">chemie, fyzikální</xsl:when>
+			<xsl:when test="$option = 'chemotherapy'">chemoterapie</xsl:when>
+			<xsl:when test="$option = 'children'">děti</xsl:when>
+			<xsl:when test="$option = 'civil engineering'">stavebnictví</xsl:when>
+			<xsl:when test="$option = 'clergy'">duchovenstvo</xsl:when>
+			<xsl:when test="$option = 'clinical neurology'">klinická neurologie</xsl:when>
+			<xsl:when test="$option = 'colleges &amp; universities'">vysoké školy a univerzity</xsl:when>
+			<xsl:when test="$option = 'communication and the arts'">komunikace a umění</xsl:when>
+			<xsl:when test="$option = 'communication'">komunikace</xsl:when>
+			<xsl:when test="$option = 'computed tomography'">počítačová tomografie</xsl:when>
+			<xsl:when test="$option = 'computer programs'">počítačové programy</xsl:when>
+			<xsl:when test="$option = 'computer science, artificial intelligence'">počítačové vědy, umělá inteligence</xsl:when>
+			<xsl:when test="$option = 'computer science, hardware &amp; architecture'">počítačové vědy, hardware a architektura</xsl:when>
+			<xsl:when test="$option = 'computer science, information systems'">počítačové vědy, informační systémy</xsl:when>
+			<xsl:when test="$option = 'computer science, interdisciplinary applications'">počítačové vědy, mezioborové aplikace</xsl:when>
+			<xsl:when test="$option = 'computer science'">počítačové vědy</xsl:when>
+			<xsl:when test="$option = 'computer science, software engineering'">počítačové vědy, softwarové inženýrství</xsl:when>
+			<xsl:when test="$option = 'computer science, theory &amp; methods'">počítačové vědy, teorie a metody</xsl:when>
+			<xsl:when test="$option = 'computer simulation'">počítačová simulace</xsl:when>
+			<xsl:when test="$option = 'computer software industry'">softwarový průmysl</xsl:when>
+			<xsl:when test="$option = 'computers'">počítače</xsl:when>
+			<xsl:when test="$option = 'condensed matter'">kondenzované látky</xsl:when>
+			<xsl:when test="$option = 'construction &amp; building technology'">konstrukce a stavební technologie</xsl:when>
+			<xsl:when test="$option = 'control systems'">řídící systémy</xsl:when>
+			<xsl:when test="$option = 'copyrights'">autorská práva</xsl:when>
+			<xsl:when test="$option = 'cosmology'">kosmologie</xsl:when>
+			<xsl:when test="$option = 'crystallography'">krystalografie</xsl:when>
+			<xsl:when test="$option = 'curricula'">učební osnovy</xsl:when>
+			<xsl:when test="$option = 'data processing'">zpracování dat</xsl:when>
+			<xsl:when test="$option = 'deformation'">deformace</xsl:when>
+			<xsl:when test="$option = 'depression'">deprese</xsl:when>
+			<xsl:when test="$option = 'design engineering'">konstruktérské práce</xsl:when>
+			<xsl:when test="$option = 'diagnosis'">diagnóza</xsl:when>
+			<xsl:when test="$option = 'diagnostic radiology'">diagnostická radiologie</xsl:when>
+			<xsl:when test="$option = 'diet'">strava</xsl:when>
+			<xsl:when test="$option = 'dynamics'">dynamika</xsl:when>
+			<xsl:when test="$option = 'earth sciences'">vědy o Zemi</xsl:when>
+			<xsl:when test="$option = 'ecology'">ekologie</xsl:when>
+			<xsl:when test="$option = 'economic conditions'">ekonomické podmínky</xsl:when>
+			<xsl:when test="$option = 'economics'">ekonomika</xsl:when>
+			<xsl:when test="$option = 'education &amp; educational research'">vzdělávání a vzdělávací výzkum</xsl:when>
+			<xsl:when test="$option = 'education'">vzdělávání</xsl:when>
+			<xsl:when test="$option = 'electrical engineering'">elektrotechnika</xsl:when>
+			<xsl:when test="$option = 'electronics'">elektronika</xsl:when>
+			<xsl:when test="$option = 'emerging technologies'">vznikající technologie</xsl:when>
+			<xsl:when test="$option = 'emission'">emise</xsl:when>
+			<xsl:when test="$option = 'endocrinology &amp; metabolism'">endokrinologie a metabolismus</xsl:when>
+			<xsl:when test="$option = 'engineering, biomedical'">inženýrství, biomedicínské</xsl:when>
+			<xsl:when test="$option = 'engineering, chemical'">inženýrství, chemické</xsl:when>
+			<xsl:when test="$option = 'engineering, civil'">stavebnictví</xsl:when>
+			<xsl:when test="$option = 'engineering, electrical &amp; electronic'">inženýrství, elektrotechnika a elektronika</xsl:when>
+			<xsl:when test="$option = 'engineering'">inženýrství</xsl:when>
+			<xsl:when test="$option = 'engineering, manufacturing'">inženýrství, výroba</xsl:when>
+			<xsl:when test="$option = 'engineering, mechanical'">strojírenství</xsl:when>
+			<xsl:when test="$option = 'environmental sciences'">environmentální vědy</xsl:when>
+			<xsl:when test="$option = 'epidemiology'">epidemiologie</xsl:when>
+			<xsl:when test="$option = 'ethics'">etika</xsl:when>
+			<xsl:when test="$option = 'europe'">Evropa</xsl:when>
+			<xsl:when test="$option = 'evolution'">evoluce</xsl:when>
+			<xsl:when test="$option = 'expression'">výraz</xsl:when>
+			<xsl:when test="$option = 'female'">samice</xsl:when>
+			<xsl:when test="$option = 'financial institutions'">finanční instituce</xsl:when>
+			<xsl:when test="$option = 'financial services'">finanční služby</xsl:when>
+			<xsl:when test="$option = 'financial services'">finanční služby</xsl:when>
+			<xsl:when test="$option = 'finite element method'">metoda konečných prvků</xsl:when>
+			<xsl:when test="$option = 'flow'">tok</xsl:when>
+			<xsl:when test="$option = 'fluid flow'">proudění tekutin</xsl:when>
+			<xsl:when test="$option = 'food'">jídlo</xsl:when>
+			<xsl:when test="$option = 'food science &amp; technology'">potravinová věda a technologie</xsl:when>
+			<xsl:when test="$option = 'foreign exchange markets'">devizové trhy</xsl:when>
+			<xsl:when test="$option = 'foreign exchange rates'">měnové kurzy</xsl:when>
+			<xsl:when test="$option = 'fracture mechanics'">lomová mechanika</xsl:when>
+			<xsl:when test="$option = 'gait'">chůze</xsl:when>
+			<xsl:when test="$option = 'galaxies'">galaxie</xsl:when>
+			<xsl:when test="$option = 'gastroenterology &amp; hepatology'">gastroenterologie a hepatologie</xsl:when>
+			<xsl:when test="$option = 'gene expression'">exprese genů</xsl:when>
+			<xsl:when test="$option = 'gene'">gen</xsl:when>
+			<xsl:when test="$option = 'genes'">geny</xsl:when>
+			<xsl:when test="$option = 'genetic aspects'">genetické aspekty</xsl:when>
+			<xsl:when test="$option = 'genetics &amp; heredity'">genetika a dědičnost</xsl:when>
+			<xsl:when test="$option = 'genetics'">genetika</xsl:when>
+			<xsl:when test="$option = 'geochemistry &amp; geophysics'">geochemie a geofyzika</xsl:when>
+			<xsl:when test="$option = 'geosciences, multidisciplinary'">geovědy, multidisciplinární</xsl:when>
+			<xsl:when test="$option = 'germany'">Německo</xsl:when>
+			<xsl:when test="$option = 'growth'">růst</xsl:when>
+			<xsl:when test="$option = 'health and environmental sciences'">zdraví a vědy o životním prostředí</xsl:when>
+			<xsl:when test="$option = 'health aspects'">zdravotní aspekty</xsl:when>
+			<xsl:when test="$option = 'health care sciences &amp; services'">vědy a služby zdravotnictví</xsl:when>
+			<xsl:when test="$option = 'health informatics'">zdravotnická informatika</xsl:when>
+			<xsl:when test="$option = 'health'">zdraví</xsl:when>
+			<xsl:when test="$option = 'hematology'">hematologie</xsl:when>
+			<xsl:when test="$option = 'high energy physics'">fyzika vysokých energií</xsl:when>
+			<xsl:when test="$option = 'higher education'">vyšší vzdělávání</xsl:when>
+			<xsl:when test="$option = 'history &amp; philosophy of science'">historie a filozofie vědy</xsl:when>
+			<xsl:when test="$option = 'history'">historie</xsl:when>
+			<xsl:when test="$option = 'hospitals'">nemocnice</xsl:when>
+			<xsl:when test="$option = 'humans'">lidé</xsl:when>
+			<xsl:when test="$option = 'identification'">identifikace</xsl:when>
+			<xsl:when test="$option = 'imaging / radiology'">zobrazování / radiologie</xsl:when>
+			<xsl:when test="$option = 'immunology'">imunologie</xsl:when>
+			<xsl:when test="$option = 'infection'">infekce</xsl:when>
+			<xsl:when test="$option = 'infectious diseases'">infekční nemoci</xsl:when>
+			<xsl:when test="$option = 'information science &amp; library science'">informační věda a knihovnictví</xsl:when>
+			<xsl:when test="$option = 'information technology'">informační technologie</xsl:when>
+			<xsl:when test="$option = 'injuries'">zranění</xsl:when>
+			<xsl:when test="$option = 'instruments &amp; instrumentation'">přístroje a instrumentace</xsl:when>
+			<xsl:when test="$option = 'intellectual property'">duševní vlastnictví</xsl:when>
+			<xsl:when test="$option = 'investing'">investování</xsl:when>
+			<xsl:when test="$option = 'investment and finance'">investice a finance</xsl:when>
+			<xsl:when test="$option = 'investment'">investice</xsl:when>
+			<xsl:when test="$option = 'investments'">investice</xsl:when>
+			<xsl:when test="$option = 'jews'">židé</xsl:when>
+			<xsl:when test="$option = 'kinematics'">kinematika</xsl:when>
+			<xsl:when test="$option = 'knee'">koleno</xsl:when>
+			<xsl:when test="$option = 'kultura'">culture</xsl:when>
+			<xsl:when test="$option = 'language, literature and linguistics'">jazyk, literatura a lingvistika</xsl:when>
+			<xsl:when test="$option = 'law'">právo</xsl:when>
+			<xsl:when test="$option = 'laws, regulations and rules'">zákony, předpisy a pravidla</xsl:when>
+			<xsl:when test="$option = 'learning'">učení</xsl:when>
+			<xsl:when test="$option = 'leaves'">listy</xsl:when>
+			<xsl:when test="$option = 'life sciences'">biologické vědy</xsl:when>
+			<xsl:when test="$option = 'life sciences'">vědy o životě</xsl:when>
+			<xsl:when test="$option = 'literature'">literatura</xsl:when>
+			<xsl:when test="$option = 'machine learning'">strojové učení</xsl:when>
+			<xsl:when test="$option = 'magnetic fields'">magnetická pole</xsl:when>
+			<xsl:when test="$option = 'male'">samec</xsl:when>
+			<xsl:when test="$option = 'manipulators'">manipulátory</xsl:when>
+			<xsl:when test="$option = 'marine &amp; freshwater biology'">mořská a sladkovodní biologie</xsl:when>
+			<xsl:when test="$option = 'materials science, multidisciplinary'">vědy o materiálech, multidisciplinární</xsl:when>
+			<xsl:when test="$option = 'materials science'">vědy o materiálech</xsl:when>
+			<xsl:when test="$option = 'mathematical &amp; computational biology'">matematická a výpočetní biologie</xsl:when>
+			<xsl:when test="$option = 'mathematical analysis'">matematická analýza</xsl:when>
+			<xsl:when test="$option = 'mathematical models'">matematické modely</xsl:when>
+			<xsl:when test="$option = 'mathematics, applied'">matematika, aplikovaná</xsl:when>
+			<xsl:when test="$option = 'mathematics'">matematika</xsl:when>
+			<xsl:when test="$option = 'mechanical engineering'">strojírenství</xsl:when>
+			<xsl:when test="$option = 'mechanical properties'">mechanické vlastnosti</xsl:when>
+			<xsl:when test="$option = 'mechanics'">mechanika</xsl:when>
+			<xsl:when test="$option = 'medical informatics'">medicínská informatika</xsl:when>
+			<xsl:when test="$option = 'medicine &amp; public health'">medicína a veřejné zdraví</xsl:when>
+			<xsl:when test="$option = 'medicine, general &amp; internal'">lékařství, všeobecné a interní</xsl:when>
+			<xsl:when test="$option = 'medicine, research &amp; experimental'">medicína, výzkumná a experimentální</xsl:when>
+			<xsl:when test="$option = 'memory'">paměť</xsl:when>
+			<xsl:when test="$option = 'meteorology &amp; atmospheric sciences'">meteorologie a vědy o atmosféře</xsl:when>
+			<xsl:when test="$option = 'mice'">myši</xsl:when>
+			<xsl:when test="$option = 'microbiology'">mikrobiologie</xsl:when>
+			<xsl:when test="$option = 'middle aged'">středný věk</xsl:when>
+			<xsl:when test="$option = 'models'">modely</xsl:when>
+			<xsl:when test="$option = 'morphology'">morfologie</xsl:when>
+			<xsl:when test="$option = 'mortality'">úmrtnost</xsl:when>
+			<xsl:when test="$option = 'motion pictures'">filmy</xsl:when>
+			<xsl:when test="$option = 'multidisciplinary sciences'">multidisciplinární vědy</xsl:when>
+			<xsl:when test="$option = 'multimedia computer applications'">multimediální počítačové aplikace</xsl:when>
+			<xsl:when test="$option = 'muscle, skeletal - physiology'">fyziologie svalová, kosterní</xsl:when>
+			<xsl:when test="$option = 'muscles'">svaly</xsl:when>
+			<xsl:when test="$option = 'musical recordings'">hudební nahrávky</xsl:when>
+			<xsl:when test="$option = 'music'">hudba</xsl:when>
+			<xsl:when test="$option = 'mutation'">mutace</xsl:when>
+			<xsl:when test="$option = 'nanocomposites'">nanokompozity</xsl:when>
+			<xsl:when test="$option = 'nanomaterials'">nanomateriály</xsl:when>
+			<xsl:when test="$option = 'nanoparticle'">nanočástice</xsl:when>
+			<xsl:when test="$option = 'nanoparticles'">nanočástice</xsl:when>
+			<xsl:when test="$option = 'nanoscience &amp; nanotechnology'">nanověda a nanotechnologie</xsl:when>
+			<xsl:when test="$option = 'nanostructure'">nanostruktura</xsl:when>
+			<xsl:when test="$option = 'nanotechnology'">nanotechnologie</xsl:when>
+			<xsl:when test="$option = 'nanotubes'">nanotrubičky</xsl:when>
+			<xsl:when test="$option = 'networks'">sítě</xsl:when>
+			<xsl:when test="$option = 'neurosciences'">neurovědy</xsl:when>
+			<xsl:when test="$option = 'nonfiction'">věcná literatura</xsl:when>
+			<xsl:when test="$option = 'northern america'">Severní Amerika</xsl:when>
+			<xsl:when test="$option = 'novels'">romány</xsl:when>
+			<xsl:when test="$option = 'nuclear science &amp; technology'">jaderná věda a technologie</xsl:when>
+			<xsl:when test="$option = 'nurses'">ošetřovatelé</xsl:when>
+			<xsl:when test="$option = 'nursing'">ošetřovatelství</xsl:when>
+			<xsl:when test="$option = 'nutrition &amp; dietetics'">výživa a dietetika</xsl:when>
+			<xsl:when test="$option = 'nutrition'">výživa</xsl:when>
+			<xsl:when test="$option = 'oceanography'">oceánografie</xsl:when>
+			<xsl:when test="$option = 'oncology'">onkologie</xsl:when>
+			<xsl:when test="$option = 'optics'">optika</xsl:when>
+			<xsl:when test="$option = 'optimization'">optimalizace</xsl:when>
+			<xsl:when test="$option = 'orthopedics'">ortopedie</xsl:when>
+			<xsl:when test="$option = 'particle'">částice</xsl:when>
+			<xsl:when test="$option = 'particles'">částice</xsl:when>
+			<xsl:when test="$option = 'pathology'">patologie</xsl:when>
+			<xsl:when test="$option = 'pediatrics'">pediatrie</xsl:when>
+			<xsl:when test="$option = 'peripheral vascular disease'">onemocnění periferních cév</xsl:when>
+			<xsl:when test="$option = 'pharmacology &amp; pharmacy'">farmakologie a farmacie</xsl:when>
+			<xsl:when test="$option = 'phenomenology'">fenomenologie</xsl:when>
+			<xsl:when test="$option = 'philosophy'">filozofie</xsl:when>
+			<xsl:when test="$option = 'philosophy, religion and theology'">filozofie, náboženství a teologie</xsl:when>
+			<xsl:when test="$option = 'physics, applied'">fyzika, aplikovaná</xsl:when>
+			<xsl:when test="$option = 'physics, atomic, molecular &amp; chemical'">fyzika, atomová, molekulární a chemická</xsl:when>
+			<xsl:when test="$option = 'physics, atomic, molecular &amp; chemical'">fyzika, atomová, molekulární a chemická</xsl:when>
+			<xsl:when test="$option = 'physics, condensed matter'">fyzika, kondenzované látky</xsl:when>
+			<xsl:when test="$option = 'physics, fluids &amp; plasmas'">fyzika, tekutiny a plazma</xsl:when>
+			<xsl:when test="$option = 'physics'">fyzika</xsl:when>
+			<xsl:when test="$option = 'physics, mathematical'">fyzika, matematická</xsl:when>
+			<xsl:when test="$option = 'physics, multidisciplinary'">fyzika, multidisciplinární</xsl:when>
+			<xsl:when test="$option = 'physics, nuclear'">fyzika, jaderná</xsl:when>
+			<xsl:when test="$option = 'physics of polymers'">fyzika polymerů</xsl:when>
+			<xsl:when test="$option = 'physics, particles &amp; fields'">fyzika, částice a pole</xsl:when>
+			<xsl:when test="$option = 'physiology'">fyziologie</xsl:when>
+			<xsl:when test="$option = 'plant sciences'">vědy o rostlinách</xsl:when>
+			<xsl:when test="$option = 'plants'">rostliny</xsl:when>
+			<xsl:when test="$option = 'poetry'">poezie</xsl:when>
+			<xsl:when test="$option = 'political science'">politologie</xsl:when>
+			<xsl:when test="$option = 'politics'">politika</xsl:when>
+			<xsl:when test="$option = 'polymerization'">polymerizace</xsl:when>
+			<xsl:when test="$option = 'polymer'">polymer</xsl:when>
+			<xsl:when test="$option = 'polymer sciences'">vědy o polymerech</xsl:when>
+			<xsl:when test="$option = 'polymer science'">věda o polymerech</xsl:when>
+			<xsl:when test="$option = 'polymers'">polymery</xsl:when>
+			<xsl:when test="$option = 'product introduction'">zavedení výrobku</xsl:when>
+			<xsl:when test="$option = 'proteins'">bílkoviny</xsl:when>
+			<xsl:when test="$option = 'psychiatry'">psychiatrie</xsl:when>
+			<xsl:when test="$option = 'psychology, clinical'">psychologie, klinická</xsl:when>
+			<xsl:when test="$option = 'psychology, developmental'">psychologie, vývojová</xsl:when>
+			<xsl:when test="$option = 'psychology, experimental'">psychologie, experimentální</xsl:when>
+			<xsl:when test="$option = 'psychology, multidisciplinary'">psychologie, multidisciplinární</xsl:when>
+			<xsl:when test="$option = 'psychology'">psychologie</xsl:when>
+			<xsl:when test="$option = 'psychotherapy'">psychoterapie</xsl:when>
+			<xsl:when test="$option = 'public, environmental &amp; occupational health'">zdraví veřejné, environmentální a pracovní</xsl:when>
+			<xsl:when test="$option = 'public health'">veřejné zdraví</xsl:when>
+			<xsl:when test="$option = 'pure sciences'">čisté vědy</xsl:when>
+			<xsl:when test="$option = 'radiation'">záření</xsl:when>
+			<xsl:when test="$option = 'radiology &amp; nuclear medicine'">radiologie a nukleární medicína</xsl:when>
+			<xsl:when test="$option = 'radiology, nuclear medicine &amp; medical imaging'">radiologie, nukleární medicína a lékařské zobrazování</xsl:when>
+			<xsl:when test="$option = 'radiology'">radiologie</xsl:when>
+			<xsl:when test="$option = 'radiotherapy'">radioterapie</xsl:when>
+			<xsl:when test="$option = 'rats'">krysy</xsl:when>
+			<xsl:when test="$option = 'region:asia'">Oblast: Ázie</xsl:when>
+			<xsl:when test="$option = 'rehabilitation'">rehabilitatace</xsl:when>
+			<xsl:when test="$option = 'religion'">náboženství</xsl:when>
+			<xsl:when test="$option = 'religious history'">náboženská historie</xsl:when>
+			<xsl:when test="$option = 'replication'">replikace</xsl:when>
+			<xsl:when test="$option = 'reports'">zprávy</xsl:when>
+			<xsl:when test="$option = 'research'">výzkum</xsl:when>
+			<xsl:when test="$option = 'rheology'">reologie</xsl:when>
+			<xsl:when test="$option = 'risk factors'">rizikové faktory</xsl:when>
+			<xsl:when test="$option = 'risk'">riziko</xsl:when>
+			<xsl:when test="$option = 'robotics industry'">průmysl robotiky</xsl:when>
+			<xsl:when test="$option = 'robotics'">robotika</xsl:when>
+			<xsl:when test="$option = 'robots'">roboty</xsl:when>
+			<xsl:when test="$option = 'school administration'">správa škol</xsl:when>
+			<xsl:when test="$option = 'securities markets'">trhy cenných papírů</xsl:when>
+			<xsl:when test="$option = 'sensors'">senzory</xsl:when>
+			<xsl:when test="$option = 'simulation'">simulace</xsl:when>
+			<xsl:when test="$option = 'social psychology'">sociální psychologie</xsl:when>
+			<xsl:when test="$option = 'social sciences'">společenské vědy</xsl:when>
+			<xsl:when test="$option = 'sociology'">sociologie</xsl:when>
+			<xsl:when test="$option = 'soil'">půda</xsl:when>
+			<xsl:when test="$option = 'spectra'">spektra</xsl:when>
+			<xsl:when test="$option = 'spectroscopy'">spektroskopie</xsl:when>
+			<xsl:when test="$option = 'spectroscopy'">spektroskopie</xsl:when>
+			<xsl:when test="$option = 'spirituality'">duchovno</xsl:when>
+			<xsl:when test="$option = 'sport sciences'">sportovní vědy</xsl:when>
+			<xsl:when test="$option = 'stars &amp; galaxies'">hvězdy a galaxie</xsl:when>
+			<xsl:when test="$option = 'stars'">hvězdy</xsl:when>
+			<xsl:when test="$option = 'statistical data'">statistické údaje</xsl:when>
+			<xsl:when test="$option = 'statistical mechanics'">statistická mechanika</xsl:when>
+			<xsl:when test="$option = 'statistics &amp; probability'">statistika a pravděpodobnost</xsl:when>
+			<xsl:when test="$option = 'stellar investigations'">vyšetřování hvězd</xsl:when>
+			<xsl:when test="$option = 'students'">studenti</xsl:when>
+			<xsl:when test="$option = 'studies'">studie</xsl:when>
+			<xsl:when test="$option = 'study and teaching'">studium a vyučování</xsl:when>
+			<xsl:when test="$option = 'surgery'">chirurgie</xsl:when>
+			<xsl:when test="$option = 'survival'">přežití</xsl:when>
+			<xsl:when test="$option = 'suspensions'">směsi</xsl:when>
+			<xsl:when test="$option = 'teacher education'">vzdělávání učitelů</xsl:when>
+			<xsl:when test="$option = 'teachers'">učitelé</xsl:when>
+			<xsl:when test="$option = 'teaching methods'">vyučovací metody</xsl:when>
+			<xsl:when test="$option = 'teaching'">vyučování</xsl:when>
+			<xsl:when test="$option = 'technology'">technologie</xsl:when>
+			<xsl:when test="$option = 'telecommunications'">telekomunikace</xsl:when>
+			<xsl:when test="$option = 'theater'">divadlo</xsl:when>
+			<xsl:when test="$option = 'theology'">teologie</xsl:when>
+			<xsl:when test="$option = 'therapy'">terapie</xsl:when>
+			<xsl:when test="$option = 'thermodynamics'">termodynamika</xsl:when>
+			<xsl:when test="$option = 'training'">trénink</xsl:when>
+			<xsl:when test="$option = 'trends'">trendy</xsl:when>
+			<xsl:when test="$option = 'tumors'">nádory</xsl:when>
+			<xsl:when test="$option = 'ultrasound'">ultrazvuk</xsl:when>
+			<xsl:when test="$option = 'united kingdom'">Spojené království</xsl:when>
+			<xsl:when test="$option = 'united states'">Spojené státy</xsl:when>
+			<xsl:when test="$option = 'universe'">vesmír</xsl:when>
+			<xsl:when test="$option = 'universities and colleges'">univerzity a vysoké školy</xsl:when>
+			<xsl:when test="$option = 'urology &amp; nephrology'">urologie a nefrologie</xsl:when>
+			<xsl:when test="$option = 'u.s'">Spojené státy</xsl:when>
+			<xsl:when test="$option = 'vaccines'">vakcíny</xsl:when>
+			<xsl:when test="$option = 'virology'">virologie</xsl:when>
+			<xsl:when test="$option = 'viruses'">viry</xsl:when>
+			<xsl:when test="$option = 'viscoelasticity'">viskoelasticita</xsl:when>
+			<xsl:when test="$option = 'viscosity'">viskozita</xsl:when>
+			<xsl:when test="$option = 'walking'">chůze</xsl:when>
+			<xsl:when test="$option = 'women'">ženy</xsl:when>
+			<xsl:when test="$option = ''"></xsl:when>
+<!--
+			<xsl:when test="$option = 'people's republic of china'">Čínská lidová republika</xsl:when>
+-->
+			<xsl:otherwise>
+				<xsl:value-of select="$option" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template name="text_facet_discipline">
+		<xsl:param name="option" />
+		<xsl:choose>
+			<xsl:when test="$option = 'agriculture'">zemědělství</xsl:when>
+			<xsl:when test="$option = 'anatomy &amp; physiology'">anatomie a fyziologie</xsl:when>
+			<xsl:when test="$option = 'anthropology'">antropologie</xsl:when>
+			<xsl:when test="$option = 'applied sciences'">aplikované vědy</xsl:when>
+			<xsl:when test="$option = 'architecture'">architektura</xsl:when>
+			<xsl:when test="$option = 'astronomy &amp; astrophysics'">astronomie a astrofyzika</xsl:when>
+			<xsl:when test="$option = 'biology'">biologie</xsl:when>
+			<xsl:when test="$option = 'botany'">botanika</xsl:when>
+			<xsl:when test="$option = 'business'">obchod</xsl:when>
+			<xsl:when test="$option = 'chemistry'">chemie</xsl:when>
+			<xsl:when test="$option = 'computer science'">výpočetní technika</xsl:when>
+			<xsl:when test="$option = 'dance'">tanec</xsl:when>
+			<xsl:when test="$option = 'dentistry'">zubní lékařství</xsl:when>
+			<xsl:when test="$option = 'diet &amp; clinical nutrition'">strava a klinická výživa</xsl:when>
+			<xsl:when test="$option = 'drama'">drama</xsl:when>
+			<xsl:when test="$option = 'ecology'">ekologie</xsl:when>
+			<xsl:when test="$option = 'economics'">ekonomika</xsl:when>
+			<xsl:when test="$option = 'education'">vzdělávání</xsl:when>
+			<xsl:when test="$option = 'engineering'">strojírenství</xsl:when>
+			<xsl:when test="$option = 'environmental sciences'">vědy o životním prostředí</xsl:when>
+			<xsl:when test="$option = 'film'">film</xsl:when>
+			<xsl:when test="$option = 'forestry'">lesnictví</xsl:when>
+			<xsl:when test="$option = 'geography'">zeměpis</xsl:when>
+			<xsl:when test="$option = 'geology'">geologie</xsl:when>
+			<xsl:when test="$option = 'government'">vláda</xsl:when>
+			<xsl:when test="$option = 'history &amp; archaeology'">historie a archeologie</xsl:when>
+			<xsl:when test="$option = 'international relations'">mezinárodní vztahy</xsl:when>
+			<xsl:when test="$option = 'journalism &amp; communications'">žurnalistika a komunikace</xsl:when>
+			<xsl:when test="$option = 'languages &amp; literatures'">jazyky a literatura</xsl:when>
+			<xsl:when test="$option = 'law'">právo</xsl:when>
+			<xsl:when test="$option = 'library &amp; information science'">knihovnictví a informační věda</xsl:when>
+			<xsl:when test="$option = 'mathematics'">matematika</xsl:when>
+			<xsl:when test="$option = 'medicine'">medicína</xsl:when>
+			<xsl:when test="$option = 'meteorology &amp; climatology'">meteorologie a klimatologie</xsl:when>
+			<xsl:when test="$option = 'military &amp; naval science'">vojenské a námořní vědy</xsl:when>
+			<xsl:when test="$option = 'music'">hudba</xsl:when>
+			<xsl:when test="$option = 'nursing'">ošetřovatelství</xsl:when>
+			<xsl:when test="$option = 'occupational therapy &amp; rehabilitation'">pracovní terapie a rehabilitace</xsl:when>
+			<xsl:when test="$option = 'oceanography'">oceánografie</xsl:when>
+			<xsl:when test="$option = 'parapsychology &amp; occult sciences'">parapsychologie a okultní vědy</xsl:when>
+			<xsl:when test="$option = 'pharmacy, therapeutics, &amp; pharmacology'">lékářství, léčiva a farmakologie</xsl:when>
+			<xsl:when test="$option = 'philosophy'">filozofie</xsl:when>
+			<xsl:when test="$option = 'physical therapy'">fyzioterapie</xsl:when>
+			<xsl:when test="$option = 'physics'">fyzika</xsl:when>
+			<xsl:when test="$option = 'political science'">politické vědy</xsl:when>
+			<xsl:when test="$option = 'psychology'">psychologie</xsl:when>
+			<xsl:when test="$option = 'public health'">veřejné zdraví</xsl:when>
+			<xsl:when test="$option = 'recreation &amp; sports'">rekreace a sport</xsl:when>
+			<xsl:when test="$option = 'religion'">náboženství</xsl:when>
+			<xsl:when test="$option = 'sciences'">vědy</xsl:when>
+			<xsl:when test="$option = 'social sciences'">společenské vědy</xsl:when>
+			<xsl:when test="$option = 'social welfare &amp; social work'">sociální péče a sociální práce</xsl:when>
+			<xsl:when test="$option = 'sociology &amp; social history'">sociologie a sociální dějiny</xsl:when>
+			<xsl:when test="$option = 'statistics'">statistika</xsl:when>
+			<xsl:when test="$option = 'veterinary medicine'">veterinární lékařství</xsl:when>
+			<xsl:when test="$option = 'visual arts'">výtvarné umění</xsl:when>
+<!--
+			<xsl:when test="$option = women's studies'">studie o ženách</xsl:when>
+-->
+			<xsl:when test="$option = 'zoology'">zoologie</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$option" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template name="text_search_fields">
+		<xsl:param name="option" />
+		<xsl:choose>
+			<xsl:when test="$option = 'keyword'">libovolné pole</xsl:when>
+			<xsl:when test="$option = 'title'">název</xsl:when>
+			<xsl:when test="$option = 'author'">autor</xsl:when>
+			<xsl:when test="$option = 'subject'">předmět</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$option" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template name="text_folder_export_options_list">
+		<xsl:param name="option" />
+		<xsl:choose>
+			<xsl:when test="$option = 'email'">Poslat záznamy na váš email</xsl:when>
+			<xsl:when test="$option = 'refworks'">Export do Refworks</xsl:when>
+			<xsl:when test="$option = 'endnoteweb'">Export do Endnote Web</xsl:when>
+			<xsl:when test="$option = 'blackboard'">Export do Blackboard</xsl:when>
+			<xsl:when test="$option = 'endnote'">Stáhnout do Endnote, Zotero atd.</xsl:when>
+			<xsl:when test="$option = 'text'">Stáhnout jako textový soubor</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$option" />
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
 	<xsl:variable name="text_results_clear_facets_false"> Zachovat upřesnění hledání</xsl:variable>
-	<xsl:variable name="text_results_clear_facets_true"> Nnové hledání</xsl:variable>
+	<xsl:variable name="text_results_clear_facets_true"> Nové hledání</xsl:variable>
 	
 	<xsl:variable name="text_citation_basic_title">Název: </xsl:variable>
 	<xsl:variable name="text_citation_basic_format">Formát: </xsl:variable>
@@ -533,13 +1025,12 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 		<xsl:text>Nalezli jsme </xsl:text>
 		<xsl:choose>
 		<xsl:when test="count(results/database_recommendations/database_recommendation) &gt; 1">
-			několik specializovaných databází
+			několik specializovaných databází, které by vám mohli pomoct.
 		</xsl:when>
 		<xsl:otherwise>
-			specializovanou databázi
+			specializovanou databázi, která by vám mohla pomoct.
 		</xsl:otherwise>
 		</xsl:choose>
-		<xsl:text>, která by vám mohla pomoct.</xsl:text>
 	</xsl:variable>
 	<xsl:variable name="text_summon_facets_refine">Upřesnit vaše hledání</xsl:variable>
 	<xsl:variable name="text_summon_facets_all">Všechny výsledky</xsl:variable>
@@ -552,11 +1043,33 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	
 	<xsl:variable name="text_folder_output_results_title">Název</xsl:variable>
 	<xsl:variable name="text_folder_output_results_author">Autor</xsl:variable>
-	<xsl:variable name="text_folder_output_results_format">Formiát</xsl:variable>
+	<xsl:variable name="text_folder_output_results_format">Formát</xsl:variable>
 	<xsl:variable name="text_folder_output_results_year">Rok</xsl:variable>
 	<xsl:variable name="text_folder_tags_add">Přidat záznamům štítek: </xsl:variable>
 	<xsl:variable name="text_folder_export_options">Možnosti exportu: </xsl:variable>
 	<xsl:variable name="text_folder_export_add">Přidat</xsl:variable>
 	<xsl:variable name="text_folder_export_delete">Smazat</xsl:variable>
+	<xsl:variable name="text_folder_export_delete_confirm">Smazat tyto záznamy?</xsl:variable>
+	<xsl:variable name="text_folder_export_deleted">Záznamy smazány</xsl:variable>
+	<xsl:variable name="text_folder_export_email_error">Litujeme, email se momentálně nepodařilo odeslat</xsl:variable>
+	<xsl:variable name="text_folder_export_email_sent">Email byl úspěšně odeslán</xsl:variable>
+	<xsl:variable name="text_folder_export_error_missing_label">Prosím, zadejte štítek.</xsl:variable>
+	<xsl:variable name="text_folder_export_updated">Záznamy byli aktualizovány.</xsl:variable>
+	
+	<xsl:variable name="text_folder_record_added">Záznam byl úspěšně přidán mezi uložené záznamy</xsl:variable>
+	<xsl:variable name="text_folder_record_removed">Záznam byl úspěšně odstraněn z uložených záznamů</xsl:variable>
+	<xsl:variable name="text_folder_tags_limit">Omezeno na:</xsl:variable>
+	<xsl:variable name="text_folder_tags_remove">Odstranit štítek ze záznamu</xsl:variable>
+	<xsl:variable name="text_folder_return_to_results">výsledky vyhledávání</xsl:variable>
+	
+	<xsl:variable name="text_search_loading">Načítavají se výsledky . . .</xsl:variable>
+	
+	<xsl:variable name="text_facets_include">Včetně</xsl:variable>
+	<xsl:variable name="text_facets_exclude">Mimo</xsl:variable>
+	<xsl:variable name="text_facets_submit">Odeslat</xsl:variable>
+	<xsl:variable name="text_facets_multiple_any">Vše</xsl:variable>
+	<xsl:variable name="text_facets_from">Od:</xsl:variable>
+	<xsl:variable name="text_facets_to">Do:</xsl:variable>
+	<xsl:variable name="text_facets_update">Aktualizovat</xsl:variable>
 	
 </xsl:stylesheet>

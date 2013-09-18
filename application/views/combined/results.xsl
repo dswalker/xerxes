@@ -193,6 +193,7 @@
 							
 								<div class="combined-results-other">
 							
+									<!-- @todo: i18n (remove @public from configuration, look up label by id instead) -->
 									<h3><xsl:value-of select="@public" /></h3>
 			
 									<ul>
