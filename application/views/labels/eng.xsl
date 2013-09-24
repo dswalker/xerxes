@@ -441,13 +441,85 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	
 	<xsl:template name="text_results_sort_by">
 		<xsl:param name="option" />
-		<xsl:value-of select="$option" />
+		<xsl:choose>
+			<xsl:when test="$option = 'relevance'">relevance</xsl:when>
+			<xsl:when test="$option = 'recent'">date added</xsl:when>
+			<xsl:when test="$option = 'title'">title</xsl:when>
+			<xsl:when test="$option = 'author'">author</xsl:when>
+			<xsl:when test="$option = 'date'">newest</xsl:when>
+			<xsl:when test="$option = 'date-old'">oldest</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$option" />
+			</xsl:otherwise>
+		</xsl:choose>
 	</xsl:template>
 	
-	<xsl:template name="text_results_sort_options">
+	<xsl:template name="text_facet_fields">
+		<xsl:param name="option" />
+		<xsl:choose>
+			<xsl:when test="$option = 'IsScholarly'">Scholarly</xsl:when>
+			<xsl:when test="$option = 'ContentType'">Format</xsl:when>
+			<xsl:when test="$option = 'SubjectTerms'">Topics</xsl:when>
+			<xsl:when test="$option = 'Discipline'">Subject Area</xsl:when>
+			<xsl:when test="$option = 'PublicationDate'">Publication Date</xsl:when>
+			<xsl:when test="$option = 'Language'">Language</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$option" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template name="text_facet_groups">
+		<xsl:param name="option" />
+		<xsl:choose>
+			<xsl:when test="$option = 'format'">Format</xsl:when>
+			<xsl:when test="$option = 'label'">Labels</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$option" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template name="text_facet_subject">
 		<xsl:param name="option" />
 		<xsl:value-of select="$option" />
 	</xsl:template>
+	
+	<xsl:template name="text_facet_discipline">
+		<xsl:param name="option" />
+		<xsl:value-of select="$option" />
+	</xsl:template>
+	
+	<xsl:template name="text_search_fields">
+		<xsl:param name="option" />
+		<xsl:choose>
+			<xsl:when test="$option = 'keyword'">all fields</xsl:when>
+			<xsl:when test="$option = 'title'">title</xsl:when>
+			<xsl:when test="$option = 'author'">author</xsl:when>
+			<xsl:when test="$option = 'subject'">subject</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$option" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template name="text_folder_export_options_list">
+		<xsl:param name="option" />
+		<xsl:choose>
+			<xsl:when test="$option = 'email'">Email records to yourself</xsl:when>
+			<xsl:when test="$option = 'refworks'">Export to Refworks</xsl:when>
+			<xsl:when test="$option = 'endnoteweb'">Export to Endnote Web</xsl:when>
+			<xsl:when test="$option = 'blackboard'">Export to Blackboard</xsl:when>
+			<xsl:when test="$option = 'endnote'">Download to Endnote, Zotero, etc.</xsl:when>
+			<xsl:when test="$option = 'text'">Download to text file</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="$option" />
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:variable name="text_results_clear_facets_false"> Keep search refinements</xsl:variable>
+	<xsl:variable name="text_results_clear_facets_true"> New search</xsl:variable>
 	
 	<xsl:variable name="text_citation_basic_title">Title: </xsl:variable>
 	<xsl:variable name="text_citation_basic_format">Format: </xsl:variable>
@@ -488,9 +560,35 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_summon_facets_newspaper-add">Add newspaper articles</xsl:variable>
 	<xsl:variable name="text_summon_facets_newspaper-exclude">Exclude newspaper articles</xsl:variable>
 	<xsl:variable name="text_summon_facets_beyond-holdings">Add results beyond the library's collection</xsl:variable>
-<!--
-	<xsl:variable name="text_summon_facets_"></xsl:variable>
-	<xsl:variable name="text_summon_facets_"></xsl:variable>
-	<xsl:variable name="text_summon_facets_"></xsl:variable>
--->
+	
+	<xsl:variable name="text_folder_output_results_title">Title</xsl:variable>
+	<xsl:variable name="text_folder_output_results_author">Author</xsl:variable>
+	<xsl:variable name="text_folder_output_results_format">Format</xsl:variable>
+	<xsl:variable name="text_folder_output_results_year">Year</xsl:variable>
+	<xsl:variable name="text_folder_tags_add">Add label to records: </xsl:variable>
+	<xsl:variable name="text_folder_export_options">Export options: </xsl:variable>
+	<xsl:variable name="text_folder_export_add">Add</xsl:variable>
+	<xsl:variable name="text_folder_export_delete">Delete</xsl:variable>
+	<xsl:variable name="text_folder_export_delete_confirm">Delete these records?</xsl:variable>
+	<xsl:variable name="text_folder_export_deleted">Records deleted</xsl:variable>
+	<xsl:variable name="text_folder_export_email_error">Sorry, we couldn't send an email at this time</xsl:variable>
+	<xsl:variable name="text_folder_export_email_sent">Email successfully sent</xsl:variable>
+	<xsl:variable name="text_folder_export_error_missing_label">Please provide a label.</xsl:variable>
+	<xsl:variable name="text_folder_export_updated">Records updated</xsl:variable>
+	
+	<xsl:variable name="text_folder_record_added">Record successfully added to saved records</xsl:variable>
+	<xsl:variable name="text_folder_record_removed">Record successfully removed from saved records</xsl:variable>
+	<xsl:variable name="text_folder_tags_limit">Limited to:</xsl:variable>
+	<xsl:variable name="text_folder_tags_remove">Remove label from record(s)</xsl:variable>
+	<xsl:variable name="text_folder_return_to_results">search results</xsl:variable>
+	
+	<xsl:variable name="text_search_loading">Updating results . . .</xsl:variable>
+	
+	<xsl:variable name="text_facets_include">Include</xsl:variable>
+	<xsl:variable name="text_facets_exclude">Exclude</xsl:variable>
+	<xsl:variable name="text_facets_multiple_any">Any</xsl:variable>
+	<xsl:variable name="text_facets_from">From:</xsl:variable>
+	<xsl:variable name="text_facets_to">To:</xsl:variable>
+	<xsl:variable name="text_facets_update">Update</xsl:variable>
+	
 </xsl:stylesheet>

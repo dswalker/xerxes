@@ -35,12 +35,12 @@
 		
 	<h1>
 	<xsl:choose>
-		<xsl:when test="delete = '1'">Record successfully removed from saved records</xsl:when>
-		<xsl:otherwise>Record successfully added to saved records</xsl:otherwise>
+		<xsl:when test="delete = '1'"><xsl:value-of select="$text_folder_record_removed" /></xsl:when>
+		<xsl:otherwise><xsl:value-of select="$text_folder_record_added" /></xsl:otherwise>
 	</xsl:choose>
 	</h1>
 	
-	<p>Return to <a href="{return_url}">results page</a></p>	
+	<p><xsl:value-of select="$text_folder_tags_edit_return" /><a href="{return_url}"><xsl:value-of select="$text_folder_return_to_results" /></a></p>
 	
 </xsl:template>
 </xsl:stylesheet>

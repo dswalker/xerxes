@@ -93,6 +93,8 @@ class Registry implements \Serializable
 			// process it
 			
 			$this->process();
+			
+			$this->initDefaultLanguage();
 		}
 	}
 	

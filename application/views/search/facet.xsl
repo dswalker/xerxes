@@ -78,9 +78,13 @@
 			
 			<table class="holdings-table">
 				<tr>
-					<th>Include</th>
-					<th>Exclude</th>
-					<th><xsl:value-of select="public" /></th>
+					<th><xsl:value-of select="$text_facets_include" /></th>
+					<th><xsl:value-of select="$text_facets_exclude" /></th>
+					<th>
+						<xsl:call-template name="text_facet_fields">
+							<xsl:with-param name="option" select="name" />
+						</xsl:call-template>
+					</th>
 				</tr>
 
 				<xsl:for-each select="facets/facet">
@@ -100,13 +104,17 @@
 							</input>
 						</td>
 						<td>
-							<xsl:value-of select="name" /> &nbsp;(<xsl:value-of select="count_display" />)
+							<xsl:call-template name="facet_name">
+								<xsl:with-param name="name" select="name" />
+							</xsl:call-template>&nbsp;(<xsl:value-of select="count_display" />)
 						</td>
 					</tr>
 				</xsl:for-each>
 			</table>
 			
-			<input type="submit" value="Submit" />
+			<input type="submit">
+				<xsl:attribute name="value"><xsl:value-of select="$text_facets_submit" /></xsl:attribute>
+			</input>
 		
 		</xsl:for-each>
 		

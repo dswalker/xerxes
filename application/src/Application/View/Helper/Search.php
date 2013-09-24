@@ -274,9 +274,9 @@ class Search
 		
 		$x = 1;
 		
-		foreach ( $sort_options as $key => $value )
+		foreach ( $sort_options as $value )
 		{
-			if ( $key == $sort )
+			if ( $value == $sort )
 			{
 				$here = $xml->createElement( "option", $value );
 				$here->setAttribute( "active", "true" );
@@ -285,7 +285,7 @@ class Search
 			else
 			{
 				$params = $this->sortLinkParams();
-				$params["sort"] = $key;
+				$params["sort"] = $value;
 				
 				$here = $xml->createElement( "option", $value );
 				$here->setAttribute( "active", "false" );

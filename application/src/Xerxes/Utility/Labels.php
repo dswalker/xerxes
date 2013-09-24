@@ -55,6 +55,16 @@ class Labels
 			$import = $this->xml->importNode($local_xml->documentElement, true);
 			$this->xml->documentElement->appendChild($import);			
 		}
+		
+		$labels = $this->xml->getElementsByTagName("variable");
+		
+		// last ones takes precedence
+		
+		foreach ( $labels as $label )
+		{
+			$this->labels[(string) $label->getAttribute("name")] = $label->nodeValue;
+		}
+
 	}
 	
 	/**
@@ -73,7 +83,7 @@ class Labels
 			// distro
 			
 			$language_xml = new \DOMDocument();
-			$language_xml->load("$this->path/$language.xsl");
+			$language_xml->load("$this->path/views/labels/$language.xsl");
 			
 			$import = $this->xml->importNode($language_xml->documentElement, true);
 			$this->xml->documentElement->appendChild($import);
@@ -87,6 +97,15 @@ class Labels
 				$import = $this->xml->importNode($local_xml->documentElement, true);
 				$this->xml->documentElement->appendChild($import);			
 			}		
+			
+			$labels = $this->xml->getElementsByTagName("variable");
+			
+			// last ones takes precedence
+			
+			foreach ( $labels as $label )
+			{
+				$this->labels[(string) $label->getAttribute("name")] = $label->nodeValue;
+			}
 		}
 	}
 	
@@ -146,9 +165,9 @@ class Labels
 	
 	public function getLabel($name)
 	{
-		if ( $this->labels()->offsetExists($name) )
+		if ( array_key_exists($name, $this->labels) )
 		{
-			return $this->offsetGet($name);
+			return $this->labels[$name];
 		}
 		else
 		{

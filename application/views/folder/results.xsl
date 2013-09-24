@@ -44,7 +44,7 @@
 		<xsl:call-template name="breadcrumb_start" />
 		
 		<a href="folder">
-			My Saved Records
+			<xsl:value-of select="$text_header_savedrecords" />
 		</a>
 		
 		<xsl:value-of select="$text_breadcrumb_separator" />
@@ -140,6 +140,7 @@
 					</xsl:if>
 					
 					<input type="hidden" name="return" value="{//request/server/request_uri}" />
+					<input type="hidden" name="lang" value="{//request/lang}" />
 				
 				</form>
 				
@@ -149,7 +150,7 @@
 			<xsl:otherwise>
 				
 				<div class="no-hits error">
-					Looks like you don't have any saved records.
+					<xsl:value-of select="$text_folder_no_records" />
 				</div>
 				
 			</xsl:otherwise>
@@ -205,21 +206,23 @@
 	
 		<div class="export">
 		
-			<label for="folder-output">Export options: <xsl:text> </xsl:text></label>
+			<label for="folder-output"><xsl:value-of select="$text_folder_export_options" /><xsl:text> </xsl:text></label>
 			
 			<select id="folder-output" name="output" class="selectpicker">
 			
 				<xsl:for-each select="config/export_options/option">
 				
 					<option value="{@id}" data-icon="{@icon}">
-						<xsl:value-of select="@public" />
+						<xsl:call-template name="text_folder_export_options_list">
+							<xsl:with-param name="option" select="@id" />
+						</xsl:call-template>
 					</option>
 				
 				</xsl:for-each>
 			</select>
 			
 			<xsl:text> </xsl:text>
-			<button type="submit" class="btn btn-primary output-export" name="action" value="export">Export</button>
+			<button type="submit" class="btn btn-primary output-export" name="action" value="export"><xsl:value-of select="$text_folder_export_export" /></button>
 			
 		</div>
 	
@@ -236,7 +239,7 @@
 	
 			<div class="assign">
 				
-				<label for="folder-label">Add label to records:</label>
+				<label for="folder-label"><xsl:value-of select="$text_folder_tags_add" /></label>
 				
 				<input id="folder-label" type="text" name="tag" data-provide="typeahead" autocomplete="off">
 					<xsl:attribute name="data-source">				
@@ -251,7 +254,7 @@
 					</xsl:attribute>
 				</input>
 				
-				<button type="submit" class="btn btn-primary output-export" name="action" value="label">Add</button>
+				<button type="submit" class="btn btn-primary output-export" name="action" value="label"><xsl:value-of select="$text_folder_export_add" /></button>
 				
 			</div>
 			
@@ -267,7 +270,7 @@
 	<xsl:template name="folder_delete">
 
 		<button id="folder-delete" type="submit" class="btn" name="action" value="delete">
-			<i class="icon-trash"></i><xsl:text> </xsl:text>Delete
+			<i class="icon-trash"></i><xsl:text> </xsl:text><xsl:value-of select="$text_folder_export_delete" />
 		</button>
 			
 	</xsl:template>
@@ -280,7 +283,7 @@
 	<xsl:template name="folder_remove_tags">
 		
 		<button type="submit" class="btn" name="action" value="label">
-			<i class="icon-remove"></i><xsl:text> </xsl:text>Remove  from label
+			<i class="icon-remove"></i><xsl:text> </xsl:text><xsl:value-of select="$text_folder_tags_remove" />
 		</button>
 		
 		<input type="hidden" name="remove" value="true" />
@@ -299,10 +302,10 @@
 			<thead>
 				<tr>
 					<td><input type="checkbox" value="true" id="folder-select-all" /></td>
-					<td>Title</td>
-					<td>Author</td>
-					<td>Format</td>
-					<td>Year</td>
+					<td><xsl:value-of select="$text_folder_output_results_title" /></td>
+					<td><xsl:value-of select="$text_folder_output_results_author" /></td>
+					<td><xsl:value-of select="$text_folder_output_results_format" /></td>
+					<td><xsl:value-of select="$text_folder_output_results_year" /></td>
 				</tr>
 			</thead>
 			
@@ -364,8 +367,12 @@
 				
 				<xsl:for-each select="//facets/groups/group[not(display)]">
 	
-					<h3><xsl:value-of select="public" /></h3>
-						
+					<h3>
+						<xsl:call-template name="text_facet_groups">
+							<xsl:with-param name="option" select="name" />
+						</xsl:call-template>
+					</h3>
+					
 					<ul>
 					<xsl:for-each select="facets/facet">
 						<xsl:call-template name="facet_option" />
