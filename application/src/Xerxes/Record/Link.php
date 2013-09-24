@@ -264,7 +264,13 @@ class Link
 			$xml->addAttribute("type", $this->getType());
 		}
 		
-		$xml->display = $this->getDisplay();
+		$display = $this->getDisplay();
+		
+		if( $display != "")
+		{
+			$xml->display = $display;
+		}
+		
 		$xml->url = $this->getURL();
 		
 		return Parser::convertToDOMDocument($xml);
