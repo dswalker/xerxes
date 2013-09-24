@@ -1316,7 +1316,6 @@ BBB
 
 		<xsl:variable name="source" select="source" />
 		<xsl:variable name="record_id" select="record_id" />
-		<xsl:variable name="lang_param" select="substring(concat('&amp;lang=', //request/lang), 1 div (//request/lang))" /> <!-- XPath idiom for "IF exists //request/lang THEN '&amp;lang='+//request/lang ELSE ''" -->
 		
 		<!-- @todo: move this to the controller? -->
 		
@@ -1332,7 +1331,7 @@ BBB
 						
 			<xsl:text> </xsl:text>	
 			
-			<a id="link-{$source}-{$record_id}" href="{../url_save_delete}{$lang_param}">
+			<a id="link-{$source}-{$record_id}" href="{../url_save_delete}">
 				
 				<xsl:attribute name="class">save-record
 				
