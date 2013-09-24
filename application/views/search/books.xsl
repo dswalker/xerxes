@@ -455,12 +455,9 @@
 								
 						<div id="{//request/controller}-{$record_id}-{$type}" class="availability-load"></div>
 			
-					</xsl:otherwise>				
+					</xsl:otherwise>
+								
 				</xsl:choose>
-	
-				<!-- check for full-text -->
-				
-				<xsl:call-template name="full_text_links"/>	
 								
 			</xsl:when>
 			
@@ -470,6 +467,10 @@
 				<xsl:call-template name="availability_lookup_none" />	
 			</xsl:otherwise>
 		</xsl:choose>
+		
+		<!-- check for full-text -->
+				
+		<xsl:call-template name="full_text_links"/>	
 	
 	</xsl:template>
 
