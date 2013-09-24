@@ -295,7 +295,7 @@ abstract class Config extends Registry
 		{
 			foreach ( $config->option as $option )
 			{
-				$options[(string)$option["id"]] = (string) $option["public"];
+				$options[] = (string) $option["id"];
 			}
 		}
 		
