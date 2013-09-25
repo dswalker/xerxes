@@ -1054,6 +1054,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_folder_export_email_error">Litujeme, email se momentálně nepodařilo odeslat</xsl:variable>
 	<xsl:variable name="text_folder_export_email_sent">Email byl úspěšně odeslán</xsl:variable>
 	<xsl:variable name="text_folder_export_error_missing_label">Prosím, zadejte štítek.</xsl:variable>
+	<xsl:variable name="text_folder_export_error_select_records">Prosím, vyberte záznamy.</xsl:variable>
 	<xsl:variable name="text_folder_export_updated">Záznamy byli aktualizovány.</xsl:variable>
 	
 	<xsl:variable name="text_folder_record_added">Záznam byl úspěšně přidán mezi uložené záznamy</xsl:variable>

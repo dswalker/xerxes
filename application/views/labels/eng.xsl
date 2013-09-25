@@ -574,6 +574,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_folder_export_email_error">Sorry, we couldn't send an email at this time</xsl:variable>
 	<xsl:variable name="text_folder_export_email_sent">Email successfully sent</xsl:variable>
 	<xsl:variable name="text_folder_export_error_missing_label">Please provide a label.</xsl:variable>
+	<xsl:variable name="text_folder_export_error_select_records">Please select records.</xsl:variable>
 	<xsl:variable name="text_folder_export_updated">Records updated</xsl:variable>
 	
 	<xsl:variable name="text_folder_record_added">Record successfully added to saved records</xsl:variable>
