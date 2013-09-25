@@ -571,7 +571,10 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_folder_export_delete">Delete</xsl:variable>
 	<xsl:variable name="text_folder_export_delete_confirm">Delete these records?</xsl:variable>
 	<xsl:variable name="text_folder_export_deleted">Records deleted</xsl:variable>
+	<xsl:variable name="text_folder_export_email_cancel">Cancel</xsl:variable>
 	<xsl:variable name="text_folder_export_email_error">Sorry, we couldn't send an email at this time</xsl:variable>
+	<xsl:variable name="text_folder_export_email_options">Email options</xsl:variable>
+	<xsl:variable name="text_folder_export_email_send">Send</xsl:variable>
 	<xsl:variable name="text_folder_export_email_sent">Email successfully sent</xsl:variable>
 	<xsl:variable name="text_folder_export_error_missing_label">Please provide a label.</xsl:variable>
 	<xsl:variable name="text_folder_export_error_select_records">Please select records.</xsl:variable>
