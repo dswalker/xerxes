@@ -152,7 +152,7 @@
 	</xsl:variable>
 
 	<form id="form-facet-0" action="{//request/controller}/search" method="get">
-
+		<input name="lang" type="hidden" value="{//request/lang}" />
 		<xsl:call-template name="hidden_search_inputs">
 			<xsl:with-param name="exclude_limit">facet.IsScholarly,facet.IsPeerReviewed,facet.IsFullText,facet.holdings,facet.newspapers</xsl:with-param>
 		</xsl:call-template>

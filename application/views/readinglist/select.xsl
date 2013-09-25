@@ -38,6 +38,7 @@
 	<div id="export">
 
 		<form action="{request/controller}/assign" method="get">
+			<input name="lang" type="hidden" value="{//request/lang}" />
 			<input type="hidden" name="course_id" value="{//request/course_id}" />
 			
 			<h1><xsl:call-template name="page_name" /></h1>	

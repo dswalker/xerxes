@@ -758,7 +758,8 @@ BBB
 		<div class="facet-date">
 	
 			<form id="form-{group_id}" action="{//request/controller}/search" method="get">
-			
+				<input name="lang" type="hidden" value="{//request/lang}" />
+				
 				<xsl:if test="not(//config/show_date_graph) or //config/show_date_graph = 'true'">
 			
 					<div id="placeholder" style="width: 210px; height: 120px">
@@ -883,7 +884,7 @@ BBB
 	<xsl:template name="facet_multiple">
 		
 		<form id="form-{group_id}" action="{//request/controller}/search" method="get">
-		
+		<input name="lang" type="hidden" value="{//request/lang}" />
 		<xsl:call-template name="hidden_search_inputs">
 			<xsl:with-param name="exclude_limit" select="param_name" />
 		</xsl:call-template>

@@ -69,7 +69,7 @@
 	<body>
 		
 		<form id="form-facet-selector" action="{$base_url}/{//request/controller}/search" method="get">	
-		
+		<input name="lang" type="hidden" value="{//request/lang}" />
 		<xsl:for-each select="//facets/groups/group[param_name = //request/group]">
 		
 			<xsl:call-template name="hidden_search_inputs">

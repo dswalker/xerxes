@@ -808,7 +808,7 @@
 		</xsl:element>
 	
 		<form name="smsForm" id="sms-form" action="{//request/controller}/sms" method="get">
-
+			<input name="lang" type="hidden" value="{//request/lang}" />
 			<input type="hidden" name="id" value="{record_id}" />
 			
 			<div class="sms-property">
