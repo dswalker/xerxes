@@ -55,7 +55,7 @@ class AuthenticateController extends ActionController
 	
 		if ( $config_https == true && $this->request->getScheme() == "http" )
 		{
-			$url = $this->request->getServerUrl(true) . '/' . $this->request->getUri();
+			$url = $this->request->getServerUrl(true) . $this->request->getRequestUri();
 			
 			return $this->redirectTo($url);
 		}
