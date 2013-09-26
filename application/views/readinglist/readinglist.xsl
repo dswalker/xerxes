@@ -21,16 +21,17 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 
-	<xsl:template name="module_header"><style type="text/css">
+	<xsl:template name="module_header">
+		<style type="text/css">
 			.account {
 				visibility: hidden;
 			}
 			.action- h1 {
 				display: none;
 			}
-		.courses-search-options li {
-			margin: 2em;
-		}			
+			.courses-search-options li {
+				margin: 2em;
+			}			
 			
 		</style>
 
@@ -115,10 +116,10 @@
 							
 				<xsl:choose>
 					<xsl:when test="$is_already_saved">
-						Saved
+						<xsl:value-of select="$text_readinglist_saved" />
 					</xsl:when>
 					<xsl:otherwise>
-						Add to reading list
+						<xsl:value-of select="$text_readinglist_add" />
 					</xsl:otherwise>
 				</xsl:choose>
 			</a>
@@ -128,7 +129,7 @@
 	</xsl:template>
 	
 	<xsl:template name="breadcrumb">
-		Return to reading list!
+		<xsl:value-of select="$text_readinglist_breadcrumb" />
 	</xsl:template>
 	
 	<xsl:template name="instructor_search_options">
@@ -138,12 +139,12 @@
 			<ul class="courses-search-options">
 				<li>
 					<a href="{course_nav/url_search}" class="btn btn-large">
-						<i class="icon-search"></i><xsl:text> </xsl:text>Search for new records
+						<i class="icon-search"></i><xsl:text> </xsl:text><xsl:value-of select="$text_readinglist_search" />
 					</a>
 				</li>
 				<li>
 					<a href="{course_nav/url_previously_saved}" class="btn btn-large">
-						<i class="icon-folder-open-alt"></i><xsl:text> </xsl:text>Add previously saved records
+						<i class="icon-folder-open-alt"></i><xsl:text> </xsl:text><xsl:value-of select="$text_readinglist_add_saved" />
 					</a>
 				</li>
 			</ul>

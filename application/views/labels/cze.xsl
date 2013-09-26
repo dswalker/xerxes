@@ -1134,4 +1134,44 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_ebsco_facets_all">všechny časopisy</xsl:variable>
 	<xsl:variable name="text_ebsco_facets_scholarly">pouze akademické</xsl:variable>
 	
+	<xsl:variable name="text_search_books_no_copies_available">Žádné kopie nejsou k dispozici</xsl:variable>
+	<xsl:template name="text_search_books_copies_available">
+		<xsl:param name="num" />
+		<xsl:choose>
+			<xsl:when test="$num = '1'">1 kopie k dispozici</xsl:when>
+			<xsl:when test="($num &gt; '1') and ($num &lt; '5')"><xsl:value-of select="$num" /> kopie k dispozici</xsl:when>
+			<xsl:when test="$num &gt; '5'"><xsl:value-of select="$num" /> kopií k dispozici</xsl:when>	
+		</xsl:choose>
+	</xsl:template>
+	<xsl:variable name="text_search_books_online">Online</xsl:variable>
+	<xsl:variable name="text_search_books_printed">Tištěné kopie</xsl:variable>
+	<xsl:variable name="text_search_books_bound">Vázané svazky</xsl:variable>
+	<xsl:variable name="text_search_books_database">Databáze</xsl:variable>
+	<xsl:variable name="text_search_books_coverage">Pokrytí</xsl:variable>
+	<xsl:variable name="text_search_books_information">Informace</xsl:variable>
+	<xsl:variable name="text_search_books_about">O zdroji</xsl:variable>
+	<xsl:variable name="text_search_books_institution">Instituce</xsl:variable>
+	<xsl:variable name="text_search_books_location">Umístění</xsl:variable>
+	<xsl:variable name="text_search_books_callnumber">Signatura</xsl:variable>
+	<xsl:variable name="text_search_books_status">Stav</xsl:variable>
+	<xsl:variable name="text_search_books_request">Požadavek</xsl:variable>
+	<xsl:variable name="text_search_books_sms_location">Odeslat umístění na váš telefon</xsl:variable>
+	<xsl:variable name="text_search_books_sms_location_title">Odeslat název a umístění na váš telefon</xsl:variable>
+	<xsl:variable name="text_search_books_sms_phone">Vaše telefonní číslo: </xsl:variable>
+	<xsl:variable name="text_search_books_sms_provider">Operátor:</xsl:variable>
+	<xsl:variable name="text_search_books_sms_choose">-- zvolte jednoho --</xsl:variable>
+	<xsl:variable name="text_search_books_choose_copy">Vyberte si jednu z kopií</xsl:variable>
+	<xsl:variable name="text_search_books_sms_smallprint">Služba může být zpoplatněna operátorem.</xsl:variable>
+	<xsl:variable name="text_search_books_google_preview">Vyhledat další informace na Google Books</xsl:variable>
+	
+	<xsl:variable name="text_readinglist_breadcrumb">Zpět do čtenářského seznamu</xsl:variable>
+	<xsl:variable name="text_readinglist_saved">Uloženo</xsl:variable>
+	<xsl:variable name="text_readinglist_add">Přidat do čtenářského seznamu</xsl:variable>
+	<xsl:variable name="text_readinglist_search">Hledat nové záznamy</xsl:variable>
+	<xsl:variable name="text_readinglist_add_saved">Přidat předtím uložené záznamy</xsl:variable>
+	
+	<xsl:variable name="text_worldcat_institution">Instituce</xsl:variable>
+	<xsl:variable name="text_worldcat_availability">Dostupnost</xsl:variable>
+	<xsl:variable name="text_worldcat_check_availability">Zkontrolovat dostupnost</xsl:variable>
+	
 </xsl:stylesheet>

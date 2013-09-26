@@ -519,34 +519,25 @@
 					<xsl:call-template name="img_book_not_available">
 						<xsl:with-param name="class">mini-icon</xsl:with-param>
 					</xsl:call-template>
-					No Copies Available
+					<xsl:value-of select="$text_search_books_no_copies_available" />
 				</div>
 				
 				<div class="record-action">
 					<xsl:call-template name="ill_option" />
 				</div>
-	
+			
 			</xsl:when>
 			<xsl:otherwise>
 			
 				<div class="record-action">
 				
-					<xsl:choose>
-						<xsl:when test="$printAvailable = '1'">
-							<xsl:call-template name="img_holdings">
-								<xsl:with-param name="class">mini-icon</xsl:with-param>
-							</xsl:call-template> 
-							<xsl:text> </xsl:text>
-							1 copy available
-						</xsl:when>
-						<xsl:when test="$printAvailable &gt; '1'">
-							<xsl:call-template name="img_holdings">
-									<xsl:with-param name="class">mini-icon</xsl:with-param>
-							</xsl:call-template> 
-							<xsl:text> </xsl:text>
-							<xsl:value-of select="$printAvailable" /> copies available
-						</xsl:when>	
-					</xsl:choose>
+					<xsl:call-template name="img_holdings">
+						<xsl:with-param name="class">mini-icon</xsl:with-param>
+					</xsl:call-template>
+					<xsl:text> </xsl:text>
+					<xsl:call-template name="text_search_books_copies_available">
+						<xsl:with-param name="num"><xsl:value-of select="$printAvailable" /></xsl:with-param>
+					</xsl:call-template>
 				
 				</div>
 				
@@ -565,7 +556,7 @@
 		
 		<xsl:if test="links">
 	
-			<p><strong>Online</strong></p>
+			<p><strong><xsl:value-of select="$text_search_books_online" /></strong></p>
 			
 			<xsl:call-template name="full_text_links"/>
 			
@@ -573,14 +564,14 @@
 
 		<xsl:if test="../holdings/electronicResources">
 	
-			<p><strong>Online</strong></p>
+			<p><strong><xsl:value-of select="$text_search_books_online" /></strong></p>
 			
 			<table class="holdings-table">
 			<tr>
-				<th>Database</th>
-				<th>Coverage</th>
+				<th><xsl:value-of select="$text_search_books_database" /></th>
+				<th><xsl:value-of select="$text_search_books_coverage" /></th>
 				<xsl:if test="../holdings/electronicResources//electronicResource/package">
-					<th>Information</th>
+					<th><xsl:value-of select="$text_search_books_information" /></th>
 				</xsl:if>
 			</tr>
 			<xsl:for-each select="../holdings/electronicResources/electronicResource">
@@ -588,7 +579,7 @@
 					<td><a href="{link}"><xsl:value-of select="database" /></a></td>
 					<td><xsl:value-of select="coverage" /></td>
 					<xsl:if test="package">
-						<td><a href="{package}">About resource</a></td>
+						<td><a href="{package}"><xsl:value-of select="$text_search_books_about" /></a></td>
 					</xsl:if>
 				</tr>
 			</xsl:for-each>
@@ -598,7 +589,7 @@
 		
 		<xsl:if test="../holdings/holdings">
 		
-			<p><strong>Print holdings</strong></p>
+			<p><strong><xsl:value-of select="$text_search_books_printed" /></strong></p>
 		
 			<xsl:for-each select="../holdings/holdings/holding">
 				<ul class="holdings-summary-statement">
@@ -614,7 +605,7 @@
 		
 			<xsl:if test="../holdings/items/item">
 		
-				<p><strong>Bound Volumes</strong></p>
+				<p><strong><xsl:value-of select="$text_search_books_bound" /></strong></p>
 				<xsl:call-template name="availability_item_table" />
 				
 			</xsl:if>
@@ -660,11 +651,11 @@
 			<table class="holdings-table">
 			<tr>
 				<xsl:if test="../holdings/items/item/institution">
-					<th>Institution</th>
+					<th><xsl:value-of select="$text_search_books_institution" /></th>
 				</xsl:if>
-				<th>Location</th>
-				<th>Call Number</th>
-				<th>Status</th>
+				<th><xsl:value-of select="$text_search_books_location" /></th>
+				<th><xsl:value-of select="$text_search_books_callnumber" /></th>
+				<th><xsl:value-of select="$text_search_books_status" /></th>
 			</tr>
 			<xsl:for-each select="../holdings/items/item">
 				<tr>
@@ -676,7 +667,7 @@
 						
 						<xsl:if test="request_url">
 							<xsl:text> </xsl:text>
-							[<a href="{request_url}">Request</a>]
+							[<a href="{request_url}"><xsl:value-of select="$text_search_books_request" /></a>]
 						</xsl:if>
 					</td>
 					<td>
@@ -780,7 +771,7 @@
 					<xsl:with-param name="class">mini-icon link-resolver-link</xsl:with-param>
 				</xsl:call-template>
 				<xsl:text> </xsl:text>
-				<a id="sms-link" href="{../url_sms}">Send location to your phone</a> 
+				<a id="sms-link" href="{../url_sms}"><xsl:value-of select="$text_search_books_sms_location" /></a> 
 			
 			</div>
 			
@@ -804,7 +795,7 @@
 		<xsl:variable name="num_copies" select="count(//holdings/items/item)" />
 			
 		<xsl:element name="{$header}">
-			Send title and location to your mobile phone
+			<xsl:value-of select="$text_search_books_sms_location_title" />
 		</xsl:element>
 	
 		<form name="smsForm" id="sms-form" action="{//request/controller}/sms" method="get">
@@ -812,18 +803,18 @@
 			<input type="hidden" name="id" value="{record_id}" />
 			
 			<div class="sms-property">
-				<label for="phone">Your phone number: </label>
+				<label for="phone"><xsl:value-of select="$text_search_books_sms_phone" /></label>
 			</div>
 			<div class="sms-value">
 				<input type="text" name="phone" id="phone" />
 			</div>
 			
 			<div class="sms-property">
-				<label for="provider">Provider:</label>
+				<label for="provider"><xsl:value-of select="$text_search_books_sms_provider" /></label>
 			</div>
 			<div class="sms-value">
 				<select name="provider">
-					<option value="">-- choose one --</option>
+					<option value=""><xsl:value-of select="$text_search_books_sms_choose" /></option>
 					
 					<xsl:call-template name="sms_input_option">
 						<xsl:with-param name="email">txt.att.net</xsl:with-param>
@@ -873,7 +864,7 @@
 			</div>
 	
 			<xsl:if test="$num_copies &gt; 1">
-				<h3>Choose one of the copies</h3>
+				<h3><xsl:value-of select="$text_search_books_choose_copy" /></h3>
 			</xsl:if>
 							
 			<xsl:for-each select="../holdings/items/item">
@@ -913,7 +904,7 @@
 			
 			<input type="submit" value="Send" class="submit-send{$language_suffix}" />
 			
-			<p class="sms-note">Carrier charges may apply.</p>
+			<p class="sms-note"><xsl:value-of select="$text_search_books_sms_smallprint" /></p>
 			
 		</form>
 	
@@ -964,7 +955,7 @@
 		<div class="google-preview">
 			<script type="text/javascript" src="http://books.google.com/books/previewlib.js"></script>
 			<script type="text/javascript">GBS_insertPreviewButtonPopup([<xsl:value-of select="$ids" />]);</script>
-			<noscript><a href="http://books.google.com/books?as_isbn={$isbn}">Check for more information at Google Book Search</a></noscript>
+			<noscript><a href="http://books.google.com/books?as_isbn={$isbn}"><xsl:value-of select="$text_search_books_google_preview" /></a></noscript>
 		</div>
 	
 	</xsl:template>

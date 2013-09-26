@@ -618,4 +618,43 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_ebsco_facets_all">all journals</xsl:variable>
 	<xsl:variable name="text_ebsco_facets_scholarly">scholarly only</xsl:variable>
 	
+	<xsl:variable name="text_search_books_no_copies_available">No Copies Available</xsl:variable>
+	<xsl:template name="text_search_books_copies_available">
+		<xsl:param name="num" />
+		<xsl:choose>
+			<xsl:when test="$num = '1'">1 copy available</xsl:when>
+			<xsl:when test="$num &gt; '1'"><xsl:value-of select="$num" /> copies available</xsl:when>	
+		</xsl:choose>
+	</xsl:template>
+	<xsl:variable name="text_search_books_online">Online</xsl:variable>
+	<xsl:variable name="text_search_books_printed">Print holdings</xsl:variable>
+	<xsl:variable name="text_search_books_bound">Bound Volumes</xsl:variable>
+	<xsl:variable name="text_search_books_database">Database</xsl:variable>
+	<xsl:variable name="text_search_books_coverage">Coverage</xsl:variable>
+	<xsl:variable name="text_search_books_information">Information</xsl:variable>
+	<xsl:variable name="text_search_books_about">About resource</xsl:variable>
+	<xsl:variable name="text_search_books_institution">Institution</xsl:variable>
+	<xsl:variable name="text_search_books_location">Location</xsl:variable>
+	<xsl:variable name="text_search_books_callnumber">Call Number</xsl:variable>
+	<xsl:variable name="text_search_books_status">Status</xsl:variable>
+	<xsl:variable name="text_search_books_request">Request</xsl:variable>
+	<xsl:variable name="text_search_books_sms_location">Send location to your phone</xsl:variable>
+	<xsl:variable name="text_search_books_sms_location_title">Send title and location to your mobile phone</xsl:variable>
+	<xsl:variable name="text_search_books_sms_phone">Your phone number: </xsl:variable>
+	<xsl:variable name="text_search_books_sms_provider">Provider:</xsl:variable>
+	<xsl:variable name="text_search_books_sms_choose">-- choose one --</xsl:variable>
+	<xsl:variable name="text_search_books_choose_copy">Choose one of the copies</xsl:variable>
+	<xsl:variable name="text_search_books_sms_smallprint">Carrier charges may apply.</xsl:variable>
+	<xsl:variable name="text_search_books_google_preview">Check for more information at Google Book Search</xsl:variable>
+	
+	<xsl:variable name="text_readinglist_breadcrumb">Return to reading list!</xsl:variable>
+	<xsl:variable name="text_readinglist_saved">Saved</xsl:variable>
+	<xsl:variable name="text_readinglist_add">Add to reading list</xsl:variable>
+	<xsl:variable name="text_readinglist_search">Search for new records</xsl:variable>
+	<xsl:variable name="text_readinglist_add_saved">Add previously saved records</xsl:variable>
+	
+	<xsl:variable name="text_worldcat_institution">Institution</xsl:variable>
+	<xsl:variable name="text_worldcat_availability">Availability</xsl:variable>
+	<xsl:variable name="text_worldcat_check_availability">Check availability</xsl:variable>
+	
 </xsl:stylesheet>
