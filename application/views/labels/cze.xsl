@@ -435,6 +435,8 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 		<xsl:choose>
 			<xsl:when test="$format = 'archive'">archiv</xsl:when>
 			<xsl:when test="$format = 'article'">článek</xsl:when>
+			<xsl:when test="$format = 'Archive'">archiv</xsl:when>
+			<xsl:when test="$format = 'Article'">článek</xsl:when>
 			<xsl:when test="$format = 'Audio Book'">zvuková kniha</xsl:when>
 			<xsl:when test="$format = 'Book--Braille'">kniha--braillovo písmo</xsl:when>
 			<xsl:when test="$format = 'Book Chapter'">kapitola knihy</xsl:when>
@@ -1108,5 +1110,20 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_facets_from">Od:</xsl:variable>
 	<xsl:variable name="text_facets_to">Do:</xsl:variable>
 	<xsl:variable name="text_facets_update">Aktualizovat</xsl:variable>
+	
+	<xsl:variable name="text_fulltext_text_in_record">Text v záznamu</xsl:variable>
+	<xsl:variable name="text_uniform_title">Jednotný název:</xsl:variable>
+	
+	<xsl:variable name="text_record_standard_numbers_issn">ISSN</xsl:variable>
+	<xsl:variable name="text_record_standard_numbers_isbn">ISBN</xsl:variable>
+	<xsl:variable name="text_record_standard_numbers_gpo">Záznam GPO</xsl:variable>
+	<xsl:variable name="text_record_standard_numbers_gov_doc">Vládní dok.</xsl:variable>
+	<xsl:variable name="text_record_standard_numbers_oclc">OCLC</xsl:variable>
+	<xsl:variable name="text_record_alternate_titles">Alternativní názvy</xsl:variable>
+	<xsl:variable name="text_record_additional_titles">Další titles</xsl:variable>
+	<xsl:variable name="text_record_description">Popis</xsl:variable>
+	<xsl:variable name="text_record_journal_continues">Pokračuje</xsl:variable>
+	<xsl:variable name="text_record_journal_continued_by">Pokračuje jako</xsl:variable>
+	<xsl:variable name="text_record_series">Seriál</xsl:variable>
 	
 </xsl:stylesheet>

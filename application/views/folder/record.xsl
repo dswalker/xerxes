@@ -33,7 +33,7 @@
 
 <xsl:template name="breadcrumb">
 	<xsl:call-template name="breadcrumb_folder" />
-	Record
+	<xsl:copy-of select="$text_record_breadcrumb" />
 </xsl:template>
 
 <xsl:template name="main">

@@ -157,7 +157,7 @@
 	<xsl:template name="record_uniform-title">
 		<xsl:if test="uniform_title">
 			<div>
-			<dt>Uniform title:</dt>
+			<dt><xsl:value-of select="$text_uniform_title" /></dt>
 			<dd>
 				<xsl:value-of select="uniform_title" />
 			</dd>
@@ -573,22 +573,22 @@
 	
 		<xsl:if test="standard_numbers">
 
-			<h2>Standard Numbers</h2>
+			<h2><xsl:value-of select="$text_record_standard_nos" /></h2>
 			<ul>
 			<xsl:for-each select="standard_numbers/issn">
-				<li>ISSN: <xsl:value-of select="text()" /></li>
+				<li><xsl:value-of select="$text_record_standard_numbers_issn" />: <xsl:value-of select="text()" /></li>
 			</xsl:for-each>
 			<xsl:for-each select="standard_numbers/isbn">
-				<li>ISBN: <xsl:value-of select="text()" /></li>
+				<li><xsl:value-of select="$text_record_standard_numbers_isbn" />: <xsl:value-of select="text()" /></li>
 			</xsl:for-each>
 			<xsl:for-each select="standard_numbers/gpo">
-				<li>GPO Item: <xsl:value-of select="text()" /></li>
+				<li><xsl:value-of select="$text_record_standard_numbers_gpo" />: <xsl:value-of select="text()" /></li>
 			</xsl:for-each>
 			<xsl:for-each select="standard_numbers/govdoc">
-				<li>Gov Doc: <xsl:value-of select="text()" /></li>
+				<li><xsl:value-of select="$text_record_standard_numbers_gov_doc" />: <xsl:value-of select="text()" /></li>
 			</xsl:for-each>
 			<xsl:for-each select="standard_numbers/oclc">
-				<li>OCLC: <xsl:value-of select="text()" /></li>
+				<li><xsl:value-of select="$text_record_standard_numbers_oclc" />: <xsl:value-of select="text()" /></li>
 			</xsl:for-each>
 			</ul>
 
@@ -618,7 +618,7 @@
 	<xsl:template name="description">
 		<xsl:if test="description">
 			<div>
-				<dt>Description:</dt>
+				<dt><xsl:value-of select="$text_record_description" />:</dt>
 				<dd><xsl:value-of select="description" /></dd>
 			</div>
 		</xsl:if>
@@ -643,7 +643,7 @@
 		
 		<xsl:if test="alternate_titles">
 
-			<h2>Alternate titles</h2>
+			<h2><xsl:value-of select="$text_record_alternate_titles" /></h2>
 			<ul>
 				<xsl:for-each select="alternate_titles/alternate_title">
 					<li><xsl:value-of select="text()" /></li>
@@ -662,7 +662,7 @@
 		
 		<xsl:if test="additional_titles">
 
-				<h2>Additional titles</h2>
+				<h2><xsl:value-of select="$text_record_additional_titles" /></h2>
 				<ul>
 					<xsl:for-each select="additional_titles/additional_title">
 						<li><xsl:value-of select="text()" /></li>
@@ -682,7 +682,7 @@
 		
 		<xsl:if test="journal_title_continues">
 
-			<h2>Continues</h2>
+			<h2><xsl:value-of select="$text_record_journal_continues" /></h2>
 			<ul>
 				<xsl:for-each select="journal_title_continues/journal_title_continue">
 					<li>
@@ -705,7 +705,7 @@
 		<xsl:if test="journal_title_continued_by">
 
 
-			<h2>Continued by</h2>
+			<h2><xsl:value-of select="$text_record_journal_continued_by" /></h2>
 			<ul>
 				<xsl:for-each select="journal_title_continued_by/linkeditem">
 					<li>
@@ -736,7 +736,7 @@
 
 		<xsl:if test="series">
 
-			<h2>Series</h2>
+			<h2><xsl:value-of select="$text_record_series" /></h2>
 			<ul>
 				<xsl:for-each select="series/serie">
 					<li><xsl:value-of select="text()" /></li>

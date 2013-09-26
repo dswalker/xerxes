@@ -594,5 +594,20 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_facets_from">From:</xsl:variable>
 	<xsl:variable name="text_facets_to">To:</xsl:variable>
 	<xsl:variable name="text_facets_update">Update</xsl:variable>
+
+	<xsl:variable name="text_fulltext_text_in_record">Text in record</xsl:variable>
+	<xsl:variable name="text_uniform_title">Uniform title:</xsl:variable>
 	
+	<xsl:variable name="text_record_standard_numbers_issn">ISSN</xsl:variable>
+	<xsl:variable name="text_record_standard_numbers_isbn">ISBN</xsl:variable>
+	<xsl:variable name="text_record_standard_numbers_gpo">GPO Item</xsl:variable>
+	<xsl:variable name="text_record_standard_numbers_gov_doc">Gov Doc</xsl:variable>
+	<xsl:variable name="text_record_standard_numbers_oclc">OCLC</xsl:variable>
+	<xsl:variable name="text_record_alternate_titles">Alternate titles</xsl:variable>
+	<xsl:variable name="text_record_additional_titles">Additional titles</xsl:variable>
+	<xsl:variable name="text_record_description">Description</xsl:variable>
+	<xsl:variable name="text_record_journal_continues">Continues</xsl:variable>
+	<xsl:variable name="text_record_journal_continued_by">Continued by</xsl:variable>
+	<xsl:variable name="text_record_series">Series</xsl:variable>
+
 </xsl:stylesheet>
