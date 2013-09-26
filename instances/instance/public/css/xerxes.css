@@ -867,7 +867,7 @@ div.autocomplete ul li {
 	margin-top: 1em;
 }
 
-.output-export {
+.output-export, .tag-add {
 	margin-left: .7em;
 }
 

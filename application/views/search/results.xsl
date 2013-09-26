@@ -800,7 +800,7 @@ BBB
 				
 				</div>
 				
-				<input type="submit" class="btn">
+				<input type="submit" class="btn submit-facets-update{$language_suffix}">
 					<xsl:attribute name="value"><xsl:value-of select="$text_facets_update"/></xsl:attribute>
 				</input>
 				
