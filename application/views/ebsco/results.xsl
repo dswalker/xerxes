@@ -61,17 +61,17 @@
 	
 	<div class="box">
 		
-		<h3>Scholarly Journals</h3>
-				
-		<ul>		
+		<h3><xsl:value-of select="$text_ebsco_facets_heading" /></h3>
+		
+		<ul>
 			<xsl:choose>
 				<xsl:when test="//request/scholarly">
-					<li><a href="{//refereed_link}">all journals</a></li>
-					<li><strong>scholarly only</strong></li>
+					<li><a href="{//refereed_link}"><xsl:value-of select="$text_ebsco_facets_all" /></a></li>
+					<li><strong><xsl:value-of select="$text_ebsco_facets_scholarly" /></strong></li>
 				</xsl:when>
 				<xsl:otherwise>
-					<li><strong>all journals</strong></li>
-					<li><a href="{//refereed_link}">scholarly only</a></li>
+					<li><strong><xsl:value-of select="$text_ebsco_facets_all" /></strong></li>
+					<li><a href="{//refereed_link}"><xsl:value-of select="$text_ebsco_facets_scholarly" /></a></li>
 				</xsl:otherwise>
 			</xsl:choose>
 		</ul>

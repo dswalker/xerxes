@@ -614,4 +614,8 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_combined_record_published">Published: </xsl:variable>
 	<xsl:variable name="text_combined_record_no_matches">No results found.</xsl:variable>
 	
+	<xsl:variable name="text_ebsco_facets_heading">Scholarly Journals</xsl:variable>
+	<xsl:variable name="text_ebsco_facets_all">all journals</xsl:variable>
+	<xsl:variable name="text_ebsco_facets_scholarly">scholarly only</xsl:variable>
+	
 </xsl:stylesheet>

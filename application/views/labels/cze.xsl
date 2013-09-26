@@ -1130,4 +1130,8 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_combined_record_published">Publikováno: </xsl:variable>
 	<xsl:variable name="text_combined_record_no_matches">Nebyli nalezeny žádné výsledky.</xsl:variable>
 	
+	<xsl:variable name="text_ebsco_facets_heading">Akademické časopisy</xsl:variable>
+	<xsl:variable name="text_ebsco_facets_all">všechny časopisy</xsl:variable>
+	<xsl:variable name="text_ebsco_facets_scholarly">pouze akademické</xsl:variable>
+	
 </xsl:stylesheet>
