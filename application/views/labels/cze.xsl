@@ -1126,4 +1126,8 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_record_journal_continued_by">Pokračuje jako</xsl:variable>
 	<xsl:variable name="text_record_series">Seriál</xsl:variable>
 	
+	<xsl:variable name="text_combined_record_author">Autor: </xsl:variable>
+	<xsl:variable name="text_combined_record_published">Publikováno: </xsl:variable>
+	<xsl:variable name="text_combined_record_no_matches">Nebyli nalezeny žádné výsledky.</xsl:variable>
+	
 </xsl:stylesheet>

@@ -609,5 +609,9 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_record_journal_continues">Continues</xsl:variable>
 	<xsl:variable name="text_record_journal_continued_by">Continued by</xsl:variable>
 	<xsl:variable name="text_record_series">Series</xsl:variable>
-
+	
+	<xsl:variable name="text_combined_record_author">Author: </xsl:variable>
+	<xsl:variable name="text_combined_record_published">Published: </xsl:variable>
+	<xsl:variable name="text_combined_record_no_matches">No results found.</xsl:variable>
+	
 </xsl:stylesheet>

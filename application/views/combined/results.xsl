@@ -267,7 +267,7 @@
 					</xsl:if>
 					
 					<xsl:if test="primary_author">
-						Author: <xsl:value-of select="primary_author" /><br />
+						<xsl:value-of select="$text_combined_record_author" /><xsl:value-of select="primary_author" /><br />
 					</xsl:if>
 					
 					<xsl:choose>
@@ -278,7 +278,7 @@
 							<xsl:value-of select="journal" />
 						</xsl:when>
 						<xsl:when test="year">
-							Published: <xsl:value-of select="year" />
+							<xsl:value-of select="$text_combined_record_published" /><xsl:value-of select="year" />
 						</xsl:when>
 					</xsl:choose>
 				</div>
@@ -309,7 +309,7 @@
 			</p>
 		</xsl:when>
 		<xsl:when test="not(//results/total)">
-			<p class="no-results">No results found.</p>
+			<p class="no-results"><xsl:value-of select="$text_combined_record_no_matches" /></p>
 		</xsl:when>
 	</xsl:choose>	
 
