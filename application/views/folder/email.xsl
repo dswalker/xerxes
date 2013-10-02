@@ -37,7 +37,7 @@
 </xsl:template>
 
 <xsl:template name="page_name">
-	Email options
+	<xsl:value-of select="$text_folder_export_email_options" />
 </xsl:template>
 
 <xsl:template name="main">
@@ -53,7 +53,7 @@
 		
 			<div class="modal inline-modal">
 				<div class="modal-header">
-					<h3>Email options</h3>
+					<h3><xsl:value-of select="$text_folder_export_email_options" /></h3>
 				</div>
 				<div class="modal-body">
 					
@@ -84,8 +84,10 @@
 
 				</div>
 				<div class="modal-footer">
-					<a href="{$return}" class="btn">Cancel</a>
-					<input type="submit" class="btn btn-primary" name="Submit" value="Send" />
+					<a href="{$return}" class="btn"><xsl:value-of select="$text_folder_export_email_cancel" /></a>
+					<input type="submit" class="btn btn-primary" name="Submit">
+						<xsl:attribute name="value"><xsl:value-of select="$text_folder_export_email_send" /></xsl:attribute>
+					</input>
 				</div>
 			</div>
 		</form>

@@ -254,7 +254,7 @@
 					</xsl:attribute>
 				</input>
 				
-				<button type="submit" class="btn btn-primary output-export" name="action" value="label"><xsl:value-of select="$text_folder_export_add" /></button>
+				<button type="submit" class="btn btn-primary tag-add" name="action" value="label"><xsl:value-of select="$text_folder_export_add" /></button>
 				
 			</div>
 			

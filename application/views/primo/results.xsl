@@ -39,7 +39,7 @@
 	</xsl:template>
 	
 	<xsl:template name="page_name">
-		Search Results
+		<xsl:value-of select="$text_search_results" />
 	</xsl:template>
 	
 	<xsl:template name="title">

@@ -571,9 +571,13 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_folder_export_delete">Delete</xsl:variable>
 	<xsl:variable name="text_folder_export_delete_confirm">Delete these records?</xsl:variable>
 	<xsl:variable name="text_folder_export_deleted">Records deleted</xsl:variable>
+	<xsl:variable name="text_folder_export_email_cancel">Cancel</xsl:variable>
 	<xsl:variable name="text_folder_export_email_error">Sorry, we couldn't send an email at this time</xsl:variable>
+	<xsl:variable name="text_folder_export_email_options">Email options</xsl:variable>
+	<xsl:variable name="text_folder_export_email_send">Send</xsl:variable>
 	<xsl:variable name="text_folder_export_email_sent">Email successfully sent</xsl:variable>
 	<xsl:variable name="text_folder_export_error_missing_label">Please provide a label.</xsl:variable>
+	<xsl:variable name="text_folder_export_error_select_records">Please select records.</xsl:variable>
 	<xsl:variable name="text_folder_export_updated">Records updated</xsl:variable>
 	
 	<xsl:variable name="text_folder_record_added">Record successfully added to saved records</xsl:variable>
@@ -590,5 +594,67 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_facets_from">From:</xsl:variable>
 	<xsl:variable name="text_facets_to">To:</xsl:variable>
 	<xsl:variable name="text_facets_update">Update</xsl:variable>
+
+	<xsl:variable name="text_fulltext_text_in_record">Text in record</xsl:variable>
+	<xsl:variable name="text_uniform_title">Uniform title:</xsl:variable>
+	
+	<xsl:variable name="text_record_standard_numbers_issn">ISSN</xsl:variable>
+	<xsl:variable name="text_record_standard_numbers_isbn">ISBN</xsl:variable>
+	<xsl:variable name="text_record_standard_numbers_gpo">GPO Item</xsl:variable>
+	<xsl:variable name="text_record_standard_numbers_gov_doc">Gov Doc</xsl:variable>
+	<xsl:variable name="text_record_standard_numbers_oclc">OCLC</xsl:variable>
+	<xsl:variable name="text_record_alternate_titles">Alternate titles</xsl:variable>
+	<xsl:variable name="text_record_additional_titles">Additional titles</xsl:variable>
+	<xsl:variable name="text_record_description">Description</xsl:variable>
+	<xsl:variable name="text_record_journal_continues">Continues</xsl:variable>
+	<xsl:variable name="text_record_journal_continued_by">Continued by</xsl:variable>
+	<xsl:variable name="text_record_series">Series</xsl:variable>
+	
+	<xsl:variable name="text_combined_record_author">Author: </xsl:variable>
+	<xsl:variable name="text_combined_record_published">Published: </xsl:variable>
+	<xsl:variable name="text_combined_record_no_matches">No results found.</xsl:variable>
+	
+	<xsl:variable name="text_ebsco_facets_heading">Scholarly Journals</xsl:variable>
+	<xsl:variable name="text_ebsco_facets_all">all journals</xsl:variable>
+	<xsl:variable name="text_ebsco_facets_scholarly">scholarly only</xsl:variable>
+	
+	<xsl:variable name="text_search_books_no_copies_available">No Copies Available</xsl:variable>
+	<xsl:template name="text_search_books_copies_available">
+		<xsl:param name="num" />
+		<xsl:choose>
+			<xsl:when test="$num = '1'">1 copy available</xsl:when>
+			<xsl:when test="$num &gt; '1'"><xsl:value-of select="$num" /> copies available</xsl:when>	
+		</xsl:choose>
+	</xsl:template>
+	<xsl:variable name="text_search_books_online">Online</xsl:variable>
+	<xsl:variable name="text_search_books_printed">Print holdings</xsl:variable>
+	<xsl:variable name="text_search_books_bound">Bound Volumes</xsl:variable>
+	<xsl:variable name="text_search_books_database">Database</xsl:variable>
+	<xsl:variable name="text_search_books_coverage">Coverage</xsl:variable>
+	<xsl:variable name="text_search_books_information">Information</xsl:variable>
+	<xsl:variable name="text_search_books_about">About resource</xsl:variable>
+	<xsl:variable name="text_search_books_institution">Institution</xsl:variable>
+	<xsl:variable name="text_search_books_location">Location</xsl:variable>
+	<xsl:variable name="text_search_books_callnumber">Call Number</xsl:variable>
+	<xsl:variable name="text_search_books_status">Status</xsl:variable>
+	<xsl:variable name="text_search_books_request">Request</xsl:variable>
+	<xsl:variable name="text_search_books_sms_location">Send location to your phone</xsl:variable>
+	<xsl:variable name="text_search_books_sms_location_title">Send title and location to your mobile phone</xsl:variable>
+	<xsl:variable name="text_search_books_sms_phone">Your phone number: </xsl:variable>
+	<xsl:variable name="text_search_books_sms_provider">Provider:</xsl:variable>
+	<xsl:variable name="text_search_books_sms_choose">-- choose one --</xsl:variable>
+	<xsl:variable name="text_search_books_choose_copy">Choose one of the copies</xsl:variable>
+	<xsl:variable name="text_search_books_sms_smallprint">Carrier charges may apply.</xsl:variable>
+	<xsl:variable name="text_search_books_google_preview">Check for more information at Google Book Search</xsl:variable>
+	
+	<xsl:variable name="text_readinglist_breadcrumb">Return to reading list!</xsl:variable>
+	<xsl:variable name="text_readinglist_saved">Saved</xsl:variable>
+	<xsl:variable name="text_readinglist_add">Add to reading list</xsl:variable>
+	<xsl:variable name="text_readinglist_search">Search for new records</xsl:variable>
+	<xsl:variable name="text_readinglist_add_saved">Add previously saved records</xsl:variable>
+	
+	<xsl:variable name="text_worldcat_institution">Institution</xsl:variable>
+	<xsl:variable name="text_worldcat_availability">Availability</xsl:variable>
+	<xsl:variable name="text_worldcat_check_availability">Check availability</xsl:variable>
 	
 </xsl:stylesheet>

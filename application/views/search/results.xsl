@@ -487,7 +487,7 @@
 					</xsl:if>				
 				</input>
 				<xsl:text> </xsl:text>
-				<label for="results-clear-facets-true"><xsl:value-of select="$text_results_clear_facets_false" /></label>
+				<label for="results-clear-facets-true"><xsl:value-of select="$text_results_clear_facets_true" /></label>
 			</div>
 			
 			<xsl:call-template name="hidden_search_inputs">
@@ -800,7 +800,7 @@ BBB
 				
 				</div>
 				
-				<input type="submit" class="btn">
+				<input type="submit" class="btn submit-facets-update{$language_suffix}">
 					<xsl:attribute name="value"><xsl:value-of select="$text_facets_update"/></xsl:attribute>
 				</input>
 				

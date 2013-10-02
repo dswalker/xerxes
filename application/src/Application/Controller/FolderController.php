@@ -492,7 +492,7 @@ class FolderController extends SearchController
 			$lang = $this->request->getParam("lang");
 			$labels = $this->getLabels($lang);
 			
-			$this->request->setFlashMessage(Request::FLASH_MESSAGE_ERROR, $labels->getLabel('text_folder_export_error_missing_label'));
+			$this->request->setFlashMessage(Request::FLASH_MESSAGE_ERROR, $labels->getLabel('text_folder_export_error_select_records'));
 			return $this->redirectTo($return);
 		}
 		else

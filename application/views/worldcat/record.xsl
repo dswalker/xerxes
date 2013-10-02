@@ -58,15 +58,15 @@
 		<table class="holdings-table">
 	
 			<tr>
-				<th>Institution</th>
-				<th>Availability</th>
+				<th><xsl:value-of select="$text_worldcat_institution" /></th>
+				<th><xsl:value-of select="$text_worldcat_availability" /></th>
 			</tr>
 	
 			<xsl:for-each select="../holdings/holding">
 			
 				<tr>
 					<td><span id="institution-{oclc}"><xsl:value-of select="institution" /></span></td>
-					<td><a href="{url}" aria-describedby="institution-{oclc}">Check availability</a></td>
+					<td><a href="{url}" aria-describedby="institution-{oclc}"><xsl:value-of select="$text_worldcat_check_availability" /></a></td>
 				</tr>
 			
 			</xsl:for-each>

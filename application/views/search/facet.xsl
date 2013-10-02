@@ -112,7 +112,7 @@
 				</xsl:for-each>
 			</table>
 			
-			<input type="submit">
+			<input type="submit" class="facets-submit{$language_suffix}">
 				<xsl:attribute name="value"><xsl:value-of select="$text_facets_submit" /></xsl:attribute>
 			</input>
 		
