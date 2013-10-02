@@ -251,6 +251,11 @@ class Engine extends Search\Engine
 			
 			if ( $message != null )
 			{
+                                if ( $message->nodeValue == "The following parameter(s) have incorrect values: Field query: Greater than 0" )
+                                {
+                                        throw new \Exception('Ebsco search error: your search query cannot be empty');
+                                }
+				
 				throw new \Exception('Ebsco server error: ' . $message->nodeValue);
 			}
 		}
