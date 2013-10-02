@@ -487,7 +487,7 @@
 					</xsl:if>				
 				</input>
 				<xsl:text> </xsl:text>
-				<label for="results-clear-facets-true"><xsl:value-of select="$text_results_clear_facets_false" /></label>
+				<label for="results-clear-facets-true"><xsl:value-of select="$text_results_clear_facets_true" /></label>
 			</div>
 			
 			<xsl:call-template name="hidden_search_inputs">
