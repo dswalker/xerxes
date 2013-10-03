@@ -1220,7 +1220,8 @@
 	<xsl:template name="brief_result_info-primary_author">
 		<xsl:if test="primary_author">
 			<span class="results-author">
-				<strong><xsl:copy-of select="$text_results_author" />: </strong><xsl:value-of select="primary_author" />
+				<strong><xsl:copy-of select="$text_results_author" />: </strong>
+				<a href="{authors/author[@rank='1']/url}"><xsl:value-of select="primary_author" /></a>
 			</span>
 		</xsl:if>
 	</xsl:template>
