@@ -16,6 +16,7 @@ $(document).ready(fillAvailability);
 $(document).ready(addSaveLinks);
 $(document).ready(function(){ $('.selectpicker').selectpicker(); });
 $(document).ready(focusInputField);
+$("img.cover").load(onCoverLoad);
 
 function drawPubGraph()
 {
@@ -348,3 +349,8 @@ function focusInputField()
 	if ($('form#login')) if ($('form#login #username')) $('form#login #username').focus();
 }	
 
+function onCoverLoad() {
+	if ( $( this ).attr('src') == 'images/no-image.gif') {
+		$( this ).remove();
+	}
+}
