@@ -227,6 +227,10 @@ class Innopac implements AvailabilityInterface
 				}
 			}
 			
+			// remove any ?'s as these are wonky and mess up guzzle
+			
+			$holdings_url = str_replace('?', '', $holdings_url);
+			
 			// get the full response page now and redo the function call
 			
 			$response = $this->client->getUrl($holdings_url);
