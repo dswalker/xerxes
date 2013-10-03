@@ -513,7 +513,7 @@ class Request extends HttpFoundation\Request
 	/**
 	 * Retrieve a value from the request parameters
 	 *
-	 * @param string $key		key that identify the value
+	 * @param string $key		key to identify the value
 	 * @param string $default	[optional] a default value to return if no param supplied
 	 * @param bool $is_array	[optional] whether value should be returned as an array, even if only one value
 	 * 
