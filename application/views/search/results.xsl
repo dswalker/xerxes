@@ -520,38 +520,50 @@
 	
 	<xsl:template name="search_modules">
 	
-		<xsl:choose>
-			<xsl:when test="config/search and config/search/column/option[@tab = 'true' and @current = '1']">
+		<!-- only do this if we have more than one search option -->
+	
+		<xsl:if test="count(config/search/column/option) &gt; 1">
+		
+			<xsl:choose>
 			
-				<div>
-					<xsl:choose>
-						<xsl:when test="config/use_tabs = 'true'">
-							<xsl:attribute name="id">tabnav</xsl:attribute>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:attribute name="id">search-modules</xsl:attribute>
-						</xsl:otherwise>
-					</xsl:choose>
+				<!-- horizontal tabs -->
 				
-					<!-- <h2>Search Options</h2> -->
+				<xsl:when test="config/search/column/option[@tab = 'true' and @current = '1']">
+				
+					<div>
+						<xsl:choose>
+							<xsl:when test="config/use_tabs = 'true'">
+								<xsl:attribute name="id">tabnav</xsl:attribute>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:attribute name="id">search-modules</xsl:attribute>
+							</xsl:otherwise>
+						</xsl:choose>
 					
-					<xsl:for-each select="config/search">
-						<ul>
-							<xsl:call-template name="search_module" />
-						</ul>
-						<div style="clear:both"></div>
-					</xsl:for-each>
+						<!-- <h2>Search Options</h2> -->
+						
+						<xsl:for-each select="config/search">
+							<ul>
+								<xsl:call-template name="search_module" />
+							</ul>
+							<div style="clear:both"></div>
+						</xsl:for-each>
+						
+					</div>
+				
+				</xsl:when>
+				
+				<!-- vertial tabs -->
+				
+				<xsl:otherwise>
 					
-				</div>
-			
-			</xsl:when>
-			<xsl:when test="config/search">
+					<h2><xsl:value-of select="//option[@current = '1']/@public" /></h2>
+					
+				</xsl:otherwise>	
 				
-				<h2><xsl:value-of select="//option[@current = '1']/@public" /></h2>
-				
-			</xsl:when>	
+			</xsl:choose>
 			
-		</xsl:choose>
+		</xsl:if>
 		
 	</xsl:template>
 	
@@ -667,6 +679,7 @@
 			
 			<div class="box">
 			
+				<xsl:call-template name="facet_expand_results" />
 			
 				<xsl:call-template name="facet_narrow_results" />
 				
@@ -721,10 +734,10 @@
 				<xsl:call-template name="text_facet_fields">
 					<xsl:with-param name="option" select="@internal" />
 				</xsl:call-template>
-AAA
-<!--
+				
+				<!-- @todo helix84's got this, yo! -->
 				<xsl:value-of select="@public" />
--->
+				
 			</h3>
 			<ul>
 				<xsl:for-each select="option">
@@ -733,10 +746,10 @@ AAA
 							<xsl:call-template name="text_facet_fields">
 								<xsl:with-param name="option" select="@internal" />
 							</xsl:call-template>
-BBB
-<!--
+							
+							<!-- @todo helix84's got this, yo! -->
 							<xsl:value-of select="@public" />
--->
+							
 						</a>
 						<xsl:text> </xsl:text>
 						<xsl:call-template name="tab_hit" />
