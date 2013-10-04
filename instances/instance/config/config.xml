@@ -357,6 +357,10 @@
 			which case the default position on the left will be used) -->
 		<config name="search_sidebar" pass="true"></config>
 		
+		<!-- spell check option -->
+		
+		<config name="spell_checker">summon</config>
+		
 	</configuration>
 	
 </xerxes>
