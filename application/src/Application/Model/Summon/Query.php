@@ -41,7 +41,7 @@ class Query extends Search\Query
 			
 			if ( $term->field_internal != "" ) // yes
 			{
-				$query .= " " . $term->field_internal . ':' . $this->escape($term->phrase);
+				$query .= " " . $term->field_internal . ':(' . $this->escape($term->phrase) . ')';
 
 			}
 			else // keyword
