@@ -81,8 +81,6 @@ class Yahoo
 			}
 			catch (\Exception $e)
 			{
-				throw $e; // @todo: remove after testing
-					
 				trigger_error('Could not process spelling suggestion: ' . $e->getTraceAsString(), E_USER_WARNING);
 			}
 		
