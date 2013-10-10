@@ -446,8 +446,8 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 			<xsl:when test="$option = 'recent'">date added</xsl:when>
 			<xsl:when test="$option = 'title'">title</xsl:when>
 			<xsl:when test="$option = 'author'">author</xsl:when>
-			<xsl:when test="$option = 'date'">newest</xsl:when>
-			<xsl:when test="$option = 'date-old'">oldest</xsl:when>
+			<xsl:when test="$option = 'date'">newest first</xsl:when>
+			<xsl:when test="$option = 'date-old'">oldest first</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="$option" />
 			</xsl:otherwise>
@@ -458,10 +458,10 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 		<xsl:param name="option" />
 		<xsl:choose>
 			<xsl:when test="$option = 'IsScholarly'">Scholarly</xsl:when>
-			<xsl:when test="$option = 'ContentType'">Format</xsl:when>
+			<xsl:when test="$option = 'ContentType' or $option = 'format'">Format</xsl:when>
 			<xsl:when test="$option = 'SubjectTerms'">Topics</xsl:when>
-			<xsl:when test="$option = 'Discipline'">Subject Area</xsl:when>
-			<xsl:when test="$option = 'PublicationDate'">Publication Date</xsl:when>
+			<xsl:when test="$option = 'Discipline' or $option = 'callnumber-first'">Subject Area</xsl:when>
+			<xsl:when test="$option = 'PublicationDate' or $option = 'publishDate'">Publication Date</xsl:when>
 			<xsl:when test="$option = 'Language'">Language</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="$option" />
