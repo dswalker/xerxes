@@ -26,13 +26,11 @@ class MvcEvent
 	/**
 	 * @var string
 	 */
-	
 	protected $app_dir;
 	
 	/**
 	 * @var Stopwatch
 	 */
-	
 	protected $stopwatch;
 	
 	/**

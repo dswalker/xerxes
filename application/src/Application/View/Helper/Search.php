@@ -37,31 +37,26 @@ class Search
 	/**
 	 * @var string
 	 */
-	
 	protected $id;
 	
 	/**
 	 * @var Query
 	 */
-	
 	protected $query;
 	
 	/**
 	 * @var Config
 	 */
-	
 	protected $config;
 	
 	/**
 	 * @var Request
 	 */
-	
 	protected $request;
 	
 	/**
 	 * @var Registry
 	 */
-	
 	protected $registry;
 	
 	/**
