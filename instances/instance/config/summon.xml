@@ -20,25 +20,25 @@
 		<config name="mark_fulltext_using_export">false</config>
 
 		<config name="facet_fields" xml="true" pass="true">
-			<facet public="Scholarly" internal="IsScholarly" display="false" />
-			<facet public="Format" internal="ContentType" max="100" />
-			<facet public="Topics" internal="SubjectTerms" max="30" />
-			<facet public="Subject Area" internal="Discipline" max="60" />
-			<facet public="Publication Date" internal="PublicationDate" max="30" type="date" />
-			<facet public="Language" internal="Language" max="30" />
+			<facet label="text_facet_field_scholarly" internal="IsScholarly" display="false" />
+			<facet label="text_facet_field_format" internal="ContentType" max="100" />
+			<facet label="text_facet_field_subjects" internal="SubjectTerms" max="30" />
+			<facet label="text_facet_field_discipline" internal="Discipline" max="60" />
+			<facet label="text_facet_field_date" internal="PublicationDate" max="30" type="date" />
+			<facet label="text_facet_field_language" internal="Language" max="30" />
 		</config>
 		
 		<config name="sort_options" xml="true" pass="true">
-			<option id="relevance" public="relevance" internal="" />
-			<option id="date" public="newest first" internal="PublicationDate:desc" type="year"/>
-			<option id="date-old" public="oldest first" internal="PublicationDate:asc" type="year"/>
+			<option id="relevance" label="text_results_sort_by_relevance" internal="" />
+			<option id="date" label="text_results_sort_by_date" internal="PublicationDate:desc" type="year"/>
+			<option id="date-old" label="text_results_sort_by_date_old" internal="PublicationDate:asc" type="year"/>
 		</config>
 
 		<config name="basic_search_fields" xml="true" pass="true">
-			<field id="keyword" public="all fields" internal="" />
-			<field id="title" public="title" internal="Title" />
-			<field id="author" public="author" internal="Author" />
-			<field id="subject" public="subject" internal="SubjectTerms" />
+			<field id="keyword" label="text_search_fields_keyword" internal="" />
+			<field id="title" label="text_search_fields_title" internal="Title" />
+			<field id="author" label="text_search_fields_author" internal="Author" />
+			<field id="subject" label="text_search_fields_subject" internal="SubjectTerms" />
 		</config>
 		
 	</configuration>

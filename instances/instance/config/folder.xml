@@ -22,12 +22,12 @@
 		</config>	
 		
 		<config name="export_options" xml="true" pass="true">
-			<option id="email" icon="icon-envelope" public="Email records to yourself" />
-			<option id="refworks" icon="icon-share-alt" public="Export to Refworks" />
-			<option id="endnoteweb" icon="icon-share-alt" public="Export to Endnote Web" />
-			<option id="blackboard" icon="icon-share-alt" public="Export to Blackboard" />
-			<option id="endnote" icon="icon-download" public="Download to Endnote, Zotero, etc." />
-			<option id="text" icon="icon-download-alt" public="Download to text file" />
+			<option id="email" icon="icon-envelope" label="text_folder_export_options_list_email" />
+			<option id="refworks" icon="icon-share-alt" label="text_folder_export_options_list_refworks" />
+			<option id="endnoteweb" icon="icon-share-alt" label="text_folder_export_options_list_endnoteweb" />
+			<option id="blackboard" icon="icon-share-alt" label="text_folder_export_options_list_blackboard" />
+			<option id="endnote" icon="icon-download" label="text_folder_export_options_list_endnote" />
+			<option id="text" icon="icon-download-alt" label="text_folder_export_options_list_text" />
 		</config>			
 		
 	</configuration>
