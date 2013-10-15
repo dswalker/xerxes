@@ -553,6 +553,13 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_search_fields_author">autor</xsl:variable>
 	<xsl:variable name="text_search_fields_subject">předmět</xsl:variable>	
 	
+	<xsl:variable name="text_folder_export_options_list_email">Poslat záznamy na váš email</xsl:variable>
+	<xsl:variable name="text_folder_export_options_list_refworks">Export do Refworks</xsl:variable>
+	<xsl:variable name="text_folder_export_options_list_endnoteweb">Export do Endnote Web</xsl:variable>
+	<xsl:variable name="text_folder_export_options_list_blackboard">Export do Blackboard</xsl:variable>
+	<xsl:variable name="text_folder_export_options_list_endnote">Stáhnout do Endnote, Zotero atd.</xsl:variable>
+	<xsl:variable name="text_folder_export_options_list_text">Stáhnout jako textový soubore</xsl:variable>	
+	
 	
 	<xsl:template name="text_facet_groups">
 		<xsl:param name="option" />
@@ -1003,20 +1010,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 		</xsl:choose>
 	</xsl:template>
 	
-	<xsl:template name="text_folder_export_options_list">
-		<xsl:param name="option" />
-		<xsl:choose>
-			<xsl:when test="$option = 'email'">Poslat záznamy na váš email</xsl:when>
-			<xsl:when test="$option = 'refworks'">Export do Refworks</xsl:when>
-			<xsl:when test="$option = 'endnoteweb'">Export do Endnote Web</xsl:when>
-			<xsl:when test="$option = 'blackboard'">Export do Blackboard</xsl:when>
-			<xsl:when test="$option = 'endnote'">Stáhnout do Endnote, Zotero atd.</xsl:when>
-			<xsl:when test="$option = 'text'">Stáhnout jako textový soubor</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="$option" />
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
+
 	
 	<xsl:variable name="text_results_clear_facets_false"> Zachovat upřesnění hledání</xsl:variable>
 	<xsl:variable name="text_results_clear_facets_true"> Nové hledání</xsl:variable>

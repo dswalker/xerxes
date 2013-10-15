@@ -213,9 +213,7 @@
 				<xsl:for-each select="config/export_options/option">
 				
 					<option value="{@id}" data-icon="{@icon}">
-						<xsl:call-template name="text_folder_export_options_list">
-							<xsl:with-param name="option" select="@id" />
-						</xsl:call-template>
+						<xsl:value-of select="@public" />
 					</option>
 				
 				</xsl:for-each>

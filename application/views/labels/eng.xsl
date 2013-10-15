@@ -463,6 +463,13 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_search_fields_author">author</xsl:variable>
 	<xsl:variable name="text_search_fields_subject">subject</xsl:variable>
 
+	<xsl:variable name="text_folder_export_options_list_email">Email records to yourself</xsl:variable>
+	<xsl:variable name="text_folder_export_options_list_refworks">Export to Refworks</xsl:variable>
+	<xsl:variable name="text_folder_export_options_list_endnoteweb">Export to Endnote Web</xsl:variable>
+	<xsl:variable name="text_folder_export_options_list_blackboard">Export to Blackboard</xsl:variable>
+	<xsl:variable name="text_folder_export_options_list_endnote">Download to Endnote, Zotero, etc.</xsl:variable>
+	<xsl:variable name="text_folder_export_options_list_text">Download to text file</xsl:variable>
+
 	<xsl:template name="text_facet_groups">
 		<xsl:param name="option" />
 		<xsl:choose>
@@ -484,12 +491,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 		<xsl:value-of select="$option" />
 	</xsl:template>
 	
-	<xsl:variable name="text_folder_export_options_list_email">Email records to yourself</xsl:variable>
-	<xsl:variable name="text_folder_export_options_list_refworks">Export to Refworks</xsl:variable>
-	<xsl:variable name="text_folder_export_options_list_endnoteweb">Export to Endnote Web</xsl:variable>
-	<xsl:variable name="text_folder_export_options_list_blackboard">Export to Blackboard</xsl:variable>
-	<xsl:variable name="text_folder_export_options_list_endnote">Download to Endnote, Zotero, etc.</xsl:variable>
-	<xsl:variable name="text_folder_export_options_list_text">Download to text file</xsl:variable>
+
 	
 	<xsl:variable name="text_results_clear_facets_false"> Keep search refinements</xsl:variable>
 	<xsl:variable name="text_results_clear_facets_true"> New search</xsl:variable>

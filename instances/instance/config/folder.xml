@@ -14,11 +14,11 @@
 		<config name="sort_order">recent</config>
 		
 		<config name="sort_options" xml="true" pass="true">
-			<option id="recent" internal="" />
-			<option id="title" internal="title" />
-			<option id="author" internal="author" />
-			<option id="date" internal="date:desc" type="year"/>
-			<option id="date-old" internal="date:asc" type="year"/>
+			<option id="recent" label="text_results_sort_by_recent" internal="" />
+			<option id="title" label="text_results_sort_by_title" internal="title" />
+			<option id="author" label="text_results_sort_by_author" internal="author" />
+			<option id="date" label="text_results_sort_by_date" internal="date:desc" type="year"/>
+			<option id="date-old" label="text_results_sort_by_date_old" internal="date:asc" type="year"/>
 		</config>	
 		
 		<config name="export_options" xml="true" pass="true">
