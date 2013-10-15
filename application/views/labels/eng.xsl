@@ -416,28 +416,6 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:template name="text_collections_add_database_section">add database <xsl:value-of select="title_display" /> to this section</xsl:template>
 	
 	<xsl:template name="text_collections_remove_database">remove database <xsl:value-of select="title_display" /> from section</xsl:template>
-	
-	
-	<!-- 
-		the templates deal with text labels that are in the XML itself.  they largely
-		just take the value and print it, but one could override the template and use
-		a <xsl:choose> block to change the underlying value to something else
-	-->
-	
-	<xsl:template name="text_results_language">
-		<xsl:if test="language and language != 'English' and format/internal != 'VIDEO'">
-			<span class="results-language"> written in <xsl:value-of select="language" /></span>
-		</xsl:if>
-	</xsl:template>
-	
-	<xsl:template name="text_results_format">
-		<xsl:param name="format" />
-		<xsl:value-of select="$format" />
-	</xsl:template>
-	
-	<xsl:template name="text_facet_group">
-		<xsl:value-of select="@name" />
-	</xsl:template>
 
 	<xsl:variable name="text_results_sort_by_relevance">relevance</xsl:variable>
 	<xsl:variable name="text_results_sort_by_recent">date added</xsl:variable>
@@ -469,6 +447,27 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_folder_export_options_list_blackboard">Export to Blackboard</xsl:variable>
 	<xsl:variable name="text_folder_export_options_list_endnote">Download to Endnote, Zotero, etc.</xsl:variable>
 	<xsl:variable name="text_folder_export_options_list_text">Download to text file</xsl:variable>
+	
+	<!-- 
+		the templates deal with text labels that are in the XML itself.  they largely
+		just take the value and print it, but one could override the template and use
+		a <xsl:choose> block to change the underlying value to something else
+	-->
+	
+	<xsl:template name="text_results_language">
+		<xsl:if test="language and language != 'English' and format/internal != 'VIDEO'">
+			<span class="results-language"> written in <xsl:value-of select="language" /></span>
+		</xsl:if>
+	</xsl:template>
+	
+	<xsl:template name="text_results_format">
+		<xsl:param name="format" />
+		<xsl:value-of select="$format" />
+	</xsl:template>
+	
+	<xsl:template name="text_facet_group">
+		<xsl:value-of select="@name" />
+	</xsl:template>	
 
 	<xsl:template name="text_facet_groups">
 		<xsl:param name="option" />

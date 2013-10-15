@@ -416,6 +416,40 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:template name="text_collections_add_database_section">přidat databázi <xsl:value-of select="title_display" /> do této sekce</xsl:template>
 	
 	<xsl:template name="text_collections_remove_database">odstranit databázi <xsl:value-of select="title_display" /> z této sekce</xsl:template>
+
+	<xsl:variable name="text_results_sort_by_relevance">relevance</xsl:variable>
+	<xsl:variable name="text_results_sort_by_recent">datum přidání</xsl:variable>
+	<xsl:variable name="text_results_sort_by_title">název</xsl:variable>
+	<xsl:variable name="text_results_sort_by_author">autor</xsl:variable>
+	<xsl:variable name="text_results_sort_by_date">nejnovější</xsl:variable>
+	<xsl:variable name="text_results_sort_by_date_old">nejstarší</xsl:variable>
+	
+	<xsl:variable name="text_facet_field_scholarly">Vědecké</xsl:variable>
+	<xsl:variable name="text_facet_field_format">Formát</xsl:variable>
+	<xsl:variable name="text_facet_field_subjects">Téma</xsl:variable>
+	<xsl:variable name="text_facet_field_discipline">Oblast</xsl:variable>
+	<xsl:variable name="text_facet_field_date">Datum publikace</xsl:variable>
+	<xsl:variable name="text_facet_field_language">Jazyk</xsl:variable>
+	
+	<!-- @todo helix84
+	<xsl:variable name="text_facet_field_publisher">Publisher</xsl:variable>
+	<xsl:variable name="text_facet_field_journal">Journal</xsl:variable>
+	<xsl:variable name="text_facet_field_geographic">Place</xsl:variable>
+	<xsl:variable name="text_facet_field_database">Database</xsl:variable>
+	<xsl:variable name="text_facet_field_location">Location</xsl:variable>
+	-->
+	
+	<xsl:variable name="text_search_fields_keyword">libovolné pole</xsl:variable>
+	<xsl:variable name="text_search_fields_title">název</xsl:variable>
+	<xsl:variable name="text_search_fields_author">autor</xsl:variable>
+	<xsl:variable name="text_search_fields_subject">předmět</xsl:variable>	
+	
+	<xsl:variable name="text_folder_export_options_list_email">Poslat záznamy na váš email</xsl:variable>
+	<xsl:variable name="text_folder_export_options_list_refworks">Export do Refworks</xsl:variable>
+	<xsl:variable name="text_folder_export_options_list_endnoteweb">Export do Endnote Web</xsl:variable>
+	<xsl:variable name="text_folder_export_options_list_blackboard">Export do Blackboard</xsl:variable>
+	<xsl:variable name="text_folder_export_options_list_endnote">Stáhnout do Endnote, Zotero atd.</xsl:variable>
+	<xsl:variable name="text_folder_export_options_list_text">Stáhnout jako textový soubore</xsl:variable>	
 	
 	
 	<!-- 
@@ -524,42 +558,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 				<xsl:value-of select="@name" />
 			</xsl:otherwise>
 		</xsl:choose>
-	</xsl:template>
-	
-	<xsl:variable name="text_results_sort_by_relevance">relevance</xsl:variable>
-	<xsl:variable name="text_results_sort_by_recent">datum přidání</xsl:variable>
-	<xsl:variable name="text_results_sort_by_title">název</xsl:variable>
-	<xsl:variable name="text_results_sort_by_author">autor</xsl:variable>
-	<xsl:variable name="text_results_sort_by_date">nejnovější</xsl:variable>
-	<xsl:variable name="text_results_sort_by_date_old">nejstarší</xsl:variable>
-	
-	<xsl:variable name="text_facet_field_scholarly">Vědecké</xsl:variable>
-	<xsl:variable name="text_facet_field_format">Formát</xsl:variable>
-	<xsl:variable name="text_facet_field_subjects">Téma</xsl:variable>
-	<xsl:variable name="text_facet_field_discipline">Oblast</xsl:variable>
-	<xsl:variable name="text_facet_field_date">Datum publikace</xsl:variable>
-	<xsl:variable name="text_facet_field_language">Jazyk</xsl:variable>
-	
-	<!-- @todo helix84
-	<xsl:variable name="text_facet_field_publisher">Publisher</xsl:variable>
-	<xsl:variable name="text_facet_field_journal">Journal</xsl:variable>
-	<xsl:variable name="text_facet_field_geographic">Place</xsl:variable>
-	<xsl:variable name="text_facet_field_database">Database</xsl:variable>
-	<xsl:variable name="text_facet_field_location">Location</xsl:variable>
-	-->
-	
-	<xsl:variable name="text_search_fields_keyword">libovolné pole</xsl:variable>
-	<xsl:variable name="text_search_fields_title">název</xsl:variable>
-	<xsl:variable name="text_search_fields_author">autor</xsl:variable>
-	<xsl:variable name="text_search_fields_subject">předmět</xsl:variable>	
-	
-	<xsl:variable name="text_folder_export_options_list_email">Poslat záznamy na váš email</xsl:variable>
-	<xsl:variable name="text_folder_export_options_list_refworks">Export do Refworks</xsl:variable>
-	<xsl:variable name="text_folder_export_options_list_endnoteweb">Export do Endnote Web</xsl:variable>
-	<xsl:variable name="text_folder_export_options_list_blackboard">Export do Blackboard</xsl:variable>
-	<xsl:variable name="text_folder_export_options_list_endnote">Stáhnout do Endnote, Zotero atd.</xsl:variable>
-	<xsl:variable name="text_folder_export_options_list_text">Stáhnout jako textový soubore</xsl:variable>	
-	
+	</xsl:template>	
 	
 	<xsl:template name="text_facet_groups">
 		<xsl:param name="option" />
