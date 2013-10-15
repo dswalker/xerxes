@@ -22,9 +22,10 @@ use Xerxes\Record\Author;
 use Xerxes\Record\Bibliographic\LinkedItem;
 use Xerxes\Record\Subject;
 use Xerxes\Utility\Parser;
-use Xerxes\Mvc\Request;
-use Xerxes\Utility\Registry;
 use Xerxes\Mvc\MvcEvent;
+use Xerxes\Mvc\Request;
+use Xerxes\Utility\Labels;
+use Xerxes\Utility\Registry;
 
 /**
  * View helper for search results
@@ -60,6 +61,11 @@ class Search
 	protected $registry;
 	
 	/**
+	 * @var Labels
+	 */
+	protected $labels;
+	
+	/**
 	 * Create new Search Helper
 	 * 
 	 * @param MvcEvent $e
@@ -75,6 +81,8 @@ class Search
 		$this->id = $id;
 		$this->query = $engine->getQuery($this->request);
 		$this->config = $engine->getConfig();
+		
+		$this->labels = $e->getLabels();
 	}
 	
 	/**
@@ -269,24 +277,25 @@ class Search
 		
 		$x = 1;
 		
-		foreach ( $sort_options as $value )
+		foreach ( $sort_options as $id )
 		{
-			if ( $value == $sort )
+			$here = $xml->createElement('option');
+			$here->setAttribute('id', $id);
+			
+			if ( $id == $sort )
 			{
-				$here = $xml->createElement( "option", $value );
-				$here->setAttribute( "active", "true" );
-				$xml->documentElement->appendChild( $here );
+				$here->setAttribute( 'active', 'true' );
 			} 
 			else
 			{
 				$params = $this->sortLinkParams();
-				$params["sort"] = $value;
+				$params['sort'] = $id;
 				
-				$here = $xml->createElement( "option", $value );
-				$here->setAttribute( "active", "false" );
-				$here->setAttribute( "link", $this->request->url_for($params) );
-				$xml->documentElement->appendChild( $here );
+				$here->setAttribute('active', 'false' );
+				$here->setAttribute('link', $this->request->url_for($params) );
 			}
+			
+			$xml->documentElement->appendChild( $here );
 			
 			$x++;
 		}
@@ -296,7 +305,7 @@ class Search
 	
 	
 	######################
-	#        LINKS       #
+	#   LINKS & LABELS   #
 	######################
 	
 	
@@ -485,6 +494,27 @@ class Search
 					
 					$facet->param_exclude = str_replace('facet.', 'facet.remove.', $param_name);				
 				}
+			}
+		}
+	}
+	
+	/**
+	 * Add labels to search config
+	 * 
+	 * @param Config $config
+	 */
+	
+	public function addSearchLabels(Config $config)
+	{
+		$xml = $config->getXML();
+		
+		$entries = $xml->xpath("//*[@label != '']"); // any config entry that has a label attribute
+		
+		if ( $entries !== false )
+		{
+			foreach ( $entries as $entry )
+			{
+				$entry['public'] = $this->labels->getLabel((string) $entry['label']);
 			}
 		}
 	}

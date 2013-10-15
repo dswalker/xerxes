@@ -90,11 +90,13 @@ abstract class SearchController extends ActionController
 		
 		$this->config = $this->engine->getConfig();
 		
-		$this->response->setVariable('config_local', $this->config->toXML());
-		
 		$this->query = $this->engine->getQuery($this->request);
 		
 		$this->helper = new SearchHelper($this->event, $this->id, $this->engine);
+		
+		$this->helper->addSearchLabels($this->config);
+		
+		$this->response->setVariable('config_local', $this->config);
 
 		// defaults
 		
@@ -301,7 +303,7 @@ abstract class SearchController extends ActionController
 			
 		$this->request->setSessionData($id, (string) $total);
 		
-		// add links
+		// add links & labels
 		
 		$this->helper->addRecordLinks($results);
 		$this->helper->addFacetLinks($results);
