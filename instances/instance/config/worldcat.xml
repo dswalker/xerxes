@@ -26,16 +26,16 @@
 		     -->
 
 		<config name="sort_options" xml="true" pass="true">
-			<option id="relevance" public="relevance" internal="Score,,0" />
-			<option id="date" public="newest first" internal="Date,,0" />
-			<option id="date-old" public="oldest first" internal="Date" />
+			<option id="relevance" label="text_results_sort_by_relevance" internal="Score,,0" />
+			<option id="date" label="text_results_sort_by_date" internal="Date,,0" />
+			<option id="date-old" label="text_results_sort_by_date_old" internal="Date" />
 		</config>
 
 		<config name="basic_search_fields" xml="true" pass="true">
-			<field id="keyword" public="keyword" internal="kw" />
-			<field id="author" public="author" internal="au" />
-			<field id="title" public="title" internal="ti" />
-			<field id="subject" public="subject" internal="su" />		
+			<field id="keyword" label="text_search_fields_keyword" internal="kw" />
+			<field id="author" label="text_search_fields_title" internal="au" />
+			<field id="title" label="text_search_fields_author" internal="ti" />
+			<field id="subject" label="text_search_fields_subject" internal="su" />		
 		</config>
 
 		<config name="worldcat_groups" xml="true" pass="true">

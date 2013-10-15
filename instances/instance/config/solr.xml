@@ -7,22 +7,22 @@
 		<config name="lookup" pass="true"></config>
 
 		<config name="facet_fields" xml="true" pass="true">
-			<facet public="Format" internal="format" />
-			<facet public="Subject Area" internal="callnumber-first" />
-			<facet public="Year" internal="publishDate" type="date" />
+			<facet label="text_facet_field_format" internal="format" />
+			<facet label="text_facet_field_discipline" internal="callnumber-first" />
+			<facet label="text_facet_field_date" internal="publishDate" type="date" />
 		</config>
 		
 		<config name="sort_options" xml="true" pass="true">
-			<option id="relevance" public="relevance" internal="score desc,publishDate desc" />
-			<option id="date" public="newest first" internal="publishDate desc" />
-			<option id="date-old" public="oldest first" internal="publishDate asc" />
+			<option id="relevance" label="text_results_sort_by_relevance" internal="score desc,publishDate desc" />
+			<option id="date" label="text_results_sort_by_date" internal="publishDate desc" />
+			<option id="date-old" label="text_results_sort_by_date_old" internal="publishDate asc" />
 		</config>
 
 		<config name="basic_search_fields" xml="true" pass="true">
-			<field id="keyword" public="all fields" internal="title^2 allfields" />
-			<field id="title" public="title" internal="title title_sub^0.8 title_full^0.5 title_alt^0.5 title_preceding^0.3 title_succeeding^0.3 title_series^0.3 title_contents^0.3" />
-			<field id="author" public="author" internal="author_primary author_secondary^0.8 author_series^0.5 author_contents^0.5" />
-			<field id="subject" public="subject" internal="subject_topic subject_geographic subject_era genre^0.5" />
+			<field id="keyword" label="text_search_fields_keyword"  internal="title^2 allfields" />
+			<field id="title" label="text_search_fields_title" internal="title title_sub^0.8 title_full^0.5 title_alt^0.5 title_preceding^0.3 title_succeeding^0.3 title_series^0.3 title_contents^0.3" />
+			<field id="author" label="text_search_fields_author" internal="author_primary author_secondary^0.8 author_series^0.5 author_contents^0.5" />
+			<field id="subject" label="text_search_fields_subject" internal="subject_topic subject_geographic subject_era genre^0.5" />
 		</config>
 		
 	</configuration>

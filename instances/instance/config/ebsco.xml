@@ -8,16 +8,16 @@
 			
 		<config name="facet_multiple" pass="true">true</config>
 		<config name="sort_options" xml="true" pass="true">
-			<option id="relevance" public="relevance" internal="relevance" />			
-			<option id="date" public="newest first" internal="date" type="year"/>
-			<option id="date-old" public="oldest first" internal="date2" type="year"/>
+			<option id="relevance" label="text_results_sort_by_relevance" internal="relevance" />			
+			<option id="date" label="text_results_sort_by_date" internal="date" type="year"/>
+			<option id="date-old" label="text_results_sort_by_date_old" internal="date2" type="year"/>
 		</config>
 		
 		<config name="basic_search_fields" xml="true" pass="true">
-			<field id="keyword" public="keyword" internal="" />
-			<field id="title" public="title" internal="TI" />
-			<field id="author" public="author" internal="AU" />
-			<field id="subject"  public="subject" internal="SU" />
+			<field id="keyword" label="text_search_fields_keyword" internal="" />
+			<field id="title" label="text_search_fields_title"  internal="TI" />
+			<field id="author" label="text_search_fields_author" internal="AU" />
+			<field id="subject" label="text_search_fields_subject" internal="SU" />
 		</config>
 		
 	</configuration>
