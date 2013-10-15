@@ -13,6 +13,7 @@ namespace Xerxes\Mvc;
 
 use Symfony\Component\HttpFoundation;
 use Symfony\Component\Stopwatch\Stopwatch;
+use Xerxes\Utility\Labels;
 use Xerxes\Utility\Registry;
 
 /**
@@ -57,6 +58,11 @@ class MvcEvent
 	 * @var ControllerMap
 	 */
 	protected $controller_map;
+	
+	/**
+	 * @var Labels
+	 */
+	protected $labels;
 	
 	/**
 	 * Create a new Mvc Event
@@ -216,4 +222,25 @@ class MvcEvent
 	{
 		$this->controller_map = $controller_map;
 	}
+	
+	/**
+	 * @return Labels
+	 */
+	public function getLabels()
+	{
+		if ( ! $this->labels instanceof Labels )
+		{
+			$path = $this->getBootstrap()->getApplicationDir();
+			$this->labels = new Labels($path);
+	
+			// @todo need a proper language grabber
+			// $lang = $this->registry->defaultLanguage();
+				
+			$lang = $this->request->getParam("lang");
+				
+			$this->labels->setLanguage($lang);
+		}
+	
+		return $this->labels;
+	}	
 }

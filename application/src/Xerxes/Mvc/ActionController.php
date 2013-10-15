@@ -56,11 +56,6 @@ abstract class ActionController
 	protected $controller_map;
 	
 	/**
-	 * @var Labels
-	 */
-	private $labels;	
-	
-	/**
 	 * Create Action Controller
 	 */
 	
@@ -258,22 +253,9 @@ abstract class ActionController
 	/**
 	 * @return Labels
 	 */
+	
 	public function getLabels()
 	{
-		if ( ! $this->labels instanceof Labels )
-		{
-			$path = $this->event->getBootstrap()->getApplicationDir();
-			$this->labels = new Labels($path);
-				
-			// @todo need a proper language grabber
-			
-//			$lang = $this->registry->defaultLanguage();
-			
-			$lang = $this->request->getParam("lang");
-			
-			$this->labels->setLanguage($lang);
-		}
-		
-		return $this->labels;
+		return $this->event->getLabels();
 	}	
 }
