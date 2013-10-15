@@ -36,6 +36,7 @@ class Record
 	protected $govdoc_number = ""; // gov doc number
 	protected $gpo_number = ""; // gov't printing office (gpo) number
 	protected $eric_number = ""; // eric document number
+	protected $pubmed_id = ""; // pubmed id
 	protected $isbns = array(); // isbn
 	protected $issns = array(); // issn
 	protected $call_number = ""; // lc call number
