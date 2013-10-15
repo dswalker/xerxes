@@ -94,7 +94,7 @@ abstract class SearchController extends ActionController
 		
 		$this->helper = new SearchHelper($this->event, $this->id, $this->engine);
 		
-		$this->helper->addSearchLabels($this->config);
+		$this->helper->addConfigLabels($this->config);
 		
 		$this->response->setVariable('config_local', $this->config);
 

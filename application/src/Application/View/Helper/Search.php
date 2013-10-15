@@ -504,7 +504,7 @@ class Search
 	 * @param Config $config
 	 */
 	
-	public function addSearchLabels(Config $config)
+	public function addConfigLabels(Config $config)
 	{
 		$xml = $config->getXML();
 		
