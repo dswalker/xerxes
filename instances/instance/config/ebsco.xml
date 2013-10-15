@@ -19,6 +19,10 @@
 			<field id="subject" label="text_search_fields_subject" internal="SU" />
 		</config>
 		
+		<config name="facet_fields" xml="true" pass="true">
+			<facet label="text_facet_field_database" internal="database" />
+		</config>
+		
 	</configuration>
 	
 </xerxes>
