@@ -685,9 +685,10 @@ div.autocomplete ul li {
 }
 
 .results-facets-applied li {
-	position: relative; 
+	position: relative;
+	display: inline-table;
 	padding: 10px; 
-	padding-left: 30px; 
+	padding-right: 35px;
 	margin: 2px;
 	background-image: url(../images/facet-bg.png);
 	background-repeat:repeat-x;
