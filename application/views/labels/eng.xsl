@@ -438,37 +438,30 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:template name="text_facet_group">
 		<xsl:value-of select="@name" />
 	</xsl:template>
+
+	<xsl:variable name="text_results_sort_by_relevance">relevance</xsl:variable>
+	<xsl:variable name="text_results_sort_by_recent">date added</xsl:variable>
+	<xsl:variable name="text_results_sort_by_title">title</xsl:variable>
+	<xsl:variable name="text_results_sort_by_author">author</xsl:variable>
+	<xsl:variable name="text_results_sort_by_date">newest first</xsl:variable>
+	<xsl:variable name="text_results_sort_by_date_old">oldest first</xsl:variable>
 	
-	<xsl:template name="text_results_sort_by">
-		<xsl:param name="option" />
-		<xsl:choose>
-			<xsl:when test="$option = 'relevance'">relevance</xsl:when>
-			<xsl:when test="$option = 'recent'">date added</xsl:when>
-			<xsl:when test="$option = 'title'">title</xsl:when>
-			<xsl:when test="$option = 'author'">author</xsl:when>
-			<xsl:when test="$option = 'date'">newest first</xsl:when>
-			<xsl:when test="$option = 'date-old'">oldest first</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="$option" />
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
+	<xsl:variable name="text_facet_field_scholarly">Scholarly</xsl:variable>
+	<xsl:variable name="text_facet_field_format">Format</xsl:variable>
+	<xsl:variable name="text_facet_field_subjects">Topics</xsl:variable>
+	<xsl:variable name="text_facet_field_discipline">Subject Area</xsl:variable>
+	<xsl:variable name="text_facet_field_date">Publication Date</xsl:variable>
+	<xsl:variable name="text_facet_field_publisher">Publisher</xsl:variable>
+	<xsl:variable name="text_facet_field_journal">Journal</xsl:variable>
+	<xsl:variable name="text_facet_field_language">Language</xsl:variable>
+	<xsl:variable name="text_facet_field_geographic">Place</xsl:variable>
+	<xsl:variable name="text_facet_field_database">Database</xsl:variable>
+	<xsl:variable name="text_facet_field_location">Location</xsl:variable>
 	
-	<xsl:template name="text_facet_fields">
-		<xsl:param name="option" />
-		<xsl:choose>
-			<xsl:when test="$option = 'IsScholarly'">Scholarly</xsl:when>
-			<xsl:when test="$option = 'ContentType' or $option = 'format'">Format</xsl:when>
-			<xsl:when test="$option = 'SubjectTerms'">Topics</xsl:when>
-			<xsl:when test="$option = 'Discipline' or $option = 'callnumber-first'">Subject Area</xsl:when>
-			<xsl:when test="$option = 'PublicationDate' or $option = 'publishDate'">Publication Date</xsl:when>
-			<xsl:when test="$option = 'Language'">Language</xsl:when>
-			<xsl:when test="$option = 'location'">Location</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="$option" />
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
+	<xsl:variable name="text_search_fields_keyword">all fields</xsl:variable>
+	<xsl:variable name="text_search_fields_title">title</xsl:variable>
+	<xsl:variable name="text_search_fields_author">author</xsl:variable>
+	<xsl:variable name="text_search_fields_subject">subject</xsl:variable>
 
 	<xsl:template name="text_facet_groups">
 		<xsl:param name="option" />
@@ -491,33 +484,12 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 		<xsl:value-of select="$option" />
 	</xsl:template>
 	
-	<xsl:template name="text_search_fields">
-		<xsl:param name="option" />
-		<xsl:choose>
-			<xsl:when test="$option = 'keyword'">all fields</xsl:when>
-			<xsl:when test="$option = 'title'">title</xsl:when>
-			<xsl:when test="$option = 'author'">author</xsl:when>
-			<xsl:when test="$option = 'subject'">subject</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="$option" />
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-	
-	<xsl:template name="text_folder_export_options_list">
-		<xsl:param name="option" />
-		<xsl:choose>
-			<xsl:when test="$option = 'email'">Email records to yourself</xsl:when>
-			<xsl:when test="$option = 'refworks'">Export to Refworks</xsl:when>
-			<xsl:when test="$option = 'endnoteweb'">Export to Endnote Web</xsl:when>
-			<xsl:when test="$option = 'blackboard'">Export to Blackboard</xsl:when>
-			<xsl:when test="$option = 'endnote'">Download to Endnote, Zotero, etc.</xsl:when>
-			<xsl:when test="$option = 'text'">Download to text file</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="$option" />
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
+	<xsl:variable name="text_folder_export_options_list_email">Email records to yourself</xsl:variable>
+	<xsl:variable name="text_folder_export_options_list_refworks">Export to Refworks</xsl:variable>
+	<xsl:variable name="text_folder_export_options_list_endnoteweb">Export to Endnote Web</xsl:variable>
+	<xsl:variable name="text_folder_export_options_list_blackboard">Export to Blackboard</xsl:variable>
+	<xsl:variable name="text_folder_export_options_list_endnote">Download to Endnote, Zotero, etc.</xsl:variable>
+	<xsl:variable name="text_folder_export_options_list_text">Download to text file</xsl:variable>
 	
 	<xsl:variable name="text_results_clear_facets_false"> Keep search refinements</xsl:variable>
 	<xsl:variable name="text_results_clear_facets_true"> New search</xsl:variable>

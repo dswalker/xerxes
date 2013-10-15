@@ -244,19 +244,16 @@
 								<div id="sort-options" data-role="controlgroup" data-type="horizontal" data-mini="true">
 									<xsl:copy-of select="$text_results_sort_by" /><xsl:text>: </xsl:text>
 									<xsl:for-each select="//sort_display/option">
+										<xsl:variable name="sort_id" select="@id" />
 										<xsl:choose>
 											<xsl:when test="@active = 'true'">
 												<strong data-role="button" data-theme="b">
-													<xsl:call-template name="text_results_sort_by">
-														<xsl:with-param name="option" select="text()" />
-													</xsl:call-template>
+													<xsl:value-of select="//config/sort_options/option[@id = $sort_id]/@public" />
 												</strong>
 											</xsl:when>
 											<xsl:otherwise>
 												<a href="{@link}" data-role="button">
-													<xsl:call-template name="text_results_sort_by">
-														<xsl:with-param name="option" select="text()" />
-													</xsl:call-template>
+													<xsl:value-of select="//config/sort_options/option[@id = $sort_id]/@public" />
 												</a>
 											</xsl:otherwise>
 										</xsl:choose>
@@ -415,9 +412,7 @@
 							<xsl:if test="//request/field = $internal">
 								<xsl:attribute name="selected">selected</xsl:attribute>
 							</xsl:if>
-							<xsl:call-template name="text_search_fields">
-								<xsl:with-param name="option" select="$internal" />
-							</xsl:call-template>
+							<xsl:value-of select="@public" />
 						</option>
 						
 					</xsl:for-each>
@@ -686,16 +681,13 @@
 				<xsl:if test="//facets/groups[not(display)]">
 				
 					<xsl:for-each select="//facets/groups/group[not(display)]">
+						<xsl:variable name="group_name" select="name" />
 
 						<!-- only show the facets if there is more than one -->
 	
 						<xsl:if test="count(facets/facet) &gt; 1 or //config/facet_multiple = 'true'">
 								
-							<h3>
-								<xsl:call-template name="text_facet_fields">
-									<xsl:with-param name="option" select="name" />
-								</xsl:call-template>
-							</h3>
+							<h3><xsl:value-of select="//config/facet_fields/facet[@internal = $group_name]/@public" /></h3>
 							
 							<xsl:choose>
 								<xsl:when test="facets/facet/is_date">
@@ -731,25 +723,13 @@
 			<div class="facet-expand box">
 				
 			<h3 class="facet-expand-header">
-				<xsl:call-template name="text_facet_fields">
-					<xsl:with-param name="option" select="@internal" />
-				</xsl:call-template>
-				
-				<!-- @todo helix84's got this, yo! -->
-				<xsl:value-of select="@public" />
-				
+				<xsl:value-of select="@public" />				
 			</h3>
 			<ul>
 				<xsl:for-each select="option">
 					<li>
 						<a href="{@url}">
-							<xsl:call-template name="text_facet_fields">
-								<xsl:with-param name="option" select="@internal" />
-							</xsl:call-template>
-							
-							<!-- @todo helix84's got this, yo! -->
 							<xsl:value-of select="@public" />
-							
 						</a>
 						<xsl:text> </xsl:text>
 						<xsl:call-template name="tab_hit" />

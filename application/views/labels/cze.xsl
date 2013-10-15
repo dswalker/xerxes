@@ -526,36 +526,33 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 		</xsl:choose>
 	</xsl:template>
 	
-	<xsl:template name="text_results_sort_by">
-		<xsl:param name="option" />
-		<xsl:choose>
-			<xsl:when test="$option = 'relevance'">relevance</xsl:when>
-			<xsl:when test="$option = 'recent'">datum přidání</xsl:when>
-			<xsl:when test="$option = 'title'">název</xsl:when>
-			<xsl:when test="$option = 'author'">autor</xsl:when>
-			<xsl:when test="$option = 'date'">nejnovější</xsl:when>
-			<xsl:when test="$option = 'date-old'">nejstarší</xsl:when>
-
-			<xsl:otherwise>
-				<xsl:value-of select="$option" />
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
+	<xsl:variable name="text_results_sort_by_relevance">relevance</xsl:variable>
+	<xsl:variable name="text_results_sort_by_recent">datum přidání</xsl:variable>
+	<xsl:variable name="text_results_sort_by_title">název</xsl:variable>
+	<xsl:variable name="text_results_sort_by_author">autor</xsl:variable>
+	<xsl:variable name="text_results_sort_by_date">nejnovější</xsl:variable>
+	<xsl:variable name="text_results_sort_by_date_old">nejstarší</xsl:variable>
 	
-	<xsl:template name="text_facet_fields">
-		<xsl:param name="option" />
-		<xsl:choose>
-			<xsl:when test="$option = 'IsScholarly'">Vědecké</xsl:when>
-			<xsl:when test="$option = 'ContentType'">Formát</xsl:when>
-			<xsl:when test="$option = 'SubjectTerms'">Téma</xsl:when>
-			<xsl:when test="$option = 'Discipline'">Oblast</xsl:when>
-			<xsl:when test="$option = 'PublicationDate'">Datum publikace</xsl:when>
-			<xsl:when test="$option = 'Language'">Jazyk</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="$option" />
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
+	<xsl:variable name="text_facet_field_scholarly">Vědecké</xsl:variable>
+	<xsl:variable name="text_facet_field_format">Formát</xsl:variable>
+	<xsl:variable name="text_facet_field_subjects">Téma</xsl:variable>
+	<xsl:variable name="text_facet_field_discipline">Oblast</xsl:variable>
+	<xsl:variable name="text_facet_field_date">Datum publikace</xsl:variable>
+	<xsl:variable name="text_facet_field_language">Jazyk</xsl:variable>
+	
+	<!-- @todo helix84
+	<xsl:variable name="text_facet_field_publisher">Publisher</xsl:variable>
+	<xsl:variable name="text_facet_field_journal">Journal</xsl:variable>
+	<xsl:variable name="text_facet_field_geographic">Place</xsl:variable>
+	<xsl:variable name="text_facet_field_database">Database</xsl:variable>
+	<xsl:variable name="text_facet_field_location">Location</xsl:variable>
+	-->
+	
+	<xsl:variable name="text_search_fields_keyword">libovolné pole</xsl:variable>
+	<xsl:variable name="text_search_fields_title">název</xsl:variable>
+	<xsl:variable name="text_search_fields_author">autor</xsl:variable>
+	<xsl:variable name="text_search_fields_subject">předmět</xsl:variable>	
+	
 	
 	<xsl:template name="text_facet_groups">
 		<xsl:param name="option" />
@@ -1000,19 +997,6 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 			<xsl:when test="$option = women's studies'">studie o ženách</xsl:when>
 -->
 			<xsl:when test="$option = 'zoology'">zoologie</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="$option" />
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-	
-	<xsl:template name="text_search_fields">
-		<xsl:param name="option" />
-		<xsl:choose>
-			<xsl:when test="$option = 'keyword'">libovolné pole</xsl:when>
-			<xsl:when test="$option = 'title'">název</xsl:when>
-			<xsl:when test="$option = 'author'">autor</xsl:when>
-			<xsl:when test="$option = 'subject'">předmět</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="$option" />
 			</xsl:otherwise>

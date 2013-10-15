@@ -80,11 +80,7 @@
 				<tr>
 					<th><xsl:value-of select="$text_facets_include" /></th>
 					<th><xsl:value-of select="$text_facets_exclude" /></th>
-					<th>
-						<xsl:call-template name="text_facet_fields">
-							<xsl:with-param name="option" select="name" />
-						</xsl:call-template>
-					</th>
+					<th><xsl:value-of select="public" /></th>
 				</tr>
 
 				<xsl:for-each select="facets/facet">
