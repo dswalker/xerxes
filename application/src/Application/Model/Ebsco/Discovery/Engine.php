@@ -49,16 +49,24 @@ class Engine extends Search\Engine
 	
 	/**
 	 * New EDS Engine
+	 * 
+	 * @param $session  session information
 	 */
 	
-	public function __construct( $profile = 'edsapi' )
+	public function __construct( $session = "" )
 	{
 		parent::__construct();
 		
+		$profile = 'edsapi';
+		
 		$this->base = 'http://eds-api.ebscohost.com/edsapi/rest/';
+		
 		$this->client = new HttpClient();
 		
-		$this->session_id = $this->createSession($profile);
+		if ( $session == "" )
+		{
+			$this->session_id = $this->createSession($profile);
+		}
 		
 		$this->headers =  array(
 			'Accept' => 'application/json',
@@ -332,8 +340,6 @@ class Engine extends Search\Engine
 						$facet->name = $counts["Value"];
 						$facet->count = $counts["Count"];
 						
-						// @todo negation?
-						
 						$group->addFacet($facet);
 					}
 				}
@@ -354,15 +360,28 @@ class Engine extends Search\Engine
 	{
 		$url = $this->base . 'createsession?profile=' . urlencode($profile);
 	
-		$xml = $this->client->getUrl($url);
+		$xml = $this->client->getUrl($url, 10);
 	
 		$dom = new \DOMDocument();
 		$dom->loadXML($xml);
+		
+		// header('Content-type: text/xml'); echo $dom->saveXML(); exit;
 	
 		$session_id = $dom->getElementsByTagName('SessionToken')->item(0)->nodeValue;
 	
 		return $session_id;
-	}	
+	}
+	
+	/**
+	 * Session identifier
+	 * 
+	 * @return string
+	 */
+	
+	public function getSession()
+	{
+		return $this->session_id;
+	}
 	
 	/**
 	 * @return Config
