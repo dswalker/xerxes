@@ -463,6 +463,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 			<xsl:when test="$option = 'Discipline' or $option = 'callnumber-first'">Subject Area</xsl:when>
 			<xsl:when test="$option = 'PublicationDate' or $option = 'publishDate'">Publication Date</xsl:when>
 			<xsl:when test="$option = 'Language'">Language</xsl:when>
+			<xsl:when test="$option = 'location'">Location</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of select="$option" />
 			</xsl:otherwise>
