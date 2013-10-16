@@ -81,7 +81,16 @@ class Record extends Xerxes\Record
 	
 	public function getOpenURL($resolver, $referer = null, $para_delimiter = '&')
 	{
-		return $resolver . '?' . $this->open_url;
+		$open_url = $resolver . '?' . $this->open_url; // use sersol supplied openurl
+		
+		// special cooking for sfx
+		
+		if ( $this->format->getNormalizedFormat() == Format::Journal )
+		{
+			$open_url .= '&sfx.ignore_date_threshold=1';
+		}
+		
+		return $open_url;
 	}
 	
 	/**
