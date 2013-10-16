@@ -227,6 +227,7 @@ class Engine extends Search\Engine
 		$url .= '&resultsperpage=' . $max;
 		$url .= '&pagenumber=' . $page;
 		$url .= '&sort=' . $sort;
+		$url .= '&searchmode=all';
 		$url .= '&highlight=n';
 		$url .= '&includefacets=y';
 		
