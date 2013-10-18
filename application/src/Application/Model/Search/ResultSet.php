@@ -58,6 +58,7 @@ class ResultSet
 	public function __construct( Config $config )
 	{
 		$this->config = $config;	
+		$this->facets = new Facets();
 	}
 	
 	/**
