@@ -368,6 +368,10 @@ dd, dt, li {
 
 /** RESULTS **/
 
+#results {
+	max-width: 700px;
+}
+
 .no-hits {
 	margin: 4em;
 }
