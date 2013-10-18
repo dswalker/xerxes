@@ -23,6 +23,7 @@ class Format
 {
 	protected $internal = ""; // original value from source
 	protected $normalized = ""; // normalized value
+	protected $label = ""; // label identifier
 	protected $public = ""; // value for public display
 	
 	// ris format types
@@ -345,7 +346,7 @@ class Format
 	}
 	
 	/**
-	 * Set internal/normalized/public format values
+	 * Set internal/normalized/label/public format values
 	 * 
 	 * @param string $format normalized value
 	 */
@@ -354,6 +355,7 @@ class Format
 	{
 		$this->internal = $format;
 		$this->normalized = $format;
+		$this->label = $this->createLabel($format);
 		$this->public = $this->getReadableConstName($format);
 	}
 	
@@ -414,6 +416,31 @@ class Format
 			return $this->public;
 		}
 	}
+
+	/**
+	 * Get format label
+	 *
+	 * @return string
+	 */
+	
+	public function getLabel()
+	{
+		if ( $this->label == "" && $this->public != "")
+		{
+			$this->label = $this->createLabel($this->public);
+		}
+		
+		return $this->label;
+	}
+	
+	/**
+	 * Set format label
+	 */
+	
+	public function setLabel($label)
+	{
+		$this->label = $label;
+	}	
 	
 	/**
 	 * Get public displayed format designation
@@ -433,6 +460,22 @@ class Format
 	public function setPublicFormat($format)
 	{
 		$this->public = $format;
+	}
+	
+	/**
+	 * Create a label id based on the supplied format string
+	 * 
+	 * @param string $format
+	 */
+	
+	protected function createLabel($format)
+	{
+		$format = strtolower($format);
+		$format = preg_replace('/\W/', '_', $format);
+		
+		$format = 'text_results_format_' . $format;
+		
+		return $format;
 	}
 	
 	/**
@@ -457,7 +500,8 @@ class Format
 		return array(
 			'public' => $this->public,
 			'internal' => $this->internal,
-			'normalized' => $this->normalized
-			);
+			'normalized' => $this->normalized,
+			'label' => $this->getLabel()
+		);
 	}
 }
