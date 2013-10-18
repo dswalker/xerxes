@@ -20,6 +20,7 @@ use Application\Model\Search\Spelling\Suggestion;
 use Xerxes\Record;
 use Xerxes\Record\Author;
 use Xerxes\Record\Bibliographic\LinkedItem;
+use Xerxes\Record\Format;
 use Xerxes\Record\Subject;
 use Xerxes\Utility\Parser;
 use Xerxes\Mvc\MvcEvent;
@@ -305,9 +306,79 @@ class Search
 	
 	
 	######################
-	#   LINKS & LABELS   #
+	#       LABELS       #
 	######################
 	
+	/**
+	 * Add labels to search config
+	 *
+	 * @param Config $config
+	 */
+	
+	public function addConfigLabels(Config $config)
+	{
+		$xml = $config->getXML();
+	
+		$entries = $xml->xpath("//*[@label != '']"); // any config entry that has a label attribute
+	
+		if ( $entries !== false )
+		{
+			foreach ( $entries as $entry )
+			{
+				$entry['public'] = $this->labels->getLabel((string) $entry['label']);
+			}
+		}
+	}
+	
+	/**
+	 * Add labels to ResultSet
+	 * 
+	 * Primarily for formats, facets, and other 'data'-based labels
+	 *
+	 * @param Config ResultSet $results 
+	 */
+	
+	public function addResultsLabels( ResultSet &$results )
+	{
+		// format in record
+		
+		foreach ( $results->getRecords() as $result )
+		{
+			$format = $result->getXerxesRecord()->format();
+
+			$label_id = $format->getLabel();
+			$label = $this->labels->getLabel($label_id);
+			
+			if ( $label != $label_id)
+			{
+				$format->setPublicFormat($label);	
+			}
+		}
+		
+		// format in facets
+		
+		foreach ( $results->getFacets()->getGroups() as $group )
+		{
+			if ( $this->config->getFacetType($group->name) == 'format' )
+			{
+				foreach ( $group->getFacets() as $facet )
+				{
+					$label_id = Format::createLabelIdentifier($facet->name);
+					$label = $this->labels->getLabel($label_id);
+					
+					if ( $label != $label_id)
+					{
+						$facet->name = $label;
+					}
+				}
+			}
+		}
+	}	
+	
+	
+	######################
+	#        LINKS       #
+	######################	
 	
 	/**
 	 * Add links to search results
@@ -494,27 +565,6 @@ class Search
 					
 					$facet->param_exclude = str_replace('facet.', 'facet.remove.', $param_name);				
 				}
-			}
-		}
-	}
-	
-	/**
-	 * Add labels to search config
-	 * 
-	 * @param Config $config
-	 */
-	
-	public function addConfigLabels(Config $config)
-	{
-		$xml = $config->getXML();
-		
-		$entries = $xml->xpath("//*[@label != '']"); // any config entry that has a label attribute
-		
-		if ( $entries !== false )
-		{
-			foreach ( $entries as $entry )
-			{
-				$entry['public'] = $this->labels->getLabel((string) $entry['label']);
 			}
 		}
 	}

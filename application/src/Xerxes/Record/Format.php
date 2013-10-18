@@ -355,7 +355,7 @@ class Format
 	{
 		$this->internal = $format;
 		$this->normalized = $format;
-		$this->label = $this->createLabel($format);
+		$this->label = self::createLabelIdentifier($format);
 		$this->public = $this->getReadableConstName($format);
 	}
 	
@@ -427,7 +427,7 @@ class Format
 	{
 		if ( $this->label == "" && $this->public != "")
 		{
-			$this->label = $this->createLabel($this->public);
+			$this->label = self::createLabelIdentifier($this->public);
 		}
 		
 		return $this->label;
@@ -468,7 +468,7 @@ class Format
 	 * @param string $format
 	 */
 	
-	protected function createLabel($format)
+	public static function createLabelIdentifier($format)
 	{
 		$format = strtolower($format);
 		$format = preg_replace('/\W/', '_', $format);

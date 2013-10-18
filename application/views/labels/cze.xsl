@@ -451,6 +451,78 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_folder_export_options_list_endnote">Stáhnout do Endnote, Zotero atd.</xsl:variable>
 	<xsl:variable name="text_folder_export_options_list_text">Stáhnout jako textový soubore</xsl:variable>	
 	
+
+	<xsl:variable name="text_results_format_archive">archiv</xsl:variable>
+	<xsl:variable name="text_results_format_article">clánek</xsl:variable>
+	<xsl:variable name="text_results_format_audio_book">zvuková kniha</xsl:variable>
+	<xsl:variable name="text_results_format_book__braille">kniha--braillovo písmo</xsl:variable>
+	<xsl:variable name="text_results_format_book_chapter">kapitola knihy</xsl:variable>
+	<xsl:variable name="text_results_format_book">kniha</xsl:variable>
+	<xsl:variable name="text_results_format_book___ebook">kniha / eKniha</xsl:variable>
+	<xsl:variable name="text_results_format_book__large_print">kniha--velký formát</xsl:variable>
+	<xsl:variable name="text_results_format_book_review">recenze knihy</xsl:variable>
+	<xsl:variable name="text_results_format_computer_file">pocítacový soubor</xsl:variable>
+	<xsl:variable name="text_results_format_conference_paper">príspevek do konference</xsl:variable>
+	<xsl:variable name="text_results_format_conference_proceeding">sborník z konference</xsl:variable>
+	<xsl:variable name="text_results_format_dissertation">dizertacní práce</xsl:variable>
+	<xsl:variable name="text_results_format_ebook">elektronická kniha</xsl:variable>
+	<xsl:variable name="text_results_format_essay">esej</xsl:variable>
+	<xsl:variable name="text_results_format_film_review">recenze filmu</xsl:variable>
+	<xsl:variable name="text_results_format_hearing">projednání</xsl:variable>
+	<xsl:variable name="text_results_format_journal">odborný casopis</xsl:variable>
+	<xsl:variable name="text_results_format_journal_or_newspaper">casopis nebo noviny</xsl:variable>
+	<xsl:variable name="text_results_format_journal_article">clánek v odborném casopise</xsl:variable>
+	<xsl:variable name="text_results_format_magazine_article">clánek v casopise</xsl:variable>
+	<xsl:variable name="text_results_format_map">mapa</xsl:variable>
+	<xsl:variable name="text_results_format_microfiche">mikrofiš</xsl:variable>
+	<xsl:variable name="text_results_format_microfilm">mikrofilm</xsl:variable>
+	<xsl:variable name="text_results_format_micropaque">mikrotisk</xsl:variable>
+	<xsl:variable name="text_results_format_newspaper_article">clánek v novinách</xsl:variable>
+	<xsl:variable name="text_results_format_pamphlet">brožura</xsl:variable>
+	<xsl:variable name="text_results_format_patent">patent</xsl:variable>
+	<xsl:variable name="text_results_format_photograph_or_slide">snímek</xsl:variable>
+	<xsl:variable name="text_results_format_printed_music">tištená hudebnina</xsl:variable>
+	<xsl:variable name="text_results_format_review">recenze</xsl:variable>
+	<xsl:variable name="text_results_format_report">zpráva</xsl:variable>
+	<xsl:variable name="text_results_format_sound_recording">zvukový záznam</xsl:variable>
+	<xsl:variable name="text_results_format_thesis">kvalifikacní práce</xsl:variable>
+	<xsl:variable name="text_results_format_video">video</xsl:variable>
+	<xsl:variable name="text_results_format_website">webová stránka</xsl:variable>
+	<xsl:variable name="text_results_format_working_paper">pracovní, podkladová studie</xsl:variable>
+	<xsl:variable name="text_results_format_web_resource">webový zdroj</xsl:variable>
+	<xsl:variable name="text_results_format_archival_material">archivní materiál</xsl:variable>
+	<xsl:variable name="text_results_format_audio_recording">zvukový záznam</xsl:variable>
+	<xsl:variable name="text_results_format_case">prípad</xsl:variable>
+	<xsl:variable name="text_results_format_data_set">datová sada</xsl:variable>
+	<xsl:variable name="text_results_format_electronic_resource">elektronický zdroj</xsl:variable>
+	<xsl:variable name="text_results_format_exam">zkouška</xsl:variable>
+	<xsl:variable name="text_results_format_film">film</xsl:variable>
+	<xsl:variable name="text_results_format_government_document">vládní dokument</xsl:variable>
+	<xsl:variable name="text_results_format_image">obrázek</xsl:variable>
+	<xsl:variable name="text_results_format_journal___ejournal">odborný casopis / eCasopis</xsl:variable>
+	<xsl:variable name="text_results_format_magazine">casopis</xsl:variable>
+	<xsl:variable name="text_results_format_manuscript">rukopis</xsl:variable>
+	<xsl:variable name="text_results_format_market_research">pruzkum trhu</xsl:variable>
+	<xsl:variable name="text_results_format_microform">mikrozáznam</xsl:variable>
+	<xsl:variable name="text_results_format_mikrofilm">mikrofilm</xsl:variable>
+	<xsl:variable name="text_results_format_model">model</xsl:variable>
+	<xsl:variable name="text_results_format_music_score">hudební partitura</xsl:variable>
+	<xsl:variable name="text_results_format_newspaper">noviny</xsl:variable>
+	<xsl:variable name="text_results_format_newsletter">newsletter</xsl:variable>
+	<xsl:variable name="text_results_format_paper">dokument</xsl:variable>
+	<xsl:variable name="text_results_format_play">hra</xsl:variable>
+	<xsl:variable name="text_results_format_poem">básen</xsl:variable>
+	<xsl:variable name="text_results_format_presentation">prezentace</xsl:variable>
+	<xsl:variable name="text_results_format_publication">publikace</xsl:variable>
+	<xsl:variable name="text_results_format_reference">prírucka</xsl:variable>
+	<xsl:variable name="text_results_format_spoken_word_recording">záznam mluveného slova</xsl:variable>
+	<xsl:variable name="text_results_format_standard">standard</xsl:variable>
+	<xsl:variable name="text_results_format_technical_report">technická zpráva</xsl:variable>
+	<xsl:variable name="text_results_format_trade_publication_article">clánek v obchodní publikaci</xsl:variable>
+	<xsl:variable name="text_results_format_transcript">transkript</xsl:variable>
+	<xsl:variable name="text_results_format_video_recording">videozáznam</xsl:variable>
+	<xsl:variable name="text_results_format_unknown">Neznámý formát</xsl:variable>
+
 	
 	<!-- 
 		the templates deal with text labels that are in the XML itself.  they largely
@@ -463,88 +535,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 			<span>, </span><span class="resultsLanguage">jazyk: <xsl:value-of select="language" /></span>
 		</xsl:if>
 	</xsl:template>
-	
-	<xsl:template name="text_results_format">
-		<xsl:param name="format" />
-		<xsl:choose>
-			<xsl:when test="$format = 'archive'">archiv</xsl:when>
-			<xsl:when test="$format = 'article'">článek</xsl:when>
-			<xsl:when test="$format = 'Archive'">archiv</xsl:when>
-			<xsl:when test="$format = 'Article'">článek</xsl:when>
-			<xsl:when test="$format = 'Audio Book'">zvuková kniha</xsl:when>
-			<xsl:when test="$format = 'Book--Braille'">kniha--braillovo písmo</xsl:when>
-			<xsl:when test="$format = 'Book Chapter'">kapitola knihy</xsl:when>
-			<xsl:when test="$format = 'Book'">kniha</xsl:when>
-			<xsl:when test="$format = 'Book / eBook'">kniha / eKniha</xsl:when>
-			<xsl:when test="$format = 'Book--Large print'">kniha--velký formát</xsl:when>
-			<xsl:when test="$format = 'Book Review'">recenze knihy</xsl:when>
-			<xsl:when test="$format = 'Computer File'">počítačový soubor</xsl:when>
-			<xsl:when test="$format = 'Conference Paper'">příspěvek do konference</xsl:when>
-			<xsl:when test="$format = 'Conference Proceeding'">sborník z konference</xsl:when>
-			<xsl:when test="$format = 'Dissertation'">dizertační práce</xsl:when>
-			<xsl:when test="$format = 'eBook'">elektronická kniha</xsl:when>
-			<xsl:when test="$format = 'Essay'">esej</xsl:when>
-			<xsl:when test="$format = 'Film Review'">recenze filmu</xsl:when>
-			<xsl:when test="$format = 'Hearing'">projednání</xsl:when>
-			<xsl:when test="$format = 'Journal'">odborný časopis</xsl:when>
-			<xsl:when test="$format = 'Journal or Newspaper'">časopis nebo noviny</xsl:when>
-			<xsl:when test="$format = 'Journal Article'">článek v odborném časopise</xsl:when>
-			<xsl:when test="$format = 'Magazine Article'">článek v časopise</xsl:when>
-			<xsl:when test="$format = 'Map'">mapa</xsl:when>
-			<xsl:when test="$format = 'Microfiche'">mikrofiš</xsl:when>
-			<xsl:when test="$format = 'Microfilm'">mikrofilm</xsl:when>
-			<xsl:when test="$format = 'Micropaque'">mikrotisk</xsl:when>
-			<xsl:when test="$format = 'Newspaper Article'">článek v novinách</xsl:when>
-			<xsl:when test="$format = 'Pamphlet'">brožura</xsl:when>
-			<xsl:when test="$format = 'Patent'">patent</xsl:when>
-			<xsl:when test="$format = 'Photograph or Slide'">snímek</xsl:when>
-			<xsl:when test="$format = 'Printed Music'">tištěná hudebnina</xsl:when>
-			<xsl:when test="$format = 'Review'">recenze</xsl:when>
-			<xsl:when test="$format = 'Report'">zpráva</xsl:when>
-			<xsl:when test="$format = 'Sound Recording'">zvukový záznam</xsl:when>
-			<xsl:when test="$format = 'Thesis'">kvalifikační práce</xsl:when>
-			<xsl:when test="$format = 'Video'">video</xsl:when>
-			<xsl:when test="$format = 'Website'">webová stránka</xsl:when>
-			<xsl:when test="$format = 'Working Paper'">pracovní, podkladová studie</xsl:when>
-			<xsl:when test="$format = 'Web Resource'">webový zdroj</xsl:when>
-			<xsl:when test="$format = 'Archival Material'">archivní materiál</xsl:when>
-			<xsl:when test="$format = 'Audio Recording'">zvukový záznam</xsl:when>
-			<xsl:when test="$format = 'Case'">případ</xsl:when>
-			<xsl:when test="$format = 'Data Set'">datová sada</xsl:when>
-			<xsl:when test="$format = 'Electronic Resource'">elektronický zdroj</xsl:when>
-			<xsl:when test="$format = 'Exam'">zkouška</xsl:when>
-			<xsl:when test="$format = 'Film'">film</xsl:when>
-			<xsl:when test="$format = 'Government Document'">vládní dokument</xsl:when>
-			<xsl:when test="$format = 'Image'">obrázek</xsl:when>
-			<xsl:when test="$format = 'Journal / eJournal'">odborný časopis / eČasopis</xsl:when>
-			<xsl:when test="$format = 'Magazine'">časopis</xsl:when>
-			<xsl:when test="$format = 'Manuscript'">rukopis</xsl:when>
-			<xsl:when test="$format = 'Market Research'">průzkum trhu</xsl:when>
-			<xsl:when test="$format = 'Microform'">mikrozáznam</xsl:when>
-			<xsl:when test="$format = 'Mikrofilm'">mikrofilm</xsl:when>
-			<xsl:when test="$format = 'Model'">model</xsl:when>
-			<xsl:when test="$format = 'Music Score'">hudební partitura</xsl:when>
-			<xsl:when test="$format = 'Newspaper'">noviny</xsl:when>
-			<xsl:when test="$format = 'Newsletter'">newsletter</xsl:when>
-			<xsl:when test="$format = 'Paper'">dokument</xsl:when>
-			<xsl:when test="$format = 'Play'">hra</xsl:when>
-			<xsl:when test="$format = 'Poem'">báseň</xsl:when>
-			<xsl:when test="$format = 'Presentation'">prezentace</xsl:when>
-			<xsl:when test="$format = 'Publication'">publikace</xsl:when>
-			<xsl:when test="$format = 'Reference'">příručka</xsl:when>
-			<xsl:when test="$format = 'Spoken Word Recording'">záznam mluveného slova</xsl:when>
-			<xsl:when test="$format = 'Standard'">standard</xsl:when>
-			<xsl:when test="$format = 'Technical Report'">technická zpráva</xsl:when>
-			<xsl:when test="$format = 'Trade Publication Article'">článek v obchodní publikaci</xsl:when>
-			<xsl:when test="$format = 'Transcript'">transkript</xsl:when>
-			<xsl:when test="$format = 'Video Recording'">videozáznam</xsl:when>
-			
-			<xsl:when test="$format = 'Unknown'">Neznámý formát</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="$format" />
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
+
 	
 	<xsl:template name="text_facet_group">
 		<xsl:choose>

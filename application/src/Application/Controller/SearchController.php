@@ -305,6 +305,7 @@ abstract class SearchController extends ActionController
 		
 		// add links & labels
 		
+		$this->helper->addResultsLabels($results);
 		$this->helper->addRecordLinks($results);
 		$this->helper->addFacetLinks($results);
 		$this->helper->addQueryLinks($this->query);
@@ -344,8 +345,9 @@ abstract class SearchController extends ActionController
 			$results->getRecord(0)->includeOriginalRecord();
 		}
 		
-		// set links
+		// set lables and links
 		
+		$this->helper->addResultsLabels($results);
 		$this->helper->addRecordLinks($results);
 		
 		// add to response
