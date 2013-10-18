@@ -31,6 +31,8 @@ class ErrorController extends ActionController
     	
     	if ( $e instanceof RequestException )
     	{
+    		// echo (string) $e->getResponse()->getBody(); exit; 
+    		
     		$message = 'Could not connect to search engine';
     	}
     	elseif ($e instanceof \PDOException )
