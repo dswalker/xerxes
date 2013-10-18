@@ -160,7 +160,8 @@ class Labels
 	/**
 	 * Get label value
 	 * 
-	 * @param string $name		label identifier or label id if no corresponding label found
+	 * @param string $name  label identifier 
+	 * @return string       label, or label identifier if no corresponding label found
 	 */
 	
 	public function getLabel($name)
