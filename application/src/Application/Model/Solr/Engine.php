@@ -277,7 +277,6 @@ class Engine extends Search\Engine
 				
 				$group = new Search\FacetGroup();
 				$group->name = $group_internal_name;
-				$group->public = $this->config->getFacetPublicName($group_internal_name);
 				
 				// put facets into an array
 				

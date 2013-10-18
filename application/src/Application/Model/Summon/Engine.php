@@ -485,7 +485,7 @@ class Engine extends Search\Engine
 					{
 						$group = new Search\FacetGroup();
 						$group->name = $facetFields["displayName"];
-						$group->public = $this->config->getFacetPublicName($facetFields["displayName"]);
+						$group->type = (string) $config["type"];
 						
 						if ( $config['display'] == 'false' )
 						{

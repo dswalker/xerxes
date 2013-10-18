@@ -350,7 +350,6 @@ class Engine extends Search\Engine
 				
 				$group = new Search\FacetGroup();
 				$group->name = $group_internal_name;
-				$group->public = $this->config->getFacetPublicName($group_internal_name);
 				
 				// get the actual facets out of the array above
 				
@@ -389,9 +388,7 @@ class Engine extends Search\Engine
 				// now make them into group facet objects
 				
 				foreach ( $facet_array as $key => $value )
-				{
-					$public_value = $this->config->getValuePublicName($group_internal_name, $key);
-					
+				{					
 					$facet = new Search\Facet();
 					$facet->name = $public_value;
 					$facet->count = $value;

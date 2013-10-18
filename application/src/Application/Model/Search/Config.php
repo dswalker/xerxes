@@ -68,57 +68,6 @@ abstract class Config extends Registry
 	}
 	
 	/**
-	 * Get the defined public name of a given facet
-	 * 
-	 * @param string $internal		facet internal id
-	 * @return string 				public name, or null if not defined
-	 */
-	
-	public function getFacetPublicName($internal)
-	{
-		if ( array_key_exists($internal, $this->facets) )
-		{
-			$facet = $this->facets[$internal];
-			
-			return (string) $facet["public"]; 
-		}
-		else
-		{
-			return null;
-		}
-	}
-
-	/**
-	 * Get the defined public name of a facet value
-	 * 
-	 * @param string $internal_group		group internal id
-	 * @param string $internal_group		internal field id
-	 * 
-	 * @return string 						public name, or the internal field name supplied if not found
-	 */	
-	
-	public function getValuePublicName($internal_group, $internal_field)
-	{
-		if ( strstr($internal_field, "'") || strstr($internal_field, " ") )
-		{
-			return $internal_field;
-		}
-		
-		$query = "//config[@name='facet_fields']/facet[@internal='$internal_group']/value[@internal='$internal_field']";
-		
-		$values = $this->xml->xpath($query);
-		
-		if ( count($values) > 0 )
-		{
-			return (string) $values[0]["public"];
-		}
-		else
-		{
-			return $internal_field;
-		}
-	}
-
-	/**
 	 * Get the defined facet type for a given facet
 	 * 
 	 * @param string $internal			facet internal id
