@@ -368,8 +368,8 @@ dd, dt, li {
 
 /** RESULTS **/
 
-#results {
-	max-width: 700px;
+#results, .record-abstract {
+	max-width: 600px;
 }
 
 .no-hits {
