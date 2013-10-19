@@ -67,6 +67,10 @@ class Engine extends Search\Engine
 		{
 			$this->session_id = $this->createSession($profile);
 		}
+		else
+		{
+			$this->session_id = $session;
+		}
 		
 		$this->headers =  array(
 			'Accept' => 'application/json',

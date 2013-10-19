@@ -23,6 +23,8 @@ class EdsController extends SearchController
 		
 		$engine = new Engine($session_id);
 		
+		$session_id = $engine->getSession();
+		
 		$this->request->setSessionData('ebsco_session', $session_id);
 		
 		return $engine;
