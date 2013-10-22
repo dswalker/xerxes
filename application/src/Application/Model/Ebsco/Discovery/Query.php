@@ -39,14 +39,22 @@ class Query extends Search\Query
 		
 		foreach ( $this->getQueryTerms() as $term )
 		{
-			$query .= '&query-' . $x . '=' . $term->boolean . ',';
+			$boolean = $term->boolean;
+			$value = $this->escapeChars($term->phrase);
+			
+			if ( $boolean == "")
+			{
+				$boolean = 'AND';
+			}
+			
+			$query .= '&query-' . $x . '=' . urlencode($boolean . ',');
 
 			if ( $term->field_internal != "")
 			{
 				$query .= urlencode($term->field_internal . ':');
 			}
 			
-			$query .= urlencode($term->phrase);
+			$query .= urlencode($value);
 			
 			$x++;
 		}
@@ -65,11 +73,27 @@ class Query extends Search\Query
 				$value = implode(',', $value);
 			}
 			
-			$query .= '&facetfilter=' . $y . ',' . $field . ':' . urlencode($value);
-			
+			$query .= '&facetfilter=' . urlencode($y . ',' . $field . ':' . $this->escapeChars($value) );			
 			$y++;
 		}
 		
 		return trim($query);
+	}
+	
+	/**
+	 * Escape special characters
+	 * 
+	 * @param string $string
+	 * @return string
+	 */
+	
+	protected function escapeChars($string)
+	{
+		$string = str_replace(':', '\:', $string);
+		$string = str_replace(',', '\,', $string);
+		$string = str_replace('(', '\(', $string);
+		$string = str_replace(')', '\)', $string);
+		
+		return $string;
 	}
 }
