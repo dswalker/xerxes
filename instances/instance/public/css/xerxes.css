@@ -749,6 +749,15 @@ div.autocomplete ul li {
 	margin-bottom: .7em;
 }
 
+table.facet-multi-table td, table.facet-multi-table th {
+	padding: 5px;
+	text-align: left;
+}
+
+table.facet-multi-table td.facet-multi-selector {
+	text-align: center;
+}
+
 #fullscreen {
 	position: absolute; 
 	top: 0;

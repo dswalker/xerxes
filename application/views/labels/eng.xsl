@@ -565,6 +565,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_facets_include">Include</xsl:variable>
 	<xsl:variable name="text_facets_exclude">Exclude</xsl:variable>
 	<xsl:variable name="text_facets_submit">Submit</xsl:variable>
+	<xsl:variable name="text_facets_close">Close</xsl:variable>
 	<xsl:variable name="text_facets_multiple_any">Any</xsl:variable>
 	<xsl:variable name="text_facets_from">From:</xsl:variable>
 	<xsl:variable name="text_facets_to">To:</xsl:variable>

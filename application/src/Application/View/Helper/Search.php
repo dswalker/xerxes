@@ -355,10 +355,21 @@ class Search
 			}
 		}
 		
-		// format in facets
+		// facets
 		
 		foreach ( $results->getFacets()->getGroups() as $group )
 		{
+			$label_group_name = $this->config->getFacetAttribute($group->name, 'label');
+			
+			if ( $label_group_name == "")
+			{
+				$label_group_name = $this->config->getFacetAttribute($group->name, 'public');
+			}
+			
+			$group->public = $this->labels->getLabel($label_group_name);
+			
+			// format values in facets
+			
 			if ( $this->config->getFacetType($group->name) == 'format' )
 			{
 				foreach ( $group->getFacets() as $facet )

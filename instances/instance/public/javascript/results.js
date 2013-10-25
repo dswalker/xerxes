@@ -99,6 +99,16 @@ function addFacetSelection()
 		$('#form-' + group_id).submit();
 		loadWaitMessage();
 	});
+	
+	$('.facet-multi-option-include').click(function() {			
+		facet_id = '#exclude-' + this.id;
+		$(facet_id).attr('checked', false);
+	});
+	
+	$('.facet-multi-option-exclude').click(function() {			
+		facet_id = '#' + this.id.replace('exclude-', '');
+		$(facet_id).attr('checked', false);
+	});	
 }
 
 function addFacetClear()

@@ -681,13 +681,12 @@
 				<xsl:if test="//facets/groups[not(display)]">
 				
 					<xsl:for-each select="//facets/groups/group[not(display)]">
-						<xsl:variable name="group_name" select="name" />
 
 						<!-- only show the facets if there is more than one -->
 	
 						<xsl:if test="count(facets/facet) &gt; 1 or //config/facet_multiple = 'true'">
 								
-							<h3><xsl:value-of select="//config/facet_fields/facet[@internal = $group_name]/@public" /></h3>
+							<h3><xsl:value-of select="public" /></h3>
 							
 							<xsl:choose>
 								<xsl:when test="facets/facet/is_date">
@@ -875,7 +874,7 @@
 	-->	
 	
 	<xsl:template name="facet_multiple">
-		
+			
 		<form id="form-{group_id}" action="{//request/controller}/search" method="get">
 		<input name="lang" type="hidden" value="{//request/lang}" />
 		<xsl:call-template name="hidden_search_inputs">
@@ -900,16 +899,78 @@
 			<xsl:call-template name="facet_excluded" />
 			
 		</ul>
-				
+						
 		<p id="facet-more-{group_id}" class="facet-option-more"> 
-			<a id="facet-more-link-{group_id}" href="{url}" class="btn btn-small facet-more-launch"> 
+			<a id="facet-more-link-{group_id}" href="#facet-modal-{group_id}" role="button" class="btn btn-small facet-more-launch" data-toggle="modal"> 
 				<xsl:value-of select="$text_searchbox_options_more" />
 			</a>
 		</p>
-		
+				
 		<xsl:call-template name="facet_noscript_submit" />
 		
 		</form>
+		
+		<form id="form-multi-{group_id}" action="{//request/controller}/search" method="get">
+		<input name="lang" type="hidden" value="{//request/lang}" />
+		<xsl:call-template name="hidden_search_inputs">
+			<xsl:with-param name="exclude_limit" select="param_name" />
+		</xsl:call-template>
+		
+		<div id="facet-modal-{group_id}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="facet-modal-{group_id}-label" aria-hidden="true">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+				<h3 id="facet-modal-{group_id}-label"><xsl:value-of select="public" /></h3>
+			</div>
+			<div class="modal-body">
+				<xsl:call-template name="facet_multiple_table" />
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true"><xsl:value-of select="$text_facets_close" /></button>
+				<button class="btn btn-primary"><xsl:value-of select="$text_facets_submit" /></button>
+			</div>
+		</div>
+		
+		</form>
+	
+	</xsl:template>
+	
+	<!-- 
+		TEMPLATE: FACET MULTIPLE TABLE
+	-->		
+	
+	<xsl:template name="facet_multiple_table">
+	
+		<table class="facet-multi-table">
+			<tr>
+				<th><xsl:value-of select="$text_facets_include" /></th>
+				<th><xsl:value-of select="$text_facets_exclude" /></th>
+				<th><xsl:value-of select="public" /></th>
+			</tr>
+
+			<xsl:for-each select="facets/facet">
+				<tr>
+					<td class="facet-multi-selector">
+						<input type="checkbox" id="multi-{input_id}" class="facet-multi-option-include" name="{param_name}" value="{name}">
+							<xsl:if test="selected and ( not(is_excluded) or is_excluded != '1')">
+								<xsl:attribute name="checked">checked</xsl:attribute>
+							</xsl:if>
+						</input>
+					</td>
+					<td class="facet-multi-selector">
+						<input type="checkbox" id="exclude-multi-{input_id}" class="facet-multi-option-exclude" name="{param_exclude}" value="{name}">
+							<xsl:if test="is_excluded">
+								<xsl:attribute name="checked">checked</xsl:attribute>
+							</xsl:if>
+						</input>
+					</td>
+					<td>
+						<label for="multi-{input_id}" class="ada">include results for <xsl:value-of select="name" /></label>
+						<label for="exclude-multi-{input_id}" class="ada">exclude results for <xsl:value-of select="name" /></label>
+						<xsl:value-of select="name" />&nbsp;(<xsl:value-of select="count_display" />)
+					</td>
+				</tr>
+			</xsl:for-each>
+		</table>	
 	
 	</xsl:template>
 

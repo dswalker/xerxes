@@ -76,37 +76,7 @@
 				<xsl:with-param name="exclude_limit" select="//request/group" />
 			</xsl:call-template>
 			
-			<table class="holdings-table">
-				<tr>
-					<th><xsl:value-of select="$text_facets_include" /></th>
-					<th><xsl:value-of select="$text_facets_exclude" /></th>
-					<th><xsl:value-of select="public" /></th>
-				</tr>
-
-				<xsl:for-each select="facets/facet">
-					<tr>
-						<td>
-							<input type="checkbox" id="{input_id}" class="facet-selection-option" name="{param_name}" value="{name}">
-								<xsl:if test="selected">
-									<xsl:attribute name="checked">checked</xsl:attribute>
-								</xsl:if>
-							</input>
-						</td>
-						<td>
-							<input type="checkbox" id="remove_{input_id}" class="facet-selection-option" name="{param_exclude}" value="{name}">
-								<xsl:if test="is_excluded">
-									<xsl:attribute name="checked">checked</xsl:attribute>
-								</xsl:if>
-							</input>
-						</td>
-						<td>
-							<xsl:call-template name="facet_name">
-								<xsl:with-param name="name" select="name" />
-							</xsl:call-template>&nbsp;(<xsl:value-of select="count_display" />)
-						</td>
-					</tr>
-				</xsl:for-each>
-			</table>
+			<xsl:call-template name="facet_multiple_table" />
 			
 			<input type="submit" class="facets-submit{$language_suffix}">
 				<xsl:attribute name="value"><xsl:value-of select="$text_facets_submit" /></xsl:attribute>

@@ -143,8 +143,8 @@ abstract class Config extends Registry
 	/**
 	 * Return a specific attribute from a field definition
 	 * 
-	 * @param string $internal			facet internal id
-	 * @param string $internal			facet internal id
+	 * @param string $field      facet internal id
+	 * @param string $attribute  facet attribute name
 	 * 
 	 * @return string if found, null if not
 	 */		
@@ -162,6 +162,29 @@ abstract class Config extends Registry
 			return null;
 		}
 	}
+	
+	/**
+	 * Return a specific attribute from a facet definition
+	 *
+	 * @param string $internal   facet internal id
+	 * @param string $attribute  facet attribute name
+	 *
+	 * @return string if found, null if not
+	 */
+	
+	public function getFacetAttribute( $internal, $attribute )
+	{
+		$values = $this->xml->xpath("//config/facet[@internal='$internal']/@$attribute");
+	
+		if ( count($values) > 0 )
+		{
+			return (string) $values[0];
+		}
+		else
+		{
+			return null;
+		}
+	}	
 
 	/**
 	 * Swap the sort id for the internal sort option
