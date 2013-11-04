@@ -368,7 +368,7 @@ dd, dt, li {
 
 /** RESULTS **/
 
-#results, .record-abstract {
+.book-abstract-data, .record-abstract {
 	max-width: 600px;
 }
 
@@ -429,6 +429,8 @@ dd, dt, li {
 
 a.results-title {
 	font-weight: bold;
+	max-width: 600px;
+	display: block;
 }
 
 .results-info {
