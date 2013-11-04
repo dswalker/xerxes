@@ -163,13 +163,14 @@ class Query
 	/**
 	 * Get a specific limit
 	 *
-	 * @param string $id		the limit name
+	 * @param string $id             the limit name
+	 * @param bool $facets_to_field  whether to return facets with key convention as limits
 	 * @return LimitTerm
 	 */
 	
-	public function getLimit($id)
+	public function getLimit($id, $facets_to_field = false)
 	{
-		foreach ( $this->limits as $limit )
+		foreach ( $this->getLimits($facets_to_field) as $limit )
 		{
 			if ( $limit->field == $id )
 			{

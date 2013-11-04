@@ -168,7 +168,7 @@ class Query extends Search\Query
 			$value = $facet_chosen->value;
 			$field = $facet_chosen->field;
 			
-			$boolean = 'OR';
+			// date field
 						
 			if ( $field == 'publishDate')
 			{
@@ -183,34 +183,56 @@ class Query extends Search\Query
 				
 				continue;
 			}
-			else
+			
+			// regular field
+			
+			$boolean = 'OR';
+			$negative = '';
+			
+			if ( $facet_chosen->boolean == 'NOT')
 			{
-				if ( $facet_chosen->boolean == "NOT")
+				$boolean = 'NOT';
+				$negative = 'NOT';
+			}			
+
+			// multi-selected
+			
+			if ( is_array($value) )
+			{
+				for ( $x = 0; $x < count($value); $x++ )
 				{
-					$boolean = ' -';
-				}
-				
-				if ( ! is_array($value) )
-				{
-					$value = array($value);
-				}
-				
-				// put quotes around non-keyed terms
-									
-				if ( $facet_chosen->key != true )
-				{
-					for( $x =0; $x < count($value); $x++)
+					// put quotes around non-keyed terms
+					
+					if ( $facet_chosen->key != true )
 					{
-						$value[$x] = '"' . $value[$x] . '"';
+						for( $x =0; $x < count($value); $x++)
+						{
+							$value[$x] = '"' . $value[$x] . '"';
+						}
 					}
 				}
+				
+				$tag = urlencode( '{!tag=' . $facet_chosen->field . '}');
+				
+				$composite = $negative . " $field:" . implode(" $boolean $field:", $value);
+				
+				$query .= '&fq=' . $tag . urlencode($composite);
 			}
-			
-			$value = implode(" $boolean $field:", $value);
-			
-			$tag = urlencode( '{!tag=' . $facet_chosen->field . '}');
-			
-			$query .= '&fq=' . $tag . urlencode( "$field:$value");
+			else
+			{
+				// put quotes around non-keyed terms
+					
+				if ( $facet_chosen->key != true )
+				{
+					$value = '"' . $value . '"';
+				}
+				
+				$tag = urlencode( '{!tag=' . $facet_chosen->field . '}');
+				
+				$composite = $negative . " $field:$value";
+					
+				$query .= '&fq=' . $tag . urlencode($composite);				
+			}
 		}
 		
 		if ( $start_date != '*' || $end_date != '*')
@@ -220,7 +242,6 @@ class Query extends Search\Query
 			$tag = urlencode( '{!tag=publishDate}');
 				
 			$query .= '&fq=' . $tag . urlencode( "$field:$value");
-				
 		}
 		
 		// limits set in config
@@ -232,6 +253,8 @@ class Query extends Search\Query
 			$query .= "&fq=" . urlencode($auto_limit);
 		}
 		
-		return $type . $query;		
+		$final = $type . $query;
+
+		return $final;
 	}
 }

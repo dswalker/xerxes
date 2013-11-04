@@ -184,7 +184,7 @@ class Engine extends Search\Engine
 		
 		
 		## get and parse the response
-
+		
 		// get the data
 		
 		$client = Factory::getHttpClient();
@@ -216,7 +216,39 @@ class Engine extends Search\Engine
 		
 		// extract facets
 		
-		$results->setFacets($this->extractFacets($xml));
+		$facets = $this->extractFacets($xml);
+		
+		// associate facets excluded in the query with the 
+		// multi-select facets returned in the response
+		
+		foreach ( $facets->getGroups() as $group )
+		{
+			foreach ( $search->getLimits(true) as $matching_limit )
+			{
+				if ( $matching_limit->boolean == 'NOT' && $matching_limit->field == $group->name )
+				{
+					$facet_values = $matching_limit->value;
+					
+					if ( ! is_array($facet_values) )
+					{
+						$facet_values = array($facet_values);
+					}
+					
+					foreach ( $group->getFacets() as $facet )
+					{
+						foreach ( $facet_values as $facet_value )
+						{
+							if ( $facet->name == $facet_value)
+							{
+								$facet->is_excluded = true;
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		$results->setFacets($facets);
 		
 		return $results;
 	}
