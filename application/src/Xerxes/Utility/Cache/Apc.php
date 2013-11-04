@@ -29,6 +29,11 @@ class Apc
 	
 	public function __construct()
 	{
+		if ( ! function_exists('apc_store') )
+		{
+			throw new Exception('You are using the APC cache in Xerxes, but apc is not installed on your system');
+		}
+		
 		$registry = Registry::getInstance();
 		
 		$institution = $registry->getConfig('APPLICATION_NAME', false, 'xerxes');
@@ -45,11 +50,18 @@ class Apc
 	
 	public function set( $id, $data, $expiry = null )
 	{
+		$expiry = $expiry - time();
+		
+		if ( $expiry < 0 )
+		{
+			$expiry = 0;
+		}
+		
 		$result = apc_store($this->institution . '_' . $id, $data, $expiry);
 		
 		if ( $result === false )
 		{
-			// @todo something
+			throw new Exception('Why?');
 		}
 	}
 	
@@ -64,14 +76,29 @@ class Apc
 	{
 		if ( is_array($id) )
 		{
-			$arrCache = array();
+			$cache_array = array();
+			$query = array();
+			
+			// add the institution prefix here so we can send all id's
+			// to apc with a singlt apc_fetch call
 			
 			foreach ( $id as $cache_id )
 			{
-				$arrCache[$cache_id] = apc_fetch($this->institution . '_' . $cache_id);
+				$query[] = $this->institution . '_' . $cache_id;
 			}
 			
-			return $arrCache;
+			$values = apc_fetch($query);
+			
+			// now remove the institution prefix so we return the
+			// supplied id's
+			
+			foreach ( $values as $id => $object )
+			{
+				$id = str_replace($this->institution . '_' , '', $id);	
+				$cache_array[$id] = $object;
+			}
+			
+			return $cache_array;
 		}
 		else
 		{
