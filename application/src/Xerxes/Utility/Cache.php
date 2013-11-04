@@ -34,14 +34,15 @@ class Cache
 	{
 		$registry = Registry::getInstance();
 		
-		if ( function_exists('apc_store') && $registry->getConfig('APC_CACHE', false, true) )
+		$cache_type =  $registry->getConfig('CACHE_TYPE', false, 'Database');
+		$cache_type = 'Xerxes\\Utility\\Cache\\' . ucfirst(strtolower($cache_type));
+		
+		if ( ! class_exists($cache_type) )
 		{
-			$this->cache = new Apc();
+			throw new \Exception("You specified a cache type of '$cache_type', but no such class exists");
 		}
-		else
-		{
-			$this->cache = new Database();
-		}
+		
+		$this->cache = new $cache_type();
 	}	
 	
 	/**
@@ -117,6 +118,6 @@ class Cache
 		
 		// get it from the cache store
 		
-		$this->cache->get($id);
+		return $this->cache->get($id);
 	}
 }
