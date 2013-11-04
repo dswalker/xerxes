@@ -671,7 +671,7 @@ class Bibliographic extends Record
 	{
 		// additional titles for display
 		
-		foreach ( $this->marc->datafield('730|740') as $additional_titles )
+		foreach ( $this->marc->datafield('730|740|79X') as $additional_titles )
 		{
 			$subfields = (string) $additional_titles->subfield();
 			array_push($this->additional_titles, $subfields);
