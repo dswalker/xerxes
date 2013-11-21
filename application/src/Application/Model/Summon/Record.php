@@ -165,6 +165,16 @@ class Record extends Xerxes\Record
 		$this->end_page = $this->extractValue($document, "EndPage/0");
 		$this->doi = $this->extractValue($document, "DOI/0");
 		
+		// subscription
+		
+		$has_full_text = (int) $this->extractValue($document, 'hasFullText');
+		$in_holdings = (int) $this->extractValue($document, 'inHoldings');
+		
+		if ($has_full_text == 1 && $in_holdings == 1)
+		{
+			$this->setSubscription(true);
+		}
+		
 		// direct link
 		
 		if ( $this->config()->getConfig('direct_linking', false, false ) )
@@ -174,7 +184,18 @@ class Record extends Xerxes\Record
 			
 			if ( $model == 'DirectLink')
 			{
-				$this->links[] = new Link($direct_link, Link::ONLINE);
+				$link = new Link($direct_link);
+				
+				if ( $has_full_text == 1 )
+				{
+					$link->setType(Link::ONLINE);
+				}
+				else
+				{
+					$link->setType(Link::ORIGINAL_RECORD);
+				}
+				
+				$this->links[] = $link;
 			}
 		}
 		
@@ -187,15 +208,7 @@ class Record extends Xerxes\Record
 			$this->links[] = new Link($uri, Link::ORIGINAL_RECORD);
 		}
 		
-		// subscription
-		
-		$has_full_text = (int) $this->extractValue($document, 'hasFullText');
-		$in_holdings = (int) $this->extractValue($document, 'inHoldings');
-			
-		if ($has_full_text == 1 && $in_holdings == 1)
-		{
-			$this->setSubscription(true);
-		}		
+	
 		
 		// peer reviewed
 		
