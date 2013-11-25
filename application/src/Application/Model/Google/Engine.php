@@ -79,6 +79,15 @@ class Engine extends Search\Engine
 			$this->url .= '&site=' . urlencode($this->config->getConfig('site'));
 		}
 		
+		// google results are 0-based
+		
+		if ( $start != null )
+		{
+			$start = $start - 1;
+			
+			$this->url .= '&start=' . $start;
+		}
+		
 		$client = Factory::getHttpClient();
 		$google_results = $client->getUrl($this->url, 3);
 		
