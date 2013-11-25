@@ -1235,11 +1235,18 @@
 			
 			<!-- peer reviewed -->
 			
-			<xsl:if test="refereed">
-				<xsl:text> </xsl:text><xsl:call-template name="img_refereed" />
-				<xsl:text> </xsl:text><xsl:copy-of select="$text_results_refereed" />
-			</xsl:if>
+			<xsl:call-template name="result_refereed" />
+			
 		</div>
+	</xsl:template>
+	
+	<xsl:template name="result_refereed">
+	
+		<xsl:if test="refereed and ( not(contains(format/internal,'Review')) and not(contains(format/internal,'News')) )">
+			<xsl:text> </xsl:text><xsl:call-template name="img_refereed" />
+			<xsl:text> </xsl:text><xsl:copy-of select="$text_results_refereed" />
+		</xsl:if>
+	
 	</xsl:template>
 	
 	<xsl:template name="brief_result_info-abstract">

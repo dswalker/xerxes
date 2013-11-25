@@ -309,10 +309,7 @@
 					<xsl:with-param name="format" select="format/public" />
 				</xsl:call-template>
 
-				<xsl:if test="refereed = 1 and not(contains(format/internal,'Review'))">
-					<xsl:text> </xsl:text><xsl:call-template name="img_refereed" />
-					<xsl:text> </xsl:text><strong><xsl:copy-of select="$text_results_refereed" /></strong>
-				</xsl:if>
+				<xsl:call-template name="result_refereed" />
 			</dd>
 			</div>
 		</xsl:if>
