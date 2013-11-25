@@ -497,6 +497,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	
 	<xsl:variable name="text_citation_basic_title">Title: </xsl:variable>
 	<xsl:variable name="text_citation_basic_format">Format: </xsl:variable>
+	<xsl:variable name="text_citation_basic_abstract">Abstract: </xsl:variable>
 	<xsl:variable name="text_citation_basic_author">Author: </xsl:variable>
 	<xsl:variable name="text_citation_basic_citation">Original Citation: </xsl:variable>
 	<xsl:variable name="text_citation_basic_journal-title">Journal Title: </xsl:variable>
