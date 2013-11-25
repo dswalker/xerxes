@@ -559,7 +559,8 @@ class Bibliographic extends Record
 		
 		if ( $found == false )
 		{
-			$this->title = (string) $this->marc->datafield("245")->subfield("acnp"); // added 'c'
+			$this->title = (string) $this->marc->datafield("245")->subfield("abcnp"); // added 'b' and 'c'
+			$this->sub_title = null; // blank subtitle since we added it above
 		}
 		
 		
