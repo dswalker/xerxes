@@ -51,6 +51,13 @@ class Query extends Search\Query
 		
 		$term = $terms[0]; // get just the first term for now
 		
+		// isbn
+		
+		if ( preg_match('/(?:-?\d){10,13}/', $term->phrase ) )
+		{
+			$term->phrase = str_replace('-', '', $term->phrase);
+		}
+		
 		$trunc_test = $this->config->getFieldAttribute($term->field_internal, "truncate");
 		
 		// use dismax if this is a simple search, that is:
