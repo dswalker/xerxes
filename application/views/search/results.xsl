@@ -983,17 +983,17 @@
 		<xsl:choose>
 			<xsl:when test="../../name = 'ContentType'">
 				<xsl:call-template name="text_results_format">
-					<xsl:with-param name="format" select="name" />
+					<xsl:with-param name="format" select="$name" />
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:when test="../../name = 'SubjectTerms'">
 				<xsl:call-template name="text_facet_subject">
-					<xsl:with-param name="option" select="name" />
+					<xsl:with-param name="option" select="$name" />
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:when test="../../name = 'Discipline'">
 				<xsl:call-template name="text_facet_discipline">
-					<xsl:with-param name="option" select="name" />
+					<xsl:with-param name="option" select="$name" />
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:when test="../../name = 'Language'">
@@ -1002,7 +1002,7 @@
 			</xsl:when>
 			<xsl:when test="../../name = 'format'">
 				<xsl:call-template name="text_results_format">
-					<xsl:with-param name="format" select="name" />
+					<xsl:with-param name="format" select="$name" />
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise>
@@ -1029,7 +1029,7 @@
 			
 			<label for="{input_id}">
 				<xsl:call-template name="facet_name">
-					<xsl:with-param name="name" select="name" />
+					<xsl:with-param name="name" select="display" />
 				</xsl:call-template>
 			</label>
 			
