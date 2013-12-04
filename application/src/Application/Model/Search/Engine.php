@@ -90,7 +90,7 @@ abstract class Engine
 	{
 		// get the results
 	
-		$results = $this->doSearch( $search, 1, 0 );
+		$results = $this->doSearch( $search, 1, 1 );
 	
 		// return total
 	
