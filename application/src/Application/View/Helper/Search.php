@@ -335,7 +335,7 @@ class Search
 	 * 
 	 * Primarily for formats, facets, and other 'data'-based labels
 	 *
-	 * @param Config ResultSet $results 
+	 * @param ResultSet $results 
 	 */
 	
 	public function addResultsLabels( ResultSet &$results )
@@ -370,17 +370,16 @@ class Search
 			
 			// format values in facets
 			
-			if ( $this->config->getFacetType($group->name) == 'format' )
+			foreach ( $group->getFacets() as $facet )
 			{
-				foreach ( $group->getFacets() as $facet )
+				$facet->display = $facet->name;
+				
+				$label_id = Format::createLabelIdentifier($facet->name);
+				$label = $this->labels->getLabel($label_id);
+				
+				if ( $label != $label_id)
 				{
-					$label_id = Format::createLabelIdentifier($facet->name);
-					$label = $this->labels->getLabel($label_id);
-					
-					if ( $label != $label_id)
-					{
-						$facet->name = $label;
-					}
+					$facet->display = $label;
 				}
 			}
 		}
