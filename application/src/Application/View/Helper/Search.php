@@ -627,7 +627,18 @@ class Search
 		// we have to pass in the query object here rather than take
 		// the property above because adding the links doesn't seem
 		// to reflect back in the main object, even though they should 
-		// be references, maybe because limit objects are in an array?  
+		// be references, maybe because limit objects are in an array? 
+		
+		// add current query to query object itself
+		
+		$params = $query->extractSearchParams();
+		$params['controller'] = $this->request->getParam('controller');
+		$params['action'] = 'search';
+		$params['source'] = $this->request->getParam('source');
+		$params['sort'] = $this->request->getParam('sort');
+			
+		$query->url = $this->request->url_for($params);
+		
 		
 		// search option links
 		
