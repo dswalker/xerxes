@@ -23,7 +23,8 @@ class ResultSet extends Search\ResultSet
 {
 	public $database_recommendations;
 	public $best_bets;
-
+	public $query_expansion = array();
+	
 	public function addRecommendation(Resource $resource)
 	{
 		if ( $resource instanceof Database )
@@ -34,5 +35,10 @@ class ResultSet extends Search\ResultSet
 		{
 			$this->best_bets[] = $resource;
 		}
+	}
+	
+	public function addQueryExpansion(array $terms)
+	{
+		$this->query_expansion = $terms;
 	}
 }

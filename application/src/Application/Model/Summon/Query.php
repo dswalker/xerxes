@@ -54,6 +54,37 @@ class Query extends Search\Query
 	}
 	
 	/**
+	 * Get specified language
+	 * 
+	 * @todo make this not so hacky
+	 */
+	
+	public function getLanguage()
+	{
+		$lang = $this->request->getParam('lang');
+	
+		if ( $lang == 'cze' )
+		{
+			return 'cs';
+		}
+		else
+		{
+			return 'en';
+		}
+	}
+	
+	/**
+	 * Should query be expanded
+	 *
+	 * @todo make this not so hacky
+	 */
+	
+	public function shouldExpandQuery()
+	{
+		return $this->request->getParam('expand');
+	}	
+	
+	/**
 	 * Escape reserved characters
 	 * 
 	 * @param string $string

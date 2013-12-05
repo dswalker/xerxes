@@ -13,9 +13,10 @@ namespace Application\Model\Summon;
 
 use Application\Model\Search;
 use Xerxes\Summon;
-use Xerxes\Utility\Factory;
-use Xerxes\Utility\Parser;
 use Xerxes\Mvc\Request;
+use Xerxes\Utility\Factory;
+use Xerxes\Utility\Json;
+use Xerxes\Utility\Parser;
 
 /**
  * Summon Search Engine
@@ -320,6 +321,16 @@ class Engine extends Search\Engine
 			$page = 1;
 		}
 		
+		// language
+		
+		$this->summon_client->setLanguage($search->getLanguage());
+		
+		// query expansion
+		
+		$expand_query = $this->config->getConfig('QUERY_EXPANSION', false, false);
+		
+		$this->summon_client->setQueryExpansion($expand_query);
+		
 		// get the results
 		
 		$summon_results = $this->summon_client->query($query, $page, $max, $sort);
@@ -368,6 +379,11 @@ class Engine extends Search\Engine
 		{
 			$result_set->addRecommendation($database);
 		}
+		
+		// query expansion
+		
+		$terms = $this->extractQueryExpansion($summon_results);
+		$result_set->addQueryExpansion($terms);
 
 		// total
 		
@@ -396,7 +412,7 @@ class Engine extends Search\Engine
 	 * @return Database[]|Resource[]
 	 */
 	
-	protected function extractRecommendations($summon_results)
+	protected function extractRecommendations(array $summon_results)
 	{
 		$recommend = array();
 		
@@ -422,13 +438,30 @@ class Engine extends Search\Engine
 	}
 	
 	/**
+	 * Parse out query expansion
+	 *
+	 * @param array $summon_results
+	 * @return array  of terms, if expanded
+	 */
+	
+	protected function extractQueryExpansion(array $summon_results)
+	{
+		$json = new Json($summon_results);
+		
+		$terms = $json->extractData('queryExpansion/searchTerms');
+		$terms = str_replace('"', '', $terms);
+		
+		return $terms;
+	}	
+	
+	/**
 	 * Parse records out of the response
 	 *
 	 * @param array $summon_results
 	 * @return Record[]
 	 */
 	
-	protected function extractRecords($summon_results)
+	protected function extractRecords(array $summon_results)
 	{
 		$records = array();
 		
@@ -452,7 +485,7 @@ class Engine extends Search\Engine
 	 * @return Facets
 	 */	
 	
-	protected function extractFacets($summon_results)
+	protected function extractFacets(array $summon_results)
 	{
 		$facets = new Search\Facets();
 		

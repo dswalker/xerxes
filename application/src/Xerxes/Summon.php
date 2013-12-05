@@ -36,6 +36,8 @@ class Summon
 	
 	protected $role; // user's role: authenticated or not
 	protected $holdings_only = false;
+	protected $lang = 'en'; // language
+	protected $query_expansion = false;
 	
 	/**
 	 * Create a Summon Client
@@ -141,7 +143,11 @@ class Summon
 		if ( $this->start_date != '*' || $this->end_date != '*' )
 		{
 			$options['s.rf'] = 'PublicationDate,' . $this->start_date . ":" . $this->end_date;
-		}		
+		}
+		
+		// language
+		
+		$options['s.l'] = $this->lang;
 		
 		// sort
 		
@@ -158,6 +164,17 @@ class Summon
 		// facets to return in response
 		
 		$options['s.ff'] = $this->getFacetsToInclude();
+		
+		// lighten the response to make things load faster
+		
+		$options['s.light'] = 'true';
+		
+		// query expansion
+		
+		if ( $this->query_expansion == true )
+		{
+			$options['s.exp'] = 'true';
+		}
 		
 		// date groupings to return in response
 		
@@ -398,5 +415,27 @@ class Summon
 	public function setToAuthenticated()
 	{
 		$this->role = 'authenticated';
+	}
+	
+	/**
+	 * Set the language
+	 * 
+	 * @param string $lang  ISO-639-1 language code
+	 */
+	
+	public function setLanguage($lang)
+	{
+		$this->lang = $lang;
+	}
+	
+	/**
+	 * Set query expansion
+	 * 
+	 * @param bool $bool
+	 */
+	
+	public function setQueryExpansion($bool)
+	{
+		$this->query_expansion = (bool) $bool;
 	}
 }
