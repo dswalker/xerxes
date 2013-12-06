@@ -197,14 +197,35 @@ class Engine extends Search\Engine
 		{
 			$this->summon_client->limitToHoldings();
 		}
-
+		
+		// query expansion
+		
+		$expand_query = $this->config->getConfig('QUERY_EXPANSION', false, false);
+		$this->summon_client->setQueryExpansion($expand_query);
+		
 		// limits
 		
 		foreach ( $search->getLimits(true) as $limit )
 		{
-			if ( $limit->field == 'newspapers')
+			if ( $limit->field == 'newspapers' )
 			{
 				continue; // we'll handle you later
+			}
+			
+			// query expansion overriden by user
+			
+			if ( $limit->field == 'qe' )
+			{
+				if ( $limit->value == 0 )
+				{
+					$this->summon_client->setQueryExpansion(false);
+				}
+				elseif ( $limit->value == 1 )
+				{
+					$this->summon_client->setQueryExpansion(true);
+				}
+				
+				continue;
 			}
 			
 			// holdings only
@@ -324,12 +345,6 @@ class Engine extends Search\Engine
 		// language
 		
 		$this->summon_client->setLanguage($search->getLanguage());
-		
-		// query expansion
-		
-		$expand_query = $this->config->getConfig('QUERY_EXPANSION', false, false);
-		
-		$this->summon_client->setQueryExpansion($expand_query);
 		
 		// get the results
 		

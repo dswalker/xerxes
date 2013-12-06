@@ -385,6 +385,10 @@ dd, dt, li {
 	text-align: right;
 }
 
+.results-query-expansion {
+	margin-bottom: 2.5em;
+}
+
 .results-database-recommendations {
 	font-size: 100%;
 	color: #444;

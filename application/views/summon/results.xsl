@@ -52,13 +52,17 @@
 
 <xsl:template name="search_recommendations">
 
-	<xsl:if test="not(//request/start)">
+	<xsl:if test="not(request/start)">
 	
 		<xsl:if test="results/query_expansion">
-			<div>
+		
+			<div class="results-query-expansion">
+			
 				Search includes "<strong><xsl:value-of select="results/query_expansion/object" /></strong>." 
-				Only search for <a href="{query/url}&amp;expand=0"><xsl:value-of select="query/terms/term/query" /></a>.
+				Only show results for "<a href="{query/url_dont_expand_query}"><xsl:value-of select="query/terms/term/query" /></a>."
+			
 			</div>
+		
 		</xsl:if>
 	
 		<xsl:if test="results/database_recommendations  and //config/show_database_recommendations = 'true'">

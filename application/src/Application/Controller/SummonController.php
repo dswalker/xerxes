@@ -12,10 +12,18 @@
 namespace Application\Controller;
 
 use Application\Model\Summon\Engine;
+use Application\View\Helper\Summon as SearchHelper;
 
 class SummonController extends SearchController
 {
 	protected $id = "summon";
+	
+	protected function init()
+	{
+		parent::init();
+	
+		$this->helper = new SearchHelper($this->event, $this->id, $this->engine);
+	}
 	
 	protected function getEngine()
 	{
