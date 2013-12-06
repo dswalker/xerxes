@@ -12,6 +12,8 @@
 namespace Application\Model\Primo;
 
 use Application\Model\Search;
+use Application\Model\Search\Query;
+use Xerxes\Mvc\Request;
 use Xerxes\Utility\Factory;
 use Xerxes\Utility\Parser;
 
@@ -110,15 +112,6 @@ class Engine extends Search\Engine
 	}
 
 	/**
-	 * @return Config
-	 */			
-	
-	public function getConfig()
-	{
-		return Config::getInstance();
-	}	
-
-	/**
 	 * Do the actual fetch of an individual record
 	 * 
 	 * @param string	record identifier
@@ -202,11 +195,11 @@ class Engine extends Search\Engine
 		// get the response
 		
 		$client = Factory::getHttpClient();
-		$client->setUri($this->url);
+		$response = $client->getUrl($this->url);
 		
-		$response = $client->send()->getBody();
+		echo $this->url;
 		
-		// echo $response;
+		// header('Content-type: text/xml'); echo $response; exit;
 		
 		if ( $response == "" )
 		{
@@ -390,7 +383,7 @@ class Engine extends Search\Engine
 				foreach ( $facet_array as $key => $value )
 				{					
 					$facet = new Search\Facet();
-					$facet->name = $public_value;
+					$facet->name = $key;
 					$facet->count = $value;
 					
 					// dates are different
