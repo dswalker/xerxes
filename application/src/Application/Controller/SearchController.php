@@ -485,6 +485,11 @@ abstract class SearchController extends ActionController
 		return $this->response;
 	}
 	
+	public function advancedAction()
+	{
+		return $this->response;
+	}
+	
 	/**
 	 * Check for mispelled terms
 	 * 
