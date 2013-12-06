@@ -515,6 +515,9 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_citation_basic_items">Items: </xsl:variable>
 	<xsl:variable name="text_citation_basic_link">Link: </xsl:variable>
 	
+	<xsl:variable name="text_summon_query_expansion_inlcude">Search includes</xsl:variable>
+	<xsl:variable name="text_summon_query_expansion_only_show">Only show results for</xsl:variable>
+	
 	<xsl:variable name="text_summon_recommendation">
 		<xsl:text>We found a </xsl:text>
 		<xsl:choose>

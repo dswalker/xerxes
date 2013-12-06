@@ -58,8 +58,13 @@
 		
 			<div class="results-query-expansion">
 			
-				Search includes "<strong><xsl:value-of select="results/query_expansion/object" /></strong>." 
-				Only show results for "<a href="{query/url_dont_expand_query}"><xsl:value-of select="query/terms/term/query" /></a>."
+				<xsl:value-of select="$text_summon_query_expansion_inlcude" />
+				<xsl:text> "</xsl:text>
+				<strong><xsl:value-of select="results/query_expansion/object" /></strong>
+				<xsl:text>." </xsl:text>
+				<xsl:value-of select="$text_summon_query_expansion_only_show" />
+				<xsl:text> "</xsl:text>
+				<a href="{query/url_dont_expand_query}"><xsl:value-of select="query/terms/term/query" /></a>."
 			
 			</div>
 		
