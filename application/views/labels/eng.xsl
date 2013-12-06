@@ -518,7 +518,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_summon_recommendation">
 		<xsl:text>We found a </xsl:text>
 		<xsl:choose>
-		<xsl:when test="count(results/database_recommendations/database_recommendation) &gt; 1">
+		<xsl:when test="count(//results/database_recommendations/database_recommendation) &gt; 1">
 			couple of specialized databases
 		</xsl:when>
 		<xsl:otherwise>

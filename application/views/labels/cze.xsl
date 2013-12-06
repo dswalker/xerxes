@@ -1027,7 +1027,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_summon_recommendation">
 		<xsl:text>Nalezli jsme </xsl:text>
 		<xsl:choose>
-		<xsl:when test="count(results/database_recommendations/database_recommendation) &gt; 1">
+		<xsl:when test="count(//results/database_recommendations/database_recommendation) &gt; 1">
 			několik specializovaných databází, které by vám mohli pomoct.
 		</xsl:when>
 		<xsl:otherwise>
