@@ -28,6 +28,7 @@ class Record
 {
 	protected $source = "";	// source database id
 	protected $database_name; // source database name
+	protected $database_openurl; // source database identifier for openurl
 	protected $score; // relevenace score
 
 	protected $record_id; // canonical record id
@@ -576,15 +577,15 @@ class Record
 		{
 			$source = $this->source;
 			
-			if ( $this->database_name != "" )
+			if ( $this->database_openurl != "" )
 			{
 				$source .= ":";
 			}
 		}
 		
-		if ( $this->database_name != "" )
+		if ( $this->database_openurl != "" )
 		{
-			$source .= $this->database_name;
+			$source .= $this->database_openurl;
 		}
 		
 		$source = trim($source);
@@ -1008,6 +1009,30 @@ class Record
 		
 		return $citation;
 	}
+	
+	/**
+	 * html decode
+	 *
+	 * @param string|array $item
+	 * @return string|array
+	 */
+	
+	public static function decode($item)
+	{
+		if (  is_string($item) )
+		{
+			return html_entity_decode($item, null, 'UTF-8');
+		}
+		elseif ( is_array($item) )
+		{
+			foreach ( $item as $key => $value )
+			{
+				$item[$key] = html_entity_decode($item, null, 'UTF-8');
+			}
+				
+			return $item;
+		}
+	}	
 
 	/**
 	 * Returns the object's properties that correspond to the OpenURL standard
@@ -1159,26 +1184,6 @@ class Record
 		return $arrReferant;
 	}
 	
-	
-	
-	
-	public static function decode($item)
-	{
-		if (  is_string($item) )
-		{
-			return html_entity_decode($item, null, 'UTF-8');
-		}
-		elseif ( is_array($item) )
-		{
-			foreach ( $item as $key => $value )
-			{
-				$item[$key] = html_entity_decode($item, null, 'UTF-8');
-			}
-			
-			return $item;
-		}
-	}
-
 	/**
 	 * Returns the object's properties that correspond to OpenURL standard
 	 * rft_id URIs as a simple list array. 

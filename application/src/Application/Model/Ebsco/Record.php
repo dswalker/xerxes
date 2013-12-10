@@ -24,6 +24,8 @@ class Record extends Xerxes\Record
 		$control_info = $xml->header->controlInfo;
 		
 		$this->database_name = (string) $xml->header["longDbName"];
+		$this->database_openurl = (string) $xml->header["longDbName"];
+		
 		$short_db_name = (string) $xml->header["shortDbName"];
 		
 		$book = $control_info->bkinfo;
