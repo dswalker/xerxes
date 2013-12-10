@@ -54,7 +54,7 @@ class CombinedController extends ActionController
 		
 		// these so the search engine controller thinks it's not a 'combined' request
 		
-		$this->request->replaceParam('max', 3);
+		$this->request->replaceParam('max', $this->registry->getConfig('combined_max_results', false, 3));
 		$this->request->replaceParam('controller', $alias);
 		$this->request->setParam('include_facets', false);
 		
