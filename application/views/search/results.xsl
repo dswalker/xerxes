@@ -1160,7 +1160,7 @@
 				</xsl:when>
 				<xsl:otherwise>
 					
-					<xsl:call-template name="brief_result_info-cover" />
+					<xsl:call-template name="brief_result_info_cover" />
 					<a class="results-title" href="{../url_full}"><xsl:value-of select="$title" /></a>
 					<xsl:call-template name="brief_result_info" />
 					
@@ -1175,7 +1175,7 @@
 		TEMPLATE: BOOK COVER
 	-->
 	
-	<xsl:template name="brief_result_info-cover">
+	<xsl:template name="brief_result_info_cover">
 	</xsl:template>
 
 	<!-- 
@@ -1186,11 +1186,11 @@
 		
 		<div class="results-info">
 		
-			<xsl:call-template name="brief_result_info-type" />
-			<xsl:call-template name="brief_result_info-abstract" />
-			<xsl:call-template name="brief_result_info-primary_author" />
-			<xsl:call-template name="brief_result_info-publication_year" />
-			<xsl:call-template name="brief_result_info-journal_info" />
+			<xsl:call-template name="brief_result_info_type" />
+			<xsl:call-template name="brief_result_info_abstract" />
+			<xsl:call-template name="brief_result_info_primary_author" />
+			<xsl:call-template name="brief_result_info_publication_year" />
+			<xsl:call-template name="brief_result_info_journal_info" />
 			
 			<!-- custom area for local implementation to add junk -->
 			
@@ -1220,7 +1220,7 @@
 	
 	</xsl:template>
 	
-	<xsl:template name="brief_result_info-type">
+	<xsl:template name="brief_result_info_type">
 		<div class="results-type">
 		
 			<!-- format -->
@@ -1249,7 +1249,7 @@
 	
 	</xsl:template>
 	
-	<xsl:template name="brief_result_info-abstract">
+	<xsl:template name="brief_result_info_abstract">
 		<div class="results-abstract">
 		
 			<xsl:choose>
@@ -1273,7 +1273,7 @@
 		</div>
 	</xsl:template>
 	
-	<xsl:template name="brief_result_info-primary_author">
+	<xsl:template name="brief_result_info_primary_author">
 		<xsl:if test="primary_author">
 			<span class="results-author">
 				<strong><xsl:copy-of select="$text_results_author" />: </strong>
@@ -1282,7 +1282,7 @@
 		</xsl:if>
 	</xsl:template>
 	
-	<xsl:template name="brief_result_info-publication_year">
+	<xsl:template name="brief_result_info_publication_year">
 		<xsl:if test="year">
 			<span class="results-year">
 				<strong><xsl:copy-of select="$text_results_year" />: </strong>
@@ -1291,7 +1291,7 @@
 		</xsl:if>
 	</xsl:template>
 	
-	<xsl:template name="brief_result_info-journal_info">
+	<xsl:template name="brief_result_info_journal_info">
 			<xsl:if test="journal or journal_title">
 				<span class="results-publishing">
 					<strong><xsl:copy-of select="$text_results_published_in" />: </strong>

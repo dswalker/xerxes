@@ -294,7 +294,7 @@
 
 </xsl:template>
 
-	<xsl:template name="brief_result_info-cover">
+	<xsl:template name="brief_result_info_cover">
 	
 		<xsl:if test="//config[@source='summon']/client_id != ''">
 
