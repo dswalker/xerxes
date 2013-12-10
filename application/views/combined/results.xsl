@@ -47,73 +47,6 @@
 	
 </xsl:template>
 
-<xsl:template name="module_header">
-
-	<style type="text/css">
-		.combined-results-box {
-			border-left : 1px solid #ccc;
-			padding-left: 1em;
-			font-size: 12px;
-		}
-		
-		.combined-results-box h2, .combined-results-box h3 {
-			font-weight: bold;
-		}
-		
-		.combined-results-section {
-			margin-bottom: 3em;
-		}
-		
-		.combined-results-box h2 {
-			margin-bottom: 1em;
-			line-height: normal;
-		}
-		
-		.first-box {
-			border-left: none;
-			padding-left: 0;
-		}
-		
-		.combined-results-box p.no-results {
-			font-style: italic;
-		}		
-		
-		ul.combined-results li {
-			margin-bottom: 1.3em;
-			line-height: 140%;
-		}
-		
-		ul.combined-results .record-info {
-			margin-top: 4px;
-			color: #666;
-		}
-
-		ul.combined-results .record-title {
-			font-weight: bold;
-			font-size: 110%;
-		}
-		
-		.more-results {
-			margin: 2em;
-		}
-		
-		.more-results a, .more-results a:visited {
-			font-size: 110%;
-			color: #090;
-		}
-		
-		.combined-results-other ul {
-			margin-left: 2em;
-		}
-		
-		.combined-results-other li {
-			margin-bottom: 1em;
-			list-style: disc;
-		}
-	</style>
-
-</xsl:template>
-
 <xsl:template name="module_javascript">
 
 	<script type="application/javascript">
@@ -193,7 +126,6 @@
 							
 								<div class="combined-results-other">
 							
-									<!-- @todo: i18n (remove @public from configuration, look up label by id instead) -->
 									<h3><xsl:value-of select="@public" /></h3>
 			
 									<ul>
