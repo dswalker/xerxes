@@ -66,6 +66,15 @@ class Record extends Xerxes\Record
 			// language
 
 			$this->language = $this->getElementValue($display,"language");
+			
+			// peer reviewed
+			
+			$peer_reviewed = $this->getElementValue($display,'lds50');
+			
+			if ( $peer_reviewed == 'peer_reviewed' )
+			{
+				$this->refereed = true;
+			}
 		}
 		
 		if ( $search != null)
@@ -94,9 +103,16 @@ class Record extends Xerxes\Record
 			}
 			
 			// format
-			// @todo: create map for internal
 			
-			$this->format->setFormat($this->getElementValue($search,"rsrctype"));			
+			$format = $this->getElementValue($search,"rsrctype");
+			$this->format()->setInternalFormat($format);
+			
+			// create a readable display
+			
+			$format_display = str_replace('audio_video', 'Audio/Video', $format);
+			$format_display = str_replace('_', ' ', $format_display);
+			$format_display = $this->toTitleCase($format_display);
+			$this->format()->setPublicFormat($format_display);
 		}		
 		
 		// article data
@@ -109,11 +125,20 @@ class Record extends Xerxes\Record
 			$this->start_page = $this->getElementValue($addata,"spage");
 			$this->end_page = $this->getElementValue($addata,"epage");
 			
+			// primo's own ris type
+			
+			$ris_type = $this->getElementValue($addata,'ristype');
+			
+			if ( $ris_type != "" )
+			{
+				$this->format()->setNormalizedFormat($ris_type);
+			}
+			
 			// abstract 
 			
 			$abstract = $this->getElementValue($addata,"abstract");
 			
-			if ( $this->abstract == "" )
+			if ( $this->abstract == "" ) // only take this one if none set above
 			{
 				$this->abstract = strip_tags($abstract);
 			}
@@ -217,5 +242,3 @@ class Record extends Xerxes\Record
 		return $values;
 	}		
 }
-
-?>

@@ -86,7 +86,6 @@ class Engine extends Search\Engine
 		// enhance
 		
 		$results->markFullText(); // sfx data
-		$results->markRefereed(); // refereed
 		
 		return $results;
 	}	
@@ -120,7 +119,10 @@ class Engine extends Search\Engine
 	
 	protected function doGetRecord( $id )
 	{
-		$results = $this->doSearch("rid,exact,$id", 1, 1);
+		$query = new Query();
+		$query->simple = "rid,exact,$id";
+		
+		$results = $this->doSearch($query, 1, 1);
 		return $results;
 	}
 
@@ -142,7 +144,11 @@ class Engine extends Search\Engine
 		
 		$query = "";
 		
-		if ( $search instanceof Search\Query )
+		if( $search->simple != "")
+		{
+			$query = "&query=" . urlencode($search->simple);
+		}
+		else
 		{
 			foreach ( $search->getQueryTerms() as $term )
 			{
@@ -154,10 +160,7 @@ class Engine extends Search\Engine
 				$query .= "&query=facet_" . $limit->field . ",exact," . urlencode($limit->value);
 			}
 		}
-		else
-		{
-			$query = "&query=" . urlencode($search);
-		}
+
 		
 		// on campus as string
 		
@@ -197,7 +200,7 @@ class Engine extends Search\Engine
 		$client = Factory::getHttpClient();
 		$response = $client->getUrl($this->url);
 		
-		echo $this->url;
+		// echo $this->url;
 		
 		// header('Content-type: text/xml'); echo $response; exit;
 		
