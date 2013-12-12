@@ -109,9 +109,7 @@ class Record extends Xerxes\Record
 			
 			// create a readable display
 			
-			$format_display = str_replace('audio_video', 'Audio/Video', $format);
-			$format_display = str_replace('_', ' ', $format_display);
-			$format_display = $this->toTitleCase($format_display);
+			$format_display = self::createReadableLabel($format);
 			$this->format()->setPublicFormat($format_display);
 		}		
 		
@@ -198,6 +196,22 @@ class Record extends Xerxes\Record
 				}
 			}
 		}
+	}
+	
+	public static function createReadableLabel($format)
+	{
+		$format_display = str_replace('audio_video', 'Audio/Video', $format);
+			
+		$format_array = explode('_', $format_display);
+			
+		for ( $x = 0; $x < count($format_array); $x++ )
+		{
+			$format_array[$x] = ucfirst($format_array[$x]);
+		}
+			
+		$format_display = implode(' ', $format_array);
+		
+		return $format_display;
 	}
 	
 	protected function getElement($node, $name)
