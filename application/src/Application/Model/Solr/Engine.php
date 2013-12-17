@@ -11,6 +11,10 @@
 
 namespace Application\Model\Solr;
 
+use Application\Model\Search\QueryTerm;
+
+use Solarium\QueryType\Suggester\Result\Term;
+
 use Application\Model\Search;
 use Xerxes\Utility\Factory;
 use Xerxes\Mvc\Request;
@@ -23,26 +27,6 @@ use Xerxes\Mvc\Request;
 
 class Engine extends Search\Engine 
 {
-	protected $server; // solr server address
-	protected $url; // track the url
-
-	/**
-	 * Constructor
-	 */
-	
-	public function __construct()
-	{
-		parent::__construct();
-
-		// server address
-		
-		$this->server = $this->config->getConfig('SOLR', true);
-		
-		$this->server = rtrim($this->server, '/');
-		
-		$this->server .= "/select/?version=2.2";
-	}
-	
 	/**
 	 * Search and return results
 	 * 
@@ -110,86 +94,36 @@ class Engine extends Search\Engine
 	/**
 	 * Do the actual search
 	 * 
-	 * @param Search\Query $search  search object or string
-	 * @param int $start            [optional] starting record number
-	 * @param int $max              [optional] max records
-	 * @param string $sort          [optional] sort order
-	 * @param bool $facets  [optional] whether to include facets or not
+	 * @param Search\Query $query  search object or string
+	 * @param int $start           [optional] starting record number
+	 * @param int $max             [optional] max records
+	 * @param string $sort         [optional] sort order
+	 * @param bool $facets         [optional] whether to include facets or not
 	 * 
 	 * @return ResultSet
 	 */		
 	
-	protected function doSearch( Search\Query $search, $start = 1, $max = 10, $sort = "", $facets = true)
+	protected function doSearch( Search\Query $query, $start = 1, $max = 10, $sort = "", $facets = true)
 	{
-		// start
-		
-		if ( $start > 0)
-		{
-			$start--; // solr is 0-based
-		}
-		
-		// parse the query
-		
-		$query = '';
-		
-		if ( $search->simple != "" )
-		{
-			$query = "&q=" . urlencode($search->simple);
-		}
-		else
-		{
-			$query = $search->toQuery();
-		}
-		
-		// now the url
-		
-		$this->url = $this->server . $query;
-
-		$this->url .= "&start=$start&rows=" . $max . "&sort=" . urlencode($sort);
-		
-		if ( $facets == true )
-		{
-			$this->url .= "&facet=true&facet.mincount=1";
-			
-			foreach ( $this->config->getFacets() as $facet => $attributes )
-			{
-				$sort = (string) $attributes["sort"];
-				$max = (string) $attributes["max"];
-				$type = (string) $attributes["type"];
-				
-				if ( $type == 'date' )
-				{
-					$sort = 'index';
-				}
-				
-				$this->url .= "&facet.field=" . urlencode("{!ex=$facet}$facet");
-
-				if ( $sort != "" )
-				{
-					$this->url .= "&f.$facet.facet.sort=$sort";
-				}				
-				
-				if ( $max != "" )
-				{
-					$this->url .= "&f.$facet.facet.limit=$max";
-				}					
-			}
-		}
-		
-		// make sure we get the score
-		
-		$this->url .= "&fl=*+score";
-		
-		// echo $this->url;
-		
-		
-		## get and parse the response
+		$url = $query->getQueryUrl();
 		
 		// get the data
 		
 		$client = Factory::getHttpClient();
-		$response = $client->getUrl($this->url);
+		$response = $client->getUrl($url);
 		
+		return $this->parseResponse($response);
+	}
+	
+	/**
+	 * Parse the solr response
+	 *
+	 * @param string $response
+	 * @return ResultSet
+	 */	
+	
+	public function parseResponse($response)
+	{
 		// header('Content-type: text/xml'); echo $response; echo '<!--' . $this->url . '-->'; exit;
 		
 		$xml = simplexml_load_string($response);
@@ -223,7 +157,7 @@ class Engine extends Search\Engine
 		
 		foreach ( $facets->getGroups() as $group )
 		{
-			foreach ( $search->getLimits(true) as $matching_limit )
+			foreach ( $this->query->getLimits(true) as $matching_limit )
 			{
 				if ( $matching_limit->boolean == 'NOT' && $matching_limit->field == $group->name )
 				{
@@ -282,7 +216,7 @@ class Engine extends Search\Engine
 	 * Extract facets from the Solr response
 	 * 
 	 * @param simplexml	$xml	solr response
-	 * @return Facets, null if none
+	 * @return Facets           null if none
 	 */
 	
 	protected function extractFacets($xml)
@@ -344,6 +278,28 @@ class Engine extends Search\Engine
 	}
 	
 	/**
+	 * Get facets from an 'all records' search
+	 * 
+	 * @return Facets
+	 */
+	
+	public function getAllFacets()
+	{
+		$this->getQuery()->addTerm(1, null, '*', null, '*');
+		
+		$results = $this->doSearch($this->query);
+		
+		$facets = $results->getFacets();
+		
+		foreach ( $facets->groups as $group )
+		{
+			$group->sortByName('asc');
+		}
+		
+		return $facets;
+	}
+	
+	/**
 	 * @return Config
 	 */
 	
@@ -359,15 +315,13 @@ class Engine extends Search\Engine
 	 * @return Query
 	 */
 	
-	public function getQuery(Request $request )
+	public function getQuery(Request $request = null)
 	{
-		if ( $this->query instanceof Query )
+		if ( ! $this->query instanceof Query )
 		{
-			return $this->query;
+			$this->query = new Query($request, $this->getConfig());
 		}
-		else
-		{
-			return new Query($request, $this->getConfig());
-		}
+		
+		return $this->query;
 	}	
 }

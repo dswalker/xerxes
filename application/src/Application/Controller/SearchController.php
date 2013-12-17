@@ -54,24 +54,6 @@ abstract class SearchController extends ActionController
 	protected $helper;
 	
 	/**
-	 * default records per page
-	 * @var int
-	 */
-	protected $max;
-	
-	/**
-	 * upper-limit per page
-	 * @var int
-	 */
-	protected $max_allowed;
-
-	/**
-	 * default sort
-	 * @var string
-	 */
-	protected $sort;
-
-	/**
 	 * inlcude facets
 	 * @var bool
 	 */
@@ -98,17 +80,6 @@ abstract class SearchController extends ActionController
 		
 		$this->response->setVariable('config_local', $this->config);
 
-		// defaults
-		
-		$this->max = $this->registry->getConfig("RECORDS_PER_PAGE", false, 10);
-		$this->max = $this->config->getConfig("RECORDS_PER_PAGE", false, $this->max);
-		
-		$this->max_allowed = $this->registry->getConfig("MAX_RECORDS_PER_PAGE", false, 30);
-		$this->max_allowed = $this->config->getConfig("MAX_RECORDS_PER_PAGE", false, $this->max_allowed);
-		
-		$this->sort = $this->registry->getConfig("SORT_ORDER", false, "relevance");
-		$this->sort = $this->config->getConfig("SORT_ORDER", false, $this->sort);		
-		
 		// disable caching
 		
 		$this->response->cache = false; // @todo figure out how to cache more
@@ -224,21 +195,10 @@ abstract class SearchController extends ActionController
 	{
 		// params
 		
-		$start = $this->request->getParam('start', 1);
-		$max = $this->request->getParam('max', $this->max);
-		$sort = $this->request->getParam('sort', $this->sort);
+		$start = $this->query->start;
+		$max = $this->query->max;
+		$sort = $this->query->sort;
 		$include_facets = $this->request->getParam('include_facets', $this->include_facets);
-		
-		// swap for internal
-		
-		$internal_sort = $this->config->swapForInternalSort($sort);
-		
-		// make sure records per page does not exceed upper bound
-		
-		if ( $max > $this->max_allowed )
-		{
-			$max = $this->max_allowed;
-		}
 		
 		// keep search refinements, if not set by user already and so configured 
 		
@@ -249,7 +209,7 @@ abstract class SearchController extends ActionController
 
 		// search
 		
-		$results = $this->engine->searchRetrieve($this->query, $start, $max, $internal_sort, $include_facets);
+		$results = $this->engine->searchRetrieve($this->query, $start, $max, $sort, $include_facets);
 		
 		// total
 		
@@ -485,8 +445,18 @@ abstract class SearchController extends ActionController
 		return $this->response;
 	}
 	
+	/**
+	 * Advanced search screen
+	 */
+	
 	public function advancedAction()
 	{
+		$facets = $this->engine->getAllFacets();
+		
+		$this->response->setVariable('limits', $facets);
+		
+		$this->response->setView('search/advanced.xsl');
+		
 		return $this->response;
 	}
 	

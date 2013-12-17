@@ -20,7 +20,7 @@ use Xerxes\Utility\Parser;
 use Xerxes\Mvc\Request;
 
 /**
- * Summon Search Engine
+ * EDS Search Engine
  * 
  * @author David Walker <dwalker@calstate.edu>
  */
@@ -28,24 +28,9 @@ use Xerxes\Mvc\Request;
 class Engine extends Search\Engine 
 {
 	/**
-	 * @var string
-	 */
-	protected $base;
-	
-	/**
 	 * @var HttpClient
 	 */
 	protected $client;
-	
-	/**
-	 * @var string
-	 */
-	protected $session_id;
-	
-	/**
-	 * @var array
-	 */
-	protected $headers;
 	
 	/**
 	 * New EDS Engine
@@ -56,26 +41,7 @@ class Engine extends Search\Engine
 	public function __construct( $session = "" )
 	{
 		parent::__construct();
-		
-		$profile = 'edsapi';
-		
-		$this->base = 'http://eds-api.ebscohost.com/edsapi/rest/';
-		
 		$this->client = new HttpClient();
-		
-		if ( $session == "" )
-		{
-			$this->session_id = $this->createSession($profile);
-		}
-		else
-		{
-			$this->session_id = $session;
-		}
-		
-		$this->headers =  array(
-			'Accept' => 'application/json',
-			'x-sessionToken' => $this->session_id
-		);
 	}
 
 	/**
@@ -174,68 +140,20 @@ class Engine extends Search\Engine
 	/**
 	 * Do the actual search and return results
 	 *
-	 * @param Query $search  search object
-	 * @param int $start     [optional] starting record number
-	 * @param int $max       [optional] max records
-	 * @param string $sort   [optional] sort order
-	 * @param bool $facets   [optional] whether to include facets
+	 * @param Query $query  search object
+	 * @param int $start    [optional] starting record number
+	 * @param int $max      [optional] max records
+	 * @param string $sort  [optional] sort order
+	 * @param bool $facets  [optional] whether to include facets
 	 *
 	 * @return Results
 	 */	
 	
-	protected function doSearch( Search\Query $search, $start = 1, $max = 10, $sort = "", $facets = true)
+	protected function doSearch( Search\Query $query, $start = 1, $max = 10, $sort = "", $facets = true)
 	{
-		// limit to local users?
+		$request = $query->getQueryUrl();
 		
-		if ( $search->getUser()->isAuthorized() )
-		{
-			
-		}
-		
-		// prepare the query
-		
-		$query = $search->toQuery();
-		
-		// limit to local holdings unless told otherwise
-		
-		if ( $this->config->getConfig('LIMIT_TO_HOLDINGS', false) )
-		{
-			
-		}
-
-		// format filters
-		
-		// newspapers are a special case, i.e., they can be optional
-		
-		if ( $this->config->getConfig('NEWSPAPERS_OPTIONAL', false) )
-		{
-			
-		}
-
-		// EDS deals in pages, not start record number
-		
-		if ( $max > 0 )
-		{
-			$page = ceil ($start / $max);
-		}
-		else
-		{
-			$page = 1;
-		}
-		
-		// get the results
-		
-		$url = $this->base . 'Search?';
-		$url .= $query;
-		$url .= '&view=detailed';
-		$url .= '&resultsperpage=' . $max;
-		$url .= '&pagenumber=' . $page;
-		$url .= '&sort=' . $sort;
-		$url .= '&searchmode=all';
-		$url .= '&highlight=n';
-		$url .= '&includefacets=y';
-		
-		$response = $this->client->getUrl($url, null, $this->headers);
+		$response = $this->client->getUrl($request->url, null, $request->headers);
 		
 		return $this->parseResponse($response);
 	}
@@ -355,40 +273,6 @@ class Engine extends Search\Engine
 	}
 	
 	/**
-	 * Establish a new session with EDS
-	 * 
-	 * @param string $profile
-	 * @return string
-	 */
-	
-	public function createSession($profile)
-	{
-		$url = $this->base . 'createsession?profile=' . urlencode($profile);
-	
-		$xml = $this->client->getUrl($url, 10);
-	
-		$dom = new \DOMDocument();
-		$dom->loadXML($xml);
-		
-		// header('Content-type: text/xml'); echo $dom->saveXML(); exit;
-	
-		$session_id = $dom->getElementsByTagName('SessionToken')->item(0)->nodeValue;
-	
-		return $session_id;
-	}
-	
-	/**
-	 * Session identifier
-	 * 
-	 * @return string
-	 */
-	
-	public function getSession()
-	{
-		return $this->session_id;
-	}
-	
-	/**
 	 * @return Config
 	 */
 	
@@ -398,7 +282,7 @@ class Engine extends Search\Engine
 	}	
 	
 	/**
-	 * Return the Summon search query object
+	 * Return the EDS search query object
 	 *
 	 * @param Request $request
 	 * @return Query
@@ -406,13 +290,11 @@ class Engine extends Search\Engine
 	
 	public function getQuery(Request $request )
 	{
-		if ( $this->query instanceof Query )
+		if ( ! $this->query instanceof Query )
 		{
-			return $this->query;
+			$this->query = new Query($request, $this->getConfig());
 		}
-		else
-		{
-			return new Query($request, $this->getConfig());
-		}
+		
+		return $this->query;
 	}
 }

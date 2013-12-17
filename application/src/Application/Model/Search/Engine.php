@@ -198,16 +198,14 @@ abstract class Engine
 	 * @return Query
 	 */	
 	
-	public function getQuery(Request $request )
+	public function getQuery(Request $request = null)
 	{
-		if ( $this->query instanceof Query )
+		if ( ! $this->query instanceof Query )
 		{
-			return $this->query;
+			$this->query = new Query($request, $this->getConfig());
 		}
-		else
-		{
-			return new Query($request, $this->getConfig());
-		}
+		
+		return $this->query;
 	}
 	
 	/**

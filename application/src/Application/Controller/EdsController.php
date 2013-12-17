@@ -19,14 +19,6 @@ class EdsController extends SearchController
 	
 	protected function getEngine()
 	{
-		$session_id = $this->request->getSessionData('ebsco_session');
-		
-		$engine = new Engine($session_id);
-		
-		$session_id = $engine->getSession();
-		
-		$this->request->setSessionData('ebsco_session', $session_id);
-		
-		return $engine;
+		return new Engine();
 	}
 }

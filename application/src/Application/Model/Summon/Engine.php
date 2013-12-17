@@ -634,6 +634,28 @@ class Engine extends Search\Engine
 	}
 	
 	/**
+	 * Get facets from an 'all records' search
+	 *
+	 * @return Facets
+	 */
+	
+	public function getAllFacets()
+	{
+		$this->getQuery()->addTerm(1, null, '*', null, '*');
+	
+		$results = $this->doSearch($this->query);
+	
+		$facets = $results->getFacets();
+	
+		foreach ( $facets->groups as $group )
+		{
+			$group->sortByName('asc');
+		}
+	
+		return $facets;
+	}	
+	
+	/**
 	 * @return Config
 	 */
 	
@@ -649,15 +671,13 @@ class Engine extends Search\Engine
 	 * @return Query
 	 */
 	
-	public function getQuery(Request $request )
+	public function getQuery(Request $request = null)
 	{
-		if ( $this->query instanceof Query )
+		if ( ! $this->query instanceof Query )
 		{
-			return $this->query;
+			$this->query = new Query($request, $this->getConfig());
 		}
-		else
-		{
-			return new Query($request, $this->getConfig());
-		}
-	}
+		
+		return $this->query;
+	}	
 }

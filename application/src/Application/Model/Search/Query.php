@@ -25,6 +25,31 @@ use Xerxes\Mvc\Request;
 class Query
 {
 	/**
+	 * maximum records to return
+	 * @var string
+	 */
+	
+	public $start;
+	
+	/**
+	 * default records per page
+	 * @var int
+	 */
+	public $max;
+	
+	/**
+	 * upper-limit per page
+	 * @var int
+	 */
+	public $max_allowed;
+
+	/**
+	 * default sort
+	 * @var string
+	 */
+	public $sort;
+	
+	/**
 	 * @var string
 	 */
 	
@@ -41,6 +66,11 @@ class Query
 	 */	
 	
 	public $limits = array();
+	
+	/*
+	 * @var bool
+	 */
+	protected $facets = true;
 	
 	/**
 	 * @var string
@@ -65,6 +95,12 @@ class Query
 	 */
 	
 	protected $request;
+
+	/**
+	 * @var Registry
+	 */
+	
+	protected $registry;
 	
 	/**
 	 * @var Config
@@ -81,33 +117,70 @@ class Query
 	
 	public function __construct(Request $request = null, Config $config = null )
 	{
-		$this->config = $config;
+		// registry
 		
-		// xerxes request
+		$this->registry = Registry::getInstance();
 		
-		if ( $request != null )
+		if ( $config != null )
 		{
-			// make these available
+			// config
 			
-			$this->request = $request;
-	
-			// populate it with the 'search' related params out of the url
+			$this->config = $config;
 			
-			foreach ( $this->extractSearchGroupings() as $term )
+			// defaults
+				
+			$this->max = $this->registry->getConfig("RECORDS_PER_PAGE", false, 10);
+			$this->max = $this->config->getConfig("RECORDS_PER_PAGE", false, $this->max);
+				
+			$this->max_allowed = $this->registry->getConfig("MAX_RECORDS_PER_PAGE", false, 30);
+			$this->max_allowed = $this->config->getConfig("MAX_RECORDS_PER_PAGE", false, $this->max_allowed);
+				
+			$this->sort = $this->registry->getConfig("SORT_ORDER", false, "relevance");
+			$this->sort = $this->config->getConfig("SORT_ORDER", false, $this->sort);	
+			
+			// xerxes request
+			
+			if ( $request != null )
 			{
-				$this->addTerm(
-					$term["id"], 
-					$term["boolean"], 
-					$term["field"], 
-					$term["relation"], 
-					$term["query"]);
-			}
-	
-			// also limits
-			
-			foreach ( $this->extractLimitGroupings() as $limit )
-			{
-				$this->addLimit($limit["boolean"], $limit["field"], $limit["relation"], $limit["value"]);
+				// make these available
+				
+				$this->request = $request;
+		
+				// populate it with the 'search' related params out of the url
+				
+				foreach ( $this->extractSearchGroupings() as $term )
+				{
+					$this->addTerm(
+						$term["id"], 
+						$term["boolean"], 
+						$term["field"], 
+						$term["relation"], 
+						$term["query"]);
+				}
+		
+				// also limits
+				
+				foreach ( $this->extractLimitGroupings() as $limit )
+				{
+					$this->addLimit($limit["boolean"], $limit["field"], $limit["relation"], $limit["value"]);
+				}
+				
+				// start, max, sort
+				
+				$this->start = $this->request->getParam('start', 1);
+				$this->max = $this->request->getParam('max', $this->max);
+				$this->sort = $this->request->getParam('sort', $this->sort);
+				
+				// swap for internal
+				
+				$this->sort = $this->config->swapForInternalSort($this->sort);
+				
+				// make sure records per page does not exceed upper bound
+				
+				if ( $this->max > $this->max_allowed )
+				{
+					$this->max = $this->max_allowed;
+				}
 			}
 		}
 	}
@@ -306,8 +379,7 @@ class Query
 	
 	public function checkSpelling()
 	{
-		$registry = Registry::getInstance();
-		$spell_type = $registry->getConfig('SPELL_CHECKER');
+		$spell_type = $this->registry->getConfig('SPELL_CHECKER');
 		
 		if ( $spell_type != null )
 		{

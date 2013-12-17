@@ -12,7 +12,6 @@
 namespace Application\Model\Primo;
 
 use Application\Model\Search;
-use Application\Model\Search\Query;
 use Xerxes\Mvc\Request;
 use Xerxes\Utility\Factory;
 use Xerxes\Utility\Parser;
@@ -25,46 +24,6 @@ use Xerxes\Utility\Parser;
 
 class Engine extends Search\Engine 
 {
-	protected $server; // primo server address
-	protected $institution; // primo institution id
-	protected $vid; // not sure what this is, 'vendor' id?
-	protected $loc = array(); // scope value(s)
-	protected $on_campus; // on campus or not
-	protected $url; // track the url
-
-	/**
-	 * New Primo Search Engine
-	 */
-	
-	public function __construct( $on_campus = true, $scope = "" )
-	{
-		parent::__construct();
-
-		// server info
-		
-		$this->server = $this->config->getConfig('PRIMO_ADDRESS', true);
-
-		$this->server = rtrim($this->server, '/');	
-		
-		// institutional id's
-		
-		$this->institution = $this->config->getConfig('INSTITUTION', true);
-		$this->vid = $this->config->getConfig('VID', false);
-		
-		// scope
-		
-		$loc = $this->config->getConfig('LOC', false, $scope);
-		
-		if ( $loc != "" )
-		{
-			$this->loc = explode(";", $loc);
-		}
-		
-		// on campus
-		
-		$this->on_campus = $on_campus;
-	}
-	
 	/**
 	 * Search and return results
 	 * 
@@ -129,78 +88,23 @@ class Engine extends Search\Engine
 	/**
 	 * Do the actual search and return results
 	 *
-	 * @param Query $search  search object
-	 * @param int $start     [optional] starting record number
-	 * @param int $max       [optional] max records
-	 * @param string $sort   [optional] sort order
-	 * @param bool $facets   [optional] whether to include facets
+	 * @param Search\Query $query  search object
+	 * @param int $start           [optional] starting record number
+	 * @param int $max             [optional] max records
+	 * @param string $sort         [optional] sort order
+	 * @param bool $facets         [optional] whether to include facets
 	 *
 	 * @return Results
 	 */
 
-	protected function doSearch( Search\Query $search, $start = 1, $max = 10, $sort = "", $facets = true )
+	protected function doSearch( Search\Query $query, $start = 1, $max = 10, $sort = "", $facets = true )
 	{
-		// parse the query
-		
-		$query = "";
-		
-		if( $search->simple != "")
-		{
-			$query = "&query=" . urlencode($search->simple);
-		}
-		else
-		{
-			foreach ( $search->getQueryTerms() as $term )
-			{
-				$query .= "&query=" . $term->field_internal . ",contains," . urlencode($term->phrase);
-			}
-			
-			foreach ( $search->getLimits(true) as $limit )
-			{
-				$query .= "&query=facet_" . $limit->field . ",exact," . urlencode($limit->value);
-			}
-		}
-
-		
-		// on campus as string
-		
-		$on_campus = "true";
-		
-		if ( $this->on_campus == false )
-		{
-			$on_campus = "false";
-		}
-		
-		// create the url
-		
-		$this->url = $this->server . "/xservice/search/brief?" .
-			"institution=" . $this->institution .
-			"&onCampus=" . $on_campus .
-			$query .
-			"&indx=$start" .
-			"&bulkSize=$max";
-			
-		if ( $this->vid != "" )
-		{
-			$this->url .= "&vid=" . $this->vid;	
-		}
-		
-		foreach ( $this->loc as $loc )
-		{
-			$this->url .= "&loc=" . $loc;
-		}
-			
-		if ( $sort != "" )
-		{
-			$this->url .= "&sortField=$sort";
-		}
+		$url = $query->getQueryUrl();
 		
 		// get the response
 		
 		$client = Factory::getHttpClient();
-		$response = $client->getUrl($this->url);
-		
-		// echo $this->url;
+		$response = $client->getUrl($url);
 		
 		// header('Content-type: text/xml'); echo $response; exit;
 		
@@ -209,24 +113,24 @@ class Engine extends Search\Engine
 			throw new \Exception("Could not connect to Primo server");
 		}
 		
-		// load it
-
-		$xml = Parser::convertToDOMDocument($response);
-		
 		// parse it
 		
-		return $this->parseResponse($xml);
+		return $this->parseResponse($response);
 	}	
 
 	/**
 	 * Parse the primo response
 	 *
-	 * @param DOMDocument $xml	primo results
+	 * @param string $response
 	 * @return ResultSet
 	 */	
 	
-	protected function parseResponse(\DOMDocument $xml)
+	public function parseResponse($response)
 	{
+		// load it
+		
+		$xml = Parser::convertToDOMDocument($response);
+		
 		// check for errors
 		
 		$error = $xml->getElementsByTagName("ERROR")->item(0);

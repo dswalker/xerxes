@@ -12,6 +12,7 @@
 namespace Application\Model\Solr;
 
 use Application\Model\Search;
+use Xerxes\Mvc\Request;
 
 /**
  * Solr Search Query
@@ -22,15 +23,40 @@ use Application\Model\Search;
 class Query extends Search\Query
 {
 	/**
+	 * solr server address
+	 * @var string
+	 */
+	protected $server;
+	
+	/**
+	 * Create a Solr Query
+	 *
+	 * @param Request $request
+	 * @param Config $config
+	 */
+	
+	public function __construct(Request $request = null, Config $config = null )
+	{
+		parent::__construct($request, $config);
+	
+		// server address
+		
+		$this->server = $this->config->getConfig('SOLR', true);
+		$this->server = rtrim($this->server, '/');
+		$this->server .= "/select/?version=2.2";
+	}
+	
+	/**
 	 * Convert to Solr query syntax
 	 * 
 	 * Includes the URL parameters &q, &qf, and &pf
 	 * @throws \Exception
-	 * @return string
+	 * @return string url
 	 */
 	
-	public function toQuery()
+	public function getQueryUrl()
 	{
+		$url = ""; // final url
 		$query = ""; // search query
 		$type = ""; // dismax or standard
 		
@@ -262,6 +288,54 @@ class Query extends Search\Query
 		
 		$final = $type . $query;
 
-		return $final;
+		// start
+		
+		if ( $this->start > 0)
+		{
+			$this->start--; // solr is 0-based
+		}
+		
+		// now the url
+		
+		$url = $this->server . $final;
+
+		$url .= '&start=' . $this->start . '&rows=' . $this->max . '&sort=' . urlencode($this->sort);
+		
+		if ( $this->facets == true )
+		{
+			$url .= "&facet=true&facet.mincount=1";
+			
+			foreach ( $this->config->getFacets() as $facet => $attributes )
+			{
+				$sort = (string) $attributes["sort"];
+				$max = (string) $attributes["max"];
+				$type = (string) $attributes["type"];
+				
+				if ( $type == 'date' )
+				{
+					$sort = 'index';
+				}
+				
+				$url .= "&facet.field=" . urlencode("{!ex=$facet}$facet");
+
+				if ( $sort != "" )
+				{
+					$url .= "&f.$facet.facet.sort=$sort";
+				}				
+				
+				if ( $max != "" )
+				{
+					$url .= "&f.$facet.facet.limit=$max";
+				}					
+			}
+		}
+		
+		// make sure we get the score
+		
+		$url .= "&fl=*+score";
+		
+		// echo $url;
+		
+		return $url;
 	}
 }
