@@ -740,6 +740,80 @@
 		</xsl:for-each>
 			
 	</xsl:template>
+	
+	<xsl:template name="facet_narrow_results">
+	
+		<xsl:if test="config/limit_search_options">
+		
+			<xsl:variable name="showall">
+				<xsl:for-each select="config/limit_search_options/facet">
+					<xsl:variable name="facet_name" select="@param" />
+					<xsl:variable name="facet_value" select="@value" />
+					<xsl:if test="//request/*[@original_key = $facet_name] = $facet_value">
+						<xsl:text>yes</xsl:text>
+					</xsl:if>
+				</xsl:for-each>		
+			</xsl:variable>
+	
+			<h3><xsl:copy-of select="$text_summon_facets_refine" /></h3>
+		
+			<form id="form-facet-0" action="{//request/controller}/search" method="get">
+			
+				<input name="lang" type="hidden" value="{//request/lang}" />
+				
+				<xsl:call-template name="hidden_search_inputs">
+					<xsl:with-param name="exclude_limit">
+						<xsl:for-each select="config/limit_search_options/facet">
+							<xsl:value-of select="@param" />
+							<xsl:if test="following-sibling::facet">
+								<xsl:text>,</xsl:text>
+							</xsl:if>
+						</xsl:for-each>
+					</xsl:with-param>
+				</xsl:call-template>
+				
+				<ul>	
+				
+					<li class="facet-selection">
+					
+						<input type="checkbox" class="facet-selection-clear" id="facet-0">
+							<xsl:if test="$showall = ''">
+								<xsl:attribute name="checked">checked</xsl:attribute>
+							</xsl:if>
+						</input>
+						<xsl:text> </xsl:text>
+						<label for="facet-0"><xsl:copy-of select="$text_summon_facets_all" /></label>
+						
+					</li>
+					
+				<xsl:for-each select="config/limit_search_options/facet">
+				
+					<xsl:variable name="facet_name" select="@param" />
+					<xsl:variable name="facet_value" select="@value" />
+				
+					<li class="facet-selection">
+					
+						<input type="checkbox" id="facet-0-{position()}" class="facet-selection-option facet-0" name="{$facet_name}" value="{@value}">
+							<xsl:if test="//request/*[@original_key = $facet_name] = $facet_value">
+								<xsl:attribute name="checked">checked</xsl:attribute>
+							</xsl:if>
+						</input>
+						<xsl:text> </xsl:text>
+						<label for="facet-0-{position()}"><xsl:value-of select="@public" /></label>
+					
+					</li>
+					
+				</xsl:for-each>
+				
+				</ul>
+	
+				<xsl:call-template name="facet_noscript_submit" />
+			
+			</form>
+			
+		</xsl:if>
+	
+	</xsl:template>
 
 	<!-- 
 		TEMPLATE: FACET DATES
@@ -1658,7 +1732,6 @@
 	<!-- search results templates -->
 	
 	<xsl:template name="search_recommendations" />
-	<xsl:template name="facet_narrow_results" />
 	<xsl:template name="search_promo" />
 	<xsl:template name="search_login_reminder" />
 	<xsl:template name="search_sidebar_additional" />

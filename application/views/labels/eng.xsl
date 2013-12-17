@@ -535,9 +535,9 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_summon_facets_scholarly">Scholarly only</xsl:variable>
 	<xsl:variable name="text_summon_facets_refereed">Peer-reviewed only</xsl:variable>
 	<xsl:variable name="text_summon_facets_fulltext">Full-text only</xsl:variable>
-	<xsl:variable name="text_summon_facets_newspaper-add">Add newspaper articles</xsl:variable>
-	<xsl:variable name="text_summon_facets_newspaper-exclude">Exclude newspaper articles</xsl:variable>
-	<xsl:variable name="text_summon_facets_beyond-holdings">Add results beyond the library's collection</xsl:variable>
+	<xsl:variable name="text_summon_facets_newspaper_add">Add newspaper articles</xsl:variable>
+	<xsl:variable name="text_summon_facets_newspaper_exclude">Exclude newspaper articles</xsl:variable>
+	<xsl:variable name="text_summon_facets_beyond_holdings">Add results beyond the library's collection</xsl:variable>
 	
 	<xsl:variable name="text_folder_output_results_title">Title</xsl:variable>
 	<xsl:variable name="text_folder_output_results_author">Author</xsl:variable>

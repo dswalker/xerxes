@@ -1040,9 +1040,9 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_summon_facets_scholarly">Pouze akademické</xsl:variable>
 	<xsl:variable name="text_summon_facets_refereed">Pouze recenzované</xsl:variable>
 	<xsl:variable name="text_summon_facets_fulltext">Pouze s plným textem online</xsl:variable>
-	<xsl:variable name="text_summon_facets_newspaper-add">Přidat novinové články</xsl:variable>
-	<xsl:variable name="text_summon_facets_newspaper-exclude">Vyjmout novinové články</xsl:variable>
-	<xsl:variable name="text_summon_facets_beyond-holdings">Vyhledávat i mimo vaši knihovnu</xsl:variable>
+	<xsl:variable name="text_summon_facets_newspaper_add">Přidat novinové články</xsl:variable>
+	<xsl:variable name="text_summon_facets_newspaper_exclude">Vyjmout novinové články</xsl:variable>
+	<xsl:variable name="text_summon_facets_beyond_holdings">Vyhledávat i mimo vaši knihovnu</xsl:variable>
 	
 	<xsl:variable name="text_folder_output_results_title">Název</xsl:variable>
 	<xsl:variable name="text_folder_output_results_author">Autor</xsl:variable>
