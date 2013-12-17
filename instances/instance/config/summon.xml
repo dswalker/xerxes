@@ -15,13 +15,23 @@
 		<config name="show_fulltext_limit" pass="true">true</config>
 		<config name="newspapers_optional" pass="true">true</config>
 		<config name="limit_to_holdings" pass="true">true</config>
+		<config name="exclude_formats"></config>
 		
 		<config name="direct_linking">true</config>
 		<config name="mark_fulltext_using_export">false</config>
 
+		<config name="limit_search_options" xml="true" pass="true">
+			<facet label="text_summon_facets_fulltext" param="facet.IsFullText" value="true" />
+			<facet label="text_summon_facets_refereed" param="facet.IsPeerReviewed" value="true" />
+			<facet label="text_summon_facets_scholarly" param="facet.IsScholarly" value="true" />
+			<facet label="text_summon_facets_newspaper_add" param="facet.newspapers" value="true" />
+			<facet label="text_summon_facets_newspaper_exclude" param="facet.newspapers" value="false" />
+			<facet label="text_summon_facets_beyond_holdings" param="facet.holdings" value="false" />
+		</config>		
+		
 		<config name="facet_fields" xml="true" pass="true">
 			<facet label="text_facet_field_scholarly" internal="IsScholarly" display="false" />
-			<facet label="text_facet_field_format" internal="ContentType" max="100" />
+			<facet label="text_facet_field_format" internal="ContentType" max="100" type="format" />
 			<facet label="text_facet_field_subjects" internal="SubjectTerms" max="30" />
 			<facet label="text_facet_field_discipline" internal="Discipline" max="60" />
 			<facet label="text_facet_field_date" internal="PublicationDate" max="30" type="date" />
@@ -33,12 +43,22 @@
 			<option id="date" label="text_results_sort_by_date" internal="PublicationDate:desc" type="year"/>
 			<option id="date-old" label="text_results_sort_by_date_old" internal="PublicationDate:asc" type="year"/>
 		</config>
-
+		
 		<config name="basic_search_fields" xml="true" pass="true">
 			<field id="keyword" label="text_search_fields_keyword" internal="" />
 			<field id="title" label="text_search_fields_title" internal="Title" />
 			<field id="author" label="text_search_fields_author" internal="Author" />
 			<field id="subject" label="text_search_fields_subject" internal="SubjectTerms" />
+		</config>
+
+		<config name="advanced_search_fields" xml="true" pass="true">
+			<field id="isbn" public="ISBN" internal="isbn" />
+			<field id="issn" public="ISSN" internal="issn" />
+			<field id="publication" public="publication title" internal="publication" />
+
+			<limit id="ContentType" label="text_facet_field_format" />
+			<limit id="Discipline" label="text_facet_field_discipline" />			
+			<limit id="date" public="Return articles dated between" type="date" />
 		</config>
 		
 	</configuration>
