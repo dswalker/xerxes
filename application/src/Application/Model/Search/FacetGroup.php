@@ -64,7 +64,7 @@ class FacetGroup
 		
 		foreach ( $this->facets as $facet )
 		{
-			array_push($names, (string) $facet->name);
+			array_push($names, strtoupper((string) $facet->name));
 		}
 		
 		// now sort them, keeping the key associations
