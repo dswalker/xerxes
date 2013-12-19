@@ -11,10 +11,6 @@
 
 namespace Application\Model\Solr;
 
-use Application\Model\Search\QueryTerm;
-
-use Solarium\QueryType\Suggester\Result\Term;
-
 use Application\Model\Search;
 use Xerxes\Utility\Factory;
 use Xerxes\Mvc\Request;
@@ -71,48 +67,6 @@ class Engine extends Search\Engine
 		$record->addReviews(); // good read reviews
 		
 		return $results;
-	}
-	
-	/**
-	 * Do the actual fetch of an individual record
-	 * 
-	 * @param string  record identifier
-	 * @return Results
-	 */		
-	
-	protected function doGetRecord($id)
-	{
-		$id = str_replace(':', "\\:", $id);
-		
-		$query = new Query();
-		$query->simple = "id:$id";
-		
-		$results = $this->doSearch($query, 1, 1);
-		return $results;
-	}
-	
-	/**
-	 * Do the actual search
-	 * 
-	 * @param Search\Query $query  search object or string
-	 * @param int $start           [optional] starting record number
-	 * @param int $max             [optional] max records
-	 * @param string $sort         [optional] sort order
-	 * @param bool $facets         [optional] whether to include facets or not
-	 * 
-	 * @return ResultSet
-	 */		
-	
-	protected function doSearch( Search\Query $query, $start = 1, $max = 10, $sort = "", $facets = true)
-	{
-		$url = $query->getQueryUrl();
-		
-		// get the data
-		
-		$client = Factory::getHttpClient();
-		$response = $client->getUrl($url);
-		
-		return $this->parseResponse($response);
 	}
 	
 	/**

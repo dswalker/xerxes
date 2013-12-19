@@ -12,6 +12,7 @@
 namespace Application\Model\Solr;
 
 use Application\Model\Search;
+use Application\Model\Search\Query\Url;
 use Xerxes\Mvc\Request;
 
 /**
@@ -38,20 +39,37 @@ class Query extends Search\Query
 	public function __construct(Request $request = null, Config $config = null )
 	{
 		parent::__construct($request, $config);
-	
-		// server address
 		
-		$this->server = $this->config->getConfig('SOLR', true);
-		$this->server = rtrim($this->server, '/');
-		$this->server .= "/select/?version=2.2";
+		if ( $this->config != null )
+		{
+			// server address
+			
+			$this->server = $this->config->getConfig('SOLR', true);
+			$this->server = rtrim($this->server, '/');
+			$this->server .= "/select/?version=2.2";
+		}
+	}
+	
+	/**
+	 * Convert to Solr individual record syntax
+	 *
+	 * @param string $id 
+	 * @return Url
+	 */	
+	
+	public function getRecordUrl($id)
+	{
+		$id = str_replace(':', "\\:", $id);
+		
+		$url = new Url($this->server . "&q=" . urlencode("id:$id"));
+		return $url;
 	}
 	
 	/**
 	 * Convert to Solr query syntax
 	 * 
-	 * Includes the URL parameters &q, &qf, and &pf
 	 * @throws \Exception
-	 * @return string url
+	 * @return Url
 	 */
 	
 	public function getQueryUrl()
@@ -336,6 +354,6 @@ class Query extends Search\Query
 		
 		// echo $url;
 		
-		return $url;
+		return new Url($url);
 	}
 }
