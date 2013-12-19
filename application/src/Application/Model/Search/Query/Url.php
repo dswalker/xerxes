@@ -30,4 +30,21 @@ class Url
 	 * @var string
 	 */
 	public $url;
+	
+	/**
+	 * New Search Query Request
+	 * 
+	 * @param string $url
+	 * @param array $headers
+	 */
+	
+	public function __construct($url = null, array $headers = null)
+	{
+		$this->url = $url;
+		
+		if ( $headers != null )
+		{
+			$this->headers = $headers;
+		}
+	}
 }
