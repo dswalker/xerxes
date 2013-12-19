@@ -12,6 +12,7 @@
 namespace Application\Model\Search;
 
 use Xerxes\Utility\Cache;
+use Xerxes\Utility\Factory;
 use Xerxes\Utility\Registry;
 use Xerxes\Mvc\Request;
 
@@ -136,7 +137,17 @@ abstract class Engine
 	 * @return Results
 	 */
 	
-	abstract protected function doSearch( Query $search, $start = 1, $max = 10, $sort = "", $facets = true);
+	protected function doSearch( Query $query, $start = 1, $max = 10, $sort = "", $facets = true)
+	{
+		$request = $query->getQueryUrl();
+		
+		// get the data
+		
+		$client = Factory::getHttpClient();
+		$response = $client->getUrl($request->url, null, $request->headers);
+		
+		return $this->parseResponse($response);
+	}
 	
 	/**
 	 * Return an individual record
@@ -171,7 +182,16 @@ abstract class Engine
 	 * @return ResultSet
 	 */
 	
-	abstract protected function doGetRecord( $id );
+	protected function doGetRecord($id)
+	{
+		$query = $this->getQuery();
+		$request = $query->getRecordUrl($id);
+		
+		$client = Factory::getHttpClient();
+		$response = $client->getUrl($request->url, null, $request->headers);
+		
+		return $this->parseResponse($response);
+	}
 	
 	/**
 	 * Return the search engine config
