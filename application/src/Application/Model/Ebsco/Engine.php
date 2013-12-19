@@ -24,22 +24,7 @@ use Xerxes\Mvc\Request;
 
 class Engine extends Search\Engine 
 {
-	protected $username; // ebsco username
-	protected $password; // ebsco password
-	
 	private $deincrementing = 0; // ebsco hack
-	
-	/**
-	 * New Ebsco Search Engine
-	 */
-	
-	public function __construct()
-	{
-		parent::__construct();
-		
-		$this->username = $this->config->getConfig("EBSCO_USERNAME");
-		$this->password = $this->config->getConfig("EBSCO_PASSWORD");	
-	}
 	
 	/**
 	 * Search and return results
@@ -88,133 +73,14 @@ class Engine extends Search\Engine
 	}
 
 	/**
-	 * Do the actual fetch of an individual record
-	 * 
-	 * @param string	record identifier
-	 * @return Results
+	 * Parse the ebsco response
+	 *
+	 * @param string $response
+	 * @return ResultSet
 	 */	
 	
-	protected function doGetRecord($id)
+	public function parseResponse($response)
 	{
-		if ( ! strstr($id, "-") )
-		{
-			throw new \Exception("could not find record");
-		}
-		
-		// database and id come in on same value, so split 'em
-		
-		$database = Parser::removeRight($id,"-");
-		$id = Parser::removeLeft($id,"-");
-		
-		// get results
-		
-		$query = new Query();
-		$query->simple = "AN $id";
-		$query->addLimit(null, 'database', null, $database);
-		
-		$results = $this->doSearch($query, 1, 1);
-		
-		return $results;
-	}
-
-	/**
-	 * Do the actual search and return results
-	 *
-	 * @param Query $search  search object
-	 * @param int $start     [optional] starting record number
-	 * @param int $max       [optional] max records
-	 * @param string $sort   [optional] sort order
-	 * @param bool $facets   [optional] whether to include facets
-	 *
-	 * @return Results
-	 */	
-	
-	protected function doSearch( Search\Query $search, $start = 1, $max = 10, $sort = "", $facets = true)
-	{
-		// default for sort
-		
-		if ( $sort == "" )
-		{
-			$sort = "relevance";
-		}
-		
-		// prepare the query
-		
-		$query = "";
-		
-		if ( $search->simple != "")
-		{
-			$query = $search->simple;
-		}
-		else
-		{
-			$query = $search->toQuery();
-		}
-		
-		// databases
-		
-		$databases = array();
-		
-		// see if any supplied as facet limit
-		
-		foreach ( $search->getLimits(true) as $limit )
-		{
-			if ( $limit->field == "database")
-			{
-				array_push($databases, $limit->value);
-			}
-		}
-			
-		// nope
-			
-		if ( count($databases) == 0)
-		{
-			// get 'em from config
-				
-			$databases_xml = $this->config->getConfig("EBSCO_DATABASES");
-			
-			if ( $databases_xml == "" )
-			{
-				throw new \Exception("No databases defined");
-			}
-			
-			foreach ( $databases_xml->database as $database )
-			{
-				array_push($databases, (string) $database["id"]);
-			}
-		}
-		
-		// construct url
-		
-		$this->url = "http://eit.ebscohost.com/Services/SearchService.asmx/Search?" . 
-			"prof=" . $this->username . 
-			"&pwd=" . $this->password . 
-			"&authType=&ipprof=" . // empty params are necessary because ebsco is stupid
-			"&query=" . urlencode($query) .		
-			"&startrec=$start&numrec=$max" . 
-			"&sort=$sort" .
-			"&format=detailed";
-		
-		// add in the databases
-		
-		foreach ( $databases as $database )
-		{
-			$this->url .= "&db=$database";
-		}
-		
-		// get the xml from ebsco
-		
-		$client = Factory::getHttpClient();
-		$response = $client->getUrl($this->url, 10);
-
-		// testing
-		// echo "<pre>$this->url<hr>$response</pre>"; exit;
-		
-		if ( $response == null )
-		{
-			throw new \Exception("Could not connect to Ebsco search server");
-		}
-		
 		// load it in
 		
 		$xml = Parser::convertToDOMDocument($response);
@@ -234,10 +100,10 @@ class Engine extends Search\Engine
 			
 			if ( $message != null )
 			{
-                                if ( $message->nodeValue == "The following parameter(s) have incorrect values: Field query: Greater than 0" )
-                                {
-                                        throw new \Exception('Ebsco search error: your search query cannot be empty');
-                                }
+				if ( $message->nodeValue == "The following parameter(s) have incorrect values: Field query: Greater than 0" )
+				{
+					throw new \Exception('Ebsco search error: your search query cannot be empty');
+				}
 				
 				throw new \Exception('Ebsco server error: ' . $message->nodeValue);
 			}
@@ -259,7 +125,6 @@ class Engine extends Search\Engine
 		}
 		
 		
-		
 		### hacks until ebsco gives us proper hit counts, they are almost there
 		
 		$check = 0;
@@ -272,24 +137,26 @@ class Engine extends Search\Engine
 		// no hits, but we're above the first page, so the user has likely
 		// skipped here, need to increment down until we find the true ceiling
 		
-		if ( $check == 0 && $start > $max )
+		if ( $check == 0 && $this->query->start > $this->query->max )
 		{
 			// but let's not get crazy here
 			
 			if ( $this->deincrementing <= 8 )
 			{
 				$this->deincrementing++;
-				$new_start = $start - $max;
+				$new_start = $this->query->start - $this->query->max;
 				
-				return $this->doSearch($search, $new_start, $max, $sort);
+				$this->query->start = $new_start;
+				
+				return $this->doSearch($this->query);
 			}
 		}
 		
 		// we've reached the end prematurely, so set this to the end
 		
-		$check_end = $start + $check;
+		$check_end = $this->query->start + $check;
 		
-		if ( $check < $max )
+		if ( $check < $this->query->max )
 		{
 			if ( $check_end	< $total )
 			{
@@ -427,12 +294,6 @@ class Engine extends Search\Engine
 		return $facets;
 	}
 	
-	public function getDatabases()
-	{
-		$url = 'http://eit.ebscohost.com/Services/SearchService.asmx/Info?prof=' . 
-			$this->username  . '&pwd=' . $this->password;
-	}
-	
 	/**
 	 * @return Config
 	 */
@@ -449,15 +310,14 @@ class Engine extends Search\Engine
 	 * @return Query
 	 */
 	
-	public function getQuery(Request $request )
+	public function getQuery(Request $request = null)
 	{
-		if ( $this->query instanceof Query )
+		if ( ! $this->query instanceof Query )
 		{
-			return $this->query;
+			$this->query = new Query($request, $this->getConfig());
 		}
-		else
-		{
-			return new Query($request, $this->getConfig());
-		}
+		
+		return $this->query;
 	}	
+	
 }
