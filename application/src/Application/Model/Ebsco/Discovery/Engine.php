@@ -98,70 +98,9 @@ class Engine extends Search\Engine
 	}
 
 	/**
-	 * Do the actual fetch of an individual record
-	 * 
-	 * @param string	record identifier
-	 * @return Results
-	 */	
-	
-	protected function doGetRecord( $id )
-	{
-		if ( $id == "" )
-		{
-			throw new \DomainException('No record ID supplied');
-		}
-		
-		$database = Parser::removeRight($id,"-");
-		$id = Parser::removeLeft($id,"-");
-		
-		// build request
-		
-		$url = $this->base . 'retrieve?';
-		$url .= 'dbid=' . $database;
-		$url .= '&an=' . urlencode($id);
-		$url .= '&includefacets=n';
-		
-		// get the data
-		
-		$response = $this->client->getUrl($url, null, $this->headers);
-		$json = new Json($response);
-		
-		// create the result set
-		
-		$result_set = new ResultSet($this->config);
-		
-		$xerxes_record = new Record();
-		$xerxes_record->load($json->extractData('Record'));
-		$result_set->addRecord($xerxes_record);
-		
-		return $result_set;
-	}		
-	
-	/**
-	 * Do the actual search and return results
+	 * Parse the EDS response
 	 *
-	 * @param Query $query  search object
-	 * @param int $start    [optional] starting record number
-	 * @param int $max      [optional] max records
-	 * @param string $sort  [optional] sort order
-	 * @param bool $facets  [optional] whether to include facets
-	 *
-	 * @return Results
-	 */	
-	
-	protected function doSearch( Search\Query $query, $start = 1, $max = 10, $sort = "", $facets = true)
-	{
-		$request = $query->getQueryUrl();
-		
-		$response = $this->client->getUrl($request->url, null, $request->headers);
-		
-		return $this->parseResponse($response);
-	}
-	
-	/**
-	 * Parse the summon response
-	 *
-	 * @param string $response  eds results response
+	 * @param string $response
 	 * @return ResultSet
 	 */
 	
@@ -169,13 +108,9 @@ class Engine extends Search\Engine
 	{
 		$json = new Json($response);
 		
-		// just an error, so throw it
-		// @todo throw an error
-		
 		// results
 		
 		$result_set = new ResultSet($this->config);
-		
 		
 		// total
 		
@@ -208,11 +143,24 @@ class Engine extends Search\Engine
 	{
 		$records = array();
 		
-		foreach ( $json->extractData('SearchResult/Data/Records') as $document )
+		// single record
+		
+		$record = $json->extractData('Record');
+		
+		if ( count($record) > 0 )
 		{
 			$xerxes_record = new Record();
-			$xerxes_record->load($document);
+			$xerxes_record->load($json->extractData('Record'));
 			array_push($records, $xerxes_record);
+		}
+		else // search results
+		{
+			foreach ( $json->extractData('SearchResult/Data/Records') as $document )
+			{
+				$xerxes_record = new Record();
+				$xerxes_record->load($document);
+				array_push($records, $xerxes_record);
+			}
 		}
 		
 		return $records;
@@ -288,7 +236,7 @@ class Engine extends Search\Engine
 	 * @return Query
 	 */
 	
-	public function getQuery(Request $request )
+	public function getQuery(Request $request = null)
 	{
 		if ( ! $this->query instanceof Query )
 		{

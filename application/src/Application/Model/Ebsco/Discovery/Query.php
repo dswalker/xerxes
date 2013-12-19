@@ -15,6 +15,7 @@ use Application\Model\Search;
 use Application\Model\Search\Query\Url;
 use Xerxes\Mvc\Request;
 use Xerxes\Utility\Factory;
+use Xerxes\Utility\Parser;
 
 /**
  * Ebsco Search Query
@@ -76,10 +77,37 @@ class Query extends Search\Query
 			'Accept' => 'application/json',
 			'x-sessionToken' => $this->session_id
 		);
-	}	
+	}
 	
 	/**
-	 * Convert to Ebsco query syntax
+	 * Convert to EDS individual record syntax
+	 *
+	 * @param string $id
+	 * @return Url
+	 */
+	
+	public function getRecordUrl($id)
+	{
+		if ( $id == "" )
+		{
+			throw new \DomainException('No record ID supplied');
+		}
+		
+		$database = Parser::removeRight($id,"-");
+		$id = Parser::removeLeft($id,"-");
+		
+		// build request
+		
+		$url = $this->server . 'retrieve?';
+		$url .= 'dbid=' . $database;
+		$url .= '&an=' . urlencode($id);
+		$url .= '&includefacets=n';
+		
+		return new Url($url, $this->headers);
+	}
+	
+	/**
+	 * Convert to EDS query syntax
 	 * 
 	 * @return Request
 	 */
@@ -181,11 +209,7 @@ class Query extends Search\Query
 		$url .= '&highlight=n';
 		$url .= '&includefacets=y';
 		
-		$request = new Url();
-		$request->url = $url;
-		$request->headers = $this->headers;
-		
-		return $request;
+		return new Url($url, $this->headers);
 	}
 	
 	/**
