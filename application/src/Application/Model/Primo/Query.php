@@ -12,6 +12,7 @@
 namespace Application\Model\Primo;
 
 use Application\Model\Search;
+use Application\Model\Search\Query\Url;
 use Xerxes\Mvc\Request;
 
 /**
@@ -95,7 +96,27 @@ class Query extends Search\Query
 	}
 	
 	/**
-	 * Convert to primo query syntax
+	 * Convert to Primo individual record syntax
+	 *
+	 * @param string $id
+	 * @return Url
+	 */
+	
+	public function getRecordUrl($id)
+	{
+		$id = urlencode($id);
+		
+		$url = $this->server . '/xservice/search/brief?' .
+			'institution=' . $this->institution .
+			'&onCampus=true' .
+			"rid,exact,$id" .
+			'&indx=1&bulkSize=1';
+			
+		return new Url($url);
+	}
+	
+	/**
+	 * Convert to Primo query syntax
 	 * 
 	 * @return string
 	 */
@@ -147,6 +168,6 @@ class Query extends Search\Query
 			$url .= '&sortField=' . $this->sort;
 		}
 		
-		return $url;
+		return new Url($url);
 	}
 }
