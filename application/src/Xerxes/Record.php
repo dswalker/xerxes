@@ -2099,6 +2099,17 @@ class Record
 	}
 	
 	/**
+	 * Get score
+	 *
+	 * @param string $score
+	 */
+	
+	public function getScore()
+	{
+		return $this->score;
+	}	
+	
+	/**
 	 * Set the records score in a result set
 	 * 
 	 * @param string $score
