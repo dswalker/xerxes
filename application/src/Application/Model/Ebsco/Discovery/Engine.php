@@ -104,7 +104,7 @@ class Engine extends Search\Engine
 	 * @return ResultSet
 	 */
 	
-	protected function parseResponse($response)
+	public function parseResponse($response)
 	{
 		$json = new Json($response);
 		
