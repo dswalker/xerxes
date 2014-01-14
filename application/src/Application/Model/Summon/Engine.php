@@ -36,11 +36,6 @@ class Engine extends Search\Engine
 	{
 		parent::__construct();
 		
-		$id = $this->config->getConfig("SUMMON_ID", true);
-		$key = $this->config->getConfig("SUMMON_KEY", true);		
-				
-		$this->summon_client = new Summon($id, $key, Factory::getHttpClient());
-		
 		// formats to exclude
 		
 		$this->formats_exclude = explode(',', $this->config->getConfig("EXCLUDE_FORMATS") );
@@ -356,7 +351,7 @@ class Engine extends Search\Engine
 							{
 								// skip excluded facets
 								
-								if ( $group->name == 'ContentType' && in_array($counts["value"], $this->formats_exclude) )
+								if ( $group->name == 'ContentType' && in_array($counts["value"], $this->query->getExcludedFormats()) )
 								{
 									continue;
 								}
