@@ -70,55 +70,6 @@ class Engine extends Search\Engine
 	}
 
 	/**
-	 * Do the actual fetch of an individual record
-	 * 
-	 * @param string	record identifier
-	 * @return Results
-	 */		
-	
-	protected function doGetRecord( $id )
-	{
-		$query = new Query();
-		$query->simple = "rid,exact,$id";
-		
-		$results = $this->doSearch($query, 1, 1);
-		return $results;
-	}
-
-	/**
-	 * Do the actual search and return results
-	 *
-	 * @param Search\Query $query  search object
-	 * @param int $start           [optional] starting record number
-	 * @param int $max             [optional] max records
-	 * @param string $sort         [optional] sort order
-	 * @param bool $facets         [optional] whether to include facets
-	 *
-	 * @return Results
-	 */
-
-	protected function doSearch( Search\Query $query, $start = 1, $max = 10, $sort = "", $facets = true )
-	{
-		$url = $query->getQueryUrl();
-		
-		// get the response
-		
-		$client = Factory::getHttpClient();
-		$response = $client->getUrl($url);
-		
-		// header('Content-type: text/xml'); echo $response; exit;
-		
-		if ( $response == "" )
-		{
-			throw new \Exception("Could not connect to Primo server");
-		}
-		
-		// parse it
-		
-		return $this->parseResponse($response);
-	}	
-
-	/**
 	 * Parse the primo response
 	 *
 	 * @param string $response
@@ -328,15 +279,13 @@ class Engine extends Search\Engine
 	 * @return Query
 	 */
 	
-	public function getQuery(Request $request )
+	public function getQuery(Request $request = null)
 	{
-		if ( $this->query instanceof Query )
+		if ( ! $this->query instanceof Query )
 		{
-			return $this->query;
+			$this->query = new Query($request, $this->getConfig());
 		}
-		else
-		{
-			return new Query($request, $this->getConfig());
-		}
+		
+		return $this->query;
 	}
 }
