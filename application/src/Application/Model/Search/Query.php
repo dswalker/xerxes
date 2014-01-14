@@ -35,19 +35,19 @@ class Query
 	 * default records per page
 	 * @var int
 	 */
-	public $max;
+	public $max = 10;
 	
 	/**
 	 * upper-limit per page
 	 * @var int
 	 */
-	public $max_allowed;
+	public $max_allowed = 30;
 
 	/**
 	 * default sort
 	 * @var string
 	 */
-	public $sort;
+	public $sort = 'relevance';
 	
 	/**
 	 * @var string
@@ -127,60 +127,63 @@ class Query
 			
 			$this->config = $config;
 			
-			// defaults
+			// defaults set in config(s)
 				
-			$this->max = $this->registry->getConfig("RECORDS_PER_PAGE", false, 10);
+			$this->max = $this->registry->getConfig("RECORDS_PER_PAGE", false, $this->max);
 			$this->max = $this->config->getConfig("RECORDS_PER_PAGE", false, $this->max);
 				
-			$this->max_allowed = $this->registry->getConfig("MAX_RECORDS_PER_PAGE", false, 30);
+			$this->max_allowed = $this->registry->getConfig("MAX_RECORDS_PER_PAGE", false, $this->max_allowed);
 			$this->max_allowed = $this->config->getConfig("MAX_RECORDS_PER_PAGE", false, $this->max_allowed);
 				
-			$this->sort = $this->registry->getConfig("SORT_ORDER", false, "relevance");
-			$this->sort = $this->config->getConfig("SORT_ORDER", false, $this->sort);	
+			$this->sort = $this->registry->getConfig("SORT_ORDER", false, $this->sort);
+			$this->sort = $this->config->getConfig("SORT_ORDER", false, $this->sort);
+		}
 			
-			// xerxes request
+		// xerxes request
+		
+		if ( $request != null )
+		{
+			// make these available
 			
-			if ( $request != null )
+			$this->request = $request;
+	
+			// populate it with the 'search' related params out of the url
+			
+			foreach ( $this->extractSearchGroupings() as $term )
 			{
-				// make these available
-				
-				$this->request = $request;
-		
-				// populate it with the 'search' related params out of the url
-				
-				foreach ( $this->extractSearchGroupings() as $term )
-				{
-					$this->addTerm(
-						$term["id"], 
-						$term["boolean"], 
-						$term["field"], 
-						$term["relation"], 
-						$term["query"]);
-				}
-		
-				// also limits
-				
-				foreach ( $this->extractLimitGroupings() as $limit )
-				{
-					$this->addLimit($limit["boolean"], $limit["field"], $limit["relation"], $limit["value"]);
-				}
-				
-				// start, max, sort
-				
-				$this->start = $this->request->getParam('start', 1);
-				$this->max = $this->request->getParam('max', $this->max);
-				$this->sort = $this->request->getParam('sort', $this->sort);
-				
-				// swap for internal
-				
+				$this->addTerm(
+					$term["id"], 
+					$term["boolean"], 
+					$term["field"], 
+					$term["relation"], 
+					$term["query"]);
+			}
+	
+			// also limits
+			
+			foreach ( $this->extractLimitGroupings() as $limit )
+			{
+				$this->addLimit($limit["boolean"], $limit["field"], $limit["relation"], $limit["value"]);
+			}
+			
+			// start, max, sort
+			
+			$this->start = $this->request->getParam('start', 1);
+			$this->max = $this->request->getParam('max', $this->max);
+			$this->sort = $this->request->getParam('sort', $this->sort);
+			
+			// swap for internal
+			
+			if ( $this->config != null )
+			{
 				$this->sort = $this->config->swapForInternalSort($this->sort);
-				
-				// make sure records per page does not exceed upper bound
-				
-				if ( $this->max > $this->max_allowed )
-				{
-					$this->max = $this->max_allowed;
-				}
+			}
+			
+			// make sure records per page does not exceed upper bound
+			
+			if ( $this->max > $this->max_allowed )
+			{
+				$this->max = $this->max_allowed;
 			}
 		}
 	}
@@ -698,5 +701,39 @@ class Query
 		}
 		
 		return $param_name;
+	}
+	
+	/**
+	 * Return the whole query as an internal search 
+	 * string for the search engine 
+	 */
+	
+	public function toQuery()
+	{
+		foreach ( $this->getQueryTerms() as $term )
+		{
+			$query .= " " . $term->boolean;
+		
+			// is this a fielded search?
+				
+			if ( $term->field_internal != "" ) // yes
+			{
+				$query .= " " . $term->field_internal . ':(' . $term->phrase . ')';
+		
+			}
+			else // keyword
+			{
+				$query .= " " . $term->phrase;
+			}
+		}
+	}
+	
+	/**
+	 * @return Request
+	 */
+	
+	public function getRequest()
+	{
+		return $this->request;
 	}
 }
