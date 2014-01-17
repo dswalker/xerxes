@@ -27,7 +27,12 @@ use Xerxes\Utility\Registry;
 
 abstract class ActionController
 {
-	protected $id; // controller id
+	/**
+	 * controller id
+	 * @var string
+	 */
+	
+	protected $id;
 	
 	/**
 	 * @var MvcEvent
