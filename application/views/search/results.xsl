@@ -366,7 +366,7 @@
 	<xsl:template name="searchbox_full">
 	
 		<xsl:choose>
-			<xsl:when test="request/advanced or request/advancedfull">
+			<xsl:when test="request/advanced">
 				<xsl:call-template name="advanced_search" />
 			</xsl:when>
 			<xsl:otherwise>
@@ -380,6 +380,119 @@
 				</xsl:choose>
 			</xsl:otherwise>
 		</xsl:choose>
+	
+	</xsl:template>
+
+	<!-- 
+		TEMPLATE: ADVANCED SEARCH FORMS  
+	-->
+	
+	<xsl:template name="advanced_search">
+	
+		<div class="raised-box search-box">
+		
+			<p><a href="{//request/controller}">basic search</a></p>
+		
+			<input type="hidden" name="advanced" value="true" />
+		
+			<xsl:for-each select="//query/terms/term">
+			
+				<xsl:call-template name="advanced_search_pair">
+					<xsl:with-param name="position" select="id" />
+				</xsl:call-template>
+				
+			</xsl:for-each>
+		
+			<xsl:call-template name="advanced_search_pair">
+				<xsl:with-param name="position" select="count(//query/terms/term) + 1" />
+				<xsl:with-param name="display_boolean">false</xsl:with-param>
+				<xsl:with-param name="display_submit">true</xsl:with-param>
+				<xsl:with-param name="query" /> <!-- no query -->
+			</xsl:call-template>	
+				
+			<xsl:call-template name="search_refinement" />
+		
+		</div>
+		
+	</xsl:template>
+	
+	<!-- 
+		TEMPLATE: ADVANCED SEARCH PAIR
+	-->
+	
+	<xsl:template name="advanced_search_pair">
+		<xsl:param name="position" />
+		<xsl:param name="display_boolean">true</xsl:param>
+		<xsl:param name="display_submit">false</xsl:param>
+		
+		<xsl:param name="field" select="field" />
+		<xsl:param name="boolean" select="following-sibling::term[1]/boolean" />
+		<xsl:param name="query" select="query" />
+				
+		<div style="padding: 5px">
+	
+			<select name="field{$position}">
+		
+			<xsl:for-each select="//config/basic_search_fields/field|//config/advanced_search_fields/field">
+		
+				<option>
+					<xsl:if test="@id != ''">
+						<xsl:attribute name="value"><xsl:value-of select="@id" /></xsl:attribute>
+						
+						<xsl:if test="@id = $field">
+							<xsl:attribute name="selected">selected</xsl:attribute>
+						</xsl:if>
+						
+					</xsl:if>
+					<xsl:value-of select="@public" />
+				</option>
+				
+			</xsl:for-each>
+			
+			</select>
+			
+			<xsl:text> </xsl:text>
+		
+			<input class="control-input" type="text" name="query{$position}">
+				<xsl:if test="$query != ''">
+					<xsl:attribute name="value"><xsl:value-of select="$query" /></xsl:attribute>
+				</xsl:if>
+			</input>
+			
+			<xsl:text> </xsl:text>
+			
+			<xsl:if test="$display_boolean = 'true'">
+			
+				<select name="boolean{$position + 1}">
+					<option value="AND">
+						<xsl:if test="$boolean = 'AND'">
+							<xsl:attribute name="selected">selected</xsl:attribute>
+						</xsl:if>
+						<xsl:copy-of select="$text_searchbox_boolean_and" />
+					</option>
+					<option value="OR">
+						<xsl:if test="$boolean = 'OR'">
+							<xsl:attribute name="selected">selected</xsl:attribute>
+						</xsl:if>
+					<xsl:copy-of select="$text_searchbox_boolean_or" />
+					</option>
+					<option value="NOT">
+						<xsl:if test="$boolean = 'NOT'">
+							<xsl:attribute name="selected">selected</xsl:attribute>
+						</xsl:if>
+					<xsl:copy-of select="$text_searchbox_boolean_without" />
+					</option>
+				</select>
+				
+			</xsl:if>
+			
+			<xsl:if test="$display_submit = 'true'">
+			
+				<input type="submit" name="Submit" value="{$text_searchbox_go}" class="btn submit-searchbox{$language_suffix}" />
+			
+			</xsl:if>
+			
+		</div>
 	
 	</xsl:template>
 
@@ -594,17 +707,23 @@
 	
 	<xsl:template name="tab_hit">
 	
-		<span class="tabs-hit">
+		<span class="tabs-hit" >
 			<xsl:choose>
 				<xsl:when test="@hits">
 					(<xsl:value-of select="@hits" />)
 				</xsl:when>
 				<xsl:otherwise>
-					<span class="tabs-hit-number" id="tab-{@id}-{@source}"></span>
+					<xsl:call-template name="tab_hits_number" />
 				</xsl:otherwise>
 			</xsl:choose>								
 		</span>
 	
+	</xsl:template>
+	
+	<xsl:template name="tab_hits_number">
+	
+		<span class="tabs-hit-number" id="tab-{@id}-{@source}" source="{@url_hits}"></span>
+		
 	</xsl:template>
 	
 	<!-- 
@@ -1681,14 +1800,15 @@
 		
 			<xsl:for-each select="//query/terms/term">
 			
-				<input type="hidden" name="boolean" value="{boolean}" />
-				<input type="hidden" name="field" value="{field}" />
-				<input type="hidden" name="relation" value="{relation}" />
-				<input type="hidden" name="query" value="{query}" />
+				<input type="hidden" name="boolean{id}" value="{boolean}" />
+				<input type="hidden" name="field{id}" value="{field}" />
+				<input type="hidden" name="relation{id}" value="{relation}" />
+				<input type="hidden" name="query{id}" value="{query}" />
 				
 			</xsl:for-each>
 			
 			<input type="hidden" name="sort" value="{//request/sort}" />
+			<input type="hidden" name="advanced" value="{//request/advanced}" />
 			
 		</xsl:if>
 		
@@ -1720,7 +1840,6 @@
 	<!-- search box fields overriden in templates -->
 	
 	<xsl:template name="advanced_search_option" />
-	<xsl:template name="advanced_search" />
 	<xsl:template name="searchbox_hidden_fields_module" />
 	<xsl:template name="searchbox_hidden_fields_local" />
 	

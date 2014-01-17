@@ -68,13 +68,26 @@
 
 		<h1>Advanced Search</h1>
 		
-		<form>
+		<form action="{//controller}/search">
 		
-			<xsl:call-template name="advanced_search_pair" />
-			<xsl:call-template name="advanced_search_pair" />
-			<xsl:call-template name="advanced_search_pair" />
+			<input type="hidden" name="advanced" value="true" />
+		
 			<xsl:call-template name="advanced_search_pair">
-				<xsl:with-param name="boolean">false</xsl:with-param>
+				<xsl:with-param name="position">1</xsl:with-param>
+				<xsl:with-param name="query" select="//request/query" />
+			</xsl:call-template>
+
+			<xsl:call-template name="advanced_search_pair">
+				<xsl:with-param name="position">2</xsl:with-param>
+			</xsl:call-template>
+			
+			<xsl:call-template name="advanced_search_pair">
+				<xsl:with-param name="position">3</xsl:with-param>
+			</xsl:call-template>
+			
+			<xsl:call-template name="advanced_search_pair">
+				<xsl:with-param name="position">4</xsl:with-param>
+				<xsl:with-param name="display_boolean">false</xsl:with-param>
 			</xsl:call-template>
 			
 			
@@ -90,22 +103,23 @@
 							<xsl:choose>
 								<xsl:when test="@type = 'date'">
 								
-									<input type="text" name="date-start" id="" value="" size="4" />
+									<input type="text" name="facet.{//config/facet_fields/facet[@type='date']/@internal}.start" id="" value="" size="4" />
 									&#8212;
-									<input type="text" name="date-end" id="" value="" size="4" />
+									<input type="text" name="facet.{//config/facet_fields/facet[@type='date']/@internal}.end" id="" value="" size="4" />
 									
 								</xsl:when>
 								<xsl:when test="@id">
 								
-									<xsl:if test="//limits/groups/group[name = $id]/facets/facet">
+									<xsl:for-each select="//limits/groups/group[name = $id]">
 								
-										<select>
-											<xsl:for-each select="//limits/groups/group[name = $id]/facets/facet">
-												<option><xsl:value-of select="name" /></option>
+										<select name="facet.{name}">
+											<option value=""><xsl:value-of select="$text_facets_multiple_any" /></option>
+											<xsl:for-each select="facets/facet">
+												<option value="{name}"><xsl:value-of select="name" /></option>
 											</xsl:for-each>
 										</select>
 										
-									</xsl:if>
+									</xsl:for-each>
 									
 								</xsl:when>					
 								<xsl:otherwise>
@@ -119,63 +133,13 @@
 			</xsl:for-each>
 			
 			<div class="control-submit">
-				<input type="submit" class="btn btn-primary" value="Search!" />
+				<input type="submit" class="facets-submit{$language_suffix}">
+					<xsl:attribute name="value"><xsl:value-of select="$text_facets_submit" /></xsl:attribute>
+				</input>
 			</div>
 		
 		</form>
 	
-</xsl:template>
-
-<xsl:template name="advanced_search_pair">
-	<xsl:param name="boolean">true</xsl:param>
-
-	<xsl:variable name="find_operator" />
-
-	<div style="padding: 10px">
-
-		<select name="field">
-	
-		<xsl:for-each select="config/basic_search_fields/field|config/advanced_search_fields/field">
-	
-			<option><xsl:value-of select="@public" /></option>
-			
-		</xsl:for-each>
-		
-		</select>
-		
-		<xsl:text> </xsl:text>
-	
-		<input class="control-input" type="text" name="query" value="" />
-		
-		<xsl:text> </xsl:text>
-		
-		<xsl:if test="$boolean = 'true'">
-		
-			<select name="relation">
-				<option value="AND">
-					<xsl:if test="$find_operator = 'AND'">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-					<xsl:copy-of select="$text_searchbox_boolean_and" />
-				</option>
-				<option value="OR">
-					<xsl:if test="$find_operator = 'OR'">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-				<xsl:copy-of select="$text_searchbox_boolean_or" />
-				</option>
-				<option value="NOT">
-					<xsl:if test="$find_operator = 'NOT'">
-						<xsl:attribute name="selected">selected</xsl:attribute>
-					</xsl:if>
-				<xsl:copy-of select="$text_searchbox_boolean_without" />
-				</option>
-			</select>
-			
-		</xsl:if>
-		
-	</div>
-
 </xsl:template>
 
 </xsl:stylesheet>

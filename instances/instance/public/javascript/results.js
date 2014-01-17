@@ -149,35 +149,18 @@ function showFacetLess(id)
 function showHitCounts()
 {
 	if ( $('#query') )
-	{		
-		var query = $('#query').val();
-		var field = $('#field').val();
+	{
+		var spans = document.getElementsByTagName('span');
 		
-		var links = document.getElementsByTagName('span');
-		
-		for ( i = 0; i < links.length; i++)
+		for ( i = 0; i < spans.length; i++)
 		{		
-			if ( /tabs-hit-number/.test(links[i].className) )
+			if ( /tabs-hit-number/.test(spans[i].className) )
 			{
-				hitID = links[i].id;
-								
-				arrElements = links[i].id.split("-");
-				controller = arrElements[1];
-				source = arrElements[2];
-									
-				var url = controller + "/hits?&query=" + query;
+				var url = spans[i].getAttribute("source");
 				
-				if ( field != '' && field != undefined )
-				{
-					url += "&field=" + field;
-				}
+				// alert(url);
 				
-				if ( source != '' && source != undefined )
-				{
-					url += "&source=" +  source;
-				}
-				
-				updateElement(url, links[i]);
+				updateElement(url, spans[i]);
 			}
 		}
 	}

@@ -146,7 +146,8 @@
 													<xsl:value-of select="@public" />
 												</a>
 												<xsl:text> </xsl:text>
-												<span class="tabs-hit-number" id="{$engine_id}"></span>
+												<xsl:call-template name="tab_hits_number" />
+												<!-- <span class="tabs-hit-number" id="{$engine_id}"></span> -->
 											</li>
 										</xsl:for-each>
 									</ul>
