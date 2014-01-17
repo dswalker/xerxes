@@ -194,6 +194,28 @@ abstract class Engine
 	}
 	
 	/**
+	 * Get facets from an 'all records' search
+	 *
+	 * @return Facets
+	 */
+	
+	public function getAllFacets()
+	{
+		$this->getQuery()->addTerm(1, null, '*', null, '*');
+	
+		$results = $this->doSearch($this->query);
+	
+		$facets = $results->getFacets();
+	
+		foreach ( $facets->groups as $group )
+		{
+			$group->sortByName('asc');
+		}
+		
+		return $facets;
+	}	
+	
+	/**
 	 * Return the search engine config
 	 * 
 	 * @return Config
