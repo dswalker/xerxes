@@ -183,6 +183,7 @@ class Query extends Search\Query
 			}
 		}
 		
+		$query = trim($query);
 		
 		### prepare the limits
 		
@@ -530,6 +531,8 @@ class Query extends Search\Query
 		$request = new Url();
 		$request->url = $this->host . "/$service?$query_string";
 		$request->headers = $headers;
+		
+		// $url = $request->url; $url = urldecode($url); $parts = explode('&', $url); print_r($parts);
 		
 		return $request;
 	}
