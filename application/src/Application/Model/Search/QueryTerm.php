@@ -236,12 +236,12 @@ class QueryTerm
 	{
 		$term = array();
 		
-		$id = $this->id;
+		$term["id"] = $this->id;
 		
-		if ( $this->boolean != "") $term["boolean$id"] = $this->boolean;
-		if ( $this->field != "") $term["field$id"] = $this->field;
-		if ( $this->relation != "") $term["relation$id"] = $this->relation;
-		if ( $this->phrase != "") $term["query$id"] = $this->phrase;
+		if ( $this->boolean != "") $term['boolean'] = $this->boolean;
+		if ( $this->field != "") $term['field'] = $this->field;
+		if ( $this->relation != "") $term['relation'] = $this->relation;
+		if ( $this->phrase != "") $term['query'] = $this->phrase;
 		
 		return $term;
 	}
