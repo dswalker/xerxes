@@ -82,7 +82,7 @@ class Query
 	 * @var string
 	 */	
 	
-	protected $search_fields_regex = '^query[0-9]{0,1}$|^field[0-9]{0,1}$|^boolean[0-9]{0,1}$';
+	protected $search_fields_regex = '^advanced$|^query[0-9]{0,1}$|^field[0-9]{0,1}$|^boolean[0-9]{0,1}$';
 	
 	/**
 	 * @var string
@@ -382,6 +382,15 @@ class Query
 	
 	public function checkSpelling()
 	{
+		// don't check multiple terms, for now @todo: fix
+		
+		$terms = $this->getQueryTerms();
+		
+		if ( count($terms) > 1 )
+		{
+			return null;
+		}
+		
 		$spell_type = $this->registry->getConfig('SPELL_CHECKER');
 		
 		if ( $spell_type != null )
@@ -390,7 +399,7 @@ class Query
 			
 			$spell_checker = new $class_name();
 			
-			return $spell_checker->checkSpelling($this->getQueryTerms());
+			return $spell_checker->checkSpelling($terms);
 		}
 	}
 	
@@ -621,6 +630,15 @@ class Query
 	}
 	
 	/**
+	 * Get just the limit params
+	 */
+	
+	public function getLimitParams()
+	{
+		return  $this->extractLimitParams();
+	}
+	
+	/**
 	 * Change the case or add truncation to a search based on config
 	 * 
 	 * @param string $phrase		the search phrase
@@ -704,12 +722,13 @@ class Query
 	}
 	
 	/**
-	 * Return the whole query as an internal search 
-	 * string for the search engine 
+	 * Return the (internal) search string
 	 */
 	
 	public function toQuery()
 	{
+		$query = '';
+		
 		foreach ( $this->getQueryTerms() as $term )
 		{
 			$query .= " " . $term->boolean;
@@ -718,7 +737,7 @@ class Query
 				
 			if ( $term->field_internal != "" ) // yes
 			{
-				$query .= " " . $term->field_internal . ':(' . $term->phrase . ')';
+				$query .= " " . $term->internal . ':(' . $term->phrase . ')';
 		
 			}
 			else // keyword
@@ -726,6 +745,8 @@ class Query
 				$query .= " " . $term->phrase;
 			}
 		}
+		
+		return $query;
 	}
 	
 	/**
