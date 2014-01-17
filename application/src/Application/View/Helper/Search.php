@@ -697,9 +697,17 @@ class Search
 				$params['action'] = "results";
 				$params['source'] = (string) $option["source"];
 				$params['sort'] = $this->request->getParam('sort');
-					
+				
+				// results url
+				
 				$url = $this->request->url_for($params);
 				$option->addAttribute('url', $url);
+				
+				// hits url
+				
+				$params['action'] = 'hits';
+				$url = $this->request->url_for($params);
+				$option->addAttribute('url_hits', $url);
 				
 				// cached search hit count?
 		
