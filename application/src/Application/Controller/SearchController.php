@@ -14,12 +14,14 @@ namespace Application\Controller;
 use Application\Model\DataMap\Stats;
 use Application\Model\Search\Config;
 use Application\Model\Search\Engine;
+use Application\Model\Search\Facets;
 use Application\Model\Search\Query;
 use Application\Model\Search\Result;
 use Application\Model\DataMap\SavedRecords;
 use Application\View\Helper\Search as SearchHelper;
 use Xerxes\Mvc\ActionController;
 use Xerxes\Record;
+use Xerxes\Utility\Cache;
 use Xerxes\Utility\Parser;
 use Xerxes\Utility\Registry;
 
@@ -125,13 +127,23 @@ abstract class SearchController extends ActionController
 		
 		$this->checkSpelling();
 		
-		// remove default field
+		// remove default values
 		
-		if (array_key_exists('field', $params) )
+		foreach ( $params as $id => $value )
 		{
-			if ($params['field'] == 'keyword' )
+			if ( strstr($id, 'field') )
 			{
-				unset($params['field']);
+				if ( $value == 'keyword')
+				{
+					unset($params[$id]);
+				}
+			}
+			elseif ( strstr($id, 'boolean') )
+			{
+				if ( strtolower($value) == 'and')
+				{
+					unset($params[$id]);
+				}
 			}
 		}
 		
@@ -451,7 +463,19 @@ abstract class SearchController extends ActionController
 	
 	public function advancedAction()
 	{
-		$facets = $this->engine->getAllFacets();
+		$this->cache = new Cache();
+		
+		$id = $this->id . '_facets';
+		
+		// get a cached copy if we got it
+		
+		$facets = $this->cache->get($id);
+		
+		if ( ! $facets instanceof Facets ) // nope
+		{
+			$facets = $this->engine->getAllFacets();
+			$this->cache->set($id, $facets, time() + (24 * 60 * 60)); // 24 hour cache
+		}
 		
 		$this->response->setVariable('limits', $facets);
 		
@@ -459,6 +483,27 @@ abstract class SearchController extends ActionController
 		
 		return $this->response;
 	}
+
+	/**
+	 * Advanced search redirect
+	 */
+	
+	public function advancedsearchAction()
+	{
+		// get query as single string
+		
+		$query = $this->query->toQuery();
+		
+		// just limits
+		
+		$params = $this->query->getLimitParams();
+		$params['controller'] = $this->request->getParam('controller');
+		$params['action'] = 'search';
+		$params['advanced'] = 'true';
+		$params['query'] = $query;
+		
+		return $this->redirectTo($params);
+	}	
 	
 	/**
 	 * Check for mispelled terms
