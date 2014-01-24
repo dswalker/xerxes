@@ -11,6 +11,7 @@
 
 namespace Application\Model\Ebsco;
 
+use Application\Model\Ebsco\Exception\DatabaseException;
 use Application\Model\Search;
 use Xerxes\Utility\Factory;
 use Xerxes\Utility\Parser;
@@ -24,7 +25,19 @@ use Xerxes\Mvc\Request;
 
 class Engine extends Search\Engine 
 {
-	private $deincrementing = 0; // ebsco hack
+	/**
+	 * Ebsco hack
+	 * @var int
+	 */
+	
+	private $deincrementing = 0;
+	
+	/**
+	 * database refresh
+	 * @var int
+	 */
+	
+	private $database_refresh = 0; 
 	
 	/**
 	 * Search and return results
@@ -42,7 +55,23 @@ class Engine extends Search\Engine
 	{
 		// get the results
 		
-		$results = parent::searchRetrieve( $search, $start, $max, $sort, $facets);
+		try
+		{
+			$results = parent::searchRetrieve( $search, $start, $max, $sort, $facets);
+		}
+		catch ( DatabaseException $e ) // database access error
+		{
+			if ( $this->database_refresh == 0 )
+			{
+				$this->getQuery()->getDatabases(true); // force a refresh
+				$this->database_refresh = 1; // don't repeat this twice, please
+				$this->searchRetrieve( $search, $start, $max, $sort, $facets ); // let's try that again
+			}
+			else // already tried this, so error-out
+			{
+				throw $e;
+			}
+		}
 		
 		// enhance
 		
@@ -103,6 +132,13 @@ class Engine extends Search\Engine
 				if ( $message->nodeValue == "The following parameter(s) have incorrect values: Field query: Greater than 0" )
 				{
 					throw new \Exception('Ebsco search error: your search query cannot be empty');
+				}
+				
+				// need to get a fresh set of databases
+				
+				if ( strstr($message->nodeValue, 'User does not have access rights to database') )
+				{
+					throw new DatabaseException($message->nodeValue);
 				}
 				
 				throw new \Exception('Ebsco server error: ' . $message->nodeValue);
@@ -281,7 +317,7 @@ class Engine extends Search\Engine
 			foreach ( $databases_array as $database_id => $database_hits)
 			{
 				$facet = new Search\Facet();
-				$facet->name = $this->config->getDatabaseName($database_id);
+				$facet->name = $this->getQuery()->getDatabaseName($database_id);
 				$facet->count = Parser::number_format( $database_hits );
 				$facet->key = $database_id;
 					

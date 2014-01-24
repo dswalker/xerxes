@@ -39,15 +39,4 @@ class Config extends Search\Config
 		
 		return self::$instance;
 	}
-
-	public function getDatabaseName($id)
-	{
-		foreach ( $this->getConfig("EBSCO_DATABASES") as $database )
-		{
-			if ($database["id"] == $id )
-			{
-				return (string) $database["name"];
-			}
-		}
-	}
 }

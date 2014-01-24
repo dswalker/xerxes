@@ -11,9 +11,12 @@
 
 namespace Application\Model\Ebsco;
 
+use Xerxes\Utility\Cache;
+
 use Application\Model\Search;
 use Application\Model\Search\Query\Url;
 use Xerxes\Mvc\Request;
+use Xerxes\Utility\Factory;
 use Xerxes\Utility\Parser;
 
 /**
@@ -25,6 +28,14 @@ use Xerxes\Utility\Parser;
 class Query extends Search\Query
 {
 	/**
+	 * eit host
+	 * 
+	 * @var string
+	 */
+	
+	protected $host = 'http://eit.ebscohost.com/Services/SearchService.asmx/';
+	
+	/**
 	 * ebsco username
 	 * @var string
 	 */
@@ -35,6 +46,13 @@ class Query extends Search\Query
 	 * @var unknown_type
 	 */
 	protected $password;
+	
+	/**
+	 * Ebsco databases searchable from this profile
+	 * @var array
+	 */
+	
+	protected $databases = array();
 	
 	/**
 	 * Create an Ebsco Query
@@ -81,14 +99,14 @@ class Query extends Search\Query
 		
 		// construct url
 		
-		$url = 'http://eit.ebscohost.com/Services/SearchService.asmx/Search?' .
+		$url = $this->host . '/Search?' .
 			'prof=' . $this->username .
 			'&pwd=' . $this->password .
 			'&authType=&ipprof=' . // empty params are necessary because ebsco is stupid
 			'&query=' . urlencode($query) .
 			"&db=$database" .
 			'&startrec=1&numrec=1&format=detailed';
-
+		
 		return new Url($url);
 	}
 	
@@ -158,24 +176,15 @@ class Query extends Search\Query
 			
 		if ( count($databases) == 0)
 		{
-			// get 'em from config
-		
-			$databases_xml = $this->config->getConfig("EBSCO_DATABASES");
-				
-			if ( $databases_xml == "" )
-			{
-				throw new \Exception("No databases defined");
-			}
-				
-			foreach ( $databases_xml->database as $database )
-			{
-				array_push($databases, (string) $database["id"]);
-			}
+			// get 'em from ebsco
+			
+			$databases = $this->getDatabases();
+			$databases = array_keys($databases); // just the keys
 		}
 		
 		// construct url
 		
-		$url = 'http://eit.ebscohost.com/Services/SearchService.asmx/Search?' .
+		$url = $this->host . 'Search?' .
 			'prof=' . $this->username .
 			'&pwd=' . $this->password .
 			'&authType=&ipprof=' . // empty params are necessary because ebsco is stupid
@@ -192,5 +201,96 @@ class Query extends Search\Query
 		}
 		
 		return new Url($url);
+	}
+	
+	/**
+	 * Fetch list of databases
+	 * 
+	 * @param bool $force_new  get data from ebsco 
+	 * @return array
+	 */
+	
+	public function getDatabases($force_new = false)
+	{
+		$cache = new Cache();
+		$id = 'ebsco_databases';
+		
+		if ( $force_new == false ) // no cache override
+		{
+			// do we have it already?
+			
+			if ( count($this->databases) > 0 )
+			{
+				return $this->databases;
+			}
+			
+			// check the cache
+			
+			$this->databases = $cache->get($id); 
+			
+			if ( $this->databases != null ) // got 'em cached already?
+			{ 
+				return $this->databases;
+			}
+		}
+		
+		// fetch 'em from ebsco
+		
+		$url = $this->host . '/Info?' .
+			'prof=' . $this->username .
+			'&pwd=' . $this->password;
+		
+		$client = Factory::getHttpClient();
+		$response = $client->getUrl($url);
+		
+		$xml = new \DOMDocument();
+		
+		$loaded = $xml->loadXML($response);
+		
+		if ( $loaded == true )
+		{
+			$nodes = $xml->getElementsByTagName('db');
+			
+			if ( $nodes->length > 1 )
+			{
+				foreach ( $nodes as $db )
+				{
+					if ( (string) $db->getAttribute('dbType') == 'Regular')
+					{
+						$id = (string) $db->getAttribute('shortName');
+						$name = (string) $db->getAttribute('longName');
+						
+						$this->databases[$id] = $name;
+					}
+				}
+				
+				// cache 'em
+				
+				$cache->set($id, $this->databases);
+			}
+		}
+		
+		return $this->databases;
+	}
+	
+	/**
+	 * Get the (long) database name from id
+	 * 
+	 * @param string $id
+	 * @return string
+	 */
+	
+	public function getDatabaseName($id)
+	{
+		$databases =  $this->getDatabases();
+		
+		if ( array_key_exists($id, $databases) )
+		{
+			return $databases[$id];
+		}
+		else
+		{
+			return null;
+		}
 	}
 }
