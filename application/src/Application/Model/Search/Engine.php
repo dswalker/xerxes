@@ -65,6 +65,13 @@ abstract class Engine
 	protected $cache;
 	
 	/**
+	 * Should cache results
+	 * @var bool
+	 */
+	
+	protected $should_cache_results = true;
+	
+	/**
 	 * Constructor
 	 */
 	
@@ -79,6 +86,10 @@ abstract class Engine
 		// local config
 		
 		$this->config = $this->getConfig();
+		
+		// cache results based on local config or registry, default true
+		
+		$this->should_cache_results = $this->config->getConfig('CACHE_RESULTS', false, $this->registry->getConfig('CACHE_RESULTS', false, true));
 	}
 	
 	/**
@@ -261,7 +272,7 @@ abstract class Engine
 	{
 		// if cache is turned off, then don't bother looking up cache
 		
-		if ( $this->config->getConfig('CACHE_RESULTS', false, $this->registry->getConfig('CACHE_RESULTS', false, false)) == false )
+		if ( $this->should_cache_results == false )
 		{
 			return null;
 		}
@@ -282,7 +293,7 @@ abstract class Engine
 	{
 		// if cache is turned off, then don't bother caching
 		
-		if ( $this->config->getConfig('CACHE_RESULTS', false, $this->registry->getConfig('CACHE_RESULTS', false, false)) == false )
+		if ( $this->should_cache_results == false )
 		{
 			return null;
 		}		
