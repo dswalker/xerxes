@@ -134,6 +134,8 @@ class Query extends Search\Query
 		{
 			$this->role = 'authenticated';
 		}
+		
+		$this->formats_exclude = explode(',', $this->config->getConfig("EXCLUDE_FORMATS"));
 	}
 	
 	/**
@@ -532,7 +534,7 @@ class Query extends Search\Query
 		$request->url = $this->host . "/$service?$query_string";
 		$request->headers = $headers;
 		
-		// $url = $request->url; $url = urldecode($url); $parts = explode('&', $url); print_r($parts);
+		// $url = $request->url; $url = urldecode($url); $parts = explode('&', $url); print_r($parts); exit;
 		
 		return $request;
 	}
