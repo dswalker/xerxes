@@ -202,7 +202,23 @@ class Innopac implements AvailabilityInterface
 		// see if there is more than one page of item records, in which case get the
 		// expanded (holdings) page instead; performance hit, but gotta do it
 		
-		if ( stristr($html, "additional copies") )
+		$additional_copies = false;
+		$inputs = array();
+		$count = preg_match_all('/<input[^>]*>/', $html, $inputs, PREG_SET_ORDER);
+		
+		if ( $count > 0 )
+		{
+			foreach ( $inputs as $input )
+			{
+				if ( stristr($input[0], "additional copies") )
+				{
+					$additional_copies = true;
+					break;
+				}
+			}
+		}
+		
+		if ( $additional_copies == true )
 		{
 			if ( $bolRecursive == true )
 			{
