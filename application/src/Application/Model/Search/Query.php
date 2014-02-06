@@ -44,10 +44,15 @@ class Query
 	public $max_allowed = 30;
 
 	/**
-	 * default sort
+	 * internal sort
 	 * @var string
 	 */
 	public $sort = 'relevance';
+	
+	/**
+	 * external sort id
+	 */
+	public $sort_id = 'relevance';
 	
 	/**
 	 * @var string
@@ -171,6 +176,11 @@ class Query
 			$this->start = $this->request->getParam('start', 1);
 			$this->max = $this->request->getParam('max', $this->max);
 			$this->sort = $this->request->getParam('sort', $this->sort);
+			
+			// store the original (public) sort as the sort_id,
+			// we'll take sort as the (internal) sort
+			
+			$this->sort_id = $this->sort;
 			
 			// swap for internal
 			

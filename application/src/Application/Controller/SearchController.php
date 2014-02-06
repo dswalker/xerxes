@@ -210,6 +210,7 @@ abstract class SearchController extends ActionController
 		$start = $this->query->start;
 		$max = $this->query->max;
 		$sort = $this->query->sort;
+		$sort_id = $this->query->sort_id;
 		$include_facets = $this->request->getParam('include_facets', $this->include_facets);
 		
 		// keep search refinements, if not set by user already and so configured 
@@ -286,7 +287,7 @@ abstract class SearchController extends ActionController
 		
 		$results->summary = $this->helper->summary($total, $start, $max);
 		$results->pager = $this->helper->pager($total, $start, $max);
-		$results->sort_display = $this->helper->sortDisplay($sort);
+		$results->sort_display = $this->helper->sortDisplay($sort_id);
 		
 		// response
 		
