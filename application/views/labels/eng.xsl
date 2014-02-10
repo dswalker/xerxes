@@ -331,9 +331,9 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_search_results">Search results</xsl:variable>
 	
 	<xsl:variable name="text_searchbox_ada_boolean">Boolean operator: </xsl:variable>
-	<xsl:variable name="text_searchbox_boolean_and">And</xsl:variable>
-	<xsl:variable name="text_searchbox_boolean_or">Or</xsl:variable>
-	<xsl:variable name="text_searchbox_boolean_without">Without</xsl:variable>
+	<xsl:variable name="text_searchbox_boolean_and">AND</xsl:variable>
+	<xsl:variable name="text_searchbox_boolean_or">OR</xsl:variable>
+	<xsl:variable name="text_searchbox_boolean_without">NOT</xsl:variable>
 	<xsl:variable name="text_searchbox_field_keyword">all fields</xsl:variable>
 	<xsl:variable name="text_searchbox_field_title">title</xsl:variable>
 	<xsl:variable name="text_searchbox_field_author">author</xsl:variable>

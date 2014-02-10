@@ -396,16 +396,11 @@
 			<input type="hidden" name="advanced" value="true" />
 		
 			<xsl:for-each select="//query/terms/term">
-			
-				<xsl:call-template name="advanced_search_pair">
-					<xsl:with-param name="position" select="id" />
-				</xsl:call-template>
-				
+				<xsl:call-template name="advanced_search_pair" />
 			</xsl:for-each>
 		
 			<xsl:call-template name="advanced_search_pair">
 				<xsl:with-param name="position" select="count(//query/terms/term) + 1" />
-				<xsl:with-param name="display_boolean">false</xsl:with-param>
 				<xsl:with-param name="display_submit">true</xsl:with-param>
 				<xsl:with-param name="query" /> <!-- no query -->
 			</xsl:call-template>	
@@ -421,49 +416,23 @@
 	-->
 	
 	<xsl:template name="advanced_search_pair">
-		<xsl:param name="position" />
 		<xsl:param name="display_boolean">true</xsl:param>
 		<xsl:param name="display_submit">false</xsl:param>
-		
+
+		<xsl:param name="position" select="id" />		
 		<xsl:param name="field" select="field" />
-		<xsl:param name="boolean" select="following-sibling::term[1]/boolean" />
+		<xsl:param name="boolean" select="boolean" />
 		<xsl:param name="query" select="query" />
+		
+		<xsl:variable name="show_boolean">
+			<xsl:if test="$display_boolean = 'true' and $position != 1">true</xsl:if>
+		</xsl:variable>	
 				
 		<div style="padding: 5px">
-	
-			<select name="field{$position}">
-		
-			<xsl:for-each select="//config/basic_search_fields/field|//config/advanced_search_fields/field">
-		
-				<option>
-					<xsl:if test="@id != ''">
-						<xsl:attribute name="value"><xsl:value-of select="@id" /></xsl:attribute>
-						
-						<xsl:if test="@id = $field">
-							<xsl:attribute name="selected">selected</xsl:attribute>
-						</xsl:if>
-						
-					</xsl:if>
-					<xsl:value-of select="@public" />
-				</option>
-				
-			</xsl:for-each>
 			
-			</select>
+			<xsl:if test="$show_boolean = 'true'">
 			
-			<xsl:text> </xsl:text>
-		
-			<input class="control-input" type="text" name="query{$position}">
-				<xsl:if test="$query != ''">
-					<xsl:attribute name="value"><xsl:value-of select="$query" /></xsl:attribute>
-				</xsl:if>
-			</input>
-			
-			<xsl:text> </xsl:text>
-			
-			<xsl:if test="$display_boolean = 'true'">
-			
-				<select name="boolean{$position + 1}">
+				<select name="boolean{$position}" class="advanced-boolean">
 					<option value="AND">
 						<xsl:if test="$boolean = 'AND'">
 							<xsl:attribute name="selected">selected</xsl:attribute>
@@ -485,6 +454,44 @@
 				</select>
 				
 			</xsl:if>
+
+			<xsl:text> </xsl:text>
+			
+			<select name="field{$position}">
+				<xsl:attribute name="class">
+					<xsl:text>advanced-field</xsl:text>
+					<xsl:if test="$show_boolean != 'true'">
+						<xsl:text> advanced-nobool</xsl:text>
+					</xsl:if>
+				</xsl:attribute>
+		
+			<xsl:for-each select="//config/basic_search_fields/field|//config/advanced_search_fields/field">
+		
+				<option>
+					<xsl:if test="@id != ''">
+						<xsl:attribute name="value"><xsl:value-of select="@id" /></xsl:attribute>
+						
+						<xsl:if test="@id = $field">
+							<xsl:attribute name="selected">selected</xsl:attribute>
+						</xsl:if>
+						
+					</xsl:if>
+					<xsl:value-of select="@public" />
+				</option>
+				
+			</xsl:for-each>
+			
+			</select>
+			
+			<xsl:text> </xsl:text>		
+			
+			<input class="advanced-query" type="text" name="query{$position}" >
+				<xsl:if test="$query != ''">
+					<xsl:attribute name="value"><xsl:value-of select="$query" /></xsl:attribute>
+				</xsl:if>
+			</input>
+			
+			<xsl:text> </xsl:text>
 			
 			<xsl:if test="$display_submit = 'true'">
 			

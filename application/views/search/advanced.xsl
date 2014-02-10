@@ -71,24 +71,12 @@
 		<form action="{//controller}/search">
 		
 			<input type="hidden" name="advanced" value="true" />
-		
-			<xsl:call-template name="advanced_search_pair">
-				<xsl:with-param name="position">1</xsl:with-param>
-				<xsl:with-param name="query" select="//request/query" />
-			</xsl:call-template>
-
-			<xsl:call-template name="advanced_search_pair">
-				<xsl:with-param name="position">2</xsl:with-param>
-			</xsl:call-template>
 			
-			<xsl:call-template name="advanced_search_pair">
-				<xsl:with-param name="position">3</xsl:with-param>
-			</xsl:call-template>
+			<xsl:for-each select="//query/terms/term">
 			
-			<xsl:call-template name="advanced_search_pair">
-				<xsl:with-param name="position">4</xsl:with-param>
-				<xsl:with-param name="display_boolean">false</xsl:with-param>
-			</xsl:call-template>
+				<xsl:call-template name="advanced_search_pair" />
+				
+			</xsl:for-each>
 			
 			
 			<xsl:for-each select="config/advanced_search_fields/limit">

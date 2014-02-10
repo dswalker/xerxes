@@ -475,10 +475,22 @@ abstract class SearchController extends ActionController
 		if ( ! $facets instanceof Facets ) // nope
 		{
 			$facets = $this->engine->getAllFacets();
-			$this->cache->set($id, $facets, time() + (24 * 60 * 60)); // 24 hour cache
+			$this->cache->set($id, $facets, time() + (7 * 24 * 60 * 60)); // one week cache
 		}
 		
+		$terms_number = count($this->query->getQueryTerms());
+		
+		if ( $terms_number < 4 )
+		{
+			for ( $x = $terms_number + 1; $x <= 4; $x++ )
+			{
+				$this->query->addTerm($x);
+			}  
+		}
+		
+		$this->response->setVariable('query', $this->query);
 		$this->response->setVariable('limits', $facets);
+		
 		
 		$this->response->setView('search/advanced.xsl');
 		

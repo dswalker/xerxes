@@ -944,7 +944,6 @@ ul.combined-results .record-title {
 	margin-bottom: 1em;
 }
 
-
 .folder-options div {
 	margin-left: 2em;
 	margin-top: 1em;
@@ -981,4 +980,20 @@ td.title-cell {
 	width: 100%;
 }
 
+.advanced-boolean {
+	width: 80px;
+	line-height: 130%;
+}
 
+.search-box select.advanced-nobool, .advanced-nobool {
+	margin-left: 84px;
+}
+
+.advanced-field {
+	width: 150px;
+	line-height: 130%;
+}
+
+.advanced-query {
+	width: 300px;
+}
