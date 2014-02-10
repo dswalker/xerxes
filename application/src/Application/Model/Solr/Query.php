@@ -142,71 +142,42 @@ class Query extends Search\Query
 				$phrase = strtolower($phrase);
 				$phrase = str_replace(':', '', $phrase);
 				$phrase = $this->alterQuery($phrase, $term->field_internal, $this->config);
-			
-				// break up the query into words
-			
-				$arrQuery = $term->normalizedArray( $phrase );
-			
-				// we'll now search for this term across multiple fields
-				// specified in the config
-			
-				if ( $term->field_internal != "" )
+				
+				if ( $term->boolean != "" )
 				{
-					// we'll use this to get the phrase as a whole, but minus
-					// the boolean operators in order to boost this
-						
-					$boost_phrase = "";
+					$query .= $term->boolean . ' ';
+				}
+				
+				if ( $term->field != "keyword" )
+				{
+					$field_no_boost = explode(' ', preg_replace('/[\^0-9\.]/', '', $term->field_internal));
 					
-					foreach ( $arrQuery as $strPiece )
+					$query .= '( ';
+					$x = 1;
+						
+					foreach ( $field_no_boost as $field_straight )
 					{
-						// just add the booelan value straight-up
-			
-						if ( $strPiece == "AND" || $strPiece == "OR" || $strPiece == "NOT" )
+						if ( $x != 1 )
 						{
-							$query .= " $strPiece ";
-							continue;
+							$query .= 'OR';
 						}
-			
-						$boost_phrase .= " " . $strPiece;
-			
-						// try to mimick dismax query handler as much as possible
-			
-						$query .= " (";
-						$local = array();
-		
-						// take the fields we're searching on,
-		
-						foreach ( explode(" ", $term->field_internal) as $field )
-						{
-							// split them out into index and boost score
-			
-							$parts = explode("^",$field);
-							$field_name = $parts[0];
-							$boost = "";
-								
-							// make sure there really was a  boost score
-								
-							if ( array_key_exists(1,$parts) )
-							{
-								$boost = "^" . $parts[1];
-							}
-							
-							// put them together
-							
-							array_push($local, $field_name . ":" . $strPiece . $boost);
-						}
-		
-						$query .= implode(" OR ", $local);
-							
-						$query .= " )";
+						
+						$query .= " $field_straight: $phrase ";
+						
+						$x++;
 					}
-							
-					// $boost_phrase = trim($boost_phrase);
-					// $query = "($query) OR \"" . $boost_phrase . '"';
+						
+					$query .= ') ';
+				}
+				else
+				{
+					$query .= $phrase . ' ';
 				}
 			}
-							
-			$query = "&q=" . urlencode($query);
+			
+			// echo "<p>$query</p>";
+			
+			$query = "&q=" . urlencode(trim($query));
 		}
 		
 		// facets selected
