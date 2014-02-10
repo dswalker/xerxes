@@ -413,7 +413,7 @@ class ResultSet
 			{				
 				if ( ! $holdings instanceof Holdings   )
 				{
-					throw new \Exception("cached item ($id) is not an instance of Holdings");
+					continue; // skip it
 				}
 				
 				// now associate this item with its corresponding result
