@@ -134,7 +134,7 @@ class QueryTerm
 		
 		// strip extra spaces
 		
-		while ( strstr($this->phrase, "  ") )
+		while ( strstr($phrase, "  ") )
 		{
 			$phrase = str_replace("  ", " ", $phrase);
 		}
