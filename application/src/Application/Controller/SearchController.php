@@ -138,13 +138,6 @@ abstract class SearchController extends ActionController
 					unset($params[$id]);
 				}
 			}
-			elseif ( strstr($id, 'boolean') )
-			{
-				if ( strtolower($value) == 'and')
-				{
-					unset($params[$id]);
-				}
-			}
 		}
 		
 		// keep search refinements if user says so
@@ -480,44 +473,24 @@ abstract class SearchController extends ActionController
 		
 		$terms_number = count($this->query->getQueryTerms());
 		
+		// add blank terms to get us to 4 rows
+		
 		if ( $terms_number < 4 )
 		{
 			for ( $x = $terms_number + 1; $x <= 4; $x++ )
 			{
-				$this->query->addTerm($x);
+				$this->query->addTerm($x, null, null, null, null);
 			}  
 		}
 		
 		$this->response->setVariable('query', $this->query);
 		$this->response->setVariable('limits', $facets);
 		
-		
 		$this->response->setView('search/advanced.xsl');
 		
 		return $this->response;
 	}
 
-	/**
-	 * Advanced search redirect
-	 */
-	
-	public function advancedsearchAction()
-	{
-		// get query as single string
-		
-		$query = $this->query->toQuery();
-		
-		// just limits
-		
-		$params = $this->query->getLimitParams();
-		$params['controller'] = $this->request->getParam('controller');
-		$params['action'] = 'search';
-		$params['advanced'] = 'true';
-		$params['query'] = $query;
-		
-		return $this->redirectTo($params);
-	}	
-	
 	/**
 	 * Check for mispelled terms
 	 * 
