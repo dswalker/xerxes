@@ -433,7 +433,7 @@
 			<xsl:if test="$show_boolean = 'true'">
 			
 				<select name="boolean{$position}" class="advanced-boolean">
-					<option value="AND">
+					<option value="">
 						<xsl:if test="$boolean = 'AND'">
 							<xsl:attribute name="selected">selected</xsl:attribute>
 						</xsl:if>
