@@ -37,9 +37,12 @@ class Query extends Search\Query
 		
 		// search terms
 		
+		$x = 1;
+		
 		foreach ( $this->getQueryTerms() as $term )
 		{
-			$query .= $this->keyValue($term);
+			$query .= $this->keyValue($x, $term);
+			$x++;
 		}
 		
 		// limits
@@ -121,22 +124,36 @@ class Query extends Search\Query
 	 * Create an SRU boolean/key/value expression in the query, such as:
 	 * AND srw.su="xslt"
 	 *
-	 * @param QueryTerm $term
+	 * @param int $positoin         position in query 
+	 * @param QueryTerm $term       term
 	 * @param bool $neg				(optional) whether the presence of '-' in $value should indicate a negative expression
 	 * 								in which case $boolean gets changed to 'NOT'
 	 * @return string				the resulting SRU expresion
 	 */
 	
-	private function keyValue(Search\QueryTerm $term, $neg = false)
+	private function keyValue($position = 1, Search\QueryTerm $term, $neg = false)
 	{
+		// no term, no mas
+		
+		if ( $term->phrase == "" )
+		{
+			return "";
+		}
+		
+		// internal field
+		
 		if ( $term->field_internal == 'undefined' )
 		{
 			$term->field_internal = 'kw'; // @todo figure out why this hack is necessary on combined
 		}
 		
-		if ( $term->phrase == "" )
+		// boolean
+		
+		$boolean = $term->boolean;
+		
+		if ( $boolean == "" && $position > 1 )
 		{
-			return "";
+			$boolean = 'AND';
 		}
 	
 		if ($neg == true && strstr (  $term->phrase, "-" ))
@@ -155,9 +172,16 @@ class Query extends Search\Query
 		else
 		{
 			$phrase = $term->removeStopWords()->phrase;
-				
-			foreach ( $term->normalizedArray($phrase) as $query_part )
+			
+			$parts = $term->normalizedArray($phrase);
+			
+			foreach ( $parts as $query_part )
 			{
+				if ( ! preg_match('/[a-zA-Z0-9]{1}/', $query_part))
+				{
+					continue; // no searchable term, skip
+				}
+				
 				if ($query_part == "AND" || $query_part == "OR" || $query_part == "NOT")
 				{
 					$together .= " " . $query_part;
@@ -170,6 +194,6 @@ class Query extends Search\Query
 			}
 		}
 	
-		return " " . $term->boolean . " ( $together ) ";
+		return " $boolean ( $together ) ";
 	}
 }
