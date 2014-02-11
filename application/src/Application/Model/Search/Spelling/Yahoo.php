@@ -55,7 +55,7 @@ class Yahoo
 		foreach ( $query_terms as $term )
 		{
 			$query = $term->phrase;
-			$query = urlencode(trim($query));
+			$query = trim($query);
 			
 			$correction = null;
 		
