@@ -739,7 +739,7 @@
 		<span class="tabs-hit" >
 			<xsl:choose>
 				<xsl:when test="@hits">
-					(<xsl:value-of select="@hits" />)
+					<xsl:call-template name="tab_hits_number_display" />
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:call-template name="tab_hits_number" />
@@ -748,10 +748,26 @@
 		</span>
 	
 	</xsl:template>
+
+	<!-- 
+		TEMPLATE: TAB HITS NUMBER
+		ajax look-up place holder
+	-->
 	
 	<xsl:template name="tab_hits_number">
 	
 		<span class="tabs-hit-number" id="tab-{@id}-{@source}" source="{@url_hits}"></span>
+		
+	</xsl:template>
+
+	<!-- 
+		TEMPLATE: TAB HITS NUMBER DISPLAY
+		inline display of the number
+	-->
+	
+	<xsl:template name="tab_hits_number_display">
+	
+		&nbsp;&nbsp;&nbsp;(<xsl:value-of select="@hits|hits" />)
 		
 	</xsl:template>
 	
