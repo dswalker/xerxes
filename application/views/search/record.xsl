@@ -444,7 +444,8 @@
 		<xsl:call-template name="record_language" />
 		<xsl:call-template name="record_standard_numbers" />
 		<xsl:call-template name="record_notes" />
-		<xsl:call-template name="additional-title-info" />
+		<xsl:call-template name="record_non_fulltext_links" />
+		<xsl:call-template name="additional_title_info" />
 		
 	</xsl:template>	
 
@@ -607,6 +608,35 @@
 			</ul>
 		</xsl:if>
 	</xsl:template>
+	
+	
+	<!--
+		TEMPLATE: RECORD NOTES
+	-->
+
+	<xsl:template name="record_non_fulltext_links">
+		
+		<xsl:if test="links/link[@type = 'none']">
+		
+			<h2><xsl:copy-of select="$text_record_non_fulltext_links" />:</h2>
+			<ul>
+				<xsl:for-each select="links/link[@type != 'full']">
+					<li>
+						<a href="{url}" target="{$link_target}" data-role="button">
+							<xsl:choose>
+								<xsl:when test="display != ''">
+									<xsl:value-of select="display" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:copy-of select="$text_record_non_fulltext_links" />
+								</xsl:otherwise>
+							</xsl:choose>
+						</a>
+					</li>
+				</xsl:for-each>
+			</ul>
+		</xsl:if>
+	</xsl:template>	
 
 	<!--
 		TEMPLATE: RECORD NOTES
@@ -625,7 +655,7 @@
 		TEMPLATE: ADDITIONAL TITLE INFO
 	-->	
 	
-	<xsl:template name="additional-title-info">
+	<xsl:template name="additional_title_info">
 		<xsl:call-template name="alternate-titles" />
 		<xsl:call-template name="additional-titles" />
 		<xsl:call-template name="related-journal-titles" />
