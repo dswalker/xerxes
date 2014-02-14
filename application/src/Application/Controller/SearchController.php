@@ -17,6 +17,7 @@ use Application\Model\Search\Engine;
 use Application\Model\Search\Facets;
 use Application\Model\Search\Query;
 use Application\Model\Search\Result;
+use Application\Model\Search\Spelling\Suggestion;
 use Application\Model\DataMap\SavedRecords;
 use Application\View\Helper\Search as SearchHelper;
 use Xerxes\Mvc\ActionController;
@@ -101,6 +102,9 @@ abstract class SearchController extends ActionController
 	
 	public function indexAction()
 	{
+		$this->helper->addQueryLinks($this->query);
+		$this->response->setVariable('query', $this->query);
+		
 		// set view template
 		
 		$this->response->setView('search/index.xsl');
@@ -500,8 +504,15 @@ abstract class SearchController extends ActionController
 	
 	protected function checkSpelling()
 	{
-		$id = $this->query->getHash();
+		// advanced search?  no thanks!
 		
+		if ( $this->request->getParam('advanced') != null)
+		{
+			return new Suggestion();
+		}
+
+		$id = $this->query->getHash();
+			
 		// have we checked it already?
 		
 		$suggestion = $this->request->getSessionData("spelling_$id");

@@ -391,8 +391,6 @@
 	
 		<div class="raised-box search-box">
 		
-			<p><a href="{//request/controller}">basic search</a></p>
-		
 			<input type="hidden" name="advanced" value="true" />
 		
 			<xsl:for-each select="//query/terms/term">
@@ -548,8 +546,6 @@
 			
 			<xsl:call-template name="search_refinement" />
 			
-			<xsl:call-template name="advanced_search_option" />
-			
 		</div>
 	
 	</xsl:template>
@@ -572,8 +568,6 @@
 				<input type="submit" name="Submit" value="Search" class="btn submit-searchbox{$language_suffix}" />
 			
 			</div>
-						
-			<xsl:call-template name="advanced_search_option" />
 			
 		</div>
 	
@@ -585,9 +579,10 @@
 	
 	<xsl:template name="search_refinement">
 	
-		<xsl:if test="config/facet_multiple = 'true' and results/facets">
-		
-			<div class="search-refine">
+		<div class="search-refine">
+	
+			<xsl:if test="config/facet_multiple = 'true' and results/facets">
+			
 				<input id="results-clear-facets-false" type="radio" name="clear-facets" value="false">
 					<xsl:if test="//request/session/clear_facets = 'false'">
 						<xsl:attribute name="checked">checked</xsl:attribute>
@@ -603,13 +598,40 @@
 				</input>
 				<xsl:text> </xsl:text>
 				<label for="results-clear-facets-true"><xsl:value-of select="$text_results_clear_facets_true" /></label>
-			</div>
+				<xsl:text> </xsl:text>
 			
-			<xsl:call-template name="hidden_search_inputs">
-				<xsl:with-param name="exclude_search_params">true</xsl:with-param>
-			</xsl:call-template>
+				<xsl:call-template name="hidden_search_inputs">
+					<xsl:with-param name="exclude_search_params">true</xsl:with-param>
+				</xsl:call-template>
 			
-		</xsl:if>	
+			</xsl:if>	
+		
+			<xsl:call-template name="advanced_search_option" />
+			
+		</div>
+	
+	</xsl:template>
+	
+	<xsl:template name="advanced_search_option">
+	
+		<xsl:if test="config/advanced_search = 'true'">
+	
+			<span class="padding: 2px;">
+			
+				<xsl:choose>
+					<xsl:when test="request/advanced">
+						<a href="{request/controller}/"><xsl:value-of select="$text_searchbox_basic" /></a>
+						<xsl:text> | </xsl:text>
+						<a href="{query/url_advanced}"><xsl:value-of select="$text_searchbox_options_more" /></a>
+					</xsl:when>
+					<xsl:otherwise>
+						<a href="{query/url_advanced}"><xsl:value-of select="$text_searchbox_advanced" /></a>
+					</xsl:otherwise>
+				</xsl:choose>
+			
+			</span>	
+			
+		</xsl:if>
 	
 	</xsl:template>
 
@@ -1846,7 +1868,6 @@
 
 	<!-- search box fields overriden in templates -->
 	
-	<xsl:template name="advanced_search_option" />
 	<xsl:template name="searchbox_hidden_fields_module" />
 	<xsl:template name="searchbox_hidden_fields_local" />
 	

@@ -288,6 +288,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_record_format_label">Format</xsl:variable>
 	<xsl:variable name="text_record_inst">Institution</xsl:variable>
 	<xsl:variable name="text_record_language_label">Language</xsl:variable>
+	<xsl:variable name="text_record_non_fulltext_links">Additional Information</xsl:variable>
 	<xsl:variable name="text_record_notes">Additional Notes</xsl:variable>
 	<xsl:variable name="text_record_publisher">Publisher</xsl:variable>
 	<xsl:variable name="text_record_summary">Summary</xsl:variable>
@@ -331,6 +332,8 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_search_results">Search results</xsl:variable>
 	
 	<xsl:variable name="text_searchbox_ada_boolean">Boolean operator: </xsl:variable>
+	<xsl:variable name="text_searchbox_advanced">advanced search</xsl:variable>
+	<xsl:variable name="text_searchbox_basic">basic search</xsl:variable>
 	<xsl:variable name="text_searchbox_boolean_and">AND</xsl:variable>
 	<xsl:variable name="text_searchbox_boolean_or">OR</xsl:variable>
 	<xsl:variable name="text_searchbox_boolean_without">NOT</xsl:variable>
@@ -344,7 +347,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_searchbox_for">for</xsl:variable>
 	<xsl:variable name="text_searchbox_go">GO</xsl:variable>
 	<xsl:variable name="text_searchbox_options_fewer">Fewer Options</xsl:variable>
-	<xsl:variable name="text_searchbox_options_more">More Options</xsl:variable>
+	<xsl:variable name="text_searchbox_options_more">more options</xsl:variable>
 	<xsl:variable name="text_searchbox_search">Search</xsl:variable>
 	<xsl:variable name="text_searchbox_spelling_error">Did you mean: </xsl:variable>
 	

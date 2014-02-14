@@ -639,6 +639,11 @@ class Search
 			
 		$query->url = $this->request->url_for($params);
 		
+		// advanced search
+		
+		$params['action'] = 'advanced';
+		$query->url_advanced = $this->request->url_for($params);
+		
 		
 		// search option links
 		

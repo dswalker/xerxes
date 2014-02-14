@@ -72,11 +72,17 @@
 		
 			<input type="hidden" name="advanced" value="true" />
 			
-			<xsl:for-each select="//query/terms/term">
+			<div style="margin-bottom: 20px">
+				<a href="{request/controller}/"><xsl:value-of select="$text_searchbox_basic" /></a>				
+			</div>	
 			
-				<xsl:call-template name="advanced_search_pair" />
+			<div class="raised-box search-box">
+						
+				<xsl:for-each select="//query/terms/term">				
+					<xsl:call-template name="advanced_search_pair" />
+				</xsl:for-each>
 				
-			</xsl:for-each>
+			</div>
 			
 			
 			<xsl:for-each select="config/advanced_search_fields/limit">
