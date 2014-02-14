@@ -174,7 +174,16 @@ class Engine extends Search\Engine
 	 */		
 	
 	protected function doSearch( Search\Query $search, $start = 1, $max = 10, $sort = "", $facets = true)
-	{ 	
+	{ 
+		// can't search on this field, so return 0
+		
+		if ( $this->query->hasUnsupportedField() )
+		{
+			$results = new Search\ResultSet($this->getConfig());
+			$results->total = 0;
+			return $results;
+		}		
+		
 		// convert query
 		
 		$query = $search->toQuery();
