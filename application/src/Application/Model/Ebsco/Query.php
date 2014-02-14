@@ -131,8 +131,17 @@ class Query extends Search\Query
 		
 			$local_term->toLower()
 			           ->andAllTerms();
+			
+			$boolean = $term->boolean;
+			
+			// default to and boolean if not supplied
+			
+			if ( $term->id > 1 && $boolean == "")
+			{
+				$boolean = 'AND';
+			}
 		
-			$query .= ' ' . $term->boolean . ' (';
+			$query .= " $boolean (";
 		
 			if ( $local_term->field_internal != "" )
 			{
@@ -149,7 +158,9 @@ class Query extends Search\Query
 			$query = "$query AND PT Academic Journal";
 		}
 		
-		$query = trim($query);		
+		$query = trim($query);
+		
+		// echo "<p>$query</p>";
 		
 		// default for sort
 		
