@@ -150,6 +150,17 @@ abstract class Engine
 	
 	protected function doSearch( Query $query, $start = 1, $max = 10, $sort = "", $facets = true)
 	{
+		// can't search on this field, so return 0
+		
+		if ( $this->query->hasUnsupportedField() )
+		{
+			$results = new ResultSet($this->getConfig());
+			$results->total = 0;
+			return $results;
+		}
+		
+		// get the query
+		
 		$request = $query->getQueryUrl();
 		
 		// get the data
@@ -212,9 +223,11 @@ abstract class Engine
 	
 	public function getAllFacets()
 	{
-		$this->getQuery()->addTerm(1, null, '*', null, '*');
+		$query = clone $this->getQuery(); // clone so we don't add this to the search by accident
+		
+		$query->addTerm(1, null, '*', null, '*');
 	
-		$results = $this->doSearch($this->query);
+		$results = $this->doSearch($query);
 	
 		$facets = $results->getFacets();
 	

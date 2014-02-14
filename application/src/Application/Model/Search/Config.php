@@ -24,6 +24,8 @@ abstract class Config extends Registry
 	private $facets = array();
 	private $fields = array();
 	
+	const UNSUPPORED_FIELD = '__UNSUPPORTED__';
+	
 	/**
 	 * Initialize the object by picking up and processing the config xml file
 	 */	
@@ -222,33 +224,38 @@ abstract class Config extends Registry
 	
 	public function swapForInternalField($id)
 	{
-		$config = $this->getConfig("basic_search_fields");
+		$options = array('basic_search_fields', 'advanced_search_fields');
 		
-		if ( $config != null )
+		foreach ( $options as $option )
 		{
-			foreach ( $config->field as $field )
+			$config = $this->getConfig($option);
+			
+			if ( $config != null )
 			{
-				$field_id = (string) $field["id"];
-				
-				if ( $field_id == "")
+				foreach ( $config->field as $field )
 				{
-					continue;
-				}
-				
-				// if $id was blank, then we take the first
-				// one in the list, otherwise, we're looking 
-				// to match
-				
-				elseif ( $field_id == $id || $id == "")
-				{
-					return (string) $field["internal"];
-				}
-			}			
+					$field_id = (string) $field["id"];
+					
+					if ( $field_id == "")
+					{
+						continue;
+					}
+					
+					// if $id was blank, then we take the first
+					// one in the list, otherwise, we're looking 
+					// to match
+					
+					elseif ( $field_id == $id || $id == "")
+					{
+						return (string) $field["internal"];
+					}
+				}			
+			}
 		}
 		
-		// if we got this far no mapping, so return original
+		// if we got this far no mapping, so return unsupported
 		
-		return $id; 
+		return self::UNSUPPORED_FIELD; 
 	}
 
 	/**

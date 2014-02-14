@@ -760,6 +760,26 @@ class Query
 	}
 	
 	/**
+	 * Check to see if any of the search terms have an undefined (hence unsupported)
+	 * internal search field
+	 * 
+	 * @return boolean
+	 */
+	
+	public function hasUnsupportedField()
+	{
+		foreach ( $this->terms as $term )
+		{
+			if ( $term->field_internal == Config::UNSUPPORED_FIELD )
+			{
+				return true;
+			}
+		}
+		
+		return false; // got this far nada
+	}
+	
+	/**
 	 * @return Request
 	 */
 	
