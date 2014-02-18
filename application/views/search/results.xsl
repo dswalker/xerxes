@@ -611,6 +611,10 @@
 		</div>
 	
 	</xsl:template>
+
+	<!-- 	
+		TEMPLATE: ADVANCED SEARCH
+	-->
 	
 	<xsl:template name="advanced_search_option">
 	
