@@ -32,7 +32,7 @@ class Engine extends Search\Engine
 	 * Create Worldcat Search Engine
 	 */
 	
-	public function __construct($role, $source)
+	public function __construct($role = null, $source = null)
 	{
 		parent::__construct();
 
