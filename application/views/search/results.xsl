@@ -430,7 +430,9 @@
 			
 			<xsl:if test="$show_boolean = 'true'">
 			
-				<select name="boolean{$position}" class="advanced-boolean">
+				<label class="ada" for="boolean{$position}"><xsl:value-of select="$text_searchbox_ada_boolean" /></label>
+			
+				<select id="boolean{$position}" name="boolean{$position}" class="advanced-boolean">
 					<option value="">
 						<xsl:if test="$boolean = 'AND'">
 							<xsl:attribute name="selected">selected</xsl:attribute>
@@ -452,10 +454,15 @@
 				</select>
 				
 			</xsl:if>
+			
+			<xsl:text> </xsl:text>	
+
+			<label class="ada" for="field{$position}"><xsl:value-of select="$text_searchbox_ada_field" /></label>
 
 			<xsl:text> </xsl:text>
 			
-			<select name="field{$position}">
+			
+			<select id="field{$position}" name="field{$position}">
 				<xsl:attribute name="class">
 					<xsl:text>advanced-field</xsl:text>
 					<xsl:if test="$show_boolean != 'true'">
@@ -481,9 +488,13 @@
 			
 			</select>
 			
+			<xsl:text> </xsl:text>	
+			
+			<label class="ada" for="query{$position}"><xsl:value-of select="$text_searchbox_ada_query" /></label>
+			
 			<xsl:text> </xsl:text>		
 			
-			<input class="advanced-query" type="text" name="query{$position}" >
+			<input class="advanced-query" type="text" id="query{$position}" name="query{$position}">
 				<xsl:if test="$query != ''">
 					<xsl:attribute name="value"><xsl:value-of select="$query" /></xsl:attribute>
 				</xsl:if>
@@ -559,7 +570,6 @@
 		<xsl:variable name="query"	select="request/query" />
 		
 		<div class="raised-box search-box">
-	
 	
 			<div class="search-row">
 				

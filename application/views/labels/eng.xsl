@@ -332,6 +332,8 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_search_results">Search results</xsl:variable>
 	
 	<xsl:variable name="text_searchbox_ada_boolean">Boolean operator: </xsl:variable>
+	<xsl:variable name="text_searchbox_ada_field">Field: </xsl:variable>
+	<xsl:variable name="text_searchbox_ada_query">Search terms: </xsl:variable>
 	<xsl:variable name="text_searchbox_advanced">advanced search</xsl:variable>
 	<xsl:variable name="text_searchbox_basic">basic search</xsl:variable>
 	<xsl:variable name="text_searchbox_boolean_and">AND</xsl:variable>
