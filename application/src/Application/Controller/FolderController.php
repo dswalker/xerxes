@@ -119,16 +119,23 @@ class FolderController extends SearchController
 		return parent::resultsAction();
 	}
 	
+	/**
+	 * (non-PHPdoc)
+	 * @see Application\Controller.SearchController::recordAction()
+	 */
+	
 	public function recordAction()
 	{
 		$response = parent::recordAction();
 		
 		$results = $this->response->getVariable('results');
+		$result = $results->getRecord(0);
 		
-		if ( $results->getRecord(0)->getXerxesRecord() instanceof Solr\Record )
+		// special display for solr
+		
+		if ( $result->getXerxesRecord() instanceof Solr\Record )
 		{
 			$response->setView('folder/books/record.xsl');
-			
 			$response->setVariable('folder_config', Solr\Config::getInstance());
 		}
 		
