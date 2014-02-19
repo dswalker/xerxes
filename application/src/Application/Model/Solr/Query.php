@@ -47,6 +47,15 @@ class Query extends Search\Query
 			$this->server = $this->config->getConfig('SOLR', true);
 			$this->server = rtrim($this->server, '/');
 			$this->server .= "/select/?version=2.2";
+			
+			// limits set in config
+			
+			$auto_limit = $this->config->getConfig("LIMIT", false);
+			
+			if ( $auto_limit != null )
+			{
+				$this->server .= "&fq=" . urlencode($auto_limit);
+			}
 		}
 	}
 	
@@ -89,10 +98,6 @@ class Query extends Search\Query
 			throw new \Exception("No search terms supplied");
 		}
 		
-		//@todo: get rid of this as we upgrade to solr 3.x and get e-dismax
-		
-		// decide between basic and dismax handler
-		
 		$term = $terms[0]; // get just the first term for now
 		
 		// isbn
@@ -101,6 +106,10 @@ class Query extends Search\Query
 		{
 			$term->phrase = str_replace('-', '', $term->phrase);
 		}
+		
+		// decide between basic and dismax handler
+		
+		//@todo: get rid of this as we upgrade to solr > 3.x and get e-dismax
 		
 		$trunc_test = $this->config->getFieldAttribute($term->field_internal, "truncate");
 		
