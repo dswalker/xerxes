@@ -224,6 +224,15 @@ abstract class Config extends Registry
 	
 	public function swapForInternalField($id)
 	{
+		// asterisk is a special case
+		
+		if  ( $id == '*')
+		{
+			return $id;
+		}
+		
+		// check basic and advanced search fields
+		
 		$options = array('basic_search_fields', 'advanced_search_fields');
 		
 		foreach ( $options as $option )
