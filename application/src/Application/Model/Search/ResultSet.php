@@ -13,6 +13,7 @@ namespace Application\Model\Search;
 
 use Application\Model\DataMap\Availability;
 use Application\Model\DataMap\Refereed as DataMapRefereed;
+use Application\Model\Search\Exception\NotFoundException;
 use Xerxes\Record;
 use Xerxes\Utility\Cache;
 
@@ -76,7 +77,7 @@ class ResultSet
 		}
 		else
 		{
-			throw new \Exception("No such record");
+			throw new NotFoundException("No such record");
 		}
 	}
 	

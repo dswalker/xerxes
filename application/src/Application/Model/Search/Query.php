@@ -12,9 +12,10 @@
 namespace Application\Model\Search;
 
 use Application\Model\Search\Spelling\Suggestion;
+use Xerxes\Mvc\Request;
 use Xerxes\Utility\Factory;
 use Xerxes\Utility\Registry;
-use Xerxes\Mvc\Request;
+use Xerxes\Utility\User;
 
 /**
  * Search Query
@@ -698,7 +699,14 @@ class Query
 	
 	public function getUser()
 	{
-		return $this->request->getUser();
+		if ( $this->request instanceof Request )
+		{
+			return $this->request->getUser();
+		}
+		else
+		{
+			return new User();
+		}
 	}
 	
 	/**

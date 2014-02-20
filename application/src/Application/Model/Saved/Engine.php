@@ -12,6 +12,7 @@
 namespace Application\Model\Saved;
 
 use Application\Model\Search;
+use Application\Model\Search\Exception\NotFoundException;
 use Application\Model\Search\ResultSet;
 use Application\Model\Solr;
 use Application\Model\DataMap\SavedRecords;
@@ -84,6 +85,44 @@ class Engine extends Search\Engine
 		$results->total = 1;
 		
 		$result = $this->createSearchResult($record);
+		
+		// corrupted record, look out
+		
+		if ( $result->corrupted == true )
+		{
+			$fixed = false;
+				
+			// go back to the original search engine and fetch it again
+				
+			$class_name = 'Application\\Model\\' . ucfirst($result->source) . '\\Engine';
+				
+			if ( class_exists($class_name) )
+			{
+				try 
+				{
+					$engine = new $class_name();
+			
+					$new_results = $engine->getRecord($result->original_id);
+			
+					if ( $new_results->total > 0 )
+					{
+						$results = $new_results;
+						$result = $results->getRecord(0);
+						$this->response->setVariable('results', $results);
+						$fixed = true;
+					}
+				}
+				catch (NotFoundException $e)
+				{
+					
+				}
+			}
+				
+			if ( $fixed == false )
+			{
+				throw new \Exception('Sorry, this record has been corrupted');
+			}
+		}		
 		
 		// if a catalog record, fetch holdings
 		
@@ -239,13 +278,13 @@ class Engine extends Search\Engine
 	}
 	
 	/**
-	 * Create a Result from the suppled Xerxes Record
+	 * Create a Result from the supplied Xerxes Record
 	 * @param Record $record
 	 */
 	
 	protected function createSearchResult(Record $record)
 	{
-		$result = new Result($record->xerxes_record, $this->config);
+		$result = new Result($record, $this->config);
 		
 		// set the internal id as the record id, not the original
 		
