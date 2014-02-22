@@ -72,7 +72,7 @@ class Result extends Search\Result
 			
 			$xerxes_record = new Xerxes\Record();
 			
-			$title = $record->title . ' [' . $record->source . ':***]';
+			$title = $record->title;
 			
 			if ( $record->nonsort != "")
 			{

@@ -18,6 +18,7 @@ use Application\Model\Solr;
 use Application\Model\DataMap\SavedRecords;
 use Xerxes;
 use Xerxes\Mvc\Request;
+use Xerxes\Utility\Parser;
 
 /**
  * Saved Records
@@ -70,6 +71,8 @@ class Engine extends Search\Engine
 	{
 		$results = new Search\ResultSet($this->config);
 		
+		// get the record from the database
+		
 		$record = $this->datamap->getRecordByID($id);
 		
 		// no record found?
@@ -106,15 +109,22 @@ class Engine extends Search\Engine
 			
 					if ( $new_results->total > 0 )
 					{
-						$results = $new_results;
-						$result = $results->getRecord(0);
-						$this->response->setVariable('results', $results);
+						$result = $new_results->getRecord(0);
 						$fixed = true;
 					}
 				}
 				catch (NotFoundException $e)
 				{
+					$data = $record->marc;
 					
+					if ( strstr($data, 'Xerxes_TransRecord') )
+					{
+						$data = '<?xml version="1.0"?>' . Parser::removeLeft($data, '<?xml version="1.0"?>');
+						$data = Parser::removeRight($data, '</xerxes_record>') . '</xerxes_record>';
+					}
+					else
+					{
+					}
 				}
 			}
 				

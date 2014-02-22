@@ -371,6 +371,12 @@ class SavedRecords extends DataMap
 						if ( $arrResult["record_type"] == "xerxes_record")
 						{
 							$objRecord->xerxes_record = unserialize($arrResult["marc"]);
+							
+							if ( ! $objRecord->xerxes_record instanceof Record )
+							{
+								$data = $this->fix_corrupted_serialized_string($arrResult["marc"]);
+								$objRecord->xerxes_record = unserialize($data);
+							}
 						}
 						else // old ass metalib record from early in version 1
 						{
@@ -404,6 +410,20 @@ class SavedRecords extends DataMap
 		}
 		
 		return $arrRecords;
+	}
+	
+	function fix_corrupted_serialized_string($string) {
+		$tmp = explode(':"', $string);
+		$length = count($tmp);
+		for($i = 1; $i < $length; $i++) {
+			list($string) = explode('"', $tmp[$i]);
+			$str_length = strlen($string);
+			$tmp2 = explode(':', $tmp[$i-1]);
+			$last = count($tmp2) - 1;
+			$tmp2[$last] = $str_length;
+			$tmp[$i-1] = join(':', $tmp2);
+		}
+		return join(':"', $tmp);
 	}
 	
 	/**
