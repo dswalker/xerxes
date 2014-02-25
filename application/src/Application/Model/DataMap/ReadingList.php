@@ -122,9 +122,9 @@ class ReadingList extends DataMap
 			$records_datamap = new SavedRecords();
 			$records = $records_datamap->getRecordsByID($ids);
 			
-			// reorder them here -- hacky sack! @todo: find a better way!
+			// print_r($record_data); print_r($records); exit;
 			
-			// print_r($ids); print_r($records); exit;
+			// reorder them here -- hacky sack! @todo: find a better way!
 			
 			$final = array();
 			
@@ -134,7 +134,21 @@ class ReadingList extends DataMap
 				{
 					if ( $record->id == $record_data_item->record_id )
 					{
-						// substitute any user-supplied data with 
+						// substitute any user-supplied data
+
+						if ( $record_data_item->title != "" )
+						{
+							$user_params = array(
+								'title' => $record_data_item->title,
+								'sub_title' => '', // nix subtitle and non-sort so user-supplied title 
+								'non_sort' => ' ',  // becomes the full title of the record
+								'primary_author' => $record_data_item->author,
+								'journal' => $record_data_item->publication,
+								'abstract' => $record_data_item->description
+							);
+							
+							$record->xerxes_record->setProperties($user_params);
+						}
 						
 						// add them in this order
 						

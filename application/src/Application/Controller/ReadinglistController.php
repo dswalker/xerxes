@@ -265,7 +265,7 @@ class ReadinglistController extends SearchController
 	
 	public function editAction()
 	{
-		$record_id = $this->request->getParam('id');
+		$record_id = $this->request->getParam('record_id');
 		$title = $this->request->getParam('title');
 		$author = $this->request->getParam('author');
 		$publication = $this->request->getParam('publication');
