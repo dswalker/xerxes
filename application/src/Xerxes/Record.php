@@ -2180,7 +2180,7 @@ class Record
 	}
 	
 	/**
-	 * Set all properties from the given array
+	 * Set properties from the given array
 	 * 
 	 * @param array $arguments	key must match property name
 	 */
@@ -2191,17 +2191,12 @@ class Record
 		{
 			if ( property_exists($this, $key) )
 			{
-				if ( is_array($value) )
+				if ( is_array($this->$key) && ! is_array($value)  )
 				{
-					if (count($value) > 0 )
-					{
-						$this->$key = $value;
-					}
+					throw new \OutOfBoundsException('Property is array but supplied value was not an array');
 				}
-				elseif ($value != "")
-				{
-					$this->$key = $value;
-				}
+
+				$this->$key = $value;
 			}
 		}
 	}
