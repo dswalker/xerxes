@@ -679,9 +679,9 @@ class Request extends HttpFoundation\Request
 	/**
 	 * Construct a URL, taking into account routes, based on supplied parameters
 	 * 
-	 * @param array $params				the elements of the url
-	 * @param bool $full				[optional] should be full url
-	 * @param bool $force_secure		[optional] should be https://
+	 * @param array $params       the elements of the url
+	 * @param bool $full          [optional] should be full url
+	 * @param bool $force_secure  [optional] should be https://
 	 */
 	
 	public function url_for(array $params, $full = false, $force_secure = false )
@@ -741,12 +741,19 @@ class Request extends HttpFoundation\Request
 		{
 			$url .= "?";
 			
-			$x = 0;
+			$x = 0; // counter
+			$hash = ''; // hash url
 			
 			foreach ( $params as $name => $value )
 			{
 				if ( $value == "" )
 				{
+					continue;
+				}
+				
+				if ( $name == '#' ) // this is a url hash
+				{
+					$hash .= "#$value";
 					continue;
 				}
 				
@@ -772,6 +779,10 @@ class Request extends HttpFoundation\Request
 				$x++;
 			}
 		}
+		
+		// add hash
+		
+		$url .= $hash;
 		
 		// is it supposed to be a full url?
 		
