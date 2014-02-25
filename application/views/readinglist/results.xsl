@@ -102,19 +102,27 @@
 				</div>
 				<div class="abstract" style="color: #555; margin-top: 1em">
 					<xsl:value-of select="abstract" />
-				</div>				
-				
-				
-				
-				<div id="reading-modal-{../id}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="reading-modal-{../id}-label" aria-hidden="true">
-					
-					<form action="{//request/controller}/edit">
+				</div>
+			</li>
+			
+		</xsl:for-each>
+		
+		</ul>
+		
+		</div>
+		
+		<xsl:for-each select="results/records/record/xerxes_record">
+			
+			<div id="reading-modal-{../id}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="reading-modal-{../id}-label" aria-hidden="true">
+			
+				<form action="{//request/controller}/edit">
+					<input type="hidden" name="record_id" value="{../id}" />
 					<div class="modal-header">
 						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
 						<h3 id="reading-modal-{../id}-label">Edit</h3>
 					</div>
 					<div class="modal-body">
-
+	
 						<div class="reading-group">
 							<label class="reading-label" for="reading-input-title">Title</label>
 							<div class="reading-input">
@@ -125,16 +133,16 @@
 						</div>
 						
 						<div class="reading-group">
-							<label class="reading-label" for="reading-input-author">Author</label>
+							<label class="reading-label" for="reading-input-author">Author(s)</label>
 							<div class="reading-input">
 								<textarea name="author" id="reading-input-author">
 									<xsl:value-of select="primary_author" />
 								</textarea>
 							</div>
 						</div>
-
+	
 						<div class="reading-group">
-							<label class="reading-label" for="reading-input-journal">Journal</label>
+							<label class="reading-label" for="reading-input-journal">Publication</label>
 							<div class="reading-input">
 								<textarea rows="3" name="publication" id="reading-input-journal">
 									<xsl:value-of select="journal" />
@@ -143,32 +151,24 @@
 						</div>
 						
 						<div class="reading-group">
-							<label class="control-label" for="reading-input-abstract">Abstract</label>
+							<label class="control-label" for="reading-input-abstract">Description</label>
 							<div class="reading-input">
 								<textarea rows="7" name="abstract" id="reading-input-abstract">
 									<xsl:value-of select="abstract"	/>
 								</textarea>
 							</div>
 						</div>
-
+	
 					</div>
 					<div class="modal-footer">
 						<button class="btn" data-dismiss="modal" aria-hidden="true"><xsl:value-of select="$text_facets_close" /></button>
 						<button class="btn btn-primary"><xsl:value-of select="$text_facets_submit" /></button>
 					</div>
-					</form>	
-					
-				</div>
-				
-						
-				
-			</li>
+				</form>	
 			
+			</div>
+		
 		</xsl:for-each>
-		
-		</ul>
-		
-		</div>
 
 	</xsl:if>
 
