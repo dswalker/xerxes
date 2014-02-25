@@ -27,13 +27,23 @@ class Record extends Xerxes\Record
 	{
 		$xml = simplexml_import_dom($this->document);
 		
-		$mime_type = (string) $xml["MIME"];
-		
-		$this->title = $this->getData($xml->T);
-		$this->snippet = $this->getData($xml->S);
-		
-		$link = new Link($this->getData($xml->U), Link::ONLINE);
-		$this->links[] = $link;
+		if ( $xml->GL->getName() == 'GL') // exact match
+		{
+			$this->title =  $this->getData($xml->GD);
+			
+			$link = new Link($this->getData($xml->GL), Link::ONLINE);
+			$this->links[] = $link;		
+		}
+		else // regular entry
+		{
+			$mime_type = (string) $xml["MIME"];
+			
+			$this->title = $this->getData($xml->T);
+			$this->snippet = $this->getData($xml->S);
+			
+			$link = new Link($this->getData($xml->U), Link::ONLINE);
+			$this->links[] = $link;
+		}
 	}
 	
 	protected function getData($xml)

@@ -88,6 +88,8 @@ class Engine extends Search\Engine
 			$this->url .= '&start=' . $start;
 		}
 		
+		// echo $this->url; exit;
+		
 		$client = Factory::getHttpClient();
 		$google_results = $client->getUrl($this->url, 3);
 		
@@ -96,6 +98,19 @@ class Engine extends Search\Engine
 		// header("Content-type: text/xml"); echo $xml->saveXML(); exit;
 		
 		$x = 0;
+		
+		// exact matches
+		
+		foreach ( $xml->GM as $gm )
+		{
+			$record = new Record();
+			$record->loadXML($gm);
+			
+			$results->addRecord($record);
+		}
+		
+		
+		// regular results
 		
 		$results_array = $xml->xpath("//RES");
 		
