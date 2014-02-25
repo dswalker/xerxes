@@ -260,6 +260,34 @@ class ReadinglistController extends SearchController
 	}
 	
 	/**
+	 * User supplied data to edit the record
+	 */
+	
+	public function editAction()
+	{
+		$record_id = $this->request->getParam('id');
+		$title = $this->request->getParam('title');
+		$author = $this->request->getParam('author');
+		$publication = $this->request->getParam('publication');
+		$abstract = $this->request->getParam('abstract');
+		$course_id = $this->request->getSessionData('course_id');
+	
+		$reading_list = new ReadingList($this->request->requireSessionData('course_id', 'Session has expired'));
+	
+		$success = $reading_list->editRecord($record_id, $title, $author, $publication, $abstract);
+	
+		// return to reading list
+	
+		$params = array(
+			'controller' => $this->request->getParam('controller'),
+			'action' => 'results',
+			'course_id' => $this->getCourseID()
+		);
+		
+		return $this->redirectTo($params);
+	}	
+	
+	/**
 	 * Records that are in this reading list
 	 */
 	

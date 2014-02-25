@@ -75,6 +75,22 @@ class ReadingList extends DataMap
 		}
 	}
 	
+	public function editRecord($record_id, $title, $author, $publication, $abstract)
+	{
+		$sql = "UPDATE xerxes_reading_list SET title= :title, author = :author, publication = :publication, description = :abstract " . 
+			"WHERE record_id = :record_id";
+		
+		$params = array(
+			":title" => $title, 
+			":author" => $author,
+			":publication" => $publication,
+			":abstract" => $abstract,
+			":record_id" => $record_id 
+		);
+		
+		return $this->update( $sql, $params);
+	}	
+	
 	public function removeRecord($record_id)
 	{
 		if ( $record_id != "" )

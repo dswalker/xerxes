@@ -31,7 +31,15 @@
 			}
 			.courses-search-options li {
 				margin: 2em;
-			}			
+			}
+			.readmore-js-collapsed {
+				margin-bottom: 10px;
+			}
+			
+			a.readmore-js-toggle, a.readmore-js-toggle:visited  {
+				font-size: 90%;
+				color: green;
+			}
 			
 		</style>
 
@@ -64,6 +72,10 @@
 						margin-bottom: 10px;
 						position: relative; 
 						visibility: hidden;
+					}
+					
+					.reading-group input, .reading-group textarea {
+						width: 500px;
 					}
 
 					.courses-search-options li {
@@ -129,7 +141,7 @@
 	</xsl:template>
 	
 	<xsl:template name="breadcrumb">
-		<xsl:value-of select="$text_readinglist_breadcrumb" />
+		<!-- <xsl:value-of select="$text_readinglist_breadcrumb" /> -->
 	</xsl:template>
 	
 	<xsl:template name="instructor_search_options">
