@@ -33,7 +33,7 @@ class Query extends Search\Query
 	 * @var string
 	 */
 	
-	protected $host = 'http://eit.ebscohost.com/Services/SearchService.asmx/';
+	protected $host = 'http://140.234.254.43/Services/SearchService.asmx/';
 	
 	/**
 	 * ebsco username
