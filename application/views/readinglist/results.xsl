@@ -40,7 +40,8 @@
 	<script type="text/javascript">
 		$('.abstract').readmore({
 		  speed: 75,
-		  maxHeight: 100
+		  maxHeight: 100,
+		  heightMargin: 20
 		});
 	</script>
 </xsl:template>
@@ -50,6 +51,25 @@
 	<xsl:if test="//lti/instructor = '1'">
 	
 		<div class="reading-list-header">
+		
+			<div style="float:right">
+			
+				<xsl:choose>
+					<xsl:when test="//request/session/reading_minimize = 'true'">
+						<a href="{//request/controller}/minimize?minimize=false" class="btn">
+							Show abstracts
+						</a>
+					</xsl:when>
+					<xsl:otherwise>
+						<a href="{//request/controller}/minimize?minimize=true" class="btn">
+							Hide abstracts
+						</a>
+					</xsl:otherwise>
+				</xsl:choose>
+			
+
+			</div>
+			
 			<a href="{course_nav/url_search}" class="btn ">
 				<i class="icon-search"></i><xsl:text> </xsl:text>Search for new records
 			</a>
@@ -57,6 +77,7 @@
 			<a href="{course_nav/url_previously_saved}" class="btn">
 				<i class="icon-folder-open-alt"></i><xsl:text> </xsl:text>Add previously saved records
 			</a>
+			
 		</div>
 		
 	</xsl:if>
@@ -68,6 +89,11 @@
 		<ul data-source="{//request/course_id}">
 		
 		<xsl:for-each select="results/records/record/xerxes_record">
+		
+			<xsl:variable name="delete_position" select="position() - 1" />
+		
+			<a name="record-{../id}"></a>
+			<a name="position-{position()}"></a>
 		
 			<li id="reader_list_{../id}" class="reading-list-item">
 			
@@ -83,7 +109,7 @@
 								<i class="icon-pencil"></i> Edit
 							</a>
 							<xsl:text> </xsl:text>
-							<a href="{../url_save_delete}" class="btn btn-small">
+							<a href="{../url_save_delete}&amp;position={$delete_position}" class="btn btn-small">
 								<i class="icon-trash"></i> Remove
 							</a>
 						</div>
@@ -91,18 +117,26 @@
 				
 				</xsl:if>	
 
-				<div>
+				<div class="title">
 					<strong>
 						<a href="{../url_open}" target="_blank"><xsl:value-of select="title_normalized" /></a>
 					</strong>
 					<xsl:text> </xsl:text>
 				</div>
 				<div>
+					<xsl:value-of select="primary_author" />
+				</div>
+				<div>
 					<xsl:value-of select="journal" />
 				</div>
-				<div class="abstract" style="color: #555; margin-top: 1em">
-					<xsl:value-of select="abstract" />
-				</div>
+				
+				<xsl:if test="not(//request/session/reading_minimize = 'true')">
+				
+					<div class="abstract">
+						<xsl:value-of select="abstract" />
+					</div>
+					
+				</xsl:if>
 			</li>
 			
 		</xsl:for-each>
@@ -135,7 +169,7 @@
 						<div class="reading-group">
 							<label class="reading-label" for="reading-input-author">Author(s)</label>
 							<div class="reading-input">
-								<textarea name="author" id="reading-input-author">
+								<textarea rows="2" name="author" id="reading-input-author">
 									<xsl:value-of select="primary_author" />
 								</textarea>
 							</div>
@@ -153,10 +187,16 @@
 						<div class="reading-group">
 							<label class="control-label" for="reading-input-abstract">Description</label>
 							<div class="reading-input">
-								<textarea rows="7" name="abstract" id="reading-input-abstract">
+								<textarea rows="10" name="abstract" id="reading-input-abstract">
 									<xsl:value-of select="abstract"	/>
 								</textarea>
 							</div>
+						</div>
+
+						<div>
+							<input type="checkbox" name="reset" id="reading-input-restore" value="true" />
+							<xsl:text> </xsl:text>
+							<label class="control-label" for="reading-input-restore">Restore original information</label>
 						</div>
 	
 					</div>

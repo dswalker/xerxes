@@ -23,6 +23,10 @@
 
 	<xsl:template name="module_header">
 		<style type="text/css">
+		
+			#bd-top {
+				display: none;
+			}
 			.account {
 				visibility: hidden;
 			}
@@ -35,10 +39,13 @@
 			.readmore-js-collapsed {
 				margin-bottom: 10px;
 			}
-			
 			a.readmore-js-toggle, a.readmore-js-toggle:visited  {
 				font-size: 90%;
 				color: green;
+			}
+			.abstract {
+				color: #555;
+				margin-top: 1em;
 			}
 			
 		</style>
@@ -54,17 +61,17 @@
 						background-color: #efefef; 
 						border: 1px solid #ccc;
 					}
-					
 					.reading-list-item {
 						padding: .5em;
 						border: 1px solid #fff;
 						max-width: 650px;
 					}
-					
+					.reading-list-item .title {
+						margin-bottom: 7px;
+					}
 					.reading-list-highlight { 
 						border: 1px solid #ccc; 
 					}
-					
 					.reading-list-item-action {
 						background-color: #eee; 
 						padding: 10px; 
@@ -73,11 +80,9 @@
 						position: relative; 
 						visibility: hidden;
 					}
-					
 					.reading-group input, .reading-group textarea {
 						width: 500px;
 					}
-
 					.courses-search-options li {
 						margin: 2em;
 					}
