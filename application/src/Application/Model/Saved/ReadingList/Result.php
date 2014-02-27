@@ -52,7 +52,7 @@ class Result
 	 * @param array $data  [optional] array of property => value's
 	 */
 	
-	public function __construct(array $data = null )
+	public function __construct(array $data = array() )
 	{
 		foreach ( $data as $key => $value )
 		{

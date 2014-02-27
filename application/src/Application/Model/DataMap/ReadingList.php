@@ -75,20 +75,30 @@ class ReadingList extends DataMap
 		}
 	}
 	
-	public function editRecord($record_id, $title, $author, $publication, $abstract)
+	public function editRecord(Result $result)
 	{
-		$sql = "UPDATE xerxes_reading_list SET title= :title, author = :author, publication = :publication, description = :abstract " . 
+		$sql = "UPDATE xerxes_reading_list SET title= :title, author = :author, publication = :publication, description = :description " . 
 			"WHERE record_id = :record_id";
 		
 		$params = array(
-			":title" => $title, 
-			":author" => $author,
-			":publication" => $publication,
-			":abstract" => $abstract,
-			":record_id" => $record_id 
+			':title' => $result->title, 
+			':author' => $result->author,
+			':publication' => $result->publication,
+			':description' => $result->description,
+			':record_id' => $result->record_id 
 		);
 		
-		return $this->update( $sql, $params);
+		return $this->update($sql, $params);
+	}	
+	
+	public function clearRecordData($record_id)
+	{
+		$sql = "UPDATE xerxes_reading_list SET title = NULL, author = NULL, publication = NULL, description = NULL " .
+			"WHERE record_id = :record_id";
+	
+		$params = array(':record_id' => $record_id);
+	
+		return $this->update($sql, $params);
 	}	
 	
 	public function removeRecord($record_id)
@@ -141,7 +151,7 @@ class ReadingList extends DataMap
 							$user_params = array(
 								'title' => $record_data_item->title,
 								'sub_title' => '', // nix subtitle and non-sort so user-supplied title 
-								'non_sort' => ' ',  // becomes the full title of the record
+								'non_sort' => '',  // becomes the full title of the record
 								'primary_author' => $record_data_item->author,
 								'journal' => $record_data_item->publication,
 								'abstract' => $record_data_item->description

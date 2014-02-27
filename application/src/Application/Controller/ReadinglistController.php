@@ -14,6 +14,7 @@ namespace Application\Controller;
 use Application\Model\DataMap\ReadingList;
 use Application\Model\Saved\Engine;
 use Application\Model\Saved\ReadingList\Engine as ListEngine;
+use Application\Model\Saved\ReadingList\Result;
 use Application\View\Helper\ReadingList as ListHelper;
 use Xerxes\Lti;
 use Xerxes\Mvc\MvcEvent;
@@ -242,6 +243,7 @@ class ReadinglistController extends SearchController
 		// get the ids that were selected for export
 	
 		$record_id = $this->request->getParam("id");
+		$position = $this->request->getParam("position");
 	
 		if ( $record_id != "" )
 		{
@@ -253,7 +255,8 @@ class ReadinglistController extends SearchController
 		$params = array(
 			'controller' => $this->request->getParam('controller'),
 			'action' => 'results',
-			'course_id' => $this->getCourseID()
+			'course_id' => $this->getCourseID(),
+			'#' => 'position-' . $position
 		);
 		
 		return $this->redirectTo($params);
@@ -265,23 +268,36 @@ class ReadinglistController extends SearchController
 	
 	public function editAction()
 	{
-		$record_id = $this->request->getParam('record_id');
-		$title = $this->request->getParam('title');
-		$author = $this->request->getParam('author');
-		$publication = $this->request->getParam('publication');
-		$abstract = $this->request->getParam('abstract');
-		$course_id = $this->request->getSessionData('course_id');
-	
 		$reading_list = new ReadingList($this->request->requireSessionData('course_id', 'Session has expired'));
-	
-		$success = $reading_list->editRecord($record_id, $title, $author, $publication, $abstract);
-	
+		
+		// this is a reset
+		
+		if ( $this->request->getParam('reset') != "" )
+		{
+			$record_id = $this->request->getParam('record_id');
+			
+			$reading_list->clearRecordData($record_id);
+		}
+		else // update the user supplied data
+		{
+			$result = new Result();
+			
+			$result->record_id = $this->request->getParam('record_id');
+			$result->title = $this->request->getParam('title');
+			$result->author = $this->request->getParam('author');
+			$result->publication = $this->request->getParam('publication');
+			$result->description = $this->request->getParam('abstract');
+			
+			$success = $reading_list->editRecord($result);
+		}
+		
 		// return to reading list
 	
 		$params = array(
 			'controller' => $this->request->getParam('controller'),
 			'action' => 'results',
-			'course_id' => $this->getCourseID()
+			'course_id' => $this->getCourseID(),
+			'#' => 'record-' . $this->request->getParam('record_id')
 		);
 		
 		return $this->redirectTo($params);
@@ -297,7 +313,32 @@ class ReadinglistController extends SearchController
 		{
 			return parent::resultsAction();
 		}
-	}	
+	}
+	
+	public function minimizeAction()
+	{
+		$minimize = $this->request->getParam('minimize');
+		
+		if ( $minimize == 'true' )
+		{
+			$this->request->setSessionData('reading_minimize', 'true');
+		}
+		else
+		{
+			$this->request->setSessionData('reading_minimize', null);
+		}
+
+		// return to reading list
+		
+		$params = array(
+			'controller' => $this->request->getParam('controller'),
+			'action' => 'results',
+			'course_id' => $this->getCourseID()
+		);
+		
+		return $this->redirectTo($params);	
+	
+	}
 		
 	/**
 	 * Lazyload reading list
