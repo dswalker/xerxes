@@ -504,4 +504,17 @@ class Format
 			'label' => $this->getLabel()
 		);
 	}
+	
+	/**
+	 * Construct format from XML
+	 * 
+	 * @param \SimpleXMLElement $link
+	 */
+	
+	public function fromXML(\SimpleXMLElement $format)
+	{
+		$this->public = (string) $format->public;
+		$this->internal = (string) $format->internal;
+		$this->normalized = (string) $format->normalized;
+	}
 }

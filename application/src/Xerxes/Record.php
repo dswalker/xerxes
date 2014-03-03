@@ -12,6 +12,8 @@
 namespace Xerxes;
 
 use Xerxes\Record\Author;
+use Xerxes\Record\Chapter;
+use Xerxes\Record\Subject;
 use Xerxes\Record\Bibliographic\LinkedItem;
 use Xerxes\Record\Format;
 use Xerxes\Record\Link;
@@ -167,11 +169,75 @@ class Record
 	
 	/**
 	 * Map the source data to record properties
+	 * 
+	 * By default here it maps from the internal xml produced by toXML()
 	 */
 	
 	protected function map()
 	{
+		$xml = simplexml_load_string($this->document->saveXML());
 		
+		foreach ( $xml->children() as $child )
+		{
+			$name = $child->getName();
+				
+			if ( $name == 'standard_numbers' )
+			{
+				foreach ( $child->children() as $number )
+				{
+					$this->addPropertyFromXML($number);
+				}
+			}
+			elseif ( $name == 'authors' )
+			{
+				foreach ( $child->children() as $author )
+				{
+					$author_object = new Author();
+					$author_object->fromXML($author);
+					$this->authors[] = $author_object;
+				}
+			}
+			elseif ( $name == 'links' )
+			{
+				foreach ( $child->children() as $link )
+				{
+					$link_object = new Link();
+					$link_object->fromXML($link);
+					$this->links[] = $link_object;
+				}
+			}
+			elseif ( $name == 'format' )
+			{
+				$this->format->fromXML($child);
+			}
+			elseif ( $name == 'subjects' )
+			{
+				foreach ( $child->children() as $subject )
+				{
+					$subject_object = new Subject();
+					$subject_object->display = (string) $subject->display;
+					$subject_object->value = (string) $subject->value;
+						
+					$this->subjects[] = $subject_object;
+				}
+			}
+			elseif ( $name == 'toc' )
+			{
+				foreach ( $child->children() as $chapter )
+				{
+					$chapter_object = new Chapter();
+					$chapter_object->title = (string) $chapter->display;
+					$chapter_object->author = (string) $chapter->value;
+					$chapter_object->statement = (string) $chapter->value;
+						
+					$this->toc[] = $chapter_object;
+				}
+			}
+			else
+			{
+				$this->addPropertyFromXML($child);
+			}
+		}
 	}
 	
 	/**
@@ -1031,6 +1097,39 @@ class Record
 			}
 				
 			return $item;
+		}
+	}
+	
+	/**
+	 * Add the value of the XML to the property
+	 *
+	 * @param \SimpleXMLElement $child
+	 */
+	
+	private function addPropertyFromXML(\SimpleXMLElement $xml)
+	{
+		$name = $xml->getName();
+	
+		if ( property_exists($this, $name))
+		{
+			if ( is_array($this->$name) )
+			{
+				if ( $xml->count() > 0 )
+				{
+					foreach ( $xml->children() as $child )
+					{
+						array_push($this->$name, (string) $child);
+					}
+				}
+				else
+				{
+					array_push($this->$name, (string) $xml);
+				}
+			}
+			else
+			{
+				$this->$name = (string) $xml;
+			}
 		}
 	}	
 

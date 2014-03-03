@@ -58,12 +58,12 @@ class Link
 	/**
 	 * Create a Record Link
 	 * 
-	 * @param string $url			URL
+	 * @param string $url			[optional] URL
 	 * @param string $type			[optional] type of link, or data from which to determine that
 	 * @param string $display		[optional] text to display
 	 */
 	
-	public function __construct($url, $type = null, $display = null)
+	public function __construct($url = null, $type = null, $display = null)
 	{
 		$this->url = $url;
 		$this->type = $type;
@@ -266,7 +266,7 @@ class Link
 		
 		$display = $this->getDisplay();
 		
-		if( $display != "")
+		if ( $display != "")
 		{
 			$xml->display = $display;
 		}
@@ -274,5 +274,18 @@ class Link
 		$xml->url = $this->getURL();
 		
 		return Parser::convertToDOMDocument($xml);
+	}
+	
+	/**
+	 * Construct link from XML
+	 * 
+	 * @param \SimpleXMLElement $link
+	 */
+	
+	public function fromXML(\SimpleXMLElement $link)
+	{
+		$this->url = (string) $link->url;
+		$this->type = (string) $link['type'];
+		$this->display = (string) $link->display;
 	}
 }

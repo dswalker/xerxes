@@ -220,6 +220,22 @@ class Author
 	}
 	
 	/**
+	 * Create author from XML
+	 * 
+	 * @param \SimpleXMLElement $author
+	 */
+	
+	public function fromXML(\SimpleXMLElement $author )
+	{
+		$this->first_name = (string) $author->aufirst;
+		$this->last_name = (string) $author->aulast;
+		$this->init = (string) $author->auinit;
+		$this->name = (string) $author->aucorp;
+		$this->type = (string) $author->type;
+		$this->display = (string) $author->display;
+	}
+	
+	/**
 	 * Serialize to string
 	 */
 	
