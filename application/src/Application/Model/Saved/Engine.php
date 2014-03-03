@@ -121,9 +121,17 @@ class Engine extends Search\Engine
 					{
 						$data = '<?xml version="1.0"?>' . Parser::removeLeft($data, '<?xml version="1.0"?>');
 						$data = Parser::removeRight($data, '</xerxes_record>') . '</xerxes_record>';
-					}
-					else
-					{
+						
+						$xerxes_record = new Xerxes\Record();
+						$xerxes_record->loadXML($data);
+						
+						$record->xerxes_record = $xerxes_record;
+						
+						// recreate the result, since we need the openurl and such
+						
+						$result = $this->createSearchResult($record);
+						
+						$fixed = true;
 					}
 				}
 			}
