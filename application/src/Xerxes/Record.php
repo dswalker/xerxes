@@ -1109,6 +1109,11 @@ class Record
 	private function addPropertyFromXML(\SimpleXMLElement $xml)
 	{
 		$name = $xml->getName();
+		
+		if ( ! property_exists($this, $name))
+		{
+			$name .= 's'; // try the plural
+		}
 	
 		if ( property_exists($this, $name))
 		{
