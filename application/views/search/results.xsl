@@ -1834,7 +1834,7 @@
 									<xsl:value-of select="display" />
 								</xsl:when>
 								<xsl:otherwise>
-									<xsl:copy-of select="$text_records_fulltext_available" />
+									<xsl:call-template name="records_full_text_available" />
 								</xsl:otherwise>
 							</xsl:choose>
 						</xsl:otherwise>
@@ -1845,6 +1845,10 @@
 			
 		</xsl:for-each>
 		
+	</xsl:template>
+	
+	<xsl:template name="records_full_text_available">
+		<xsl:copy-of select="$text_records_fulltext_available" />
 	</xsl:template>
 
 	<!--
