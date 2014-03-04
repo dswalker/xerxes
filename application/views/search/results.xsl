@@ -580,6 +580,8 @@
 			</div>
 			
 		</div>
+		
+		<xsl:call-template name="simple_search_hidden" />
 	
 	</xsl:template>	
 
@@ -1904,6 +1906,7 @@
 	
 	<xsl:template name="searchbox_hidden_fields_module" />
 	<xsl:template name="searchbox_hidden_fields_local" />
+	<xsl:template name="simple_search_hidden" />
 	
 	<!-- additional record data overriden in templates -->
 	
