@@ -94,6 +94,8 @@ class Engine extends Search\Engine
 		if ( $result->corrupted == true )
 		{
 			$fixed = false;
+			
+			$data = $record->marc;
 				
 			// go back to the original search engine and fetch it again
 				
@@ -115,8 +117,6 @@ class Engine extends Search\Engine
 				}
 				catch (NotFoundException $e)
 				{
-					$data = $record->marc;
-					
 					if ( strstr($data, 'Xerxes_TransRecord') )
 					{
 						$data = '<?xml version="1.0"?>' . Parser::removeLeft($data, '<?xml version="1.0"?>');
@@ -134,6 +134,22 @@ class Engine extends Search\Engine
 						$fixed = true;
 					}
 				}
+			}
+			elseif (strstr($data, 'Xerxes_MetalibRecord'))
+			{
+				$data = '<?xml' . Parser::removeLeft($data, '<?xml');
+				$data = Parser::removeRight($data, '</x_server_response>') . '</x_server_response>';
+				
+				$xerxes_record = new \Xerxes_MetalibRecord();
+				$xerxes_record->loadXML($data);
+				
+				$record->xerxes_record = $xerxes_record;
+
+				// recreate the result, since we need the openurl and such
+				
+				$result = $this->createSearchResult($record);
+						
+				$fixed = true;
 			}
 				
 			if ( $fixed == false )
