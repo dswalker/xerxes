@@ -51,7 +51,7 @@ class Query extends Search\Query
 	 * on campus or not
 	 * @var bool
 	 */
-	protected $on_campus;
+	protected $on_campus = true;
 	
 	/**
 	 * Create a Primo Query
@@ -132,7 +132,14 @@ class Query extends Search\Query
 			
 		foreach ( $this->getLimits(true) as $limit )
 		{
-			$query .= "&query=facet_" . $limit->field . ",exact," . urlencode($limit->value);
+			$value = $limit->value;
+			
+			if ( is_array($limit->value) )
+			{
+				$value = implode(',', $limit->value);
+			}
+			
+			$query .= "&query_inc=facet_" . $limit->field . ",exact," . urlencode($value);
 		}
 		
 		// on campus as string
@@ -152,7 +159,10 @@ class Query extends Search\Query
 			$query .
 			'&indx=' . $this->start .
 			'&bulkSize=' . $this->max;
-			
+
+		
+		// $url .= '&pc_availability_ind=false';
+		
 		if ( $this->vid != "" )
 		{
 			$url .= "&vid=" . $this->vid;	
@@ -167,6 +177,8 @@ class Query extends Search\Query
 		{
 			$url .= '&sortField=' . $this->sort;
 		}
+		
+		// echo $url;
 		
 		return new Url($url);
 	}
