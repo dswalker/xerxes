@@ -96,6 +96,17 @@ class Basic
 	}
 	
 	/**
+	 * User ID
+	 * 
+	 * @return string
+	 */
+	
+	public function getUserID()
+	{
+		return $this->getParam('user_id');
+	}
+	
+	/**
 	 * Whether the user is an Instructor
 	 * 
 	 * @return bool

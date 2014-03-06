@@ -11,6 +11,10 @@
 
 namespace Application\Controller;
 
+use Application\Model\Authentication\AuthenticationFactory;
+
+use Application\Model\DataMap\Users;
+
 use Application\Model\DataMap\ReadingList;
 use Application\Model\Saved\Engine;
 use Application\Model\Saved\ReadingList\Engine as ListEngine;
@@ -28,10 +32,20 @@ use Xerxes\Utility\Parser;
 
 class ReadinglistController extends SearchController
 {
+	/**
+	 * @var string
+	 */
 	protected $id = 'readinglist';
-	protected $registry; // registry
-	protected $reading_list; // reading list
-	protected $course_id; // course id
+	
+	/**
+	 * @var ReadingList
+	 */
+	protected $reading_list;
+	
+	/**
+	 * @var string
+	 */
+	protected $course_id;
 	
 	/**
 	 * New Readinglist Controller
@@ -47,8 +61,15 @@ class ReadinglistController extends SearchController
 		// (including errors, which is why it's here in the constructor)
 	
 		$this->response->setVariable('no_header', 'true');
-		
-		
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see Application\Controller.SearchController::init()
+	 */
+	
+	public function init()
+	{
 		// inital oauth request
 		// @todo: this needs to be folded into the authentication framework or something?
 		
@@ -66,11 +87,51 @@ class ReadinglistController extends SearchController
 			
 			// save in session for subsequent actions
 			
-			$this->request->setSessionData('username', $this->extractUsername($lti));
-			$this->request->setSessionData("role", "named");
-			
 			$this->request->setSessionData('course_id', $this->course_id);
-			$this->request->setSessionObject("lti_" . $this->course_id, $lti);		
+			$this->request->setSessionObject("lti_" . $this->course_id, $lti);
+			
+			$user = $this->request->getUser();
+			
+			// this is the first time user has come during this session
+			
+			if ( $this->request->getSessionData('reading_list_user') == null )
+			{
+				$datamap = new Users();
+				
+				$user_id = $lti->getUserID(); // the lms user id
+				$username = $datamap->getUserFromLti($user_id); // see if user is already in our database
+				
+				// we don't know this user
+				
+				if ( $username == "" )
+				{
+					// and they have not logged in
+					
+					if ( ! $user->isAuthenticated() )
+					{
+						return $this->redirectToLogin(); // send them to login
+					}
+					else // they are logged in
+					{
+						$datamap->associateUserWithLti($user->username, $user_id); // register them for next time
+					}
+				}
+				else // we know this user
+				{
+					// swap username
+					
+					$user->username = $username;
+					
+					// register them in session and such for single sign on
+						
+					$auth_factory = new AuthenticationFactory();
+					$auth_factory->getAuthenticationObject($this->request)->register($user);
+				}
+
+				// and make sure we keep track of that here for subsequent requests
+				
+				$this->request->setSessionData('reading_list_user', $user_id);
+			}
 		}
 		
 		// subsequent requests with course_id in URL
@@ -97,16 +158,18 @@ class ReadinglistController extends SearchController
 		
 		$lti = $this->request->getSessionObject("lti_" . $this->course_id);
 		$this->response->setVariable('lti', $lti);
-	}
-	
-	protected function init()
-	{
-		parent::init();
-	
-		$this->helper = new ListHelper($this->event, $this->id, $this->engine);
 		
+		
+		
+		parent::init();
+		
+		
+		
+		// display helpers
+		
+		$this->helper = new ListHelper($this->event, $this->id, $this->engine);
 		$this->response->setVariable('course_nav', $this->helper->getNavigation());
-	}	
+	}
 	
 	/**
 	 * Register the LTI request in session and authenticate the user
@@ -315,6 +378,10 @@ class ReadinglistController extends SearchController
 		}
 	}
 	
+	/**
+	 * Minimize the display (abstract, etc.)
+	 */	
+	
 	public function minimizeAction()
 	{
 		$minimize = $this->request->getParam('minimize');
@@ -356,19 +423,6 @@ class ReadinglistController extends SearchController
 		return $this->reading_list;
 	}
 	
-	
-	/**
-	 * Map username from LMS to local Xerxes user
-	 */
-	
-	protected function extractUsername(Lti\Basic $lti)
-	{
-		$username = $lti->getParam('lis_person_contact_email_primary');
-		$username = Parser::removeRight($username, '@');
-		
-		return $username;
-	}
-	
 	/**
 	 * Override: Don't check spelling, since there's nothing to check
 	 * 
@@ -391,6 +445,8 @@ class ReadinglistController extends SearchController
 	
 	/**
 	 * Get the course ID
+	 * 
+	 * @return string
 	 */
 	
 	protected function getCourseID()

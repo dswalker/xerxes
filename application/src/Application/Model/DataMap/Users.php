@@ -39,7 +39,7 @@ class Users extends DataMap
 		// array to pass to db updating routines. Make an array out of our
 		// properties. 
 
-		$update_values = array ( );
+		$update_values = array();
 		
 		foreach ( $user->properties() as $key => $value )
 		{
@@ -97,7 +97,6 @@ class Users extends DataMap
 		else
 		{
 			// add em otherwise
-			
 
 			$strSQL = "INSERT INTO xerxes_users " .
 				"( username, last_login, suspended, first_name, last_name, email_addr) " .
@@ -146,5 +145,49 @@ class Users extends DataMap
 		$this->commit();
 		
 		return $user;
+	}
+	
+	/**
+	 * Associate a user with the supplied lti user id
+	 * 
+	 * @param string $user     xerxes user
+	 * @param string $user_id  lti user id
+	 */
+	
+	public function associateUserWithLti($username, $user_id)
+	{
+		if (trim($username) == "")
+		{
+			throw new \DomainException("Username cannot be null");
+		}
+		
+		$sql = 'INSERT INTO xerxes_reading_list_users (id, username) VALUES (:id, :username)';
+		$params = array (":id" => $user_id, ":username" => $username );
+		
+		$status = $this->insert( $sql, $params);
+	}
+	
+	/**
+	 * Get the User from the supplied lti user id
+	 * 
+	 * @param string $user_id  lti user id
+	 * @return User
+	 */
+	
+	public function getUserFromLti($user_id)
+	{
+		$sql = 'SELECT username FROM xerxes_reading_list_users WHERE id = :id';
+		$params = array (':id' => $user_id);
+		
+		$results = $this->select($sql, $params);
+		
+		if ( count($results) == 0 )
+		{
+			return null;
+		}
+		else
+		{
+			return $results[0]['username'];
+		}
 	}
 }
