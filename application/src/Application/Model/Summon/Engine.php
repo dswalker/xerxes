@@ -185,7 +185,10 @@ class Engine extends Search\Engine
 		{
 			foreach ( $recommendations['database'] as $database_array )
 			{
-				$recommend[] = new Database($database_array);
+				if ( (int) $database_array['score'] > 75 )
+				{
+					$recommend[] = new Database($database_array);
+				}
 			}
 		}
 		
