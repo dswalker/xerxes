@@ -158,10 +158,19 @@ abstract class Scheme
 	/**
 	 * Register the user in session and with the user tables in the database
 	 * and then forwards them to the return url
+	 * 
+	 * @param User $user  [optional] user object
 	 */
-
-	public function register()
+	
+	public function register(User $user = null)
 	{
+		// if passed in externally
+		
+		if ( $user != null )
+		{
+			$this->user = $user;
+		}
+		
 		// data map
 		
 		$datamap_users = new Users();
