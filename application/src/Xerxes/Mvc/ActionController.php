@@ -244,16 +244,25 @@ abstract class ActionController
 			
 			if ( $redirect_to_login == true )
 			{
-				$params = array (
-					'controller' => 'authenticate', 
-					'action' => 'login',
-					'return' => $this->request->getRequestUri()
-				);
-				
-				return $this->redirectTo($params);
+				return $this->redirectToLogin();
 			}
 		}
 	}
+	
+	/**
+	 * Redirect user to login page
+	 */
+	
+	public function redirectToLogin()
+	{
+		$params = array (
+			'controller' => 'authenticate',
+			'action' => 'login',
+			'return' => $this->request->getRequestUri()
+		);
+		
+		return $this->redirectTo($params);
+	} 
 	
 	/**
 	 * @return Labels
