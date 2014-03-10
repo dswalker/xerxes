@@ -313,7 +313,14 @@ abstract class Engine
 		
 		$id = $this->getResultsID($query);
 		
-		$this->cache->set($id, $results);
+		try
+		{
+			$this->cache->set($id, $results);
+		}
+		catch ( \Exception $e )
+		{
+			trigger_error("Could not cache results");
+		}
 	}
 	
 	/**
