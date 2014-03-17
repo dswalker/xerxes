@@ -69,6 +69,7 @@
 <xsl:template name="main">
 
 	<xsl:variable name="query" select="php:function('urlencode', string(//request/query))" />
+	<xsl:variable name="query_params" select="combined_query_params" />
 
 	<xsl:call-template name="searchbox">
 		<xsl:with-param name="action">combined/results</xsl:with-param>
@@ -107,7 +108,7 @@
 							
 									<xsl:choose>
 										<xsl:when test="$is_ada = 0">
-											<div id="{@id}" class="combined-engine" data-source="combined/partial?query={$query};engine={@id}">
+											<div id="{@id}" class="combined-engine" data-source="combined/partial?{$query_params};engine={@id}">
 												<img src="images/ajax-loader.gif" alt="" />
 											</div>
 											<noscript>
@@ -127,30 +128,47 @@
 								<div class="combined-results-other">
 							
 									<h3><xsl:value-of select="@public" /></h3>
+									
+									<xsl:if test="option">
 			
-									<ul>
-										<xsl:for-each select="option">
-											
-											<xsl:variable name="id" select="@id" />
-											<xsl:variable name="source" select="@source" />
-											<xsl:variable name="engine_id">
-												<xsl:text>tab-</xsl:text>
-												<xsl:value-of select="@id" />
-												<xsl:if test="@source">
-													<xsl:text>-</xsl:text><xsl:value-of select="@source" />
-												</xsl:if>
-											</xsl:variable>
-											
+										<ul>
+											<xsl:for-each select="option">
+												
+												<xsl:variable name="id" select="@id" />
+												<xsl:variable name="source" select="@source" />
+												<xsl:variable name="engine_id">
+													<xsl:text>tab-</xsl:text>
+													<xsl:value-of select="@id" />
+													<xsl:if test="@source">
+														<xsl:text>-</xsl:text><xsl:value-of select="@source" />
+													</xsl:if>
+												</xsl:variable>
+												
+												<li>
+													<a href="{@url}">
+														<xsl:value-of select="@public" />
+													</a>
+													<xsl:text> </xsl:text>
+													<xsl:call-template name="tab_hits_number" />
+													<!-- <span class="tabs-hit-number" id="{$engine_id}"></span> -->
+												</li>
+											</xsl:for-each>
+										</ul>
+										
+									</xsl:if>
+									<xsl:if test="search_and_link">
+										
+										<ul>
+										<xsl:for-each select="search_and_link">
 											<li>
-												<a href="{@url}">
+												<a href="{//request/controller}/link?id={@id};query={$query}">
 													<xsl:value-of select="@public" />
 												</a>
-												<xsl:text> </xsl:text>
-												<xsl:call-template name="tab_hits_number" />
-												<!-- <span class="tabs-hit-number" id="{$engine_id}"></span> -->
-											</li>
+											</li>										
 										</xsl:for-each>
-									</ul>
+										</ul>
+										
+									</xsl:if>
 									
 								</div>
 							

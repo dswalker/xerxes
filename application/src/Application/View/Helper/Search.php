@@ -636,8 +636,14 @@ class Search
 		$params['action'] = 'search';
 		$params['source'] = $this->request->getParam('source');
 		$params['sort'] = $this->request->getParam('sort');
-			
+		
+		// url
+		
 		$query->url = $this->request->url_for($params);
+		
+		// query only
+		
+		$query->url_query = Parser::removeLeft($query->url, '?');
 		
 		// advanced search
 		

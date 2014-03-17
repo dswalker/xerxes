@@ -581,6 +581,10 @@
 			
 		</div>
 		
+		<xsl:for-each select="//query/limits/limit">
+			<xsl:call-template name="hidden_search_limit" />
+		</xsl:for-each>
+		
 		<xsl:call-template name="simple_search_hidden" />
 	
 	</xsl:template>	
@@ -1883,7 +1887,7 @@
 				<xsl:call-template name="hidden_search_limit" />
 			</xsl:if>
 			
-		</xsl:for-each>					
+		</xsl:for-each>
 	
 	</xsl:template>
 	

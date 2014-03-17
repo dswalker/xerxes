@@ -20,12 +20,25 @@ use Xerxes\Mvc\Response;
 
 class CombinedController extends ActionController
 {
+	/**
+	 * Search engine id
+	 * @var string
+	 */
+	
 	protected $id = 'combined';
+	
+	/**
+	 * Search home page
+	 */
 	
 	public function indexAction()
 	{
 		$this->response->setView('search/index.xsl');
 	}
+	
+	/**
+	 * Search redirect
+	 */
 	
 	public function searchAction()
 	{
@@ -38,9 +51,14 @@ class CombinedController extends ActionController
 		return $this->redirectTo($params);
 	}
 	
+	/**
+	 * Search results action
+	 */
+	
 	public function resultsAction()
 	{
-		$engine = $this->request->getParam('engine', 'solr');
+		$default_engine = $this->registry->getConfig('COMBINED_DEFAULT_CONTROLLER', false, 'solr');
+		$engine = $this->request->getParam('engine', $default_engine);
 		$alias = $this->controller_map->getUrlAlias($engine);
 		
 		// to help the views
@@ -50,11 +68,18 @@ class CombinedController extends ActionController
 		// for breadcrumbs and such
 		
 		$query = new Query($this->request);
-		$this->request->setSessionData( $this->id . '_' . $query->getHash(), true);
+		
+		$this->response->setVariable('combined_query_params', $this->getSearchQuery($query) );
+		$this->request->setSessionData( $this->id . '_' . $query->getHash(), true );
+		
+		// default to three results, unless specified for all engines or just specific ones
+		
+		$max = $this->registry->getConfig('COMBINED_MAX_RESULTS', false, 3);
+		$max = $this->registry->getConfig("COMBINED_MAX_RESULTS_$engine", false, $max);
 		
 		// these so the search engine controller thinks it's not a 'combined' request
 		
-		$this->request->replaceParam('max', $this->registry->getConfig('combined_max_results', false, 3));
+		$this->request->replaceParam('max', $max);
 		$this->request->replaceParam('controller', $alias);
 		$this->request->setParam('include_facets', false);
 		
@@ -74,12 +99,9 @@ class CombinedController extends ActionController
 		
 		// construct more results url
 		
-		$params = array(
-			'controller' => $alias,
-			'action' => 'search',
-			'query' => $this->request->getParam('query'),
-			'field' => $this->request->getParam('field')
-		);
+		$params = $query->getAllSearchParams();
+		$params['controller'] = $alias;
+		$params['action'] = 'search';
 		
 		// not authenticated (controller is redirecting to authentication)
 		// so tell the user they need to login to see results
@@ -122,11 +144,60 @@ class CombinedController extends ActionController
 		return $this->response;
 	}
 	
+	/**
+	 * Only show the results themselves
+	 */
+	
 	public function partialAction()
 	{
 		$this->response = $this->resultsAction();
 		$this->response->setView('combined/partial.xsl');
 	
 		return $this->response;
-	}	
+	}
+	
+	/**
+	 * Search and link 
+	 */
+	
+	public function linkAction()
+	{
+		$id = $this->request->getParam('id');
+		$query = $this->request->getParam('query');
+		
+		$xml = $this->registry->getXML();
+		
+		$link = $xml->xpath("//search_and_link[@id='$id']/@url");
+		
+		if ( count($link) == 1 )
+		{
+			$url = (string) $link[0];
+			$url = str_replace('{query}', $query, $url);
+			
+			return $this->redirectTo($url);
+		}
+		else
+		{
+			throw new \Exception("Could not find search and link option for '$id'");
+		}
+	}
+	
+	/**
+	 * Extract the search params as a url
+	 * @param Query $query
+	 */
+	
+	protected function getSearchQuery(Query $query)
+	{
+		$url = '';
+		
+		$params = $query->getAllSearchParams();
+		
+		foreach ( $params as $key => $value )
+		{
+			$url .= ';' . $key . '=' . urlencode($value);
+		}
+		
+		return $url;
+	}
 }
