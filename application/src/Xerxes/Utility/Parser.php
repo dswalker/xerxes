@@ -689,7 +689,14 @@ class Parser
 	
 				if ( is_int($property) && substr($id,-1) == "s" )
 				{
-					$property = substr($id,0,-1);
+					if ( substr($id,-3) == "ies" )
+					{
+						$property = substr($id,0,-3) . 'y';
+					}
+					else
+					{
+						$property = substr($id,0,-1);
+					}
 				}
 	
 				self::addToXML($object_xml, $property, $value);
