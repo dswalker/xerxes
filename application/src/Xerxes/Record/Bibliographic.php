@@ -609,8 +609,18 @@ class Bibliographic extends Record
 
 	protected function parsePublisher()
 	{
-		$this->place = (string) $this->marc->datafield("260")->subfield("a");
-		$this->publisher = (string) $this->marc->datafield("260")->subfield("b");		
+		foreach ( $this->marc->datafield("260|264") as $datafield )
+		{
+			$this->place .= ' ' . (string) $datafield->subfield('a');
+		}
+		
+		foreach ( $this->marc->datafield("260|264") as $datafield )
+		{
+			$this->publisher .= ' ' . (string) $datafield->subfield('b');
+		}
+		
+		$this->place = trim($this->place);
+		$this->publisher = trim($this->publisher);
 	}
 	
 	/**
@@ -631,7 +641,14 @@ class Bibliographic extends Record
 	
 	protected function parseYear()
 	{
-		$date = (string) $this->marc->datafield("260")->subfield("c");
+		$date = '';
+		
+		foreach ( $this->marc->datafield("260|264") as $datafield )
+		{
+			$date .= ' ' . (string) $datafield->subfield('c');
+		}
+		
+		$date = trim($date);
 		
 		### year
 
