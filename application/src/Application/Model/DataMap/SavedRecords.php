@@ -370,12 +370,19 @@ class SavedRecords extends DataMap
 						
 						if ( $arrResult["record_type"] == "xerxes_record")
 						{
-							$objRecord->xerxes_record = unserialize($arrResult["marc"]);
-							
-							if ( ! $objRecord->xerxes_record instanceof Record )
+							try
 							{
-								$data = $this->fix_corrupted_serialized_string($arrResult["marc"]);
-								$objRecord->xerxes_record = unserialize($data);
+								$objRecord->xerxes_record = unserialize($arrResult["marc"]);
+								
+								if ( ! $objRecord->xerxes_record instanceof Record )
+								{
+									$data = $this->fix_corrupted_serialized_string($arrResult["marc"]);
+									$objRecord->xerxes_record = unserialize($data);
+								}
+							}
+							catch (\Exception $e)
+							{
+								trigger_error('Could not unserialize record ' . $arrResult["id"] );
 							}
 						}
 						else // old ass metalib record from early in version 1
