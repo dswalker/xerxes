@@ -363,10 +363,20 @@ class Query
 	 * @param string $field		field name
 	 * @param string $relation	operator
 	 * @param string $phrase	the value of the limit
+	 * 
+	 * @return boolean          true if successful, false if limit not supported
 	 */
 	
 	public function addLimit($boolean, $field, $relation, $phrase)
 	{
+		if ( $this->config != null )
+		{
+			if ( $this->config->getFacet($field) == null )
+			{
+				return false;
+			}
+		}
+		
 		$term = new LimitTerm();
 		$term->boolean = $boolean;
 		$term->field = $field;
@@ -383,6 +393,8 @@ class Query
 		}
 		
 		array_push($this->limits , $term);
+		
+		return true;
 	}
 	
 	/**
