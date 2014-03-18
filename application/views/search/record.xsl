@@ -765,7 +765,7 @@
 
 			<h2><xsl:value-of select="$text_record_series" /></h2>
 			<ul>
-				<xsl:for-each select="series/serie">
+				<xsl:for-each select="series/sery">
 					<li><xsl:value-of select="text()" /></li>
 				</xsl:for-each>
 			</ul>
