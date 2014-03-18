@@ -175,7 +175,7 @@ class Query extends Search\Query
 		
 		// see if any supplied as facet limit
 		
-		foreach ( $this->getLimits(true) as $limit )
+		foreach ( $this->getLimits() as $limit )
 		{
 			if ( $limit->field == "database")
 			{

@@ -111,7 +111,7 @@ class Engine extends Search\Engine
 		
 		foreach ( $facets->getGroups() as $group )
 		{
-			foreach ( $this->query->getLimits(true) as $matching_limit )
+			foreach ( $this->query->getLimits() as $matching_limit )
 			{
 				if ( $matching_limit->boolean == 'NOT' && $matching_limit->field == $group->name )
 				{

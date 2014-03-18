@@ -202,7 +202,7 @@ class Query
 	/**
 	 * Get a specific query term
 	 *
-	 * @param int $id		the position of the term in the list of terms
+	 * @param int $id      the position of the term in the list of terms
 	 * @return QueryTerm
 	 */
 	
@@ -255,9 +255,9 @@ class Query
 	 * @return LimitTerm
 	 */
 	
-	public function getLimit($id, $facets_to_field = false)
+	public function getLimit($id)
 	{
-		foreach ( $this->getLimits($facets_to_field) as $limit )
+		foreach ( $this->getLimits() as $limit )
 		{
 			if ( $limit->field == $id )
 			{
@@ -273,56 +273,13 @@ class Query
 	/**
 	 * Return all limits
 	 *
-	 * @param bool $facets_to_field		whether to return facets with key convention as limits
+	 * @param bool $facets_to_field  whether to return facets with key convention as limits
 	 * @return array
 	 */
 	
-	public function getLimits($facets_to_field = false)
+	public function getLimits()
 	{
-		if ( $facets_to_field == false )
-		{
-			return $this->limits;
-		}
-		else
-		{
-			$final = array();
-			
-			foreach ( $this->limits as $limit )
-			{
-				$new_limit = clone $limit; // make a copy
-				
-				// take the field name out of our facet.* param
-				
-				if ( strstr($new_limit->field,"facet.") )
-				{
-					$parts = explode('.', $new_limit->field);
-					
-					// if it has 3 parts, it's our special 'key' convention, where
-					// the third part is the value, so swap it in for the value
-					
-					if ( count($parts) == 3 )
-					{
-						$new_limit->value = array_pop($parts);
-						$new_limit->field = array_pop($parts);
-						$new_limit->key = true;
-						$new_limit->display = $limit->value;  // @todo: make this not 'display'
-					}
-					else
-					{
-						// the field name is the only thing there, value is already
-						// populated in the value of the limit object
-						
-						$new_limit->field = array_pop($parts);
-					}
-				}
-				
-				// put it into the return array
-				
-				array_push($final, $new_limit);
-			}
-
-			return $final;
-		}
+		return $this->limits;
 	}
 	
 	/**
@@ -369,14 +326,6 @@ class Query
 	
 	public function addLimit($boolean, $field, $relation, $phrase)
 	{
-		if ( $this->config != null )
-		{
-			if ( $this->config->getFacet($field) == null )
-			{
-				return false;
-			}
-		}
-		
 		$term = new LimitTerm();
 		$term->boolean = $boolean;
 		$term->field = $field;
@@ -391,6 +340,41 @@ class Query
 		{
 			$term->param = $field;
 		}
+		
+		// take the field name out of our facet.* param
+		
+		if ( strstr($term->field,"facet.") )
+		{
+			$parts = explode('.', $term->field);
+				
+			// if it has 3 parts, it's our special 'key' convention, where
+			// the third part is the value, so swap it in for the value
+				
+			if ( count($parts) == 3 )
+			{
+				$term->value = array_pop($parts);
+				$term->field = array_pop($parts);
+				$term->key = true;
+				$term->display = $phrase;  // @todo: make this not 'display'
+			}
+			else
+			{
+				// the field name is the only thing there, value is already
+				// populated in the value of the limit object
+		
+				$term->field = array_pop($parts);
+			}
+		}
+
+		// see if this field is supported by the config
+		
+		if ( $this->config != null )
+		{
+			if ( $this->config->getFacet($term->field) == null )
+			{
+				return false; // nope
+			}
+		}		
 		
 		array_push($this->limits , $term);
 		

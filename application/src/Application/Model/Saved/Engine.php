@@ -220,8 +220,8 @@ class Engine extends Search\Engine
 	{
 		$username = $search->getQueryTerm(0)->phrase;
 		
-		$label = $search->getLimit("facet.label");
-		$format = $search->getLimit("facet.format");
+		$label = $search->getLimit("label");
+		$format = $search->getLimit("format");
 		
 		$results = new Search\ResultSet($this->config);
 		$results->total = $this->datamap->totalRecords($username, $label->value, $format->value);

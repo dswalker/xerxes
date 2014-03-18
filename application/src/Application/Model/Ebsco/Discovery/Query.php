@@ -147,7 +147,7 @@ class Query extends Search\Query
 		
 		$y = 1;
 		
-		foreach ( $this->getLimits(true) as $limit )
+		foreach ( $this->getLimits() as $limit )
 		{
 			$field = $limit->field;
 			$value = $limit->value;

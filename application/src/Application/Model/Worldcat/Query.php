@@ -49,7 +49,7 @@ class Query extends Search\Query
 		
 		$limit_array = array();
 		
-		foreach ( $this->getLimits(true) as $limit )
+		foreach ( $this->getLimits() as $limit )
 		{
 			if ( $limit->value == "" )
 			{

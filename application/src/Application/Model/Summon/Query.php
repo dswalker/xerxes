@@ -244,7 +244,7 @@ class Query extends Search\Query
 		
 		// limits
 		
-		foreach ( $this->getLimits(true) as $limit )
+		foreach ( $this->getLimits() as $limit )
 		{
 			if ( $limit->field == 'newspapers' )
 			{
@@ -355,7 +355,7 @@ class Query extends Search\Query
 		
 		if ( $this->config->getConfig('NEWSPAPERS_OPTIONAL', false) )
 		{
-			$news_limit = $this->getLimit('facet.newspapers');
+			$news_limit = $this->getLimit('newspapers');
 				
 			if ( $news_limit->value != 'true' )
 			{

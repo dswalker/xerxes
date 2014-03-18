@@ -750,7 +750,7 @@ class Search
 			
 			// urlencode here necessary to support the urlencode above on 'key' urls
 			
-			$params = Parser::removeFromArray($params, urlencode($limit->field), $limit->value);
+			$params = Parser::removeFromArray($params, urlencode($limit->param), $limit->value);
 			
 			$limit->remove_url = $this->request->url_for($params);
 		}

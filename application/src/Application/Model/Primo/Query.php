@@ -130,7 +130,7 @@ class Query extends Search\Query
 			$query .= "&query=" . $term->field_internal . ",contains," . urlencode($term->phrase);
 		}
 			
-		foreach ( $this->getLimits(true) as $limit )
+		foreach ( $this->getLimits() as $limit )
 		{
 			$value = $limit->value;
 			

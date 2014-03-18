@@ -194,7 +194,7 @@ class Query extends Search\Query
 		$start_date = '*';
 		$end_date = '*';
 		
-		foreach ( $this->getLimits(true) as $facet_chosen )
+		foreach ( $this->getLimits() as $facet_chosen )
 		{
 			$value = $facet_chosen->value;
 			$field = $facet_chosen->field;

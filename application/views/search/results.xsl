@@ -1870,7 +1870,7 @@
 			<xsl:for-each select="//query/terms/term">
 			
 				<input type="hidden" name="boolean{id}" value="{boolean}" />
-				<input type="hidden" name="field{id}" value="{field}" />
+				<input type="hidden" name="field{id}" value="{param}" />
 				<input type="hidden" name="relation{id}" value="{relation}" />
 				<input type="hidden" name="query{id}" value="{query}" />
 				
@@ -1883,7 +1883,7 @@
 		
 		<xsl:for-each select="//query/limits/limit">
 			
-			<xsl:if test="php:function('Application\View\Helper\Search::shouldIncludeLimit', string(field), string($exclude_limit))">
+			<xsl:if test="php:function('Application\View\Helper\Search::shouldIncludeLimit', string(param), string($exclude_limit))">
 				<xsl:call-template name="hidden_search_limit" />
 			</xsl:if>
 			
