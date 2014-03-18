@@ -371,7 +371,7 @@ class Database
 	/**
 	 * @return string
 	 */
-	public function getLink_guide() 
+	public function getLinkGuide() 
 	{
 		return $this->link_guide;
 	}
@@ -379,7 +379,7 @@ class Database
 	/**
 	 * @param string $link_guide
 	 */
-	public function setLink_guide($link_guide) 
+	public function setLinkGuide($link_guide) 
 	{
 		$this->link_guide = $link_guide;
 	}
