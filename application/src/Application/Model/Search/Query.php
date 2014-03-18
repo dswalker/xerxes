@@ -250,8 +250,7 @@ class Query
 	/**
 	 * Get a specific limit
 	 *
-	 * @param string $id             the limit name
-	 * @param bool $facets_to_field  whether to return facets with key convention as limits
+	 * @param string $id  the limit name
 	 * @return LimitTerm
 	 */
 	
@@ -273,7 +272,6 @@ class Query
 	/**
 	 * Return all limits
 	 *
-	 * @param bool $facets_to_field  whether to return facets with key convention as limits
 	 * @return array
 	 */
 	
