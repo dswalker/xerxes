@@ -33,7 +33,7 @@ class Subcategory
 	protected $name;
 	
 	/**
-	 * @Column(type="integer")
+	 * @Column(type="integer", nullable=true)
 	 * @var int
 	 */
 	protected $sequence;
@@ -92,14 +92,6 @@ class Subcategory
 	}
 
 	/**
-	 * @return Category
-	 */
-	public function getCategory()
-	{
-		return $this->category;
-	}
-
-	/**
 	 * @param Category $category
 	 */
 	public function setCategory($category) 
@@ -112,7 +104,7 @@ class Subcategory
 	 */
 	public function getDatabases()
 	{
-		return $this->databases;
+		return $this->databases->getValues();
 	}
 
 	/**

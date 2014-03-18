@@ -28,19 +28,16 @@ class Knowledgebase extends Doctrine
 	 * Owner name
 	 * @var string
 	 */
-	
 	private $owner;
 	
 	/**
 	 * @var User
 	 */
-	
 	private $user;
 	
 	/**
 	 * @var EntityManager
 	 */
-	
 	protected $entityManager;
 	
 	/**
@@ -59,13 +56,42 @@ class Knowledgebase extends Doctrine
 		$this->owner = 'admin'; // @todo: logic for local users
 	}
 	
+	public function addCategory($name)
+	{
+		$category = new Category();
+		$category->setName($name);
+		
+		return $this->updateCategory($category);
+	}
+
+	public function addSubcategory($category_id, $subcategory_name)
+	{
+		// get category
+		
+		$category = $this->getCategory($category_id);
+		
+		// create subcategory
+		
+		$subcategory = new Subcategory();
+		$subcategory->setName($subcategory_name);
+		
+		// assign subcategory to category
+		
+		$subcategory->setCategory($category);
+		
+		// update
+	
+		$this->entityManager->persist($subcategory);
+		$this->entityManager->flush();
+	}
+	
 	/**
 	 * Add a database
 	 *
 	 * @param Database $database
 	 */
 	
-	public function addDatabase(Database $database)
+	public function updateDatabase(Database $database)
 	{
 		$database->setOwner($this->owner);
 		$this->entityManager->persist($database);
@@ -78,15 +104,9 @@ class Knowledgebase extends Doctrine
 	 * @param Category $category
 	 */
 	
-	public function addCategory(Category $category)
+	public function updateCategory(Category $category)
 	{
-		if ( $category->getNormalized() == '')
-		{
-			if ( $category->getName() != '')
-			{
-				$category->setNormalizedFromName();
-			}
-		}
+		$category->setOwner($this->owner);
 		
 		$this->entityManager->persist($category);
 		$this->entityManager->flush();
@@ -95,11 +115,18 @@ class Knowledgebase extends Doctrine
 	/**
 	 * Get all categories
 	 * 
-	 * @return array
+	 * @return Category[]
 	 */
 	
 	public function getCategories()
 	{
+		$category_repo = $this->entityManager->getRepository('Application\Model\Knowledgebase\Category');
+		$results = $category_repo->findBy(
+			array('owner' => 'admin'),
+			array('name' => 'asc')
+		);
+		
+		return $results;
 	}
 	
 	/**
@@ -111,6 +138,22 @@ class Knowledgebase extends Doctrine
 	
 	public function getCategory($normalized)
 	{
+		$category_repo = $this->entityManager->getRepository('Application\Model\Knowledgebase\Category');
+		$results = $category_repo->findBy(
+			array(
+				'owner' => 'admin',
+				'normalized' => $normalized
+			)
+		);
+		
+		if ( count($results) == 1 )
+		{
+			return $results[0];
+		}
+		else
+		{
+			throw new \Exception('Could not find category');
+		}
 	}
 	
 	/**

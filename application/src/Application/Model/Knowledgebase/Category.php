@@ -19,7 +19,7 @@ use Xerxes\Utility\Parser;
  *
  * @author David Walker <dwalker@calstate.edu>
  * 
- * @Entity @Table(name="categories")
+ * @Entity @Table(name="categories",uniqueConstraints={@UniqueConstraint(name="category_unique_idx", columns={"normalized"})})
  */
 
 class Category
@@ -113,6 +113,8 @@ class Category
 	public function setName($name)
 	{
 		$this->name = $name;
+		
+		$this->setNormalizedFromName();
 	}
 
 	/**
@@ -136,7 +138,7 @@ class Category
 	 */
 	public function getSubcategories() 
 	{
-		return $this->subcategories;
+		return $this->subcategories->getValues();
 	}
 
 	/**
@@ -162,5 +164,4 @@ class Category
 	{
 		$this->owner = $owner;
 	}
-
 }
