@@ -25,4 +25,5 @@ class LimitTerm
 	public $relation;
 	public $value;
 	public $key;
+	public $display;
 }
