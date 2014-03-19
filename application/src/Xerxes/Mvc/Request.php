@@ -545,7 +545,14 @@ class Request extends HttpFoundation\Request
 		} 
 		else
 		{
-			return $default;
+			if ( $default == null && $is_array == true )
+			{
+				return array();
+			}
+			else
+			{
+				return $default;
+			}
 		}
 	}
 
