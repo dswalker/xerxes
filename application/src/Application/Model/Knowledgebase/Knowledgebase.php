@@ -141,7 +141,7 @@ class Knowledgebase extends Doctrine
 		$category_repo = $this->entityManager->getRepository('Application\Model\Knowledgebase\Category');
 		$results = $category_repo->findBy(
 			array(
-				'owner' => 'admin',
+				'owner' =>  $this->owner,
 				'normalized' => $normalized
 			)
 		);
@@ -167,7 +167,22 @@ class Knowledgebase extends Doctrine
 	
 	public function getDatabase($id)
 	{
+		return $this->entityManager->find('Application\Model\Knowledgebase\Database', $id);
 	}
+	
+	/**
+	 * Remove database
+	 *
+	 * @param string $id  database id
+	 * @return bool       true on success, false otherwise
+	 */
+	
+	public function removeDatabase($id)
+	{
+		$database = $this->getDatabase($id);
+		$this->entityManager->remove($database);
+		$this->entityManager->flush();
+	}	
 	
 	/**
 	 * Get the starting letters for database titles
@@ -188,6 +203,10 @@ class Knowledgebase extends Doctrine
 
 	public function getDatabasesStartingWith($alpha)
 	{
+		$query = $this->entityManager->createQuery('SELECT d FROM Application\Model\Knowledgebase\Database d WHERE d.title LIKE :alpha AND d.owner = :owner ORDER BY d.title ASC');
+		$query->setParameter('alpha', "$alpha%");
+		$query->setParameter('owner', $this->owner);
+		return $query->getResult();
 	}
 	
 	/**
@@ -199,5 +218,12 @@ class Knowledgebase extends Doctrine
 	
 	public function getDatabases($query = null)
 	{
+		$databases_repo = $this->entityManager->getRepository('Application\Model\Knowledgebase\Database');
+		$results = $databases_repo->findBy(
+			array('owner' => $this->owner),
+			array('title' => 'asc')
+		);
+		
+		return $results;
 	}
 }

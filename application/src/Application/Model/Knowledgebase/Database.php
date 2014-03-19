@@ -12,6 +12,7 @@
 namespace Application\Model\Knowledgebase;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Database
@@ -25,21 +26,30 @@ class Database
 {
 	/** @Id @Column(type="integer") @GeneratedValue **/
 	protected $id;
-	
+
 	/**
 	 * @Column(type="string")
+	 * @var string
+	 */
+	protected $owner;	
+	
+	/**
+	 * @Column(type="string", nullable=true)
 	 * @var string 
 	 */
 	protected $source_id;
 	
 	/** 
 	 * @Column(type="string")
+	 * @Assert\NotNull()
 	 * @var string 
 	 */
 	protected $title;
 	
 	/** 
 	 * @Column(type="string")
+	 * @Assert\NotNull()
+	 * @Assert\Url()
 	 * @var string 
 	 */
 	protected $link;
@@ -112,6 +122,7 @@ class Database
 	
 	/**
 	 * @Column(type="string", nullable=true)
+	 * @Assert\Url()
 	 * @var string
 	 */
 	protected $link_guide = null;
@@ -143,6 +154,30 @@ class Database
 		$this->keywords = new ArrayCollection();
 		$this->alternate_titles = new ArrayCollection();
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}	
+	
+	/**
+	 * @return string
+	 */
+	public function getOwner()
+	{
+		return $this->owner;
+	}
+	
+	/**
+	 * @param string $source_id
+	 */
+	public function setOwner($owner)
+	{
+		$this->owner = $owner;
+	}	
 	
 	/**
 	 * @return string

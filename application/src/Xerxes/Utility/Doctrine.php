@@ -70,10 +70,12 @@ abstract class Doctrine extends DatabaseConnection
 			
 			if ( substr($method_name, 0, 3) == 'get' )
 			{
-				// everything after get and convert camel case to underscore
+				// everything after get, and convert camel case to underscore
 				
 				$name = substr($method_name, 3);
+				$name = lcfirst($name);
 				$name = preg_replace('/([A-Z])/', '_$1', $name);
+				$name = strtolower($name);
 				
 				// object's value
 				

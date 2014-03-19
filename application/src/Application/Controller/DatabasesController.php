@@ -52,6 +52,34 @@ class DatabasesController extends ActionController
 		return $this->response;
 	}	
 	
+	public function alphabeticalAction()
+	{
+		$alpha = $this->request->getParam('alpha');
+		$query = $this->request->getParam('query');
+		
+		$databases = null; // list of databases
+		
+		// limited to specific letter
+		
+		if ( $alpha != null )
+		{
+			$databases = $this->knowledgebase->getDatabasesStartingWith($alpha);
+		}
+		
+		// all databases
+		
+		else
+		{
+			$databases = $this->knowledgebase->getDatabases();
+		}
+		
+		$this->response->setVariable('databases', $this->knowledgebase->convertToArray($databases, true));
+		
+		$this->response->render('xerxes')->send(); exit;
+		
+		return $this->response;
+	}
+	
 	public function addCategoryAction()
 	{
 		$name = $this->request->getParam('name');
@@ -81,7 +109,6 @@ class DatabasesController extends ActionController
 		$date_new_expiry = $this->request->getParam('date_new_expiry');
 		$description = $this->request->getParam('description');
 		$language = $this->request->getParam('language');
-		
 		$link_guide = $this->request->getParam('link_guide');
 		$notes = $this->request->getParam('notes');
 		$proxy = $this->request->getParam('proxy');
@@ -94,20 +121,33 @@ class DatabasesController extends ActionController
 		
 		$database = new Database();
 		
-		$database->setActive($active);
 		$database->setCoverage($coverage);
 		$database->setCreator($creator);
-		$database->setDateNewExpiry($date_new_expiry);
 		$database->setDescription($description);
 		$database->setLanguage($language);
 		$database->setLink($link);
 		$database->setLinkGuide($link_guide);
 		$database->setNotes($notes);
-		$database->setProxy($proxy);
 		$database->setPublisher($publisher);
 		$database->setSearchHints($search_hints);
 		$database->setSourceId('web');
 		$database->setTitle($title);
+		
+		if ( $active != null )
+		{
+			$database->setActive($active);
+		}
+		
+		if ( $date_new_expiry != null )
+		{
+			$date_time = new \DateTime($date_new_expiry);
+			$database->setDateNewExpiry($date_new_expiry);
+		}
+		
+		if ( $proxy != null )
+		{
+			$database->setProxy($proxy);
+		}
 		
 		foreach ( $alternate_titles as $alternate_title )
 		{
@@ -121,6 +161,25 @@ class DatabasesController extends ActionController
 		
 		$this->knowledgebase->updateDatabase($database);
 	
-		exit;
+		$params = array(
+			'controller' => $this->request->getParam('controller'),
+			'action' => 'alphabetical'
+		);
+		
+		return $this->redirectTo($params);
+	}
+	
+	public function removeDatabaseAction()
+	{
+		$id = $this->request->requireParam('id', 'You must specify a database to delete');
+		
+		$this->knowledgebase->removeDatabase($id);
+
+		$params = array(
+			'controller' => $this->request->getParam('controller'),
+			'action' => 'alphabetical'
+		);
+		
+		return $this->redirectTo($params);	
 	}
 }
