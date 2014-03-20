@@ -647,10 +647,14 @@ class Innopac implements AvailabilityInterface
 				$data = preg_replace('/<[^>]*>/', '', $data);
 				$data = trim($data);
 				
+				if ( $record->link == "" )
+				{
+					$record->link = $url;
+				}
+				
 				if ( $x == 0 )
 				{
 					$record->database = $data;
-					$record->link = $url;
 				}
 				elseif ( $x == 1 )
 				{
