@@ -966,13 +966,13 @@ class Record
 			
 			if ( $this->govdoc_number != "" )
 			{
-				$objGovDoc = $xml->createElement("gpo", Parser::escapeXml($this->govdoc_number));
+				$objGovDoc = $xml->createElement("govdoc", Parser::escapeXml($this->govdoc_number));
 				$objStandard->appendChild($objGovDoc);
 			}
 			
 			if ( $this->gpo_number != "" )
 			{
-				$objGPO = $xml->createElement("govdoc", Parser::escapeXml($this->gpo_number));
+				$objGPO = $xml->createElement("gpo", Parser::escapeXml($this->gpo_number));
 				$objStandard->appendChild($objGPO);
 			}
 				
