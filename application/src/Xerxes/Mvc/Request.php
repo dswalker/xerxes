@@ -785,11 +785,11 @@ class Request extends HttpFoundation\Request
 				
 				$x++;
 			}
+			
+			// add hash
+			
+			$url .= $hash;
 		}
-		
-		// add hash
-		
-		$url .= $hash;
 		
 		// is it supposed to be a full url?
 		
