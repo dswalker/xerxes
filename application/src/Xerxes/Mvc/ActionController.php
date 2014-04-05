@@ -97,7 +97,10 @@ abstract class ActionController
 	
 	public function execute($action)
 	{
-		$action_name = str_replace('_', '', $action) . 'Action';
+		$action_name = str_replace('-', '', $action);
+		$action_name = str_replace('_', '', $action_name);
+
+		$action_name .= 'Action';
 		
 		if ( ! method_exists($this, $action_name) ) // this is always the child class
 		{
