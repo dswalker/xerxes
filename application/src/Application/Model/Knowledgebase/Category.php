@@ -39,6 +39,7 @@ class Category
 	
 	/**
 	 * @OneToMany(targetEntity="Subcategory", mappedBy="category", cascade={"persist"})
+	 * @OrderBy({"sequence" = "ASC"})
 	 * @var Subcategory[]
 	 */	
 	protected $subcategories;
@@ -99,6 +100,15 @@ class Category
 			$this->normalized = str_replace( "--", "-", $this->normalized );
 		}
 	}
+
+	/**
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+	
 	/**
 	 * @return string
 	 */

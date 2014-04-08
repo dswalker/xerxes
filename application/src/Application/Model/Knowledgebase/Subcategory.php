@@ -59,6 +59,16 @@ class Subcategory
 	{
 		$this->databases = new ArrayCollection();
 	}
+
+	/**
+	 * @return int
+	 */
+	public function getId()
+	{
+		return $this->id;
+	}
+	
+	
 	/**
 	 * @return string
 	 */

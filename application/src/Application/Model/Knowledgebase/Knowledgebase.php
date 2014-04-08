@@ -11,6 +11,8 @@
 
 namespace Application\Model\Knowledgebase;
 
+use Xerxes\Utility\DataMap;
+
 use Doctrine\ORM\EntityManager;
 use Xerxes\Utility\Cache;
 use Xerxes\Utility\Doctrine;
@@ -39,6 +41,11 @@ class Knowledgebase extends Doctrine
 	 * @var EntityManager
 	 */
 	protected $entityManager;
+	
+	/**
+	 * @var DataMap
+	 */
+	private $datamap;
 	
 	/**
 	 * Create new Knowledgebase object
@@ -81,7 +88,31 @@ class Knowledgebase extends Doctrine
 		
 		// update
 	
-		$this->entityManager->persist($subcategory);
+		$this->update($subcategory);
+	}
+
+	public function deleteSubcategory($subcategory_id)
+	{
+		$subcategory = $this->entityManager->find('Application\Model\Knowledgebase\Subcategory', $subcategory_id);
+		$this->entityManager->remove($subcategory);
+		$this->entityManager->flush();
+		
+		/*
+		$datamap = $this->datamap();
+		$sql = 'DELETE FROM subcategories WHERE id = :id';
+		return $datamap->delete($sql, array(':id' => $subcategory_id));
+		*/
+	}
+	
+	/**
+	 * Update the data object
+	 * 
+	 * @param object $object
+	 */
+	
+	public function update($object)
+	{
+		$this->entityManager->persist($object);
 		$this->entityManager->flush();
 	}
 	
@@ -94,8 +125,7 @@ class Knowledgebase extends Doctrine
 	public function updateDatabase(Database $database)
 	{
 		$database->setOwner($this->owner);
-		$this->entityManager->persist($database);
-		$this->entityManager->flush();
+		$this->update($database);
 	}
 	
 	/**
@@ -107,9 +137,7 @@ class Knowledgebase extends Doctrine
 	public function updateCategory(Category $category)
 	{
 		$category->setOwner($this->owner);
-		
-		$this->entityManager->persist($category);
-		$this->entityManager->flush();
+		$this->update($category);
 	}
 	
 	/**
@@ -132,7 +160,7 @@ class Knowledgebase extends Doctrine
 	/**
 	 * Get category
 	 *
-	 * @param string $normalized normalized category name
+	 * @param string $normalized  normalized category name
 	 * @return Category
 	 */
 	
@@ -141,8 +169,8 @@ class Knowledgebase extends Doctrine
 		$category_repo = $this->entityManager->getRepository('Application\Model\Knowledgebase\Category');
 		$results = $category_repo->findBy(
 			array(
-				'owner' =>  $this->owner,
-				'normalized' => $normalized
+				'normalized' => $normalized,
+				'owner' => $this->owner
 			)
 		);
 		
@@ -153,7 +181,32 @@ class Knowledgebase extends Doctrine
 		else
 		{
 			throw new \Exception('Could not find category');
-		}
+		}		
+		
+	}
+	
+	/**
+	 * Get category
+	 *
+	 * @param int $id  internal category id
+	 * @return Category
+	 */
+	
+	public function getCategoryById($id)
+	{
+		return $this->entityManager->find('Application\Model\Knowledgebase\Category', $id);
+	}
+	
+	/**
+	 * Get subcategory
+	 *
+	 * @param int $id  internal category id
+	 * @return Subcategory
+	 */
+	
+	public function getSubcategoryById($id)
+	{
+		return $this->entityManager->find('Application\Model\Knowledgebase\Subcategory', $id);
 	}
 	
 	/**
@@ -225,5 +278,46 @@ class Knowledgebase extends Doctrine
 		);
 		
 		return $results;
+	}
+	
+	/**
+	 * Reorder subcategories
+	 * 
+	 * @param array $reorder_array
+	 */
+	
+	public function reorderSubcategories(array $reorder_array)
+	{
+		if ( count($reorder_array) > 0 )
+		{
+			$datamap = $this->datamap();
+			
+			$datamap->beginTransaction();
+			
+			$sql = "UPDATE subcategories SET sequence = :sequence WHERE id = :id";
+			
+			foreach ( $reorder_array as $order => $subcategory_id )
+			{
+				$datamap->update( $sql, array(":sequence" => $order, ":id" => $subcategory_id ) );
+			}
+				
+			return $datamap->commit();
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * @return DataMap
+	 */
+	
+	protected function datamap()
+	{
+		if ( ! $this->datamap instanceof DataMap )
+		{
+			$this->datamap = new DataMap();
+		}
+		
+		return $this->datamap;
 	}
 }

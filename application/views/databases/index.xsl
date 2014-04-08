@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<!DOCTYPE xsl:stylesheet  [
+	<!ENTITY nbsp   "&#160;">
+	<!ENTITY copy   "&#169;">
+	<!ENTITY reg    "&#174;">
+	<!ENTITY times  "&#215;">
+	<!ENTITY trade  "&#8482;">
+	<!ENTITY mdash  "&#8212;">
+	<!ENTITY ldquo  "&#8220;">
+	<!ENTITY rdquo  "&#8221;"> 
+	<!ENTITY pound  "&#163;">
+	<!ENTITY yen    "&#165;">
+	<!ENTITY euro   "&#8364;">
+]>
 <!--
 
  This file is part of Xerxes.
@@ -31,61 +43,75 @@
 
 <xsl:template name="breadcrumb">
 	<xsl:call-template name="breadcrumb_start" />
-	Databases!
+	<a href="databases">Databases</a>
+</xsl:template>
+
+<xsl:template name="module_header">
+	<style type="text/css">
+
+	/* DATABASES */
+	
+	.databases-categories-list li {
+		padding: 5px;
+	}
+	
+	</style>
+	
 </xsl:template>
 
 <xsl:template name="main">
 
-		<a id="facet-more-link-{group_id}" href="#database-modal-add-category" role="button" class="btn btn-small facet-more-launch" data-toggle="modal"> 
-			<i class="icon-pencil"></i> Edit
-		</a>
+	<h1>Categories</h1>
+		
+	<div class="databases-categories-list">
+		<xsl:call-template name="loop_columns" />
+	</div>
+		
+</xsl:template>
 
-		<h1>Databases</h1>
+<!-- 
+	TEMPLATE: LOOP_COLUMNS
+	
+	A recursively called looping template for dynamically determined number of columns.
+	produces the following logic 
+-->
+
+<xsl:template name="loop_columns">
+	<xsl:param name="num_columns">2</xsl:param>
+	<xsl:param name="iteration_value">1</xsl:param>
+	
+	<xsl:variable name="total" select="count(categories/category)" />
+	<xsl:variable name="numRows" select="ceiling($total div $num_columns)"/>
+
+	<xsl:if test="$iteration_value &lt;= $num_columns">
+		
+		<div class="span4">
 			
-		<div class="databases-categories-list">
-		
 			<ul>
-				<xsl:for-each select="categories/category">
-					<li><xsl:value-of select="name"	/></li>
-				</xsl:for-each>
+			<xsl:for-each select="categories/category[position() &gt; ($numRows * ($iteration_value -1)) and 
+				position() &lt;= ( $numRows * $iteration_value )]">
+				
+				<xsl:variable name="normalized" select="normalized" />
+				<li>
+					<xsl:call-template name="category_link" />
+				</li>
+			</xsl:for-each>
 			</ul>
-		
+			
 		</div>
 		
-		<xsl:call-template name="database_category_add" />
-		
+		<xsl:call-template name="loop_columns">
+			<xsl:with-param name="num_columns" select="$num_columns"/>
+			<xsl:with-param name="iteration_value"  select="$iteration_value+1"/>
+		</xsl:call-template>
+	
+	</xsl:if>
 	
 </xsl:template>
 
-<xsl:template name="database_category_add">
+<xsl:template name="category_link">
 
-	<div id="database-modal-add-category" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="database-modal-add-category-label" aria-hidden="true">
-	
-		<form action="{//request/controller}/addcategory">
-
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-				<h3 id="database-modal-add-category-label">Add Category</h3>
-			</div>
-			<div class="modal-body">
-	
-				<div class="reading-group">
-					<label class="database-label" for="database-input-title">Category</label>
-					<div class="database-input">
-						<textarea name="name" id="database-input-title" style="width: 500px">
-						</textarea>
-					</div>
-				</div>
-				
-			</div>
-			<div class="modal-footer">
-				<button class="btn" data-dismiss="modal" aria-hidden="true"><xsl:value-of select="$text_facets_close" /></button>
-				<button class="btn btn-primary"><xsl:value-of select="$text_facets_submit" /></button>
-			</div>
-		</form>	
-	
-	</div>
-
+	<a href="{url}"><xsl:value-of select="name" /></a>
 
 </xsl:template>
 

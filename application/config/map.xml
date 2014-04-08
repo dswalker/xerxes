@@ -5,6 +5,7 @@
 	
 	<global_action controller="navigation" action="menu" />
 	
+	<controller name="databases-edit" class="Application\Controller\DatabasesEditController" />
 	<controller name="databases">
 		<action name="subject">
 			<path index="3" param="subject" />
