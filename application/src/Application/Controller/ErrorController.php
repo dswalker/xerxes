@@ -52,6 +52,8 @@ class ErrorController extends ActionController
     		$error['trace'] = $trace;
     	}
     	
+    	$this->response->setStatusCode(500);
+    	
     	$this->response->setVariable('error', $error);
     	
     	if ( $this->request->isXmlHttpRequest() )
