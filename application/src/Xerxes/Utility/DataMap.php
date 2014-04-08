@@ -20,7 +20,7 @@ namespace Xerxes\Utility;
  * @author David Walker <dwalker@calstate.edu>
  */
 
-abstract class DataMap extends DatabaseConnection
+class DataMap extends DatabaseConnection
 {
 	/**
 	 * Begin the database transaction
@@ -130,7 +130,7 @@ abstract class DataMap extends DatabaseConnection
 	 * @return mixed        status of the request, as set by PDO
 	 */
 	
-	protected function delete($sql, $values = null)
+	public function delete($sql, $values = null)
 	{
 		return $this->update($sql, $values);
 	}
@@ -139,7 +139,7 @@ abstract class DataMap extends DatabaseConnection
 	 * Get the last inserted ID
 	 */
 	
-	protected function lastInsertId()
+	public function lastInsertId()
 	{
 		return $this->pdo()->lastInsertId();
 	}
@@ -153,7 +153,7 @@ abstract class DataMap extends DatabaseConnection
 	 * @return bool                    false if failure. on success, true or inserted pk based on $return_pk
 	 */
 	
-	protected function doSimpleInsert($table_name, DataValue $value_object, $return_pk = false)
+	public function doSimpleInsert($table_name, DataValue $value_object, $return_pk = false)
 	{
 		$properties = array();
 		
@@ -184,7 +184,7 @@ abstract class DataMap extends DatabaseConnection
 	 * @param array $values
 	 */
 	
-	private function log($sql, array $values)
+	protected function log($sql, array $values)
 	{
 		$this->sql = $sql;
 		
