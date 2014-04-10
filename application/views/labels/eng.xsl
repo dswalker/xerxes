@@ -99,6 +99,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_database_availability">Availability:</xsl:variable>
 	<xsl:variable name="text_database_available_registered">Only available to registered users.</xsl:variable>
 	<xsl:variable name="text_database_available_everyone">Available to everyone.</xsl:variable>
+	<xsl:variable name="text_databases_confirm_delete">Sure you want to delete this?</xsl:variable>	
 	<xsl:variable name="text_database_coverage">Coverage:</xsl:variable>
 	<xsl:variable name="text_database_creator">Creator</xsl:variable>
 	<xsl:variable name="text_database_guide">Guide:</xsl:variable>
@@ -118,26 +119,12 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_databases_az_breadcrumb_matching">Databases matching</xsl:variable>
 	<xsl:variable name="text_databases_az_databases">databases</xsl:variable>
 	<xsl:variable name="text_databases_az_hint_info">more information</xsl:variable>
-	<xsl:variable name="text_databases_az_hint_searchable">searchable by <xsl:value-of select="$text_app_name" /></xsl:variable>
 	<xsl:variable name="text_databases_az_letter_separator"> | </xsl:variable>
 	<xsl:variable name="text_databases_az_pagename">Databases A-Z</xsl:variable>
 	<xsl:variable name="text_databases_az_search">List databases matching: </xsl:variable>
 	
 	<xsl:variable name="text_databases_category_pagename">Home</xsl:variable>
-	<xsl:variable name="text_databases_category_quick_desc">
-		<xsl:text>Search </xsl:text>
-		<xsl:call-template name="text_number_to_words">
-			<xsl:with-param name="number" select="count(//category[1]/subcategory[1]/database[searchable = 1])" /> 
-		</xsl:call-template>
-		<xsl:text> of our most popular databases</xsl:text>
-	</xsl:variable>
 	<xsl:variable name="text_databases_category_subject">Search by Subject</xsl:variable>
-	<xsl:variable name="text_databases_category_subject_desc">Search databases specific to your area of study.</xsl:variable>
-
-	<xsl:variable name="text_databases_subject_hint_direct_search">Go directly to </xsl:variable>
-	<xsl:variable name="text_databases_subject_hint_more_info_about">More information about </xsl:variable>
-	<xsl:variable name="text_databases_subject_hint_native_only">Click database title to search individually</xsl:variable>
-	<xsl:variable name="text_databases_subject_hint_restricted">Restricted, click database title to search individually</xsl:variable>
 	
 	<xsl:variable name="text_databases_subject_librarian_address">Office:</xsl:variable>
 	<xsl:variable name="text_databases_subject_librarian_email">Email:</xsl:variable>
@@ -146,12 +133,8 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 
 	<xsl:variable name="text_error">Sorry, there was an error</xsl:variable>
 	<xsl:variable name="text_error_access_denied">Access Denied</xsl:variable>
-	<xsl:variable name="text_error_databases_permission">You do not have access to search these databases</xsl:variable>
-	<xsl:variable name="text_error_databases_registered">Only available to registered users.</xsl:variable>
 	<xsl:variable name="text_error_pdo_exception">There was a problem with the database.</xsl:variable>
-	<xsl:variable name="text_error_not_authorized_db">Not authorized to search certain databases</xsl:variable>
 	<xsl:variable name="text_error_not_found">Not Found</xsl:variable>
-	<xsl:variable name="text_error_search_expired">Your search appears to have expired</xsl:variable>
 	
 	<xsl:variable name="text_folder_email_address">Email address:</xsl:variable>
 	<xsl:variable name="text_folder_email_notes">Notes:</xsl:variable>
