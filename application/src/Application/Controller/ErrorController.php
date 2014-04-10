@@ -11,6 +11,8 @@
 
 namespace Application\Controller;
 
+use Xerxes\Mvc\Exception\AccessDeniedException;
+
 use Guzzle\Http\Exception\RequestException;
 use Xerxes\Mvc\ActionController;
 
@@ -27,6 +29,12 @@ class ErrorController extends ActionController
     	
     	trigger_error("Xerxes Error ($line): $message");
     	
+    	// error response
+    	
+    	$error = array();
+    	$error['type'] = 'error';
+    	$error['code'] = $code;
+    	
     	// handle PDO and Guzzle errors differently
     	
     	if ( $e instanceof RequestException )
@@ -39,9 +47,11 @@ class ErrorController extends ActionController
     	{
     		$message = 'There was a problem with the database';
     	}
-    	
-    	$error = array();
-    	$error['code'] = $code;
+    	elseif ( $e instanceof AccessDeniedException )
+    	{
+    		$error['type'] = 'access_denied'; 
+    	}
+
     	$error['message'] = $message;
     	
     	// only include location and trace if reporting is turned on
