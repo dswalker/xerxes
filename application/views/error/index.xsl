@@ -34,7 +34,16 @@
 
 <xsl:template name="main">
 
-		<h1><xsl:value-of select="$text_error" /></h1>
+		<h1>
+			<xsl:choose>
+				<xsl:when test="error/type = 'access_denied'">
+					<xsl:value-of select="$text_error_access_denied" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$text_error" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</h1>
 		
 		<p><xsl:value-of select="error/message" /></p>
 		
