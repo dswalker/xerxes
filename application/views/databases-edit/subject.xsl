@@ -24,7 +24,7 @@
 -->
 <!--
 
- Search home page view
+ Edit: Databases search page
  author: David Walker <dwalker@calstate.edu>
  
  -->
@@ -88,7 +88,7 @@
 
 <xsl:template name="breadcrumb">
 	<xsl:call-template name="breadcrumb_start" />
-	<a href="databases">Databases</a>
+	<a href="databases-edit">Databases</a>
 </xsl:template>
 
 <xsl:template name="main">
@@ -106,15 +106,22 @@
 			<div class="container">
 				<div class="nav-collapse collapse">
 				
-					<ul class="nav">
-						<li>
-							<a id="delete-category" href="#" role="button"> 
+					<ul class="nav" style="width:100%">
+						<li style="float:right">
+							<a id="delete-category" class="delete-confirm" href="{//request/controller}/delete-category?id={categories/id}" 
+								style="background-color:#400; border: 1px solid #efefef; border-top: 0px" role="button"> 
 								<i class="icon-trash"></i>&nbsp; Delete Category
 							</a>							
 						</li>					
 						<li>
-							<a id="facet-more-link-{group_id}" href="#database-modal-add-subcategory" role="button" data-toggle="modal"> 
+							<a id="facet-more-link-{group_id}" href="#database-modal-add-subcategory" 
+								role="button" data-toggle="modal"> 
 								<i class="icon-plus"></i>&nbsp; Add Subcategory
+							</a>							
+						</li>
+						<li>
+							<a id="facet-more-link-{group_id}" href="#" role="button"> 
+								<i class="icon-collapse"></i>&nbsp; Hide databases
 							</a>							
 						</li>
 					</ul>
@@ -180,7 +187,8 @@
 		<img src="{$base_url}/images/famfamfam/arrow_out.png" alt="" />
 		
 		<div style="position: absolute; top: 3px; right: 10px">
-			<a href="{//request/controller}/delete-subcategory?subcategory={id};category={../../id}" class="btn btn-small subcategory-delete">
+			<a href="{//request/controller}/delete-subcategory?subcategory={id};category={../../id}" 
+				class="btn btn-small subcategory-delete delete-confirm">
 				<i class="icon-trash"></i> Remove
 			</a>
 			<xsl:text> </xsl:text>

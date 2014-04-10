@@ -24,7 +24,7 @@
 -->
 <!--
 
- Search home page view
+ Databases search page
  author: David Walker <dwalker@calstate.edu>
  
  -->

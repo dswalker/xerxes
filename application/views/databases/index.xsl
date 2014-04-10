@@ -24,7 +24,7 @@
 -->
 <!--
 
- Search home page view
+ Databases home page
  author: David Walker <dwalker@calstate.edu>
  
  -->
@@ -43,7 +43,7 @@
 
 <xsl:template name="breadcrumb">
 	<xsl:call-template name="breadcrumb_start" />
-	<a href="databases">Databases</a>
+	Databases
 </xsl:template>
 
 <xsl:template name="module_header">
@@ -77,7 +77,16 @@
 -->
 
 <xsl:template name="loop_columns">
-	<xsl:param name="num_columns">2</xsl:param>
+	<xsl:param name="num_columns">
+		<xsl:choose>
+			<xsl:when test="count(//categories/category) &lt;= 10">
+				<xsl:text>1</xsl:text>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:text>2</xsl:text>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:param>
 	<xsl:param name="iteration_value">1</xsl:param>
 	
 	<xsl:variable name="total" select="count(categories/category)" />

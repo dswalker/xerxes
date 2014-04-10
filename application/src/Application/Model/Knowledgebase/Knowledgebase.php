@@ -196,6 +196,20 @@ class Knowledgebase extends Doctrine
 	{
 		return $this->entityManager->find('Application\Model\Knowledgebase\Category', $id);
 	}
+
+	/**
+	 * Delete category
+	 *
+	 * @param int $id  internal category id
+	 */
+	
+	public function deleteCategory($id)
+	{
+		$category = $this->getCategoryById($id);
+
+		$this->entityManager->remove($category);
+		$this->entityManager->flush();		
+	}	
 	
 	/**
 	 * Get subcategory

@@ -38,7 +38,7 @@ class Category
 	protected $normalized;
 	
 	/**
-	 * @OneToMany(targetEntity="Subcategory", mappedBy="category", cascade={"persist"})
+	 * @OneToMany(targetEntity="Subcategory", mappedBy="category", cascade={"remove"}, orphanRemoval=true)
 	 * @OrderBy({"sequence" = "ASC"})
 	 * @var Subcategory[]
 	 */	

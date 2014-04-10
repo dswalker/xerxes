@@ -1,8 +1,19 @@
 $(document).ready(highlight);
 $(document).ready(resort);
+$(document).ready(addDeleteConfirm);
+
+function addDeleteConfirm()
+{
+	$('.delete-confirm').click(function()
+	{
+  		return confirm(xerxes_labels['text_databases_confirm_delete']);
+	});
+}
 
 function highlight()
-{ 
+{
+	$('.delete-confirm')
+	
 	$(".list-item").mouseover(function() {
 			$(this).addClass("list-highlight");
 			$(this).children(".list-item-action").css('visibility', 'visible');
