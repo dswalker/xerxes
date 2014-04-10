@@ -193,9 +193,18 @@ abstract class Scheme
 		$this->user = $datamap_users->touchUser( $this->user );
 		
 		
-		// @todo: should we just save user object in session?
+		// @todo: reconcile this code with User code
+		// should we just save user object in session?
+		
 		
 		// set main properties in session
+		
+		$admins = explode(',', $this->registry->getConfig('ADMIN_USERS'));
+		
+		if ( in_array($this->user->username, $admins) )
+		{
+			$this->request->setSessionData("user_admin", true);
+		}
 		
 		$this->request->setSessionData("username", $this->user->username);
 		$this->request->setSessionData("role", $this->role);

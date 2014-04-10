@@ -21,20 +21,81 @@ use Xerxes\Mvc\Request;
 
 class User extends DataValue
 {
+	/**
+	 * Username
+	 * @var string
+	 */
 	public $username;
 	
+	/**
+	 * Date of last login
+	 * @var string
+	 */
 	public $last_login;
+	
+	/**
+	 * Is account suspended
+	 * @var boolean
+	 */
 	public $suspended;
+	
+	/**
+	 * First name
+	 * @var string
+	 */
 	public $first_name;
+	
+	/**
+	 * Last name
+	 * @var string
+	 */
 	public $last_name;
+	
+	/**
+	 * Email address
+	 * @var string
+	 */
 	public $email_addr;
+
+	/**
+	 * Usergroups
+	 * @var array
+	 */
 	public $usergroups = array();	
 	
+	/**
+	 * User's role (local, guest, named, etc.)
+	 * @var string
+	 */
 	private $role;
+
+	/**
+	 * Is this an admin user?
+	 * @var bool
+	 */
+	private $admin = false;	
+	
+	/**
+	 * IP address
+	 * @var string
+	 */
 	private $ip_address;
 	
+	/**
+	 * Campus IP Range
+	 * @var string
+	 */
 	private $ip_range;
+	
+	/**
+	 * @var Request
+	 */
 	private static $request;
+
+	/**
+	 * @var Registry
+	 */
+	private static $registry;	
 	
 	const LOCAL = "local";
 	const GUEST = "guest";
@@ -42,12 +103,13 @@ class User extends DataValue
 	/**
 	 * Create a User
 	 * 
-	 * @param Request $request		[optional] create user from current Request
+	 * @param Request $request  [optional] create user from current Request
 	 */
 
 	public function __construct(Request $request = null)
 	{
 		self::$request = $request;
+		$this->registry = Registry::getInstance();
 		
 		if ( $request != "" )
 		{
@@ -56,11 +118,11 @@ class User extends DataValue
 			$this->username = $request->getSessionData("username");
 			$this->role = $request->getSessionData("role");
 			$this->ip_address = $request->getClientIp();
+			$this->admin = $request->getSessionData('user_admin');
 			
 			// local ip range from config
 			
-			$registry = Registry::getInstance();
-			$this->ip_range = $registry->getConfig( "LOCAL_IP_RANGE", false, null );
+			$this->ip_range = $this->registry->getConfig( "LOCAL_IP_RANGE", false, null );
 			
 			// temporarily authenticate users
 			
@@ -191,6 +253,15 @@ class User extends DataValue
 			return false;
 		}
 	}
+
+	/**
+	 * Whether user is admin
+	 */
+	
+	public function isAdmin()
+	{
+		return $this->admin;
+	}	
 	
 	/**
 	 * Get remote IP address of user
