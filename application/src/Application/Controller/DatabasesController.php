@@ -65,6 +65,24 @@ class DatabasesController extends ActionController
 	public function subjectAction()
 	{
 		$subject = $this->request->getParam('subject');
+		$id = $this->request->getParam('id');
+		
+		// if the request included the internal id, redirect
+		// the user to the normalized form
+		
+		if ( $id != "" )
+		{
+			$category = $this->knowledgebase->getCategoryById($id);
+			$normalized = $category->getNormalized();
+			
+			$params = array(
+				'controller' => $this->request->getParam('controller'),
+				'action' => $this->request->getParam('action'),
+				'subject' => $normalized
+			);
+			
+			return $this->redirectTo($params);
+		}
 		
 		$category = $this->knowledgebase->getCategory($subject);
 		
