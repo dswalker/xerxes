@@ -33,34 +33,32 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 
-<xsl:import href="../databases/alphabetical.xsl" />
+<xsl:import href="../databases/database.xsl" />
 
 <xsl:template name="main">
 	
-	<xsl:call-template name="databases_list" />
+	<xsl:call-template name="databases_full" />
 	
 	<xsl:call-template name="databases_edit" />
 				
 </xsl:template>
 
 <xsl:template name="databases_edit">
-		
+
 	<div class="navbar navbar-inverse navbar-fixed-bottom databases-edit">
 		<div class="navbar-inner">
 			<div class="container">
 				<div class="nav-collapse collapse">
-				
-					<ul class="nav" style="width:100%">
-			
+					<ul class="nav">
 						<li>
-							<a id="facet-more-link-{group_id}" href="{//request/controller}/edit-database" role="button" data-toggle="modal"> 
-								<i class="icon-plus"></i>&nbsp; Add Database
+							<a id="facet-more-link-{group_id}" href="{//request/controller}/edit-database?id={databases/id}" role="button" data-toggle="modal"> 
+								<i class="icon-edit"></i>
+								&nbsp;<xsl:text> Edit Database</xsl:text>
 							</a>							
 						</li>
-
 					</ul>
-					
-				</div>
+				</div>		  
+				
 			</div>
 		</div>
 	</div>

@@ -74,6 +74,21 @@ class DatabasesController extends ActionController
 	}
 	
 	/**
+	 * Database page
+	 */
+	
+	public function databaseAction()
+	{
+		$id = $this->request->getParam('id');
+	
+		$database = $this->knowledgebase->getDatabase($id);
+	
+		$this->response->setVariable('databases', $database);
+	
+		return $this->response;
+	}	
+	
+	/**
 	 * Database A-Z page
 	 */
 	
@@ -90,10 +105,7 @@ class DatabasesController extends ActionController
 		{
 			$databases = $this->knowledgebase->getDatabasesStartingWith($alpha);
 		}
-		
-		// all databases
-		
-		else
+		else // all databases
 		{
 			$databases = $this->knowledgebase->getDatabases();
 		}

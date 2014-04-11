@@ -52,10 +52,6 @@
 	<link href="{$base_include}/css/jquery.tagit.css" rel="stylesheet" type="text/css" />
 
 	<style type="text/css">
-	
-		body {
-			font-size: 14px;
-		}
 		
 		#database-form label.error {
 			color: red;
@@ -105,42 +101,54 @@
 </xsl:template>
 
 <xsl:template name="main">
-		
-	<xsl:call-template name="databases_edit" />
+	
+	<xsl:choose>
+		<xsl:when test="databases">
+			<xsl:for-each select="databases">
+				<xsl:call-template name="databases_edit" />
+			</xsl:for-each>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:call-template name="databases_edit" />
+		</xsl:otherwise>
+	</xsl:choose>
 				
 </xsl:template>
 
 <xsl:template name="databases_edit">
 	
-	<h1>Add Database</h1>
-		
+	<h1>Edit Database</h1>
+	
 	<div style="margin: 4em">
 		
-		<form class="form-horizontal" action="{//request/controller}/{//request/action}" method="post" id="database-form">	
+		<form class="form-horizontal" action="{//request/controller}/update-database" method="post" id="database-form">	
 			<input type="hidden" name="postback" value="true" />
+			<input type="hidden" name="id" value="{id}" />
 		  
 		  <div class="control-group">
 			<label class="control-label" for="title">Title</label>
 			<div class="controls">
-			  <input type="text" name="title" style="width:300px" required="required" class="required" />
+			  <input type="text" name="title" style="width:400px" required="required" class="required" value="{title}" />
 			</div>
 		  </div>
 		  <div class="control-group">
 			<label class="control-label">Link</label>
 			<div class="controls">
-			  <input type="text" name="link" style="width:300px" placeholder="to the database" required="required" class="required" />
+			  <input type="text" name="link" style="width:400px" placeholder="to the database" required="required" class="required" value="{link}" />
 			</div>
 		  </div>
 		  <div class="control-group">
 			<label class="control-label">Description</label>
 			<div class="controls">
-			  <textarea name="description" style="width:300px"></textarea>
+			  <textarea name="description" style="width:500px" rows="5">
+			  	<xsl:value-of select="description" />
+			  </textarea>
 			</div>
 		  </div>
 		  <div class="control-group">
 			<label class="control-label">Coverage</label>
 			<div class="controls">
-			  <input type="text" name="coverage" style="width:300px" />
+			  <input type="text" name="coverage" style="width:400px" value="{coverage}" />
 			</div>
 		  </div>
 		  <div class="control-group">
@@ -158,46 +166,47 @@
 		  <div class="control-group">
 			<label class="control-label">Trial until</label>
 			<div class="controls">
-			  <input type="text" name="trial_new_expiry" class="datepicker" maxlength="10" size="10" placeholder="date when trial is over" />
+			  <input type="text" name="trial_new_expiry" class="datepicker" maxlength="10" size="10" placeholder="date when trial is over" value="{trial_new_expiry}" />
 			</div>
 		  </div>
 		  <div class="control-group">
 			<label class="control-label">New until</label>
 			<div class="controls">
-			  <input type="text" name="date_new_expiry" class="datepicker" maxlength="10" size="10" placeholder="date no longer new" />					  
+			  <input type="text" name="date_new_expiry" class="datepicker" maxlength="10" size="10" placeholder="date no longer new"  value="{date_new_expiry}" />					  
 			</div>
 		  </div>	
 		  <div class="control-group">
 			<label class="control-label">Keywords</label>
 			<div class="controls">
-			  <input name="keywords" id="form-keywords" data-original-title="Coverage" data-placement="right" />			  	  
+			  <input name="keywords" id="form-keywords" data-original-title="Coverage" data-placement="right" value="{keywords}" />			  	  
 			</div>
 		  </div>  
 		  <div class="control-group">
 			<label class="control-label">Creator</label>
 			<div class="controls">
-			  <input type="text" name="creator" style="width:300px" />
+			  <input type="text" name="creator" style="width:400px" value="{creator}" />
 			</div>
 		  </div>
 		  <div class="control-group">
 			<label class="control-label">Publisher</label>
 			<div class="controls">
-			  <input type="text" name="publisher" style="width:300px" />
+			  <input type="text" name="publisher" style="width:400px" value="{publisher}" />
 			</div>
 		  </div>
 		  <div class="control-group">
 			<label class="control-label">Search hints</label>
 			<div class="controls">
-			  <textarea name="search-hints" style="width:300px"></textarea>
+			  <textarea name="search-hints" style="width:400px">
+			  	<xsl:value-of select="search_hints" />
+			  </textarea>
 			</div>
 		  </div>
 		  <div class="control-group">
 			<label class="control-label">Link guide</label>
 			<div class="controls">
-			  <input type="text" name="link-guide" style="width:300px" placeholder="Link to a guide or instructions page" />
+			  <input type="text" name="link-guide" style="width:400px" placeholder="Link to a guide or instructions page" value="{link_guide}" />
 			</div>
 		  </div>
-
 		  
 		  <div style="padding: 20px; padding-left: 200px">
 			  <button class="btn btn-large btn-primary" type="submit">Update</button>

@@ -5,11 +5,18 @@
 	
 	<global_action controller="navigation" action="menu" />
 	
-	<controller name="databases-edit" class="Application\Controller\DatabasesEditController" />
+	<controller name="databases-edit" class="Application\Controller\DatabasesEditController">
+		<action name="database">
+			<path index="3" param="id" />
+		</action>
+	</controller>
 	<controller name="databases">
 		<action name="subject">
 			<path index="3" param="subject" />
 		</action>	
+		<action name="database">
+			<path index="3" param="id" />
+		</action>
 	</controller>
 	<controller name="ebsco">
 		<action name="results" restricted="true" />

@@ -189,106 +189,127 @@ class DatabasesEditController extends DatabasesController
 		{
 			$this->response->noView(); // ajax action, no need for a view
 		}
-	}	
+	}
+	
+	/**
+	 * Edit (or add) database page
+	 */
+	
+	public function editDatabaseAction()
+	{
+		$id = $this->request->getParam('id');
+		
+		if ( $id != null )
+		{
+			return $this->databaseAction();
+		}
+	}
 	
 	/**
 	 * Add a database to the knowledgebase
 	 */
 	
-	public function addDatabaseAction()
+	public function updateDatabaseAction()
 	{
-		$post_back = $this->request->getParam('postback');
+		$id = $this->request->getParam('id');
 		
-		if ( $post_back != "" )
+		$title = $this->request->requireParam('title', 'You must specify a title');
+		$link = $this->request->requireParam('link', 'You must specify a link');
+		
+		$description = $this->request->getParam('description');
+		$coverage = $this->request->getParam('coverage');
+		
+		$active = (bool) $this->request->getParam('active', false, false);
+		$proxy = (bool) $this->request->getParam('proxy', false, false);
+		
+		$date_new_expiry = $this->request->getParam('date_new_expiry');
+		$date_trial_expiry = $this->request->getParam('date_new_expiry');
+		
+		$keywords = $this->request->getParam('keywords');
+		$creator = $this->request->getParam('creator');
+		$publisher = $this->request->getParam('publisher');
+		$search_hints = $this->request->getParam('search-hints');
+		$link_guide = $this->request->getParam('link_guide');
+			
+		
+		$language = $this->request->getParam('language');
+		$notes = $this->request->getParam('notes');
+		$alternate_titles = $this->request->getParam('alternate_title', null, true);
+		
+		// if an id came in, then we are editing 
+		// rather than adding, so fetch the database
+		
+		$database = null;
+		
+		if ( $id != "" )
 		{
-			// print_r($this->request->getParams());
-			
-			$title = $this->request->requireParam('title', 'You must specify a title');
-			$link = $this->request->requireParam('link', 'You must specify a link');
-			
-			$description = $this->request->getParam('description');
-			$coverage = $this->request->getParam('coverage');
-			
-			$active = (bool) $this->request->getParam('active', false, false);
-			$proxy = (bool) $this->request->getParam('proxy', false, false);
-			
-			$date_new_expiry = $this->request->getParam('date_new_expiry');
-			$date_trial_expiry = $this->request->getParam('date_new_expiry');
-			
-			$keywords = $this->request->getParam('keywords');
-			$creator = $this->request->getParam('creator');
-			$publisher = $this->request->getParam('publisher');
-			$search_hints = $this->request->getParam('search-hints');
-			$link_guide = $this->request->getParam('link_guide');
-				
-			
-			$language = $this->request->getParam('language');
-			$notes = $this->request->getParam('notes');
-			$alternate_titles = $this->request->getParam('alternate_title', null, true);
-			
-			
-			$database = new Database();
-			
-			$database->setCoverage($coverage);
-			$database->setCreator($creator);
-			$database->setDescription($description);
-			$database->setLanguage($language);
-			$database->setLink($link);
-			$database->setLinkGuide($link_guide);
-			$database->setNotes($notes);
-			$database->setPublisher($publisher);
-			$database->setSearchHints($search_hints);
-			$database->setSourceId('web');
-			$database->setTitle($title);
-			
-			if ( $active != null )
-			{
-				$database->setActive($active);
-			}
-			
-			if ( $date_new_expiry != null )
-			{
-				$date_time = new \DateTime($date_new_expiry);
-				$database->setDateNewExpiry($date_time);
-			}
-
-			if ( $date_trial_expiry != null )
-			{
-				$date_time = new \DateTime($date_trial_expiry);
-				$database->setDateTrialExpiry($date_time);
-			}			
-			
-			if ( $proxy != null )
-			{
-				$database->setProxy($proxy);
-			}
-			
-			foreach ( $alternate_titles as $alternate_title )
-			{
-				$database->addAlternateTitle($alternate_title);
-			}
-			
-			if ( $keywords != "" )
-			{
-				$keywords = explode(',', $keywords);
-				
-				foreach ( $keywords as $keyword )
-				{
-					$database->addKeyword($keyword);
-				}
-			}
-			
-			$this->knowledgebase->updateDatabase($database);
-		
-			$params = array(
-				'controller' => $this->request->getParam('controller'),
-				'action' => 'alphabetical'
-			);
-			
-			// return $this->redirectTo($params);
+			$database = $this->knowledgebase->getDatabase($id);
 		}
-	}
+		else
+		{
+			$database = new Database();
+		}
+		
+		$database->setCoverage($coverage);
+		$database->setCreator($creator);
+		$database->setDescription($description);
+		$database->setLanguage($language);
+		$database->setLink($link);
+		$database->setLinkGuide($link_guide);
+		$database->setNotes($notes);
+		$database->setPublisher($publisher);
+		$database->setSearchHints($search_hints);
+		$database->setSourceId('web');
+		$database->setTitle($title);
+		
+		if ( $active != null )
+		{
+			$database->setActive($active);
+		}
+		
+		if ( $date_new_expiry != null )
+		{
+			$date_time = new \DateTime($date_new_expiry);
+			$database->setDateNewExpiry($date_time);
+		}
+
+		if ( $date_trial_expiry != null )
+		{
+			$date_time = new \DateTime($date_trial_expiry);
+			$database->setDateTrialExpiry($date_time);
+		}			
+		
+		if ( $proxy != null )
+		{
+			$database->setProxy($proxy);
+		}
+		
+		foreach ( $alternate_titles as $alternate_title )
+		{
+			$database->addAlternateTitle($alternate_title);
+		}
+		
+		if ( $keywords != "" )
+		{
+			$keywords = explode(',', $keywords);
+			
+			foreach ( $keywords as $keyword )
+			{
+				$database->addKeyword($keyword);
+			}
+		}
+		
+		$this->knowledgebase->updateDatabase($database);
 	
+		$params = array(
+			'controller' => $this->request->getParam('controller'),
+			'action' => 'database',
+			'id' => $database->getId()
+		);
+		
+		return $this->redirectTo($params);
+	}
+
 	/**
 	 * Remove database from knowledgebase
 	 */

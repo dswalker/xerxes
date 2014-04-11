@@ -100,15 +100,15 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_database_available_registered">Only available to registered users.</xsl:variable>
 	<xsl:variable name="text_database_available_everyone">Available to everyone.</xsl:variable>
 	<xsl:variable name="text_databases_confirm_delete">Sure you want to delete this?</xsl:variable>	
-	<xsl:variable name="text_database_coverage">Coverage:</xsl:variable>
+	<xsl:variable name="text_database_coverage">Coverage</xsl:variable>
 	<xsl:variable name="text_database_creator">Creator</xsl:variable>
-	<xsl:variable name="text_database_guide">Guide:</xsl:variable>
+	<xsl:variable name="text_database_guide">Guide</xsl:variable>
 	<xsl:variable name="text_database_guide_help">Help in using this database</xsl:variable>
 	<xsl:variable name="text_database_go_to_database">Go to this database!</xsl:variable>
-	<xsl:variable name="text_database_link">Link:</xsl:variable>
-	<xsl:variable name="text_database_publisher">Publisher:</xsl:variable>
+	<xsl:variable name="text_database_link">Link</xsl:variable>
+	<xsl:variable name="text_database_publisher">Publisher</xsl:variable>
 	<xsl:variable name="text_database_save_database">Save database</xsl:variable>
-	<xsl:variable name="text_database_search_hints">Search Hints:</xsl:variable>
+	<xsl:variable name="text_database_search_hints">Search Hints</xsl:variable>
 	
 	<xsl:variable name="text_databases_access_available">Only available to </xsl:variable>
 	<xsl:variable name="text_databases_access_group_and">and</xsl:variable>

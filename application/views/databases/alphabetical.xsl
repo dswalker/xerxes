@@ -52,13 +52,21 @@
 		
 		.databases-list {
 			margin-bottom: 2em;
+			max-width: 600px;
 		}
 		.database-title {
+			font-size: 105%;
 			font-weight: bold;
-			margin-bottom: .7 em;
+			margin-bottom: .5em;
 		}
 		.database-description {
-			font-color: #eee;
+			color: #666;
+		}
+		.database-more-info {
+			margin-top: .3em;
+		}		
+		.database-more-info a, .database-more-info a:visited {
+			color: green;
 		}
 					
 	</style>
@@ -81,10 +89,13 @@
 
 		<li class="databases-list">
 			<div class="database-title">
-				<xsl:value-of select="title" />
+				<a href="{link}"><xsl:value-of select="title" /></a>
 			</div>
 			<div class="database-description">
 				<xsl:value-of select="description" />
+			</div>
+			<div class="database-more-info">
+				<a href="{//request/controller}/database/{id}">More information</a>
 			</div>
 		</li>
 
