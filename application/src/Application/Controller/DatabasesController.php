@@ -53,15 +53,7 @@ class DatabasesController extends ActionController
 		
 		$categories = $this->knowledgebase->getCategories();
 		
-		// convert to array
-		
-		$categories_array = $this->knowledgebase->convertToArray($categories);
-		
-		// add in links
-		
-		$categories_array = $this->helper->addCategoryLinks($categories_array);
-		
-		$this->response->setVariable('categories', $categories_array);
+		$this->response->setVariable('categories', $categories->toArray());
 		
 		return $this->response;
 	}
@@ -76,7 +68,7 @@ class DatabasesController extends ActionController
 		
 		$category = $this->knowledgebase->getCategory($subject);
 		
-		$this->response->setVariable('categories', $this->knowledgebase->convertToArray($category, true));
+		$this->response->setVariable('categories', $category);
 	
 		return $this->response;
 	}
@@ -106,9 +98,7 @@ class DatabasesController extends ActionController
 			$databases = $this->knowledgebase->getDatabases();
 		}
 		
-		$this->response->setVariable('databases', $this->knowledgebase->convertToArray($databases, true));
-		
-		$this->response->render('xerxes')->send(); exit;
+		$this->response->setVariable('databases', $databases);
 		
 		return $this->response;
 	}

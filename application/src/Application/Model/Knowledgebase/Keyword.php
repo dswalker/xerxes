@@ -30,7 +30,35 @@ class Keyword
 	protected $value;
 	
 	/**
-	 * @ManyToOne(targetEntity="Database", inversedBy="alternate_titles")
+	 * @ManyToOne(targetEntity="Database", inversedBy="keywords")
 	 */
 	protected $database;
+	
+	/**
+	 * Create new Keyword
+	 */
+	
+	public function __construct($value)
+	{
+		$this->value = $value;
+	}
+	
+	/**
+	 * Create new Keyword
+	 */
+	
+	public function setDatabase(Database $database)
+	{
+		$this->database = $database;
+	}
+	
+	/**
+	 * Get value
+	 * @return string
+	 */
+	
+	public function getValue()
+	{
+		return $this->value;
+	}
 }

@@ -32,8 +32,6 @@ class DatabasesEditController extends DatabasesController
 		
 		if ( $user->isAdmin() != true )
 		{
-			print_r($user); exit;
-			
 			throw new AccessDeniedException('Only administrators may access this part of the system');
 		}
 	}	
@@ -52,7 +50,7 @@ class DatabasesEditController extends DatabasesController
 	
 		$category = $this->knowledgebase->getCategoryById($id);
 	
-		$this->response->setVariable('categories', $this->knowledgebase->convertToArray($category, true));
+		$this->response->setVariable('categories', $category);
 	
 		return $this->response;
 	}	
@@ -203,23 +201,30 @@ class DatabasesEditController extends DatabasesController
 		
 		if ( $post_back != "" )
 		{
+			// print_r($this->request->getParams());
+			
 			$title = $this->request->requireParam('title', 'You must specify a title');
 			$link = $this->request->requireParam('link', 'You must specify a link');
 			
-			$active = $this->request->getParam('active');
-			$coverage = $this->request->getParam('coverage');
-			$creator = $this->request->getParam('creator');
-			$date_new_expiry = $this->request->getParam('date_new_expiry');
 			$description = $this->request->getParam('description');
-			$language = $this->request->getParam('language');
-			$link_guide = $this->request->getParam('link_guide');
-			$notes = $this->request->getParam('notes');
-			$proxy = $this->request->getParam('proxy');
+			$coverage = $this->request->getParam('coverage');
+			
+			$active = (bool) $this->request->getParam('active', false, false);
+			$proxy = (bool) $this->request->getParam('proxy', false, false);
+			
+			$date_new_expiry = $this->request->getParam('date_new_expiry');
+			$date_trial_expiry = $this->request->getParam('date_new_expiry');
+			
+			$keywords = $this->request->getParam('keywords');
+			$creator = $this->request->getParam('creator');
 			$publisher = $this->request->getParam('publisher');
-			$search_hints = $this->request->getParam('search_hints');
-	
+			$search_hints = $this->request->getParam('search-hints');
+			$link_guide = $this->request->getParam('link_guide');
+				
+			
+			$language = $this->request->getParam('language');
+			$notes = $this->request->getParam('notes');
 			$alternate_titles = $this->request->getParam('alternate_title', null, true);
-			$keywords = $this->request->getParam('keywords', null, true);	
 			
 			
 			$database = new Database();
@@ -244,8 +249,14 @@ class DatabasesEditController extends DatabasesController
 			if ( $date_new_expiry != null )
 			{
 				$date_time = new \DateTime($date_new_expiry);
-				$database->setDateNewExpiry($date_new_expiry);
+				$database->setDateNewExpiry($date_time);
 			}
+
+			if ( $date_trial_expiry != null )
+			{
+				$date_time = new \DateTime($date_trial_expiry);
+				$database->setDateTrialExpiry($date_time);
+			}			
 			
 			if ( $proxy != null )
 			{
@@ -257,9 +268,14 @@ class DatabasesEditController extends DatabasesController
 				$database->addAlternateTitle($alternate_title);
 			}
 			
-			foreach ( $keywords as $keyword )
+			if ( $keywords != "" )
 			{
-				$database->addKeyword($keyword);
+				$keywords = explode(',', $keywords);
+				
+				foreach ( $keywords as $keyword )
+				{
+					$database->addKeyword($keyword);
+				}
 			}
 			
 			$this->knowledgebase->updateDatabase($database);

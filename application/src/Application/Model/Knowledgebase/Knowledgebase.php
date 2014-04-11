@@ -143,7 +143,7 @@ class Knowledgebase extends Doctrine
 	/**
 	 * Get all categories
 	 * 
-	 * @return Category[]
+	 * @return Categories
 	 */
 	
 	public function getCategories()
@@ -154,7 +154,7 @@ class Knowledgebase extends Doctrine
 			array('name' => 'asc')
 		);
 		
-		return $results;
+		return new Categories($results);
 	}
 	
 	/**

@@ -43,7 +43,7 @@
 
 <xsl:template name="breadcrumb">
 	<xsl:call-template name="breadcrumb_start" />
-	<a href="databases">Databases</a>
+	<a href="{//request/controller}">Databases</a>
 </xsl:template>
 
 <xsl:template name="main">

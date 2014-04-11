@@ -174,4 +174,27 @@ class Category
 	{
 		$this->owner = $owner;
 	}
+	
+	/**
+	 * @return array
+	 */
+	
+	public function toArray($deep = true)
+	{
+		$final = array();
+	
+		foreach ( $this as $key => $value )
+		{
+			if ( $key == 'subcategories' && $deep == true )
+			{
+				$final[$key] = $value->toArray();
+			}
+			else
+			{
+				$final[$key] = $value;
+			}
+		}
+	
+		return $final;
+	}
 }

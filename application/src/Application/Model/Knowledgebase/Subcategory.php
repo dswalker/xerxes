@@ -125,4 +125,32 @@ class Subcategory
 		$database->setSubcategory($this);
 		$this->databases[] = $database;
 	}
+	
+	/**
+	 * @return array
+	 */
+	
+	public function toArray()
+	{
+		$final = array();
+	
+		foreach ( $this as $key => $value )
+		{
+			if ( $key == 'category')
+			{
+				continue;
+			}
+			
+			if ( $key == 'databases')
+			{
+				$final[$key] = $value->toArray();
+			}
+			else
+			{
+				$final[$key] = $value;
+			}
+		}
+	
+		return $final;
+	}
 }

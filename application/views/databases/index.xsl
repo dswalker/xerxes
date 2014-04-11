@@ -48,8 +48,6 @@
 
 <xsl:template name="module_header">
 	<style type="text/css">
-
-	/* DATABASES */
 	
 	.databases-categories-list li {
 		padding: 5px;
@@ -120,7 +118,7 @@
 
 <xsl:template name="category_link">
 
-	<a href="{url}"><xsl:value-of select="name" /></a>
+	<a href="{//request/controller}/subject/{normalized}"><xsl:value-of select="name" /></a>
 
 </xsl:template>
 

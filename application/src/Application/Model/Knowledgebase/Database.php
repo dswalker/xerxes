@@ -128,13 +128,13 @@ class Database
 	protected $link_guide = null;
 	
 	/**
-	 * @OneToMany(targetEntity="AlternateTitle", mappedBy="database")
+	 * @OneToMany(targetEntity="AlternateTitle", mappedBy="database", cascade={"persist"})
 	 * @var AlternateTitle[]
 	 */
 	protected $alternate_titles;
 	
 	/**
-	 * @OneToMany(targetEntity="Keyword", mappedBy="database")
+	 * @OneToMany(targetEntity="Keyword", mappedBy="database", cascade={"persist"})
 	 * @var Keyword[]
 	 */
 	protected $keywords;
@@ -424,7 +424,7 @@ class Database
 	 */
 	public function getAlternateTitles() 
 	{
-		return $this->alternate_titles;
+		return $this->alternate_titles->getValues();
 	}
 
 	/**
@@ -440,7 +440,7 @@ class Database
 	 */
 	public function getKeywords() 
 	{
-		return $this->keywords;
+		return $this->keywords->getValues();
 	}
 
 	/**
@@ -448,7 +448,9 @@ class Database
 	 */
 	public function addKeyword($keyword) 
 	{
-		$this->keywords[] = $keyword;
+		$keyword_object = new Keyword($keyword);
+		$keyword_object->setDatabase($this);
+		$this->keywords[] = $keyword_object;
 	}
 
 	/**
@@ -458,6 +460,34 @@ class Database
 	{
 		$this->subcategory = $subcategory;
 	}
-
-
+	
+	/**
+	 * @return array
+	 */
+	
+	public function toArray()
+	{
+		$final = array();
+		
+		foreach ( $this as $key => $value )
+		{
+			if ( $key == 'keywords' || $key == 'alternate_titles')
+			{
+				$second = array();
+				
+				foreach ( $this->$key->getValues() as $object )
+				{
+					$second[] = $object->getValue();
+				}
+				
+				$final[$key] = $second;
+			}
+			else
+			{
+				$final[$key] = $value;
+			}
+		}
+		
+		return $final;
+	}
 }

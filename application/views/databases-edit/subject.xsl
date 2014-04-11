@@ -86,11 +86,6 @@
 	</script>	
 </xsl:template>
 
-<xsl:template name="breadcrumb">
-	<xsl:call-template name="breadcrumb_start" />
-	<a href="databases-edit">Databases</a>
-</xsl:template>
-
 <xsl:template name="main">
 	
 	<xsl:call-template name="subject_databases_list" />
