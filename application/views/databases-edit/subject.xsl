@@ -34,11 +34,20 @@
 	xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 
 <xsl:import href="../databases/subject.xsl" />
+<xsl:import href="includes.xsl" />
 
 <xsl:output method="html" />
 
 <xsl:template match="/*">
 	<xsl:call-template name="surround" />
+</xsl:template>
+
+<xsl:template name="module_nav">
+
+	<xsl:call-template name="module_nav_display">
+		<xsl:with-param name="url">databases/subject?id=<xsl:value-of select="categories/id" /></xsl:with-param>
+	</xsl:call-template>
+
 </xsl:template>
 
 <xsl:template name="module_header">

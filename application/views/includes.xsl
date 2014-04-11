@@ -540,6 +540,8 @@
 				</a>
 			</li>
 			
+			<xsl:call-template name="module_nav" />
+			
 		</ul>	
 	
 	</xsl:template>
@@ -668,7 +670,7 @@
 	<xsl:template name="sidebar_additional" />
 	<xsl:template name="module_header" />	
 	<xsl:template name="module_javascript" />
-	
+	<xsl:template name="module_nav" />
 	
 	
 	

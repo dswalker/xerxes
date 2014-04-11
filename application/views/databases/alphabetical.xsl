@@ -34,6 +34,7 @@
 	xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 
 <xsl:import href="../includes.xsl" />
+<xsl:import href="includes.xsl" />
 
 <xsl:output method="html" />
 
@@ -44,6 +45,8 @@
 <xsl:template name="breadcrumb">
 	<xsl:call-template name="breadcrumb_start" />
 	<a href="{//request/controller}">Databases</a>
+	<xsl:value-of select="$text_breadcrumb_separator" />
+	<xsl:text>Alphabetical</xsl:text>
 </xsl:template>
 
 <xsl:template name="module_header">
@@ -70,6 +73,14 @@
 					
 	</style>
 	
+</xsl:template>
+
+<xsl:template name="module_nav">
+
+	<xsl:call-template name="module_nav_display">
+		<xsl:with-param name="url">databases-edit/alphabetical</xsl:with-param>
+	</xsl:call-template>
+
 </xsl:template>
 
 <xsl:template name="main">

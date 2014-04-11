@@ -34,6 +34,15 @@
 	xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 
 <xsl:import href="../databases/alphabetical.xsl" />
+<xsl:import href="includes.xsl" />
+
+<xsl:template name="module_nav">
+
+	<xsl:call-template name="module_nav_display">
+		<xsl:with-param name="url">databases/alphabetical</xsl:with-param>
+	</xsl:call-template>
+
+</xsl:template>
 
 <xsl:template name="main">
 	

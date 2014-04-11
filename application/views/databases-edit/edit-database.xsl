@@ -117,7 +117,7 @@
 
 <xsl:template name="databases_edit">
 	
-	<h1>Edit Database</h1>
+	<h1>Database</h1>
 	
 	<div style="margin: 4em">
 		
@@ -140,7 +140,7 @@
 		  <div class="control-group">
 			<label class="control-label">Description</label>
 			<div class="controls">
-			  <textarea name="description" style="width:500px" rows="5">
+			  <textarea name="description" style="width:400px" rows="8">
 			  	<xsl:value-of select="description" />
 			  </textarea>
 			</div>
@@ -166,19 +166,21 @@
 		  <div class="control-group">
 			<label class="control-label">Trial until</label>
 			<div class="controls">
-			  <input type="text" name="trial_new_expiry" class="datepicker" maxlength="10" size="10" placeholder="date when trial is over" value="{trial_new_expiry}" />
+			  <input type="text" name="trial_new_expiry" class="datepicker" maxlength="10" size="10" 
+			  	placeholder="date when trial is over" value="{trial_new_expiry/date}" />
 			</div>
 		  </div>
 		  <div class="control-group">
 			<label class="control-label">New until</label>
 			<div class="controls">
-			  <input type="text" name="date_new_expiry" class="datepicker" maxlength="10" size="10" placeholder="date no longer new"  value="{date_new_expiry}" />					  
+			  <input type="text" name="date_new_expiry" class="datepicker" maxlength="10" size="10" 
+			  	placeholder="date no longer new"  value="{date_new_expiry/date}" />					  
 			</div>
 		  </div>	
 		  <div class="control-group">
 			<label class="control-label">Keywords</label>
 			<div class="controls">
-			  <input name="keywords" id="form-keywords" data-original-title="Coverage" data-placement="right" value="{keywords}" />			  	  
+			  <input name="keywords" id="form-keywords" style="width:400px" data-original-title="Coverage" data-placement="right" value="{keywords}" />			  	  
 			</div>
 		  </div>  
 		  <div class="control-group">
@@ -196,7 +198,7 @@
 		  <div class="control-group">
 			<label class="control-label">Search hints</label>
 			<div class="controls">
-			  <textarea name="search-hints" style="width:400px">
+			  <textarea name="search-hints" style="width:400px" rows="8">
 			  	<xsl:value-of select="search_hints" />
 			  </textarea>
 			</div>

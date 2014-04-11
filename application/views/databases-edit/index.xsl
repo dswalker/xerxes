@@ -34,10 +34,23 @@
 	xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 
 <xsl:import href="../databases/index.xsl" />
+<xsl:import href="includes.xsl" />
+
+<xsl:template name="module_nav">
+
+	<xsl:call-template name="module_nav_display">
+		<xsl:with-param name="url">databases</xsl:with-param>
+	</xsl:call-template>
+
+</xsl:template>
 
 <xsl:template name="main">
 
 	<h1>Edit Categories</h1>
+
+	<div style="margin-bottom: 30px">
+		[ <a href="{//request/controller}/alphabetical">Databases A-Z</a> ]
+	</div>
 		
 	<div class="databases-categories-list">
 		<xsl:call-template name="loop_columns" />
