@@ -1526,8 +1526,8 @@
 				<xsl:when test="summary">
 					<xsl:value-of select="summary" />
 				</xsl:when>
-				
 			</xsl:choose>
+			
 		</div>
 	</xsl:template>
 	

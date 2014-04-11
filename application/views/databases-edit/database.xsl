@@ -49,7 +49,14 @@
 		<div class="navbar-inner">
 			<div class="container">
 				<div class="nav-collapse collapse">
-					<ul class="nav">
+				
+					<ul class="nav" style="width:100%">
+						<li style="float:right">
+							<a id="delete-category" class="delete-confirm" href="{//request/controller}/delete-database?id={databases/id}" 
+								style="background-color:#400; border: 1px solid #efefef; border-top: 0px" role="button"> 
+								<i class="icon-trash"></i>&nbsp; Delete Database
+							</a>							
+						</li>	
 						<li>
 							<a id="facet-more-link-{group_id}" href="{//request/controller}/edit-database?id={databases/id}" role="button" data-toggle="modal"> 
 								<i class="icon-edit"></i>
@@ -57,8 +64,8 @@
 							</a>							
 						</li>
 					</ul>
-				</div>		  
-				
+					
+				</div>
 			</div>
 		</div>
 	</div>

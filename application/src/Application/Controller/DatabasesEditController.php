@@ -314,7 +314,7 @@ class DatabasesEditController extends DatabasesController
 	 * Remove database from knowledgebase
 	 */
 	
-	public function removeDatabaseAction()
+	public function deleteDatabaseAction()
 	{
 		$id = $this->request->requireParam('id', 'You must specify a database to delete');
 		
