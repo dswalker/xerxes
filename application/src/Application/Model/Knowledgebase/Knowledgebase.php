@@ -96,12 +96,6 @@ class Knowledgebase extends Doctrine
 		$subcategory = $this->entityManager->find('Application\Model\Knowledgebase\Subcategory', $subcategory_id);
 		$this->entityManager->remove($subcategory);
 		$this->entityManager->flush();
-		
-		/*
-		$datamap = $this->datamap();
-		$sql = 'DELETE FROM subcategories WHERE id = :id';
-		return $datamap->delete($sql, array(':id' => $subcategory_id));
-		*/
 	}
 	
 	/**
@@ -249,7 +243,21 @@ class Knowledgebase extends Doctrine
 		$database = $this->getDatabase($id);
 		$this->entityManager->remove($database);
 		$this->entityManager->flush();
-	}	
+	}
+	
+	/**
+	 * Just database titles
+	 * 
+	 * Doesn't use Doctrine, for speed
+	 * 
+	 * @return array
+	 */
+	
+	public function getDatabaseTitles()
+	{
+		$sql = "select id, title from research_databases where owner = 'admin'";
+		return $this->datamap()->select($sql);
+	}
 	
 	/**
 	 * Get the starting letters for database titles
