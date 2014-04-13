@@ -187,10 +187,14 @@ class Engine extends Search\Engine
 			{
 				if ( array_key_exists('score', $database_array) )
 				{
-					if ( (int) $database_array['score'] > 75 )
+					if ( (int) $database_array['score'] > 50 )
 					{
 						$recommend[] = new Database($database_array);
 					}
+				}
+				else
+				{
+					$recommend[] = new Database($database_array);
 				}
 			}
 		}
