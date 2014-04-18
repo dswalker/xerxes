@@ -12,6 +12,12 @@
 		<config name="max_records_per_page">1000</config>
 		
 		<config name="sort_order">recent</config>
+
+
+		<config name="facet_fields" xml="true" pass="true">
+			<facet label="text_facet_field_scholarly" internal="format" />
+			<facet label="text_facet_field_format" internal="label" />
+		</config>
 		
 		<config name="sort_options" xml="true" pass="true">
 			<option id="recent" label="text_results_sort_by_recent" internal="" />

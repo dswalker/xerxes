@@ -363,19 +363,18 @@ class Query
 				$term->field = array_pop($parts);
 			}
 		}
-
+		
 		// see if this field is supported by the config
 		
 		if ( $this->config != null )
 		{
-			if ( $this->config->getFacet($term->field) == null )
+			if ( $this->config->getFacet($term->field) == null && $this->config->getLimit($term->field) == null )
 			{
 				return false; // nope
 			}
 		}		
 		
 		array_push($this->limits , $term);
-		
 		return true;
 	}
 	

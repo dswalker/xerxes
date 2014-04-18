@@ -22,6 +22,7 @@ use Xerxes\Utility\Registry;
 abstract class Config extends Registry
 {
 	private $facets = array();
+	private $limits = array();
 	private $fields = array();
 	
 	const UNSUPPORED_FIELD = '__UNSUPPORTED__';
@@ -43,6 +44,18 @@ abstract class Config extends Registry
 			foreach ( $facets as $facet )
 			{
 				$this->facets[(string) $facet["internal"]] = $facet;
+			}
+		}
+		
+		// (fixed) search limits
+
+		$limits = $this->xml->xpath("//config[@name='limit_search_options']/facet");
+		
+		if ( $limits !== false )
+		{
+			foreach ( $limits as $limit )
+			{
+				$this->limits[(string) $limit["internal"]] = $limit;
 			}
 		}
 		
@@ -120,6 +133,25 @@ abstract class Config extends Registry
 		}
 	}
 
+	/**
+	 * Return a limit definition from the config file
+	 *
+	 * @param string $internal			limit internal id
+	 * @return simplexml
+	 */
+	
+	public function getLimit($internal)
+	{
+		if ( array_key_exists($internal, $this->limits) )
+		{
+			return $this->limits[$internal];
+		}
+		else
+		{
+			return null;
+		}
+	}	
+	
 	/**
 	 * Return all of the facet definitions
 	 * 
