@@ -1900,7 +1900,19 @@
 				</xsl:for-each>
 			</xsl:when>
 			<xsl:otherwise>
-				<input type="hidden" name="{param}" value="{value}" />
+				<input type="hidden" name="{param}">
+					<!-- @todo: this is a kludge for dates, need a better solution -->
+					<xsl:attribute name="value">
+						<xsl:choose>
+							<xsl:when test="display">
+								<xsl:value-of select="display" />
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="value" />
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:attribute>
+				</input>
 			</xsl:otherwise>
 		</xsl:choose>	
 	
