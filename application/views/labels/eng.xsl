@@ -126,10 +126,10 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_databases_category_pagename">Home</xsl:variable>
 	<xsl:variable name="text_databases_category_subject">Search by Subject</xsl:variable>
 	
-	<xsl:variable name="text_databases_subject_librarian_address">Office:</xsl:variable>
-	<xsl:variable name="text_databases_subject_librarian_email">Email:</xsl:variable>
-	<xsl:variable name="text_databases_subject_librarian_fax">Fax:</xsl:variable>
-	<xsl:variable name="text_databases_subject_librarian_telephone">Telephone:</xsl:variable>
+	<xsl:variable name="text_databases_subject_librarian_office">Office</xsl:variable>
+	<xsl:variable name="text_databases_subject_librarian_office_hours">Office Hours</xsl:variable>
+	<xsl:variable name="text_databases_subject_librarian_email">Email</xsl:variable>
+	<xsl:variable name="text_databases_subject_librarian_telephone">Telephone</xsl:variable>
 
 	<xsl:variable name="text_error">Sorry, there was an error</xsl:variable>
 	<xsl:variable name="text_error_access_denied">Access Denied</xsl:variable>

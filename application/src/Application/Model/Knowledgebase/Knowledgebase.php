@@ -230,6 +230,34 @@ class Knowledgebase extends Doctrine
 	{
 		return $this->entityManager->find('Application\Model\Knowledgebase\Database', $id);
 	}
+
+	/**
+	 * Get librarians(s) by ID
+	 *
+	 * you supply an array, you get back an array
+	 *
+	 * @param string|array $id
+	 * @return Librarian|Librarian[]
+	 */
+	
+	public function getLibrarian($id)
+	{
+		return $this->entityManager->find('Application\Model\Knowledgebase\Librarian', $id);
+	}
+	
+	/**
+	 * Remove librarian
+	 *
+	 * @param string $id  librarian id
+	 * @return bool       true on success, false otherwise
+	 */
+	
+	public function removeLibrarian($id)
+	{
+		$librarian = $this->getLibrarian($id);
+		$this->entityManager->remove($librarian);
+		$this->entityManager->flush();
+	}	
 	
 	/**
 	 * Remove database
@@ -301,6 +329,24 @@ class Knowledgebase extends Doctrine
 		
 		return $results;
 	}
+
+	/**
+	 * Get databases from the knowledgebase
+	 *
+	 * @param string $query [optional] query to search for dbs.
+	 * @return array        of Database objects
+	 */
+	
+	public function getLibrarians()
+	{
+		$databases_repo = $this->entityManager->getRepository('Application\Model\Knowledgebase\Librarian');
+		$results = $databases_repo->findBy(
+			array(),
+			array('name' => 'asc')
+		);
+	
+		return $results;
+	}	
 	
 	/**
 	 * Reorder subcategories

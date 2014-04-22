@@ -104,7 +104,7 @@ class Subcategory
 	/**
 	 * @param Category $category
 	 */
-	public function setCategory($category) 
+	public function setCategory(Category $category) 
 	{
 		$this->category = $category;
 	}

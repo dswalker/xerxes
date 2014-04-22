@@ -9,12 +9,18 @@
 		<action name="database">
 			<path index="3" param="id" />
 		</action>
+		<action name="librarian">
+			<path index="3" param="id" />
+		</action>
 	</controller>
 	<controller name="databases">
 		<action name="subject">
 			<path index="3" param="subject" />
 		</action>	
 		<action name="database">
+			<path index="3" param="id" />
+		</action>
+		<action name="librarian">
 			<path index="3" param="id" />
 		</action>
 	</controller>

@@ -104,6 +104,33 @@ class DatabasesController extends ActionController
 		$this->response->setVariable('databases', $database);
 	
 		return $this->response;
+	}
+
+	/**
+	 * Librarian page
+	 */
+	
+	public function librarianAction()
+	{
+		$id = $this->request->getParam('id');
+	
+		$librarian = $this->knowledgebase->getLibrarian($id);
+	
+		$this->response->setVariable('librarians', $librarian);
+	
+		return $this->response;
+	}
+	
+	/**
+	 * Librarians
+	 */
+	
+	public function librariansAction()
+	{
+		$librarian = $this->knowledgebase->getLibrarians();
+		$this->response->setVariable('librarians', $librarian);
+	
+		return $this->response;
 	}	
 	
 	/**

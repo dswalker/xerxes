@@ -43,6 +43,12 @@ class Category
 	 * @var Subcategory[]
 	 */	
 	protected $subcategories;
+
+	/**
+     * @ManyToMany(targetEntity="Librarian", mappedBy="categories")
+	 * @var Librarian[]
+	 */
+	protected $librarians;	
 	
 	/**
 	 * @Column(type="string")
@@ -57,6 +63,7 @@ class Category
 	public function __construct()
 	{
 		$this->subcategories = new ArrayCollection();
+		$this->librarians = new ArrayCollection();
 	}	
 	
 	/**
@@ -159,6 +166,7 @@ class Category
 		$subcategory->setCategory($this);
 		$this->subcategories[] = $subcategory;
 	}
+	
 	/**
 	 * @return string
 	 */
@@ -185,7 +193,7 @@ class Category
 	
 		foreach ( $this as $key => $value )
 		{
-			if ( $key == 'subcategories' && $deep == true )
+			if ( ($key == 'subcategories' || $key == 'librarians') && $deep == true )
 			{
 				$final[$key] = $value->toArray();
 			}

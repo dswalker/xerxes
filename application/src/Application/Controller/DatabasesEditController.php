@@ -13,6 +13,7 @@ namespace Application\Controller;
 
 use Application\Model\Knowledgebase\Category;
 use Application\Model\Knowledgebase\Database;
+use Application\Model\Knowledgebase\Librarian;
 use Application\Model\Knowledgebase\Knowledgebase;
 use Application\View\Helper\Databases as DatabasehHelper;
 use Xerxes\Mvc\ActionController;
@@ -204,7 +205,7 @@ class DatabasesEditController extends DatabasesController
 			return $this->databaseAction();
 		}
 	}
-	
+
 	/**
 	 * Add a database to the knowledgebase
 	 */
@@ -309,7 +310,7 @@ class DatabasesEditController extends DatabasesController
 		
 		return $this->redirectTo($params);
 	}
-
+	
 	/**
 	 * Remove database from knowledgebase
 	 */
@@ -317,14 +318,96 @@ class DatabasesEditController extends DatabasesController
 	public function deleteDatabaseAction()
 	{
 		$id = $this->request->requireParam('id', 'You must specify a database to delete');
-		
+	
 		$this->knowledgebase->removeDatabase($id);
+	
+		$params = array(
+				'controller' => $this->request->getParam('controller'),
+				'action' => 'alphabetical'
+		);
+	
+		return $this->redirectTo($params);
+	}	
 
+	/**
+	 * Edit (or add) database page
+	 */
+	
+	public function editLibrarianAction()
+	{
+		$id = $this->request->getParam('id');
+	
+		if ( $id != null )
+		{
+			return $this->librarianAction();
+		}
+	}
+	
+	/**
+	 * Add (or update) a librarian to the knowledgebase
+	 */
+	
+	public function updateLibrarianAction()
+	{
+		$id = $this->request->getParam('id');
+	
+		$name = $this->request->requireParam('name', 'You must specify a name');
+		$link = $this->request->requireParam('link', 'You must specify a link');
+
+		$image = $this->request->getParam('image');
+		$email = $this->request->getParam('email');
+		$phone = $this->request->getParam('phone');
+		$office = $this->request->getParam('office');
+		$office_hours = $this->request->getParam('office_hours');
+	
+		// if an id came in, then we are editing
+		// rather than adding, so fetch the database
+	
+		$librarian = null;
+	
+		if ( $id != "" )
+		{
+			$librarian = $this->knowledgebase->getLibrarian($id);
+		}
+		else
+		{
+			$librarian = new Librarian();
+		}
+	
+		$librarian->setName($name);
+		$librarian->setLink($link);
+		$librarian->setImage($image);
+		$librarian->setEmail($email);
+		$librarian->setPhone($phone);
+		$librarian->setOffice($office);
+		$librarian->setOfficeHours($office_hours);
+
+		$this->knowledgebase->update($librarian);
+	
 		$params = array(
 			'controller' => $this->request->getParam('controller'),
-			'action' => 'alphabetical'
+			'action' => 'librarian',
+			'id' => $librarian->getId()
 		);
-		
-		return $this->redirectTo($params);	
+	
+		return $this->redirectTo($params);
+	}
+	
+	/**
+	 * Remove librarian from knowledgebase
+	 */
+	
+	public function deleteLibrarianAction()
+	{
+		$id = $this->request->requireParam('id', 'You must specify a librarian to delete');
+	
+		$this->knowledgebase->removeLibrarian($id);
+	
+		$params = array(
+			'controller' => $this->request->getParam('controller'),
+			'action' => 'librarians'
+		);
+	
+		return $this->redirectTo($params);
 	}
 }

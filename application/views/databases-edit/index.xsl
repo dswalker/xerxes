@@ -79,6 +79,21 @@
 								&nbsp;<xsl:text> Add Category</xsl:text>
 							</a>							
 						</li>
+						<li>
+							<a id="facet-more-link-{group_id}" href="{//request/controller}/edit-database" role="button" data-toggle="modal"> 
+								<i class="icon-plus"></i>&nbsp; Add Database
+							</a>							
+						</li>
+						<li>
+							<a id="facet-more-link-{group_id}" href="{//request/controller}/edit-librarian" role="button" data-toggle="modal"> 
+								<i class="icon-plus"></i>&nbsp; Add Librarian
+							</a>							
+						</li>
+						<li>
+							<a id="facet-more-link-{group_id}" href="{//request/controller}/librarians" role="button" data-toggle="modal"> 
+								<i class="icon-user"></i>&nbsp; Show all Librarians
+							</a>							
+						</li>
 					</ul>
 				</div>		  
 				

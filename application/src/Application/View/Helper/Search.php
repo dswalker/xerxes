@@ -748,9 +748,16 @@ class Search
 		{
 			$params = $this->currentParams();
 			
+			$value = $limit->value;
+			
+			if ( $limit->display != "" )
+			{
+				$value = $limit->display;
+			}
+			
 			// urlencode here necessary to support the urlencode above on 'key' urls
 			
-			$params = Parser::removeFromArray($params, urlencode($limit->param), $limit->value);
+			$params = Parser::removeFromArray($params, urlencode($limit->param), $value);
 			
 			$limit->remove_url = $this->request->url_for($params);
 		}
