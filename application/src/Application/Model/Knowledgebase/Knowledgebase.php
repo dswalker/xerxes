@@ -283,20 +283,10 @@ class Knowledgebase extends Doctrine
 	
 	public function getDatabaseTitles()
 	{
-		$sql = "select id, title from research_databases where owner = 'admin'";
+		$sql = "select id, title from research_databases where owner = 'admin' order by title";
 		return $this->datamap()->select($sql);
 	}
 	
-	/**
-	 * Get the starting letters for database titles
-	 *
-	 * @return array of letters
-	 */	
-	
-	public function getDatabaseAlpha()
-	{
-	}
-
 	/**
 	 * Get databases that start with a particular letter
 	 *
@@ -373,6 +363,123 @@ class Knowledgebase extends Doctrine
 		}
 		
 		return null;
+	}
+	
+	public function migrate()
+	{
+		// databases
+		
+		$sql = 'SELECT * FROM xerxes_databases';
+		$results = $this->datamap()->select($sql);
+		
+		foreach ( $results as $result )
+		{
+			$xml = simplexml_load_string($result['data']);
+			
+			$title = (string) $xml->title_display;
+			$metalib_id = (string) $xml->metalib_id;
+			
+			$active = (string) $xml->active;
+			$active = (int) $xml->proxy;
+			$subscription = (int) $xml->proxy;
+			
+			$creator = (string) $xml->creator;
+			$publisher = (string) $xml->publisher;
+			$description = (string) $xml->description;
+			$link = (string) $xml->link_native_home;
+			$time_span = (string) $xml->time_span;
+			$link_guide = (string) $xml->link_guide;
+			
+			$type = (string) $xml->type; // @todo: assign types
+			
+			$database = new Database();
+			
+			$database->setOwner($this->owner);
+			$database->setTitle($title);
+			$database->setSourceId($metalib_id);
+			$database->setCreator($creator);
+			$database->setPublisher($publisher);
+			$database->setDescription($description);
+			$database->setLink($link);
+			$database->setCoverage($time_span);
+			$database->setLinkGuide($link_guide);
+			
+			foreach ( $xml->title_alternate as $title_alternate )
+			{
+				$database->addAlternateTitle((string) $title_alternate);
+			}
+			
+			$notes = "";
+			
+			foreach ( $xml->note_cataloger as $note )
+			{
+				$notes = " " . (string) $note;
+			}
+			
+			foreach ( $xml->note as $note )
+			{
+				$notes = " " . (string) $note;
+			}
+			
+			$notes = trim($notes);
+			
+			$database->setNotes($notes);
+			
+			foreach ( $xml->keyword as $keyword )
+			{
+				$keyword_array = explode(',', (string) $keyword);
+				
+				foreach ( $keyword_array as $keyword_term )
+				{
+					$keyword_term = trim($keyword_term);
+					
+					$database->addKeyword($keyword_term);
+				}
+			}
+			
+			$this->entityManager->persist($database);
+		}
+		
+		$this->entityManager->flush();
+		
+		// subjects
+		
+		$url = 'http://library.calstate.edu/sonoma/databases/?format=xerxes';
+		$xml = simplexml_load_file($url);
+		
+		foreach ( $xml->categories->category as $category_xml )
+		{
+			$name = (string) $category_xml->name;
+			$path = (string) $category_xml->url;
+			
+			$category = new Category();
+			$category->setName($name);
+			$category->setOwner($this->owner);
+			
+			$url = "http://library.calstate.edu$path?format=xerxes";
+			
+			$subject_xml = simplexml_load_file($url);
+			
+			foreach ( $subject_xml->category->subcategory as $subcategory_xml )
+			{
+				$name = (string) $subcategory_xml['name']; 
+				$sequence = (string) $subcategory_xml['position'];
+				
+				$subcategory = new Subcategory();
+				$subcategory->setName($name);
+				$subcategory->setSequence($sequence);
+				
+				$this->entityManager->persist($subcategory);
+				
+				$category->addSubcategory($subcategory);
+			}
+			
+			$this->entityManager->persist($category);
+		}
+		
+		$this->entityManager->flush();
+		
+		
 	}
 	
 	/**

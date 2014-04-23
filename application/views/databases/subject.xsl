@@ -83,26 +83,31 @@
 				<h2>
 					<xsl:call-template name="subcategory_name" />
 				</h2>
-			
-				<ul>
-				<xsl:for-each select="database">
-					<li>
-					
-						<div class="subject-database-title">
-		
-							<a href="{link}">
-								<xsl:value-of select="title_display" />
-							</a>
 				
-						</div>
+				<xsl:for-each select="databases">
+				
+					<ul>
+					<xsl:for-each select="database">
+						<li>
 						
-						<div class="subject-database-info">
-							<xsl:value-of select="description" />
-						</div>
+							<div class="subject-database-title">
+			
+								<a href="{link}">
+									<xsl:value-of select="title" />
+								</a>
 					
-					</li>
+							</div>
+							
+							<div class="subject-database-info">
+								<xsl:value-of select="description" />
+							</div>
+						
+						</li>
+					</xsl:for-each>
+					</ul>
+					
 				</xsl:for-each>
-				</ul>
+				
 			</li>
 	
 		</xsl:for-each>
@@ -111,6 +116,16 @@
 	
 	</div>
 	
+</xsl:template>
+
+<xsl:template name="sidebar">
+
+	<xsl:if test="categories/librarians">
+		<h2>Subject Specialist</h2>
+	</xsl:if>
+	
+	<xsl:call-template name="librarian_assign" />
+
 </xsl:template>
 
 <xsl:template name="category_name">
@@ -126,5 +141,6 @@
 </xsl:template>
 
 <xsl:template name="subcategory_actions" />
+<xsl:template name="librarian_assign" />
 
 </xsl:stylesheet>

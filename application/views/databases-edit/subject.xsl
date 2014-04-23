@@ -162,7 +162,7 @@
 			</div>
 		</form>	
 	
-	</div>	
+	</div>
 		
 </xsl:template>
 
@@ -196,13 +196,69 @@
 				<i class="icon-trash"></i> Remove
 			</a>
 			<xsl:text> </xsl:text>
-			<a href="#" class="btn btn-small">
+			<a href="#database-modal-asign-databases" class="btn btn-small" role="button" data-toggle="modal">
 				<i class="icon-plus"></i> Database
 			</a>
 		</div>
 		
 	</div>
+
+	<div id="database-modal-asign-databases" class="modal hide fade" tabindex="-1" role="dialog" 
+		aria-labelledby="database-modal-assign-databases-label" aria-hidden="true">
 	
+		<form action="{//request/controller}/assign-databases">
+			<input type="hidden" name="category" value="{//categories/id}" />
+			<input type="hidden" name="subcategory" value="{id}" />
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+				<h3 id="database-modal-assign-databases-label">Assign Databases</h3>
+			</div>
+			<div class="modal-body">
+	
+				<xsl:call-template name="database_title_table" />
+				
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true"><xsl:value-of select="$text_facets_close" /></button>
+				<button class="btn btn-primary"><xsl:value-of select="$text_facets_submit" /></button>
+			</div>
+		</form>	
+	
+	</div>	
+	
+</xsl:template>
+
+<xsl:template name="database_title_table">
+
+	<table class="facet-multi-table">
+		<tr>
+			<th>Include</th>
+			<th>Database</th>
+		</tr>
+
+		<xsl:for-each select="//database_titles/database_title">
+			<tr>
+				<td class="facet-multi-selector">
+					<input type="checkbox" id="database-select-{id}" class="facet-multi-option-include" name="database" value="{id}">
+						<!--
+						<xsl:if test="selected and ( not(is_excluded) or is_excluded != '1')">
+							<xsl:attribute name="checked">checked</xsl:attribute>
+						</xsl:if>
+						-->
+					</input>
+				</td>
+				<td>
+					<xsl:value-of select="title" />
+				</td>
+			</tr>
+		</xsl:for-each>
+	</table>	
+
+</xsl:template>
+
+<xsl:template name="librarian_assign">
+	<a href="#" class="btn">Assign librarian</a>
 </xsl:template>
 
 </xsl:stylesheet>

@@ -52,6 +52,10 @@ class DatabasesEditController extends DatabasesController
 		$category = $this->knowledgebase->getCategoryById($id);
 	
 		$this->response->setVariable('categories', $category);
+		
+		// add title list
+		
+		$this->response->setVariable('database_titles', $this->getDatabaseTitles());
 	
 		return $this->response;
 	}	
@@ -301,6 +305,8 @@ class DatabasesEditController extends DatabasesController
 		}
 		
 		$this->knowledgebase->updateDatabase($database);
+		
+		$this->clearDatabaseTitleCache();
 	
 		$params = array(
 			'controller' => $this->request->getParam('controller'),
@@ -322,10 +328,39 @@ class DatabasesEditController extends DatabasesController
 		$this->knowledgebase->removeDatabase($id);
 	
 		$params = array(
-				'controller' => $this->request->getParam('controller'),
-				'action' => 'alphabetical'
+			'controller' => $this->request->getParam('controller'),
+			'action' => 'alphabetical'
 		);
 	
+		return $this->redirectTo($params);
+	}
+	
+	/**
+	 * Edit (or add) database page
+	 */
+	
+	public function assignDatabasesAction()
+	{
+		$category_id = $this->request->requireParam('category', 'Request did not include category id');
+		$subcategory_id = $this->request->requireParam('subcategory', 'Request did not include subcategory id');
+		$databases = $this->request->getParam('database', null, true);
+		
+		$subcategory = $this->knowledgebase->getSubcategoryById($subcategory_id);
+		
+		foreach ( $databases as $database )
+		{
+			$database_object = $this->knowledgebase->getDatabase($database);
+			$subcategory->addDatabase($database_object);
+		}
+		
+		$this->knowledgebase->update($subcategory);
+		
+		$params = array(
+			'controller' => $this->request->getParam('controller'),
+			'action' => 'subject',
+			'id' => $category_id
+		);
+		
 		return $this->redirectTo($params);
 	}	
 
@@ -409,5 +444,23 @@ class DatabasesEditController extends DatabasesController
 		);
 	
 		return $this->redirectTo($params);
+	}
+	
+	protected function getDatabaseTitles()
+	{
+		$titles = $this->cache()->get('databases-names');
+		
+		if ( $titles == null )
+		{
+			$titles = $this->knowledgebase->getDatabaseTitles();
+			$this->cache()->set('databases-names', $titles, time() + (12 * 60 * 60) ); // 12 hour cache
+		}
+		
+		return $titles;
+	}
+	
+	protected function clearDatabaseTitleCache()
+	{
+		$this->cache()->set('databases-names', null, time() - 1000 );
 	}
 }

@@ -16,9 +16,15 @@ use Application\Model\Knowledgebase\Database;
 use Application\Model\Knowledgebase\Knowledgebase;
 use Application\View\Helper\Databases as DatabasehHelper;
 use Xerxes\Mvc\ActionController;
+use Xerxes\Utility\Cache;
 
 class DatabasesController extends ActionController
 {
+	/**
+	 * @var Cache
+	 */
+	protected $cache;
+	
 	/**
 	 * @var Knowledgebase
 	 */
@@ -131,7 +137,7 @@ class DatabasesController extends ActionController
 		$this->response->setVariable('librarians', $librarian);
 	
 		return $this->response;
-	}	
+	}
 	
 	/**
 	 * Database A-Z page
@@ -158,5 +164,26 @@ class DatabasesController extends ActionController
 		$this->response->setVariable('databases', $databases);
 		
 		return $this->response;
+	}
+	
+	/**
+	 * @return Cache
+	 */
+	
+	protected function cache()
+	{
+		if ( ! $this->cache instanceof Cache )
+		{
+			$this->cache = new Cache();
+		}
+	
+		return $this->cache;
+	}	
+	
+	public function pullAction()
+	{
+		$this->knowledgebase->migrate();
+		
+		exit;
 	}
 }
