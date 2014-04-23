@@ -155,7 +155,7 @@ class Category
 	 */
 	public function getSubcategories() 
 	{
-		return $this->subcategories->getValues();
+		return $this->subcategories->toArray();
 	}
 
 	/**
@@ -164,7 +164,7 @@ class Category
 	public function addSubcategory($subcategory) 
 	{
 		$subcategory->setCategory($this);
-		$this->subcategories[] = $subcategory;
+		$this->subcategories->add($subcategory);
 	}
 	
 	/**

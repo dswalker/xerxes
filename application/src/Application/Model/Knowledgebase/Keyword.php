@@ -44,7 +44,7 @@ class Keyword
 	}
 	
 	/**
-	 * Create new Keyword
+	 * Set Database
 	 */
 	
 	public function setDatabase(Database $database)

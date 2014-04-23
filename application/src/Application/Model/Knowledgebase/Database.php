@@ -424,15 +424,19 @@ class Database
 	 */
 	public function getAlternateTitles() 
 	{
-		return $this->alternate_titles->getValues();
+		return $this->alternate_titles->toArray();
 	}
 
 	/**
-	 * @param AlternateTitle $alternate_titles
+	 * @param string $name
 	 */
-	public function addAlternateTitle(AlternateTitle $alternate_title) 
+	public function addAlternateTitle($name) 
 	{
-		$this->alternate_titles[] = $alternate_title;
+		$alternate_title = new AlternateTitle();
+		$alternate_title->setName($name);
+		$alternate_title->setDatabase($this);
+		
+		$this->alternate_titles->add($alternate_title);
 	}
 
 	/**
@@ -440,7 +444,7 @@ class Database
 	 */
 	public function getKeywords() 
 	{
-		return $this->keywords->getValues();
+		return $this->keywords->toArray();
 	}
 
 	/**
@@ -450,7 +454,8 @@ class Database
 	{
 		$keyword_object = new Keyword($keyword);
 		$keyword_object->setDatabase($this);
-		$this->keywords[] = $keyword_object;
+		
+		$this->keywords->add($keyword_object);
 	}
 
 	/**
@@ -471,13 +476,17 @@ class Database
 		
 		foreach ( $this as $key => $value )
 		{
-			if ( $key == 'keywords' || $key == 'alternate_titles')
+			if ( $key == 'subcategory')
+			{
+				continue;
+			}
+			elseif ( $key == 'keywords' || $key == 'alternate_titles')
 			{
 				$second = array();
 				
-				foreach ( $this->$key->getValues() as $object )
+				foreach ( $this->$key->toArray() as $object )
 				{
-					$second[] = $object->getValue();
+					$second[] = $object;
 				}
 				
 				$final[$key] = $second;
