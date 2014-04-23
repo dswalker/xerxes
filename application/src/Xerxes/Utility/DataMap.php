@@ -184,7 +184,7 @@ class DataMap extends DatabaseConnection
 	 * @param array $values
 	 */
 	
-	protected function log($sql, array $values)
+	protected function log($sql, array $values = null)
 	{
 		$this->sql = $sql;
 		
