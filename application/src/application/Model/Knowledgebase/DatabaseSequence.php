@@ -14,23 +14,17 @@ namespace Application\Model\Knowledgebase;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * Subcategory
+ * Database Subcategory Join
  *
  * @author David Walker <dwalker@calstate.edu>
  * 
- * @Entity @Table(name="subcategories")
+ * @Entity @Table(name="databases_subcategories")
  */
 
-class Subcategory
+class DatabaseSequence
 {
 	/** @Id @Column(type="integer") @GeneratedValue **/
 	protected $id;
-	
-	/**
-	 * @Column(type="string")
-	 * @var string
-	 */
-	protected $name;
 	
 	/**
 	 * @Column(type="integer", nullable=true)
@@ -39,25 +33,23 @@ class Subcategory
 	protected $sequence;
 	
 	/**
-	 * @ManyToOne(targetEntity="Category", inversedBy="subcategories")
-	 * @JoinColumn(name="category_id", referencedColumnName="id", nullable=false)
-	 * @var Category
-	 */
-	protected $category;
-	
-	/**
-	 * @OneToMany(targetEntity="DatabaseSequence", mappedBy="subcategory", cascade={"persist"})
-	 * @var DatabaseSequence[]
+	 * @ManyToOne(targetEntity="Database", inversedBy="database_sequence", cascade={"persist"})
+	 * @var Database[]
 	 */	
-	protected $database_sequences;
+	protected $database;
 	
 	/**
-	 * Create new Subcategory
+	 * @ManyToOne(targetEntity="Subcategory", inversedBy="database_sequence")
+	 * @var Subcategory
+	 */
+	protected $subcategory;
+	
+	/**
+	 * Create new Database Sequence
 	 */
 	
 	public function __construct()
 	{
-		$this->database_sequences = new ArrayCollection();
 	}
 
 	/**
@@ -68,23 +60,6 @@ class Subcategory
 		return $this->id;
 	}
 	
-	
-	/**
-	 * @return string
-	 */
-	public function getName()
-	{
-		return $this->name;
-	}
-
-	/**
-	 * @param string $name
-	 */
-	public function setName($name)
-	{
-		$this->name = $name;
-	}
-
 	/**
 	 * @return int
 	 */
@@ -102,29 +77,36 @@ class Subcategory
 	}
 
 	/**
-	 * @param Category $category
-	 */
-	public function setCategory(Category $category) 
-	{
-		$this->category = $category;
-	}
-
-	/**
-	 * @return Database[]
+	 * @return Database
 	 */
 	public function getDatabases()
 	{
-		return $this->database_sequences->toArray();
+		return $this->databases;
 	}
 
 	/**
-	 * @param Database $sequence
+	 * @param Database $databases
 	 */
-	public function addDatabaseSequence(DatabaseSequence $sequence)
+	public function setDatabase(Database $database)
 	{
-		$sequence->setSubcategory($this);
-		$this->database_sequences[] = $sequence;
+		$this->database = $database;
 	}
+
+	/**
+	 * @param Subcategory $subcategory
+	 */
+	public function setSubcategory($subcategory)
+	{
+		$this->subcategory = $subcategory;
+	}
+
+	/**
+	 * @return Subcategory
+	 */
+	public function getSubcategory()
+	{
+		return $this->subcategory;
+	}	
 	
 	/**
 	 * @return array
@@ -136,12 +118,12 @@ class Subcategory
 	
 		foreach ( $this as $key => $value )
 		{
-			if ( $key == 'category')
+			if ( $key == 'subcategory')
 			{
 				continue;
 			}
 			
-			if ( $key == 'database_sequences')
+			if ( $key == 'database')
 			{
 				$final[$key] = $value->toArray();
 			}

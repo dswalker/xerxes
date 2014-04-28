@@ -84,10 +84,10 @@
 					<xsl:call-template name="subcategory_name" />
 				</h2>
 				
-				<xsl:for-each select="databases">
+				<xsl:for-each select="database_sequences">
 				
 					<ul class="databases-list">
-						<xsl:for-each select="database">
+						<xsl:for-each select="database_sequence/database">
 							<li>
 								<xsl:call-template name="database_brief_display" />
 							</li>

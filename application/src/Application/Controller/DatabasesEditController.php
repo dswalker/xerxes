@@ -11,6 +11,8 @@
 
 namespace Application\Controller;
 
+use Application\Model\Knowledgebase\DatabaseSequence;
+
 use Application\Model\Knowledgebase\Category;
 use Application\Model\Knowledgebase\Database;
 use Application\Model\Knowledgebase\Librarian;
@@ -350,7 +352,11 @@ class DatabasesEditController extends DatabasesController
 		foreach ( $databases as $database )
 		{
 			$database_object = $this->knowledgebase->getDatabase($database);
-			$subcategory->addDatabase($database_object);
+			
+			$sequence = new DatabaseSequence();
+			$sequence->setDatabase($database_object);
+			
+			$subcategory->addDatabaseSequence($sequence);
 		}
 		
 		$this->knowledgebase->update($subcategory);

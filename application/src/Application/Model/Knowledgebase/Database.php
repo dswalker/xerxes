@@ -140,10 +140,10 @@ class Database
 	protected $keywords;
 	
 	/**
-	 * @ManyToMany(targetEntity="Subcategory", inversedBy="databases")
+	 * @OneToMany(targetEntity="DatabaseSequence", mappedBy="database")
 	 * @var Subcategory
 	 */
-	protected $subcategory;	
+	protected $database_sequence;	
 	
 	/**
 	 * Create new Database
@@ -459,11 +459,11 @@ class Database
 	}
 
 	/**
-	 * @param Subcategory $subcategory
+	 * @param DatabaseSequence $subcategory
 	 */
-	public function addSubcategory(Subcategory $subcategory) 
+	public function addDatabaseSequence(DatabaseSequence $sequence) 
 	{
-		$this->subcategory[] = $subcategory;
+		$this->database_sequence[] = $sequence;
 	}
 	
 	/**
@@ -476,7 +476,7 @@ class Database
 		
 		foreach ( $this as $key => $value )
 		{
-			if ( $key == 'subcategory')
+			if ( $key == 'database_sequence')
 			{
 				continue;
 			}
