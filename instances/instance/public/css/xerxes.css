@@ -995,3 +995,23 @@ td.title-cell {
 .advanced-query {
 	width: 300px;
 }
+
+/** DATABASES **/
+
+.databases-list li {
+	margin-bottom: 2em;
+	max-width: 600px;
+}
+.database-title {
+	font-weight: bold;
+	margin-bottom: .5em;
+}
+.database-description {
+	color: #666;
+}
+.database-more-info {
+	margin-top: .3em;
+}		
+.database-more-info a, .database-more-info a:visited {
+	color: green;
+}

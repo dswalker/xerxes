@@ -86,24 +86,12 @@
 				
 				<xsl:for-each select="databases">
 				
-					<ul>
-					<xsl:for-each select="database">
-						<li>
-						
-							<div class="subject-database-title">
-			
-								<a href="{link}">
-									<xsl:value-of select="title" />
-								</a>
-					
-							</div>
-							
-							<div class="subject-database-info">
-								<xsl:value-of select="description" />
-							</div>
-						
-						</li>
-					</xsl:for-each>
+					<ul class="databases-list">
+						<xsl:for-each select="database">
+							<li>
+								<xsl:call-template name="database_brief_display" />
+							</li>
+						</xsl:for-each>
 					</ul>
 					
 				</xsl:for-each>
