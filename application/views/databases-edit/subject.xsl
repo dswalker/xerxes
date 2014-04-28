@@ -196,15 +196,15 @@
 				<i class="icon-trash"></i> Remove
 			</a>
 			<xsl:text> </xsl:text>
-			<a href="#database-modal-asign-databases" class="btn btn-small" role="button" data-toggle="modal">
+			<a href="#database-modal-asign-databases-{id}" class="btn btn-small" role="button" data-toggle="modal">
 				<i class="icon-plus"></i> Database
 			</a>
 		</div>
 		
 	</div>
 
-	<div id="database-modal-asign-databases" class="modal hide fade" tabindex="-1" role="dialog" 
-		aria-labelledby="database-modal-assign-databases-label" aria-hidden="true">
+	<div id="database-modal-asign-databases-{id}" class="modal hide fade" tabindex="-1" role="dialog" 
+		aria-labelledby="database-modal-assign-databases-label-{id}" aria-hidden="true">
 	
 		<form action="{//request/controller}/assign-databases">
 			<input type="hidden" name="category" value="{//categories/id}" />
@@ -212,7 +212,7 @@
 
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-				<h3 id="database-modal-assign-databases-label">Assign Databases</h3>
+				<h3 id="database-modal-assign-databases-label-{id}">Assign Databases</h3>
 			</div>
 			<div class="modal-body">
 	
