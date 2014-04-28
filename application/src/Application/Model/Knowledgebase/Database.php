@@ -140,7 +140,7 @@ class Database
 	protected $keywords;
 	
 	/**
-	 * @ManyToOne(targetEntity="Subcategory", inversedBy="databases")
+	 * @ManyToMany(targetEntity="Subcategory", inversedBy="databases")
 	 * @var Subcategory
 	 */
 	protected $subcategory;	
@@ -461,9 +461,9 @@ class Database
 	/**
 	 * @param Subcategory $subcategory
 	 */
-	public function setSubcategory(Subcategory $subcategory) 
+	public function addSubcategory(Subcategory $subcategory) 
 	{
-		$this->subcategory = $subcategory;
+		$this->subcategory[] = $subcategory;
 	}
 	
 	/**

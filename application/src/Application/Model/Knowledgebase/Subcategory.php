@@ -46,7 +46,8 @@ class Subcategory
 	protected $category;
 	
 	/**
-	 * @OneToMany(targetEntity="Database", mappedBy="subcategory", cascade={"persist"})
+	 * @ManyToMany(targetEntity="Database", inversedBy="subcategory", cascade={"persist"})
+     * @JoinTable(name="databases_subcategories")
 	 * @var Database[]
 	 */	
 	protected $databases;
@@ -122,7 +123,7 @@ class Subcategory
 	 */
 	public function addDatabase(Database $database)
 	{
-		$database->setSubcategory($this);
+		$database->addSubcategory($this);
 		$this->databases[] = $database;
 	}
 	
