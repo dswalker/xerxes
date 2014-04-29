@@ -64,15 +64,16 @@
 		.list-highlight { 
 			border: 1px solid #ccc; 
 		}
-		.list-item-action {
+		.list-item-action-menu {
+			position: relative; 
+			visibility: hidden;
+		}
+		.list-item-action-full {
 			background-color: #eee; 
 			padding: 10px; 
 			margin: -6px; 
 			margin-bottom: 10px;
-			position: relative; 
-			visibility: hidden;
 		}
-
 		.list-item-action {
 			margin-bottom: -20px;
 		}
@@ -163,6 +164,34 @@
 		</form>	
 	
 	</div>
+	
+	<xsl:for-each select="categories/subcategories/subcategory">
+	
+		<div id="database-modal-asign-databases-{id}" class="modal hide fade" tabindex="-1" role="dialog" 
+			aria-labelledby="database-modal-assign-databases-label-{id}" aria-hidden="true">
+		
+			<form action="{//request/controller}/assign-databases">
+				<input type="hidden" name="category" value="{//categories/id}" />
+				<input type="hidden" name="subcategory" value="{id}" />
+	
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+					<h3 id="database-modal-assign-databases-label-{id}">Assign Databases</h3>
+				</div>
+				<div class="modal-body">
+		
+					<xsl:call-template name="database_title_table" />
+					
+				</div>
+				<div class="modal-footer">
+					<button class="btn" data-dismiss="modal" aria-hidden="true"><xsl:value-of select="$text_facets_close" /></button>
+					<button class="btn btn-primary"><xsl:value-of select="$text_facets_submit" /></button>
+				</div>
+			</form>	
+		
+		</div>
+		
+	</xsl:for-each>
 		
 </xsl:template>
 
@@ -186,7 +215,7 @@
 
 <xsl:template name="subcategory_actions">
 	
-	<div class="list-item-action">
+	<div class="list-item-action-menu list-item-action list-item-action-full">
 					
 		<img src="{$base_url}/images/famfamfam/arrow_out.png" alt="" />
 		
@@ -202,31 +231,22 @@
 		</div>
 		
 	</div>
+	
+</xsl:template>
 
-	<div id="database-modal-asign-databases-{id}" class="modal hide fade" tabindex="-1" role="dialog" 
-		aria-labelledby="database-modal-assign-databases-label-{id}" aria-hidden="true">
+<xsl:template name="database_sequence_actions">
 	
-		<form action="{//request/controller}/assign-databases">
-			<input type="hidden" name="category" value="{//categories/id}" />
-			<input type="hidden" name="subcategory" value="{id}" />
+	<div class="list-item-action-menu">
+	
+		<div style="position: absolute; top: -15px; right: -15px">
+			<a href="{//request/controller}/delete-database-sequence?id={../id};category={//categories/id}" 
+				class="btn btn-small delete-confirm">
+				<i class="icon-trash"></i> Remove
+			</a>
+		</div>
+		
+	</div>
 
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-				<h3 id="database-modal-assign-databases-label-{id}">Assign Databases</h3>
-			</div>
-			<div class="modal-body">
-	
-				<xsl:call-template name="database_title_table" />
-				
-			</div>
-			<div class="modal-footer">
-				<button class="btn" data-dismiss="modal" aria-hidden="true"><xsl:value-of select="$text_facets_close" /></button>
-				<button class="btn btn-primary"><xsl:value-of select="$text_facets_submit" /></button>
-			</div>
-		</form>	
-	
-	</div>	
-	
 </xsl:template>
 
 <xsl:template name="database_title_table">

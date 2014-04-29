@@ -36,7 +36,7 @@ class Subcategory
 	 * @Column(type="integer", nullable=true)
 	 * @var int
 	 */
-	protected $sequence;
+	protected $sequence = 999;
 	
 	/**
 	 * @ManyToOne(targetEntity="Category", inversedBy="subcategories")
@@ -47,6 +47,7 @@ class Subcategory
 	
 	/**
 	 * @OneToMany(targetEntity="DatabaseSequence", mappedBy="subcategory", cascade={"persist"})
+	 * @OrderBy({"sequence" = "ASC"})
 	 * @var DatabaseSequence[]
 	 */	
 	protected $database_sequences;

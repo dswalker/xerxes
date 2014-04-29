@@ -72,7 +72,9 @@
 
 	<div id="subject-list">
 		
-		<ul data-source="{categories/normalized}">
+		<xsl:variable name="category" select="categories/normalized" />
+		
+		<ul data-target="databases-edit/reorder-subcategories" data-category="{$category}">
 		
 		<xsl:for-each select="categories/subcategories/subcategory">
 	
@@ -84,17 +86,20 @@
 					<xsl:call-template name="subcategory_name" />
 				</h2>
 				
-				<xsl:for-each select="database_sequences">
+				<ul class="databases-list" data-target="databases-edit/reorder-databases" data-category="{$category}" data-subcategory="{id}">
 				
-					<ul class="databases-list">
-						<xsl:for-each select="database_sequence/database">
-							<li>
-								<xsl:call-template name="database_brief_display" />
-							</li>
-						</xsl:for-each>
-					</ul>
+					<xsl:for-each select="database_sequences/database_sequence/database">
 					
-				</xsl:for-each>
+						<!-- sequence id -->
+					
+						<li id="database_{../id}" class="list-item"> 
+							<xsl:call-template name="database_sequence_actions" />
+							<xsl:call-template name="database_brief_display" />
+							
+						</li>
+					</xsl:for-each>
+					
+				</ul>
 				
 			</li>
 	
@@ -129,6 +134,7 @@
 </xsl:template>
 
 <xsl:template name="subcategory_actions" />
+<xsl:template name="database_sequence_actions" />
 <xsl:template name="librarian_assign" />
 
 </xsl:stylesheet>

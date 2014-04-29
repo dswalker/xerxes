@@ -163,14 +163,12 @@ class DatabasesEditController extends DatabasesController
 	}	
 	
 	/**
-	 * Reorder databases in subcategory list
+	 * Reorder subcategories in category
 	 */
 	
 	public function reorderSubcategoriesAction()
 	{
-		// get the ids that were selected for export
-	
-		$category = $this->request->getParam('category');
+		$category = $this->request->getParam('cat');
 	
 		$reorder_array = $this->request->getParam('subcategory', null, true);
 	
@@ -197,6 +195,61 @@ class DatabasesEditController extends DatabasesController
 			$this->response->noView(); // ajax action, no need for a view
 		}
 	}
+	
+	/**
+	 * Reorder subcategories in category
+	 */
+	
+	public function reorderDatabasesAction()
+	{
+		$category = $this->request->getParam('cat');
+		$subcategory = $this->request->getParam('subcat');
+	
+		$reorder_array = $this->request->getParam('database', null, true);
+	
+		// re-order databases
+	
+		$this->knowledgebase->reorderDatabaseSequence($reorder_array);
+	
+		// redirect or not
+	
+		if ( $this->request->getParam("noredirect") == "" )
+		{
+			// construct return url back to reading list for results
+	
+			$params = array(
+				'controller' => $this->request->getParam('controller'),
+				'action' => 'subject',
+				'subject' => $category
+			);
+	
+			return $this->redirectTo($params);
+		}
+		else
+		{
+			$this->response->noView(); // ajax action, no need for a view
+		}
+	}
+	
+	/**
+	 * Delete subcategory
+	 */
+	
+	public function deleteDatabaseSequenceAction()
+	{
+		$sequence_id = $this->request->getParam('id');
+		$category_id = $this->request->getParam('category');
+	
+		$this->knowledgebase->deleteDatabaseSequence($sequence_id);
+	
+		$return = array(
+			'controller' => $this->request->getParam('controller'),
+			'action' => 'subject',
+			'id' => $category_id
+		);
+	
+		return $this->redirectTo($return);
+	}	
 	
 	/**
 	 * Edit (or add) database page
