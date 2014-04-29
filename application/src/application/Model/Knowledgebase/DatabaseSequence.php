@@ -34,12 +34,14 @@ class DatabaseSequence
 	
 	/**
 	 * @ManyToOne(targetEntity="Database", inversedBy="database_sequence", cascade={"persist"})
+	 * @JoinColumn(name="database_id", referencedColumnName="id", onDelete="CASCADE")
 	 * @var Database[]
 	 */	
 	protected $database;
 	
 	/**
 	 * @ManyToOne(targetEntity="Subcategory", inversedBy="database_sequence")
+	 * @JoinColumn(name="subcategory_id", referencedColumnName="id", onDelete="CASCADE")
 	 * @var Subcategory
 	 */
 	protected $subcategory;
