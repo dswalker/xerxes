@@ -93,7 +93,7 @@
 		$(document).ready(function() {
 			$('.edit').editable();
 		});
-	</script>	
+	</script>
 </xsl:template>
 
 <xsl:template name="main">
@@ -170,24 +170,34 @@
 		<div id="database-modal-asign-databases-{id}" class="modal hide fade" tabindex="-1" role="dialog" 
 			aria-labelledby="database-modal-assign-databases-label-{id}" aria-hidden="true">
 		
-			<form action="{//request/controller}/assign-databases">
-				<input type="hidden" name="category" value="{//categories/id}" />
-				<input type="hidden" name="subcategory" value="{id}" />
+
 	
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
 					<h3 id="database-modal-assign-databases-label-{id}">Assign Databases</h3>
+					<form id="live-search" action="" class="styled" method="post">
+						<fieldset>
+							<input type="text" class="text-input" id="filter" value="" />
+							<span id="filter-count"></span>
+						</fieldset>
+					</form>
 				</div>
-				<div class="modal-body">
-		
-					<xsl:call-template name="database_title_table" />
+				
+				<form action="{//request/controller}/assign-databases">
+					<input type="hidden" name="category" value="{//categories/id}" />
+					<input type="hidden" name="subcategory" value="{id}" />
+				
+					<div class="modal-body">
+			
+						<xsl:call-template name="database_title_table" />
+						
+					</div>
+					<div class="modal-footer">
+						<button class="btn" data-dismiss="modal" aria-hidden="true"><xsl:value-of select="$text_facets_close" /></button>
+						<button class="btn btn-primary"><xsl:value-of select="$text_facets_submit" /></button>
+					</div>
 					
-				</div>
-				<div class="modal-footer">
-					<button class="btn" data-dismiss="modal" aria-hidden="true"><xsl:value-of select="$text_facets_close" /></button>
-					<button class="btn btn-primary"><xsl:value-of select="$text_facets_submit" /></button>
-				</div>
-			</form>	
+				</form>	
 		
 		</div>
 		
@@ -251,7 +261,7 @@
 
 <xsl:template name="database_title_table">
 
-	<table class="facet-multi-table">
+	<table class="facet-multi-table database-choice-list">
 		<tr>
 			<th>Include</th>
 			<th>Database</th>
