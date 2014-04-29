@@ -95,8 +95,8 @@
 						<li id="database_{../id}" class="list-item"> 
 							<xsl:call-template name="database_sequence_actions" />
 							<xsl:call-template name="database_brief_display" />
-							
 						</li>
+						
 					</xsl:for-each>
 					
 				</ul>

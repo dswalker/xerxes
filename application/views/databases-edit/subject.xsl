@@ -221,11 +221,11 @@
 		
 		<div style="position: absolute; top: 3px; right: 10px">
 			<a href="{//request/controller}/delete-subcategory?subcategory={id};category={../../id}" 
-				class="btn btn-small subcategory-delete delete-confirm">
+				class="btn btn-small subcategory-delete delete-confirm-fade" data-source="subcategory_{id}">
 				<i class="icon-trash"></i> Remove
 			</a>
 			<xsl:text> </xsl:text>
-			<a href="#database-modal-asign-databases-{id}" class="btn btn-small" role="button" data-toggle="modal">
+			<a href="#database-modal-asign-databases-{id}" class="btn btn-small" role="button" data-toggle="modal" >
 				<i class="icon-plus"></i> Database
 			</a>
 		</div>
@@ -240,7 +240,7 @@
 	
 		<div style="position: absolute; top: -15px; right: -15px">
 			<a href="{//request/controller}/delete-database-sequence?id={../id};category={//categories/id}" 
-				class="btn btn-small delete-confirm">
+				class="btn btn-small delete-confirm-fade" data-source="database_{../id}">
 				<i class="icon-trash"></i> Remove
 			</a>
 		</div>

@@ -4,24 +4,47 @@ $(document).ready(addDeleteConfirm);
 
 function addDeleteConfirm()
 {
+	$('.delete-confirm-fade').click(function()
+	{		
+  		var confirmed = confirm(xerxes_labels['text_databases_confirm_delete']);
+		var target = $(this).attr('href');
+		var data_source = $(this).attr('data-source');
+		
+		data_source = "#" + data_source;
+
+		if ( confirmed )
+		{
+			$.get( target, function( data ) {
+				$(data_source).fadeOut(500, function() { $(data_source).remove(); });
+			});			
+		}
+		
+		return false;
+	});
+	
 	$('.delete-confirm').click(function()
-	{
-  		return confirm(xerxes_labels['text_databases_confirm_delete']);
+	{		
+  		var confirmed = confirm(xerxes_labels['text_databases_confirm_delete']);
+
+		if ( confirmed )
+		{
+			return true;
+		}
+		
+		return false;
 	});
 }
 
 function highlight()
 {
-	$('.delete-confirm')
-	
 	$(".list-item").mouseover(function() {
 			$(this).addClass("list-highlight");
-			$(this).children(".list-item-action").css('visibility', 'visible');
+			$(this).children(".list-item-action-menu").css('visibility', 'visible');
 		});
 
 	$(".list-item").mouseout(function() {
 			$(this).removeClass("list-highlight");
-			$(this).children(".list-item-action").css('visibility', 'hidden');
+			$(this).children(".list-item-action-menu").css('visibility', 'hidden');
 		});
 }
 
@@ -31,10 +54,12 @@ function resort()
 {	
 	$("#subject-list ul").sortable({ opacity: 0.6, cursor: 'move', update: function() {
 		
-		var category = $(this).attr('data-source')
-		var order = $(this).sortable("serialize") + "&category=" + category;
+		var target = $(this).attr('data-target');
+		var category = $(this).attr('data-category');
+		var subcategory = $(this).attr('data-subcategory');
+		var order = $(this).sortable("serialize") + "&cat=" + category + "&subcat=" + subcategory + "&noredirect=1";
 
-		$.post("databases-edit/reorder-subcategories", order, function(theResponse){
+		$.post(target, order, function(theResponse){
 			
 			// do something
 
