@@ -30,7 +30,7 @@ class DatabaseSequence
 	 * @Column(type="integer", nullable=true)
 	 * @var int
 	 */
-	protected $sequence;
+	protected $sequence = 999;
 	
 	/**
 	 * @ManyToOne(targetEntity="Database", inversedBy="database_sequence", cascade={"persist"})
