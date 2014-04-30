@@ -406,6 +406,10 @@ class Knowledgebase extends Doctrine
 		$sql = 'SELECT * FROM xerxes_databases';
 		$results = $this->datamap()->select($sql);
 		
+		echo "<p>Original: " . count($results) . "</p>";
+		
+		$x = 0;
+		
 		foreach ( $results as $result )
 		{
 			$xml = simplexml_load_string($result['data']);
@@ -471,10 +475,12 @@ class Knowledgebase extends Doctrine
 				}
 			}
 			
+			$x++;
+			
 			$this->entityManager->persist($database);
 		}
 		
-		$this->entityManager->flush();
+		echo "<p>Second:$x</p>";
 		
 		// subjects
 		

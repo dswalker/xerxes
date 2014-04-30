@@ -70,7 +70,7 @@ function resort()
 
 function databaseFilter() 
 {
-	$("#filter").keyup(function(){
+	$(".filter").keyup(function(){
  
 		// Retrieve the input field text and reset the count to zero
 		var filter = $(this).val(), count = 0;
