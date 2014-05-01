@@ -48,9 +48,21 @@
 
 <xsl:template name="database_brief_display">
 
+	<xsl:call-template name="database_brief_title" />
+	<xsl:call-template name="database_brief_description" />
+	
+</xsl:template>
+
+<xsl:template name="database_brief_title">
+
 	<div class="database-title">
 		<a href="{link}"><xsl:value-of select="title" /></a>
 	</div>
+
+</xsl:template>
+
+<xsl:template name="database_brief_description">
+
 	<div class="database-description">
 		<xsl:choose>
 			<xsl:when test="string-length(description) &gt; 300">
@@ -61,10 +73,11 @@
 			</xsl:when>
 		</xsl:choose>
 	</div>
+
 	<div class="database-more-info">
 		<a href="{//request/controller}/database/{id}">More information</a>
 	</div>
-	
+
 </xsl:template>
 
 </xsl:stylesheet>

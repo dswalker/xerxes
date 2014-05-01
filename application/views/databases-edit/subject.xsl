@@ -79,6 +79,26 @@
 		}
 					
 	</style>
+
+	<!-- don't show any database info -->
+
+	<xsl:if test="//request/session/display_databases = 0">
+		<style type="text/css">
+			.databases-list {
+				display: none;
+			}
+		</style>
+	</xsl:if>
+
+	<!-- don't show description -->
+
+	<xsl:if test="//request/session/display_database_descriptions = 0">
+		<style type="text/css">
+			.database-description, .database-more-info {
+				display: none;
+			}
+		</style>
+	</xsl:if>
 	
 </xsl:template>
 
@@ -125,9 +145,35 @@
 							</a>							
 						</li>
 						<li>
-							<a id="facet-more-link-{group_id}" href="#" role="button"> 
-								<i class="icon-collapse"></i>&nbsp; Hide databases
-							</a>							
+							<xsl:choose>
+								<xsl:when test="//request/session/display_databases = 0">
+									<a id="facet-more-link-{group_id}" href="{//request/controller}/show-database-descriptions?database=on;return={php:function('urlencode', string(//request/server/request_uri))}" role="button"> 
+										<i class="icon-collapse-top"></i>&nbsp; Show databases
+									</a>
+								</xsl:when>
+								<xsl:otherwise>
+									<a id="facet-more-link-{group_id}" href="{//request/controller}/show-database-descriptions?database=off;return={php:function('urlencode', string(//request/server/request_uri))}" role="button"> 
+										<i class="icon-collapse"></i>&nbsp; Hide databases
+									</a>
+								</xsl:otherwise>
+							</xsl:choose>						
+						</li>
+						<li>
+							<xsl:choose>
+								<xsl:when test="//request/session/display_databases = 0">
+									<!-- don't show this option since databases are hidden -->
+								</xsl:when>
+								<xsl:when test="//request/session/display_database_descriptions = 0">
+									<a id="facet-more-link-{group_id}" href="{//request/controller}/show-database-descriptions?description=on;return={php:function('urlencode', string(//request/server/request_uri))}" role="button"> 
+										<i class="icon-collapse-top"></i>&nbsp; Show database descriptions
+									</a>
+								</xsl:when>
+								<xsl:otherwise>
+									<a id="facet-more-link-{group_id}" href="{//request/controller}/show-database-descriptions?description=off;return={php:function('urlencode', string(//request/server/request_uri))}" role="button"> 
+										<i class="icon-collapse"></i>&nbsp; Hide database descriptions
+									</a>	
+								</xsl:otherwise>
+							</xsl:choose>						
 						</li>
 					</ul>
 					
@@ -170,14 +216,12 @@
 		<div id="database-modal-asign-databases-{id}" class="modal hide fade" tabindex="-1" role="dialog" 
 			aria-labelledby="database-modal-assign-databases-label-{id}" aria-hidden="true">
 		
-
-	
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
 					<h3 id="database-modal-assign-databases-label-{id}">Assign Databases</h3>
 					<form id="live-search" action="" class="styled" method="post">
 						<fieldset>
-							<input type="text" class="text-input" id="filter" value="" />
+							<input type="text" class="text-input filter" value="" />
 							<span id="filter-count"></span>
 						</fieldset>
 					</form>

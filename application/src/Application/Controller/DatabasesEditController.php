@@ -505,6 +505,34 @@ class DatabasesEditController extends DatabasesController
 		return $this->redirectTo($params);
 	}
 	
+	public function showDatabaseDescriptionsAction()
+	{
+		$database = $this->request->getParam('database');
+		
+		if ( $database == 'on' )
+		{
+			$this->request->setSessionData('display_databases', 1);
+		}
+		elseif ( $database == 'off' )
+		{
+			$this->request->setSessionData('display_databases', 0);
+		}		
+		
+		$description = $this->request->getParam('description');
+		
+		if ( $description == 'on' )
+		{
+			$this->request->setSessionData('display_databases', 1); // always make sure databases are on first
+			$this->request->setSessionData('display_database_descriptions', 1);
+		}
+		elseif ( $description == 'off' )
+		{
+			$this->request->setSessionData('display_database_descriptions', 0);
+		}
+		
+		return $this->redirectTo($this->request->getParam('return'));
+	}
+	
 	protected function getDatabaseTitles()
 	{
 		$titles = $this->cache()->get('databases-names');
