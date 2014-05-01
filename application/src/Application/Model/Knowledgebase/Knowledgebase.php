@@ -63,6 +63,11 @@ class Knowledgebase extends Doctrine
 		$this->owner = 'admin'; // @todo: logic for local users
 	}
 	
+	/**
+	 * Add a Category
+	 * @param string $name  category name
+	 */
+	
 	public function addCategory($name)
 	{
 		$category = new Category();
@@ -70,6 +75,13 @@ class Knowledgebase extends Doctrine
 		
 		return $this->updateCategory($category);
 	}
+	
+	/**
+	 * Add a Subcategory
+	 * 
+	 * @param int $category_id          internal category id
+	 * @param string $subcategory_name  subcategory name
+	 */
 
 	public function addSubcategory($category_id, $subcategory_name)
 	{
@@ -90,6 +102,12 @@ class Knowledgebase extends Doctrine
 	
 		$this->update($subcategory);
 	}
+	
+	/**
+	 * Permanently remove a Subcategory
+	 * 
+	 * @param int $subcategory_id  internal subcategory id
+	 */
 
 	public function deleteSubcategory($subcategory_id)
 	{
@@ -97,6 +115,12 @@ class Knowledgebase extends Doctrine
 		$this->entityManager->remove($subcategory);
 		$this->entityManager->flush();
 	}
+	
+	/**
+	 * Remove a Database Sequence
+	 * 
+	 * @param int $sequence_id  internal database sequence id
+	 */
 	
 	public function deleteDatabaseSequence($sequence_id)
 	{
@@ -118,7 +142,7 @@ class Knowledgebase extends Doctrine
 	}
 	
 	/**
-	 * Add a database
+	 * Update a database
 	 *
 	 * @param Database $database
 	 */
@@ -130,7 +154,7 @@ class Knowledgebase extends Doctrine
 	}
 	
 	/**
-	 * Add a category
+	 * Update a category
 	 * 
 	 * @param Category $category
 	 */
@@ -187,7 +211,7 @@ class Knowledgebase extends Doctrine
 	}
 	
 	/**
-	 * Get category
+	 * Get a Category
 	 *
 	 * @param int $id  internal category id
 	 * @return Category
@@ -199,7 +223,7 @@ class Knowledgebase extends Doctrine
 	}
 
 	/**
-	 * Delete category
+	 * Delete Category
 	 *
 	 * @param int $id  internal category id
 	 */
@@ -213,7 +237,7 @@ class Knowledgebase extends Doctrine
 	}	
 	
 	/**
-	 * Get subcategory
+	 * Get Subcategory
 	 *
 	 * @param int $id  internal category id
 	 * @return Subcategory
@@ -225,12 +249,10 @@ class Knowledgebase extends Doctrine
 	}
 	
 	/**
-	 * Get database(s) by ID
+	 * Get database by ID
 	 * 
-	 * you supply an array, you get back an array
-	 *
-	 * @param string|array $id
-	 * @return Database|Database[]
+	 * @param int $id
+	 * @return Database
 	 */
 	
 	public function getDatabase($id)
@@ -241,10 +263,8 @@ class Knowledgebase extends Doctrine
 	/**
 	 * Get librarians(s) by ID
 	 *
-	 * you supply an array, you get back an array
-	 *
-	 * @param string|array $id
-	 * @return Librarian|Librarian[]
+	 * @param int $id
+	 * @return Librarian
 	 */
 	
 	public function getLibrarian($id)
@@ -255,8 +275,7 @@ class Knowledgebase extends Doctrine
 	/**
 	 * Remove librarian
 	 *
-	 * @param string $id  librarian id
-	 * @return bool       true on success, false otherwise
+	 * @param int $id  librarian id
 	 */
 	
 	public function removeLibrarian($id)
@@ -269,8 +288,7 @@ class Knowledgebase extends Doctrine
 	/**
 	 * Remove database
 	 *
-	 * @param string $id  database id
-	 * @return bool       true on success, false otherwise
+	 * @param int $id  database id
 	 */
 	
 	public function removeDatabase($id)
@@ -283,7 +301,7 @@ class Knowledgebase extends Doctrine
 	/**
 	 * Just database titles
 	 * 
-	 * Doesn't use Doctrine, for speed
+	 * doesn't use Doctrine, for speed
 	 * 
 	 * @return array
 	 */
