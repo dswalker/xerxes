@@ -115,6 +115,22 @@
 
 	<xsl:if test="categories/librarians">
 		<h2>Subject Specialist</h2>
+		
+		<xsl:for-each select="categories/librarians/librarian">
+			<h3><xsl:value-of select="name" /></h3>
+			<dl>
+				<xsl:if test="email">
+					<div>
+						<dt><xsl:copy-of select="$text_database_guide" />:</dt>
+						<dd>
+							<a href="mailto:{email}">
+								<xsl:value-of select="email" />
+							</a>
+						</dd>
+					</div>
+				</xsl:if>
+			</dl>
+		</xsl:for-each>
 	</xsl:if>
 	
 	<xsl:call-template name="librarian_assign" />

@@ -75,7 +75,7 @@
 			margin-bottom: 10px;
 		}
 		.list-item-action {
-			margin-bottom: -20px;
+			margin-bottom: -40px;
 		}
 					
 	</style>
@@ -186,7 +186,6 @@
 		aria-labelledby="database-modal-add-subcategory-label" aria-hidden="true">
 	
 		<form action="{//request/controller}/add-subcategory">
-			<input type="hidden" name="return" value="{//request/server/request_uri}" />
 			<input type="hidden" name="category" value="{categories/normalized}" />
 
 			<div class="modal-header">
@@ -246,6 +245,29 @@
 		</div>
 		
 	</xsl:for-each>
+	
+	<div id="database-modal-add-librarian" class="modal hide fade" tabindex="-1" role="dialog" 
+		aria-labelledby="database-modal-add-librarian-label" aria-hidden="true">
+	
+		<form action="{//request/controller}/assign-librarian">
+			<input type="hidden" name="category" value="{categories/normalized}" />
+
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+				<h3 id="database-modal-add-librarian-label">Assign Librarians</h3>
+			</div>
+			<div class="modal-body">
+	
+				<xsl:call-template name="librarian_name_table" />
+				
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true"><xsl:value-of select="$text_facets_close" /></button>
+				<button class="btn btn-primary"><xsl:value-of select="$text_facets_submit" /></button>
+			</div>
+		</form>	
+	
+	</div>	
 		
 </xsl:template>
 
@@ -331,8 +353,36 @@
 
 </xsl:template>
 
+<xsl:template name="librarian_name_table">
+
+	<table class="facet-multi-table librarian-choice-list">
+		<tr>
+			<th>Include</th>
+			<th>Database</th>
+		</tr>
+
+		<xsl:for-each select="//librarian_names/librarian_name">
+			<tr>
+				<td class="facet-multi-selector">
+					<input type="checkbox" id="librarian-select-{id}" class="facet-multi-option-include" name="librarian" value="{id}">
+						<!--
+						<xsl:if test="selected and ( not(is_excluded) or is_excluded != '1')">
+							<xsl:attribute name="checked">checked</xsl:attribute>
+						</xsl:if>
+						-->
+					</input>
+				</td>
+				<td>
+					<xsl:value-of select="name" />
+				</td>
+			</tr>
+		</xsl:for-each>
+	</table>	
+
+</xsl:template>
+
 <xsl:template name="librarian_assign">
-	<a href="#" class="btn">Assign librarian</a>
+	<a href="#database-modal-add-librarian" class="btn" role="button" data-toggle="modal">Assign librarian</a>
 </xsl:template>
 
 </xsl:stylesheet>

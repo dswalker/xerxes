@@ -161,11 +161,28 @@ class Category
 	/**
 	 * @param Subcategory $subcategory
 	 */
-	public function addSubcategory($subcategory) 
+	public function addSubcategory(Subcategory $subcategory) 
 	{
 		$subcategory->setCategory($this);
 		$this->subcategories->add($subcategory);
 	}
+	
+	/**
+	 * @return Librarian[]
+	 */
+	public function getLibrarians()
+	{
+		return $this->subcategories->toArray();
+	}
+	
+	/**
+	 * @param Subcategory $subcategory
+	 */
+	public function addLibrarian(Librarian $librarian)
+	{
+		$librarian->addCategory($this);
+		$this->librarians->add($librarian);
+	}	
 	
 	/**
 	 * @return string

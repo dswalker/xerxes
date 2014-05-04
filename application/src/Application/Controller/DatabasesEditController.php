@@ -23,6 +23,10 @@ use Xerxes\Mvc\Exception\AccessDeniedException;
 
 class DatabasesEditController extends DatabasesController
 {
+	private $librarian_names_id = 'librarian-names';
+	
+	private $database_titles_id = 'database-titles';
+	
 	/**
 	 * Do a user check
 	 */
@@ -58,6 +62,7 @@ class DatabasesEditController extends DatabasesController
 		// add title list
 		
 		$this->response->setVariable('database_titles', $this->getDatabaseTitles());
+		$this->response->setVariable('librarian_names', $this->getLibrarianNames());
 	
 		return $this->response;
 	}	
@@ -421,6 +426,31 @@ class DatabasesEditController extends DatabasesController
 		);
 		
 		return $this->redirectTo($params);
+	}
+	
+	/**
+	 * Edit (or add) database page
+	 */
+	
+	public function assignLibrarianAction()
+	{
+		$category_id = $this->request->requireParam('category', 'Request did not include category id');
+		$librarian_id = $this->request->requireParam('librarian', 'Request did not include subcategory id');
+	
+		$category = $this->knowledgebase->getCategory($category_id);
+		$librarian = $this->knowledgebase->getLibrarian($librarian_id);
+
+		$category->addLibrarian($librarian);
+		
+		$this->knowledgebase->update($category);
+	
+		$params = array(
+			'controller' => $this->request->getParam('controller'),
+			'action' => 'subject',
+			'id' => $category_id
+		);
+	
+		return $this->redirectTo($params);
 	}	
 
 	/**
@@ -535,19 +565,37 @@ class DatabasesEditController extends DatabasesController
 	
 	protected function getDatabaseTitles()
 	{
-		$titles = $this->cache()->get('databases-names');
+		$titles = $this->cache()->get($this->database_titles_id);
 		
 		if ( $titles == null )
 		{
 			$titles = $this->knowledgebase->getDatabaseTitles();
-			$this->cache()->set('databases-names', $titles, time() + (12 * 60 * 60) ); // 12 hour cache
+			$this->cache()->set($this->database_titles_id, $titles, time() + (12 * 60 * 60) ); // 12 hour cache
 		}
 		
 		return $titles;
 	}
 	
+	protected function getLibrarianNames()
+	{
+		$titles = $this->cache()->get($this->librarian_names_id);
+	
+		if ( $titles == null )
+		{
+			$titles = $this->knowledgebase->getLibrarianNames();
+			$this->cache()->set($this->librarian_names_id, $titles, time() + (12 * 60 * 60) ); // 12 hour cache
+		}
+	
+		return $titles;
+	}
+	
 	protected function clearDatabaseTitleCache()
 	{
-		$this->cache()->set('databases-names', null, time() - 1000 );
+		$this->cache()->set($this->database_titles_id, null, time() - 1000 );
 	}
+	
+	protected function clearLibrarianCache()
+	{
+		$this->cache()->set($this->librarian_names_id, null, time() - 1000 );
+	}	
 }

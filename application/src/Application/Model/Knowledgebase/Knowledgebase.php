@@ -311,6 +311,20 @@ class Knowledgebase extends Doctrine
 		$sql = "select id, title from research_databases where owner = 'admin' order by title";
 		return $this->datamap()->select($sql);
 	}
+
+	/**
+	 * Just librarian names
+	 *
+	 * doesn't use Doctrine, for speed
+	 *
+	 * @return array
+	 */
+	
+	public function getLibrarianNames()
+	{
+		$sql = "select id, name from librarians order by name";
+		return $this->datamap()->select($sql);
+	}	
 	
 	/**
 	 * Get databases that start with a particular letter
