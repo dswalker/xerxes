@@ -141,9 +141,16 @@ class Database
 	
 	/**
 	 * @OneToMany(targetEntity="DatabaseSequence", mappedBy="database")
-	 * @var Subcategory
+	 * @var DatabaseSequence[]
 	 */
-	protected $database_sequence;	
+	protected $database_sequence;
+	
+	/**
+	 * @ManyToMany(targetEntity="Type", inversedBy="databases")
+	 * @JoinTable(name="databases_types")
+	 * @var Type[]
+	 */
+	protected $types;
 	
 	/**
 	 * Create new Database
@@ -153,6 +160,8 @@ class Database
 	{
 		$this->keywords = new ArrayCollection();
 		$this->alternate_titles = new ArrayCollection();
+		$this->database_sequence = new ArrayCollection();
+		$this->types = new ArrayCollection();
 	}
 
 	/**
@@ -467,6 +476,23 @@ class Database
 	}
 	
 	/**
+	 * @param Type $type
+	 */
+	public function addType(Type $type)
+	{
+		$type->addDatabase($this);
+		$this->types[] = $type;
+	}
+	
+	/**
+	 * @return Type[]
+	 */
+	public function getTypes()
+	{
+		return $this->types->toArray();
+	}
+	
+	/**
 	 * @return array
 	 */
 	
@@ -480,7 +506,7 @@ class Database
 			{
 				continue;
 			}
-			elseif ( $key == 'keywords' || $key == 'alternate_titles')
+			elseif ( $key == 'keywords' || $key == 'alternate_titles' || $key == 'types' )
 			{
 				$second = array();
 				
