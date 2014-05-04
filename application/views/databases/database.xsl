@@ -62,9 +62,6 @@
 		.database-link {
 			margin: 2em;
 		}
-		.database-link a, .database-link a:visited {
-			color: #fff;
-		}
 					
 	</style>
 	
@@ -95,12 +92,14 @@
 		</div>
 		
 		<div class="database-link">
-			<a href="{link}" class="btn btn-success">
-				Go to <xsl:value-of select="title" />
+			<a href="{link}" class="btn">
+				Go to this database
 			</a>
 		</div>		
 		
 		<div class="database-details">
+		
+			<dl>
 			
 			<xsl:if test="coverage">
 				<div>
@@ -133,6 +132,8 @@
 					</dd>
 				</div>
 			</xsl:if>
+			
+			</dl>
 			
 		</div>
 				
