@@ -165,8 +165,33 @@ class DatabasesEditController extends DatabasesController
 		);
 	
 		return $this->redirectTo($return);
-	}	
+	}
 	
+	/**
+	 * Move subcategory to sidebar
+	 */
+	
+	public function moveToSidebarAction()
+	{
+		$category_id = $this->request->getParam('category');
+		$subcategory_id = $this->request->getParam('subcategory');
+		$move = (bool) $this->request->getParam('move');
+	
+		$subcategory = $this->knowledgebase->getSubcategoryById($subcategory_id);
+		
+		$subcategory->setSidebar($move);
+		
+		$this->knowledgebase->update($subcategory);
+	
+		$return = array(
+			'controller' => $this->request->getParam('controller'),
+			'action' => 'subject',
+			'id' => $category_id
+		);
+	
+		return $this->redirectTo($return);
+	}
+
 	/**
 	 * Reorder subcategories in category
 	 */
@@ -327,11 +352,6 @@ class DatabasesEditController extends DatabasesController
 		$database->setSourceId('web');
 		$database->setTitle($title);
 		
-		if ( $active != null )
-		{
-			$database->setActive($active);
-		}
-		
 		if ( $date_new_expiry != null )
 		{
 			$date_time = new \DateTime($date_new_expiry);
@@ -344,10 +364,8 @@ class DatabasesEditController extends DatabasesController
 			$database->setDateTrialExpiry($date_time);
 		}			
 		
-		if ( $proxy != null )
-		{
-			$database->setProxy($proxy);
-		}
+		$database->setProxy($proxy);
+		$database->setActive($active);
 		
 		foreach ( $alternate_titles as $alternate_title )
 		{

@@ -38,6 +38,8 @@
 
 <xsl:output method="html" />
 
+<xsl:variable name="category" select="//categories/normalized" />
+
 <xsl:template match="/*">
 	<xsl:call-template name="surround" />
 </xsl:template>
@@ -70,45 +72,59 @@
 		<xsl:call-template name="category_name" />
 	</h1>
 
-	<div id="subject-list">
-		
-		<xsl:variable name="category" select="categories/normalized" />
+	<div class="subject-list">
 		
 		<ul data-target="databases-edit/reorder-subcategories" data-category="{$category}">
 		
-		<xsl:for-each select="categories/subcategories/subcategory">
-	
-			<li id="subcategory_{id}" class="subcategory list-item">
+			<xsl:for-each select="categories/subcategories/subcategory[not(sidebar) or sidebar = 0]">
 			
-				<xsl:call-template name="subcategory_actions" />
+				<xsl:call-template name="subject_subcategory" />
 			
-				<h2>
-					<xsl:call-template name="subcategory_name" />
-				</h2>
-				
-				<ul class="databases-list" data-target="databases-edit/reorder-databases" data-category="{$category}" data-subcategory="{id}">
-				
-					<xsl:for-each select="database_sequences/database_sequence/database">
-					
-						<!-- sequence id -->
-					
-						<li id="database_{../id}" class="list-item"> 
-							<xsl:call-template name="database_sequence_actions" />
-							<xsl:call-template name="database_brief_display" />
-						</li>
-						
-					</xsl:for-each>
-					
-				</ul>
-				
-			</li>
-	
-		</xsl:for-each>
+			</xsl:for-each>
 		
 		</ul>
 	
 	</div>
 	
+</xsl:template>
+
+<xsl:template name="subject_subcategory">
+	<xsl:param name="show_description">true</xsl:param>
+	
+	<li id="subcategory_{id}" class="subcategory list-item">
+	
+		<xsl:call-template name="subcategory_actions" />
+	
+		<h2>
+			<xsl:call-template name="subcategory_name" />
+		</h2>
+		
+		<ul class="databases-list" data-target="databases-edit/reorder-databases" data-category="{$category}" data-subcategory="{id}">
+		
+			<xsl:for-each select="database_sequences/database_sequence/database">
+			
+				<!-- sequence id -->
+			
+				<li id="database_{../id}" class="list-item"> 
+					<xsl:call-template name="database_sequence_actions" />
+					
+					<xsl:choose>
+						<xsl:when test="$show_description = 'true'">
+							<xsl:call-template name="database_brief_display" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:call-template name="database_brief_title" />
+						</xsl:otherwise>
+					</xsl:choose>
+					
+				</li>
+				
+			</xsl:for-each>
+			
+		</ul>
+		
+	</li>
+
 </xsl:template>
 
 <xsl:template name="sidebar">
@@ -136,9 +152,28 @@
 			</div>
 			
 		</xsl:for-each>
+		
 	</xsl:if>
 	
 	<xsl:call-template name="librarian_assign" />
+	
+	<xsl:if test="categories/subcategories/subcategory[sidebar = 1]">
+	
+		<div class="subject-list">
+	
+			<ul data-target="databases-edit/reorder-subcategories" data-category="{$category}">
+	
+				<xsl:for-each select="categories/subcategories/subcategory[sidebar = 1]">
+					<xsl:call-template name="subject_subcategory">
+						<xsl:with-param name="show_description">false</xsl:with-param>
+					</xsl:call-template>
+				</xsl:for-each>
+	
+			</ul>
+			
+		</div>
+		
+	</xsl:if>
 
 </xsl:template>
 

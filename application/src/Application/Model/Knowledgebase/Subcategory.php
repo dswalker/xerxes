@@ -39,6 +39,12 @@ class Subcategory
 	protected $sequence = 999;
 	
 	/**
+	 * @Column(type="boolean", nullable=true)
+	 * @var boolean
+	 */	
+	protected $sidebar = false;
+	
+	/**
 	 * @ManyToOne(targetEntity="Category", inversedBy="subcategories")
 	 * @JoinColumn(name="category_id", referencedColumnName="id", nullable=false)
 	 * @var Category
@@ -101,6 +107,22 @@ class Subcategory
 	{
 		$this->sequence = $sequence;
 	}
+	
+	/**
+	 * @param bool $bool
+	 */
+	public function setSidebar($bool)
+	{
+		$this->sidebar = (bool) $bool;
+	}
+	
+	/**
+	 * return bool
+	 */
+	public function getSidebar()
+	{
+		return $this->sidebar;
+	}	
 
 	/**
 	 * @param Category $category
@@ -136,6 +158,7 @@ class Subcategory
 		$sequence->setSubcategory($this);
 		$this->database_sequences[] = $sequence;
 	}
+	
 	
 	/**
 	 * @return array

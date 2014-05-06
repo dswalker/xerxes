@@ -75,7 +75,17 @@
 			margin-bottom: 10px;
 		}
 		.list-item-action {
-			margin-bottom: -40px;
+			margin-bottom: -20px;
+		}
+		.list-item-buttons {
+			position: absolute; 
+			top: 3px; 
+			right: 10px;
+		}
+		
+		.sidebar .list-item-action {
+			margin-bottom: 0px;
+			text-align: right;
 		}
 					
 	</style>
@@ -296,15 +306,38 @@
 					
 		<img src="{$base_url}/images/famfamfam/arrow_out.png" alt="" />
 		
-		<div style="position: absolute; top: 3px; right: 10px">
-			<a href="{//request/controller}/delete-subcategory?subcategory={id};category={../../id}" 
-				class="btn btn-small subcategory-delete delete-confirm-fade" data-source="subcategory_{id}">
-				<i class="icon-trash"></i> Remove
-			</a>
-			<xsl:text> </xsl:text>
-			<a href="#database-modal-asign-databases-{id}" class="btn btn-small" role="button" data-toggle="modal" >
+		<div class="list-item-buttons">
+
+			<a href="#database-modal-asign-databases-{id}" class="btn btn-small" role="button" data-toggle="modal">
 				<i class="icon-plus"></i> Database
 			</a>
+			
+			<xsl:text> </xsl:text>
+			
+			<xsl:choose>
+				<xsl:when test="sidebar = 1">
+
+					<a href="{//request/controller}/move-to-sidebar?subcategory={id};category={../../id};move=0" class="btn btn-small">
+						<i class="icon-arrow-left"></i> Remove
+					</a>
+				
+				</xsl:when>
+				<xsl:otherwise>
+			
+					<a href="{//request/controller}/move-to-sidebar?subcategory={id};category={../../id};move=1" class="btn btn-small">
+						<i class="icon-arrow-right"></i> Move to Sidebar
+					</a>
+					
+				</xsl:otherwise>
+			</xsl:choose>
+			
+			<xsl:text> </xsl:text>
+			
+			<a href="{//request/controller}/delete-subcategory?subcategory={id};category={../../id}" 
+				class="btn btn-small subcategory-delete delete-confirm-fade" data-source="subcategory_{id}">
+				<i class="icon-trash"></i> Delete
+			</a>			
+			
 		</div>
 		
 	</div>
@@ -381,7 +414,11 @@
 </xsl:template>
 
 <xsl:template name="librarian_assign">
-	<a href="#database-modal-add-librarian" class="btn" role="button" data-toggle="modal">Assign librarian</a>
+	<div style="margin-bottom: 3em">
+		<a href="#database-modal-add-librarian" class="btn" role="button" data-toggle="modal">
+			<i class="icon-plus"></i> Add Librarian
+		</a>
+	</div>
 </xsl:template>
 
 <xsl:template name="librarian_edit_actions">
@@ -389,6 +426,7 @@
 	<a href="{//request/controller}/delete-librarian-sequence?id={../id};category={//categories/id}" class="btn btn-small" role="button" data-toggle="modal">
 		<i class="icon-trash"></i>
 	</a>
+	
 </xsl:template>
 
 </xsl:stylesheet>

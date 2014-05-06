@@ -53,7 +53,7 @@ function highlight()
 
 function resort()
 {	
-	$("#subject-list ul").sortable({ opacity: 0.6, cursor: 'move', update: function() {
+	$(".subject-list ul").sortable({ opacity: 0.6, cursor: 'move', update: function() {
 		
 		var target = $(this).attr('data-target');
 		var category = $(this).attr('data-category');
