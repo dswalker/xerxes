@@ -322,7 +322,7 @@
 				
 					<div>
 						<xsl:if test="$sidebar != 'none' and $is_mobile != '1'">
-							<xsl:attribute name="class">span9</xsl:attribute>
+							<xsl:attribute name="class">span8</xsl:attribute>
 						</xsl:if>
 						
 						<xsl:if test="request/flash_messages/*">
@@ -433,7 +433,7 @@
 	-->
 	
 	<xsl:template name="sidebar_wrapper">
-		<div class="span3">
+		<div class="span4">
 			<div class="sidebar">
 				<xsl:call-template name="sidebar" />
 				<xsl:call-template name="sidebar_additional" />
