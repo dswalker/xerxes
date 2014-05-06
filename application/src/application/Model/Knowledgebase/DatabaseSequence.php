@@ -81,9 +81,9 @@ class DatabaseSequence
 	/**
 	 * @return Database
 	 */
-	public function getDatabases()
+	public function getDatabase()
 	{
-		return $this->databases;
+		return $this->database;
 	}
 
 	/**

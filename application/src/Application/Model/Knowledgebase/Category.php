@@ -179,10 +179,20 @@ class Category
 	/**
 	 * @param Subcategory $subcategory
 	 */
-	public function addLibrarianSequence(LibrarianSequence $librarian)
+	public function addLibrarianSequence(LibrarianSequence $sequence)
 	{
-		$librarian->setCategory($this);
-		$this->librarian_sequences[] = $librarian;
+		// check to make sure the librarian isn't already assigned
+		
+		foreach ( $this->librarian_sequences as $librarian_sequence )
+		{
+			if ( $librarian_sequence->getLibrarian()->getId() == $sequence->getLibrarian()->getId() )
+			{
+				return null; // don't add it
+			}
+		}		
+		
+		$sequence->setCategory($this);
+		$this->librarian_sequences[] = $sequence;
 	}
 	
 	/**

@@ -123,6 +123,16 @@ class Subcategory
 	 */
 	public function addDatabaseSequence(DatabaseSequence $sequence)
 	{
+		// check to make sure the database isn't already assigned
+		
+		foreach ( $this->database_sequences as $database_sequence )
+		{
+			if ( $database_sequence->getDatabase()->getId() == $sequence->getDatabase()->getId() )
+			{
+				return null; // don't add it
+			}
+		}
+		
 		$sequence->setSubcategory($this);
 		$this->database_sequences[] = $sequence;
 	}
