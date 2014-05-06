@@ -387,11 +387,13 @@ class DatabasesEditController extends DatabasesController
 	
 		$this->knowledgebase->removeDatabase($id);
 	
+		$this->clearDatabaseTitleCache();
+		
 		$params = array(
 			'controller' => $this->request->getParam('controller'),
 			'action' => 'alphabetical'
 		);
-	
+		
 		return $this->redirectTo($params);
 	}
 	
@@ -530,13 +532,15 @@ class DatabasesEditController extends DatabasesController
 		$librarian->setOfficeHours($office_hours);
 
 		$this->knowledgebase->update($librarian);
-	
+
+		$this->clearLibrarianCache();
+		
 		$params = array(
 			'controller' => $this->request->getParam('controller'),
 			'action' => 'librarian',
 			'id' => $librarian->getId()
 		);
-	
+		
 		return $this->redirectTo($params);
 	}
 	
@@ -550,11 +554,13 @@ class DatabasesEditController extends DatabasesController
 	
 		$this->knowledgebase->removeLibrarian($id);
 	
+		$this->clearLibrarianCache();
+		
 		$params = array(
 			'controller' => $this->request->getParam('controller'),
 			'action' => 'librarians'
 		);
-	
+		
 		return $this->redirectTo($params);
 	}
 	
