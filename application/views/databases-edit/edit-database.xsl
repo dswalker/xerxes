@@ -154,13 +154,21 @@
 		  <div class="control-group">
 			<label class="control-label">Active</label>
 			<div class="controls">
-			  <input type="checkbox" name="active" checked="checked" />
+			  <input type="checkbox" name="active">
+			  	<xsl:if test="active">
+					<xsl:attribute name="checked">checked</xsl:attribute>
+				</xsl:if>
+			  </input>
 			</div>
 		  </div>
 		  <div class="control-group">
 			<label class="control-label">Requires proxy</label>
 			<div class="controls">
-			   <input type="checkbox" name="proxy" checked="checked" />
+			   <input type="checkbox" name="proxy">
+			    	<xsl:if test="proxy">
+						<xsl:attribute name="checked">checked</xsl:attribute>
+					</xsl:if>
+			   </input>
 			</div>
 		  </div>
 		  <div class="control-group">
