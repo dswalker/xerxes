@@ -228,4 +228,26 @@ class DatabasesController extends ActionController
 		
 		exit;
 	}
+	
+	/**
+	 * Proxy a database URL
+	 * 
+	 * @throws \Exception
+	 */
+	
+	public function proxyAction()
+	{
+		$id = $this->request->requireParam('id', 'Missing database ID'); 
+
+		$database = $this->knowledgebase->getDatabase($id);
+		
+		if ( $database == null )
+		{
+			throw new \Exception("Couldn't find database '$id'");
+		}
+		
+		$final = $database->getProxyUrl();
+			
+		return $this->redirectTo($final);
+	}
 }

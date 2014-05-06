@@ -92,7 +92,7 @@
 		</div>
 		
 		<div class="database-link">
-			<a href="{link}" class="btn">
+			<a href="databases/proxy?id={id}" class="btn">
 				Go to this database
 			</a>
 		</div>		

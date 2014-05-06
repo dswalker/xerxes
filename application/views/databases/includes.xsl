@@ -56,7 +56,7 @@
 <xsl:template name="database_brief_title">
 
 	<div class="database-title">
-		<a href="{link}"><xsl:value-of select="title" /></a>
+		<a href="databases/proxy?id={id}"><xsl:value-of select="title" /></a>
 	</div>
 
 </xsl:template>

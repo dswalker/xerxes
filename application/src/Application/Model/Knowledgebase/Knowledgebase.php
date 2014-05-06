@@ -529,7 +529,7 @@ class Knowledgebase extends Doctrine
 		
 		// subjects
 		
-		$url = 'http://library.calstate.edu/sonoma/databases/?format=xerxes';
+		$url = 'http://library.calstate.edu/sanjose/databases/?format=xerxes';
 		$xml = simplexml_load_file($url);
 		
 		foreach ( $xml->categories->category as $category_xml )

@@ -11,6 +11,8 @@
 
 namespace Application\Model\Knowledgebase;
 
+use Xerxes\Utility\Proxy;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -301,7 +303,7 @@ class Database
 	}
 
 	/**
-	 * @return string
+	 * @return bool
 	 */
 	public function getProxy()
 	{
@@ -490,6 +492,20 @@ class Database
 	public function getTypes()
 	{
 		return $this->types->toArray();
+	}
+	
+	public function getProxyUrl()
+	{
+		$url = $this->getLink(); // main link
+		
+		// databases marked as subscription should be proxied
+		
+		if ( $this->getProxy() == true )
+		{
+			$url = Proxy::getProxyLink($url);
+		}
+		
+		return $url;
 	}
 	
 	/**
