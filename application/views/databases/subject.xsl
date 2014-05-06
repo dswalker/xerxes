@@ -126,7 +126,7 @@
 				</div>
 				
 				<h3>
-					<xsl:value-of select="name" />
+					<a href="{link}"><xsl:value-of select="name" /></a>
 					<xsl:call-template name="librarian_edit_actions" />
 				</h3>
 				
