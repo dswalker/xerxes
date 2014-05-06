@@ -1023,3 +1023,17 @@ td.title-cell {
 #subject-list h2 {
 	margin-top: 40px;
 }
+
+.sidebar h2 {
+	margin-top: 0;
+}
+
+#bd div.librarian dt {
+	width: inherit;
+	padding-right: 5px;
+}
+
+#bd div.librarian dd {
+	margin-left: 0;
+}
+	
