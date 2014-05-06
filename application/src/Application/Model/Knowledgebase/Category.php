@@ -45,10 +45,11 @@ class Category
 	protected $subcategories;
 
 	/**
-     * @ManyToMany(targetEntity="Librarian", mappedBy="categories")
-	 * @var Librarian[]
+	 * @OneToMany(targetEntity="LibrarianSequence", mappedBy="category", cascade={"persist"})
+	 * @OrderBy({"sequence" = "ASC"})
+	 * @var LibrarianSequence[]
 	 */
-	protected $librarians;	
+	protected $librarian_sequences;	
 	
 	/**
 	 * @Column(type="string")
@@ -172,17 +173,17 @@ class Category
 	 */
 	public function getLibrarians()
 	{
-		return $this->subcategories->toArray();
+		return $this->librarian_sequences->toArray();
 	}
 	
 	/**
 	 * @param Subcategory $subcategory
 	 */
-	public function addLibrarian(Librarian $librarian)
+	public function addLibrarianSequence(LibrarianSequence $librarian)
 	{
-		$librarian->addCategory($this);
-		$this->librarians->add($librarian);
-	}	
+		$librarian->setCategory($this);
+		$this->librarian_sequences[] = $librarian;
+	}
 	
 	/**
 	 * @return string
@@ -210,7 +211,7 @@ class Category
 	
 		foreach ( $this as $key => $value )
 		{
-			if ( ($key == 'subcategories' || $key == 'librarians') && $deep == true )
+			if ( ($key == 'subcategories' || $key == 'librarian_sequences') && $deep == true )
 			{
 				$final[$key] = $value->toArray();
 			}

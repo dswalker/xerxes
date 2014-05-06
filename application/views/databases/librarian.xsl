@@ -51,6 +51,18 @@
 	<xsl:text>Librarian</xsl:text>
 </xsl:template>
 
+<xsl:template name="module_header">
+
+	<style type="text/css">
+		
+		#bd dt {
+			clear: none;
+		}
+					
+	</style>
+	
+</xsl:template>
+
 <xsl:template name="module_nav">
 
 	<xsl:call-template name="module_nav_display">
@@ -69,40 +81,31 @@
 	
 	<xsl:for-each select="librarians">
 	
-		<h1><xsl:value-of select="name" /></h1>
+		<div style="clear:left">
 				
-		<div class="database-details">
-			
-			<xsl:if test="email">
-				<div>
-					<dt><xsl:copy-of select="$text_databases_subject_librarian_email" />:</dt>
-					<dd><xsl:value-of select="email" /></dd>
-				</div>
-			</xsl:if>
+			<div style="float: left; width: 180px">
+				<img src="databases/librarian-image?id={id}" alt="{name}" />
+			</div>
+					
+			<div style="margin-left: 180px">
+				
+				<h1><xsl:value-of select="name" /></h1>
 
-			<xsl:if test="phone">
-				<div>
-					<dt><xsl:copy-of select="$text_databases_subject_librarian_telephone" />:</dt>
-					<dd><xsl:value-of select="phone" /></dd>
-				</div>
-			</xsl:if>
+				<dl>
 
-			<xsl:if test="office">
-				<div>
-					<dt><xsl:copy-of select="$text_databases_subject_librarian_office" />:</dt>
-					<dd><xsl:value-of select="office" /></dd>
-				</div>
-			</xsl:if>
-
-			<xsl:if test="office_hours">
-				<div>
-					<dt><xsl:copy-of select="$text_databases_subject_librarian_office_hours" />:</dt>
-					<dd><xsl:value-of select="office_hours" /></dd>
-				</div>
-			</xsl:if>
+					<div>
+						<dt>Website:</dt>
+						<dd><a href="{link}"><xsl:value-of select="link" /></a></dd>
+					</div>
+					
+					<xsl:call-template name="librarian_details" />
+				
+				</dl>
+				
+			</div>
 			
 		</div>
-				
+					
 	</xsl:for-each>
 	
 </xsl:template>

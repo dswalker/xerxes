@@ -113,23 +113,28 @@
 
 <xsl:template name="sidebar">
 
-	<xsl:if test="categories/librarians">
+	<xsl:if test="categories/librarian_sequences">
+	
 		<h2>Subject Specialist</h2>
 		
-		<xsl:for-each select="categories/librarians/librarian">
-			<h3><xsl:value-of select="name" /></h3>
-			<dl>
-				<xsl:if test="email">
-					<div>
-						<dt><xsl:copy-of select="$text_database_guide" />:</dt>
-						<dd>
-							<a href="mailto:{email}">
-								<xsl:value-of select="email" />
-							</a>
-						</dd>
-					</div>
-				</xsl:if>
-			</dl>
+		<xsl:for-each select="categories/librarian_sequences/librarian_sequence/librarian">
+		
+			<div class="librarian">
+				
+				<div class="librarian-image">
+					<img src="databases/librarian-image?id={id}" alt="{name}" />
+				</div>
+				
+				<h3>
+					<xsl:value-of select="name" />
+					<xsl:call-template name="librarian_edit_actions" />
+				</h3>
+				
+				<dl>
+					<xsl:call-template name="librarian_details" />
+				</dl>
+			</div>
+			
 		</xsl:for-each>
 	</xsl:if>
 	
@@ -152,5 +157,6 @@
 <xsl:template name="subcategory_actions" />
 <xsl:template name="database_sequence_actions" />
 <xsl:template name="librarian_assign" />
+<xsl:template name="librarian_edit_actions" />
 
 </xsl:stylesheet>

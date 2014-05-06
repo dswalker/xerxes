@@ -12,6 +12,7 @@
 namespace Application\Model\Knowledgebase;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Xerxes\Utility\Parser;
 
 /**
  * Librarian
@@ -68,11 +69,11 @@ class Librarian
 	 */
 	protected $office_hours;
 	
-    /**
-     * @ManyToMany(targetEntity="Category", inversedBy="librarians")
-     * @JoinTable(name="librarians_categories")
-     */
-	protected $categories;
+	/**
+	 * @OneToMany(targetEntity="LibrarianSequence", mappedBy="librarian")
+	 * @var LibrarianSequence[]
+	 */
+	protected $librarian_sequence;	
 	
 	/**
 	 * New Librarian
@@ -133,9 +134,93 @@ class Librarian
 	/**
 	 * @return @string
 	 */
-	public function getImage()
+	public function getImageUrl()
 	{
 		return $this->image;
+	}
+	
+	/**
+	 * @return resource  image
+	 */
+	
+	public function getImage()
+	{
+		$url = $this->image;
+		
+		if ( ! function_exists("gd_info") )
+		{
+			return null;
+		}
+		
+		if ( $url == "" )
+		{
+			return $this->createblank();
+		}
+		
+		$size = $this->config()->getConfig("LIBRARIAN_IMAGE_SIZE", false, 150);
+		$domains = $this->config()->getConfig("LIBRARIAN_IMAGE_DOMAINS", false);
+		
+		// images can only come from these domains, for added security
+		
+		if ( $domains != null )
+		{
+			$bolPassed = Parser::withinDomain($url,$domains);
+		
+			if ( $bolPassed == false )
+			{
+				throw new \Exception("librarian image not allowed from that domain");
+			}
+		}
+		
+		$image_string = file_get_contents($url);
+		
+		if ( $image_string == "")
+		{
+			return $this->createblank();
+		}
+		else
+		{
+			// convert to a thumbnail
+		
+			$original = imagecreatefromstring($image_string);
+				
+			if ( $original == false )
+			{
+				return $this->createblank();
+			}
+					
+			$old_x = imagesx($original);
+			$old_y = imagesy($original);
+		
+			if ($old_x > $old_y)
+			{
+				$thumb_w = $size;
+				$thumb_h = $old_y*($size/$old_x);
+			}
+			if ($old_x < $old_y)
+			{
+				$thumb_w = $old_x*($size/$old_y);
+				$thumb_h = $size;
+			}
+			if ($old_x == $old_y)
+			{
+				$thumb_w = $size;
+				$thumb_h = $size;
+			}
+				
+			$thumb = imagecreatetruecolor($thumb_w,$thumb_h);
+				
+			imagecopyresampled($thumb,$original,0,0,0,0,$thumb_w,$thumb_h,$old_x,$old_y);
+	
+			imagedestroy($original);
+			
+			return $thumb;
+		}
+	}
+	
+	protected function createblank()
+	{
+		return imagecreatetruecolor(1,1);
 	}
 
 	/**
@@ -211,11 +296,19 @@ class Librarian
 	}
 
 	/**
-	 * @param Category $category
+	 * @param LibrarianSequence $sequence
 	 */
-	public function addCategory(Category $category) 
+	public function addLibrarianSequence(LibrarianSequence $sequence) 
 	{
-		$this->categories[] = $category;
+		$this->librarian_sequence[] = $sequence;
+	}
+	
+	/**
+	 * @return Config
+	 */
+	protected function config()
+	{
+		return Config::getInstance();
 	}
 	
 	/**
@@ -228,7 +321,7 @@ class Librarian
 	
 		foreach ( $this as $key => $value )
 		{
-			if ( $key != 'categories' )
+			if ( $key != 'librarian_sequence' )
 			{
 				$final[$key] = $value;
 			}

@@ -11,11 +11,11 @@
 
 namespace Application\Controller;
 
-use Application\Model\Knowledgebase\DatabaseSequence;
-
 use Application\Model\Knowledgebase\Category;
 use Application\Model\Knowledgebase\Database;
+use Application\Model\Knowledgebase\DatabaseSequence;
 use Application\Model\Knowledgebase\Librarian;
+use Application\Model\Knowledgebase\LibrarianSequence;
 use Application\Model\Knowledgebase\Knowledgebase;
 use Application\View\Helper\Databases as DatabasehHelper;
 use Xerxes\Mvc\ActionController;
@@ -237,7 +237,7 @@ class DatabasesEditController extends DatabasesController
 	}
 	
 	/**
-	 * Delete subcategory
+	 * Delete database sequence
 	 */
 	
 	public function deleteDatabaseSequenceAction()
@@ -437,10 +437,13 @@ class DatabasesEditController extends DatabasesController
 		$category_id = $this->request->requireParam('category', 'Request did not include category id');
 		$librarian_id = $this->request->requireParam('librarian', 'Request did not include subcategory id');
 	
-		$category = $this->knowledgebase->getCategory($category_id);
+		$category = $this->knowledgebase->getCategoryById($category_id);
 		$librarian = $this->knowledgebase->getLibrarian($librarian_id);
+		
+		$librarian_sequence = new LibrarianSequence();
+		$librarian_sequence->setLibrarian($librarian);
 
-		$category->addLibrarian($librarian);
+		$category->addLibrarianSequence($librarian_sequence);
 		
 		$this->knowledgebase->update($category);
 	
@@ -451,7 +454,27 @@ class DatabasesEditController extends DatabasesController
 		);
 	
 		return $this->redirectTo($params);
-	}	
+	}
+	
+	/**
+	 * Delete librarian sequence
+	 */
+	
+	public function deleteLibrarianSequenceAction()
+	{
+		$sequence_id = $this->request->getParam('id');
+		$category_id = $this->request->getParam('category');
+	
+		$this->knowledgebase->deleteLibrarianSequence($sequence_id);
+	
+		$return = array(
+			'controller' => $this->request->getParam('controller'),
+			'action' => 'subject',
+			'id' => $category_id
+		);
+	
+		return $this->redirectTo($return);
+	}
 
 	/**
 	 * Edit (or add) database page

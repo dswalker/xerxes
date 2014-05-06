@@ -127,6 +127,19 @@ class Knowledgebase extends Doctrine
 		$sequence = $this->entityManager->find('Application\Model\Knowledgebase\DatabaseSequence', $sequence_id);
 		$this->entityManager->remove($sequence);
 		$this->entityManager->flush();
+	}
+	
+	/**
+	 * Remove a Librarian Sequence
+	 *
+	 * @param int $sequence_id  internal librarian sequence id
+	 */
+	
+	public function deleteLibrarianSequence($sequence_id)
+	{
+		$sequence = $this->entityManager->find('Application\Model\Knowledgebase\LibrarianSequence', $sequence_id);
+		$this->entityManager->remove($sequence);
+		$this->entityManager->flush();
 	}	
 	
 	/**

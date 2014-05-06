@@ -25,8 +25,6 @@ class Config extends Registry
 	private static $instance; // singleton pattern
 	
 	/**
-	 * Get an instance of the file; Singleton to ensure correct data
-	 *
 	 * @return Config
 	 */	
 	
@@ -35,6 +33,8 @@ class Config extends Registry
 		if ( empty( self::$instance ) )
 		{
 			self::$instance = new Config();
+			$object = self::$instance;
+			$object->init();			
 		}
 		
 		return self::$instance;

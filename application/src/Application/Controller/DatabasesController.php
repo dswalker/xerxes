@@ -12,6 +12,7 @@
 namespace Application\Controller;
 
 use Application\Model\Knowledgebase\Category;
+use Application\Model\Knowledgebase\Config;
 use Application\Model\Knowledgebase\Database;
 use Application\Model\Knowledgebase\Knowledgebase;
 use Application\View\Helper\Databases as DatabasehHelper;
@@ -36,17 +37,28 @@ class DatabasesController extends ActionController
 	protected $helper;
 	
 	/**
+	 * @var Config
+	 */
+	protected $config;
+	
+	/**
 	 * (non-PHPdoc)
 	 * @see Xerxes\Mvc.ActionController::init()
 	 */
 	
 	public function init()
 	{
+		// model
+		
 		$this->knowledgebase = new Knowledgebase($this->request->getUser());
 		
 		// view helper
 		
 		$this->helper = new DatabasehHelper($this->event);
+		
+		// config
+		
+		$this->config = Config::getInstance();
 	}
 	
 	/**
@@ -183,6 +195,36 @@ class DatabasesController extends ActionController
 	public function pullAction()
 	{
 		$this->knowledgebase->migrate();
+		
+		exit;
+	}
+	
+	public function librarianImageAction()
+	{
+		$librarian_id = $this->request->getParam("id");
+		
+		$librarian = $this->knowledgebase->getLibrarian($librarian_id);
+		
+		$thumb = $librarian->getImage();
+		
+		if ( $thumb == "" )
+		{
+			$url = $librarian->getImageUrl();
+			
+			if ( $url != "" )
+			{
+				return $this->redirectTo($url);
+			}
+			
+			exit;
+		}
+
+		// output image
+		
+		header("Content-type: image/jpg");
+		imagejpeg($thumb, null, 100);
+		
+		imagedestroy($thumb);
 		
 		exit;
 	}

@@ -251,7 +251,7 @@
 		aria-labelledby="database-modal-add-librarian-label" aria-hidden="true">
 	
 		<form action="{//request/controller}/assign-librarian">
-			<input type="hidden" name="category" value="{categories/normalized}" />
+			<input type="hidden" name="category" value="{categories/id}" />
 
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
@@ -358,19 +358,17 @@
 
 	<table class="facet-multi-table librarian-choice-list">
 		<tr>
-			<th>Include</th>
-			<th>Database</th>
+			<th>Assign</th>
+			<th>Librarian</th>
 		</tr>
 
 		<xsl:for-each select="//librarian_names/librarian_name">
 			<tr>
 				<td class="facet-multi-selector">
 					<input type="checkbox" id="librarian-select-{id}" class="facet-multi-option-include" name="librarian" value="{id}">
-						<!--
-						<xsl:if test="selected and ( not(is_excluded) or is_excluded != '1')">
+						<xsl:if test="id = //categories/librarian_sequences/librarian_sequence/librarian/id">
 							<xsl:attribute name="checked">checked</xsl:attribute>
 						</xsl:if>
-						-->
 					</input>
 				</td>
 				<td>
@@ -384,6 +382,13 @@
 
 <xsl:template name="librarian_assign">
 	<a href="#database-modal-add-librarian" class="btn" role="button" data-toggle="modal">Assign librarian</a>
+</xsl:template>
+
+<xsl:template name="librarian_edit_actions">
+	&nbsp;
+	<a href="{//request/controller}/delete-librarian-sequence?id={../id};category={//categories/id}" class="btn btn-small" role="button" data-toggle="modal">
+		<i class="icon-trash"></i>
+	</a>
 </xsl:template>
 
 </xsl:stylesheet>

@@ -80,4 +80,36 @@
 
 </xsl:template>
 
+<xsl:template name="librarian_details">
+
+	<xsl:if test="email">
+		<div>
+			<dt><xsl:copy-of select="$text_databases_subject_librarian_email" />:</dt>
+			<dd><xsl:value-of select="email" /></dd>
+		</div>
+	</xsl:if>
+	
+	<xsl:if test="phone">
+		<div>
+			<dt><xsl:copy-of select="$text_databases_subject_librarian_telephone" />:</dt>
+			<dd><xsl:value-of select="phone" /></dd>
+		</div>
+	</xsl:if>
+	
+	<xsl:if test="office">
+		<div>
+			<dt><xsl:copy-of select="$text_databases_subject_librarian_office" />:</dt>
+			<dd><xsl:value-of select="office" /></dd>
+		</div>
+	</xsl:if>
+	
+	<xsl:if test="office_hours">
+		<div>
+			<dt><xsl:copy-of select="$text_databases_subject_librarian_office_hours" />:</dt>
+			<dd><xsl:value-of select="office_hours" /></dd>
+		</div>
+	</xsl:if>
+
+</xsl:template>
+
 </xsl:stylesheet>
