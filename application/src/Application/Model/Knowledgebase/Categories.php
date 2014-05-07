@@ -34,7 +34,7 @@ class Categories
 	{
 		foreach ( $categories as $category )
 		{
-			$this->values[] = $category->toArray();
+			$this->values[] = $category->toArray(false); // shallow data
 		}
 	}
 	
