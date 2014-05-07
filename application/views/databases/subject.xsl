@@ -38,7 +38,7 @@
 
 <xsl:output method="html" />
 
-<xsl:variable name="category" select="//categories/normalized" />
+<xsl:variable name="category" select="//category/normalized" />
 
 <xsl:template match="/*">
 	<xsl:call-template name="surround" />
@@ -48,13 +48,13 @@
 	<xsl:call-template name="breadcrumb_start" />
 	<a href="{//request/controller}">Databases</a>
 	<xsl:value-of select="$text_breadcrumb_separator" />
-	<xsl:value-of select="categories/name" />
+	<xsl:value-of select="category/name" />
 </xsl:template>
 
 <xsl:template name="module_nav">
 
 	<xsl:call-template name="module_nav_display">
-		<xsl:with-param name="url">databases-edit/subject?id=<xsl:value-of select="categories/id" /></xsl:with-param>
+		<xsl:with-param name="url">databases-edit/subject?id=<xsl:value-of select="category/id" /></xsl:with-param>
 	</xsl:call-template>
 
 </xsl:template>
@@ -76,7 +76,7 @@
 		
 		<ul data-target="databases-edit/reorder-subcategories" data-category="{$category}">
 		
-			<xsl:for-each select="categories/subcategories/subcategory[not(sidebar) or sidebar = 0]">
+			<xsl:for-each select="category/subcategories/subcategory[not(sidebar) or sidebar = 0]">
 			
 				<xsl:call-template name="subject_subcategory" />
 			
@@ -129,11 +129,11 @@
 
 <xsl:template name="sidebar">
 
-	<xsl:if test="categories/librarian_sequences">
+	<xsl:if test="category/librarian_sequences">
 	
 		<h2>Subject Specialist</h2>
 		
-		<xsl:for-each select="categories/librarian_sequences/librarian_sequence/librarian">
+		<xsl:for-each select="category/librarian_sequences/librarian_sequence/librarian">
 		
 			<div class="librarian">
 				
@@ -157,13 +157,13 @@
 	
 	<xsl:call-template name="librarian_assign" />
 	
-	<xsl:if test="categories/subcategories/subcategory[sidebar = 1]">
+	<xsl:if test="category/subcategories/subcategory[sidebar = 1]">
 	
 		<div class="subject-list">
 	
 			<ul data-target="databases-edit/reorder-subcategories" data-category="{$category}">
 	
-				<xsl:for-each select="categories/subcategories/subcategory[sidebar = 1]">
+				<xsl:for-each select="category/subcategories/subcategory[sidebar = 1]">
 					<xsl:call-template name="subject_subcategory">
 						<xsl:with-param name="show_description">false</xsl:with-param>
 					</xsl:call-template>
@@ -179,7 +179,7 @@
 
 <xsl:template name="category_name">
 
-	<xsl:value-of select="categories/name" />
+	<xsl:value-of select="category/name" />
 	
 </xsl:template>
 

@@ -507,7 +507,13 @@ class Knowledgebase extends Doctrine
 		{
 			$xml = simplexml_load_string($result['data']);
 			
-			$title = (string) $xml->title_display;
+			$title = trim((string) $xml->title_display);
+			
+			if ( $title == "" )
+			{
+				continue;
+			}
+			
 			$metalib_id = (string) $xml->metalib_id;
 			
 			$active = (int) $xml->active;

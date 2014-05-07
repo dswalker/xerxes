@@ -104,7 +104,7 @@ class DatabasesController extends ActionController
 		
 		$category = $this->knowledgebase->getCategory($subject);
 		
-		$this->response->setVariable('categories', $category);
+		$this->response->setVariable('category', $category);
 	
 		return $this->response;
 	}
@@ -124,7 +124,7 @@ class DatabasesController extends ActionController
 			$database = $this->knowledgebase->getDatabaseBySourceId($id);
 		}
 	
-		$this->response->setVariable('databases', $database);
+		$this->response->setVariable('database', $database);
 	
 		return $this->response;
 	}

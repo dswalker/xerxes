@@ -45,7 +45,7 @@
 <xsl:template name="module_nav">
 
 	<xsl:call-template name="module_nav_display">
-		<xsl:with-param name="url">databases/subject?id=<xsl:value-of select="categories/id" /></xsl:with-param>
+		<xsl:with-param name="url">databases/subject?id=<xsl:value-of select="category/id" /></xsl:with-param>
 	</xsl:call-template>
 
 </xsl:template>
@@ -143,7 +143,7 @@
 				
 					<ul class="nav" style="width:100%">
 						<li style="float:right">
-							<a id="delete-category" class="delete-confirm" href="{//request/controller}/delete-category?id={categories/id}" 
+							<a id="delete-category" class="delete-confirm" href="{//request/controller}/delete-category?id={category/id}" 
 								style="background-color:#400; border: 1px solid #efefef; border-top: 0px" role="button"> 
 								<i class="icon-trash"></i>&nbsp; Delete Category
 							</a>							
@@ -196,7 +196,7 @@
 		aria-labelledby="database-modal-add-subcategory-label" aria-hidden="true">
 	
 		<form action="{//request/controller}/add-subcategory">
-			<input type="hidden" name="category" value="{categories/normalized}" />
+			<input type="hidden" name="category" value="{category/normalized}" />
 			<input type="hidden" name="return" value="{//request/server/request_uri}" />
 
 			<div class="modal-header">
@@ -221,7 +221,7 @@
 	
 	</div>
 	
-	<xsl:for-each select="categories/subcategories/subcategory">
+	<xsl:for-each select="category/subcategories/subcategory">
 	
 		<div id="database-modal-asign-databases-{id}" class="modal hide fade" tabindex="-1" role="dialog" 
 			aria-labelledby="database-modal-assign-databases-label-{id}" aria-hidden="true">
@@ -238,7 +238,7 @@
 				</div>
 				
 				<form action="{//request/controller}/assign-databases">
-					<input type="hidden" name="category" value="{//categories/id}" />
+					<input type="hidden" name="category" value="{//category/id}" />
 					<input type="hidden" name="subcategory" value="{id}" />
 				
 					<div class="modal-body">
@@ -261,7 +261,7 @@
 		aria-labelledby="database-modal-add-librarian-label" aria-hidden="true">
 	
 		<form action="{//request/controller}/assign-librarian">
-			<input type="hidden" name="category" value="{categories/id}" />
+			<input type="hidden" name="category" value="{category/id}" />
 
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
@@ -285,8 +285,8 @@
 <xsl:template name="category_name">
 
 	<a class="edit" href="#" id="category" 
-		data-type="text" data-pk="{categories/id}" data-url="{//request/controller}/edit-category" data-title="Enter category name">
-		<xsl:value-of select="categories/name" />
+		data-type="text" data-pk="{category/id}" data-url="{//request/controller}/edit-category" data-title="Enter category name">
+		<xsl:value-of select="category/name" />
 	</a>	
 
 </xsl:template>
@@ -349,7 +349,7 @@
 	<div class="list-item-action-menu">
 	
 		<div style="position: absolute; top: -15px; right: -15px">
-			<a href="{//request/controller}/delete-database-sequence?id={../id};category={//categories/id}" 
+			<a href="{//request/controller}/delete-database-sequence?id={../id};category={//category/id}" 
 				class="btn btn-small delete-confirm-fade" data-source="database_{../id}">
 				<i class="icon-trash"></i> Remove
 			</a>
@@ -399,7 +399,7 @@
 			<tr>
 				<td class="facet-multi-selector">
 					<input type="checkbox" id="librarian-select-{id}" class="facet-multi-option-include" name="librarian" value="{id}">
-						<xsl:if test="id = //categories/librarian_sequences/librarian_sequence/librarian/id">
+						<xsl:if test="id = //category/librarian_sequences/librarian_sequence/librarian/id">
 							<xsl:attribute name="checked">checked</xsl:attribute>
 						</xsl:if>
 					</input>
@@ -423,7 +423,7 @@
 
 <xsl:template name="librarian_edit_actions">
 	&nbsp;
-	<a href="{//request/controller}/delete-librarian-sequence?id={../id};category={//categories/id}" class="btn btn-small" role="button" data-toggle="modal">
+	<a href="{//request/controller}/delete-librarian-sequence?id={../id};category={//category/id}" class="btn btn-small" role="button" data-toggle="modal">
 		<i class="icon-trash"></i>
 	</a>
 	
