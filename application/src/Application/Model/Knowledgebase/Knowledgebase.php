@@ -659,8 +659,10 @@ class Knowledgebase extends Doctrine
 					
 					$name = (string) $subcategory_xml['name']; 
 					$sequence = (string) $subcategory_xml['position'];
+					$metalib_sucategory_id = (string) $subcategory_xml['id'];
 					
 					$subcategory = new Subcategory();
+					$subcategory->setSourceId($metalib_sucategory_id);
 					$subcategory->setName($name);
 					$subcategory->setSidebar($sidebar);
 					$subcategory->setSequence($sequence);

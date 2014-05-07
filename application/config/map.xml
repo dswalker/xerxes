@@ -24,6 +24,11 @@
 			<path index="3" param="id" />
 		</action>
 	</controller>
+	<controller name="embed">
+		<action name="subject">
+			<path index="3" param="subject" />
+		</action>
+	</controller>
 	<controller name="ebsco">
 		<action name="results" restricted="true" />
 		<action name="record" restricted="true" />

@@ -69,6 +69,7 @@
 	<xsl:param name="show_title">true</xsl:param>
 	<xsl:param name="show_subcategories">true</xsl:param>
 	<xsl:param name="show_database_description">true</xsl:param>
+	<xsl:param name="show_individual_subcategory" />
 	
 	<xsl:if test="$show_title = 'true'">
 		<h1>
@@ -82,13 +83,32 @@
 			
 			<ul data-target="databases-edit/reorder-subcategories" data-category="{$category}">
 			
-				<xsl:for-each select="category/subcategories/subcategory[not(sidebar) or sidebar = 0]">
-				
-					<xsl:call-template name="subject_subcategory">
-						<xsl:with-param name="show_description" select="$show_database_description" />
-					</xsl:call-template>
-				
-				</xsl:for-each>
+				<xsl:choose>
+					<xsl:when test="$show_individual_subcategory != ''">
+
+						<xsl:for-each select="category/subcategories/subcategory[id = $show_individual_subcategory or source_id = $show_individual_subcategory]">
+						
+							<xsl:call-template name="subject_subcategory">
+								<xsl:with-param name="show_description" select="$show_database_description" />
+							</xsl:call-template>
+						
+						</xsl:for-each>
+					
+					</xsl:when>
+					<xsl:otherwise>
+		
+						<xsl:for-each select="category/subcategories/subcategory[not(sidebar) or sidebar = 0]">
+						
+							<xsl:call-template name="subject_subcategory">
+								<xsl:with-param name="show_description" select="$show_database_description" />
+							</xsl:call-template>
+						
+						</xsl:for-each>
+					
+					</xsl:otherwise>
+				</xsl:choose>
+			
+
 			
 			</ul>
 		

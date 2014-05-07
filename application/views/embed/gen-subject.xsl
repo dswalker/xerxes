@@ -74,13 +74,13 @@
 									<select id="disp_show_title" name="disp_show_title">
 										<option value="true">
 											<xsl:if test="request/disp_show_title = 'true'">
-											<xsl:attribute name="selected">selected</xsl:attribute>
+												<xsl:attribute name="selected">selected</xsl:attribute>
 											</xsl:if>
 											<xsl:value-of select="$text_snippet_display_yes" />
 										</option>
 										<option value="false">
 											<xsl:if test="request/disp_show_title = 'false'">
-											<xsl:attribute name="selected">selected</xsl:attribute>
+												<xsl:attribute name="selected">selected</xsl:attribute>
 											</xsl:if>
 											<xsl:value-of select="$text_snippet_display_no" />
 										</option>
@@ -93,13 +93,13 @@
 									<select name="disp_show_search" id="disp_show_search">
 										<option value="true">
 											<xsl:if test="request/disp_show_search = 'true'">
-											<xsl:attribute name="selected">selected</xsl:attribute>
+												<xsl:attribute name="selected">selected</xsl:attribute>
 											</xsl:if>
 											<xsl:value-of select="$text_snippet_display_yes" />
 										</option>
 										<option value="false">
 											<xsl:if test="request/disp_show_search = 'false'">
-											<xsl:attribute name="selected">selected</xsl:attribute>
+												<xsl:attribute name="selected">selected</xsl:attribute>
 											</xsl:if>
 											<xsl:value-of select="$text_snippet_display_no" />
 										</option>
@@ -113,13 +113,13 @@
 								<select name="disp_show_subcategories" id="disp_show_subcategories">
 									<option value="true">
 										<xsl:if test="request/disp_show_subcategories = 'true'">
-										<xsl:attribute name="selected">selected</xsl:attribute>
+											<xsl:attribute name="selected">selected</xsl:attribute>
 										</xsl:if>
 										<xsl:value-of select="$text_snippet_display_yes" />
 									</option>
 									<option value="false">
 										<xsl:if test="request/disp_show_subcategories = 'false'">
-										<xsl:attribute name="selected">selected</xsl:attribute>
+											<xsl:attribute name="selected">selected</xsl:attribute>
 										</xsl:if>      
 										<xsl:value-of select="$text_snippet_display_no" />
 									</option>
@@ -134,7 +134,7 @@
 										<option value=""><xsl:value-of select="$text_snippet_display_all" /></option>
 										<xsl:for-each select="//subcategory[not(sidebar) or sidebar = 0]">
 											<option>
-												<xsl:if test="request/disp_only_subcategory = id">
+												<xsl:if test="//request/disp_only_subcategory = id or //request/disp_only_subcategory = source_id">
 													<xsl:attribute name="selected">selected</xsl:attribute>
 												</xsl:if>
 												<xsl:attribute name="value">
@@ -153,13 +153,13 @@
 								<select id="disp_embed_css" name="disp_embed_css">
 									<option value="true">
 										<xsl:if test="request/disp_embed_css = 'true'">
-										<xsl:attribute name="selected">selected</xsl:attribute>
+											<xsl:attribute name="selected">selected</xsl:attribute>
 										</xsl:if>
 										<xsl:value-of select="$text_snippet_display_yes" />
 									</option>
 									<option value="false">
 										<xsl:if test="request/disp_embed_css = 'false'">
-										<xsl:attribute name="selected">selected</xsl:attribute>
+											<xsl:attribute name="selected">selected</xsl:attribute>
 										</xsl:if>      
 										<xsl:value-of select="$text_snippet_display_no" />
 									</option>

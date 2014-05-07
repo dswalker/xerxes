@@ -25,6 +25,12 @@ class Subcategory
 {
 	/** @Id @Column(type="integer") @GeneratedValue **/
 	protected $id;
+
+	/**
+	 * @Column(type="string")
+	 * @var string
+	 */
+	protected $source_id;
 	
 	/**
 	 * @Column(type="string")
@@ -122,8 +128,24 @@ class Subcategory
 	public function getSidebar()
 	{
 		return $this->sidebar;
-	}	
+	}
 
+	/**
+	 * @param string $id
+	 */
+	public function setSourceId($id)
+	{
+		$this->source_id = $id;
+	}
+	
+	/**
+	 * return string
+	 */
+	public function getSourceId()
+	{
+		return $this->source_id;
+	}	
+	
 	/**
 	 * @param Category $category
 	 */

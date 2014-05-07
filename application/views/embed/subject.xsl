@@ -101,6 +101,7 @@
 		<xsl:with-param name="show_title">false</xsl:with-param>
 		<xsl:with-param name="show_subcategories" select="$show_subcategories" />
 		<xsl:with-param name="show_database_description">false</xsl:with-param>
+		<xsl:with-param name="show_individual_subcategory" select="request/disp_only_subcategory" />
 	</xsl:call-template>
 
 </xsl:template>
