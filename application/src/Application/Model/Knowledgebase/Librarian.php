@@ -25,7 +25,13 @@ use Xerxes\Utility\Parser;
 class Librarian
 {
 	/** @Id @Column(type="integer") @GeneratedValue **/
-	protected $id;	
+	protected $id;
+	
+	/**
+	 * @Column(type="string")
+	 * @var string
+	 */
+	protected $source_id;	
 	
 	/**
 	 * @Column(type="string")
@@ -294,6 +300,23 @@ class Librarian
 	{
 		$this->office_hours = $office_hours;
 	}
+	
+	
+	/**
+	 * @return @string
+	 */
+	public function getSourceId()
+	{
+		return $this->source_id;
+	}
+	
+	/**
+	 * @param string $source_id
+	 */
+	public function setSourceId($source_id)
+	{
+		$this->source_id = $source_id;
+	}	
 
 	/**
 	 * @param LibrarianSequence $sequence
