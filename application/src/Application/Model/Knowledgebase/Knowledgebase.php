@@ -87,7 +87,7 @@ class Knowledgebase extends Doctrine
 	{
 		// get category
 		
-		$category = $this->getCategory($category_id);
+		$category = $this->getCategoryById($category_id);
 		
 		// create subcategory
 		
@@ -692,7 +692,6 @@ class Knowledgebase extends Doctrine
 		}
 		
 		$this->entityManager->flush();
-		$this->entityManager->clear();
 	}
 	
 	/**
