@@ -146,11 +146,28 @@ dd, dt, li {
 
 /** SIDEBAR **/
 
-.sidebar {
-	background-color: #e9e9e9;
+.sidebar {	
+	background-color: #f0f0f0;
+	background-image: url(../images/bg-long-light.gif);
+	background-repeat: repeat-x;
+	background-position: top;
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 2px;
+	border-left-width: 1px;
+	border-top-style: solid;
+	border-right-style: solid;
+	border-bottom-style: solid;
+	border-left-style: solid;
+	border-top-color: #CCCCCC;
+	border-right-color: #CCCCCC;
+	border-bottom-color: #999999;
+	border-left-color: #CCCCCC;
+	border-radius: 5px;
+	
 	padding: 1.3em;
 	color: #333;
-}	
+}
 
 .sidebar .box {
 	margin-left: 1em;
@@ -1022,6 +1039,10 @@ td.title-cell {
 
 .subject-list h2 {
 	margin-top: 40px;
+}
+
+.sidebar h2:first-child {
+	margin-top: 0;
 }
 
 .sidebar .subject-list {
