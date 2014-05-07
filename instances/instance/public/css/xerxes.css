@@ -1016,11 +1016,11 @@ td.title-cell {
 	color: green;
 }
 
-#subject-list, ul.databases-list {
+.subject-list, ul.databases-list {
 	margin-left: 15px;
 }
 
-#subject-list h2 {
+.subject-list h2 {
 	margin-top: 40px;
 }
 

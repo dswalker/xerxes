@@ -75,7 +75,7 @@
 			margin-bottom: 10px;
 		}
 		.list-item-action {
-			margin-bottom: -20px;
+			margin-bottom: -40px;
 		}
 		.list-item-buttons {
 			position: absolute; 
