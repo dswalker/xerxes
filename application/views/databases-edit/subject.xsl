@@ -84,7 +84,7 @@
 		}
 		
 		.sidebar .list-item-action {
-			margin-bottom: 0px;
+			margin-bottom: -20px;
 			text-align: right;
 		}
 					
