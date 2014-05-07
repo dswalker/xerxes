@@ -163,6 +163,39 @@ class Response extends HttpFoundation\Response
 		{
 			$this->noCache();
 		}
+
+		// you can append 'format=embed_html_js' to the querystring to output
+		// the content as a javascript source document with everything wrapped in
+		// document.write() statements		
+		
+		if ( $format == "embed_html_js" )
+		{
+			$this->headers->set('Content-type', 'text/javascript');
+			
+			$output = $this->getContent();
+			
+			// first escape any single quotes
+		
+			$output = str_replace( "'", "\\'", $output );
+		
+			// now break the html into lines and output with document.write('')
+		
+			$lines = explode( "\n", $output );
+			$new_lines = array ("// Javascript output. " );
+		
+			foreach ( $lines as $line )
+			{
+				array_push( $new_lines, "document.write('" . $line . "');" );
+			}
+		
+			$output = implode( "\n", $new_lines );
+			
+			$this->setContent($output);
+		}
+		elseif ( $format == "text" )
+		{
+			$this->headers->set('Content-type', 'text/plain');
+		}	
 		
 		return $this;
 	}
