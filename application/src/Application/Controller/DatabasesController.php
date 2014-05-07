@@ -118,6 +118,11 @@ class DatabasesController extends ActionController
 		$id = $this->request->getParam('id');
 	
 		$database = $this->knowledgebase->getDatabase($id);
+		
+		if ( $database == null )
+		{
+			$database = $this->knowledgebase->getDatabaseBySourceId($id);
+		}
 	
 		$this->response->setVariable('databases', $database);
 	

@@ -272,6 +272,31 @@ class Knowledgebase extends Doctrine
 	{
 		return $this->entityManager->find('Application\Model\Knowledgebase\Database', $id);
 	}
+	
+	/**
+	 * Get databases from the knowledgebase
+	 *
+	 * @param string $source_id
+	 * 
+	 * @return Database|null
+	 */
+	
+	public function getDatabaseBySourceId($source_id)
+	{
+		$databases_repo = $this->entityManager->getRepository('Application\Model\Knowledgebase\Database');
+		$results = $databases_repo->findBy(
+			array('source_id' => $source_id)
+		);
+		
+		if ( count($results) == 1)
+		{
+			return $results[0];
+		}
+		else
+		{
+			return null;
+		}
+	}
 
 	/**
 	 * Get librarians(s) by ID
@@ -283,6 +308,31 @@ class Knowledgebase extends Doctrine
 	public function getLibrarian($id)
 	{
 		return $this->entityManager->find('Application\Model\Knowledgebase\Librarian', $id);
+	}
+	
+	/**
+	 * Get Librarian from the knowledgebase
+	 *
+	 * @param string $source_id
+	 *
+	 * @return Librarian|null
+	 */
+	
+	public function getLibrarianBySourceId($source_id)
+	{
+		$databases_repo = $this->entityManager->getRepository('Application\Model\Knowledgebase\Librarian');
+		$results = $databases_repo->findBy(
+			array('source_id' => $source_id)
+		);
+	
+		if ( count($results) == 1)
+		{
+			return $results[0];
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	/**
@@ -451,8 +501,6 @@ class Knowledgebase extends Doctrine
 		$sql = 'SELECT * FROM xerxes_databases';
 		$results = $this->datamap()->select($sql);
 		
-		echo "<p>Original: " . count($results) . "</p>";
-		
 		$x = 0;
 		
 		foreach ( $results as $result )
@@ -462,8 +510,7 @@ class Knowledgebase extends Doctrine
 			$title = (string) $xml->title_display;
 			$metalib_id = (string) $xml->metalib_id;
 			
-			$active = (string) $xml->active;
-			$active = (int) $xml->proxy;
+			$active = (int) $xml->active;
 			$subscription = (int) $xml->proxy;
 			
 			$creator = (string) $xml->creator;
@@ -473,57 +520,83 @@ class Knowledgebase extends Doctrine
 			$time_span = (string) $xml->time_span;
 			$link_guide = (string) $xml->link_guide;
 			
+			$email = (string) $xml->library_email;
+			$phone = (string) $xml->library_telephone;
+			$office = (string) $xml->library_address;
+			$image = (string) $xml->library_contact;
+			$office_hours = (string) $xml->library_hours;
+			
 			$type = (string) $xml->type; // @todo: assign types
 			
-			$database = new Database();
-			
-			$database->setOwner($this->owner);
-			$database->setTitle($title);
-			$database->setSourceId($metalib_id);
-			$database->setCreator($creator);
-			$database->setPublisher($publisher);
-			$database->setDescription($description);
-			$database->setLink($link);
-			$database->setCoverage($time_span);
-			$database->setLinkGuide($link_guide);
-			
-			foreach ( $xml->title_alternate as $title_alternate )
+			if ( $type == 'Librarian')
 			{
-				$database->addAlternateTitle((string) $title_alternate);
-			}
-			
-			$notes = "";
-			
-			foreach ( $xml->note_cataloger as $note )
-			{
-				$notes = " " . (string) $note;
-			}
-			
-			foreach ( $xml->note as $note )
-			{
-				$notes = " " . (string) $note;
-			}
-			
-			$notes = trim($notes);
-			
-			$database->setNotes($notes);
-			
-			foreach ( $xml->keyword as $keyword )
-			{
-				$keyword_array = explode(',', (string) $keyword);
+				$librarian = new Librarian();
+				$librarian->setSourceId($metalib_id);
+				$librarian->setImage($image);
+				$librarian->setEmail($email);
+				$librarian->setLink($link);
+				$librarian->setName($title);
+				$librarian->setPhone($phone);
+				$librarian->setOffice($office);
+				$librarian->setOfficeHours($office_hours);
 				
-				foreach ( $keyword_array as $keyword_term )
+				$this->entityManager->persist($librarian);
+			}
+			else
+			{
+				$database = new Database();
+				
+				$database->setOwner($this->owner);
+				$database->setTitle($title);
+				$database->setSourceId($metalib_id);
+				$database->setCreator($creator);
+				$database->setPublisher($publisher);
+				$database->setDescription($description);
+				$database->setLink($link);
+				$database->setCoverage($time_span);
+				$database->setLinkGuide($link_guide);
+				
+				foreach ( $xml->title_alternate as $title_alternate )
 				{
-					$keyword_term = trim($keyword_term);
-					
-					$database->addKeyword($keyword_term);
+					$database->addAlternateTitle((string) $title_alternate);
 				}
+				
+				$notes = "";
+				
+				foreach ( $xml->note_cataloger as $note )
+				{
+					$notes = " " . (string) $note;
+				}
+				
+				foreach ( $xml->note as $note )
+				{
+					$notes = " " . (string) $note;
+				}
+				
+				$notes = trim($notes);
+				
+				$database->setNotes($notes);
+				
+				foreach ( $xml->keyword as $keyword )
+				{
+					$keyword_array = explode(',', (string) $keyword);
+					
+					foreach ( $keyword_array as $keyword_term )
+					{
+						$keyword_term = trim($keyword_term);
+						
+						$database->addKeyword($keyword_term);
+					}
+				}
+				
+				$this->entityManager->persist($database);
 			}
 			
 			$x++;
-			
-			$this->entityManager->persist($database);
 		}
+		
+		$this->entityManager->flush();
+		$this->entityManager->clear();
 		
 		echo "<p>Second:$x</p>";
 		
@@ -545,26 +618,74 @@ class Knowledgebase extends Doctrine
 			
 			$subject_xml = simplexml_load_file($url);
 			
-			foreach ( $subject_xml->category->subcategory as $subcategory_xml )
+			// subcategories
+			
+			$nodes = $subject_xml->xpath('//category|//sidebar');
+			
+			foreach ( $nodes as $node )
 			{
-				$name = (string) $subcategory_xml['name']; 
-				$sequence = (string) $subcategory_xml['position'];
+				$sidebar = false;
 				
-				$subcategory = new Subcategory();
-				$subcategory->setName($name);
-				$subcategory->setSequence($sequence);
+				if ( $node->getName() == 'sidebar')
+				{
+					$sidebar = true;
+				}
 				
-				$this->entityManager->persist($subcategory);
-				
-				$category->addSubcategory($subcategory);
+				foreach ( $node->subcategory as $subcategory_xml )
+				{
+					if ( (string) $subcategory_xml->database->type == 'Librarian')
+					{
+						foreach ( $subcategory_xml->database->metalib_id as $metalib )
+						{
+							$metalib_id = (string) $metalib;
+							
+							$librarian = $this->getLibrarianBySourceId($metalib_id);
+							
+							$librarian_sequence = new LibrarianSequence();
+							$librarian_sequence->setLibrarian($librarian);
+							
+							$category->addLibrarianSequence($librarian_sequence);
+						}
+						
+						continue;
+					}
+					
+					
+					$name = (string) $subcategory_xml['name']; 
+					$sequence = (string) $subcategory_xml['position'];
+					
+					$subcategory = new Subcategory();
+					$subcategory->setName($name);
+					$subcategory->setSidebar($sidebar);
+					$subcategory->setSequence($sequence);
+					
+					$this->entityManager->persist($subcategory);
+					
+					// databases
+					
+					foreach ( $subcategory_xml->database as $database )
+					{
+						$metalib_id = (string) $database->metalib_id;
+						
+						$database = $this->getDatabaseBySourceId($metalib_id);
+						
+						if ( $database != null )
+						{
+							$sequence = new DatabaseSequence();
+							$sequence->setDatabase($database);
+							$subcategory->addDatabaseSequence($sequence);
+						}
+					}
+					
+					$category->addSubcategory($subcategory);
+				}
 			}
 			
 			$this->entityManager->persist($category);
 		}
 		
 		$this->entityManager->flush();
-		
-		
+		$this->entityManager->clear();
 	}
 	
 	/**
