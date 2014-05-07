@@ -1028,6 +1028,28 @@ td.title-cell {
 	margin-top: 0;
 }
 
+.sidebar .subject-list {
+	margin-left: 0;
+}
+
+.sidebar .databases-list li {
+	list-style: disc;
+	margin-left: 10px;
+	margin-bottom: 3px;
+}
+
+.sidebar ul.databases-list {
+	margin-bottom: 20px;
+}
+
+.sidebar .database-title a {
+	font-weight: 100;
+}
+
+.librarian {
+	margin-left: 20px;
+}
+
 .librarian h3 {
 	margin-bottom: 0;
 }
