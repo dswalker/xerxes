@@ -27,7 +27,7 @@ class Subcategory
 	protected $id;
 
 	/**
-	 * @Column(type="string")
+	 * @Column(type="string", nullable=true)
 	 * @var string
 	 */
 	protected $source_id;
