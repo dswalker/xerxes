@@ -602,9 +602,8 @@ class Knowledgebase extends Doctrine
 		}
 		
 		$this->entityManager->flush();
-		$this->entityManager->clear();
 		
-		echo "<p>Second:$x</p>";
+		$this->entityManager = $this->getEntityManager(array(__DIR__));
 		
 		// subjects
 		
