@@ -1024,8 +1024,8 @@ td.title-cell {
 	margin-top: 40px;
 }
 
-.sidebar h2 {
-	margin-top: 0;
+.sidebar {
+	padding-top: 1px;
 }
 
 .sidebar .subject-list {
@@ -1065,5 +1065,33 @@ td.title-cell {
 
 #bd div.librarian dl {
 	margin-bottom: 3em;
+}
+
+/** EMBED **/
+
+#snippet-control {
+	padding: 20px;
+}
+
+#snippet-control h2 {
+	margin-left: -20px;
+}
+
+#snippet-display-table td {
+	padding-right: 1em;
+}
+
+.display-textbox {
+	width: 100%;
+	font-size: 80%;
+}
+
+#snippet-subcategories {
+	margin: 1.3em;
+}
+
+#bd p.option-info {
+	margin: 1.3em;
+	color: #666;
 }
 	

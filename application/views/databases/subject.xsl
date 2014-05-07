@@ -66,25 +66,35 @@
 </xsl:template>
 
 <xsl:template name="subject_databases_list">
-	<xsl:param name="show_only_subcategory" select="false()" />
+	<xsl:param name="show_title">true</xsl:param>
+	<xsl:param name="show_subcategories">true</xsl:param>
+	<xsl:param name="show_database_description">true</xsl:param>
 	
-	<h1>
-		<xsl:call-template name="category_name" />
-	</h1>
+	<xsl:if test="$show_title = 'true'">
+		<h1>
+			<xsl:call-template name="category_name" />
+		</h1>
+	</xsl:if>
 
-	<div class="subject-list">
-		
-		<ul data-target="databases-edit/reorder-subcategories" data-category="{$category}">
-		
-			<xsl:for-each select="category/subcategories/subcategory[not(sidebar) or sidebar = 0]">
+	<xsl:if test="$show_subcategories = 'true'">
+
+		<div class="subject-list">
 			
-				<xsl:call-template name="subject_subcategory" />
+			<ul data-target="databases-edit/reorder-subcategories" data-category="{$category}">
 			
-			</xsl:for-each>
+				<xsl:for-each select="category/subcategories/subcategory[not(sidebar) or sidebar = 0]">
+				
+					<xsl:call-template name="subject_subcategory">
+						<xsl:with-param name="show_description" select="$show_database_description" />
+					</xsl:call-template>
+				
+				</xsl:for-each>
+			
+			</ul>
 		
-		</ul>
+		</div>
 	
-	</div>
+	</xsl:if>
 	
 </xsl:template>
 
