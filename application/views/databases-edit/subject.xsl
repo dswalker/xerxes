@@ -196,7 +196,7 @@
 		aria-labelledby="database-modal-add-subcategory-label" aria-hidden="true">
 	
 		<form action="{//request/controller}/add-subcategory">
-			<input type="hidden" name="category" value="{category/normalized}" />
+			<input type="hidden" name="category" value="{category/id}" />
 			<input type="hidden" name="return" value="{//request/server/request_uri}" />
 
 			<div class="modal-header">
