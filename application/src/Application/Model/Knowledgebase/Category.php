@@ -64,7 +64,7 @@ class Category
 	public function __construct()
 	{
 		$this->subcategories = new ArrayCollection();
-		$this->librarians = new ArrayCollection();
+		$this->librarian_sequences = new ArrayCollection();
 	}	
 	
 	/**
@@ -221,9 +221,12 @@ class Category
 	
 		foreach ( $this as $key => $value )
 		{
-			if ( ($key == 'subcategories' || $key == 'librarian_sequences') && $deep == true )
+			if ( $key == 'subcategories' || $key == 'librarian_sequences' )
 			{
-				$final[$key] = $value->toArray();
+				if ( $deep == true )
+				{
+					$final[$key] = $value->toArray();
+				}
 			}
 			else
 			{
