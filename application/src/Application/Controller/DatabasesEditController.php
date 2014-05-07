@@ -57,7 +57,7 @@ class DatabasesEditController extends DatabasesController
 	
 		$category = $this->knowledgebase->getCategoryById($id);
 	
-		$this->response->setVariable('categories', $category);
+		$this->response->setVariable('category', $category);
 		
 		// add title list
 		
