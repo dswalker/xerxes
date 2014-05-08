@@ -103,8 +103,8 @@
 <xsl:template name="main">
 	
 	<xsl:choose>
-		<xsl:when test="databases">
-			<xsl:for-each select="databases">
+		<xsl:when test="database">
+			<xsl:for-each select="database">
 				<xsl:call-template name="databases_edit" />
 			</xsl:for-each>
 		</xsl:when>
