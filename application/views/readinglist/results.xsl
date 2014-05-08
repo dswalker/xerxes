@@ -201,8 +201,8 @@
 	
 					</div>
 					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary"><xsl:value-of select="$text_facets_submit" /></button>
 						<button class="btn" data-dismiss="modal" aria-hidden="true"><xsl:value-of select="$text_facets_close" /></button>
-						<button class="btn btn-primary"><xsl:value-of select="$text_facets_submit" /></button>
 					</div>
 				</form>	
 			
