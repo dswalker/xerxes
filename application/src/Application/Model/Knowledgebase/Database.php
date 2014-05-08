@@ -130,6 +130,12 @@ class Database
 	protected $link_guide = null;
 	
 	/**
+	 * @Column(type="text", nullable=true)
+	 * @var string
+	 */
+	protected $type;
+	
+	/**
 	 * @OneToMany(targetEntity="AlternateTitle", mappedBy="database", cascade={"persist"})
 	 * @var AlternateTitle[]
 	 */
@@ -146,13 +152,6 @@ class Database
 	 * @var DatabaseSequence[]
 	 */
 	protected $database_sequence;
-	
-	/**
-	 * @ManyToMany(targetEntity="Type", inversedBy="databases")
-	 * @JoinTable(name="databases_types")
-	 * @var Type[]
-	 */
-	protected $types;
 	
 	/**
 	 * Create new Database
@@ -429,7 +428,23 @@ class Database
 	{
 		$this->link_guide = $link_guide;
 	}
-
+	
+	/**
+	 * @return string
+	 */
+	public function getType()
+	{
+		return $this->type;
+	}
+	
+	/**
+	 * @param string $type
+	 */
+	public function setType($type)
+	{
+		$this->type = $type;
+	}
+	
 	/**
 	 * @return AlternateTitle[]
 	 */
@@ -443,8 +458,7 @@ class Database
 	 */
 	public function addAlternateTitle($name) 
 	{
-		$alternate_title = new AlternateTitle();
-		$alternate_title->setName($name);
+		$alternate_title = new AlternateTitle($name);
 		$alternate_title->setDatabase($this);
 		
 		$this->alternate_titles->add($alternate_title);
@@ -478,21 +492,10 @@ class Database
 	}
 	
 	/**
-	 * @param Type $type
+	 * Proxied version of URL
+	 * 
+	 * @return string
 	 */
-	public function addType(Type $type)
-	{
-		$type->addDatabase($this);
-		$this->types[] = $type;
-	}
-	
-	/**
-	 * @return Type[]
-	 */
-	public function getTypes()
-	{
-		return $this->types->toArray();
-	}
 	
 	public function getProxyUrl()
 	{
@@ -522,13 +525,13 @@ class Database
 			{
 				continue;
 			}
-			elseif ( $key == 'keywords' || $key == 'alternate_titles' || $key == 'types' )
+			elseif ( $key == 'keywords' || $key == 'alternate_titles' )
 			{
 				$second = array();
 				
 				foreach ( $this->$key->toArray() as $object )
 				{
-					$second[] = $object;
+					$second[] = $object->getValue();
 				}
 				
 				$final[$key] = $second;

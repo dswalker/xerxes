@@ -28,22 +28,24 @@ class AlternateTitle
 	 * @Column(type="string") 
 	 * @var string
 	 */
-	protected $name;
+	protected $value;
 	
 	/**
 	 * @ManyToOne(targetEntity="Database", inversedBy="alternate_titles")
+	 * @JoinColumn(name="database_id", referencedColumnName="id", onDelete="CASCADE")
 	 * @var Database
 	 */
 	protected $database;
 	
 	/**
-	 * @return Database
+	 * Create new Alternate Title
 	 */
-	public function getDatabase()
+	
+	public function __construct($value)
 	{
-		return $this->database;
-	}
-
+		$this->value = $value;
+	}	
+	
 	/**
 	 * @param Database $database
 	 */
@@ -53,17 +55,12 @@ class AlternateTitle
 	}
 
 	/**
+	 * Get value
 	 * @return string
 	 */
-	public function getName() {
-		return $this->name;
-	}
-
-	/**
-	 * @param string $name
-	 */
-	public function setName($name) 
+	
+	public function getValue()
 	{
-		$this->name = $name;
+		return $this->value;
 	}
 }

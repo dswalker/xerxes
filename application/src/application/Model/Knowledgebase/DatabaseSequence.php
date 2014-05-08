@@ -35,7 +35,7 @@ class DatabaseSequence
 	/**
 	 * @ManyToOne(targetEntity="Database", inversedBy="database_sequence", cascade={"persist"})
 	 * @JoinColumn(name="database_id", referencedColumnName="id", onDelete="CASCADE")
-	 * @var Database[]
+	 * @var Database
 	 */	
 	protected $database;
 	

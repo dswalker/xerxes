@@ -561,6 +561,7 @@ class Knowledgebase extends Doctrine
 				$database->setLink($link);
 				$database->setCoverage($time_span);
 				$database->setLinkGuide($link_guide);
+				$database->setType($type);
 				
 				foreach ( $xml->title_alternate as $title_alternate )
 				{

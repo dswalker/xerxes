@@ -31,6 +31,8 @@ class Keyword
 	
 	/**
 	 * @ManyToOne(targetEntity="Database", inversedBy="keywords")
+	 * @JoinColumn(name="database_id", referencedColumnName="id", onDelete="CASCADE")
+	 * @var Database
 	 */
 	protected $database;
 	
