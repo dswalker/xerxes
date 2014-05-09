@@ -93,6 +93,9 @@
 			<xsl:when test="count(//categories/category) &lt;= 10">
 				<xsl:text>1</xsl:text>
 			</xsl:when>
+			<xsl:when test="//config/num_columns">
+				<xsl:value-of select="//config/num_columns" />
+			</xsl:when>
 			<xsl:otherwise>
 				<xsl:text>2</xsl:text>
 			</xsl:otherwise>
@@ -100,12 +103,13 @@
 	</xsl:param>
 	<xsl:param name="iteration_value">1</xsl:param>
 	
+	<xsl:variable name="width" select="floor(12 div $num_columns)" />
 	<xsl:variable name="total" select="count(categories/category)" />
 	<xsl:variable name="numRows" select="ceiling($total div $num_columns)"/>
 
 	<xsl:if test="$iteration_value &lt;= $num_columns">
 		
-		<div class="span4">
+		<div class="span{$width}">
 			
 			<ul>
 			<xsl:for-each select="categories/category[position() &gt; ($numRows * ($iteration_value -1)) and 
