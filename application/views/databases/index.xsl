@@ -68,8 +68,8 @@
 
 <xsl:template name="main">
 
-	<h1>Categories</h1>
-	
+	<h1><xsl:value-of select="$text_databases_category_pagename" /></h1>
+
 	<div style="margin-bottom: 30px">
 		[ <a href="{//request/controller}/alphabetical">Databases A-Z</a> ]
 	</div>
@@ -77,7 +77,9 @@
 	<div class="databases-categories-list">
 		<xsl:call-template name="loop_columns" />
 	</div>
-		
+	
+	<xsl:call-template name="databases_edit" />
+	
 </xsl:template>
 
 <!-- 
@@ -138,5 +140,7 @@
 	<a href="{//request/controller}/subject/{normalized}"><xsl:value-of select="name" /></a>
 
 </xsl:template>
+
+<xsl:template name="databases_edit" />
 
 </xsl:stylesheet>

@@ -44,29 +44,13 @@
 
 </xsl:template>
 
-<xsl:template name="main">
-
-	<h1>Edit Categories</h1>
-
-	<div style="margin-bottom: 30px">
-		[ <a href="{//request/controller}/alphabetical">Databases A-Z</a> ]
-	</div>
-		
-	<div class="databases-categories-list">
-		<xsl:call-template name="loop_columns" />
-	</div>
-	
-	<xsl:call-template name="database_category_add" />
-	
-</xsl:template>
-
 <xsl:template name="category_link">
 
 	<a href="{//request/controller}/subject?id={id}"><xsl:value-of select="name" /></a>
 
 </xsl:template>
 
-<xsl:template name="database_category_add">
+<xsl:template name="databases_edit">
 
 	<div class="navbar navbar-inverse navbar-fixed-bottom databases-edit">
 		<div class="navbar-inner">
