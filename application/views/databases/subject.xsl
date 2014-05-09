@@ -204,6 +204,16 @@
 		</div>
 		
 	</xsl:if>
+	
+	<xsl:call-template name="subject_embed" />
+
+</xsl:template>
+
+<xsl:template name="subject_embed">
+
+	<div style="margin-top: 2em">
+		<a href="embed/gen-subject?subject={//request/subject}"><i class="icon-code"></i> Embed this page in an external website</a>
+	</div>
 
 </xsl:template>
 
