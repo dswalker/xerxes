@@ -31,7 +31,7 @@ class Librarian
 	 * @Column(type="string")
 	 * @var string
 	 */
-	protected $source_id;	
+	protected $source_id = 'web';	
 	
 	/**
 	 * @Column(type="string")
