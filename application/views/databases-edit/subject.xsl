@@ -183,7 +183,6 @@
 	
 		<form action="{//request/controller}/add-subcategory">
 			<input type="hidden" name="category" value="{category/id}" />
-			<input type="hidden" name="return" value="{//request/server/request_uri}" />
 
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>

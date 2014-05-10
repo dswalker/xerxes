@@ -123,13 +123,12 @@ class DatabasesEditController extends DatabasesController
 	
 	public function addSubcategoryAction()
 	{
-		$return = $this->request->getParam('return');
-		$category_name = $this->request->getParam('category');
+		$category_id = $this->request->getParam('category');
 		$subcategory_name = $this->request->getParam('subcategory');
 	
-		$this->knowledgebase->addSubcategory($category_name, $subcategory_name);
+		$this->knowledgebase->addSubcategory($category_id, $subcategory_name);
 	
-		return $this->redirectTo($return);
+		return $this->returnToCategory($category_id);
 	}
 	
 	/**
@@ -161,13 +160,7 @@ class DatabasesEditController extends DatabasesController
 		
 		$this->knowledgebase->deleteSubcategory($subcategory_id);
 		
-		$return = array(
-			'controller' => $this->request->getParam('controller'),
-			'action' => 'subject',
-			'id' => $category_id
-		);
-	
-		return $this->redirectTo($return);
+		return $this->returnToCategory($category_id);
 	}
 	
 	/**
@@ -186,13 +179,7 @@ class DatabasesEditController extends DatabasesController
 		
 		$this->knowledgebase->update($subcategory);
 	
-		$return = array(
-			'controller' => $this->request->getParam('controller'),
-			'action' => 'subject',
-			'id' => $category_id
-		);
-	
-		return $this->redirectTo($return);
+		return $this->returnToCategory($category_id);
 	}
 
 	/**
@@ -213,15 +200,7 @@ class DatabasesEditController extends DatabasesController
 	
 		if ( $this->request->getParam("noredirect") == "" )
 		{
-			// construct return url back to reading list for results
-	
-			$params = array(
-				'controller' => $this->request->getParam('controller'),
-				'action' => 'subject',
-				'subject' => $category
-			);
-	
-			return $this->redirectTo($params);
+			return $this->returnToCategory($category);
 		}
 		else
 		{
@@ -248,15 +227,7 @@ class DatabasesEditController extends DatabasesController
 	
 		if ( $this->request->getParam("noredirect") == "" )
 		{
-			// construct return url back to reading list for results
-	
-			$params = array(
-				'controller' => $this->request->getParam('controller'),
-				'action' => 'subject',
-				'subject' => $category
-			);
-	
-			return $this->redirectTo($params);
+			return $this->returnToCategory($category);
 		}
 		else
 		{
@@ -275,13 +246,7 @@ class DatabasesEditController extends DatabasesController
 	
 		$this->knowledgebase->deleteDatabaseSequence($sequence_id);
 	
-		$return = array(
-			'controller' => $this->request->getParam('controller'),
-			'action' => 'subject',
-			'id' => $category_id
-		);
-	
-		return $this->redirectTo($return);
+		return $this->returnToCategory($category_id);
 	}	
 	
 	/**
@@ -490,13 +455,7 @@ class DatabasesEditController extends DatabasesController
 	
 		$this->knowledgebase->deleteLibrarianSequence($sequence_id);
 	
-		$return = array(
-			'controller' => $this->request->getParam('controller'),
-			'action' => 'subject',
-			'id' => $category_id
-		);
-	
-		return $this->redirectTo($return);
+		return $this->returnToCategory($category_id);
 	}
 
 	/**
@@ -611,6 +570,17 @@ class DatabasesEditController extends DatabasesController
 		}
 		
 		return $this->redirectTo($this->request->getParam('return'));
+	}
+	
+	protected function returnToCategory($category)
+	{
+		$params = array(
+			'controller' => $this->request->getParam('controller'),
+			'action' => 'subject',
+			'id' => $category
+		);
+		
+		return $this->redirectTo($params);
 	}
 	
 	protected function getDatabaseTitles()
