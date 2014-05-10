@@ -136,20 +136,20 @@ class Database
 	protected $type;
 	
 	/**
-	 * @OneToMany(targetEntity="AlternateTitle", mappedBy="database", cascade={"persist"})
-	 * @var AlternateTitle[]
+	 * @OneToMany(targetEntity="AlternateTitle", mappedBy="database", cascade={"persist", "remove"}, orphanRemoval=true)
+	 * @var ArrayCollection AlternateTitle[]
 	 */
 	protected $alternate_titles;
 	
 	/**
-	 * @OneToMany(targetEntity="Keyword", mappedBy="database", cascade={"persist"})
-	 * @var Keyword[]
+	 * @OneToMany(targetEntity="Keyword", mappedBy="database", cascade={"persist", "remove"}, orphanRemoval=true)
+	 * @var ArrayCollection Keyword[]
 	 */
 	protected $keywords;
 	
 	/**
 	 * @OneToMany(targetEntity="DatabaseSequence", mappedBy="database")
-	 * @var DatabaseSequence[]
+	 * @var ArrayCollection DatabaseSequence[]
 	 */
 	protected $database_sequence;
 	
@@ -471,12 +471,41 @@ class Database
 	{
 		return $this->keywords->toArray();
 	}
+	
+	/**
+	 * @param string $values
+	 */
+	public function setKeywords($values)
+	{
+		$keywords = explode(',', $values);
+		
+		// remove existing ones
+		
+		$this->keywords->clear();
+		
+		// add new ones
+		
+		foreach ( $keywords as $keyword )
+		{
+			$this->addKeyword($keyword);
+		}
+	}
 
 	/**
 	 * @param Keyword $keywords
 	 */
 	public function addKeyword($keyword) 
 	{
+		// don't add a keyword that already exists
+		
+		foreach ( $this->keywords as $keyword_object )
+		{
+			if ( $keyword_object->getValue() == $keyword )
+			{
+				return null;
+			}
+		}
+		
 		$keyword_object = new Keyword($keyword);
 		$keyword_object->setDatabase($this);
 		

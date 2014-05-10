@@ -146,21 +146,30 @@
 		  <div class="control-group">
 			<label class="control-label">Trial until</label>
 			<div class="controls">
-			  <input type="text" name="trial_new_expiry" class="datepicker" maxlength="10" size="10" 
-			  	placeholder="date when trial is over" value="{trial_new_expiry/date}" />
+			  <input type="text" name="date_trial_expiry" class="datepicker" maxlength="10" size="10" 
+			  	placeholder="date when trial is over" value="{substring(string(date_trial_expiry/date),1,10)}" />
 			</div>
 		  </div>
 		  <div class="control-group">
 			<label class="control-label">New until</label>
 			<div class="controls">
 			  <input type="text" name="date_new_expiry" class="datepicker" maxlength="10" size="10" 
-			  	placeholder="date no longer new"  value="{date_new_expiry/date}" />					  
+			  	placeholder="date no longer new"  value="{substring(string(date_new_expiry/date),1,10)}" />					  
 			</div>
 		  </div>	
 		  <div class="control-group">
 			<label class="control-label">Keywords</label>
 			<div class="controls">
-			  <input name="keywords" id="form-keywords" class="input-long" data-original-title="Coverage" data-placement="right" value="{keywords}" />			  	  
+			  <input name="keywords" id="form-keywords" class="input-long" data-original-title="Coverage" data-placement="right">
+			  	<xsl:attribute name="value">
+					<xsl:for-each select="keywords/keyword">
+						<xsl:value-of select="text()" />
+						<xsl:if test="following-sibling::keyword">
+							<xsl:text>,</xsl:text>
+						</xsl:if>
+					</xsl:for-each>
+				</xsl:attribute>
+			  </input>			  	  
 			</div>
 		  </div>  
 		  <div class="control-group">

@@ -281,7 +281,7 @@ class DatabasesEditController extends DatabasesController
 		$proxy = (bool) $this->request->getParam('proxy', false, false);
 		
 		$date_new_expiry = $this->request->getParam('date_new_expiry');
-		$date_trial_expiry = $this->request->getParam('date_new_expiry');
+		$date_trial_expiry = $this->request->getParam('date_trial_expiry');
 		
 		$keywords = $this->request->getParam('keywords');
 		$creator = $this->request->getParam('creator');
@@ -319,6 +319,7 @@ class DatabasesEditController extends DatabasesController
 		$database->setSearchHints($search_hints);
 		$database->setSourceId('web');
 		$database->setTitle($title);
+		$database->setKeywords($keywords);
 		
 		if ( $date_new_expiry != null )
 		{
@@ -338,16 +339,6 @@ class DatabasesEditController extends DatabasesController
 		foreach ( $alternate_titles as $alternate_title )
 		{
 			$database->addAlternateTitle($alternate_title);
-		}
-		
-		if ( $keywords != "" )
-		{
-			$keywords = explode(',', $keywords);
-			
-			foreach ( $keywords as $keyword )
-			{
-				$database->addKeyword($keyword);
-			}
 		}
 		
 		$this->knowledgebase->updateDatabase($database);
