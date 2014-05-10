@@ -1111,4 +1111,16 @@ td.title-cell {
 	margin: 1.3em;
 	color: #666;
 }
+
+.database-form-edit {
+	margin: 4em;
+}
+
+.database-form-edit input[type="checkbox"] {
+	margin: 0;
+	margin-top: 4px;
+}
+.input-long {
+	width: 400px;
+}
 	

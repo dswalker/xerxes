@@ -91,7 +91,7 @@
 	
 	<h1>Database</h1>
 	
-	<div style="margin: 4em">
+	<div class="database-form-edit">
 		
 		<form class="form-horizontal" action="{//request/controller}/update-database" method="post" id="database-form">	
 			<input type="hidden" name="postback" value="true" />
@@ -100,19 +100,19 @@
 		  <div class="control-group">
 			<label class="control-label" for="title">Title</label>
 			<div class="controls">
-			  <input type="text" name="title" style="width:400px" required="required" class="required" value="{title}" />
+			  <input type="text" name="title" class="input-long required" required="required" value="{title}" />
 			</div>
 		  </div>
 		  <div class="control-group">
 			<label class="control-label">Link</label>
 			<div class="controls">
-			  <input type="text" name="link" style="width:400px" placeholder="to the database" required="required" class="required" value="{link}" />
+			  <input type="text" name="link" class="input-long required" placeholder="to the database" required="required" value="{link}" />
 			</div>
 		  </div>
 		  <div class="control-group">
 			<label class="control-label">Description</label>
 			<div class="controls">
-			  <textarea name="description" style="width:400px" rows="8">
+			  <textarea name="description" class="input-long" rows="8">
 			  	<xsl:value-of select="description" />
 			  </textarea>
 			</div>
@@ -120,7 +120,7 @@
 		  <div class="control-group">
 			<label class="control-label">Coverage</label>
 			<div class="controls">
-			  <input type="text" name="coverage" style="width:400px" value="{coverage}" />
+			  <input type="text" name="coverage" class="input-long" value="{coverage}" />
 			</div>
 		  </div>
 		  <div class="control-group">
@@ -160,25 +160,25 @@
 		  <div class="control-group">
 			<label class="control-label">Keywords</label>
 			<div class="controls">
-			  <input name="keywords" id="form-keywords" style="width:400px" data-original-title="Coverage" data-placement="right" value="{keywords}" />			  	  
+			  <input name="keywords" id="form-keywords" class="input-long" data-original-title="Coverage" data-placement="right" value="{keywords}" />			  	  
 			</div>
 		  </div>  
 		  <div class="control-group">
 			<label class="control-label">Creator</label>
 			<div class="controls">
-			  <input type="text" name="creator" style="width:400px" value="{creator}" />
+			  <input type="text" name="creator" class="input-long" value="{creator}" />
 			</div>
 		  </div>
 		  <div class="control-group">
 			<label class="control-label">Publisher</label>
 			<div class="controls">
-			  <input type="text" name="publisher" style="width:400px" value="{publisher}" />
+			  <input type="text" name="publisher" class="input-long" value="{publisher}" />
 			</div>
 		  </div>
 		  <div class="control-group">
 			<label class="control-label">Search hints</label>
 			<div class="controls">
-			  <textarea name="search-hints" style="width:400px" rows="8">
+			  <textarea name="search-hints" class="input-long" rows="8">
 			  	<xsl:value-of select="search_hints" />
 			  </textarea>
 			</div>
@@ -186,7 +186,7 @@
 		  <div class="control-group">
 			<label class="control-label">Link guide</label>
 			<div class="controls">
-			  <input type="text" name="link-guide" style="width:400px" placeholder="Link to a guide or instructions page" value="{link_guide}" />
+			  <input type="text" name="link-guide" class="input-long" placeholder="Link to a guide or instructions page" value="{link_guide}" />
 			</div>
 		  </div>
 		  
