@@ -89,12 +89,15 @@ class DatabasesEditController extends DatabasesController
 	{
 		$category_id = (int) $this->request->getParam('pk');
 		$value = $this->request->getParam('value');
-	
-		// update category name
-	
-		$category = $this->knowledgebase->getCategoryById($category_id);
-		$category->setName($value);
-		$this->knowledgebase->updateCategory($category);
+		
+		if ( $value != "" )
+		{
+			// update category name
+		
+			$category = $this->knowledgebase->getCategoryById($category_id);
+			$category->setName($value);
+			$this->knowledgebase->updateCategory($category);
+		}
 	
 		$this->response->noView();
 	}
