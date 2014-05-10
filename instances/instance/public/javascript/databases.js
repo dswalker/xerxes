@@ -5,20 +5,16 @@ $(document).ready(databaseFilter);
 
 function addDeleteConfirm()
 {
-	$('.delete-confirm-fade').click(function()
+	$('.delete-fade').click(function()
 	{		
-  		var confirmed = confirm(xerxes_labels['text_databases_confirm_delete']);
 		var target = $(this).attr('href');
 		var data_source = $(this).attr('data-source');
 		
 		data_source = "#" + data_source;
 
-		if ( confirmed )
-		{
-			$.get( target, function( data ) {
-				$(data_source).fadeOut(500, function() { $(data_source).remove(); });
-			});			
-		}
+		$.get( target, function( data ) {
+			$(data_source).fadeOut(500, function() { $(data_source).remove(); });
+		});			
 		
 		return false;
 	});

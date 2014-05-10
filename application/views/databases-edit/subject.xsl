@@ -112,20 +112,6 @@
 	
 </xsl:template>
 
-
-<xsl:template name="module_javascript">
-	<script src="//code.jquery.com/ui/1.10.3/jquery-ui.js"  type="text/javascript"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap-editable/js/bootstrap-editable.min.js"></script>
-	<script src="{$base_include}/javascript/databases.js"  type="text/javascript"></script>
-	
-	<script type="text/javascript">
-		$.fn.editable.defaults.mode = 'inline';	
-		$(document).ready(function() {
-			$('.edit').editable();
-		});
-	</script>
-</xsl:template>
-
 <xsl:template name="main">
 	
 	<xsl:call-template name="subject_databases_list" />
@@ -334,7 +320,7 @@
 			<xsl:text> </xsl:text>
 			
 			<a href="{//request/controller}/delete-subcategory?subcategory={id};category={../../id}" 
-				class="btn btn-small subcategory-delete delete-confirm-fade" data-source="subcategory_{id}">
+				class="btn btn-small subcategory-delete delete-confirm" data-source="subcategory_{id}">
 				<i class="icon-trash"></i> Delete
 			</a>			
 			
@@ -350,7 +336,7 @@
 	
 		<div style="position: absolute; top: -15px; right: -15px">
 			<a href="{//request/controller}/delete-database-sequence?id={../id};category={//category/id}" 
-				class="btn btn-small delete-confirm-fade" data-source="database_{../id}">
+				class="btn btn-small delete-fade" data-source="database_{../id}">
 				<i class="icon-trash"></i> Remove
 			</a>
 		</div>

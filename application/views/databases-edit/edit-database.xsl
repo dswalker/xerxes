@@ -33,7 +33,7 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 
-<xsl:import href="../includes.xsl" />
+<xsl:import href="includes.xsl" />
 
 <xsl:output method="html" />
 
@@ -69,34 +69,6 @@
 		}
 		
 	</style>
-
-</xsl:template>
-
-<xsl:template name="module_javascript">
-
-	<script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>
-	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.min.js"></script>
-	<script src="{$base_include}/javascript/tag-it.js" type="text/javascript" charset="utf-8"></script>
-	<script>
-		$(function() {
-			$( ".datepicker" ).datepicker();
-		});
-		
-		$(document).ready(function(){
-			
-			$('#form-keywords').tagit({
-				'allowSpaces': true
-			});
-			
-			$("#database-form").validate();
-			
-			$('#form-coverage').popover({
-				html: true,
-				content: function(ele) { return $('#popover-content').html(); }
-			});			
-			
-		});
-	</script>
 
 </xsl:template>
 
