@@ -544,6 +544,10 @@ class DatabasesEditController extends DatabasesController
 		return $this->redirectTo($params);
 	}
 	
+	/**
+	 * Show or hide databases and descriptions
+	 */
+	
 	public function showDatabaseDescriptionsAction()
 	{
 		$database = $this->request->getParam('database');
@@ -572,6 +576,12 @@ class DatabasesEditController extends DatabasesController
 		return $this->redirectTo($this->request->getParam('return'));
 	}
 	
+	/**
+	 * Redirect back to subject page
+	 * 
+	 * @param int $category
+	 */
+	
 	protected function returnToCategory($category)
 	{
 		$params = array(
@@ -582,6 +592,10 @@ class DatabasesEditController extends DatabasesController
 		
 		return $this->redirectTo($params);
 	}
+	
+	/**
+	 * Get database titles (cache)
+	 */
 	
 	protected function getDatabaseTitles()
 	{
@@ -596,6 +610,10 @@ class DatabasesEditController extends DatabasesController
 		return $titles;
 	}
 	
+	/**
+	 * Get librarian names (cache)
+	 */
+	
 	protected function getLibrarianNames()
 	{
 		$titles = $this->cache()->get($this->librarian_names_id);
@@ -609,10 +627,18 @@ class DatabasesEditController extends DatabasesController
 		return $titles;
 	}
 	
+	/**
+	 * Clear database title cache
+	 */
+	
 	protected function clearDatabaseTitleCache()
 	{
 		$this->cache()->set($this->database_titles_id, null, time() - 1000 );
 	}
+
+	/**
+	 * Clear librarian name cache
+	 */
 	
 	protected function clearLibrarianCache()
 	{
