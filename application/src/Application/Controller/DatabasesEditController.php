@@ -23,11 +23,11 @@ use Xerxes\Mvc\Exception\AccessDeniedException;
 
 class DatabasesEditController extends DatabasesController
 {
-	private $librarian_names_id = 'librarian-names';
+	protected $librarian_names_id = 'librarian-names';
 	
-	private $database_titles_id = 'database-titles';
+	protected $database_titles_id = 'database-titles';
 	
-	private $database_types_id = 'database-types';
+	protected $database_types_id = 'database-types';
 	
 	/**
 	 * Do a user check
@@ -651,6 +651,7 @@ class DatabasesEditController extends DatabasesController
 	{
 		$this->cache()->set($this->database_titles_id, null, time() - 1000 );
 		$this->cache()->set($this->database_types_id, null, time() - 1000 );
+		$this->cache()->set($this->database_alpha_id, null, time() - 1000 );
 	}
 
 	/**

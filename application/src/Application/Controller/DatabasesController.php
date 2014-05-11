@@ -42,6 +42,11 @@ class DatabasesController extends ActionController
 	protected $config;
 	
 	/**
+	 * @var string
+	 */
+	protected $database_alpha_id = 'database-alpha';
+	
+	/**
 	 * (non-PHPdoc)
 	 * @see Xerxes\Mvc.ActionController::init()
 	 */
@@ -59,6 +64,10 @@ class DatabasesController extends ActionController
 		// config
 		
 		$this->config = Config::getInstance();
+		
+		// get cached information
+		
+		$this->response->setVariable('database_alpha', $this->getDatabaseAlpha());
 	}
 	
 	/**
@@ -245,6 +254,23 @@ class DatabasesController extends ActionController
 			
 		return $this->redirectTo($final);
 	}
+	
+	/**
+	 * Get database alpha listing
+	 */
+	
+	protected function getDatabaseAlpha()
+	{
+		$types = $this->cache()->get($this->database_alpha_id );
+	
+		if ( $types == null )
+		{
+			$types = $this->knowledgebase->getDatabaseAlpha();
+			$this->cache()->set($this->database_alpha_id , $types, time() + (12 * 60 * 60) ); // 12 hour cache
+		}
+	
+		return $types;
+	}	
 	
 	/**
 	 * @return Cache
