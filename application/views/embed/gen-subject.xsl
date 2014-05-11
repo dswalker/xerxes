@@ -37,6 +37,18 @@
 
 <xsl:output method="html" />
 
+<xsl:template name="module_javascript">
+
+	<script>
+	
+	$(".display-textbox").click( function() {
+    	this.select(); 
+	}); 
+
+	</script>
+	
+</xsl:template>
+
 <xsl:template match="/*">
 	<xsl:call-template name="surround">
 		<xsl:with-param name="surround_template">none</xsl:with-param>
@@ -192,7 +204,9 @@
 									<xsl:attribute name="src"><xsl:value-of select="embed_info/javascript_url"/></xsl:attribute>
 								</script>
 								<noscript>
-									<!-- <xsl:copy-of select="$noscript_content" /> -->
+									<a href="{$base_url}/databases/subject/{//request/subject}">
+										<xsl:value-of select="category/name" /> databases
+									</a>
 								</noscript>
 							</textarea>
 					

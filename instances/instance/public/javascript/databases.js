@@ -2,6 +2,7 @@ $(document).ready(highlight);
 $(document).ready(resort);
 $(document).ready(addDeleteConfirm);
 $(document).ready(databaseFilter);
+$(document).ready(databaseForm);
 
 function addDeleteConfirm()
 {
@@ -85,4 +86,33 @@ function databaseFilter()
 			}
 		});
 	});
+}
+
+function databaseForm()
+{
+	$.fn.editable.defaults.mode = 'inline';	
+	$('.edit').editable();
+
+	$( ".datepicker" ).datepicker();
+	
+	$('#form-keywords').tagit({
+		'allowSpaces': true
+	});
+	
+	$("#database-form").validate();
+	
+	$('#form-coverage').popover({
+		html: true,
+		content: function(ele) { return $('#popover-content').html(); }
+	});			
+				
+	var tags = $("#type").attr('data-source');
+	
+	if ( tags != null )
+	{
+		var availableTags = tags.split(';');
+		$( "#type" ).autocomplete({
+			source: availableTags
+		});
+	}
 }
