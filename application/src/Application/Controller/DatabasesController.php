@@ -183,26 +183,16 @@ class DatabasesController extends ActionController
 		return $this->response;
 	}
 	
-	/**
-	 * @return Cache
-	 */
-	
-	protected function cache()
-	{
-		if ( ! $this->cache instanceof Cache )
-		{
-			$this->cache = new Cache();
-		}
-	
-		return $this->cache;
-	}	
-	
 	public function pullAction()
 	{
 		$this->knowledgebase->migrate();
 		
 		exit;
 	}
+	
+	/**
+	 * Librarian image
+	 */
 	
 	public function librarianImageAction()
 	{
@@ -254,5 +244,19 @@ class DatabasesController extends ActionController
 		$final = $database->getProxyUrl();
 			
 		return $this->redirectTo($final);
+	}
+	
+	/**
+	 * @return Cache
+	 */
+	
+	protected function cache()
+	{
+		if ( ! $this->cache instanceof Cache )
+		{
+			$this->cache = new Cache();
+		}
+	
+		return $this->cache;
 	}
 }
