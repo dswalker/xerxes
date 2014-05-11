@@ -48,7 +48,12 @@ class DatabasesEditController extends DatabasesController
 		
 		$this->response->setVariable('database_titles', $this->getDatabaseTitles());
 		$this->response->setVariable('database_types', $this->getDatabaseTypes());
-		$this->response->setVariable('librarian_names', $this->getLibrarianNames());		
+		$this->response->setVariable('librarian_names', $this->getLibrarianNames());	
+
+		// set view on database sub-folder
+		
+		$action = $this->request->getParam('action', 'index');
+		$this->response->setView("databases/edit/$action.xsl");
 	}	
 	
 	/**

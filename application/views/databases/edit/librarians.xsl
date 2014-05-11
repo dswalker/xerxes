@@ -33,20 +33,11 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 
-<xsl:import href="../databases/librarian.xsl" />
-<xsl:import href="includes.xsl" />
-
-<xsl:template name="module_nav">
-
-	<xsl:call-template name="module_nav_display">
-		<xsl:with-param name="url">databases/librarian/<xsl:value-of select="librarians/id" /></xsl:with-param>
-	</xsl:call-template>
-
-</xsl:template>
+<xsl:import href="../librarians.xsl" />
 
 <xsl:template name="main">
 	
-	<xsl:call-template name="librarian_full" />
+	<xsl:call-template name="librarians_list" />
 	
 	<xsl:call-template name="databases_edit" />
 				
@@ -60,16 +51,9 @@
 				<div class="nav-collapse collapse">
 				
 					<ul class="nav" style="width:100%">
-						<li style="float:right">
-							<a id="delete-category" class="delete-confirm" href="{//request/controller}/delete-librarian?id={librarians/id}" 
-								style="background-color:#400; border: 1px solid #efefef; border-top: 0px" role="button"> 
-								<i class="icon-trash"></i>&nbsp; Delete Librarian
-							</a>							
-						</li>	
 						<li>
-							<a id="facet-more-link-{group_id}" href="{//request/controller}/edit-librarian?id={librarians/id}" role="button" data-toggle="modal"> 
-								<i class="icon-edit"></i>
-								&nbsp;<xsl:text> Edit Librarian</xsl:text>
+							<a id="facet-more-link-{group_id}" href="{//request/controller}/edit-librarian" role="button" data-toggle="modal"> 
+								<i class="icon-plus"></i>&nbsp; Add Librarian
 							</a>							
 						</li>
 					</ul>
