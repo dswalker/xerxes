@@ -531,7 +531,8 @@ class Knowledgebase extends Doctrine
 			$metalib_id = (string) $xml->metalib_id;
 			
 			$active = (int) $xml->active;
-			$subscription = (int) $xml->proxy;
+			$proxy = (int) $xml->proxy;
+			$subscription = (int) $xml->subscription;
 			
 			$creator = (string) $xml->creator;
 			$publisher = (string) $xml->publisher;
@@ -546,7 +547,7 @@ class Knowledgebase extends Doctrine
 			$image = (string) $xml->library_contact;
 			$office_hours = (string) $xml->library_hours;
 			
-			$type = (string) $xml->type; // @todo: assign types
+			$type = (string) $xml->type;
 			
 			if ( $type == 'Librarian')
 			{
@@ -609,6 +610,31 @@ class Knowledgebase extends Doctrine
 						$database->addKeyword($keyword_term);
 					}
 				}
+				
+				// databases marked as subscription should be proxied
+				
+				$should_proxy =  false;
+				
+				if ( $subscription == 1 )
+				{
+					$should_proxy = true;
+				}
+				
+				// override the behavior if proxy flag specifically set
+				
+				if ( $proxy != null )
+				{
+					if ( $proxy == 1 )
+					{
+						$should_proxy = true;
+					}
+					elseif ( $proxy == 0 )
+					{
+						$should_proxy = false;
+					}
+				}
+
+				$database->setProxy($should_proxy);
 				
 				$this->entityManager->persist($database);
 			}
