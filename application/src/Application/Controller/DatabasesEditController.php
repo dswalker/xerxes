@@ -27,6 +27,8 @@ class DatabasesEditController extends DatabasesController
 	
 	private $database_titles_id = 'database-titles';
 	
+	private $database_types_id = 'database-types';
+	
 	/**
 	 * Do a user check
 	 */
@@ -39,8 +41,14 @@ class DatabasesEditController extends DatabasesController
 		
 		if ( $user->isAdmin() != true )
 		{
-			throw new AccessDeniedException('Only administrators may access this part of the system');
+			$this->redirectToLogin();
 		}
+		
+		// get cached information
+		
+		$this->response->setVariable('database_titles', $this->getDatabaseTitles());
+		$this->response->setVariable('database_types', $this->getDatabaseTypes());
+		$this->response->setVariable('librarian_names', $this->getLibrarianNames());		
 	}	
 	
 	/**
@@ -59,11 +67,6 @@ class DatabasesEditController extends DatabasesController
 	
 		$this->response->setVariable('category', $category);
 		
-		// add title list
-		
-		$this->response->setVariable('database_titles', $this->getDatabaseTitles());
-		$this->response->setVariable('librarian_names', $this->getLibrarianNames());
-	
 		return $this->response;
 	}	
 	
@@ -343,7 +346,7 @@ class DatabasesEditController extends DatabasesController
 		
 		$this->knowledgebase->updateDatabase($database);
 		
-		$this->clearDatabaseTitleCache();
+		$this->clearDatabaseCache();
 	
 		$params = array(
 			'controller' => $this->request->getParam('controller'),
@@ -364,7 +367,7 @@ class DatabasesEditController extends DatabasesController
 	
 		$this->knowledgebase->removeDatabase($id);
 	
-		$this->clearDatabaseTitleCache();
+		$this->clearDatabaseCache();
 		
 		$params = array(
 			'controller' => $this->request->getParam('controller'),
@@ -619,12 +622,30 @@ class DatabasesEditController extends DatabasesController
 	}
 	
 	/**
+	 * Get librarian names (cache)
+	 */
+	
+	protected function getDatabaseTypes()
+	{
+		$types = $this->cache()->get($this->database_types_id);
+	
+		if ( $types == null )
+		{
+			$types = $this->knowledgebase->getTypes();
+			$this->cache()->set($this->database_types_id, $types, time() + (12 * 60 * 60) ); // 12 hour cache
+		}
+	
+		return $types;
+	}	
+	
+	/**
 	 * Clear database title cache
 	 */
 	
-	protected function clearDatabaseTitleCache()
+	protected function clearDatabaseCache()
 	{
 		$this->cache()->set($this->database_titles_id, null, time() - 1000 );
+		$this->cache()->set($this->database_types_id, null, time() - 1000 );
 	}
 
 	/**
@@ -634,5 +655,5 @@ class DatabasesEditController extends DatabasesController
 	protected function clearLibrarianCache()
 	{
 		$this->cache()->set($this->librarian_names_id, null, time() - 1000 );
-	}	
+	}
 }

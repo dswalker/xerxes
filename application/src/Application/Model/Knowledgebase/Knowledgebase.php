@@ -387,6 +387,20 @@ class Knowledgebase extends Doctrine
 	{
 		$sql = "select id, name from librarians order by name";
 		return $this->datamap()->select($sql);
+	}
+	
+	/**
+	 * Just database types
+	 *
+	 * doesn't use Doctrine, for speed
+	 *
+	 * @return array
+	 */
+	
+	public function getTypes()
+	{
+		$sql = "select distinct type from research_databases where owner = 'admin'";
+		return $this->datamap()->select($sql);
 	}	
 	
 	/**

@@ -46,17 +46,16 @@
 
 	<script src="//code.jquery.com/ui/1.10.3/jquery-ui.js"  type="text/javascript"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap-editable/js/bootstrap-editable.min.js"></script>
+	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.min.js"></script>
+	<script src="{$base_include}/javascript/tag-it.js" type="text/javascript" charset="utf-8"></script>
 	<script src="{$base_include}/javascript/databases.js"  type="text/javascript"></script>
-	
+			
 	<script type="text/javascript">
 		$.fn.editable.defaults.mode = 'inline';	
 		$(document).ready(function() {
 			$('.edit').editable();
 		});
 	</script>
-	
-	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.min.js"></script>
-	<script src="{$base_include}/javascript/tag-it.js" type="text/javascript" charset="utf-8"></script>
 	<script>
 		$(function() {
 			$( ".datepicker" ).datepicker();
@@ -76,7 +75,21 @@
 			});			
 			
 		});
-	</script>	
+		
+		$(function() {
+			
+			var tags = $("#type").attr('data-source');
+			
+			if ( tags != null )
+			{
+				var availableTags = tags.split(';');
+				$( "#type" ).autocomplete({
+					source: availableTags
+					});
+			}
+		
+		});		
+	</script>
 	
 </xsl:template>
 

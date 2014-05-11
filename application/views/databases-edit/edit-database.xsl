@@ -118,6 +118,21 @@
 			</div>
 		  </div>
 		  <div class="control-group">
+			<label class="control-label">Type</label>
+			<div class="controls">
+			  <input type="text" id="type" name="type" class="input-long" value="{type}">
+			  	<xsl:attribute name="data-source">
+					<xsl:for-each select="//database_types/database_type">
+						<xsl:value-of select="type" />
+						<xsl:if test="following-sibling::database_type">
+							<xsl:text>;</xsl:text>
+						</xsl:if>					
+					</xsl:for-each>
+				</xsl:attribute>
+			  </input>
+			</div>
+		  </div>
+		  <div class="control-group">
 			<label class="control-label">Coverage</label>
 			<div class="controls">
 			  <input type="text" name="coverage" class="input-long" value="{coverage}" />
