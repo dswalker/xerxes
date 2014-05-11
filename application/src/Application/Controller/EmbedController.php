@@ -19,6 +19,16 @@ namespace Application\Controller;
 
 class EmbedController extends DatabasesController
 {
+	public function init()
+	{
+		parent::init();
+		
+		// set view on database sub-folder
+		
+		$action = $this->request->getParam('action', 'index');
+		$this->response->setView("databases/embed/$action.xsl");
+	}
+	
 	public function genSubjectAction()
 	{
 		$params = $this->request->getParams();
