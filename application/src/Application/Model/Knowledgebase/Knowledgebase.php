@@ -371,7 +371,21 @@ class Knowledgebase extends Doctrine
 	
 	public function getDatabaseTitles()
 	{
-		$sql = "select id, title from research_databases where owner = 'admin' order by title";
+		$sql = "SELECT id, title FROM research_databases WHERE owner = 'admin' ORDER BY title";
+		return $this->datamap()->select($sql);
+	}
+	
+	/**
+	 * Get the letters starting each database title 
+	 *
+	 * doesn't use Doctrine, for speed
+	 *
+	 * @return array
+	 */
+	
+	public function getDatabaseAlpha()
+	{
+		$sql = "SELECT DISTINCT LEFT(title, 1) as letter FROM research_databases ORDER BY letter";
 		return $this->datamap()->select($sql);
 	}
 
@@ -385,7 +399,7 @@ class Knowledgebase extends Doctrine
 	
 	public function getLibrarianNames()
 	{
-		$sql = "select id, name from librarians order by name";
+		$sql = "SELECT id, name FROM librarians ORDER BY name";
 		return $this->datamap()->select($sql);
 	}
 	
@@ -399,7 +413,7 @@ class Knowledgebase extends Doctrine
 	
 	public function getTypes()
 	{
-		$sql = "select distinct type from research_databases where owner = 'admin'";
+		$sql = "SELECT DISTINCT type FROM research_databases WHERE owner = 'admin'";
 		return $this->datamap()->select($sql);
 	}	
 	
@@ -744,6 +758,7 @@ class Knowledgebase extends Doctrine
 		if ( ! $this->datamap instanceof DataMap )
 		{
 			$this->datamap = new DataMap();
+			$this->datamap->setFetchStyle(\PDO::FETCH_ASSOC);
 		}
 		
 		return $this->datamap;

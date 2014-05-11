@@ -23,6 +23,13 @@ namespace Xerxes\Utility;
 class DataMap extends DatabaseConnection
 {
 	/**
+	 * PDO fetch style
+	 * @var int
+	 */
+	
+	protected $fetch_style;
+	
+	/**
 	 * Begin the database transaction
 	 */
 		
@@ -69,7 +76,7 @@ class DataMap extends DatabaseConnection
 		
 		$statement->execute();
 			
-		return $statement->fetchAll();
+		return $statement->fetchAll($this->fetch_style);
 	}
 	
 	/**
@@ -190,4 +197,24 @@ class DataMap extends DatabaseConnection
 		
 		// echo "<p>" . $sql . "</p>"; print_r($values);
 	}
+	
+	/**
+	 * Get fetch style
+	 *
+	 * @return int
+	 */
+	public function getFetchStyle()
+	{
+		return $this->fetch_style;
+	}
+	
+	/**
+	 * Set fetch style
+	 *
+	 * @param int $fetch_style
+	 */
+	public function setFetchStyle($fetch_style)
+	{
+		$this->fetch_style = $fetch_style;
+	}	
 }
