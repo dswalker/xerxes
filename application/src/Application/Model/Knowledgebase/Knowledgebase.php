@@ -11,11 +11,11 @@
 
 namespace Application\Model\Knowledgebase;
 
-use Xerxes\Utility\DataMap;
-
 use Doctrine\ORM\EntityManager;
 use Xerxes\Utility\Cache;
+use Xerxes\Utility\DataMap;
 use Xerxes\Utility\Doctrine;
+use Xerxes\Utility\Registry;
 use Xerxes\Utility\User;
 
 /**
@@ -45,7 +45,7 @@ class Knowledgebase extends Doctrine
 	/**
 	 * @var DataMap
 	 */
-	private $datamap;
+	protected $datamap;
 	
 	/**
 	 * Create new Knowledgebase object
@@ -58,8 +58,6 @@ class Knowledgebase extends Doctrine
 		parent::__construct();
 		
 		$this->user = $user->username;
-		$this->entityManager = $this->getEntityManager(array(__DIR__));
-		
 		$this->owner = 'admin'; // @todo: logic for local users
 	}
 	
@@ -111,9 +109,9 @@ class Knowledgebase extends Doctrine
 
 	public function deleteSubcategory($subcategory_id)
 	{
-		$subcategory = $this->entityManager->find('Application\Model\Knowledgebase\Subcategory', $subcategory_id);
-		$this->entityManager->remove($subcategory);
-		$this->entityManager->flush();
+		$subcategory = $this->entityManager()->find('Application\Model\Knowledgebase\Subcategory', $subcategory_id);
+		$this->entityManager()->remove($subcategory);
+		$this->entityManager()->flush();
 	}
 	
 	/**
@@ -124,9 +122,9 @@ class Knowledgebase extends Doctrine
 	
 	public function deleteDatabaseSequence($sequence_id)
 	{
-		$sequence = $this->entityManager->find('Application\Model\Knowledgebase\DatabaseSequence', $sequence_id);
-		$this->entityManager->remove($sequence);
-		$this->entityManager->flush();
+		$sequence = $this->entityManager()->find('Application\Model\Knowledgebase\DatabaseSequence', $sequence_id);
+		$this->entityManager()->remove($sequence);
+		$this->entityManager()->flush();
 	}
 	
 	/**
@@ -137,9 +135,9 @@ class Knowledgebase extends Doctrine
 	
 	public function deleteLibrarianSequence($sequence_id)
 	{
-		$sequence = $this->entityManager->find('Application\Model\Knowledgebase\LibrarianSequence', $sequence_id);
-		$this->entityManager->remove($sequence);
-		$this->entityManager->flush();
+		$sequence = $this->entityManager()->find('Application\Model\Knowledgebase\LibrarianSequence', $sequence_id);
+		$this->entityManager()->remove($sequence);
+		$this->entityManager()->flush();
 	}	
 	
 	/**
@@ -150,8 +148,8 @@ class Knowledgebase extends Doctrine
 	
 	public function update($object)
 	{
-		$this->entityManager->persist($object);
-		$this->entityManager->flush();
+		$this->entityManager()->persist($object);
+		$this->entityManager()->flush();
 	}
 	
 	/**
@@ -186,7 +184,7 @@ class Knowledgebase extends Doctrine
 	
 	public function getCategories()
 	{
-		$category_repo = $this->entityManager->getRepository('Application\Model\Knowledgebase\Category');
+		$category_repo = $this->entityManager()->getRepository('Application\Model\Knowledgebase\Category');
 		$results = $category_repo->findBy(
 			array('owner' => 'admin'),
 			array('name' => 'asc')
@@ -204,7 +202,7 @@ class Knowledgebase extends Doctrine
 	
 	public function getCategory($normalized)
 	{
-		$category_repo = $this->entityManager->getRepository('Application\Model\Knowledgebase\Category');
+		$category_repo = $this->entityManager()->getRepository('Application\Model\Knowledgebase\Category');
 		$results = $category_repo->findBy(
 			array(
 				'normalized' => $normalized,
@@ -232,7 +230,7 @@ class Knowledgebase extends Doctrine
 	
 	public function getCategoryById($id)
 	{
-		return $this->entityManager->find('Application\Model\Knowledgebase\Category', $id);
+		return $this->entityManager()->find('Application\Model\Knowledgebase\Category', $id);
 	}
 
 	/**
@@ -245,8 +243,8 @@ class Knowledgebase extends Doctrine
 	{
 		$category = $this->getCategoryById($id);
 
-		$this->entityManager->remove($category);
-		$this->entityManager->flush();		
+		$this->entityManager()->remove($category);
+		$this->entityManager()->flush();		
 	}	
 	
 	/**
@@ -258,7 +256,7 @@ class Knowledgebase extends Doctrine
 	
 	public function getSubcategoryById($id)
 	{
-		return $this->entityManager->find('Application\Model\Knowledgebase\Subcategory', $id);
+		return $this->entityManager()->find('Application\Model\Knowledgebase\Subcategory', $id);
 	}
 	
 	/**
@@ -270,7 +268,7 @@ class Knowledgebase extends Doctrine
 	
 	public function getDatabase($id)
 	{
-		return $this->entityManager->find('Application\Model\Knowledgebase\Database', $id);
+		return $this->entityManager()->find('Application\Model\Knowledgebase\Database', $id);
 	}
 	
 	/**
@@ -283,7 +281,7 @@ class Knowledgebase extends Doctrine
 	
 	public function getDatabaseBySourceId($source_id)
 	{
-		$databases_repo = $this->entityManager->getRepository('Application\Model\Knowledgebase\Database');
+		$databases_repo = $this->entityManager()->getRepository('Application\Model\Knowledgebase\Database');
 		$results = $databases_repo->findBy(
 			array('source_id' => $source_id)
 		);
@@ -307,7 +305,7 @@ class Knowledgebase extends Doctrine
 	
 	public function getLibrarian($id)
 	{
-		return $this->entityManager->find('Application\Model\Knowledgebase\Librarian', $id);
+		return $this->entityManager()->find('Application\Model\Knowledgebase\Librarian', $id);
 	}
 	
 	/**
@@ -320,7 +318,7 @@ class Knowledgebase extends Doctrine
 	
 	public function getLibrarianBySourceId($source_id)
 	{
-		$databases_repo = $this->entityManager->getRepository('Application\Model\Knowledgebase\Librarian');
+		$databases_repo = $this->entityManager()->getRepository('Application\Model\Knowledgebase\Librarian');
 		$results = $databases_repo->findBy(
 			array('source_id' => $source_id)
 		);
@@ -344,8 +342,8 @@ class Knowledgebase extends Doctrine
 	public function removeLibrarian($id)
 	{
 		$librarian = $this->getLibrarian($id);
-		$this->entityManager->remove($librarian);
-		$this->entityManager->flush();
+		$this->entityManager()->remove($librarian);
+		$this->entityManager()->flush();
 	}	
 	
 	/**
@@ -357,8 +355,8 @@ class Knowledgebase extends Doctrine
 	public function removeDatabase($id)
 	{
 		$database = $this->getDatabase($id);
-		$this->entityManager->remove($database);
-		$this->entityManager->flush();
+		$this->entityManager()->remove($database);
+		$this->entityManager()->flush();
 	}
 	
 	/**
@@ -426,7 +424,7 @@ class Knowledgebase extends Doctrine
 
 	public function getDatabasesStartingWith($alpha)
 	{
-		$query = $this->entityManager->createQuery('SELECT d FROM Application\Model\Knowledgebase\Database d WHERE d.title LIKE :alpha AND d.owner = :owner ORDER BY d.title ASC');
+		$query = $this->entityManager()->createQuery('SELECT d FROM Application\Model\Knowledgebase\Database d WHERE d.title LIKE :alpha AND d.owner = :owner ORDER BY d.title ASC');
 		$query->setParameter('alpha', "$alpha%");
 		$query->setParameter('owner', $this->owner);
 		return $query->getResult();
@@ -441,7 +439,7 @@ class Knowledgebase extends Doctrine
 	
 	public function getDatabases($query = null)
 	{
-		$databases_repo = $this->entityManager->getRepository('Application\Model\Knowledgebase\Database');
+		$databases_repo = $this->entityManager()->getRepository('Application\Model\Knowledgebase\Database');
 		$results = $databases_repo->findBy(
 			array('owner' => $this->owner),
 			array('title' => 'asc')
@@ -459,7 +457,7 @@ class Knowledgebase extends Doctrine
 	
 	public function getLibrarians()
 	{
-		$databases_repo = $this->entityManager->getRepository('Application\Model\Knowledgebase\Librarian');
+		$databases_repo = $this->entityManager()->getRepository('Application\Model\Knowledgebase\Librarian');
 		$results = $databases_repo->findBy(
 			array(),
 			array('name' => 'asc')
@@ -522,7 +520,7 @@ class Knowledgebase extends Doctrine
 		return null;
 	}	
 	
-	public function migrate()
+	public function migrate($instance)
 	{
 		// databases
 		
@@ -575,7 +573,7 @@ class Knowledgebase extends Doctrine
 				$librarian->setOffice($office);
 				$librarian->setOfficeHours($office_hours);
 				
-				$this->entityManager->persist($librarian);
+				$this->entityManager()->persist($librarian);
 			}
 			else
 			{
@@ -650,19 +648,19 @@ class Knowledgebase extends Doctrine
 
 				$database->setProxy($should_proxy);
 				
-				$this->entityManager->persist($database);
+				$this->entityManager()->persist($database);
 			}
 			
 			$x++;
 		}
 		
-		$this->entityManager->flush();
+		$this->entityManager()->flush();
 		
 		$this->entityManager = $this->getEntityManager(array(__DIR__));
 		
-		// subjects
+		// url
 		
-		$url = 'http://library.calstate.edu/sanjose/databases/?format=xerxes';
+		$url = "http://library.calstate.edu/$instance/databases/?format=xerxes";
 		$xml = simplexml_load_file($url);
 		
 		foreach ( $xml->categories->category as $category_xml )
@@ -674,7 +672,7 @@ class Knowledgebase extends Doctrine
 			$category->setName($name);
 			$category->setOwner($this->owner);
 			
-			$url = "http://library.calstate.edu$path?format=xerxes";
+			$url = "http://library.calstate.edu/$path?format=xerxes";
 			
 			$subject_xml = simplexml_load_file($url);
 			
@@ -721,7 +719,7 @@ class Knowledgebase extends Doctrine
 					$subcategory->setSidebar($sidebar);
 					$subcategory->setSequence($sequence);
 					
-					$this->entityManager->persist($subcategory);
+					$this->entityManager()->persist($subcategory);
 					
 					// databases
 					
@@ -743,17 +741,17 @@ class Knowledgebase extends Doctrine
 				}
 			}
 			
-			$this->entityManager->persist($category);
+			$this->entityManager()->persist($category);
 		}
 		
-		$this->entityManager->flush();
+		$this->entityManager()->flush();
 	}
 	
 	/**
 	 * @return DataMap
 	 */
 	
-	protected function datamap()
+	public function datamap()
 	{
 		if ( ! $this->datamap instanceof DataMap )
 		{
@@ -762,5 +760,19 @@ class Knowledgebase extends Doctrine
 		}
 		
 		return $this->datamap;
+	}
+	
+	/**
+	 * @return EntityManager
+	 */
+	
+	public function entityManager()
+	{
+		if ( ! $this->entityManager instanceof EntityManager )
+		{
+			$this->entityManager = parent::getEntityManager(array(__DIR__));
+		}
+		
+		return $this->entityManager;
 	}
 }
