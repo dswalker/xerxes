@@ -192,13 +192,6 @@ class DatabasesController extends ActionController
 		return $this->response;
 	}
 	
-	public function pullAction()
-	{
-		$this->knowledgebase->migrate();
-		
-		exit;
-	}
-	
 	/**
 	 * Librarian image
 	 */
