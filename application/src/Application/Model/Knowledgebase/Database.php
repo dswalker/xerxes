@@ -43,15 +43,12 @@ class Database
 	
 	/** 
 	 * @Column(type="string")
-	 * @Assert\NotNull()
 	 * @var string 
 	 */
 	protected $title;
 	
 	/** 
-	 * @Column(type="string")
-	 * @Assert\NotNull()
-	 * @Assert\Url()
+	 * @Column(type="string", length=1000)
 	 * @var string 
 	 */
 	protected $link;
