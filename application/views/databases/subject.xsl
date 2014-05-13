@@ -167,12 +167,21 @@
 		
 			<div class="librarian">
 				
-				<div class="librarian-image">
-					<img src="databases/librarian-image?id={id}" alt="{name}" />
-				</div>
+				<xsl:if test="image">
+					<div class="librarian-image">
+						<img src="databases/librarian-image?id={id}" alt="{name}" />
+					</div>
+				</xsl:if>
 				
 				<h3>
-					<a href="{link}"><xsl:value-of select="name" /></a>
+					<xsl:choose>
+						<xsl:when test="link">
+							<a href="{link}"><xsl:value-of select="name" /></a>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="name" />
+						</xsl:otherwise>
+					</xsl:choose>					
 					<xsl:call-template name="librarian_edit_actions" />
 				</h3>
 				
