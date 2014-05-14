@@ -46,6 +46,46 @@
 
 </xsl:template>
 
+<xsl:template name="databases_alpha_listing">
+
+	<div class="database-alpha-letters">
+	
+		<xsl:for-each select="database_alpha/object">
+		
+			<xsl:choose>
+				<xsl:when test="//request/alpha = letter">
+					<strong><xsl:value-of select="letter" /></strong>
+				</xsl:when>
+				<xsl:otherwise>
+					<a href="{//request/controller}/alphabetical?alpha={letter}">
+						<xsl:value-of select="letter" />
+					</a>
+				</xsl:otherwise>
+			</xsl:choose>
+			
+			<span class="database-letter-seperator"><xsl:copy-of select="$text_databases_az_letter_separator" /></span>			
+		</xsl:for-each>
+	
+	</div>
+
+</xsl:template>
+
+<xsl:template name="database_results">
+
+	<ul class="databases-list">
+		
+		<xsl:for-each select="databases/database">
+	
+			<li>
+				<xsl:call-template name="database_brief_display" />
+			</li>
+	
+		</xsl:for-each>
+	
+	</ul>
+
+</xsl:template>
+
 <xsl:template name="database_brief_display">
 
 	<xsl:call-template name="database_brief_title" />

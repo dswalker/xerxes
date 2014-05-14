@@ -33,7 +33,7 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 
-<xsl:import href="../includes.xsl" />
+<xsl:import href="../search/results.xsl" />
 <xsl:import href="includes.xsl" />
 
 <xsl:output method="html" />
@@ -59,27 +59,19 @@
 
 <xsl:template name="main">
 	
-	<xsl:call-template name="databases_list" />
-				
-</xsl:template>
-
-<xsl:template name="databases_list">
+	<h1><xsl:value-of select="$text_databases_az_pagename" /></h1>
 	
-	<h1>Databases</h1>
+	<xsl:call-template name="searchbox">
+		<xsl:with-param name="action"><xsl:value-of select="//request/controller"/>/<xsl:value-of select="//request/action"/></xsl:with-param>
+		<xsl:with-param name="search_box_placeholder" select="$text_databases_az_search" />
+	</xsl:call-template>
 	
-	<ul class="databases-list">
+	<xsl:call-template name="databases_alpha_listing" />
 		
-	<xsl:for-each select="databases/database">
-
-		<li>
-			<xsl:call-template name="database_brief_display" />
-		</li>
-
-	</xsl:for-each>
+	<xsl:call-template name="database_results" />
 	
-	</ul>
+	<xsl:call-template name="databases_alpha_listing" />
 	
 </xsl:template>
-
 
 </xsl:stylesheet>

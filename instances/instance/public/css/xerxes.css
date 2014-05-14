@@ -1123,4 +1123,18 @@ td.title-cell {
 .input-long {
 	width: 400px;
 }
-	
+
+.database-alpha-letters {
+	display: table;
+	margin-top: 3em;
+	margin-bottom: 3em;
+	padding: 1em;
+	border: 1px solid #ccc;
+	background-color: #efefef;
+}
+
+.database-letter-seperator {
+	padding-left: .3em;
+	padding-right: .3em;
+	color: #ccc;
+}

@@ -123,7 +123,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_databases_az_hint_info">more information</xsl:variable>
 	<xsl:variable name="text_databases_az_letter_separator"> | </xsl:variable>
 	<xsl:variable name="text_databases_az_pagename">Databases A-Z</xsl:variable>
-	<xsl:variable name="text_databases_az_search">List databases matching: </xsl:variable>
+	<xsl:variable name="text_databases_az_search">List databases matching</xsl:variable>
 	
 	<xsl:variable name="text_databases_category_pagename">Home</xsl:variable>
 	<xsl:variable name="text_databases_category_subject">Search by Subject</xsl:variable>
