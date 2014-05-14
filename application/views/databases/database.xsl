@@ -91,47 +91,75 @@
 			<xsl:value-of select="description" />
 		</div>
 		
-		<div class="database-link">
-			<a href="databases/proxy?id={id}" class="btn">
-				Go to this database
-			</a>
-		</div>		
-		
 		<div class="database-details">
 		
 			<dl>
 			
-			<xsl:if test="coverage">
 				<div>
-					<dt><xsl:copy-of select="$text_database_coverage" />:</dt>
-					<dd><xsl:value-of select="coverage" /></dd>
-				</div>
-			</xsl:if>
-			
-			<xsl:if test="creator">
-				<div>
-					<dt><xsl:copy-of select="$text_database_creator" />:</dt>
-					<dd><xsl:value-of select="creator" /></dd>
-				</div>
-			</xsl:if>
-			
-			<xsl:if test="search_hints">
-				<div>
-					<dt><xsl:copy-of select="$text_database_search_hints" />:</dt>
-					<dd><xsl:value-of select="search_hints" /></dd>
-				</div>
-			</xsl:if>
-			
-			<xsl:if test="link_guide">
-				<div>
-					<dt><xsl:copy-of select="$text_database_guide" />:</dt>
-					<dd>
-						<a href="{link_guide}">
-							<xsl:value-of select="$text_database_guide_help" />
-						</a>
+					<dt><xsl:copy-of select="$text_database_link" />:</dt>
+					<dd><a href="databases/proxy?id={id}"><xsl:value-of select="$text_database_go_to_database" /></a>
 					</dd>
 				</div>
-			</xsl:if>
+
+				<xsl:if test="type">
+					<div>
+						<dt><xsl:copy-of select="$text_database_type" />:</dt>
+						<dd><xsl:value-of select="type" /></dd>
+					</div>
+				</xsl:if>
+
+				<xsl:if test="keywords">
+					<div>
+						<dt><xsl:copy-of select="$text_database_keywords" />:</dt>
+						<dd>
+							<xsl:for-each select="keywords/keyword">
+								<xsl:value-of select="text()" />
+								<xsl:if test="following-sibling::keyword">
+									<xsl:text>,</xsl:text>
+								</xsl:if>
+							</xsl:for-each>
+						</dd>
+					</div>
+				</xsl:if>
+					
+				<xsl:if test="coverage">
+					<div>
+						<dt><xsl:copy-of select="$text_database_coverage" />:</dt>
+						<dd><xsl:value-of select="coverage" /></dd>
+					</div>
+				</xsl:if>
+				
+				<xsl:if test="creator">
+					<div>
+						<dt><xsl:copy-of select="$text_database_creator" />:</dt>
+						<dd><xsl:value-of select="creator" /></dd>
+					</div>
+				</xsl:if>
+	
+				<xsl:if test="publisher">
+					<div>
+						<dt><xsl:copy-of select="$text_database_publisher" />:</dt>
+						<dd><xsl:value-of select="publisher" /></dd>
+					</div>
+				</xsl:if>
+				
+				<xsl:if test="search_hints">
+					<div>
+						<dt><xsl:copy-of select="$text_database_search_hints" />:</dt>
+						<dd><xsl:value-of select="search_hints" /></dd>
+					</div>
+				</xsl:if>
+				
+				<xsl:if test="link_guide">
+					<div>
+						<dt><xsl:copy-of select="$text_database_guide" />:</dt>
+						<dd>
+							<a href="{link_guide}">
+								<xsl:value-of select="$text_database_guide_help" />
+							</a>
+						</dd>
+					</div>
+				</xsl:if>
 			
 			</dl>
 			
