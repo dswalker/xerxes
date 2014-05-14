@@ -294,8 +294,8 @@
 	-->
 	
 	<xsl:template name="searchbox">
-	
 		<xsl:param name="action"><xsl:value-of select="$base_url" />/<xsl:value-of select="//request/controller" />/search</xsl:param>
+		<xsl:param name="search_box_placeholder" />
 
 		<xsl:call-template name="search_promo" />
 	
@@ -317,7 +317,9 @@
 					<xsl:call-template name="searchbox_mobile" />
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:call-template name="searchbox_full" />
+					<xsl:call-template name="searchbox_full">
+						<xsl:with-param name="search_box_placeholder" select="$search_box_placeholder" />
+					</xsl:call-template>
 				</xsl:otherwise>
 			</xsl:choose>
 			
@@ -364,6 +366,7 @@
 	-->
 	
 	<xsl:template name="searchbox_full">
+		<xsl:param name="search_box_placeholder" />
 	
 		<xsl:choose>
 			<xsl:when test="request/advanced">
@@ -372,10 +375,14 @@
 			<xsl:otherwise>
 				<xsl:choose>
 					<xsl:when test="config/basic_search_fields/field">
-						<xsl:call-template name="simple_search" />
+						<xsl:call-template name="simple_search">
+							<xsl:with-param name="search_box_placeholder" select="$search_box_placeholder" />
+						</xsl:call-template>
 					</xsl:when>
 					<xsl:otherwise>
-						<xsl:call-template name="simple_search_nofield" />
+						<xsl:call-template name="simple_search_nofield">
+							<xsl:with-param name="search_box_placeholder" select="$search_box_placeholder" />
+						</xsl:call-template>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:otherwise>
@@ -517,6 +524,7 @@
 	-->
 	
 	<xsl:template name="simple_search">
+		<xsl:param name="search_box_placeholder" />
 	
 		<xsl:variable name="query"	select="request/query" />
 		
@@ -549,7 +557,7 @@
 				
 				<xsl:text> </xsl:text><label for="query"><xsl:value-of select="$text_searchbox_for" /></label><xsl:text> </xsl:text>
 				
-				<input id="query" name="query" type="text" size="32" value="{$query}" /><xsl:text> </xsl:text>
+				<input id="query" name="query" type="text" size="32" value="{$query}" placeholder="{$search_box_placeholder}" /><xsl:text> </xsl:text>
 				
 				<input type="submit" name="Submit" value="{$text_searchbox_go}" class="btn submit-searchbox{$language_suffix}" />
 			
@@ -566,6 +574,7 @@
 	-->
 	
 	<xsl:template name="simple_search_nofield">
+		<xsl:param name="search_box_placeholder" />
 	
 		<xsl:variable name="query"	select="request/query" />
 		
@@ -573,7 +582,8 @@
 	
 			<div class="search-row">
 				
-				<input id="query" name="query" type="text" size="52" value="{$query}" title="enter search terms" /><xsl:text> </xsl:text>
+				<input id="query" name="query" type="text" size="52" placeholder="{$search_box_placeholder}" value="{$query}" />
+				<xsl:text> </xsl:text>
 				
 				<input type="submit" name="Submit" value="Search" class="btn submit-searchbox{$language_suffix}" />
 			
