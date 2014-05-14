@@ -127,7 +127,7 @@ class Database
 	protected $link_guide = null;
 	
 	/**
-	 * @Column(type="text", nullable=true)
+	 * @Column(type="string", nullable=true)
 	 * @var string
 	 */
 	protected $type;
