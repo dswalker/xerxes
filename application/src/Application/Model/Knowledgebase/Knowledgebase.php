@@ -48,6 +48,11 @@ class Knowledgebase extends Doctrine
 	protected $datamap;
 	
 	/**
+	 * @var array
+	 */
+	protected $searchable_fields = array();
+	
+	/**
 	 * Create new Knowledgebase object
 	 * 
 	 * @param User $user
@@ -60,7 +65,7 @@ class Knowledgebase extends Doctrine
 		$this->user = $user->username;
 		$this->owner = 'admin'; // @todo: logic for local users
 		
-		$searchable_fields = explode(",", $this->registry->getConfig("DATABASE_SEARCHABLE_FIELDS", false,
+		$this->searchable_fields = explode(",", $this->registry->getConfig("DATABASE_SEARCHABLE_FIELDS", false,
 			"title,description,creator,publisher,alternate_titles,keywords,coverage"));
 	}
 	
@@ -525,6 +530,12 @@ class Knowledgebase extends Doctrine
 		return null;
 	}
 	
+	/**
+	 * Index a Database so it can be searched
+	 * 
+	 * @param Database $database
+	 */
+	
 	public function indexDatabase(Database $database)
 	{
 		$this->datamap()->beginTransaction();
@@ -604,6 +615,13 @@ class Knowledgebase extends Doctrine
 		
 		$this->datamap()->commit();
 	}
+	
+	/**
+	 * Search for Databases
+	 * 
+	 * @param string $query
+	 * @return array Database[]
+	 */
 	
 	public function searchDatabases($query)
 	{
@@ -767,8 +785,10 @@ class Knowledgebase extends Doctrine
 			
 			$phrases = explode('"', $query);
 			
-			foreach ( $arrCandidates as $objDatabase )
+			foreach ( $arrCandidates as $database )
 			{
+				$data = $database->toArray();
+				
 				foreach ( $phrases as $phrase )
 				{
 					$phrase = trim($phrase);
@@ -782,7 +802,17 @@ class Knowledgebase extends Doctrine
 		
 					foreach ( $this->searchable_fields as $searchable_field )
 					{
-						$text .= $objDatabase->$searchable_field . " ";
+						if ( array_key_exists($searchable_field, $data) )
+						{
+							$value = $data[$searchable_field];
+							
+							if ( is_array($value) )
+							{
+								$value = implode(' ', $value);
+							}
+							
+							$text .= $value . " ";
+						}
 					}
 					
 					if ( ! stristr($text,$phrase) )
@@ -798,7 +828,7 @@ class Knowledgebase extends Doctrine
 		
 				if ( $found == true )
 				{
-					$arrDatabases[$objDatabase->metalib_id] = $objDatabase;
+					$arrDatabases[$database->getId()] = $database;
 				}
 			}
 		}
