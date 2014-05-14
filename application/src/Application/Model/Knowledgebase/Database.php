@@ -547,6 +547,11 @@ class Database
 		
 		foreach ( $this as $key => $value )
 		{
+			if ( $value == "")
+			{
+				continue;
+			}
+			
 			if ( $key == 'database_sequence')
 			{
 				continue;
@@ -558,6 +563,11 @@ class Database
 				foreach ( $this->$key->toArray() as $object )
 				{
 					$second[] = $object->getValue();
+				}
+				
+				if (count($second) == 0 )
+				{
+					continue;
 				}
 				
 				$final[$key] = $second;
