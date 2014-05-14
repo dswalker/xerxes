@@ -59,6 +59,9 @@ class Knowledgebase extends Doctrine
 		
 		$this->user = $user->username;
 		$this->owner = 'admin'; // @todo: logic for local users
+		
+		$searchable_fields = explode(",", $this->registry->getConfig("DATABASE_SEARCHABLE_FIELDS", false,
+			"title,description,creator,publisher,alternate_titles,keywords,coverage"));
 	}
 	
 	/**
@@ -162,6 +165,8 @@ class Knowledgebase extends Doctrine
 	{
 		$database->setOwner($this->owner);
 		$this->update($database);
+		
+		$this->indexDatabase($database);
 	}
 	
 	/**
@@ -419,7 +424,7 @@ class Knowledgebase extends Doctrine
 	 * Get databases that start with a particular letter
 	 *
 	 * @param string $alpha letter to start with 
-	 * @return array        of Database objects
+	 * @return array Database[]
 	 */	
 
 	public function getDatabasesStartingWith($alpha)
@@ -433,11 +438,11 @@ class Knowledgebase extends Doctrine
 	/**
 	 * Get databases from the knowledgebase
 	 *
-	 * @param string $query [optional] query to search for dbs. 
-	 * @return array        of Database objects
+	 * @param array $criterion  findBy supplied criterion 
+	 * @return array Database[]
 	 */
 	
-	public function getDatabases($query = null)
+	public function getDatabases(array $criterion = array())
 	{
 		$databases_repo = $this->entityManager()->getRepository('Application\Model\Knowledgebase\Database');
 		$results = $databases_repo->findBy(
@@ -518,6 +523,287 @@ class Knowledgebase extends Doctrine
 		}
 	
 		return null;
+	}
+	
+	public function indexDatabase(Database $database)
+	{
+		$this->datamap()->beginTransaction();
+		
+		// remove any existing entries
+		
+		$delete_sql = 'DELETE FROM research_databases_search WHERE database_id = :id';
+		$delete_params = array(':id' => $database->getId());
+		$this->datamap()->delete($delete_sql,$delete_params);
+		
+		// see which fields we want to index
+		
+		// get 'em all
+		
+		$fields = $database->toArray();
+		
+		foreach ( $fields as $field => $value )
+		{
+			// this is not the field you're looking for
+			
+			if ( ! in_array($field, $this->searchable_fields))
+			{
+				continue;
+			}
+			
+			// keyword and the like
+			
+			if ( is_array($value) )
+			{
+				$value = implode(' ', $value);
+			}
+				
+			$searchable_terms = array();
+	
+			foreach ( explode(" ", (string) $value) as $term )
+			{
+				// only numbers and letters please
+					
+				$term = preg_replace('/[^a-zA-Z0-9]/', '', $term);
+				$term = trim(strtolower($term));
+
+				// no searchable terms
+				
+				if ( $term == "")
+				{
+					continue;
+				}
+				
+				// anything over 50 chars is likley a URL or something
+				
+				if ( strlen($term) > 50 )
+				{
+					continue;
+				}
+					
+				array_push($searchable_terms, $term);
+			}
+	
+			// remove duplicate terms
+	
+			$searchable_terms = array_unique($searchable_terms);
+	
+			// insert em
+	
+			$sql = "INSERT INTO research_databases_search ( database_id, field, term ) " .
+				"VALUES ( :database_id, :field, :term )";
+		
+			foreach ( $searchable_terms as $unique_term )
+			{
+				$this->datamap()->insert( $sql, array (
+					":database_id" => $database->getId(),
+					":field" => $field,
+					":term" => $unique_term )
+				);
+			}
+		}
+		
+		$this->datamap()->commit();
+	}
+	
+	public function searchDatabases($query)
+	{
+		$arrDatabases = array();
+		
+		$configDatabaseTypesExclude = $this->registry->getConfig("DATABASES_TYPE_EXCLUDE_AZ", false);
+		$configAlwaysTruncate = $this->registry->getConfig("DATABASES_SEARCH_ALWAYS_TRUNCATE", false, false);
+	
+		// lowercase the query
+	
+		$query = strtolower($query);
+	
+		$sql = "SELECT id from research_databases";
+	
+		$where = true;
+				
+		$arrTables = array(); // we'll use this to keep track of temporary tables
+				
+		// we'll deal with quotes later, for now
+		// and gives us each term in an array
+				
+		$arrTerms = explode(" ", $query);
+				
+		// grab databases that meet our query
+				
+		$sql .= " WHERE id IN  ( SELECT database_id FROM ";
+				
+		// by looking for each term in the research_databases_search table
+		// making each result a temp table
+				
+		for ( $x = 0; $x < count($arrTerms); $x++ )
+		{
+			$term = $arrTerms[$x];
+	
+			// to match how they are inserted
+	
+			$term = preg_replace('/[^a-zA-Z0-9\*]/', '', $term);
+	
+			// do this to reduce the results of the inner table to just one column
+	
+			$alias = "database_id";
+	
+			if ( $x > 0 )
+			{
+				$alias = "db";
+			}
+	
+			// wildcard
+	
+			$operator = "="; // default operator is equal
+	
+			// user supplied a wildcard
+	
+			if ( strstr($term,"*") )
+			{
+				$term = str_replace("*","%", $term);
+				$operator = "LIKE";
+			}
+	
+			// site is configured for truncation
+	
+			elseif ($configAlwaysTruncate == true )
+			{
+				$term .= "%";
+				$operator = "LIKE";
+			}
+	
+			$arrParams[":term$x"] = $term;
+	
+			$sql .= " (SELECT distinct database_id AS $alias FROM research_databases_search WHERE term $operator :term$x) AS table$x ";
+	
+			// if there is another one, we need to add a comma between them
+	
+			if ( $x + 1 < count($arrTerms))
+			{
+				$sql .= ", ";
+			}
+	
+			// this essentially AND's the query by requiring results from all tables
+	
+			if ( $x > 0 )
+			{
+				for ( $y = 0; $y < $x; $y++)
+				{
+					$column = "db";
+	
+					if ( $y == 0 )
+					{
+						$column = "database_id";
+					}
+	
+					array_push($arrTables, "table$y.$column = table" . ($y + 1 ). ".db");
+				}
+			}
+		}
+		
+		// add the AND'd tables to the SQL
+						
+		if ( count($arrTables) > 0 )
+		{
+			$sql .= " WHERE " . implode(" AND ", $arrTables);
+		}
+					
+		$sql .= ")";
+	
+		// remove certain databases based on type(s), if so configured
+	
+		if ( $configDatabaseTypesExclude != null )
+		{
+			$arrTypes = explode(",", $configDatabaseTypesExclude);
+			$arrTypeQuery = array();
+			
+			// specify that the type NOT be one of these
+	
+			for ( $q = 0; $q < count($arrTypes); $q++ )
+			{
+				array_push($arrTypeQuery, "research_databases.type != :type$q");
+				$arrParams[":type$q"] = trim($arrTypes[$q]);
+			}
+	
+			// AND 'em but then also catch the case where type is null
+			
+			$joiner = "WHERE";
+			
+			if ( $where == true )
+			{
+				$joiner = "AND";
+			}
+			
+			$sql .= " $joiner ( (" . implode (" AND ", $arrTypeQuery) . ") OR research_databases.type IS NULL )";
+		}
+			
+		$sql .= " ORDER BY UPPER(title)";
+	
+		// echo $sql; print_r($arrParams); // exit;
+	
+		$arrResults = $this->datamap()->select( $sql, $arrParams );
+		
+		// print_r($arrResults); exit;
+	
+		// transform to internal data objects
+	
+		if ( $arrResults != null )
+		{
+			foreach ( $arrResults as $arrResult )
+			{
+				$arrDatabases[] = $this->getDatabase($arrResult['id']);
+			}
+		}
+		
+		// limit to quoted phrases
+	
+		if ( strstr($query, '"') )
+		{
+			// unload the array, we'll only refill the ones that match the query
+			
+			$arrCandidates = $arrDatabases;
+			$arrDatabases = array();
+			
+			$found = false;
+			
+			$phrases = explode('"', $query);
+			
+			foreach ( $arrCandidates as $objDatabase )
+			{
+				foreach ( $phrases as $phrase )
+				{
+					$phrase = trim($phrase);
+					
+					if ( $phrase == "" )
+					{
+						continue;
+					}
+					
+					$text = " ";
+		
+					foreach ( $this->searchable_fields as $searchable_field )
+					{
+						$text .= $objDatabase->$searchable_field . " ";
+					}
+					
+					if ( ! stristr($text,$phrase) )
+					{
+						$found = false;
+						break;
+					}
+					else
+					{
+						$found = true;
+					}
+				}
+		
+				if ( $found == true )
+				{
+					$arrDatabases[$objDatabase->metalib_id] = $objDatabase;
+				}
+			}
+		}
+	
+		return $arrDatabases;
 	}	
 	
 	/**

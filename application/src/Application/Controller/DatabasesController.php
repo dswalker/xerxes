@@ -178,7 +178,11 @@ class DatabasesController extends ActionController
 		
 		// limited to specific letter
 		
-		if ( $alpha != null )
+		if ( $query != null )
+		{
+			$databases = $this->knowledgebase->searchDatabases($query);
+		}
+		elseif ( $alpha != null )
 		{
 			$databases = $this->knowledgebase->getDatabasesStartingWith($alpha);
 		}
