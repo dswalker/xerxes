@@ -59,6 +59,12 @@
 
 <xsl:template name="main">
 	
+	<xsl:call-template name="databases_list" />
+				
+</xsl:template>
+
+<xsl:template name="databases_list">
+	
 	<h1><xsl:value-of select="$text_databases_az_pagename" /></h1>
 	
 	<xsl:call-template name="searchbox">
