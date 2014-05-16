@@ -63,7 +63,10 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			
-			<span class="database-letter-seperator"><xsl:copy-of select="$text_databases_az_letter_separator" /></span>			
+			<xsl:if test="following-sibling::object">
+				<span class="database-letter-seperator"><xsl:copy-of select="$text_databases_az_letter_separator" /></span>	
+			</xsl:if>	
+			
 		</xsl:for-each>
 	
 	</div>
