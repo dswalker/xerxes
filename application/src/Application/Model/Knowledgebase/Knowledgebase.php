@@ -11,6 +11,7 @@
 
 namespace Application\Model\Knowledgebase;
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Xerxes\Utility\Cache;
 use Xerxes\Utility\DataMap;
@@ -239,15 +240,21 @@ class Knowledgebase extends Doctrine
 			)
 		);
 		
-		if ( count($results) == 1 )
-		{
-			return $results[0];
-		}
-		else
+		if ( count($results) != 1 )
 		{
 			throw new \Exception('Could not find category');
-		}		
+		}
 		
+		$category =	$results[0];
+		
+		// @todo: use Doctrine Criteria or something here?
+		
+		foreach ( $category->getSubcategories() as $subcategory )
+		{
+			$subcategory->filterDatabases();
+		}
+		
+		return $category;
 	}
 	
 	/**
@@ -883,7 +890,7 @@ class Knowledgebase extends Doctrine
 	}
 	
 	/**
-	 * Filter out Databases that are exlcuded by type
+	 * Filter out Databases that are exlcuded by type, active status
 	 * 
 	 * @param array $databases Database[]
 	 * @return array Database[]
@@ -902,10 +909,18 @@ class Knowledgebase extends Doctrine
 		{
 			$type = $database->getType();
 			
-			if ( ! in_array($type, $this->types_excluded) )
+			if ( in_array($type, $this->types_excluded) )
 			{
-				$final[] = $database;
+				continue; // don't add it
 			}
+			
+			if ( $database->getActive() == false )
+			{
+				continue; // don't add it
+			}
+				
+			$final[] = $database;
+			
 		}
 		
 		return $final;

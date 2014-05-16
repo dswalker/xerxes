@@ -556,6 +556,7 @@ class Database
 			{
 				continue;
 			}
+			
 			elseif ( $key == 'keywords' || $key == 'alternate_titles' )
 			{
 				$second = array();
