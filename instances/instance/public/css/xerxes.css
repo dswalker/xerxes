@@ -1131,6 +1131,8 @@ td.title-cell {
 	padding: 1em;
 	border: 1px solid #ccc;
 	background-color: #efefef;
+	border-right: none;
+	border-left: none;
 }
 
 .database-letter-seperator {
