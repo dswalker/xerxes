@@ -53,14 +53,7 @@ class DatabasesController extends ActionController
 	
 	public function init()
 	{
-		// model
-		
-		$this->knowledgebase = new Knowledgebase($this->request->getUser());
-		
-		// remove excluded types from database alpha listings and such
-		// but not from subject pages
-		
-		$this->knowledgebase->setFilterResults(true); 
+		$this->knowledgebase = $this->getKnowledgebase();
 		
 		// view helper
 		
@@ -71,7 +64,6 @@ class DatabasesController extends ActionController
 		$this->config = Config::getInstance();
 		
 		$this->setCachedData();
-
 	}
 	
 	/**
@@ -282,6 +274,23 @@ class DatabasesController extends ActionController
 		}
 	
 		return $types;
+	}
+	
+	/**
+	 * @return Knowledgebase
+	 */
+	protected function getKnowledgebase()
+	{
+		// model
+	
+		$knowledgebase = new Knowledgebase($this->request->getUser());
+	
+		// remove excluded types from database alpha listings and such
+		// but not from subject pages
+	
+		$knowledgebase->setFilterResults(true);
+		
+		return $knowledgebase;
 	}	
 	
 	/**

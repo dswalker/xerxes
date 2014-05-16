@@ -49,16 +49,13 @@ class DatabasesEditController extends DatabasesController
 	protected $database_alpha_edit_id = 'database-alpha-edit';
 	
 	/**
-	 * Do a user check
+	 * (non-PHPdoc)
+	 * @see Application\Controller.DatabasesController::init()
 	 */
 	
 	public function init()
 	{
 		parent::init();
-		
-		// don't filter results
-		
-		$this->knowledgebase->setFilterResults(false);
 		
 		// make sure user is an admin @todo how about my saved databases
 		
@@ -69,8 +66,6 @@ class DatabasesEditController extends DatabasesController
 			$this->redirectToLogin();
 		}
 		
-		$this->setCachedData();	
-
 		// set view on database sub-folder
 		
 		$action = $this->request->getParam('action', 'index');
@@ -612,6 +607,27 @@ class DatabasesEditController extends DatabasesController
 		
 		return $this->redirectTo($params);
 	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see Application\Controller.DatabasesController::getKnowledgebase()
+	 */
+	
+	protected function getKnowledgebase()
+	{
+		$knowledgebase = parent::getKnowledgebase();
+		
+		// don't filter results
+	
+		$knowledgebase->setFilterResults(false);
+		
+		return $knowledgebase;
+	}
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see Application\Controller.DatabasesController::setCachedData()
+	 */
 	
 	protected function setCachedData()
 	{
