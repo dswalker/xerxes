@@ -39,7 +39,7 @@
 <xsl:template name="module_nav">
 
 	<xsl:call-template name="module_nav_display">
-		<xsl:with-param name="url">databases/database/<xsl:value-of select="databases/id" /></xsl:with-param>
+		<xsl:with-param name="url">databases/database/<xsl:value-of select="database/id" /></xsl:with-param>
 	</xsl:call-template>
 
 </xsl:template>
