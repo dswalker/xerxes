@@ -48,9 +48,24 @@ class Knowledgebase extends Doctrine
 	protected $datamap;
 	
 	/**
+	 * @var Config
+	 */
+	protected $config;
+	
+	/**
 	 * @var array
 	 */
 	protected $searchable_fields = array();
+	
+	/**
+	 * @var array
+	 */
+	protected $types_excluded = array();
+	
+	/**
+	 * @var bool
+	 */
+	protected $should_filter_results = false;
 	
 	/**
 	 * Create new Knowledgebase object
@@ -65,8 +80,12 @@ class Knowledgebase extends Doctrine
 		$this->user = $user->username;
 		$this->owner = 'admin'; // @todo: logic for local users
 		
-		$this->searchable_fields = explode(",", $this->registry->getConfig("DATABASE_SEARCHABLE_FIELDS", false,
+		$this->config = Config::getInstance();
+		
+		$this->searchable_fields = explode(",", $this->config->getConfig("DATABASE_SEARCHABLE_FIELDS", false,
 			"title,description,creator,publisher,alternate_titles,keywords,coverage"));
+		
+		$this->types_excluded = explode(",", $this->config->getConfig("DATABASES_TYPE_EXCLUDE_AZ", false, array()) );
 	}
 	
 	/**
@@ -393,7 +412,30 @@ class Knowledgebase extends Doctrine
 	
 	public function getDatabaseAlpha()
 	{
-		$sql = "SELECT DISTINCT LEFT(title, 1) as letter FROM research_databases ORDER BY letter";
+		$where  = '';
+		
+		if ( $this->should_filter_results == true )
+		{
+			$where = 'WHERE type IS NULL OR (';
+			
+			$x = 0;
+			
+			foreach ($this->types_excluded as $excluded )
+			{
+				if ( $x > 0 )
+				{
+					$where .= ' AND ';	
+				}
+				
+				$where .= " type <> '" . trim($excluded) . "'";
+				$x++;
+			}
+			
+			$where .= ')';
+		}
+		
+		$sql = "SELECT DISTINCT LEFT(title, 1) as letter FROM (SELECT * FROM research_databases $where) AS all_dbs ORDER BY letter";
+		
 		return $this->datamap()->select($sql);
 	}
 
@@ -437,7 +479,9 @@ class Knowledgebase extends Doctrine
 		$query = $this->entityManager()->createQuery('SELECT d FROM Application\Model\Knowledgebase\Database d WHERE d.title LIKE :alpha AND d.owner = :owner ORDER BY d.title ASC');
 		$query->setParameter('alpha', "$alpha%");
 		$query->setParameter('owner', $this->owner);
-		return $query->getResult();
+		$results = $query->getResult();
+		
+		return $this->filterResults($results);
 	}
 	
 	/**
@@ -449,13 +493,15 @@ class Knowledgebase extends Doctrine
 	
 	public function getDatabases(array $criterion = array())
 	{
+		$criterion['owner'] = $this->owner;
+		
 		$databases_repo = $this->entityManager()->getRepository('Application\Model\Knowledgebase\Database');
 		$results = $databases_repo->findBy(
-			array('owner' => $this->owner),
+			$criterion,
 			array('title' => 'asc')
 		);
 		
-		return $results;
+		return $this->filterResults($results);
 	}
 
 	/**
@@ -833,8 +879,37 @@ class Knowledgebase extends Doctrine
 			}
 		}
 	
-		return $arrDatabases;
-	}	
+		return $this->filterResults($arrDatabases);
+	}
+	
+	/**
+	 * Filter out Databases that are exlcuded by type
+	 * 
+	 * @param array $databases Database[]
+	 * @return array Database[]
+	 */
+	
+	public function filterResults(array $databases)
+	{
+		if ( $this->should_filter_results == false )
+		{
+			return $databases;
+		}
+		
+		$final = array();
+		
+		foreach ( $databases as $database )
+		{
+			$type = $database->getType();
+			
+			if ( ! in_array($type, $this->types_excluded) )
+			{
+				$final[] = $database;
+			}
+		}
+		
+		return $final;
+	}
 	
 	/**
 	 * @return DataMap
@@ -863,5 +938,25 @@ class Knowledgebase extends Doctrine
 		}
 		
 		return $this->entityManager;
+	}
+	
+	/**
+	 * Set to filter results
+	 * 
+	 * @param bool $bool
+	 */
+	
+	public function setFilterResults($bool)
+	{
+		$this->should_filter_results = $bool;
+	}
+	
+	/**
+	 * @param bool
+	 */
+	
+	public function getFilterResults()
+	{
+		return $this->should_filter_results;
 	}
 }

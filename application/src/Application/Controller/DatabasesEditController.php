@@ -21,13 +21,32 @@ use Application\View\Helper\Databases as DatabasehHelper;
 use Xerxes\Mvc\ActionController;
 use Xerxes\Mvc\Exception\AccessDeniedException;
 
+/**
+ * Dataabses Edit Controller
+ *
+ * @author David Walker <dwalker@calstate.edu>
+ */
 class DatabasesEditController extends DatabasesController
 {
+	/**
+	 * @var string
+	 */
 	protected $librarian_names_id = 'librarian-names';
-	
+
+	/**
+	 * @var string
+	 */
 	protected $database_titles_id = 'database-titles';
 	
+	/**
+	 * @var string
+	 */
 	protected $database_types_id = 'database-types';
+	
+	/**
+	 * @var string
+	 */
+	protected $database_alpha_edit_id = 'database-alpha-edit';
 	
 	/**
 	 * Do a user check
@@ -37,6 +56,12 @@ class DatabasesEditController extends DatabasesController
 	{
 		parent::init();
 		
+		// don't filter results
+		
+		$this->knowledgebase->setFilterResults(false);
+		
+		// make sure user is an admin @todo how about my saved databases
+		
 		$user = $this->request->getUser();
 		
 		if ( $user->isAdmin() != true )
@@ -44,11 +69,7 @@ class DatabasesEditController extends DatabasesController
 			$this->redirectToLogin();
 		}
 		
-		// get cached information
-		
-		$this->response->setVariable('database_titles', $this->getDatabaseTitles());
-		$this->response->setVariable('database_types', $this->getDatabaseTypes());
-		$this->response->setVariable('librarian_names', $this->getLibrarianNames());	
+		$this->setCachedData();	
 
 		// set view on database sub-folder
 		
@@ -592,6 +613,16 @@ class DatabasesEditController extends DatabasesController
 		return $this->redirectTo($params);
 	}
 	
+	protected function setCachedData()
+	{
+		// get cached information
+		
+		$this->response->setVariable('database_titles', $this->getDatabaseTitles());
+		$this->response->setVariable('database_types', $this->getDatabaseTypes());
+		$this->response->setVariable('librarian_names', $this->getLibrarianNames());
+		$this->response->setVariable('database_alpha', $this->getDatabaseAlpha());
+	}
+	
 	/**
 	 * Get database titles (cache)
 	 */
@@ -641,6 +672,24 @@ class DatabasesEditController extends DatabasesController
 		}
 	
 		return $types;
+	}
+	
+	/**
+	 * Get database alpha listing for editing pages
+	 * this overrides the parent one so we can get alpha for all types
+	 */
+	
+	protected function getDatabaseAlpha()
+	{
+		$types = $this->cache()->get($this->database_alpha_edit_id );
+	
+		if ( $types == null )
+		{
+			$types = $this->knowledgebase->getDatabaseAlpha();
+			$this->cache()->set($this->database_alpha_edit_id , $types, time() + (12 * 60 * 60) ); // 12 hour cache
+		}
+	
+		return $types;
 	}	
 	
 	/**
@@ -652,6 +701,7 @@ class DatabasesEditController extends DatabasesController
 		$this->cache()->set($this->database_titles_id, null, time() - 1000 );
 		$this->cache()->set($this->database_types_id, null, time() - 1000 );
 		$this->cache()->set($this->database_alpha_id, null, time() - 1000 );
+		$this->cache()->set($this->database_alpha_edit_id, null, time() - 1000 );
 	}
 
 	/**

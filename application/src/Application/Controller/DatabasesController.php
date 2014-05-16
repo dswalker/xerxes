@@ -57,6 +57,11 @@ class DatabasesController extends ActionController
 		
 		$this->knowledgebase = new Knowledgebase($this->request->getUser());
 		
+		// remove excluded types from database alpha listings and such
+		// but not from subject pages
+		
+		$this->knowledgebase->setFilterResults(true); 
+		
 		// view helper
 		
 		$this->helper = new DatabasehHelper($this->event);
@@ -65,9 +70,8 @@ class DatabasesController extends ActionController
 		
 		$this->config = Config::getInstance();
 		
-		// get cached information
-		
-		$this->response->setVariable('database_alpha', $this->getDatabaseAlpha());
+		$this->setCachedData();
+
 	}
 	
 	/**
@@ -250,6 +254,17 @@ class DatabasesController extends ActionController
 		$final = $database->getProxyUrl();
 			
 		return $this->redirectTo($final);
+	}
+	
+	/**
+	 * Add cached data to response
+	 */
+	
+	protected function setCachedData()
+	{
+		// get cached information
+		
+		$this->response->setVariable('database_alpha', $this->getDatabaseAlpha());
 	}
 	
 	/**
