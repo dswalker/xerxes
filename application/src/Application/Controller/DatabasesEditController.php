@@ -83,6 +83,26 @@ class DatabasesEditController extends DatabasesController
 	public function subjectAction()
 	{
 		$id = $this->request->getParam('id');
+		$normalized = $this->request->getParam('subject');
+		
+		
+		// if the request included the normalizd id, redirect
+		// the user to the internal form
+		
+		if ( $normalized != "" )
+		{
+			$category = $this->knowledgebase->getCategory($normalized);
+			$id = $category->getId();
+				
+			$params = array(
+				'controller' => $this->request->getParam('controller'),
+				'action' => $this->request->getParam('action'),
+				'id' => $id
+			);
+				
+			return $this->redirectTo($params);
+		}		
+		
 	
 		$category = $this->knowledgebase->getCategoryById($id);
 	
