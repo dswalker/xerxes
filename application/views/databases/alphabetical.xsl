@@ -42,11 +42,12 @@
 	<xsl:call-template name="surround" />
 </xsl:template>
 
+<xsl:template name="page_name">
+	<xsl:value-of select="$text_databases_az_pagename" />
+</xsl:template>
+
 <xsl:template name="breadcrumb">
-	<xsl:call-template name="breadcrumb_start" />
-	<a href="{//request/controller}">Databases</a>
-	<xsl:value-of select="$text_breadcrumb_separator" />
-	<xsl:text>Alphabetical</xsl:text>
+	<xsl:call-template name="breadcrumb_databases" />
 </xsl:template>
 
 <xsl:template name="module_nav">
@@ -65,7 +66,7 @@
 
 <xsl:template name="databases_list">
 	
-	<h1><xsl:value-of select="$text_databases_az_pagename" /></h1>
+	<h1><xsl:call-template name="page_name" /></h1>
 	
 	<xsl:call-template name="searchbox">
 		<xsl:with-param name="action"><xsl:value-of select="//request/controller"/>/<xsl:value-of select="//request/action"/></xsl:with-param>

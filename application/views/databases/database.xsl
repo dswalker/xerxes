@@ -42,13 +42,17 @@
 	<xsl:call-template name="surround" />
 </xsl:template>
 
+<xsl:template name="page_name">
+	<xsl:value-of select="database/title" />
+</xsl:template>
+
 <xsl:template name="breadcrumb">
-	<xsl:call-template name="breadcrumb_start" />
-	<a href="{//request/controller}">Databases</a>
+	<xsl:call-template name="breadcrumb_databases" />
+</xsl:template>
+
+<xsl:template name="breadcrumb_databases_intermediate">
+	<a href="{//request/controller}/alphabetical"><xsl:value-of select="$text_databases_az_pagename" /></a>
 	<xsl:value-of select="$text_breadcrumb_separator" />
-	<a href="{//request/controller}/alphabetical">Alphabetical</a>
-	<xsl:value-of select="$text_breadcrumb_separator" />
-	<xsl:text>Database</xsl:text>
 </xsl:template>
 
 <xsl:template name="module_header">
@@ -83,10 +87,10 @@
 
 <xsl:template name="databases_full">
 	
+	<h1><xsl:call-template name="page_name" /></h1>
+	
 	<xsl:for-each select="database">
 	
-		<h1><xsl:value-of select="title" /></h1>
-		
 		<div class="database-record-description">
 			<xsl:value-of select="description" />
 		</div>

@@ -42,11 +42,12 @@
 	<xsl:call-template name="surround" />
 </xsl:template>
 
+<xsl:template name="page_name">
+	Librarians
+</xsl:template>
+
 <xsl:template name="breadcrumb">
-	<xsl:call-template name="breadcrumb_start" />
-	<a href="{//request/controller}">Databases</a>
-	<xsl:value-of select="$text_breadcrumb_separator" />
-	<xsl:text>Librarians</xsl:text>
+	<xsl:call-template name="breadcrumb_databases" />
 </xsl:template>
 
 <xsl:template name="module_nav" />
@@ -59,7 +60,7 @@
 
 <xsl:template name="librarians_list">
 	
-	<h1>Librarians</h1>
+	<h1><xsl:call-template name="page_name" /></h1>
 	
 	<ul>
 		
@@ -76,6 +77,5 @@
 	</ul>
 	
 </xsl:template>
-
 
 </xsl:stylesheet>

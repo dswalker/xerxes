@@ -44,11 +44,12 @@
 	<xsl:call-template name="surround" />
 </xsl:template>
 
-<xsl:template name="breadcrumb">
-	<xsl:call-template name="breadcrumb_start" />
-	<a href="{//request/controller}">Databases</a>
-	<xsl:value-of select="$text_breadcrumb_separator" />
+<xsl:template name="page_name">
 	<xsl:value-of select="category/name" />
+</xsl:template>
+
+<xsl:template name="breadcrumb">
+	<xsl:call-template name="breadcrumb_databases" />
 </xsl:template>
 
 <xsl:template name="module_nav">

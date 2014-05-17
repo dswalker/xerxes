@@ -155,4 +155,19 @@
 
 </xsl:template>
 
+<xsl:template name="breadcrumb_databases">
+	<xsl:call-template name="breadcrumb_start" />
+	<a href="{//request/controller}"><xsl:value-of select="$text_databases_category_pagename" /></a>
+
+	<xsl:value-of select="$text_breadcrumb_separator" />
+	
+	<xsl:call-template name="breadcrumb_databases_intermediate" />
+
+	<xsl:call-template name="page_name" />
+
+</xsl:template>
+
+<xsl:template name="breadcrumb_databases_intermediate" />
+
+
 </xsl:stylesheet>
