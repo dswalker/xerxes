@@ -40,31 +40,25 @@ class Databases
 	}
 	
 	/**
-	 * Add links to categories
+	 * Add database navigation links
 	 * 
 	 * @param array $categories
 	 * @return array
 	 */
 	
-	public function addCategoryLinks(array $categories )
+	public function getEditLink()
 	{
-		$final = array();
+		$controller = $this->request->getParam('controller');
+		$switch = 'databases';
 		
-		foreach ( $categories as $category )
+		if( $controller == 'databases')
 		{
-			$normalized = $category['normalized'];
-			
-			$params = array(
-				'controller' => 'databases',
-				'action' => 'subject',
-				'subject' => $normalized
-			);
-			
-			$category['url'] = $this->request->url_for($params);
-			
-			$final[] = $category;
+			$switch = 'databases-edit';
 		}
 		
-		return $final;
+		$params = $this->request->getParams();
+		$params['controller'] = $switch;
+		
+		return $this->request->url_for($params);
 	}
 }

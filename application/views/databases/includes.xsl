@@ -33,13 +33,12 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 
-<xsl:template name="module_nav_display">
-	<xsl:param name="url" />
+<xsl:template name="module_nav">
 
 	<xsl:if test="//request/session/user_admin">
 		
 		<li id="databases-edit">
-			<a href="{$url}"><img src="images/edit.gif" alt="" /> Edit page</a>
+			<a href="{//edit_link}"><img src="images/edit.gif" alt="" /> Edit page</a>
 		</li>		
 		
 	</xsl:if>

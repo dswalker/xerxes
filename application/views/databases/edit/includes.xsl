@@ -33,11 +33,10 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 
-<xsl:template name="module_nav_display">
-	<xsl:param name="url" />
+<xsl:template name="module_nav">
 		
 	<li id="databases-edit">
-		<a href="{$url}"><img src="images/back.gif" alt="" /> Return to page</a>
+		<a href="{//edit_link}"><img src="images/back.gif" alt="" /> Return to page</a>
 	</li>		
 
 </xsl:template>

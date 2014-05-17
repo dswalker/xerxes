@@ -36,14 +36,6 @@
 <xsl:import href="../librarian.xsl" />
 <xsl:import href="includes.xsl" />
 
-<xsl:template name="module_nav">
-
-	<xsl:call-template name="module_nav_display">
-		<xsl:with-param name="url">databases/librarian/<xsl:value-of select="librarians/id" /></xsl:with-param>
-	</xsl:call-template>
-
-</xsl:template>
-
 <xsl:template name="main">
 	
 	<xsl:call-template name="librarian_full" />

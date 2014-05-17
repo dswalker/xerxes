@@ -42,14 +42,6 @@
 	<xsl:call-template name="surround" />
 </xsl:template>
 
-<xsl:template name="module_nav">
-
-	<xsl:call-template name="module_nav_display">
-		<xsl:with-param name="url">databases/subject?id=<xsl:value-of select="category/id" /></xsl:with-param>
-	</xsl:call-template>
-
-</xsl:template>
-
 <xsl:template name="module_header">
 
 	<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet"/>

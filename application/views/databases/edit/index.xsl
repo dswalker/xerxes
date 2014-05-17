@@ -36,14 +36,6 @@
 <xsl:import href="../index.xsl" />
 <xsl:import href="includes.xsl" />
 
-<xsl:template name="module_nav">
-
-	<xsl:call-template name="module_nav_display">
-		<xsl:with-param name="url">databases</xsl:with-param>
-	</xsl:call-template>
-
-</xsl:template>
-
 <xsl:template name="category_link">
 
 	<a href="{//request/controller}/subject?id={id}"><xsl:value-of select="name" /></a>

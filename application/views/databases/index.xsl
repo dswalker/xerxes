@@ -51,14 +51,6 @@
 	<xsl:value-of select="$text_databases_category_pagename" />
 </xsl:template>
 
-<xsl:template name="module_nav">
-
-	<xsl:call-template name="module_nav_display">
-		<xsl:with-param name="url">databases-edit</xsl:with-param>
-	</xsl:call-template>
-
-</xsl:template>
-
 <xsl:template name="module_header">
 	<style type="text/css">
 	
