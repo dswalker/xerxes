@@ -162,24 +162,6 @@ class Subcategory
 		return $this->database_sequences->toArray();
 	}
 	
-	public function filterDatabases()
-	{
-		// get sequences and unset the property
-		
-		$sequences = $this->getDatabases();
-		$this->database_sequences = new ArrayCollection();
-		
-		// only include active databases
-		
-		foreach ( $sequences as $sequence )
-		{
-			if ( $sequence->getDatabase()->getActive() == true )
-			{
-				$this->database_sequences[] = $sequence;
-			} 
-		}
-	}
-
 	/**
 	 * @param Database $sequence
 	 */
