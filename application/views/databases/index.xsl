@@ -44,7 +44,11 @@
 
 <xsl:template name="breadcrumb">
 	<xsl:call-template name="breadcrumb_start" />
-	Databases
+	<xsl:call-template name="page_name" />
+</xsl:template>
+
+<xsl:template name="page_name">
+	<xsl:value-of select="$text_databases_category_pagename" />
 </xsl:template>
 
 <xsl:template name="module_nav">
@@ -68,11 +72,13 @@
 
 <xsl:template name="main">
 
-	<h1><xsl:value-of select="$text_databases_category_pagename" /></h1>
-
-	<div style="margin-bottom: 30px">
-		[ <a href="{//request/controller}/alphabetical">Databases A-Z</a> ]
-	</div>
+	<h1><xsl:call-template name="page_name" /></h1>
+	
+	<h2><xsl:value-of select="$text_databases_az_pagename" /></h2>
+	<xsl:call-template name="databases_alpha_listing" />
+	
+	<h2><xsl:copy-of select="$text_databases_category_subject" /></h2>
+	<p><xsl:copy-of select="$text_databases_category_subject_desc" /></p>
 		
 	<div class="databases-categories-list">
 		<xsl:call-template name="loop_columns" />
