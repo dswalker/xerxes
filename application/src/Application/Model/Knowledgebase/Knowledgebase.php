@@ -227,34 +227,47 @@ class Knowledgebase extends Doctrine
 	 * Get category
 	 *
 	 * @param string $normalized  normalized category name
+	 * @param int $id             [optional] internal category id
+	 * 
 	 * @return Category
 	 */
 	
-	public function getCategory($normalized)
+	public function getCategory($normalized, $id = null)
 	{
-		$category_repo = $this->entityManager()->getRepository('Application\Model\Knowledgebase\Category');
-		$results = $category_repo->findBy(
-			array(
-				'normalized' => $normalized,
-				'owner' => $this->owner
-			)
-		);
+		$where = ''; // where query
+		$value = ''; // value
+		
+		if ( $id != null )
+		{
+			$where = 'c.id = :id';
+			$value = $id;
+		}
+		else
+		{
+			$where = 'c.normalized = :id';
+			$value = $normalized;
+		}
+		
+		// only include active databases
+			
+		$dql = 'SELECT c, s, j, d FROM Application\Model\Knowledgebase\Category c
+			JOIN c.subcategories s
+			JOIN s.database_sequences j
+			JOIN j.database d
+			WHERE ' . $where . '
+			AND d.active = :active';
+			
+		$query = $this->entityManager()->createQuery($dql);
+		$query->setParameter(':id', $value);
+		$query->setParameter('active', true);
+		$results = $query->getResult();
 		
 		if ( count($results) != 1 )
 		{
 			throw new \Exception('Could not find category');
 		}
 		
-		$category =	$results[0];
-		
-		// @todo: use Doctrine Criteria or something here?
-		
-		foreach ( $category->getSubcategories() as $subcategory )
-		{
-			$subcategory->filterDatabases();
-		}
-		
-		return $category;
+		return	$results[0];
 	}
 	
 	/**
@@ -266,7 +279,7 @@ class Knowledgebase extends Doctrine
 	
 	public function getCategoryById($id)
 	{
-		return $this->entityManager()->find('Application\Model\Knowledgebase\Category', $id);
+		return $this->getCategory(null, $id);
 	}
 
 	/**
@@ -483,7 +496,9 @@ class Knowledgebase extends Doctrine
 
 	public function getDatabasesStartingWith($alpha)
 	{
-		$query = $this->entityManager()->createQuery('SELECT d FROM Application\Model\Knowledgebase\Database d WHERE d.title LIKE :alpha AND d.owner = :owner ORDER BY d.title ASC');
+		$dql = 'SELECT d FROM Application\Model\Knowledgebase\Database d WHERE d.title LIKE :alpha AND d.owner = :owner ORDER BY d.title ASC';
+		
+		$query = $this->entityManager()->createQuery($dql);
 		$query->setParameter('alpha', "$alpha%");
 		$query->setParameter('owner', $this->owner);
 		$results = $query->getResult();
@@ -780,33 +795,6 @@ class Knowledgebase extends Doctrine
 					
 		$sql .= ")";
 	
-		// remove certain databases based on type(s), if so configured
-	
-		if ( $configDatabaseTypesExclude != null )
-		{
-			$arrTypes = explode(",", $configDatabaseTypesExclude);
-			$arrTypeQuery = array();
-			
-			// specify that the type NOT be one of these
-	
-			for ( $q = 0; $q < count($arrTypes); $q++ )
-			{
-				array_push($arrTypeQuery, "research_databases.type != :type$q");
-				$arrParams[":type$q"] = trim($arrTypes[$q]);
-			}
-	
-			// AND 'em but then also catch the case where type is null
-			
-			$joiner = "WHERE";
-			
-			if ( $where == true )
-			{
-				$joiner = "AND";
-			}
-			
-			$sql .= " $joiner ( (" . implode (" AND ", $arrTypeQuery) . ") OR research_databases.type IS NULL )";
-		}
-			
 		$sql .= " ORDER BY UPPER(title)";
 	
 		// echo $sql; print_r($arrParams); // exit;
@@ -911,16 +899,15 @@ class Knowledgebase extends Doctrine
 			
 			if ( in_array($type, $this->types_excluded) )
 			{
-				continue; // don't add it
+				continue; // not an approved type
 			}
 			
-			if ( $database->getActive() == false )
+			if ( $database->isActive() == false )
 			{
-				continue; // don't add it
+				continue; // should not display
 			}
-				
-			$final[] = $database;
 			
+			$final[] = $database;
 		}
 		
 		return $final;
