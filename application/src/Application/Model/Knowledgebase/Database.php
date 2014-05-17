@@ -538,6 +538,33 @@ class Database
 	}
 	
 	/**
+	 * Should the database be surpressed from display
+	 *
+	 * @param Database $database
+	 */
+	
+	public function isActive()
+	{
+		if ( $this->getActive() == false )
+		{
+			return false;
+		}
+	
+		$expired = $this->getDateTrialExpiry();
+		$now = new \DateTime("now");
+		
+		if ( $expired != null )
+		{
+			if ( $expired <= $now )
+			{
+				return false;
+			}
+		}
+	
+		return true;
+	}
+	
+	/**
 	 * @return array
 	 */
 	
