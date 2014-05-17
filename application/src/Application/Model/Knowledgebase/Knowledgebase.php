@@ -11,7 +11,6 @@
 
 namespace Application\Model\Knowledgebase;
 
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManager;
 use Xerxes\Utility\Cache;
 use Xerxes\Utility\DataMap;
@@ -59,14 +58,10 @@ class Knowledgebase extends Doctrine
 	protected $searchable_fields = array();
 	
 	/**
-	 * @var array
+	 * @var DatabaseFilter
 	 */
-	protected $types_excluded = array();
 	
-	/**
-	 * @var bool
-	 */
-	protected $should_filter_results = false;
+	protected $filter;
 	
 	/**
 	 * Create new Knowledgebase object
@@ -86,7 +81,7 @@ class Knowledgebase extends Doctrine
 		$this->searchable_fields = explode(",", $this->config->getConfig("DATABASE_SEARCHABLE_FIELDS", false,
 			"title,description,creator,publisher,alternate_titles,keywords,coverage"));
 		
-		$this->types_excluded = explode(",", $this->config->getConfig("DATABASES_TYPE_EXCLUDE_AZ", false, array()) );
+		$this->filter = new DatabaseFilter();
 	}
 	
 	/**
@@ -255,11 +250,10 @@ class Knowledgebase extends Doctrine
 			JOIN s.database_sequences j
 			JOIN j.database d
 			WHERE ' . $where . '
-			AND d.active = :active';
+			AND (' . $this->filter->getDqlQuery() . ')';
 			
 		$query = $this->entityManager()->createQuery($dql);
 		$query->setParameter(':id', $value);
-		$query->setParameter('active', true);
 		$results = $query->getResult();
 		
 		if ( count($results) != 1 )
@@ -432,27 +426,7 @@ class Knowledgebase extends Doctrine
 	
 	public function getDatabaseAlpha()
 	{
-		$where  = '';
-		
-		if ( $this->should_filter_results == true )
-		{
-			$where = 'WHERE type IS NULL OR (';
-			
-			$x = 0;
-			
-			foreach ($this->types_excluded as $excluded )
-			{
-				if ( $x > 0 )
-				{
-					$where .= ' AND ';	
-				}
-				
-				$where .= " type <> '" . trim($excluded) . "'";
-				$x++;
-			}
-			
-			$where .= ')';
-		}
+		$where = $this->filter->getSqlQuery();
 		
 		$sql = "SELECT DISTINCT LEFT(title, 1) as letter FROM (SELECT * FROM research_databases $where) AS all_dbs ORDER BY letter";
 		
@@ -503,7 +477,7 @@ class Knowledgebase extends Doctrine
 		$query->setParameter('owner', $this->owner);
 		$results = $query->getResult();
 		
-		return $this->filterResults($results);
+		return $this->filter->filterResults($results);
 	}
 	
 	/**
@@ -523,7 +497,7 @@ class Knowledgebase extends Doctrine
 			array('title' => 'asc')
 		);
 		
-		return $this->filterResults($results);
+		return $this->filter->filterResults($results);
 	}
 
 	/**
@@ -874,43 +848,7 @@ class Knowledgebase extends Doctrine
 			}
 		}
 	
-		return $this->filterResults($arrDatabases);
-	}
-	
-	/**
-	 * Filter out Databases that are exlcuded by type, active status
-	 * 
-	 * @param array $databases Database[]
-	 * @return array Database[]
-	 */
-	
-	public function filterResults(array $databases)
-	{
-		if ( $this->should_filter_results == false )
-		{
-			return $databases;
-		}
-		
-		$final = array();
-		
-		foreach ( $databases as $database )
-		{
-			$type = $database->getType();
-			
-			if ( in_array($type, $this->types_excluded) )
-			{
-				continue; // not an approved type
-			}
-			
-			if ( $database->isActive() == false )
-			{
-				continue; // should not display
-			}
-			
-			$final[] = $database;
-		}
-		
-		return $final;
+		return $this->filter->filterResults($arrDatabases);
 	}
 	
 	/**
@@ -943,22 +881,13 @@ class Knowledgebase extends Doctrine
 	}
 	
 	/**
-	 * Set to filter results
+	 * Should filter databases?
 	 * 
 	 * @param bool $bool
 	 */
 	
 	public function setFilterResults($bool)
 	{
-		$this->should_filter_results = $bool;
-	}
-	
-	/**
-	 * @param bool
-	 */
-	
-	public function getFilterResults()
-	{
-		return $this->should_filter_results;
+		return $this->filter->setToFilter($bool);
 	}
 }
