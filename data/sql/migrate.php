@@ -183,6 +183,13 @@ foreach ( $results as $result )
 
 $knowledgebase->entityManager()->flush();
 
+// index 'em
+
+foreach ( $knowledgebase->getDatabases() as $database )
+{
+	$knowledgebase->indexDatabase($database);
+}
+
 $knowledgebase->entityManager(true);
 
 // url
