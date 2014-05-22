@@ -19,6 +19,12 @@ use Application\View\Helper\Databases as DatabasehHelper;
 use Xerxes\Mvc\ActionController;
 use Xerxes\Utility\Cache;
 
+/**
+ * Databases Controller
+ *
+ * @author David Walker <dwalker@calstate.edu>
+ */
+
 class DatabasesController extends ActionController
 {
 	/**
@@ -42,6 +48,7 @@ class DatabasesController extends ActionController
 	protected $config;
 	
 	/**
+	 * Identifies the cached alpha listing
 	 * @var string
 	 */
 	protected $database_alpha_id = 'database-alpha';
