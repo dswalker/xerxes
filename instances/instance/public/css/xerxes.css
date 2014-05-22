@@ -1125,18 +1125,26 @@ td.title-cell {
 }
 
 .database-alpha-letters {
-	display: table;
 	margin-top: 3em;
 	margin-bottom: 3em;
-	padding: 1em;
+}
+
+.database-alpha-letters a, .database-alpha-letters strong {
+	display: inline-block;
+	padding: .5em;
 	border: 1px solid #ccc;
 	background-color: #efefef;
-	border-right: none;
-	border-left: none;
+	border-radius: 3px;
+	margin: 2px;
+	font-size: 110%;
+}
+
+.database-alpha-letters strong {
+	border: 1px solid #036;
+	background-color: #369;
+	color: #fff;
 }
 
 .database-letter-seperator {
-	padding-left: .3em;
-	padding-right: .3em;
-	color: #ccc;
+	display: none;
 }

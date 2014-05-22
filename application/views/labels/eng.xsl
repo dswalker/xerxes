@@ -122,12 +122,12 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_databases_az_databases">databases</xsl:variable>
 	<xsl:variable name="text_databases_az_hint_info">more information</xsl:variable>
 	<xsl:variable name="text_databases_az_letter_separator"> | </xsl:variable>
-	<xsl:variable name="text_databases_az_pagename">Databases A-Z</xsl:variable>
-	<xsl:variable name="text_databases_az_search">List databases matching</xsl:variable>
+	<xsl:variable name="text_databases_az_pagename">Browse by Database Name</xsl:variable>
+	<xsl:variable name="text_databases_az_search">Search for databases by name</xsl:variable>
 	
 	<xsl:variable name="text_databases_category_pagename">Home</xsl:variable>
 	<xsl:variable name="text_databases_category_subject">Databases by Subject</xsl:variable>
-	<xsl:variable name="text_databases_category_subject_desc">Search databases specific to your area of study.</xsl:variable>
+	<xsl:variable name="text_databases_category_subject_desc">Databases specific to your area of study, chosen by our subject specialists.</xsl:variable>
 	
 	<xsl:variable name="text_databases_subject_librarian_office">Office</xsl:variable>
 	<xsl:variable name="text_databases_subject_librarian_office_hours">Office Hours</xsl:variable>

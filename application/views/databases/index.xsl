@@ -58,6 +58,19 @@
 		padding: 5px;
 	}
 	
+	.databases-categories-list a {
+		position: relative;
+		padding-left: 20px;
+	}
+
+	.databases-categories-list a:before { 
+		content: "\203A"; 
+		color: #999; 
+		position: absolute; 
+		top: -1px; 
+		left: 3px; 
+	}
+	
 	</style>
 	
 </xsl:template>
