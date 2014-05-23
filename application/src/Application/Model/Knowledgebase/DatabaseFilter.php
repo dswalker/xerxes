@@ -70,7 +70,7 @@ class DatabaseFilter
 		
 		if ( $this->should_filter_results == true )
 		{
-			$query = 'WHERE type IS NULL OR (';
+			$query = 'WHERE ( type IS NULL OR (';
 				
 			$x = 0;
 				
@@ -85,7 +85,7 @@ class DatabaseFilter
 				$x++;
 			}
 				
-			$query .= ') AND active = 1 AND (date_trial_expiry IS NULL OR date_trial_expiry > NOW())';
+			$query .= ')) AND active = 1 AND (date_trial_expiry IS NULL OR date_trial_expiry > NOW())';
 		}
 		
 		return $query;
