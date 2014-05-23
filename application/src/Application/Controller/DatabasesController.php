@@ -185,19 +185,31 @@ class DatabasesController extends ActionController
 		
 		$databases = null; // list of databases
 		
-		// limited to specific letter
+		// this is a query
 		
 		if ( $query != null )
 		{
 			$databases = $this->knowledgebase->searchDatabases($query);
 		}
+		
+		// limited to specific letter
+		
 		elseif ( $alpha != null )
 		{
 			$databases = $this->knowledgebase->getDatabasesStartingWith($alpha);
 		}
-		else // all databases
+		
+		// redirect to the first letter
+		
+		else 
 		{
-			$databases = $this->knowledgebase->getDatabases();
+			$params = array(
+				'controller' => $this->request->getParam('controller'),
+				'action' => $this->request->getParam('action'),
+				'alpha' => 'A',
+			);
+			
+			return $this->redirectTo($params);
 		}
 		
 		$this->response->setVariable('databases', $databases);
