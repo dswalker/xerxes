@@ -1033,7 +1033,7 @@ td.title-cell {
 	color: green;
 }
 
-.subject-list, ul.databases-list {
+.subject-list, .subject-list ul.databases-list {
 	margin-left: 15px;
 }
 
