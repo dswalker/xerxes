@@ -12,10 +12,8 @@
 namespace Application\Model\Knowledgebase;
 
 use Doctrine\ORM\EntityManager;
-use Xerxes\Utility\Cache;
 use Xerxes\Utility\DataMap;
 use Xerxes\Utility\Doctrine;
-use Xerxes\Utility\Registry;
 use Xerxes\Utility\User;
 
 /**

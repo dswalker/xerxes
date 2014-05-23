@@ -13,7 +13,6 @@ namespace Application\Model\Ebsco;
 
 use Application\Model\Ebsco\Exception\DatabaseException;
 use Application\Model\Search;
-use Xerxes\Utility\Factory;
 use Xerxes\Utility\Parser;
 use Xerxes\Mvc\Request;
 

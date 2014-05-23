@@ -16,7 +16,6 @@ use Xerxes\Record;
 use Application\Model\Saved\Record as SavedRecord;
 use Application\Model\Saved\Record\Format;
 use Application\Model\Saved\Record\Tag;
-use Application\Model\Summon;
 
 /**
  * Database access mapper for saved records

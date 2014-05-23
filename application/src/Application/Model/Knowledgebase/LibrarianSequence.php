@@ -11,8 +11,6 @@
 
 namespace Application\Model\Knowledgebase;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 /**
  * Librarian Category Join
  *
