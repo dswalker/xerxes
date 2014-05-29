@@ -232,11 +232,14 @@ foreach ( $xml->categories->category as $category_xml )
 					$metalib_id = (string) $metalib;
 						
 					$librarian = $knowledgebase->getLibrarianBySourceId($metalib_id);
-						
-					$librarian_sequence = new LibrarianSequence();
-					$librarian_sequence->setLibrarian($librarian);
-						
-					$category->addLibrarianSequence($librarian_sequence);
+					
+					if ( $librarian != null )
+					{
+						$librarian_sequence = new LibrarianSequence();
+						$librarian_sequence->setLibrarian($librarian);
+							
+						$category->addLibrarianSequence($librarian_sequence);
+					}
 				}
 
 				continue;
@@ -249,6 +252,7 @@ foreach ( $xml->categories->category as $category_xml )
 				
 			$subcategory = new Subcategory();
 			$subcategory->setSourceId($metalib_sucategory_id);
+			$subcategory->setOwner($owner);
 			$subcategory->setName($name);
 			$subcategory->setSidebar($sidebar);
 			$subcategory->setSequence($sequence);
