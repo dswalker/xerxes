@@ -136,7 +136,7 @@ class Knowledgebase extends Doctrine
 	
 	public function deleteDatabaseSequence($sequence_id)
 	{
-		$sequence = $this->entityManager()->find('Application\Model\Knowledgebase\DatabaseSequence', $sequence_id);
+		$sequence = $this->getOwnedEntity('Application\Model\Knowledgebase\DatabaseSequence', $sequence_id);
 		$this->entityManager()->remove($sequence);
 		$this->entityManager()->flush();
 	}
@@ -526,7 +526,13 @@ class Knowledgebase extends Doctrine
 			
 			foreach ( $reorder_array as $order => $subcategory_id )
 			{
-				$datamap->update( $sql, array(":sequence" => $order, ":id" => $subcategory_id ) );
+				$datamap->update( $sql, 
+					array(
+						":sequence" => $order, 
+						":id" => $subcategory_id,
+						":owner" => $this->owner
+					)
+				);
 			}
 				
 			return $datamap->commit();
@@ -553,7 +559,13 @@ class Knowledgebase extends Doctrine
 				
 			foreach ( $reorder_array as $order => $sequence_id )
 			{
-				$datamap->update( $sql, array(":sequence" => $order, ":id" => $sequence_id ) );
+				$datamap->update( $sql,
+					array(
+						":sequence" => $order, 
+						":id" => $sequence_id,
+						":owner" => $this->owner
+					)
+				);
 			}
 	
 			return $datamap->commit();

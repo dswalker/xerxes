@@ -23,6 +23,12 @@ class DatabaseSequence
 {
 	/** @Id @Column(type="integer") @GeneratedValue **/
 	protected $id;
+
+	/**
+	 * @Column(type="string")
+	 * @var string
+	 */
+	protected $owner;	
 	
 	/**
 	 * @Column(type="integer", nullable=true)
@@ -59,6 +65,22 @@ class DatabaseSequence
 	{
 		return $this->id;
 	}
+	
+	/**
+	 * @return string
+	 */
+	public function getOwner()
+	{
+		return $this->owner;
+	}
+	
+	/**
+	 * @param string $source_id
+	 */
+	public function setOwner($owner)
+	{
+		$this->owner = $owner;
+	}	
 	
 	/**
 	 * @return int

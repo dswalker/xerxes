@@ -199,6 +199,8 @@ class Subcategory
 		}
 		
 		$sequence->setSubcategory($this);
+		$sequence->setOwner($this->owner);
+		
 		$this->database_sequences[] = $sequence;
 	}
 	
