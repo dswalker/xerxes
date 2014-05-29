@@ -39,7 +39,10 @@
 <xsl:output method="html" />
 
 <xsl:template match="/*">
-	<xsl:call-template name="surround" />
+	<xsl:call-template name="surround">
+		<xsl:with-param name="surround_template">none</xsl:with-param>
+		<xsl:with-param name="sidebar">none</xsl:with-param>
+	</xsl:call-template>
 </xsl:template>
 
 <xsl:template name="breadcrumb">
@@ -51,42 +54,31 @@
 	<xsl:value-of select="$text_databases_category_pagename" />
 </xsl:template>
 
-<xsl:template name="module_header">
-	<style type="text/css">
-	
-	.databases-categories-list li {
-		padding: 5px;
-	}
-	
-	.databases-categories-list a {
-		position: relative;
-		padding-left: 20px;
-	}
-
-	.databases-categories-list a:before { 
-		content: "\203A"; 
-		color: #999; 
-		position: absolute; 
-		top: -1px; 
-		left: 3px; 
-	}
-	
-	</style>
-	
-</xsl:template>
-
 <xsl:template name="main">
 
 	<h1><xsl:call-template name="page_name" /></h1>
 	
-	<h2><xsl:value-of select="$text_databases_az_pagename" /></h2>
-	<xsl:call-template name="databases_alpha_listing" />
+	<div class="row-fluid">
 	
-	<h2><xsl:copy-of select="$text_databases_category_subject" /></h2>
-	<p><xsl:copy-of select="$text_databases_category_subject_desc" /></p>
+		<div class="span7">
+				
+			<h2><xsl:copy-of select="$text_databases_category_subject" /></h2>
+				
+			<div class="databases-categories-list">
+				<xsl:call-template name="loop_columns" />
+			</div>
+			
+		</div>
 		
-	<div class="databases-categories-list">
-		<xsl:call-template name="loop_columns" />
+		<div class="span5">
+		
+			<h2><xsl:value-of select="$text_databases_az_pagename" /></h2>
+			<xsl:call-template name="databases_alpha_listing" />
+		
+			<xsl:call-template name="sidebar_additional" />
+					
+		</div>
+		
 	</div>
 	
 	<xsl:call-template name="databases_edit" />
