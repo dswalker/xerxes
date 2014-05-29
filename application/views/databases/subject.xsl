@@ -74,7 +74,7 @@
 
 		<div class="subject-list">
 			
-			<ul data-target="databases-edit/reorder-subcategories" data-category="{$category}">
+			<ul data-target="{//request/controller}/reorder-subcategories" data-category="{$category}">
 			
 				<xsl:choose>
 					<xsl:when test="$show_individual_subcategory != ''">
@@ -122,7 +122,7 @@
 			<xsl:call-template name="subcategory_name" />
 		</h2>
 		
-		<ul class="databases-list" data-target="databases-edit/reorder-databases" data-category="{$category}" data-subcategory="{id}">
+		<ul class="databases-list" data-target="{//request/controller}/reorder-databases" data-category="{$category}" data-subcategory="{id}">
 		
 			<xsl:for-each select="database_sequences/database_sequence/database">
 			
@@ -193,7 +193,7 @@
 	
 		<div class="subject-list">
 	
-			<ul data-target="databases-edit/reorder-subcategories" data-category="{$category}">
+			<ul data-target="{//request/controller}/reorder-subcategories" data-category="{$category}">
 	
 				<xsl:for-each select="category/subcategories/subcategory[sidebar = 1]">
 					<xsl:call-template name="subject_subcategory">
