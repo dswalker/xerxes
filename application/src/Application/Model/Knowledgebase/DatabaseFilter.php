@@ -50,12 +50,13 @@ class DatabaseFilter
 	/**
 	 * DQL query limiting databases to active and not expired
 	 * 
+	 * @param string $table  table name
 	 * @return string
 	 */
 	
-	public function getDqlQuery()
+	public function getDqlQuery($table = 'd')
 	{
-		return 'd.active = 1 AND d.date_trial_expiry IS NULL OR d.date_trial_expiry > CURRENT_TIMESTAMP()';
+		return "$table.active = 1 AND $table.date_trial_expiry IS NULL OR $table.date_trial_expiry > CURRENT_TIMESTAMP()";
 	}
 	
 	/**
