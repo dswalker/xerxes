@@ -12,11 +12,8 @@
 namespace Application\Model\Summon;
 
 use Application\Model\Search;
-use Xerxes\Summon;
 use Xerxes\Mvc\Request;
-use Xerxes\Utility\Factory;
 use Xerxes\Utility\Json;
-use Xerxes\Utility\Parser;
 
 /**
  * Summon Search Engine
