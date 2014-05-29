@@ -373,18 +373,27 @@
 		</tr>
 
 		<xsl:for-each select="//librarian_names/librarian_name">
-			<tr>
-				<td class="facet-multi-selector">
-					<input type="checkbox" id="librarian-select-{id}" class="facet-multi-option-include" name="librarian" value="{id}">
-						<xsl:if test="id = //category/librarian_sequences/librarian_sequence/librarian/id">
-							<xsl:attribute name="checked">checked</xsl:attribute>
-						</xsl:if>
-					</input>
-				</td>
-				<td>
-					<xsl:value-of select="name" />
-				</td>
-			</tr>
+			<xsl:choose>
+				<xsl:when test="id = //category/librarian_sequences/librarian_sequence/librarian/id">
+					<!-- this librarian is already added, so do nothing -->
+				</xsl:when>
+				<xsl:otherwise>
+		
+					<tr>
+						<td class="facet-multi-selector">
+							<input type="checkbox" id="librarian-select-{id}" class="facet-multi-option-include" name="librarian" value="{id}">
+								<xsl:if test="id = //category/librarian_sequences/librarian_sequence/librarian/id">
+									<xsl:attribute name="checked">checked</xsl:attribute>
+								</xsl:if>
+							</input>
+						</td>
+						<td>
+							<xsl:value-of select="name" />
+						</td>
+					</tr>
+					
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:for-each>
 	</table>	
 
