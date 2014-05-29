@@ -24,6 +24,7 @@
 			<path index="3" param="id" />
 		</action>
 	</controller>
+	<controller name="my-databases" class="Application\Controller\MyDatabasesController" />
 	<controller name="embed">
 		<action name="subject">
 			<path index="3" param="subject" />

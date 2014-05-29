@@ -22,7 +22,7 @@ use Xerxes\Mvc\ActionController;
 use Xerxes\Mvc\Exception\AccessDeniedException;
 
 /**
- * Dataabses Edit Controller
+ * Databases Edit Controller
  *
  * @author David Walker <dwalker@calstate.edu>
  */
@@ -57,14 +57,7 @@ class DatabasesEditController extends DatabasesController
 	{
 		parent::init();
 		
-		// make sure user is an admin @todo how about my saved databases
-		
-		$user = $this->request->getUser();
-		
-		if ( $user->isAdmin() != true )
-		{
-			$this->redirectToLogin();
-		}
+		$this->enforceLogin();
 		
 		// set view on database sub-folder
 		
@@ -637,11 +630,33 @@ class DatabasesEditController extends DatabasesController
 	{
 		$knowledgebase = parent::getKnowledgebase();
 		
+		// make sure this is admin
+		
+		$knowledgebase->setOwner('admin');
+		
 		// don't filter results
 	
 		$knowledgebase->setFilterResults(false);
 		
 		return $knowledgebase;
+	}
+	
+	/**
+	 * Make sure user is an admin
+	 * 
+	 * @return \Symfony\Component\HttpFoundation\RedirectResponse
+	 */
+	
+	protected function enforceLogin()
+	{
+		// make sure user is an admin
+		
+		$user = $this->request->getUser();
+		
+		if ( $user->isAdmin() != true )
+		{
+			return $this->redirectToLogin();
+		}
 	}
 	
 	/**
