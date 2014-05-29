@@ -116,10 +116,13 @@ class Registry implements \Serializable
 			if ( $host != "" && isset($_SERVER) )
 			{
 				// nope not this server, so skip it
-		
-				if ($host != $_SERVER['SERVER_NAME'] && $host != $_SERVER['SERVER_ADDR'] )
+				
+				if ( array_key_exists('SERVER_NAME', $_SERVER) && array_key_exists('SERVER_ADDR', $_SERVER) )
 				{
-					continue;
+					if ($host != $_SERVER['SERVER_NAME'] && $host != $_SERVER['SERVER_ADDR'] )
+					{
+						continue;
+					}
 				}
 			}
 				
