@@ -522,7 +522,7 @@ class Knowledgebase extends Doctrine
 			
 			$datamap->beginTransaction();
 			
-			$sql = "UPDATE subcategories SET sequence = :sequence WHERE id = :id";
+			$sql = "UPDATE subcategories SET sequence = :sequence WHERE owner = :owner AND id = :id";
 			
 			foreach ( $reorder_array as $order => $subcategory_id )
 			{
@@ -555,7 +555,7 @@ class Knowledgebase extends Doctrine
 				
 			$datamap->beginTransaction();
 				
-			$sql = "UPDATE databases_subcategories SET sequence = :sequence WHERE id = :id";
+			$sql = "UPDATE databases_subcategories SET sequence = :sequence WHERE owner = :owner AND id = :id";
 				
 			foreach ( $reorder_array as $order => $sequence_id )
 			{
