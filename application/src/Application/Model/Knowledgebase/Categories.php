@@ -17,13 +17,8 @@ namespace Application\Model\Knowledgebase;
  * @author David Walker <dwalker@calstate.edu>
  */
 
-class Categories
+class Categories extends \ArrayIterator
 {
-	/**
-	 * @var array
-	 */
-	private $values = array();
-	
 	/**
 	 * New Categories
 	 * 
@@ -34,7 +29,7 @@ class Categories
 	{
 		foreach ( $categories as $category )
 		{
-			$this->values[] = $category->toArray(false); // shallow data
+			$this[] = $category->toArray(false); // shallow data
 		}
 	}
 	
@@ -44,6 +39,6 @@ class Categories
 	
 	public function toArray()
 	{
-		return $this->values;
+		return $this->getArrayCopy();
 	}
 }
