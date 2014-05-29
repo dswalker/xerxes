@@ -9,13 +9,6 @@ USE xerxes;
 
 SET storage_engine = INNODB;
 
-DROP TABLE IF EXISTS xerxes_resources_search;
-DROP VIEW IF EXISTS xerxes_databases_search;
-DROP TABLE IF EXISTS xerxes_subcategory_resources;
-DROP TABLE IF EXISTS xerxes_subcategories;
-DROP VIEW IF EXISTS xerxes_databases;
-DROP TABLE IF EXISTS xerxes_resources;
-DROP TABLE IF EXISTS xerxes_categories;
 DROP TABLE IF EXISTS xerxes_reading_list;
 DROP TABLE IF EXISTS xerxes_search_stats;
 DROP TABLE IF EXISTS xerxes_user_usergroups;
@@ -25,61 +18,6 @@ DROP TABLE IF EXISTS xerxes_sfx;
 DROP TABLE IF EXISTS xerxes_refereed;
 DROP TABLE IF EXISTS xerxes_users;
 DROP TABLE IF EXISTS xerxes_records;
-
-CREATE TABLE xerxes_resources(
-	resource_id    		MEDIUMINT NOT NULL AUTO_INCREMENT,
-	source_id		VARCHAR(50),
-	title_display		VARCHAR(100),
-	type                    VARCHAR(50),
-	object_type		VARCHAR(50),
-	data			MEDIUMTEXT,
-	PRIMARY KEY (resource_id)
-);
-
-CREATE VIEW xerxes_databases AS SELECT * FROM xerxes_resources WHERE object_type = 'database';
-
-CREATE TABLE xerxes_resources_search (
-	resource_id     	MEDIUMINT NOT NULL,
-	object_type		VARCHAR(50),
-	field			VARCHAR(50),
-	term			VARCHAR(50),
-
-	FOREIGN KEY (resource_id) REFERENCES xerxes_resources(resource_id) ON DELETE CASCADE
-);
-
-CREATE INDEX xerxes_resources_search_field_idx ON xerxes_resources_search(field);
-CREATE INDEX xerxes_resources_search_term_idx ON xerxes_resources_search(term);
-
-CREATE VIEW xerxes_databases_search AS SELECT * FROM xerxes_resources_search WHERE object_type = 'database';
-
-CREATE TABLE xerxes_categories(
-	category_id		MEDIUMINT NOT NULL AUTO_INCREMENT,
-	category_name		VARCHAR(255),
-	normalized		VARCHAR(255),
-	lang			VARCHAR(5),
-
-	PRIMARY KEY (category_id)
-);
-
-CREATE TABLE xerxes_subcategories(
-	subcategory_id		MEDIUMINT NOT NULL AUTO_INCREMENT,
-	subcategory_name	VARCHAR(255),
-	sequence		MEDIUMINT NOT NULL,
-  	category_id		MEDIUMINT NOT NULL,
-
-	PRIMARY KEY (subcategory_id),
- 	FOREIGN KEY (category_id) REFERENCES xerxes_categories(category_id) ON DELETE CASCADE
-);
-
-CREATE TABLE xerxes_subcategory_resources(
-
-	resource_id	MEDIUMINT NOT NULL,
-  	subcategory_id	MEDIUMINT NOT NULL,
-    	sequence 	MEDIUMINT,
-
- 	FOREIGN KEY (resource_id) REFERENCES xerxes_resources(resource_id) ON DELETE CASCADE,
-	FOREIGN KEY (subcategory_id) REFERENCES xerxes_subcategories(subcategory_id) ON DELETE CASCADE
-);
 
 CREATE TABLE xerxes_users (
 	username 	VARCHAR(50),
