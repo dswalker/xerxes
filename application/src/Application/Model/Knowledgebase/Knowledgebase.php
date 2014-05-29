@@ -31,11 +31,6 @@ class Knowledgebase extends Doctrine
 	private $owner;
 	
 	/**
-	 * @var User
-	 */
-	private $user;
-	
-	/**
 	 * @var EntityManager
 	 */
 	protected $entityManager;
@@ -71,8 +66,7 @@ class Knowledgebase extends Doctrine
 	{
 		parent::__construct();
 		
-		$this->user = $user->username;
-		$this->owner = 'admin'; // @todo: logic for local users
+		$this->owner = $user->username;
 		
 		$this->config = Config::getInstance();
 		
@@ -130,7 +124,7 @@ class Knowledgebase extends Doctrine
 
 	public function deleteSubcategory($subcategory_id)
 	{
-		$subcategory = $this->entityManager()->find('Application\Model\Knowledgebase\Subcategory', $subcategory_id);
+		$subcategory = $this->getOwnedEntity('Application\Model\Knowledgebase\Subcategory', $subcategory_id);
 		$this->entityManager()->remove($subcategory);
 		$this->entityManager()->flush();
 	}
@@ -143,7 +137,7 @@ class Knowledgebase extends Doctrine
 	
 	public function deleteDatabaseSequence($sequence_id)
 	{
-		$sequence = $this->entityManager()->find('Application\Model\Knowledgebase\DatabaseSequence', $sequence_id);
+		$sequence = $this->getOwnedEntity('Application\Model\Knowledgebase\DatabaseSequence', $sequence_id);
 		$this->entityManager()->remove($sequence);
 		$this->entityManager()->flush();
 	}
@@ -209,7 +203,7 @@ class Knowledgebase extends Doctrine
 	{
 		$category_repo = $this->entityManager()->getRepository('Application\Model\Knowledgebase\Category');
 		$results = $category_repo->findBy(
-			array('owner' => 'admin'),
+			array('owner' => $this->owner),
 			array('name' => 'asc')
 		);
 		
@@ -227,17 +221,17 @@ class Knowledgebase extends Doctrine
 	
 	public function getCategory($normalized, $id = null)
 	{
-		$where = ''; // where query
+		$where = 'c.owner = :owner'; // where query
 		$value = ''; // value
 		
 		if ( $id != null )
 		{
-			$where = 'c.id = :id';
+			$where .= ' AND c.id = :id';
 			$value = $id;
 		}
 		else
 		{
-			$where = 'c.normalized = :id';
+			$where .= ' AND c.normalized = :id';
 			$value = $normalized;
 		}
 		
@@ -252,6 +246,7 @@ class Knowledgebase extends Doctrine
 			
 		$query = $this->entityManager()->createQuery($dql);
 		$query->setParameter(':id', $value);
+		$query->setParameter(':owner', $this->owner);
 		$results = $query->getResult();
 		
 		if ( count($results) != 1 )
@@ -297,7 +292,7 @@ class Knowledgebase extends Doctrine
 	
 	public function getSubcategoryById($id)
 	{
-		return $this->entityManager()->find('Application\Model\Knowledgebase\Subcategory', $id);
+		return $this->getOwnedEntity('Application\Model\Knowledgebase\Subcategory', $id);
 	}
 	
 	/**
@@ -410,7 +405,7 @@ class Knowledgebase extends Doctrine
 	
 	public function getDatabaseTitles()
 	{
-		$sql = "SELECT id, title FROM research_databases WHERE owner = 'admin' ORDER BY title";
+		$sql = "SELECT id, title FROM research_databases ORDER BY title";
 		return $this->datamap()->select($sql);
 	}
 	
@@ -455,7 +450,7 @@ class Knowledgebase extends Doctrine
 	
 	public function getTypes()
 	{
-		$sql = "SELECT DISTINCT type FROM research_databases WHERE owner = 'admin'";
+		$sql = "SELECT DISTINCT type FROM research_databases";
 		return $this->datamap()->select($sql);
 	}	
 	
@@ -468,11 +463,10 @@ class Knowledgebase extends Doctrine
 
 	public function getDatabasesStartingWith($alpha)
 	{
-		$dql = 'SELECT d FROM Application\Model\Knowledgebase\Database d WHERE d.title LIKE :alpha AND d.owner = :owner ORDER BY d.title ASC';
+		$dql = 'SELECT d FROM Application\Model\Knowledgebase\Database d WHERE d.title LIKE :alpha ORDER BY d.title ASC';
 		
 		$query = $this->entityManager()->createQuery($dql);
 		$query->setParameter('alpha', "$alpha%");
-		$query->setParameter('owner', $this->owner);
 		$results = $query->getResult();
 		
 		return $this->filter->filterResults($results);
@@ -487,8 +481,6 @@ class Knowledgebase extends Doctrine
 	
 	public function getDatabases(array $criterion = array())
 	{
-		$criterion['owner'] = $this->owner;
-		
 		$databases_repo = $this->entityManager()->getRepository('Application\Model\Knowledgebase\Database');
 		$results = $databases_repo->findBy(
 			$criterion,
@@ -850,6 +842,37 @@ class Knowledgebase extends Doctrine
 	}
 	
 	/**
+	 * Fetch an entity by id, limited to the current owner
+	 * 
+	 * @param string $entity  entity name
+	 * @param int $id         entity id
+	 * @return mixed          entity
+	 */
+	
+	protected function getOwnedEntity($entity, $id)
+	{
+		$repo = $this->entityManager()->getRepository($entity);
+		
+		// enforce ownership
+		
+		$results = $repo->findBy(
+			array(
+				'owner' => $this->owner,
+				'id' => $id
+			)
+		);
+		
+		if ( count($results) == 1 )
+		{
+			return $results[0];
+		}
+		else
+		{
+			throw new \Exception("Could not find $entity with id '$id'");
+		}
+	}
+	
+	/**
 	 * @return DataMap
 	 */
 	
@@ -887,5 +910,16 @@ class Knowledgebase extends Doctrine
 	public function setFilterResults($bool)
 	{
 		return $this->filter->setToFilter($bool);
+	}
+	
+	/**
+	 * Set owner
+	 * 
+	 * @param string $owner
+	 */
+	
+	public function setOwner($owner)
+	{
+		$this->owner = $owner;
 	}
 }
