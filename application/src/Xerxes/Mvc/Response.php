@@ -12,7 +12,6 @@
 namespace Xerxes\Mvc;
 
 use Symfony\Component\HttpFoundation;
-use Xerxes\Mvc\Response;
 use Xerxes\Utility\Parser;
 use Xerxes\Utility\Registry;
 use Xerxes\Utility\Xsl;

@@ -11,6 +11,8 @@
 
 namespace Application\Model\Authentication;
 
+use Xerxes\Utility\User;
+
 /**
  * Guest Authentication
  * 

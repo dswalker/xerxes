@@ -11,12 +11,9 @@
 
 namespace Application\Controller;
 
-use Application\Model\Solr\Config;
 use Application\Model\Search\Query;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Xerxes\Google\Appliance;
 use Xerxes\Mvc\ActionController;
-use Xerxes\Mvc\Response;
 
 class CombinedController extends ActionController
 {

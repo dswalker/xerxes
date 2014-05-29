@@ -24,7 +24,6 @@ use Xerxes\Mvc\ActionController;
 use Xerxes\Record;
 use Xerxes\Utility\Cache;
 use Xerxes\Utility\Parser;
-use Xerxes\Utility\Registry;
 
 /**
  * Search controller

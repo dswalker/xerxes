@@ -13,7 +13,6 @@ namespace Application\Model\Primo;
 
 use Application\Model\Search;
 use Xerxes\Mvc\Request;
-use Xerxes\Utility\Factory;
 use Xerxes\Utility\Parser;
 
 /**

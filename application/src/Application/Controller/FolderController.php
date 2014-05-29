@@ -18,8 +18,6 @@ use Application\View\Helper\Folder as FolderHelper;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Xerxes\Mvc\Request;
 use Xerxes\Utility\Email;
-use Xerxes\Utility\Labels;
-use Xerxes\Utility\User;
 
 class FolderController extends SearchController
 {

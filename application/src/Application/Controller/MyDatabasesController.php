@@ -38,6 +38,22 @@ class MyDatabasesController extends DatabasesEditController
 		$this->response->setView("databases/saved/$action.xsl");		
 	}
 	
+	/**
+	 * Make a saved category public
+	 */
+	
+	public function publicAction()
+	{
+		$id = $this->request->getParam('id');
+		$status = (bool) $this->request->getParam('status');
+		
+		$category = $this->knowledgebase->getCategoryById($id);
+		$category->setPublic($status);
+		
+		$this->knowledgebase->updateCategory($category);
+	}
+	
+	
 	protected function enforceLogin()
 	{
 		// nothing for now

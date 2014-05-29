@@ -11,11 +11,9 @@
 
 namespace Application\Model\Search\Spelling;
 
-use Xerxes\Utility\Factory;
-use Xerxes\Utility\Parser;
-use Xerxes\Utility\Registry;
 use Guzzle\Http\Client;
 use Guzzle\Plugin\Oauth\OauthPlugin;
+use Xerxes\Utility\Registry;
 
 /**
  * Yahoo BOSS Spell Checker
@@ -41,7 +39,7 @@ class Yahoo
 		
 		
 		$client = new Client('http://yboss.yahooapis.com/');
-			
+		
 		$oauth = new OauthPlugin(array(
 			'consumer_key'    => $consumer_key,
 			'consumer_secret' => $consumer_secret

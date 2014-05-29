@@ -11,9 +11,7 @@
 
 namespace Application\Controller;
 
-use Application\Model\Knowledgebase\Category;
 use Application\Model\Knowledgebase\Config;
-use Application\Model\Knowledgebase\Database;
 use Application\Model\Knowledgebase\Knowledgebase;
 use Application\View\Helper\Databases as DatabasehHelper;
 use Xerxes\Mvc\ActionController;

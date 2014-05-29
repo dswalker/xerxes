@@ -11,14 +11,11 @@
 
 namespace Application\Model\Saved;
 
-use Application\Model\Saved\Record\Format;
-
-use Xerxes\Record\Author;
 
 use Application\Model\Search;
 use Application\Model\Metalib;
 use Xerxes;
-use Xerxes\Utility\DataValue;
+use Xerxes\Record\Author;
 
 /**
  * Saved Result

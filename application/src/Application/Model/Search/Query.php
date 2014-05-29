@@ -13,7 +13,6 @@ namespace Application\Model\Search;
 
 use Application\Model\Search\Spelling\Suggestion;
 use Xerxes\Mvc\Request;
-use Xerxes\Utility\Factory;
 use Xerxes\Utility\Registry;
 use Xerxes\Utility\User;
 

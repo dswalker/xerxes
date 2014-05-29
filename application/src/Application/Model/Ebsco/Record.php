@@ -12,11 +12,20 @@
 namespace Application\Model\Ebsco;
 
 use Xerxes;
-use Xerxes\Utility\Registry;
 
+/**
+ * Ebsco Record
+ * 
+ * @author dwalker
+ */
 class Record extends Xerxes\Record
 {
 	protected $source = "Ebsco";
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see \Xerxes\Record::map()
+	 */
 	
 	public function map()
 	{

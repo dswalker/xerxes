@@ -11,7 +11,6 @@
 
 namespace Application\Model\Saved;
 
-use Application\Model\Search;
 use Xerxes\Utility\DataValue;
 
 /**

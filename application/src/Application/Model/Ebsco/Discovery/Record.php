@@ -11,11 +11,9 @@
 
 namespace Application\Model\Ebsco\Discovery;
 
-use Xerxes\Utility\Json;
-
 use Xerxes;
 use Xerxes\Record\Format;
-use Xerxes\Record\Link;
+use Xerxes\Utility\Json;
 use Xerxes\Utility\Parser;
 
 /**

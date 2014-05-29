@@ -22,7 +22,6 @@ use Application\Model\Saved\ReadingList\Result;
 use Application\View\Helper\ReadingList as ListHelper;
 use Xerxes\Lti;
 use Xerxes\Mvc\MvcEvent;
-use Xerxes\Utility\Parser;
 
 /**
  * Actions for creating and editing a reading list

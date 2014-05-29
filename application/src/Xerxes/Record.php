@@ -14,7 +14,6 @@ namespace Xerxes;
 use Xerxes\Record\Author;
 use Xerxes\Record\Chapter;
 use Xerxes\Record\Subject;
-use Xerxes\Record\Bibliographic\LinkedItem;
 use Xerxes\Record\Format;
 use Xerxes\Record\Link;
 use Xerxes\Utility\Languages;

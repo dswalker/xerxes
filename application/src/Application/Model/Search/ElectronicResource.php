@@ -11,8 +11,6 @@
 
 namespace Application\Model\Search;
 
-use Xerxes\Utility\Parser;
-
 /**
  * Electronic Resource
  * 

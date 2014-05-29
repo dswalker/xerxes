@@ -15,8 +15,6 @@ use Application\Model\Search;
 use Application\Model\Search\ResultSet;
 use Xerxes\Utility\HttpClient;
 use Xerxes\Utility\Json;
-use Xerxes\Utility\Factory;
-use Xerxes\Utility\Parser;
 use Xerxes\Mvc\Request;
 
 /**

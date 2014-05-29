@@ -11,8 +11,6 @@
 
 namespace Xerxes\Mvc;
 
-use Xerxes\Utility\Registry;
-
 /**
  * Front Controller
  *

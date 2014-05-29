@@ -31,7 +31,7 @@ class Apc
 	{
 		if ( ! function_exists('apc_store') )
 		{
-			throw new Exception('You are using the APC cache in Xerxes, but apc is not installed on your system');
+			throw new \Exception('You are using the APC cache in Xerxes, but apc is not installed on your system');
 		}
 		
 		$registry = Registry::getInstance();
@@ -61,7 +61,7 @@ class Apc
 		
 		if ( $result === false )
 		{
-			throw new Exception('Why?');
+			throw new \Exception('Why?');
 		}
 	}
 	

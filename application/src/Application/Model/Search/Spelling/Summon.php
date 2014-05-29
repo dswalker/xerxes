@@ -14,7 +14,6 @@ namespace Application\Model\Search\Spelling;
 use Application\Model\Summon\Config;
 use Xerxes\Summon as SummonClient;
 use Xerxes\Utility\Factory;
-use Xerxes\Utility\Registry;
 
 /**
  * Summon Spell Checker

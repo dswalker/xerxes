@@ -11,8 +11,6 @@
 
 namespace Application\Model\Saved\ReadingList;
 
-use Xerxes\Record;
-
 /**
  * Reading List Result
  * 

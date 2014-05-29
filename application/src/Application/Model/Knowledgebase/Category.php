@@ -38,6 +38,12 @@ class Category
 	protected $normalized;
 	
 	/**
+	 * @Column(type="boolean")
+	 * @var bool
+	 */
+	protected $public = false;	
+	
+	/**
 	 * @OneToMany(targetEntity="Subcategory", mappedBy="category", cascade={"remove"}, orphanRemoval=true)
 	 * @OrderBy({"sequence" = "ASC"})
 	 * @var Subcategory[]
@@ -152,6 +158,22 @@ class Category
 	}
 
 	/**
+	 * @return string
+	 */
+	public function getPublic()
+	{
+		return $this->public;
+	}
+	
+	/**
+	 * @param string $name
+	 */
+	public function setPublic($bool)
+	{
+		$this->public = $bool;
+	}	
+	
+	/**
 	 * @return Subcategory[]
 	 */
 	public function getSubcategories() 
@@ -192,6 +214,8 @@ class Category
 		}		
 		
 		$sequence->setCategory($this);
+		$sequence->setOwner($this->owner);
+		
 		$this->librarian_sequences[] = $sequence;
 	}
 	

@@ -11,9 +11,6 @@
 
 namespace Xerxes\Mvc;
 
-use Application\Controller;
-use Xerxes\Mvc\Bootstrap;
-
 /**
  * Controller Map
  * 

@@ -13,7 +13,6 @@ namespace Application\Model\Authentication;
 
 use Xerxes\Mvc\Exception\AccessDeniedException;
 use Xerxes\Utility\Factory;
-use Xerxes\Utility\Parser;
 use Xerxes\Mvc\Request;
 
 /**

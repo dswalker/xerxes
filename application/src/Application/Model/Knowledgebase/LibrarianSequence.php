@@ -25,6 +25,12 @@ class LibrarianSequence
 	protected $id;
 	
 	/**
+	 * @Column(type="string")
+	 * @var string
+	 */
+	protected $owner;	
+	
+	/**
 	 * @Column(type="integer", nullable=true)
 	 * @var int
 	 */
@@ -59,6 +65,22 @@ class LibrarianSequence
 	{
 		return $this->id;
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getOwner()
+	{
+		return $this->owner;
+	}
+	
+	/**
+	 * @param string $source_id
+	 */
+	public function setOwner($owner)
+	{
+		$this->owner = $owner;
+	}	
 	
 	/**
 	 * @return int

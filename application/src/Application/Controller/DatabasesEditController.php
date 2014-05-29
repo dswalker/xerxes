@@ -11,15 +11,10 @@
 
 namespace Application\Controller;
 
-use Application\Model\Knowledgebase\Category;
 use Application\Model\Knowledgebase\Database;
 use Application\Model\Knowledgebase\DatabaseSequence;
 use Application\Model\Knowledgebase\Librarian;
 use Application\Model\Knowledgebase\LibrarianSequence;
-use Application\Model\Knowledgebase\Knowledgebase;
-use Application\View\Helper\Databases as DatabasehHelper;
-use Xerxes\Mvc\ActionController;
-use Xerxes\Mvc\Exception\AccessDeniedException;
 
 /**
  * Databases Edit Controller

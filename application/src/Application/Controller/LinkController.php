@@ -11,7 +11,6 @@
 
 namespace Application\Controller;
 
-use Application\Model\Innovative\Link;
 use Application\Model\Search\LinkInterface;
 use Application\Model\Search\Query;
 use Xerxes\Mvc\ActionController;
