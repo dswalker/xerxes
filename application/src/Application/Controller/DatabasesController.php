@@ -308,7 +308,11 @@ class DatabasesController extends ActionController
 	{
 		// model
 	
-		$knowledgebase = new Knowledgebase($this->request->getUser());
+		$knowledgebase = new Knowledgebase();
+		
+		// make sure this is admin
+		
+		$knowledgebase->setOwner('admin');
 	
 		// remove excluded types from database alpha listings and such
 		// but not from subject pages

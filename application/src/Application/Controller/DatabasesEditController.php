@@ -57,7 +57,12 @@ class DatabasesEditController extends DatabasesController
 	{
 		parent::init();
 		
-		$this->enforceLogin();
+		$return = $this->enforceLogin();
+		
+		if ( $return != null )
+		{
+			return $return;
+		}
 		
 		// set view on database sub-folder
 		
@@ -630,10 +635,6 @@ class DatabasesEditController extends DatabasesController
 	{
 		$knowledgebase = parent::getKnowledgebase();
 		
-		// make sure this is admin
-		
-		$knowledgebase->setOwner('admin');
-		
 		// don't filter results
 	
 		$knowledgebase->setFilterResults(false);
@@ -656,6 +657,10 @@ class DatabasesEditController extends DatabasesController
 		if ( $user->isAdmin() != true )
 		{
 			return $this->redirectToLogin();
+		}
+		else
+		{
+			return null;
 		}
 	}
 	
