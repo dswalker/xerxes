@@ -214,7 +214,7 @@
 <xsl:template name="subject_embed">
 
 	<div style="margin-top: 2em">
-		<a href="embed/gen-subject?subject={//request/subject}"><i class="icon-code"></i> Embed this page in an external website</a>
+		<a href="embed/gen-subject?subject={//category/normalized}"><i class="icon-code"></i> Embed this page in an external website</a>
 	</div>
 
 </xsl:template>
