@@ -21,6 +21,7 @@ use Application\Model\Knowledgebase\LibrarianSequence;
  *
  * @author David Walker <dwalker@calstate.edu>
  */
+
 class DatabasesEditController extends DatabasesController
 {
 	/**
