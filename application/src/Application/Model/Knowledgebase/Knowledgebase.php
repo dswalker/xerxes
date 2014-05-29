@@ -62,11 +62,9 @@ class Knowledgebase extends Doctrine
 	 * @param User $user
 	 */
 	
-	public function __construct(User $user)
+	public function __construct()
 	{
 		parent::__construct();
-		
-		$this->owner = $user->username;
 		
 		$this->config = Config::getInstance();
 		
@@ -106,6 +104,7 @@ class Knowledgebase extends Doctrine
 		
 		$subcategory = new Subcategory();
 		$subcategory->setName($subcategory_name);
+		$subcategory->setOwner($this->owner);
 		
 		// assign subcategory to category
 		
@@ -137,7 +136,7 @@ class Knowledgebase extends Doctrine
 	
 	public function deleteDatabaseSequence($sequence_id)
 	{
-		$sequence = $this->getOwnedEntity('Application\Model\Knowledgebase\DatabaseSequence', $sequence_id);
+		$sequence = $this->entityManager()->find('Application\Model\Knowledgebase\DatabaseSequence', $sequence_id);
 		$this->entityManager()->remove($sequence);
 		$this->entityManager()->flush();
 	}
@@ -235,14 +234,15 @@ class Knowledgebase extends Doctrine
 			$value = $normalized;
 		}
 		
+		$dql_query = $this->filter->getDqlQuery();
+		
 		// only include active databases
 			
 		$dql = 'SELECT c, s, j, d FROM Application\Model\Knowledgebase\Category c
-			JOIN c.subcategories s
-			JOIN s.database_sequences j
-			JOIN j.database d
-			WHERE ' . $where . '
-			AND (' . $this->filter->getDqlQuery() . ')';
+			LEFT JOIN c.subcategories s
+			LEFT JOIN s.database_sequences j
+			LEFT JOIN j.database d WITH (' . $dql_query . ')  
+			WHERE ' . $where;
 			
 		$query = $this->entityManager()->createQuery($dql);
 		$query->setParameter(':id', $value);
