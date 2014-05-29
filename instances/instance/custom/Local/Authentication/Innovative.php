@@ -12,7 +12,6 @@
 namespace Local\Authentication;
 
 use Application\Model\Authentication;
-use Xerxes\Mvc\AccessDeniedException;
 
 /**
  * Custom authentication for III patron api
