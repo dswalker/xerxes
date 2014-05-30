@@ -29,16 +29,24 @@ class Categories extends \ArrayIterator
 	{
 		foreach ( $categories as $category )
 		{
-			$this[] = $category->toArray(false); // shallow data
+			$this[] = $category;
 		}
 	}
 	
 	/**
 	 * @return array
+	 * Shallow copy
 	 */
 	
-	public function toArray()
+	public function toArray($deep = true)
 	{
-		return $this->getArrayCopy();
+		$final = array();
+		
+		foreach ( $this as $category )
+		{
+			$final[] = $category->toArray($deep); // shallow copy
+		}
+		
+		return $final;
 	}
 }

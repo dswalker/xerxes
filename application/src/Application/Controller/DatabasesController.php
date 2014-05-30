@@ -87,7 +87,7 @@ class DatabasesController extends ActionController
 		
 		$categories = $this->knowledgebase->getCategories();
 		
-		$this->response->setVariable('categories', $categories->toArray());
+		$this->response->setVariable('categories', $categories->toArray(false)); // shallow copy
 		
 		return $this->response;
 	}
