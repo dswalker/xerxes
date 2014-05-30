@@ -11,6 +11,8 @@
 
 namespace Application\Controller;
 
+use Application\Model\Knowledgebase\Category;
+use Application\Model\Knowledgebase\Subcategory;
 /**
  * My Saved Databases Controller
  *
@@ -36,6 +38,58 @@ class MyDatabasesController extends DatabasesEditController
 		
 		$action = $this->request->getParam('action', 'index');
 		$this->response->setView("databases/saved/$action.xsl");		
+	}
+	
+	/**
+	 * Categories page
+	 */
+	
+	public function indexAction()
+	{
+		$show_categories = $this->request->getParam('show');
+		
+		$categories = $this->knowledgebase->getCategories();
+		
+		// special handling for less than two categories
+		
+		if ( $show_categories == null && $categories->count() < 2 )
+		{
+			// no categories, so create one
+			
+			if ( $categories->count() == 0 )
+			{
+				$category = $this->knowledgebase->createCategory();
+				$category->setName('My Saved Databases');
+				
+				$subcategory = new Subcategory();
+				$subcategory->setName('Databases');
+				
+				$category->addSubcategory($subcategory);
+				
+				$this->knowledgebase->updateCategory($category);
+			}
+			
+			// only one category
+			
+			elseif ( $categories->count() == 1 )
+			{
+				$category = $categories[0];
+			}
+			
+			// redirect
+				
+			$params = array(
+				'controller' => $this->request->getParam('controller'),
+				'action' => 'subject',
+				'id' => $category->getId()
+			);
+				
+			return $this->redirectTo($params);
+		}
+		
+		$this->response->setVariable('categories', $categories->toArray(false)); // shallow copy
+	
+		return $this->response;
 	}
 	
 	/**

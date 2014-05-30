@@ -75,13 +75,26 @@ class Knowledgebase extends Doctrine
 	}
 	
 	/**
+	 * Create a New Category
+	 * @return Category
+	 */
+	
+	public function createCategory()
+	{
+		$category = new Category();
+		$category->setOwner($this->owner);
+		
+		return $category;
+	}
+	
+	/**
 	 * Add a Category
 	 * @param string $name  category name
 	 */
 	
 	public function addCategory($name)
 	{
-		$category = new Category();
+		$category = $this->createCategory();
 		$category->setName($name);
 		
 		return $this->updateCategory($category);

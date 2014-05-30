@@ -44,7 +44,7 @@ class Category
 	protected $public = false;	
 	
 	/**
-	 * @OneToMany(targetEntity="Subcategory", mappedBy="category", cascade={"remove"}, orphanRemoval=true)
+	 * @OneToMany(targetEntity="Subcategory", mappedBy="category", cascade={"remove", "persist"}, orphanRemoval=true)
 	 * @OrderBy({"sequence" = "ASC"})
 	 * @var Subcategory[]
 	 */	
@@ -187,6 +187,7 @@ class Category
 	public function addSubcategory(Subcategory $subcategory) 
 	{
 		$subcategory->setCategory($this);
+		$subcategory->setOwner($this->owner);
 		$this->subcategories->add($subcategory);
 	}
 	
