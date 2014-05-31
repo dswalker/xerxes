@@ -192,7 +192,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 			</xsl:when>
 		</xsl:choose>
 	</xsl:variable>
-	<xsl:variable name="text_header_my_collections">My Collections</xsl:variable>
+	<xsl:variable name="text_header_my_collections">My Saved Databases</xsl:variable>
 	<xsl:variable name="text_header_my_collections_explain">Collections are a way to organize your saved databases.</xsl:variable>
 	<xsl:variable name="text_header_my_collections_new">Create a new collection:</xsl:variable>
 	<xsl:variable name="text_header_my_collections_add">Add</xsl:variable>
