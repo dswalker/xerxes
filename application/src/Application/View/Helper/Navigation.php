@@ -31,7 +31,8 @@ class Navigation
 			'accessible_link' => $this->accessibleLink(),
 			'login_link' => $this->loginLink(),
 			'logout_link' => $this->logoutLink(),
-			'my_account_link' => $this->myAccountLink()
+			'my_account_link' => $this->myAccountLink(),
+			'my_databases_link' => $this->myDatabasesLink()
 		);
 	}	
 	
@@ -44,6 +45,15 @@ class Navigation
 		
 		return $this->request->url_for($params);
 	}
+
+	public function myDatabasesLink()
+	{
+		$params = array(
+			'controller' => 'my-databases'
+		);
+	
+		return $this->request->url_for($params);
+	}	
 	
 	public function loginLink()
 	{
