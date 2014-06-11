@@ -19,7 +19,7 @@ use Xerxes\Utility\Parser;
  *
  * @author David Walker <dwalker@calstate.edu>
  * 
- * @Entity @Table(name="categories")
+ * @Entity @Table(name="categories",uniqueConstraints={@UniqueConstraint(name="normalized_idx", columns={"owner", "normalized"})})
  */
 
 class Category
