@@ -101,7 +101,9 @@ class MvcEvent
 		
 		// set default view
 		
-		$controller = $this->request->getParam('controller', 'index');
+		$alias = $this->request->getParam('controller', 'index');
+		
+		$controller = $this->controller_map->getControllerName($alias);
 		$action = $this->request->getParam('action', 'index');
 		$this->response->setView("$controller/$action.xsl");
 	}
