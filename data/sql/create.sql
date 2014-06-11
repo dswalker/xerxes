@@ -4,11 +4,9 @@
 # link: http://xerxes.calstate.edu
 # license:
 
-CREATE DATABASE IF NOT EXISTS xerxes DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
-USE xerxes;
-
 SET storage_engine = INNODB;
 
+DROP TABLE IF EXISTS xerxes_reading_list_users;
 DROP TABLE IF EXISTS xerxes_reading_list;
 DROP TABLE IF EXISTS xerxes_search_stats;
 DROP TABLE IF EXISTS xerxes_user_usergroups;
@@ -16,8 +14,8 @@ DROP TABLE IF EXISTS xerxes_cache;
 DROP TABLE IF EXISTS xerxes_tags;
 DROP TABLE IF EXISTS xerxes_sfx;
 DROP TABLE IF EXISTS xerxes_refereed;
-DROP TABLE IF EXISTS xerxes_users;
 DROP TABLE IF EXISTS xerxes_records;
+DROP TABLE IF EXISTS xerxes_users;
 
 CREATE TABLE xerxes_users (
 	username 	VARCHAR(50),
@@ -111,6 +109,14 @@ CREATE TABLE xerxes_reading_list (
 
 	PRIMARY KEY (id),
 	FOREIGN KEY (record_id) REFERENCES xerxes_records(id) ON DELETE CASCADE
+);
+
+CREATE TABLE xerxes_reading_list_users (
+	id 		VARCHAR(50),
+	username	VARCHAR(50),		
+
+	PRIMARY KEY (id),
+	FOREIGN KEY (username) REFERENCES xerxes_users(username) ON DELETE CASCADE
 );
 
 CREATE TABLE xerxes_search_stats (
