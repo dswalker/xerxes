@@ -56,6 +56,12 @@ class IndexController extends ActionController
 		
 		$controller = $this->controller_map->getControllerObject($default_controller, $this->event);
 		
+		// set default view
+		
+		$this->response->setView("$default_controller/index.xsl");
+		
+		// run it
+		
 		return $controller->execute('index');
 	}
 }
