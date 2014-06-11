@@ -62,9 +62,9 @@ class Knowledgebase extends Doctrine
 	 * @param User $user
 	 */
 	
-	public function __construct()
+	public function __construct($connection = null, $username = null, $password = null)
 	{
-		parent::__construct();
+		parent::__construct($connection, $username, $password);
 		
 		$this->config = Config::getInstance();
 		
