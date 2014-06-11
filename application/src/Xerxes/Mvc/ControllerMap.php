@@ -136,6 +136,12 @@ class ControllerMap
 	public function getRouteInfo($controller, $action)
 	{
 		$path = array();
+		
+		// swap any alias
+		
+		$controller = $this->getControllerName($controller);
+		
+		// check paths
 	
 		$controller_routes = $this->xml->xpath("//controller[@name='$controller']/path");
 		$action_routes = $this->xml->xpath("//controller[@name='$controller']/action[@name='$action']/path");
