@@ -312,7 +312,12 @@ dd, dt, li {
 
 .account li {
 	display: inline;
-	padding-right: 1em;
+	padding-right: .5em;
+}
+
+.account li ul li {
+	display: inherit;
+	padding-right: inherit;
 }
 
 .account img {
@@ -1153,13 +1158,13 @@ td.title-cell {
 	padding: 5px;
 }
 
-.databases-categories-list a, #databases-additional-options a {
+.databases-categories-list li a, #databases-additional-options li a {
 	position: relative;
 	padding-left: 20px;
 	display: block;
 }
 
-.databases-categories-list a:before, #databases-additional-options a:before{ 
+.databases-categories-list li a:before, #databases-additional-options li a:before{ 
 	content: "\203A"; 
 	color: #999; 
 	position: absolute; 
