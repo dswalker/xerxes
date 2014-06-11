@@ -506,25 +506,24 @@
 				<button class="btn btn-small">
 					<xsl:choose>
 						<xsl:when test="//request/session/role and //request/session/role = 'named'">
-						
-							<xsl:call-template name="img_logout" />
-							<xsl:text> </xsl:text>
-						
+											
 							<a id="logout">
 							<xsl:attribute name="href"><xsl:value-of select="//navbar/logout_link" /></xsl:attribute>
+								<xsl:call-template name="img_logout" />
+								<xsl:text> </xsl:text>
 								<xsl:copy-of select="$text_header_logout" />
 							</a>
 							
 						</xsl:when>
 						<xsl:otherwise>
 						
-							<xsl:call-template name="img_login" />
-							<xsl:text> </xsl:text>			
-	
 							<a id="login">
 							<xsl:attribute name="href"><xsl:value-of select="//navbar/login_link" /></xsl:attribute>
+								<xsl:call-template name="img_login" />
+								<xsl:text> </xsl:text>	
 								<xsl:copy-of select="$text_header_login" />
 							</a>
+							
 						</xsl:otherwise>
 					</xsl:choose>
 				</button>
