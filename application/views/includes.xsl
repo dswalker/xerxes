@@ -503,41 +503,65 @@
 	
 		<ul>
 			<li id="login-option">
-				<xsl:choose>
-					<xsl:when test="//request/session/role and //request/session/role = 'named'">
-					
-						<xsl:call-template name="img_logout" />
-						<xsl:text> </xsl:text>
-					
-						<a id="logout">
-						<xsl:attribute name="href"><xsl:value-of select="//navbar/logout_link" /></xsl:attribute>
-							<xsl:copy-of select="$text_header_logout" />
-						</a>
+				<button class="btn btn-small">
+					<xsl:choose>
+						<xsl:when test="//request/session/role and //request/session/role = 'named'">
 						
-					</xsl:when>
-					<xsl:otherwise>
-					
-						<xsl:call-template name="img_login" />
-						<xsl:text> </xsl:text>			
-
-						<a id="login">
-						<xsl:attribute name="href"><xsl:value-of select="//navbar/login_link" /></xsl:attribute>
-							<xsl:copy-of select="$text_header_login" />
-						</a>
-					</xsl:otherwise>
-				</xsl:choose>
+							<xsl:call-template name="img_logout" />
+							<xsl:text> </xsl:text>
+						
+							<a id="logout">
+							<xsl:attribute name="href"><xsl:value-of select="//navbar/logout_link" /></xsl:attribute>
+								<xsl:copy-of select="$text_header_logout" />
+							</a>
+							
+						</xsl:when>
+						<xsl:otherwise>
+						
+							<xsl:call-template name="img_login" />
+							<xsl:text> </xsl:text>			
+	
+							<a id="login">
+							<xsl:attribute name="href"><xsl:value-of select="//navbar/login_link" /></xsl:attribute>
+								<xsl:copy-of select="$text_header_login" />
+							</a>
+						</xsl:otherwise>
+					</xsl:choose>
+				</button>
 			</li>
-		
-			<li id="my-saved-records" class="sidebar-folder">
-				<xsl:call-template name="img_save_record">
-					<xsl:with-param name="id">folder</xsl:with-param>
-					<xsl:with-param name="test" select="count(//session/resultssaved) &gt; 0" />
-				</xsl:call-template>
-				<xsl:text> </xsl:text>
-				<a>
-				<xsl:attribute name="href"><xsl:value-of select="//navbar/my_account_link" /></xsl:attribute>
-					<xsl:copy-of select="$text_header_savedrecords" />
-				</a>
+			<li>
+				<div class="btn-group">
+					<button class="btn btn-small">
+						<!--
+						<xsl:call-template name="img_save_record">
+							<xsl:with-param name="id">folder</xsl:with-param>
+							<xsl:with-param name="test" select="count(//session/resultssaved) &gt; 0" />
+						</xsl:call-template>
+						<xsl:text> </xsl:text>
+						-->
+						<a>
+						<xsl:attribute name="href"><xsl:value-of select="//navbar/my_account_link" /></xsl:attribute>
+							<xsl:copy-of select="$text_header_savedrecords" />
+						</a>
+					</button>
+					<button class="btn btn-small dropdown-toggle" data-toggle="dropdown">
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li id="my-saved-databases">
+							<!--
+							<xsl:call-template name="img_save_record">
+								<xsl:with-param name="id">my-databases</xsl:with-param>
+							</xsl:call-template>
+							<xsl:text> </xsl:text>
+							-->
+							<a>
+							<xsl:attribute name="href"><xsl:value-of select="//navbar/my_databases_link" /></xsl:attribute>
+								<xsl:copy-of select="$text_header_my_collections" />
+							</a>
+						</li>
+					</ul>
+				</div>
 			</li>
 			
 			<xsl:call-template name="module_nav" />
