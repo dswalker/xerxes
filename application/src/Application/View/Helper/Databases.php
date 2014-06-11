@@ -49,7 +49,7 @@ class Databases
 	
 	public function getEditLink()
 	{
-		$controller = $this->request->getParam('controller');
+		$controller = $this->request->getControllerName();
 		$switch = 'databases';
 		
 		if( $controller == 'databases')
