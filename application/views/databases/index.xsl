@@ -116,7 +116,7 @@
 		
 		<div>
 			<xsl:if test="$width != 12">
-				<xsl:param name="class" value="span{$width}" />
+				<xsl:attribute name="class">span<xsl:value-of select="$width" /></xsl:attribute>
 			</xsl:if>
 			
 			<ul>
