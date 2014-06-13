@@ -39,58 +39,76 @@ class MyDatabasesController extends DatabasesEditController
 		$action = $this->request->getParam('action', 'index');
 		$this->response->setView("databases/saved/$action.xsl");		
 	}
-	
+		
 	/**
-	 * Categories page
+	 * Create new category
 	 */
 	
-	public function indexAction()
+	public function createNewAction()
 	{
-		$show_categories = $this->request->getParam('show');
+		$new_category_name = 'My Saved Databases';
+		$match = true;
 		
-		$categories = $this->knowledgebase->getCategories();
+		$categories = $this->knowledgebase->getCategories()->toArray(false);
 		
-		// special handling for less than two categories
-		
-		if ( $show_categories == null && $categories->count() < 2 )
+		while ( $match == true )
 		{
-			// no categories, so create one
+			$loop_match = false;
 			
-			if ( $categories->count() == 0 )
+			foreach ( $categories as $category )
 			{
-				$category = $this->knowledgebase->createCategory();
-				$category->setName('My Saved Databases');
+				// already have a default name
 				
-				$subcategory = new Subcategory();
-				$subcategory->setName('Databases');
-				
-				$category->addSubcategory($subcategory);
-				
-				$this->knowledgebase->updateCategory($category);
+				if ( $new_category_name == $category['name'] )
+				{
+					$last_char = substr($category['name'], -1, 1);
+					
+					// it also already has a number on the end
+					
+					if ( is_numeric($last_char) )
+					{
+						$last_char += 1; // so increment it
+						$new_category_name = substr($category['name'], 0, -1) . $last_char;
+						$loop_match = true; // need to keep checking
+					}
+					else // this is the first time so add 1
+					{
+						$new_category_name .= '1';
+						$loop_match = true; // need to keep checking
+					}
+				}
 			}
 			
-			// only one category
+			// not matches on any of the existing categories
 			
-			elseif ( $categories->count() == 1 )
+			if ($loop_match == false)
 			{
-				$category = $categories[0];
+				$match = false; // stop the while loop
 			}
-			
-			// redirect
-				
-			$params = array(
-				'controller' => $this->request->getParam('controller'),
-				'action' => 'subject',
-				'id' => $category->getId()
-			);
-				
-			return $this->redirectTo($params);
 		}
 		
-		$this->response->setVariable('categories', $categories->toArray(false)); // shallow copy
+		// create new one
+		
+		$category = $this->knowledgebase->createCategory();
+		$category->setName($new_category_name);
 	
-		return $this->response;
-	}
+		$subcategory = new Subcategory();
+		$subcategory->setName('Databases');
+	
+		$category->addSubcategory($subcategory);
+	
+		$this->knowledgebase->updateCategory($category);
+	
+		// redirect
+	
+		$params = array(
+			'controller' => $this->request->getParam('controller'),
+			'action' => 'subject',
+			'id' => $category->getId()
+		);
+	
+		return $this->redirectTo($params);
+	}	
 	
 	/**
 	 * Make a saved category public
