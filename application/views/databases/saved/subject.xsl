@@ -35,6 +35,8 @@
 
 <xsl:import href="../edit/subject.xsl" />
 
+<xsl:template name="module_nav" />
+
 <xsl:template name="breadcrumb">
 
 	<xsl:call-template name="breadcrumb_start" />
