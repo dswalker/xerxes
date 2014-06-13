@@ -114,7 +114,10 @@
 
 	<xsl:if test="$iteration_value &lt;= $num_columns">
 		
-		<div class="span{$width}">
+		<div>
+			<xsl:if test="$width != 12">
+				<xsl:param name="class" value="span{$width}" />
+			</xsl:if>
 			
 			<ul>
 			<xsl:for-each select="categories/category[position() &gt; ($numRows * ($iteration_value -1)) and 
