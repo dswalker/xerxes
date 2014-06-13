@@ -11,8 +11,8 @@
 
 namespace Application\Controller;
 
-use Application\Model\Knowledgebase\Category;
 use Application\Model\Knowledgebase\Subcategory;
+
 /**
  * My Saved Databases Controller
  *
