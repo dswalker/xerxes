@@ -125,7 +125,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_databases_az_pagename">Browse by Database Name</xsl:variable>
 	<xsl:variable name="text_databases_az_search">Search for databases by name</xsl:variable>
 	
-	<xsl:variable name="text_databases_category_pagename">Home</xsl:variable>
+	<xsl:variable name="text_databases_category_pagename">Databases</xsl:variable>
 	<xsl:variable name="text_databases_category_subject">Databases by Subject</xsl:variable>
 	<xsl:variable name="text_databases_category_subject_desc">Databases specific to your area of study, chosen by our subject specialists.</xsl:variable>
 	
@@ -177,6 +177,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_folder_tags_edit_return_to_records">the saved records page</xsl:variable>
 	
 	<xsl:variable name="text_header_collections">My Saved Databases</xsl:variable>
+	<xsl:variable name="text_header_collections_list">List</xsl:variable>
 	<xsl:variable name="text_header_collections_subcat">Databases</xsl:variable>
 	<xsl:variable name="text_header_embed">Embed</xsl:variable>
 	<xsl:variable name="text_header_facets">Limit top results by:</xsl:variable>

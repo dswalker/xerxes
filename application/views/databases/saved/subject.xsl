@@ -35,20 +35,19 @@
 
 <xsl:import href="../edit/subject.xsl" />
 
-<xsl:template name="breadcrumb_databases">
+<xsl:template name="breadcrumb">
+
 	<xsl:call-template name="breadcrumb_start" />
 	
 	<a href="{//navbar/databases_link}"><xsl:value-of select="$text_databases_category_pagename" /></a>
 	
 	<xsl:value-of select="$text_breadcrumb_separator" />
 	
-	<a href="{//navbar/my_databases_link}"><xsl:value-of select="$text_databases_category_pagename" /></a>
+	<a href="{//navbar/my_databases_link}"><xsl:value-of select="$text_header_collections" /></a>
 
 	<xsl:value-of select="$text_breadcrumb_separator" />
 	
-	<xsl:call-template name="breadcrumb_databases_intermediate" />
-
-	<xsl:call-template name="page_name" />
+	<xsl:value-of select="$text_header_collections_list" />
 
 </xsl:template>
 
