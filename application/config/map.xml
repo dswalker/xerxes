@@ -25,6 +25,12 @@
 		</action>
 	</controller>
 	<controller name="my-databases" class="Application\Controller\MyDatabasesController" login="true" />
+	<controller name="collections" class="Application\Controller\MyDatabasesPublicController">
+		<action name="subject">
+			<path index="3" param="username" />
+			<path index="4" param="subject" />
+		</action>	
+	</controller>
 	<controller name="embed">
 		<action name="subject">
 			<path index="3" param="subject" />

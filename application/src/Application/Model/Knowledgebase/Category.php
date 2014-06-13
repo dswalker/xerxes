@@ -160,7 +160,7 @@ class Category
 	/**
 	 * @return string
 	 */
-	public function getPublic()
+	public function isPublic()
 	{
 		return $this->public;
 	}
