@@ -215,8 +215,10 @@ abstract class ActionController
 	
 	protected function checkAuthentication($action)
 	{
-		$restricted = $this->controller_map->isRestricted($this->id, $action); 
-		$requires_login = $this->controller_map->requiresLogin($this->id, $action);
+		$id = $this->request->getControllerName();
+		
+		$restricted = $this->controller_map->isRestricted($id, $action); 
+		$requires_login = $this->controller_map->requiresLogin($id, $action);
 		
 		// get user from session
 		
