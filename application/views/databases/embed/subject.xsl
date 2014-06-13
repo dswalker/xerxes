@@ -48,6 +48,14 @@
 
 </xsl:template>
 
+<xsl:template name="page_name">
+	<xsl:value-of select="category/name" />
+</xsl:template>
+
+<xsl:template name="breadcrumb">
+	<xsl:call-template name="breadcrumb_databases" />
+</xsl:template>
+
 <xsl:template name="display_category">
 
 	<!-- show title -->
