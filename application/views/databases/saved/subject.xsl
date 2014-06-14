@@ -53,4 +53,15 @@
 
 </xsl:template>
 
+<xsl:template name="databases_subject_local_action">
+
+	<li>
+		<a id="my-databases-public" href="#database-modal-add-subcategory" 
+			role="button" data-toggle="modal"> 
+			<i class="icon-plus"></i>&nbsp; Add Subcategory
+		</a>							
+	</li>
+
+</xsl:template>
+
 </xsl:stylesheet>

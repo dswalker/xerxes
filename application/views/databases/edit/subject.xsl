@@ -163,6 +163,7 @@
 								</xsl:otherwise>
 							</xsl:choose>						
 						</li>
+						<xsl:call-template name="databases_subject_local_action" />
 					</ul>
 					
 				</div>
@@ -414,5 +415,7 @@
 	</a>
 	
 </xsl:template>
+
+<xsl:template name="databases_subject_local_action" />
 
 </xsl:stylesheet>
