@@ -819,6 +819,8 @@ table.facet-multi-table td.facet-multi-selector {
 	padding: 7px;
 	background-color: #eee;
 	border-radius: 10px;
+	background-image: none;
+	border: 0px;
 }
 
 #search-sidebar .box {
