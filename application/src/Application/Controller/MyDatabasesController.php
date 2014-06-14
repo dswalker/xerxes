@@ -99,15 +99,9 @@ class MyDatabasesController extends DatabasesEditController
 	
 		$this->knowledgebase->updateCategory($category);
 	
-		// redirect
+		// redirect to subject
 	
-		$params = array(
-			'controller' => $this->request->getParam('controller'),
-			'action' => 'subject',
-			'id' => $category->getId()
-		);
-	
-		return $this->redirectTo($params);
+		return $this->returnToCategory($category->getId());
 	}	
 	
 	/**
@@ -123,6 +117,10 @@ class MyDatabasesController extends DatabasesEditController
 		$category->setPublic($status);
 		
 		$this->knowledgebase->updateCategory($category);
+		
+		// return to subject
+		
+		return $this->returnToCategory($id);
 	}
 	
 	
