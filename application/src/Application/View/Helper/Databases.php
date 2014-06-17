@@ -72,9 +72,14 @@ class Databases
 	
 	public function injectDataLinks($object, $deep = true)
 	{
+		if ( $object == null )
+		{
+			return null;
+		}
+		
 		// array
 		
-		if ( is_array($object) )
+		if ( is_array($object) || $object instanceof \ArrayIterator)
 		{
 			foreach ( $object as $item ) // so take 'em each in turn
 			{
@@ -95,6 +100,8 @@ class Databases
 		
 		if ( $object instanceof Database )
 		{
+			// record url
+			
 			$params = array(
 				'controller' => 'databases',
 				'action' => 'database',
@@ -102,6 +109,11 @@ class Databases
 			);
 			
 			$object->url = $this->request->url_for($params);
+			
+			// proxy url
+			
+			$params['action'] = 'proxy';
+			$object->url_proxy = $this->request->url_for($params);			
 		}
 		
 		// Category
@@ -117,6 +129,16 @@ class Databases
 			);
 			
 			$object->url = $this->request->url_for($params);
+			
+			// embed link
+			
+			$params = array(
+				'controller' => 'embed',
+				'action' => 'gen-subject',
+				'subject' => $object->getNormalized()
+			);
+			
+			$object->url_embed = $this->request->url_for($params);
 			
 			// embed link
 			
@@ -149,7 +171,7 @@ class Databases
 				{
 					foreach ( $subcategory->getDatabases() as $database )
 					{
-						$this->injectDataLinks($item, $deep);
+						$this->injectDataLinks($database, $deep);
 					}
 				}
 			}

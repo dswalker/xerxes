@@ -87,6 +87,8 @@ class DatabasesController extends ActionController
 		
 		$categories = $this->knowledgebase->getCategories();
 		
+		$this->helper->injectDataLinks($categories);
+		
 		$this->response->setVariable('categories', $categories->toArray(false)); // shallow copy
 		
 		return $this->response;
@@ -120,8 +122,10 @@ class DatabasesController extends ActionController
 		
 		$category = $this->knowledgebase->getCategory($subject);
 		
+		$this->helper->injectDataLinks($category);
+		
 		$this->response->setVariable('category', $category);
-	
+		
 		return $this->response;
 	}
 	
@@ -139,6 +143,8 @@ class DatabasesController extends ActionController
 		{
 			$database = $this->knowledgebase->getDatabaseBySourceId($id);
 		}
+		
+		$this->helper->injectDataLinks($database);
 	
 		$this->response->setVariable('database', $database);
 	
@@ -209,6 +215,8 @@ class DatabasesController extends ActionController
 			
 			return $this->redirectTo($params);
 		}
+		
+		$this->helper->injectDataLinks($databases);
 		
 		$this->response->setVariable('databases', $databases);
 		

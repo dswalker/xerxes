@@ -123,7 +123,6 @@
 			<xsl:for-each select="categories/category[position() &gt; ($numRows * ($iteration_value -1)) and 
 				position() &lt;= ( $numRows * $iteration_value )]">
 				
-				<xsl:variable name="normalized" select="normalized" />
 				<li>
 					<xsl:call-template name="category_link" />
 				</li>
@@ -143,7 +142,7 @@
 
 <xsl:template name="category_link">
 
-	<a href="{//request/controller}/subject/{normalized}"><xsl:value-of select="name" /></a>
+	<a href="{url}"><xsl:value-of select="name" /></a>
 
 </xsl:template>
 
