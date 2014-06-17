@@ -46,4 +46,17 @@ class EmbedController extends DatabasesController
 		
 		return $this->subjectAction();
 	}
+	
+	public function searchAction()
+	{
+		$query = $this->request->getParam('query');
+		
+		$params = array(
+			'controller' => 'summon',
+			'action' => 'search',
+			'query' => $query
+		);
+		
+		return $this->redirectTo($params);
+	}
 }
