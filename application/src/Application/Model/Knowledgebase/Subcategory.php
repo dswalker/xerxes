@@ -176,7 +176,7 @@ class Subcategory
 	}
 
 	/**
-	 * @return Database[]
+	 * @return array DatabaseSequence
 	 */
 	public function getDatabases()
 	{
@@ -184,7 +184,7 @@ class Subcategory
 	}
 	
 	/**
-	 * @param Database $sequence
+	 * @param DatabaseSequence $sequence
 	 */
 	public function addDatabaseSequence(DatabaseSequence $sequence)
 	{

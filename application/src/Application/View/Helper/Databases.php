@@ -169,9 +169,9 @@ class Databases
 				
 				foreach ( $object->getSubcategories() as $subcategory )
 				{
-					foreach ( $subcategory->getDatabases() as $database )
+					foreach ( $subcategory->getDatabases() as $database_sequence )
 					{
-						$this->injectDataLinks($database, $deep);
+						$this->injectDataLinks($database_sequence->getDatabase(), $deep);
 					}
 				}
 			}
