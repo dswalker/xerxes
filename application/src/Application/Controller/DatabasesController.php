@@ -68,6 +68,8 @@ class DatabasesController extends ActionController
 		
 		$this->config = Config::getInstance();
 		
+		$this->response->setVariable('config_local', $this->config);
+		
 		// local navigation links
 		
 		$this->response->setVariable('edit_link', $this->helper->getEditLink());
