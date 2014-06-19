@@ -503,30 +503,30 @@
 	
 		<ul>
 			<li id="login-option">
-				<button class="btn btn-small">
-					<xsl:choose>
-						<xsl:when test="//request/session/role and //request/session/role = 'named'">
-											
-							<a id="logout">
-							<xsl:attribute name="href"><xsl:value-of select="//navbar/logout_link" /></xsl:attribute>
-								<xsl:call-template name="img_logout" />
-								<xsl:text> </xsl:text>
-								<xsl:copy-of select="$text_header_logout" />
-							</a>
-							
-						</xsl:when>
-						<xsl:otherwise>
+
+				<xsl:choose>
+					<xsl:when test="//request/session/role and //request/session/role = 'named'">
+										
+						<a id="logout" class="btn btn-small">
+						<xsl:attribute name="href"><xsl:value-of select="//navbar/logout_link" /></xsl:attribute>
+							<xsl:call-template name="img_logout" />
+							<xsl:text> </xsl:text>
+							<xsl:copy-of select="$text_header_logout" />
+						</a>
 						
-							<a id="login">
-							<xsl:attribute name="href"><xsl:value-of select="//navbar/login_link" /></xsl:attribute>
-								<xsl:call-template name="img_login" />
-								<xsl:text> </xsl:text>	
-								<xsl:copy-of select="$text_header_login" />
-							</a>
-							
-						</xsl:otherwise>
-					</xsl:choose>
-				</button>
+					</xsl:when>
+					<xsl:otherwise>
+					
+						<a id="login" class="btn btn-small">
+						<xsl:attribute name="href"><xsl:value-of select="//navbar/login_link" /></xsl:attribute>
+							<xsl:call-template name="img_login" />
+							<xsl:text> </xsl:text>	
+							<xsl:copy-of select="$text_header_login" />
+						</a>
+						
+					</xsl:otherwise>
+				</xsl:choose>
+	
 			</li>
 			<li>
 				<xsl:choose>
@@ -566,16 +566,14 @@
 	
 	<xsl:template name="my_saved_records">
 	
-		<button class="btn btn-small">
-			<a>
-			<xsl:attribute name="href"><xsl:value-of select="//navbar/my_account_link" /></xsl:attribute>
-				<xsl:call-template name="img_save_record">
-					<xsl:with-param name="id">folder</xsl:with-param>
-				</xsl:call-template>
-				<xsl:text> </xsl:text>
-				<xsl:copy-of select="$text_header_savedrecords" />
-			</a>
-		</button>
+		<a class="btn btn-small">
+		<xsl:attribute name="href"><xsl:value-of select="//navbar/my_account_link" /></xsl:attribute>
+			<xsl:call-template name="img_save_record">
+				<xsl:with-param name="id">folder</xsl:with-param>
+			</xsl:call-template>
+			<xsl:text> </xsl:text>
+			<xsl:copy-of select="$text_header_savedrecords" />
+		</a>
 	
 	</xsl:template>
 
