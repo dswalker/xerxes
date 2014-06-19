@@ -162,7 +162,7 @@
 				
 				<xsl:if test="image">
 					<div class="librarian-image">
-						<img src="databases/librarian-image?id={id}" alt="{name}" />
+						<img src="{//request/controller}/librarian-image?id={id}" alt="{name}" />
 					</div>
 				</xsl:if>
 				
@@ -214,7 +214,7 @@
 <xsl:template name="subject_embed">
 
 	<div style="margin-top: 2em">
-		<a href="{//embed_link}"><i class="icon-code"></i> Embed this page in an external website</a>
+		<a href="{//url_embed}"><i class="icon-code"></i> Embed this page in an external website</a>
 	</div>
 
 </xsl:template>
