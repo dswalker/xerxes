@@ -179,7 +179,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_header_collections">My Saved Databases</xsl:variable>
 	<xsl:variable name="text_header_collections_list">List</xsl:variable>
 	<xsl:variable name="text_header_collections_subcat">Databases</xsl:variable>
-	<xsl:variable name="text_header_embed">Embed</xsl:variable>
+	<xsl:variable name="text_header_embed">Share this page</xsl:variable>
 	<xsl:variable name="text_header_facets">Limit top results by:</xsl:variable>
 	<xsl:variable name="text_header_login">Log-in</xsl:variable>
 	<xsl:variable name="text_header_logout">
