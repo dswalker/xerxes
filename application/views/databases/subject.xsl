@@ -101,8 +101,6 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			
-
-			
 			</ul>
 		
 		</div>
@@ -154,36 +152,40 @@
 
 	<xsl:if test="category/librarian_sequences">
 	
-		<h2>Subject Specialist</h2>
-		
-		<xsl:for-each select="category/librarian_sequences/librarian_sequence/librarian">
-		
-			<div class="librarian">
-				
-				<xsl:if test="image">
-					<div class="librarian-image">
-						<img src="{//request/controller}/librarian-image?id={id}" alt="{name}" />
-					</div>
-				</xsl:if>
-				
-				<h3>
-					<xsl:choose>
-						<xsl:when test="link">
-							<a href="{link}"><xsl:value-of select="name" /></a>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="name" />
-						</xsl:otherwise>
-					</xsl:choose>					
-					<xsl:call-template name="librarian_edit_actions" />
-				</h3>
-				
-				<dl>
-					<xsl:call-template name="librarian_details" />
-				</dl>
-			</div>
+		<div class="database-box">
+	
+			<h2>Subject Specialist</h2>
 			
-		</xsl:for-each>
+			<xsl:for-each select="category/librarian_sequences/librarian_sequence/librarian">
+			
+				<div class="librarian">
+					
+					<xsl:if test="image">
+						<div class="librarian-image">
+							<img src="{//request/controller}/librarian-image?id={id}" alt="{name}" />
+						</div>
+					</xsl:if>
+					
+					<h3>
+						<xsl:choose>
+							<xsl:when test="link">
+								<a href="{link}"><xsl:value-of select="name" /></a>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="name" />
+							</xsl:otherwise>
+						</xsl:choose>					
+						<xsl:call-template name="librarian_edit_actions" />
+					</h3>
+					
+					<dl>
+						<xsl:call-template name="librarian_details" />
+					</dl>
+				</div>
+				
+			</xsl:for-each>
+		
+		</div>
 		
 	</xsl:if>
 	
@@ -191,7 +193,7 @@
 	
 	<xsl:if test="category/subcategories/subcategory[sidebar = 1]">
 	
-		<div class="subject-list">
+		<div class="database-box subject-list">
 	
 			<ul data-target="{//request/controller}/reorder-subcategories" data-category="{$category}">
 	
@@ -213,8 +215,13 @@
 
 <xsl:template name="subject_embed">
 
-	<div style="margin-top: 2em">
-		<a href="{//url_embed}"><i class="icon-code"></i> Embed this page in an external website</a>
+	<div class="database-box">
+	
+		<h2><xsl:value-of select="$text_header_embed" /></h2>
+		<ul class="embed-list">
+			<li><a href="{//url_embed}">Embed this page in an external website</a></li>
+		</ul>
+		
 	</div>
 
 </xsl:template>

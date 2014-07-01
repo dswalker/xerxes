@@ -45,6 +45,18 @@
 
 </xsl:template>
 
+<xsl:template name="module_header">
+
+	<xsl:call-template name="databases_css" />
+
+</xsl:template>
+
+<xsl:template name="databases_css">
+
+	<link href="{$base_include}/css/databases.css?version={$asset_version}" rel="stylesheet" type="text/css" />
+
+</xsl:template>
+
 <xsl:template name="databases_alpha_listing">
 
 	<div class="database-alpha-letters">

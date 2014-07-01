@@ -45,6 +45,8 @@
 <xsl:template name="module_header">
 
 	<link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+	
+	<xsl:call-template name="databases_css" />
 
 	<style type="text/css">
 		

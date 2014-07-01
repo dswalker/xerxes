@@ -33,12 +33,16 @@
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 
+<xsl:import href="../includes.xsl" />
 <xsl:import href="includes.xsl" />
 
 <xsl:output method="html" />
 
 <xsl:template match="/*">
-	<xsl:call-template name="surround" />
+	<xsl:call-template name="surround">
+		<xsl:with-param name="surround_template">none</xsl:with-param>
+		<xsl:with-param name="sidebar">none</xsl:with-param>
+	</xsl:call-template>
 </xsl:template>
 
 <xsl:template name="breadcrumb">
@@ -51,24 +55,7 @@
 	<link href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" rel="stylesheet" media="screen" />
 	<link href="{$base_include}/css/jquery.tagit.css" rel="stylesheet" type="text/css" />
 
-	<style type="text/css">
-		
-		#database-form label.error {
-			color: red;
-			padding-top: 4px;
-			display: inline-block;
-			padding-left: 1em;
-		}
-		
-		ul.tagit {
-			margin-left: 0;
-			width: 300px;
-			border: 1px solid #ccc;
-			font-size: 14px;
-			font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-		}
-		
-	</style>
+	<xsl:call-template name="databases_css" />
 
 </xsl:template>
 

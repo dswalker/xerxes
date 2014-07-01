@@ -39,7 +39,10 @@
 <xsl:output method="html" />
 
 <xsl:template match="/*">
-	<xsl:call-template name="surround" />
+	<xsl:call-template name="surround">
+		<xsl:with-param name="surround_template">none</xsl:with-param>
+		<xsl:with-param name="sidebar">none</xsl:with-param>
+	</xsl:call-template>
 </xsl:template>
 
 <xsl:template name="page_name">
@@ -53,22 +56,6 @@
 <xsl:template name="breadcrumb_databases_intermediate">
 	<a href="{//request/controller}/alphabetical"><xsl:value-of select="$text_databases_az_pagename" /></a>
 	<xsl:value-of select="$text_breadcrumb_separator" />
-</xsl:template>
-
-<xsl:template name="module_header">
-
-	<style type="text/css">
-		
-		.database-details {
-			margin-top: 1em;
-			max-width: 600px;
-		}
-		.database-link {
-			margin: 2em;
-		}
-					
-	</style>
-	
 </xsl:template>
 
 <xsl:template name="main">
