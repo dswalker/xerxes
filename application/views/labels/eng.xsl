@@ -104,7 +104,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_database_creator">Creator</xsl:variable>
 	<xsl:variable name="text_database_guide">Guide</xsl:variable>
 	<xsl:variable name="text_database_guide_help">Help in using this database</xsl:variable>
-	<xsl:variable name="text_database_go_to_database">Go to this database!</xsl:variable>
+	<xsl:variable name="text_database_go_to_database">Go to this database.</xsl:variable>
 	<xsl:variable name="text_database_keywords">Keywords</xsl:variable>
 	<xsl:variable name="text_database_link">Link</xsl:variable>
 	<xsl:variable name="text_database_publisher">Publisher</xsl:variable>
