@@ -156,6 +156,11 @@
 	margin-top: 1em;
 	max-width: 600px;
 }
+
+.database-details dl div {
+	margin-top: .7em
+}
+
 .database-link {
 	margin: 2em;
 }
