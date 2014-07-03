@@ -197,7 +197,7 @@
 		  <div class="control-group">
 			<label class="control-label">Link guide</label>
 			<div class="controls">
-			  <input type="text" name="link-guide" class="input-long" placeholder="Link to a guide or instructions page" value="{link_guide}" />
+			  <input type="text" name="link_guide" class="input-long" placeholder="Link to a guide or instructions page" value="{link_guide}" />
 			</div>
 		  </div>
 		  
