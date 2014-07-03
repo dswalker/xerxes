@@ -313,6 +313,7 @@ class DatabasesEditController extends DatabasesController
 		$link = $this->request->requireParam('link', 'You must specify a link');
 		
 		$description = $this->request->getParam('description');
+		$type = $this->request->getParam('type');
 		$coverage = $this->request->getParam('coverage');
 		
 		$active = (bool) $this->request->getParam('active', false, false);
@@ -324,7 +325,7 @@ class DatabasesEditController extends DatabasesController
 		$keywords = $this->request->getParam('keywords');
 		$creator = $this->request->getParam('creator');
 		$publisher = $this->request->getParam('publisher');
-		$search_hints = $this->request->getParam('search-hints');
+		$search_hints = $this->request->getParam('search_hints');
 		$link_guide = $this->request->getParam('link_guide');
 			
 		
@@ -346,6 +347,7 @@ class DatabasesEditController extends DatabasesController
 			$database = new Database();
 		}
 		
+		$database->setType($type);
 		$database->setCoverage($coverage);
 		$database->setCreator($creator);
 		$database->setDescription($description);
