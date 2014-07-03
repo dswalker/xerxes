@@ -563,7 +563,12 @@ class Database
 				
 				foreach ( $this->$key->toArray() as $object )
 				{
-					$second[] = $object->getValue();
+					$array_value = trim($object->getValue());
+					
+					if ( $array_value != "" )
+					{
+						$second[] = $array_value;
+					}
 				}
 				
 				if (count($second) == 0 )
