@@ -86,17 +86,28 @@
 
 <xsl:template name="database_results">
 
-	<ul class="databases-list">
+	<xsl:choose>
+		<xsl:when test="not(databases/database)">
 		
-		<xsl:for-each select="databases/database">
-	
-			<li>
-				<xsl:call-template name="database_brief_display" />
-			</li>
-	
-		</xsl:for-each>
-	
-	</ul>
+			<p class="error"><xsl:value-of select="$text_databases_no_match" /></p>
+		
+		</xsl:when>
+		<xsl:otherwise>
+			
+			<ul class="databases-list">
+				
+				<xsl:for-each select="databases/database">
+			
+					<li>
+						<xsl:call-template name="database_brief_display" />
+					</li>
+			
+				</xsl:for-each>
+			
+			</ul>
+			
+		</xsl:otherwise>
+	</xsl:choose>
 
 </xsl:template>
 
