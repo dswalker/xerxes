@@ -99,7 +99,6 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_database_availability">Availability:</xsl:variable>
 	<xsl:variable name="text_database_available_registered">Only available to registered users.</xsl:variable>
 	<xsl:variable name="text_database_available_everyone">Available to everyone.</xsl:variable>
-	<xsl:variable name="text_databases_confirm_delete">Sure you want to delete this?</xsl:variable>	
 	<xsl:variable name="text_database_coverage">Coverage</xsl:variable>
 	<xsl:variable name="text_database_creator">Creator</xsl:variable>
 	<xsl:variable name="text_database_guide">Guide</xsl:variable>
@@ -111,6 +110,9 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_database_save_database">Save database</xsl:variable>
 	<xsl:variable name="text_database_search_hints">Search Hints</xsl:variable>
 	<xsl:variable name="text_database_type">Type</xsl:variable>
+	
+	<xsl:variable name="text_databases_confirm_delete">Sure you want to delete this?</xsl:variable>	
+	<xsl:variable name="text_databases_no_match">No databases matched your search.</xsl:variable>
 	
 	<xsl:variable name="text_databases_access_available">Only available to </xsl:variable>
 	<xsl:variable name="text_databases_access_group_and">and</xsl:variable>
