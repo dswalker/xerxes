@@ -103,17 +103,17 @@ class Databases
 			// record url
 			
 			$params = array(
-				'controller' => 'databases',
+				'controller' => $this->request->getParam('controller'),
 				'action' => 'database',
 				'id' => $object->getId()
 			);
 			
-			$object->url = $this->request->url_for($params);
+			$object->url = $this->request->url_for($params, true);
 			
 			// proxy url
 			
 			$params['action'] = 'proxy';
-			$object->url_proxy = $this->request->url_for($params);			
+			$object->url_proxy = $this->request->url_for($params, true);			
 		}
 		
 		// Category
@@ -128,7 +128,7 @@ class Databases
 				'subject' => $object->getNormalized()
 			);
 			
-			$object->url = $this->request->url_for($params);
+			$object->url = $this->request->url_for($params, true);
 			
 			// embed link
 			
@@ -138,7 +138,7 @@ class Databases
 				'subject' => $object->getNormalized()
 			);
 			
-			$object->url_embed = $this->request->url_for($params);
+			$object->url_embed = $this->request->url_for($params, true);
 			
 			// embed link
 			
