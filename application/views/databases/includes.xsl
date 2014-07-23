@@ -94,14 +94,25 @@
 		</xsl:when>
 		<xsl:otherwise>
 			
-			<ul class="databases-list">
+			<ul class="databases-list" data-role="listview" data-inset="true">
 				
 				<xsl:for-each select="databases/database">
-			
+					
 					<li>
-						<xsl:call-template name="database_brief_display" />
+						<xsl:choose>
+							<xsl:when test="$is_mobile = 1">
+								<a href="{url_proxy}">
+									<xsl:value-of select="title" />	
+									<br />
+									<xsl:call-template name="database_abstract" />							
+								</a>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:call-template name="database_brief_display" />
+							</xsl:otherwise>
+						</xsl:choose>
+						
 					</li>
-			
 				</xsl:for-each>
 			
 			</ul>
@@ -129,14 +140,7 @@
 <xsl:template name="database_brief_description">
 
 	<div class="database-description">
-		<xsl:choose>
-			<xsl:when test="string-length(description) &gt; 300">
-				<xsl:value-of select="substring(description, 1, 300)" /> . . .
-			</xsl:when>
-			<xsl:when test="description">
-				<xsl:value-of select="description" />
-			</xsl:when>
-		</xsl:choose>
+		<xsl:call-template name="database_abstract" />
 	</div>
 
 	<div class="database-more-info">
@@ -145,12 +149,25 @@
 
 </xsl:template>
 
+<xsl:template name="database_abstract">
+	
+	<xsl:choose>
+		<xsl:when test="string-length(description) &gt; 300">
+			<xsl:value-of select="substring(description, 1, 300)" /> . . .
+		</xsl:when>
+		<xsl:when test="description">
+			<xsl:value-of select="description" />
+		</xsl:when>
+	</xsl:choose>
+
+</xsl:template>
+
 <xsl:template name="librarian_details">
 
 	<xsl:if test="email">
 		<div>
 			<dt><xsl:copy-of select="$text_databases_subject_librarian_email" />:</dt>
-			<dd><xsl:value-of select="email" /></dd>
+			<dd><a href="mailto:{email}"><xsl:value-of select="email" /></a></dd>
 		</div>
 	</xsl:if>
 	

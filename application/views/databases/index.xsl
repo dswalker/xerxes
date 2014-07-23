@@ -119,7 +119,7 @@
 				<xsl:attribute name="class">span<xsl:value-of select="$width" /></xsl:attribute>
 			</xsl:if>
 			
-			<ul>
+			<ul data-role="listview" data-inset="true">
 			<xsl:for-each select="categories/category[position() &gt; ($numRows * ($iteration_value -1)) and 
 				position() &lt;= ( $numRows * $iteration_value )]">
 				
