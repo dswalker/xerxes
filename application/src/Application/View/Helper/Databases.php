@@ -62,6 +62,28 @@ class Databases
 		
 		return $this->request->url_for($params);
 	}
+
+	/**
+	 * Add links to Alpha letters
+	 * 
+	 * @param array $alpha
+	 */
+	
+	public function injectAlphaLinks( array $alpha )
+	{
+		$params = array(
+			'controller' => $this->request->getParam('controller'),
+			'action' => 'alphabetical'
+		);
+		
+		for ( $x = 0; $x < count($alpha); $x++ )
+		{
+			$params['alpha'] = $alpha[$x]['letter'];
+			$alpha[$x]['url'] = $this->request->url_for($params, true);
+		}
+		
+		return $alpha;
+	}
 	
 	/**
 	 * Add links for Category, Database, and Librarian

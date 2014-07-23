@@ -68,7 +68,7 @@
 					<strong><xsl:value-of select="letter" /></strong>
 				</xsl:when>
 				<xsl:otherwise>
-					<a href="{//request/controller}/alphabetical?alpha={letter}">
+					<a href="{url}">
 						<xsl:value-of select="letter" />
 					</a>
 				</xsl:otherwise>
@@ -127,7 +127,7 @@
 
 <xsl:template name="database_mobile_display">
 
-	<a href="{url_proxy}">
+	<a href="{url_proxy}" data-ajax="false">
 		<xsl:value-of select="title" />	
 		<br />
 		<xsl:call-template name="database_abstract" />							

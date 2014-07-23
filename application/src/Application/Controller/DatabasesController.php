@@ -289,7 +289,15 @@ class DatabasesController extends ActionController
 	{
 		// get cached information
 		
-		$this->response->setVariable('database_alpha', $this->getDatabaseAlpha());
+		$databases_alpha = $this->getDatabaseAlpha();
+		
+		// create links
+		
+		$databases_alpha = $this->helper->injectAlphaLinks($databases_alpha);
+		
+		// add to response
+		
+		$this->response->setVariable('database_alpha', $databases_alpha);
 	}
 	
 	/**
