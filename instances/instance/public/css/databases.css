@@ -109,6 +109,8 @@
 	width: 400px;
 }
 
+/** These are duplicated in mobile @todo: fix that **/
+
 .database-alpha-letters {
 	margin-top: 3em;
 	margin-bottom: 3em;
@@ -133,6 +135,8 @@
 .database-letter-seperator {
 	display: none;
 }
+
+/** end dup **/
 
 .databases-categories-list li, #databases-additional-options li {
 	padding: 5px;

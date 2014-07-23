@@ -1,5 +1,7 @@
 .sidebar, #bd-top, #tabnav, .results-database-recommendations, .save-record-action { display: none; }
 
+/* Search Results */
+
 .results-info {
 	font-size: 90%;
 	padding: 0 30px .7em 15px;
@@ -20,6 +22,7 @@
 	padding-right: 1em;
 }
 
+/* Catalog */
 
 .holdings-table {
 	border-collapse:collapse;
@@ -39,4 +42,37 @@
 .holdings-table th {
 	background-color: #efefef;
 }
+
+/* Databases */
+
+.database-alpha-letters {
+	margin-top: 3em;
+	margin-bottom: 3em;
+}
+
+.database-alpha-letters a, .database-alpha-letters strong {
+	display: inline-block;
+	padding: .5em;
+	border: 1px solid #ccc;
+	background-color: #efefef;
+	border-radius: 3px;
+	margin: 2px;
+	font-size: 110%;
+}
+
+.database-alpha-letters strong {
+	border: 1px solid #036;
+	background-color: #369;
+	color: #fff;
+}
+
+.database-letter-seperator {
+	display: none;
+}
+
+.subject-list ul, .subject-list li {
+	padding-left: 0;
+	list-style: none;
+}
+	
 
