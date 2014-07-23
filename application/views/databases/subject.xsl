@@ -120,22 +120,34 @@
 			<xsl:call-template name="subcategory_name" />
 		</h2>
 		
-		<ul class="databases-list" data-target="{//request/controller}/reorder-databases" data-category="{$category}" data-subcategory="{id}">
+		<ul class="databases-list" data-target="{//request/controller}/reorder-databases" data-category="{$category}" data-subcategory="{id}"
+			data-role="listview" data-inset="true">
 		
 			<xsl:for-each select="database_sequences/database_sequence/database">
 			
 				<!-- sequence id -->
 			
 				<li id="database_{../id}" class="list-item"> 
-					<xsl:call-template name="database_sequence_actions" />
-					
+				
 					<xsl:choose>
-						<xsl:when test="$show_description = 'true'">
-							<xsl:call-template name="database_brief_display" />
+						<xsl:when test="$is_mobile = 1">
+							<xsl:call-template name="database_mobile_display" />
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:call-template name="database_brief_title" />
+				
+							<xsl:call-template name="database_sequence_actions" />
+							
+							<xsl:choose>
+								<xsl:when test="$show_description = 'true'">
+									<xsl:call-template name="database_brief_display" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:call-template name="database_brief_title" />
+								</xsl:otherwise>
+							</xsl:choose>
+							
 						</xsl:otherwise>
+						
 					</xsl:choose>
 					
 				</li>

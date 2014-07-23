@@ -101,11 +101,7 @@
 					<li>
 						<xsl:choose>
 							<xsl:when test="$is_mobile = 1">
-								<a href="{url_proxy}">
-									<xsl:value-of select="title" />	
-									<br />
-									<xsl:call-template name="database_abstract" />							
-								</a>
+								<xsl:call-template name="database_mobile_display" />
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:call-template name="database_brief_display" />
@@ -127,6 +123,16 @@
 	<xsl:call-template name="database_brief_title" />
 	<xsl:call-template name="database_brief_description" />
 	
+</xsl:template>
+
+<xsl:template name="database_mobile_display">
+
+	<a href="{url_proxy}">
+		<xsl:value-of select="title" />	
+		<br />
+		<xsl:call-template name="database_abstract" />							
+	</a>
+
 </xsl:template>
 
 <xsl:template name="database_brief_title">
