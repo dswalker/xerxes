@@ -40,9 +40,7 @@
 	
 	<xsl:template name="module_header">
 	
-		<xsl:if test="$is_mobile = 0">
-			<link href="{$base_include}/css/books.css?version={$asset_version}" rel="stylesheet" type="text/css" />
-		</xsl:if>
+		<link href="{$base_include}/css/books.css?version={$asset_version}" rel="stylesheet" type="text/css" />
 		
 	</xsl:template>
 

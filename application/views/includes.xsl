@@ -263,7 +263,15 @@
 		<xsl:call-template name="css_include" />
 		
 		<!-- header content added by module -->
-		<xsl:call-template name="module_header" />	
+		
+		<xsl:choose>
+			<xsl:when test="$is_mobile = 1">
+				<xsl:call-template name="module_header_mobile" />
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:call-template name="module_header" />
+			</xsl:otherwise>
+		</xsl:choose>
 		
 		<!-- and by local implementation -->
 		<xsl:copy-of select="$text_extra_html_head_content" />
@@ -705,7 +713,8 @@
 	<xsl:template name="breadcrumb" />
 	<xsl:template name="sidebar" />
 	<xsl:template name="sidebar_additional" />
-	<xsl:template name="module_header" />	
+	<xsl:template name="module_header" />
+	<xsl:template name="module_header_mobile" />
 	<xsl:template name="module_javascript" />
 	<xsl:template name="module_nav" />
 	
