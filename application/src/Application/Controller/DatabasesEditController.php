@@ -735,15 +735,21 @@ class DatabasesEditController extends DatabasesController
 	
 	protected function getDatabaseAlpha()
 	{
-		$types = $this->cache()->get($this->database_alpha_edit_id );
+		// is it cached?
+		
+		$databases_alpha = $this->cache()->get($this->database_alpha_edit_id );
 	
-		if ( $types == null )
+		if ( $databases_alpha == null )
 		{
-			$types = $this->knowledgebase->getDatabaseAlpha();
-			$this->cache()->set($this->database_alpha_edit_id , $types, time() + (12 * 60 * 60) ); // 12 hour cache
+			$databases_alpha = $this->knowledgebase->getDatabaseAlpha();
+			$this->cache()->set($this->database_alpha_edit_id , $databases_alpha, time() + (12 * 60 * 60) ); // 12 hour cache
 		}
+		
+		// create links
+		
+		$databases_alpha = $this->helper->injectAlphaLinks($databases_alpha);
 	
-		return $types;
+		return $databases_alpha;
 	}	
 	
 	/**

@@ -287,17 +287,7 @@ class DatabasesController extends ActionController
 	
 	protected function setCachedData()
 	{
-		// get cached information
-		
-		$databases_alpha = $this->getDatabaseAlpha();
-		
-		// create links
-		
-		$databases_alpha = $this->helper->injectAlphaLinks($databases_alpha);
-		
-		// add to response
-		
-		$this->response->setVariable('database_alpha', $databases_alpha);
+		$this->response->setVariable('database_alpha', $this->getDatabaseAlpha());
 	}
 	
 	/**
@@ -306,15 +296,23 @@ class DatabasesController extends ActionController
 	
 	protected function getDatabaseAlpha()
 	{
-		$types = $this->cache()->get($this->database_alpha_id );
+		// is it cached?
+		
+		$databases_alpha = $this->cache()->get($this->database_alpha_id );
+		
+		// nope
 	
-		if ( $types == null )
+		if ( $databases_alpha == null )
 		{
-			$types = $this->knowledgebase->getDatabaseAlpha();
-			$this->cache()->set($this->database_alpha_id , $types, time() + (12 * 60 * 60) ); // 12 hour cache
+			$databases_alpha = $this->knowledgebase->getDatabaseAlpha();
+			$this->cache()->set($this->database_alpha_id , $databases_alpha, time() + (12 * 60 * 60) ); // 12 hour cache
 		}
-	
-		return $types;
+		
+		// create links
+		
+		$databases_alpha = $this->helper->injectAlphaLinks($databases_alpha);
+		
+		return $databases_alpha;
 	}
 	
 	/**
