@@ -97,7 +97,9 @@ class Knowledgebase extends Doctrine
 		$category = $this->createCategory();
 		$category->setName($name);
 		
-		return $this->updateCategory($category);
+		$this->updateCategory($category);
+		
+		return $category->getId();
 	}
 	
 	/**

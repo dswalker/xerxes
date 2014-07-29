@@ -112,11 +112,18 @@ class DatabasesEditController extends DatabasesController
 	public function addCategoryAction()
 	{
 		$name = $this->request->getParam('name');
-		$return = $this->request->getParam('return');
 		
-		$this->knowledgebase->addCategory($name);
+		$id = $this->knowledgebase->addCategory($name);
 		
-		return $this->redirectTo($return);
+		// return them to newly created page
+		
+		$params = array(
+			'controller' => $this->request->getParam('controller'),
+			'action' => 'subject',
+			'id' => $id
+		);
+		
+		return $this->redirectTo($params);
 	}
 
 	/**
