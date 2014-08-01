@@ -465,7 +465,7 @@ class Knowledgebase extends Doctrine
 	
 	public function getTypes()
 	{
-		$sql = "SELECT DISTINCT type FROM research_databases";
+		$sql = "SELECT DISTINCT type FROM research_databases ORDER BY type";
 		return $this->datamap()->select($sql);
 	}	
 	
