@@ -183,3 +183,8 @@ ul.tagit {
 	font-size: 14px;
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
+
+a.tool-tip {
+	color: #003;
+	border-bottom: 1px dotted #003;
+}

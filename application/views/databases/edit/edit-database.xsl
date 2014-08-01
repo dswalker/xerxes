@@ -105,11 +105,17 @@
 			</div>
 		  </div>
 		  <div class="control-group">
-			<label class="control-label">Type</label>
+			<label class="control-label">
+				<a class="tool-tip" data-toggle="popover" title="" data-placement="left" data-original-title="Type of database"
+					data-content="This is a semi-controlled field.  As you type in a value, Xerxes will attempt to auto-complete based on previous values you've added, and in that way you can select from those controlled list of terms.  To see all available terms, simply type a space in the field. To add a new type, simply type in a new value." >
+					Type
+				</a>
+			</label>
 			<div class="controls">
 			  <input type="text" id="type" name="type" class="input-long" value="{type}">
 			  	<xsl:attribute name="data-source">
-					<xsl:for-each select="//database_types/database_type">
+					<xsl:for-each select="database_types/database_type">
+						<xsl:text> </xsl:text> <!-- space here necessary for 'enter space to see all terms' hack -->
 						<xsl:value-of select="type" />
 						<xsl:if test="following-sibling::database_type">
 							<xsl:text>;</xsl:text>
@@ -120,7 +126,12 @@
 			</div>
 		  </div>
 		  <div class="control-group">
-			<label class="control-label">Coverage</label>
+			<label class="control-label">
+				<a class="tool-tip" data-toggle="popover" title="" data-placement="left" data-original-title="Coverage"
+					data-content="The (approximate) publication dates covered by this databases" >
+					Coverage
+				</a>
+			</label>
 			<div class="controls">
 			  <input type="text" name="coverage" class="input-long" value="{coverage}" />
 			</div>
@@ -146,21 +157,36 @@
 			</div>
 		  </div>
 		  <div class="control-group">
-			<label class="control-label">Trial until</label>
+			<label class="control-label">
+				<a class="tool-tip" data-toggle="popover" title="" data-placement="left" data-original-title="Trial end date"
+					data-content="This is a date field.  You can use it to set a date when Xerxes will automatically suppress the database from display.  This is particularly useful for trial databases (hence the name of the field), so you don't have to remember to go back and remove the database after the trial has ended.  Enter date as mm/dd/yyyy, or click in the field and use the calendar to pick a date." >
+					Trial until
+				</a>
+			</label>
 			<div class="controls">
 			  <input type="text" name="date_trial_expiry" class="datepicker" maxlength="10" size="10" 
 			  	placeholder="date when trial is over" value="{substring(string(date_trial_expiry/date),1,10)}" />
 			</div>
 		  </div>
 		  <div class="control-group">
-			<label class="control-label">New until</label>
+			<label class="control-label">
+				<a class="tool-tip" data-toggle="popover" title="" data-placement="left" data-original-title="New until"
+					data-content="This is a date field.  It tells Xerxes to highlight a database as new until the date you set.  This will ultimately drive a 'new databases' feature on the home page.  Enter date as mm/dd/yyyy, or click in the field and use the calendar to pick a date." >
+					New until
+				</a>
+			</label>
 			<div class="controls">
 			  <input type="text" name="date_new_expiry" class="datepicker" maxlength="10" size="10" 
 			  	placeholder="date no longer new"  value="{substring(string(date_new_expiry/date),1,10)}" />					  
 			</div>
 		  </div>	
 		  <div class="control-group">
-			<label class="control-label">Keywords</label>
+			<label class="control-label">
+				<a class="tool-tip" data-toggle="popover" title="" data-placement="left" data-original-title="Keywords"
+					data-content="Enter any set of key terms you want to add to help users find this database when searching or browsing the databases pages.  Separate multiple keywords with a comma or by hitting enter.  As you add keywords, they are converted into separate blocks in the input field, which you can remove by clicking the 'x' icon next to each term, or by simply hitting backspace in your keyboard." >
+					Keywords
+				</a>
+			</label>
 			<div class="controls">
 			  <input name="keywords" id="form-keywords" class="input-long" data-original-title="Coverage" data-placement="right">
 			  	<xsl:attribute name="value">
@@ -175,13 +201,23 @@
 			</div>
 		  </div>  
 		  <div class="control-group">
-			<label class="control-label">Creator</label>
+			<label class="control-label">
+				<a class="tool-tip" data-toggle="popover" title="" data-placement="left" data-original-title="Creator"
+					data-content="The organization responsible for creating and maintaining the database (e.g., American Psychological Association), if different from the publisher." >
+					Creator
+				</a>			
+			</label>
 			<div class="controls">
 			  <input type="text" name="creator" class="input-long" value="{creator}" />
 			</div>
 		  </div>
 		  <div class="control-group">
-			<label class="control-label">Publisher</label>
+			<label class="control-label">
+				<a class="tool-tip" data-toggle="popover" title="" data-placement="left" data-original-title="Publisher"
+					data-content="The organization responsible for publishing the database (e.g. Ebsco, Proquest)." >
+					Publisher
+				</a>
+			</label>
 			<div class="controls">
 			  <input type="text" name="publisher" class="input-long" value="{publisher}" />
 			</div>

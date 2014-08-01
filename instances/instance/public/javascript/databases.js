@@ -101,10 +101,7 @@ function databaseForm()
 	
 	$("#database-form").validate();
 	
-	$('#form-coverage').popover({
-		html: true,
-		content: function(ele) { return $('#popover-content').html(); }
-	});			
+	$('[data-toggle="popover"]').popover({'placement': 'top'});		
 				
 	var tags = $("#type").attr('data-source');
 	
