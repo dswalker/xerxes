@@ -439,6 +439,7 @@ class Database
 	 */
 	public function setType($type)
 	{
+		$type = trim($type);
 		$this->type = $type;
 	}
 	
@@ -484,6 +485,7 @@ class Database
 		
 		foreach ( $keywords as $keyword )
 		{
+			$keyword = trim($keyword);
 			$this->addKeyword($keyword);
 		}
 	}
