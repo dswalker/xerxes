@@ -443,6 +443,7 @@
 	<xsl:template name="sidebar_wrapper">
 		<div class="span4">
 			<div class="sidebar">
+				<xsl:call-template name="sidebar_top" />
 				<xsl:call-template name="sidebar" />
 				<xsl:call-template name="sidebar_additional" />
 			</div>
@@ -711,6 +712,7 @@
 	<xsl:template name="footer_div" />
 	<xsl:template name="page_name" />
 	<xsl:template name="breadcrumb" />
+	<xsl:template name="sidebar_top" />
 	<xsl:template name="sidebar" />
 	<xsl:template name="sidebar_additional" />
 	<xsl:template name="module_header" />
