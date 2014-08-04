@@ -49,7 +49,15 @@
 </xsl:template>
 
 <xsl:template name="breadcrumb">
-	<xsl:call-template name="breadcrumb_databases" />
+
+	<xsl:call-template name="breadcrumb_start" />
+
+	<a href="{//request/controller}"><xsl:value-of select="$text_databases_category_pagename" /></a>
+
+	<xsl:value-of select="$text_breadcrumb_separator" />
+	
+	Subject
+	
 </xsl:template>
 
 <xsl:template name="main">
