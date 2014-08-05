@@ -99,6 +99,8 @@ class DatabasesEditController extends DatabasesController
 		
 	
 		$category = $this->knowledgebase->getCategoryById($id);
+		
+		$this->helper->injectDataLinks($category);
 	
 		$this->response->setVariable('category', $category);
 		
@@ -334,11 +336,11 @@ class DatabasesEditController extends DatabasesController
 		$publisher = $this->request->getParam('publisher');
 		$search_hints = $this->request->getParam('search_hints');
 		$link_guide = $this->request->getParam('link_guide');
-			
+		$link_copyright = $this->request->getParam('link_copyright');
 		
 		$language = $this->request->getParam('language');
 		$notes = $this->request->getParam('notes');
-		$alternate_titles = $this->request->getParam('alternate_title', null, true);
+		$alternate_titles = $this->request->getParam('alternate_titles');
 		
 		// if an id came in, then we are editing 
 		// rather than adding, so fetch the database
@@ -366,6 +368,7 @@ class DatabasesEditController extends DatabasesController
 		$database->setSearchHints($search_hints);
 		$database->setSourceId('web');
 		$database->setTitle($title);
+		$database->setAlternateTitles($alternate_titles);
 		$database->setKeywords($keywords);
 		
 		if ( $date_new_expiry != null )
@@ -382,11 +385,6 @@ class DatabasesEditController extends DatabasesController
 		
 		$database->setProxy($proxy);
 		$database->setActive($active);
-		
-		foreach ( $alternate_titles as $alternate_title )
-		{
-			$database->addAlternateTitle($alternate_title);
-		}
 		
 		$this->knowledgebase->updateDatabase($database);
 		

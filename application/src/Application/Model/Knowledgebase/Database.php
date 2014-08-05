@@ -452,16 +452,40 @@ class Database
 	}
 
 	/**
+	 * Set all alternate titles at once
+	 * 
+	 * @param string $values  delimited by semi-colon
+	 */
+	public function setAlternateTitles($values)
+	{
+		$titles = explode(';', $values);
+	
+		// remove existing ones
+	
+		$this->alternate_titles->clear();
+	
+		// add new ones
+	
+		foreach ( $titles as $title )
+		{
+			$title = trim($title);
+			$this->addAlternateTitle($title);
+		}
+	}	
+	
+	/**
+	 * Add an alternate title
+	 * 
 	 * @param string $name
 	 */
-	public function addAlternateTitle($name) 
+	public function addAlternateTitle($name)
 	{
 		$alternate_title = new AlternateTitle($name);
 		$alternate_title->setDatabase($this);
-		
+	
 		$this->alternate_titles->add($alternate_title);
 	}
-
+	
 	/**
 	 * @return Keyword[]
 	 */
