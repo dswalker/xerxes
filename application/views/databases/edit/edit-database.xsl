@@ -114,7 +114,7 @@
 			<div class="controls">
 			  <input type="text" id="type" name="type" class="input-long" value="{type}">
 			  	<xsl:attribute name="data-source">
-					<xsl:for-each select="database_types/database_type">
+					<xsl:for-each select="//database_types/database_type">
 						<xsl:text> </xsl:text> <!-- space here necessary for 'enter space to see all terms' hack -->
 						<xsl:value-of select="type" />
 						<xsl:if test="following-sibling::database_type">
@@ -236,6 +236,20 @@
 			  <input type="text" name="link_guide" class="input-long" placeholder="Link to a guide or instructions page" value="{link_guide}" />
 			</div>
 		  </div>
+		  
+		  <!--
+		  <div class="control-group">
+			<label class="control-label">
+				<a class="tool-tip" data-toggle="popover" title="" data-placement="left" data-original-title="Link copyright"
+					data-content="Use this field to link to either a Responsible Use of Electronic Resources web page or to an ERM record other page with Terms of Use for this database.">
+					Link copyright
+				</a>
+			</label>
+			<div class="controls">
+			  <input type="text" name="link_copyright" class="input-long" placeholder="" value="{link_copyright}" />
+			</div>
+		  </div>
+		  -->
 		  
 		  <div style="padding: 20px; padding-left: 200px">
 			  <button class="btn btn-large btn-primary" type="submit">Update</button>
