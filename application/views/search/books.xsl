@@ -147,7 +147,7 @@
 	
 	<xsl:template name="record_authors_bottom">
 	
-		<xsl:if test="authors/author[@additional='true' and @type != 'corporate']">
+		<xsl:if test="authors/author[@additional='true']">
 
 			<h2>Additional Authors</h2>
 			<ul>
