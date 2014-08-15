@@ -96,7 +96,12 @@ class Record
 	protected $degree = ""; // thesis degree conferred
 	protected $institution = ""; // thesis granting institution
 	
-	protected $format = ""; // format
+	/**
+	 * format
+	 * @var Format
+	 */
+	protected $format = "";
+	
 	protected $technology = ""; // technology/system format
 	
 	protected $subjects = array(); // subjects
