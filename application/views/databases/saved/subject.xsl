@@ -64,4 +64,6 @@
 
 </xsl:template>
 
+<xsl:template name="subject_embed" />
+
 </xsl:stylesheet>
