@@ -140,6 +140,11 @@ class DatabaseSequence
 	
 		foreach ( $this as $key => $value )
 		{
+			if ( $value == "")
+			{
+				continue;
+			}
+			
 			if ( $key == 'subcategory')
 			{
 				continue;
