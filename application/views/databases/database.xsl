@@ -80,7 +80,7 @@
 			
 				<div>
 					<dt><xsl:copy-of select="$text_database_link" />:</dt>
-					<dd><a href="databases/proxy?id={id}"><xsl:value-of select="$text_database_go_to_database" /></a>
+					<dd><a href="{//request/controller}/proxy?id={id}"><xsl:value-of select="$text_database_go_to_database" /></a>
 					</dd>
 				</div>
 
