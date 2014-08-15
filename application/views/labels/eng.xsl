@@ -600,7 +600,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 		<xsl:param name="num" />
 		<xsl:choose>
 			<xsl:when test="$num = '1'">1 copy available</xsl:when>
-			<xsl:when test="$num &gt; '1'"><xsl:value-of select="$num" /> copies available</xsl:when>	
+			<xsl:when test="$num &gt; '1'"><xsl:value-of select="$num" /> items available</xsl:when>	
 		</xsl:choose>
 	</xsl:template>
 	<xsl:variable name="text_search_books_online">Online</xsl:variable>
