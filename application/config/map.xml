@@ -9,6 +9,9 @@
 		<action name="database">
 			<path index="3" param="id" />
 		</action>
+		<action name="proxy">
+			<path index="3" param="id" />
+		</action>
 		<action name="librarian">
 			<path index="3" param="id" />
 		</action>
@@ -20,6 +23,9 @@
 		<action name="database">
 			<path index="3" param="id" />
 		</action>
+		<action name="proxy">
+			<path index="3" param="id" />
+		</action>		
 		<action name="librarian">
 			<path index="3" param="id" />
 		</action>

@@ -144,6 +144,11 @@ class DatabasesController extends ActionController
 		if ( $database == null )
 		{
 			$database = $this->knowledgebase->getDatabaseBySourceId($id);
+			
+			if ( $database == null )
+			{
+				throw new \Exception("Could not find database ($id)");
+			}
 		}
 		
 		$this->helper->injectDataLinks($database);
@@ -205,17 +210,11 @@ class DatabasesController extends ActionController
 			$databases = $this->knowledgebase->getDatabasesStartingWith($alpha);
 		}
 		
-		// redirect to the first letter
+		// get all databases
 		
 		else 
 		{
-			$params = array(
-				'controller' => $this->request->getParam('controller'),
-				'action' => $this->request->getParam('action'),
-				'alpha' => 'A',
-			);
-			
-			return $this->redirectTo($params);
+			$databases = $this->knowledgebase->getDatabases();
 		}
 		
 		$this->helper->injectDataLinks($databases);
@@ -267,14 +266,9 @@ class DatabasesController extends ActionController
 	
 	public function proxyAction()
 	{
-		$id = $this->request->requireParam('id', 'Missing database ID'); 
+		$this->response = $this->databaseAction();
 
-		$database = $this->knowledgebase->getDatabase($id);
-		
-		if ( $database == null )
-		{
-			throw new \Exception("Couldn't find database '$id'");
-		}
+		$database = $this->response->getVariable('database');
 		
 		$final = $database->getProxyUrl();
 			
