@@ -29,6 +29,8 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 -->
 	
 	<xsl:variable name="text_ada_version">For best results, click this link for accessible version</xsl:variable>
+	<xsl:variable name="text_ada_skip_nav">Skip navigation</xsl:variable>
+	<xsl:variable name="text_ada_skip_limits">Skip to results</xsl:variable>
 	<xsl:variable name="text_ada_table_for_display">for display only</xsl:variable>
 	
 	<xsl:variable name="text_app_name"	select="//config/application_name" />

@@ -165,10 +165,12 @@
 	
 	<xsl:template name="search_results_area">
 		
+		<a id="skip-to-results" />
+		
 		<xsl:call-template name="sort_bar" />
 		
 		<xsl:call-template name="facets_applied" />
-											
+		
 		<xsl:call-template name="spell_suggest" />
 		
 		<xsl:call-template name="no_hits" />

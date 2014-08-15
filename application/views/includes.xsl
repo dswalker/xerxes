@@ -228,10 +228,23 @@
 		<xsl:param name="sidebar" />
 	
 		<div data-role="page" id="{//config/document}" class="{$surround_template}">
+		
+			<div class="ada">
+				<xsl:if test="results">
+					<a href="{//request/server/request_uri}#skip-to-results">
+						<xsl:value-of select="$text_ada_skip_limits" />
+					</a>
+				</xsl:if>
+				<a href="{//request/server/request_uri}#skip-nav">
+					<xsl:value-of select="$text_ada_skip_nav" />
+				</a>
+			</div>
 	
 			<!-- The main content is split into subtemplates to make customiztion of parts easier -->
 			
 			<xsl:call-template name="surround_hd" />
+			
+			<a id="skip-nav" />
 	
 			<xsl:call-template name="surround_bd">
 				<xsl:with-param name="sidebar"><xsl:value-of select="$sidebar" /></xsl:with-param>
