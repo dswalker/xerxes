@@ -78,6 +78,12 @@
 			<xsl:when test="//request/disp_show_search = 'false'">
 				<xsl:text>false</xsl:text>
 			</xsl:when>
+			<xsl:when test="//request/disp_show_search = 'true'">
+				<xsl:text>true</xsl:text>
+			</xsl:when>
+			<xsl:when test="//config/embed_show_search_box">
+				<xsl:value-of select="//config/embed_show_search_box" />
+			</xsl:when>
 			<xsl:otherwise>
 				<xsl:text>true</xsl:text>
 			</xsl:otherwise>
@@ -103,6 +109,7 @@
 	
 	<xsl:if test="$show_searchbox = 'true'">
 		<xsl:call-template name="searchbox" />
+		<p><xsl:copy-of select="$text_databases_subject_searchbox_explain" /></p>
 	</xsl:if>
 	
 	<xsl:call-template name="subject_databases_list">

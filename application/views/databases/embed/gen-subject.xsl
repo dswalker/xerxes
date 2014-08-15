@@ -99,26 +99,28 @@
 									</select>
 								</td>
 								</tr>
-								<tr>
-								<td><label for="disp_show_search"><xsl:copy-of select="$text_snippet_show_searchbox" /></label></td>
-								<td>
-									<select name="disp_show_search" id="disp_show_search">
-										<option value="true">
-											<xsl:if test="request/disp_show_search = 'true'">
-												<xsl:attribute name="selected">selected</xsl:attribute>
-											</xsl:if>
-											<xsl:value-of select="$text_snippet_display_yes" />
-										</option>
-										<option value="false">
-											<xsl:if test="request/disp_show_search = 'false'">
-												<xsl:attribute name="selected">selected</xsl:attribute>
-											</xsl:if>
-											<xsl:value-of select="$text_snippet_display_no" />
-										</option>
-									</select>
-								
-								</td>
-							</tr>
+								<xsl:if test="not(//config/embed_show_search_box = 'false')">
+									<tr>
+									<td><label for="disp_show_search"><xsl:copy-of select="$text_snippet_show_searchbox" /></label></td>
+									<td>
+										<select name="disp_show_search" id="disp_show_search">
+											<option value="true">
+												<xsl:if test="request/disp_show_search = 'true'">
+													<xsl:attribute name="selected">selected</xsl:attribute>
+												</xsl:if>
+												<xsl:value-of select="$text_snippet_display_yes" />
+											</option>
+											<option value="false">
+												<xsl:if test="request/disp_show_search = 'false'">
+													<xsl:attribute name="selected">selected</xsl:attribute>
+												</xsl:if>
+												<xsl:value-of select="$text_snippet_display_no" />
+											</option>
+										</select>
+									
+									</td>
+								</tr>
+							</xsl:if>
 							<tr>
 							<td><label for="disp_show_subcategories"><xsl:copy-of select="$text_snippet_show_databases" /></label></td>
 							<td>

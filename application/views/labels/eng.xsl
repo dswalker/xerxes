@@ -135,6 +135,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_databases_subject_librarian_office_hours">Office Hours</xsl:variable>
 	<xsl:variable name="text_databases_subject_librarian_email">Email</xsl:variable>
 	<xsl:variable name="text_databases_subject_librarian_telephone">Telephone</xsl:variable>
+	<xsl:variable name="text_databases_subject_searchbox_explain"></xsl:variable>
 
 	<xsl:variable name="text_error">Sorry, there was an error</xsl:variable>
 	<xsl:variable name="text_error_access_denied">Access Denied</xsl:variable>
