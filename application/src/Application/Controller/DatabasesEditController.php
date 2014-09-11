@@ -366,7 +366,6 @@ class DatabasesEditController extends DatabasesController
 		$database->setNotes($notes);
 		$database->setPublisher($publisher);
 		$database->setSearchHints($search_hints);
-		$database->setSourceId('web');
 		$database->setTitle($title);
 		$database->setAlternateTitles($alternate_titles);
 		$database->setKeywords($keywords);
