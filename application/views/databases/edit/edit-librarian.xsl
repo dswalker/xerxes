@@ -46,6 +46,8 @@
 	<a href="databases-edit">Databases</a>
 </xsl:template>
 
+<xsl:template name="module_nav"></xsl:template>
+
 <xsl:template name="main">
 	
 	<xsl:choose>

@@ -50,6 +50,8 @@
 	<a href="databases-edit">Databases</a>
 </xsl:template>
 
+<xsl:template name="module_nav"></xsl:template>
+
 <xsl:template name="module_header">
 
 	<link href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" rel="stylesheet" media="screen" />
@@ -225,7 +227,7 @@
 		  <div class="control-group">
 			<label class="control-label">Search hints</label>
 			<div class="controls">
-			  <textarea name="search-hints" class="input-long" rows="8">
+			  <textarea name="search_hints" class="input-long" rows="8">
 			  	<xsl:value-of select="search_hints" />
 			  </textarea>
 			</div>
