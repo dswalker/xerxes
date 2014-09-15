@@ -239,6 +239,13 @@
 		
 	</ul>
 	
+	<xsl:call-template name="combined_more_link" />
+	<xsl:call-template name="combined_additional_info" />
+
+</xsl:template>
+
+<xsl:template name="combined_more_link">
+
 	<xsl:choose>
 		<xsl:when test="//results/total &gt; 1">
 		
@@ -262,7 +269,7 @@
 		<xsl:when test="not(//results/total)">
 			<p class="no-results"><xsl:value-of select="$text_combined_record_no_matches" /></p>
 		</xsl:when>
-	</xsl:choose>	
+	</xsl:choose>
 
 </xsl:template>
 
@@ -271,5 +278,7 @@
 	<xsl:call-template name="simple_search_nofield" />
 
 </xsl:template>
+
+<xsl:template name="combined_additional_info" />
 	
 </xsl:stylesheet>
