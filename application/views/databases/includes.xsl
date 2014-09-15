@@ -139,7 +139,16 @@
 
 	<div class="database-title">
 		<a href="{url_proxy}"><xsl:value-of select="title" /></a>
+		<xsl:call-template name="database_brief_new" />
 	</div>
+
+</xsl:template>
+
+<xsl:template name="database_brief_new">
+
+	<xsl:if test="is_new">
+		[ new database ]
+	</xsl:if>
 
 </xsl:template>
 
