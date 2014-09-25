@@ -110,7 +110,7 @@
 			<label class="control-label">
 				<a class="tool-tip" data-toggle="popover" title="" data-placement="left" data-original-title="Type of database"
 					data-content="This is a semi-controlled field.  As you type in a value, Xerxes will attempt to auto-complete based on previous values you've added, and in that way you can select from those controlled list of terms.  To see all available terms, simply type a space in the field. To add a new type, simply type in a new value." >
-					Type
+					<xsl:copy-of select="$text_database_type" />
 				</a>
 			</label>
 			<div class="controls">
@@ -131,7 +131,7 @@
 			<label class="control-label">
 				<a class="tool-tip" data-toggle="popover" title="" data-placement="left" data-original-title="Coverage"
 					data-content="The (approximate) publication dates covered by this databases" >
-					Coverage
+					<xsl:value-of select="coverage" />
 				</a>
 			</label>
 			<div class="controls">
@@ -186,7 +186,7 @@
 			<label class="control-label">
 				<a class="tool-tip" data-toggle="popover" title="" data-placement="left" data-original-title="Keywords"
 					data-content="Enter any set of key terms you want to add to help users find this database when searching or browsing the databases pages.  Separate multiple keywords with a comma or by hitting enter.  As you add keywords, they are converted into separate blocks in the input field, which you can remove by clicking the 'x' icon next to each term, or by simply hitting backspace in your keyboard." >
-					Keywords
+					<xsl:copy-of select="$text_database_keywords" />
 				</a>
 			</label>
 			<div class="controls">
@@ -206,7 +206,7 @@
 			<label class="control-label">
 				<a class="tool-tip" data-toggle="popover" title="" data-placement="left" data-original-title="Creator"
 					data-content="The organization responsible for creating and maintaining the database (e.g., American Psychological Association), if different from the publisher." >
-					Creator
+					<xsl:copy-of select="$text_database_creator" />
 				</a>			
 			</label>
 			<div class="controls">
@@ -217,7 +217,7 @@
 			<label class="control-label">
 				<a class="tool-tip" data-toggle="popover" title="" data-placement="left" data-original-title="Publisher"
 					data-content="The organization responsible for publishing the database (e.g. Ebsco, Proquest)." >
-					Publisher
+					<xsl:copy-of select="$text_database_publisher" />
 				</a>
 			</label>
 			<div class="controls">
@@ -225,7 +225,7 @@
 			</div>
 		  </div>
 		  <div class="control-group">
-			<label class="control-label">Search hints</label>
+			<label class="control-label"><xsl:copy-of select="$text_database_search_hints" /></label>
 			<div class="controls">
 			  <textarea name="search_hints" class="input-long" rows="8">
 			  	<xsl:value-of select="search_hints" />
@@ -233,7 +233,7 @@
 			</div>
 		  </div>
 		  <div class="control-group">
-			<label class="control-label">Link guide</label>
+			<label class="control-label"><xsl:copy-of select="$text_database_guide" /></label>
 			<div class="controls">
 			  <input type="text" name="link_guide" class="input-long" placeholder="Link to a guide or instructions page" value="{link_guide}" />
 			</div>
