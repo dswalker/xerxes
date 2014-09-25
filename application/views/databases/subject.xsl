@@ -174,7 +174,7 @@
 	
 		<div class="database-box">
 	
-			<h2>Subject Specialist</h2>
+			<h2><xsl:value-of select="$text_databases_subject_librarian_header" /></h2>
 			
 			<xsl:for-each select="category/librarian_sequences/librarian_sequence/librarian">
 			
