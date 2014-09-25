@@ -96,7 +96,7 @@
 					
 						<div class="combined-results-section">
 
-							<h2><xsl:value-of select="@public" /></h2>
+							<h2><a href="{@url}"><xsl:value-of select="@public" /></a></h2>
 							
 							<xsl:choose>
 								<xsl:when test="//results and @id = //combined_engine">
@@ -112,11 +112,11 @@
 												<img src="images/ajax-loader.gif" alt="" />
 											</div>
 											<noscript>
-												<a href="{@url}"><xsl:value-of select="more/@public" /></a>
+												<a href="{@url}"><xsl:value-of select="more/public|more/@public" /></a>
 											</noscript>
 										</xsl:when>
 										<xsl:otherwise>
-											<a href="{@url}"><xsl:value-of select="more/@public" /></a>
+											<a href="{@url}"><xsl:value-of select="more/public|more/@public" /></a>
 										</xsl:otherwise>
 									</xsl:choose>
 									

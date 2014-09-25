@@ -898,6 +898,10 @@ table.facet-multi-table td.facet-multi-selector {
 
 /* BENTO BOX RESULTS */
 
+.combined-results-box h2 a, .combined-results-box h2 a:visited {
+	color: #000;
+}
+
 .combined-results-box {
 	border-left : 1px solid #ccc;
 	padding-left: 1em;
