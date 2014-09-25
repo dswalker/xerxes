@@ -329,6 +329,27 @@ class Database
 	{
 		$this->date_new_expiry = $date_new_expiry;
 	}
+	
+	/**
+	 * Is this a 'new' database
+	 * Based on date new expiry date
+	 * @return boolean
+	 */
+	
+	public function isNew()
+	{
+		if ( $this->date_new_expiry instanceof \DateTime )
+		{
+			$today = new \DateTime("now");
+			
+			if ( $today < $this->date_new_expiry )
+			{
+				return true;
+			}
+		}
+		
+		return false;
+	}
 
 	/**
 	 * @return \DateTime
@@ -609,6 +630,8 @@ class Database
 				$final[$key] = $value;
 			}
 		}
+		
+		$final['is_new'] = $this->isNew();
 		
 		return $final;
 	}
