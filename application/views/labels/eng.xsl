@@ -110,7 +110,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_database_link">Link</xsl:variable>
 	<xsl:variable name="text_database_publisher">Publisher</xsl:variable>
 	<xsl:variable name="text_database_save_database">Save database</xsl:variable>
-	<xsl:variable name="text_database_search_hints">Search Hints</xsl:variable>
+	<xsl:variable name="text_database_search_hints">More Info</xsl:variable>
 	<xsl:variable name="text_database_type">Type</xsl:variable>
 	
 	<xsl:variable name="text_databases_confirm_delete">Sure you want to delete this?</xsl:variable>	
@@ -133,6 +133,7 @@ xmlns:php="http://php.net/xsl" exclude-result-prefixes="php">
 	<xsl:variable name="text_databases_category_subject">Databases by Subject</xsl:variable>
 	<xsl:variable name="text_databases_category_subject_desc">Databases specific to your area of study, chosen by our subject specialists.</xsl:variable>
 	
+	<xsl:variable name="text_databases_subject_librarian_header">Subject Librarian</xsl:variable>
 	<xsl:variable name="text_databases_subject_librarian_office">Office</xsl:variable>
 	<xsl:variable name="text_databases_subject_librarian_office_hours">Office Hours</xsl:variable>
 	<xsl:variable name="text_databases_subject_librarian_email">Email</xsl:variable>
