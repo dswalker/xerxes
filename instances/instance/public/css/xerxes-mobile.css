@@ -1,5 +1,10 @@
 .sidebar, #bd-top, #tabnav, .results-database-recommendations, .save-record-action { display: none; }
 
+.ada, #skipnav {
+	position: absolute; 
+	top: -1000px; 
+}
+
 /* Search Results */
 
 .results-info {
