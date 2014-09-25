@@ -229,6 +229,11 @@ class Record extends Xerxes\Record
 			
 			$this->format->determineFormat($formats);
 			
+			if ( count($formats) > 0 )
+			{
+				$this->format->setPublicFormat($formats[0]);
+			}
+			
 			// language
 			
 			$this->language = (string)$article->language;
