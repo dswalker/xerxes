@@ -97,6 +97,19 @@ class DatabasesController extends ActionController
 	}
 	
 	/**
+	 * Alias for index
+	 */
+	
+	public function categoriesAction()
+	{
+		$params = array(
+			'controller' => $this->request->getParam('controller')
+		);
+		
+		return $this->redirectTo($params);
+	}
+	
+	/**
 	 * Individual subject page
 	 */
 
@@ -273,6 +286,14 @@ class DatabasesController extends ActionController
 		$final = $database->getProxyUrl();
 			
 		return $this->redirectTo($final);
+	}
+	
+	public function indexDatabasesAction()
+	{
+		foreach ( $this->knowledgebase->getDatabases() as $database )
+		{
+			$this->knowledgebase->indexDatabase($database);
+		}
 	}
 	
 	/**
