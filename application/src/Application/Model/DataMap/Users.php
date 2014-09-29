@@ -43,7 +43,10 @@ class Users extends DataMap
 		
 		foreach ( $user->properties() as $key => $value )
 		{
-			$update_values[":" . $key] = $value;
+			if ( $value != '' )
+			{
+				$update_values[":" . $key] = $value;
+			}
 		}
 		
 		// don't use usergroups though. 
@@ -74,37 +77,46 @@ class Users extends DataMap
 					$dbKey = ":" . $key;
 					
 					// merge with currently specified values
-					
 
 					if ( ! array_key_exists( $dbKey, $update_values ) )
 					{
 						$update_values[$dbKey] = $value;
-						
-					//And add it to the user object too
-					//$user->$key = $value;
-					
-
+						$user->$key = $value; // update user
 					}
 				}
 			}
 			
-			$strSQL = "UPDATE xerxes_users " .
-				"SET last_login = :last_login, suspended = :suspended, first_name = :first_name, " .
-				"last_name = :last_name, email_addr = :email_addr " .
-				"WHERE username = :username";
+			$strSQL = "UPDATE xerxes_users SET";
+			
+			foreach ( array_keys($update_values) as $key )
+			{
+				$strSQL .= ' ' . str_replace(':', '', $key) . '=' . $key . ',';
+			}
+			
+			$strSQL = substr($strSQL, 0, -1); // get last comma
+			
+			$strSQL .= " WHERE username = :username";
+			
 			$status = $this->update( $strSQL, $update_values );
 		} 
 		else
 		{
-			// add em otherwise
+			// add 'em otherwise
+			
+			$keys = array();
+			
+			foreach ( array_keys($update_values) as $key )
+			{
+				$keys[] = str_replace(':', '', $key);
+			}
 
-			$strSQL = "INSERT INTO xerxes_users " .
-				"( username, last_login, suspended, first_name, last_name, email_addr) " .
-				"VALUES (:username, :last_login, :suspended, :first_name, :last_name, :email_addr)";
+			$strSQL = 'INSERT INTO xerxes_users (' . implode(',', $keys) . ')';
+			$strSQL .= ' VALUES (' . implode(',', array_keys($update_values)) . ')';
+			
 			$status = $this->insert( $strSQL, $update_values );
 		}
 		
-		// add let's make our group assignments match, unless the group
+		// let's make our group assignments match, unless the group
 		// assignments have been marked null which means to keep any existing ones
 		// only.
 
@@ -123,7 +135,7 @@ class Users extends DataMap
 			}
 			else
 			{
-				$user->usergroups = array ( );
+				$user->usergroups = array();
 			}
 		} 
 		else
