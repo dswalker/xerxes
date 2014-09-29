@@ -51,7 +51,7 @@
 		
 		<div class="box">
 				
-			<form id="login" name="login" method="post" action="authenticate/login">
+			<form id="login" name="login" method="post" action="{//request/controller}/{//request/action}">
 				<input name="lang" type="hidden" value="{//request/lang}" />
 				<input name="return" type="hidden" value="{$return}" />
 				<input name="local" type="hidden" value="{$local}" />
