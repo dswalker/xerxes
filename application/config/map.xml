@@ -30,6 +30,7 @@
 			<path index="3" param="id" />
 		</action>
 	</controller>
+	<controller name="folder-reassign" class="Application\Controller\FolderReassignController" login="true" />
 	<controller name="my-databases" class="Application\Controller\MyDatabasesController" login="true" />
 	<controller name="collections" class="Application\Controller\MyDatabasesPublicController">
 		<action name="subject">

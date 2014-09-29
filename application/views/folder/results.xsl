@@ -122,6 +122,8 @@
 		
 		<xsl:call-template name="facets_applied" />
 		
+		<xsl:call-template name="folder_highlight" />
+		
 		<xsl:choose>
 			<xsl:when test="//results/records/record/xerxes_record">
 		
@@ -157,7 +159,7 @@
 		</xsl:choose>
 		
 	</xsl:template>
-
+	
 	<!-- 
 		TEMPLATE: FOLDER OPTIONS
 		folder action controls
@@ -384,5 +386,7 @@
 		</xsl:if>
 	
 	</xsl:template>	
+		
+	<xsl:template name="folder_highlight" />
 		
 </xsl:stylesheet>
