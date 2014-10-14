@@ -12,6 +12,7 @@
 namespace Application\Model\Ebsco;
 
 use Xerxes;
+use Xerxes\Utility\Registry;
 
 /**
  * Ebsco Record
@@ -29,6 +30,8 @@ class Record extends Xerxes\Record
 	
 	public function map()
 	{
+		$registry = Registry::getInstance();
+		
 		$xml = simplexml_load_string($this->document->saveXML());
 		$control_info = $xml->header->controlInfo;
 		
@@ -157,7 +160,10 @@ class Record extends Xerxes\Record
 						$type = Xerxes\Record\Link::PDF;
 					}
 					
-					$this->links[] = new Xerxes\Record\Link($link, $type );
+					$link_obj = new Xerxes\Record\Link($link, $type );
+					$link_obj->addProxyPrefix($registry->getConfig('PROXY_SERVER', false));
+					
+					$this->links[] = $link_obj;
 				}
 			}
 			
