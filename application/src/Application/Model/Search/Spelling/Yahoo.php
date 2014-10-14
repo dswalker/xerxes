@@ -55,13 +55,15 @@ class Yahoo
 			$query = $term->phrase;
 			$query = trim($query);
 			
+			$escaped_query = urlencode(urlencode($query)); // yes, double-escaped
+			
 			$correction = null;
 		
 			// get spell suggestion
 		
 			try
 			{
-				$response = $client->get('ysearch/spelling?q=' . urlencode($query) . ' &format=xml')->send();
+				$response = $client->get('ysearch/spelling?q=' . $escaped_query . ' &format=xml')->send();
 				
 				// process it
 					
@@ -75,12 +77,15 @@ class Yahoo
 				{
 					$correction = (string) $suggestions[0];
 					$correction = urldecode($correction);
+					$correction = htmlspecialchars_decode($correction, ENT_QUOTES);
 				}
 			}
 			catch (\Exception $e)
 			{
 				trigger_error('Could not process spelling suggestion: ' . $e->getTraceAsString(), E_USER_WARNING);
 			}
+			
+			echo $correction;
 		
 			// got one
 		
