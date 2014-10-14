@@ -80,18 +80,6 @@ abstract class Scheme
 		{
 			$this->return_url = $base; // so send them home!
 		}
-		else
-		{
-			if ( ! strstr($this->return_url, $server) ) // not a full url
-			{
-				$this->return_url = $server . $this->return_url; // make it so  @todo: why?
-			}
-		}
-		
-		// we always send the user back on http: since shib and possibly other schemes
-		// will drop the user back in xerxes on https:, which is weird
-		
-		$this->return_url = str_replace("https://", "http://", $this->return_url);		
 		
 		// @todo find out if some CAS servers are still tripping up on this
 		
