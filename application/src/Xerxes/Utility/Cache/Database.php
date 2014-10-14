@@ -135,7 +135,7 @@ class Database extends DataMap
 		
 		if ( $timestamp == null )
 		{
-			$timestamp = time() - (2 * 24 * 60 * 60); // default timestamp is two days previous
+			$timestamp = time(); // default timestamp is now
 		}
 		
 		$arrParams[":timestamp"] = $timestamp;

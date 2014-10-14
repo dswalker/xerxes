@@ -17,9 +17,6 @@ namespace Xerxes\Utility;
  * @author David Walker <dwalker@calstate.edu>
  */
 
-use Xerxes\Utility\Cache\Apc;
-use Xerxes\Utility\Cache\Database;
-
 class Cache
 {
 	protected $_data = array(); // this data already retrieved

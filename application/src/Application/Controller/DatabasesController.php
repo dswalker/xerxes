@@ -16,6 +16,7 @@ use Application\Model\Knowledgebase\Knowledgebase;
 use Application\View\Helper\Databases as DatabasehHelper;
 use Xerxes\Mvc\ActionController;
 use Xerxes\Utility\Cache;
+use Xerxes\Utility\Cache\Database as DatabaseCache;
 
 /**
  * Databases Controller
@@ -287,15 +288,18 @@ class DatabasesController extends ActionController
 			
 		return $this->redirectTo($final);
 	}
+
+	/**
+	 * Categories page
+	 */	
 	
-	public function indexDatabasesAction()
+	public function clearCacheAction()
 	{
-		foreach ( $this->knowledgebase->getDatabases() as $database )
-		{
-			$this->knowledgebase->indexDatabase($database);
-		}
+		$cache = new DatabaseCache();
+		$cache->prune();
+		exit;
 	}
-	
+
 	/**
 	 * Add cached data to response
 	 */
