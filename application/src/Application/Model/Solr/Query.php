@@ -128,7 +128,6 @@ class Query extends Search\Query
 			$term = $terms[0];
 				
 			$phrase = $term->phrase;
-			$phrase = strtolower($phrase);
 			$phrase = str_replace(" NOT ", " -", $phrase);
 				
 			if ( $term->field_internal != "" )
@@ -148,7 +147,6 @@ class Query extends Search\Query
 			foreach ( $terms as $term )
 			{
 				$phrase = $term->phrase;
-				$phrase = strtolower($phrase);
 				$phrase = str_replace(':', '', $phrase);
 				$phrase = $this->alterQuery($phrase, $term->field_internal, $this->config);
 				
