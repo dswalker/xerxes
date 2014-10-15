@@ -11,6 +11,8 @@
 
 namespace Application\Controller;
 
+use Application\Model\Solr\Query;
+
 use Application\Model\Solr\Engine;
 use Xerxes\Mvc\Request;
 
@@ -69,5 +71,17 @@ class SolrController extends SearchController
 		);
 		
 		return $this->redirectTo($params);
+	}
+	
+	public function newTitlesAction()
+	{
+		$max = $this->request->getParam('max');
+		
+		$results = $this->engine->getNewTitles($max);
+		
+		$this->response->setVariable('results',$results);
+		
+		return $this->response;
+		
 	}
 }

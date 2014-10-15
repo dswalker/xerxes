@@ -231,6 +231,23 @@ class Engine extends Search\Engine
 		return $facets;
 	}
 	
+	public function getNewTitles($max = 10)
+	{
+		$query = new Query(null, $this->getConfig());
+		$query->addTerm(1, null, '*', null, '*');
+		$query->sort = 'id desc';
+		$query->max = $max;
+		
+		$results = $this->doSearch($query);
+		
+		foreach ( $results->getRecords() as $record )
+		{
+			$record->includeOriginalRecord();
+		}
+		
+		return $results;
+	}
+	
 	/**
 	 * @return Config
 	 */
