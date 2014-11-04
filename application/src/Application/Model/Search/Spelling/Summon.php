@@ -11,10 +11,6 @@
 
 namespace Application\Model\Search\Spelling;
 
-use Application\Model\Summon\Config;
-use Xerxes\Summon as SummonClient;
-use Xerxes\Utility\Factory;
-
 /**
  * Summon Spell Checker
  *
@@ -31,45 +27,5 @@ class Summon
 	
 	public function checkSpelling(array $query_terms)
 	{
-		$config = Config::getInstance();
-
-		$id = $config->getConfig("SUMMON_ID", true);
-		$key = $config->getConfig("SUMMON_KEY", true);
-		
-		$suggestion = new Suggestion();
-		
-		$client = new SummonClient($id, $key, Factory::getHttpClient());	
-				
-		// @todo: see if we can't collapse multiple terms into a single spellcheck query
-			
-		foreach ( $query_terms as $term )
-		{
-			$query = $term->phrase;
-			$query = urlencode(trim($query));
-		
-			$correction = null;
-		
-			// get spell suggestion
-			
-			try
-			{
-				$correction = $client->checkSpelling($query);
-			}
-			catch (\Exception $e)
-			{
-				trigger_error('Could not process spelling suggestion: ' . $e->getTraceAsString(), E_USER_WARNING);
-			}
-			
-			// got one
-			
-			if ( $correction != null )
-			{
-				$term->phrase = $correction;
-				
-				$suggestion->addTerm($term);
-			}
-		}
-		
-		return $suggestion;
 	}
 }
