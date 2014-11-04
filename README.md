@@ -105,7 +105,7 @@ To get the Summon search engine working, you'll need to add the Summon ID and ke
 
 Finally, we'll now expose only the `instances/instance/public` directory to the web by configuring that in Apache.
 
-You can do that directly in the main httpd.conf file, or by creating a second config file and dropping that in your Linux disto's directory for Apache config files.  In RHEL/CentOS that's in /etc/httpd/config.d
+You can do that directly in the main `httpd.conf` file, or by creating a second config file and dropping that in your Linux disto's directory for Apache config files.  In RHEL/CentOS that's in `/etc/httpd/config.d`.
 
 Something like this should work:
 
