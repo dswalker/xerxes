@@ -492,6 +492,7 @@
 	<xsl:template name="mobile_header" >
 	
 		<a href="{$base_url}/" data-icon="home">Home</a>
+		<a href="{//navbar/full_display_link}" class="ui-btn-right" data-ajax="false">View full site</a>
 	
 		<h1><xsl:value-of select="$text_app_name" /></h1>
 	
