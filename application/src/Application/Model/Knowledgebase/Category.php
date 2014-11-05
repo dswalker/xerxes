@@ -113,6 +113,8 @@ class Category
 		{
 			$this->normalized = str_replace( "--", "-", $this->normalized );
 		}
+		
+		return $this;
 	}
 
 	/**
