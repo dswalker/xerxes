@@ -11,12 +11,12 @@
 
 namespace Application\Controller;
 
+use Application\Model\Knowledgebase\Category;
 use Application\Model\Knowledgebase\Config;
 use Application\Model\Knowledgebase\Knowledgebase;
 use Application\View\Helper\Databases as DatabasehHelper;
 use Xerxes\Mvc\ActionController;
 use Xerxes\Utility\Cache;
-use Xerxes\Utility\Cache\Database as DatabaseCache;
 
 /**
  * Databases Controller
@@ -274,8 +274,6 @@ class DatabasesController extends ActionController
 	
 	/**
 	 * Proxy a database URL
-	 * 
-	 * @throws \Exception
 	 */
 	
 	public function proxyAction()
@@ -288,16 +286,55 @@ class DatabasesController extends ActionController
 			
 		return $this->redirectTo($final);
 	}
-
-	/**
-	 * Categories page
-	 */	
 	
-	public function clearCacheAction()
+	/**
+	 * Map category to Summon subjects 
+	 */	
+
+	public function swapAction()
 	{
-		$cache = new DatabaseCache();
-		$cache->prune();
-		exit;
+		$normalized = $this->request->getParam('normalized');
+		$query = $this->request->getParam('query');
+		
+		// subject mapping
+		
+		$subjects = array();
+		$category = new Category();
+		
+		// get the data
+		
+		if (($handle = fopen("data/test.csv", "r")) !== FALSE)
+		{
+			while (($data = fgetcsv($handle, 1000, ",")) !== FALSE)
+			{
+				// map it
+				
+				$name = $data[0];
+				$name = $category->setNormalizedFromName($name)->getNormalized();
+				array_shift($data);
+				$subjects[$name] = $data;
+			}
+			
+			fclose($handle);
+		}
+		
+		// create url
+		
+		$params = array(
+			'controller' => 'summon',
+			'action' => 'search',
+			'query' => $query,
+		);
+		
+		
+		if ( array_key_exists($normalized, $subjects) )
+		{
+			$params['facet.Discipline'] = $subjects[$normalized];
+		}
+		
+		// send them to summon
+		
+		return $this->redirectTo($params);
 	}
 
 	/**
