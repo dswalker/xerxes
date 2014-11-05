@@ -33,7 +33,8 @@ class Navigation
 			'logout_link' => $this->logoutLink(),
 			'my_account_link' => $this->myAccountLink(),
 			'databases_link' => $this->databasesLink(),
-			'my_databases_link' => $this->myDatabasesLink()
+			'my_databases_link' => $this->myDatabasesLink(),
+			'full_display_link' => $this->fullDisplay(),
 		);
 	}	
 	
@@ -103,6 +104,14 @@ class Navigation
 		);
 
 		return $this->request->url_for($params);	
+	}
+	
+	public function fullDisplay()
+	{
+		$params = $this->request->getParams();
+		$params['is_mobile'] = '0';
+		
+		return $this->request->url_for($params);
 	}
 }
 
