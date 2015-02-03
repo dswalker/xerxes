@@ -238,6 +238,13 @@ class DatabasesController extends ActionController
 		return $this->response;
 	}
 	
+	public function exportAction()
+	{
+		$this->response = $this->alphabeticalAction();
+		$this->response->setView('databases/export.php');
+		return $this->response;
+	}
+	
 	/**
 	 * Librarian image
 	 */
@@ -293,8 +300,13 @@ class DatabasesController extends ActionController
 
 	public function swapAction()
 	{
-		$normalized = $this->request->getParam('normalized');
-		$query = $this->request->getParam('query');
+		$normalized = $this->request->getParam('subject');
+		
+		// pass along all params
+		
+		$params = $this->request->getParams();
+		$params['controller'] = 'summon';
+		$params['action'] = 'search';
 		
 		// subject mapping
 		
@@ -318,18 +330,11 @@ class DatabasesController extends ActionController
 			fclose($handle);
 		}
 		
-		// create url
-		
-		$params = array(
-			'controller' => 'summon',
-			'action' => 'search',
-			'query' => $query,
-		);
-		
-		
 		if ( array_key_exists($normalized, $subjects) )
 		{
-			$params['facet.Discipline'] = $subjects[$normalized];
+			$clean = $subjects[$normalized];
+			
+			$params['facet.Discipline'] = array_filter($clean);
 		}
 		
 		// send them to summon
