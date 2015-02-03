@@ -14,6 +14,7 @@ namespace Application\Controller;
 use Application\Model\Search\Query;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Xerxes\Mvc\ActionController;
+use Xerxes\Mvc\Response;
 
 class CombinedController extends ActionController
 {
@@ -49,10 +50,35 @@ class CombinedController extends ActionController
 	}
 	
 	/**
-	 * Search results action
+	 * The 'main' page of results
 	 */
 	
 	public function resultsAction()
+	{
+		$this->response = $this->getResults();
+	
+		return $this->response;
+	}	
+	
+	/**
+	 * Only show the results themselves
+	 */
+	
+	public function partialAction()
+	{
+		$this->response = $this->getResults();
+		$this->response->setView('combined/partial.xsl');
+	
+		return $this->response;
+	}
+	
+	/**
+	 * Search results action
+	 * 
+	 * @return Response
+	 */
+	
+	public function getResults()
 	{
 		$default_engine = $this->registry->getConfig('COMBINED_DEFAULT_CONTROLLER', false, 'solr');
 		$engine = $this->request->getParam('engine', $default_engine);
@@ -138,18 +164,6 @@ class CombinedController extends ActionController
 		
 		$this->response->setView('combined/results.xsl');
 		
-		return $this->response;
-	}
-	
-	/**
-	 * Only show the results themselves
-	 */
-	
-	public function partialAction()
-	{
-		$this->response = $this->resultsAction();
-		$this->response->setView('combined/partial.xsl');
-	
 		return $this->response;
 	}
 	
