@@ -23,7 +23,10 @@
 
 	<xsl:template name="module_header">
 		<style type="text/css">
-		
+			
+			#bd {
+				margin-top: 20px;
+			}
 			#bd-top {
 				display: none;
 			}
@@ -151,22 +154,27 @@
 	
 	<xsl:template name="instructor_search_options">
 	
-		<xsl:if test="//lti/instructor = '1'">
-		
-			<ul class="courses-search-options">
-				<li>
-					<a href="{course_nav/url_search}" class="btn btn-large">
-						<i class="icon-search"></i><xsl:text> </xsl:text><xsl:value-of select="$text_readinglist_search" />
-					</a>
-				</li>
-				<li>
-					<a href="{course_nav/url_previously_saved}" class="btn btn-large">
-						<i class="icon-folder-open-alt"></i><xsl:text> </xsl:text><xsl:value-of select="$text_readinglist_add_saved" />
-					</a>
-				</li>
-			</ul>
+		<xsl:choose>	
+			<xsl:when test="//lti/instructor = '1'">
 			
-		</xsl:if>	
+				<ul class="courses-search-options">
+					<li>
+						<a href="{course_nav/url_search}" class="btn btn-large">
+							<i class="icon-search"></i><xsl:text> </xsl:text><xsl:value-of select="$text_readinglist_search" />
+						</a>
+					</li>
+					<li>
+						<a href="{course_nav/url_previously_saved}" class="btn btn-large">
+							<i class="icon-folder-open-alt"></i><xsl:text> </xsl:text><xsl:value-of select="$text_readinglist_add_saved" />
+						</a>
+					</li>
+				</ul>
+				
+			</xsl:when>	
+			<xsl:otherwise>
+				<h2>Whoops, you ain't an instructor.</h2>
+			</xsl:otherwise>
+		</xsl:choose>
 	
 	</xsl:template>
 			
