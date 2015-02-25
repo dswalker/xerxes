@@ -11,6 +11,9 @@
 .database-description {
 	color: #666;
 }
+.database-record-description {
+	max-width: 600px;
+}
 .database-more-info {
 	margin-top: .3em;
 }		
@@ -180,7 +183,7 @@ ul.tagit {
 	margin-left: 0;
 	width: 300px;
 	border: 1px solid #ccc;
-	font-size: 14px;
+	font-size: 110%;
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
