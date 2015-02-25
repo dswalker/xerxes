@@ -159,7 +159,7 @@
 	</div>
 
 	<div class="database-more-info">
-		<a href="{url}">More information</a>
+		<a href="{url}">More information <span class="ada">about <xsl:value-of select="title" /></span></a>
 	</div>
 
 </xsl:template>

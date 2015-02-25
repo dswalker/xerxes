@@ -905,7 +905,7 @@ table.facet-multi-table td.facet-multi-selector {
 .combined-results-box {
 	border-left : 1px solid #ccc;
 	padding-left: 1em;
-	font-size: 12px;
+	font-size: 100%;
 }
 
 .combined-results-box h2, .combined-results-box h3 {
