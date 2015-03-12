@@ -1180,7 +1180,7 @@ class Bibliographic extends Record
 			
 			if ( stristr($url, "catdir") || $resource_type == 2 )
 			{
-				$this->links[] = new Link($url, Link::INFORMATIONAL);
+				$this->links[] = new Link($url, Link::INFORMATIONAL, $display);
 			}
 			else
 			{
