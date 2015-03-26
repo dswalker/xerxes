@@ -168,10 +168,10 @@
 	
 	<xsl:choose>
 		<xsl:when test="string-length(description) &gt; 300">
-			<xsl:value-of select="substring(description, 1, 300)" /> . . .
+			<xsl:value-of select="substring(description, 1, 300)" disable-output-escaping="yes" /> . . .
 		</xsl:when>
 		<xsl:when test="description">
-			<xsl:value-of select="description" />
+			<xsl:value-of select="description" disable-output-escaping="yes" />
 		</xsl:when>
 	</xsl:choose>
 
