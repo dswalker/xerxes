@@ -71,7 +71,7 @@
 	<xsl:for-each select="database">
 	
 		<div class="database-record-description">
-			<xsl:value-of select="description" />
+			<xsl:value-of select="description" disable-output-escaping="yes" />
 		</div>
 		
 		<div class="database-details">
