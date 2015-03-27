@@ -63,10 +63,14 @@
 	
 	<h1><xsl:call-template name="page_name" /></h1>
 	
-	<xsl:call-template name="searchbox">
-		<xsl:with-param name="action"><xsl:value-of select="//request/controller"/>/<xsl:value-of select="//request/action"/></xsl:with-param>
-		<xsl:with-param name="search_box_placeholder" select="$text_databases_az_search" />
-	</xsl:call-template>
+	<xsl:if test="not(//config/database_list_searchable = 'false')">
+	
+		<xsl:call-template name="searchbox">
+			<xsl:with-param name="action"><xsl:value-of select="//request/controller"/>/<xsl:value-of select="//request/action"/></xsl:with-param>
+			<xsl:with-param name="search_box_placeholder" select="$text_databases_az_search" />
+		</xsl:call-template>
+		
+	</xsl:if>
 	
 	<xsl:call-template name="databases_alpha_listing" />
 		
