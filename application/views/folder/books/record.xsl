@@ -24,4 +24,6 @@
 <xsl:import href="../record.xsl" />
 <xsl:import href="../../search/books.xsl" />
 
+<xsl:template name="sms_option" />
+
 </xsl:stylesheet>
