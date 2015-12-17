@@ -368,6 +368,14 @@ class Database
 	}
 
 	/**
+	 * Set the trial expiry date to null
+	 */
+	public function removeDateTrialExpiry()
+	{
+		$this->date_trial_expiry = null;
+	}
+
+	/**
 	 * @return string
 	 */
 	public function getCreator()
