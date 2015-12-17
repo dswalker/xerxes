@@ -34,4 +34,24 @@ class Leader extends ControlField
 			$this->value = $node->nodeValue;
 		}
 	}
+	
+	/**
+	 * Get the value at the specified
+	 * @param int $position
+	 * @return string|NULL
+	 */
+	
+	public function getPosition($position)
+	{
+		$chars = str_split($this->value);
+		
+		if ( array_key_exists($position, $chars) )
+		{
+			return $chars[$position];
+		}
+		else
+		{
+			return null;
+		}
+	}
 }
