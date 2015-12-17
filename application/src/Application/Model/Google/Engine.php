@@ -79,6 +79,8 @@ class Engine extends Search\Engine
 			$this->url .= '&site=' . urlencode($this->config->getConfig('site'));
 		}
 		
+		$this->url .= '&output=xml';
+		
 		// google results are 0-based
 		
 		if ( $start != null )
