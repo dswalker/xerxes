@@ -173,6 +173,8 @@ class Query extends Search\Query
 		{
 			$phrase = $term->removeStopWords()->phrase;
 			
+			$phrase = str_replace(':', '', $phrase);
+			
 			$parts = $term->normalizedArray($phrase);
 			
 			foreach ( $parts as $query_part )
