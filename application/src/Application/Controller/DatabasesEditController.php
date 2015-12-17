@@ -376,11 +376,16 @@ class DatabasesEditController extends DatabasesController
 			$database->setDateNewExpiry($date_time);
 		}
 
+
 		if ( $date_trial_expiry != null )
 		{
 			$date_time = new \DateTime($date_trial_expiry);
 			$database->setDateTrialExpiry($date_time);
-		}			
+		}
+		else
+		{
+			$database->removeDateTrialExpiry();
+		}	
 		
 		$database->setProxy($proxy);
 		$database->setActive($active);
