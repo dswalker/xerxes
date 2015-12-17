@@ -1410,13 +1410,15 @@ class Record
 
 		$strFinal = implode( ' ', $arrWords );
 		
-		// catch subtitles
+		// catch all subtitles
 
-		if ( preg_match( "/: ([a-z])/", $strFinal, $arrMatches ) )
-		{
-			$strLetter = ucwords( $arrMatches[1] );
-			$strFinal = preg_replace( "/: ([a-z])/", ": " . $strLetter, $strFinal );
-		}
+		$strFinal = preg_replace_callback(
+			'/: ([a-z])/',
+			function ($matches) {
+				return ucwords($matches[0]);
+			},
+			$strFinal
+		);
 		
 		// catch words that start with double quotes
 
