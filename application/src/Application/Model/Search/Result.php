@@ -262,7 +262,7 @@ class Result
 		
 		$cache = new Cache();
 		
-		$expiry = $this->config->getConfig("HOLDINGS_CACHE_EXPIRY", false, 2 * 60 * 60); // expiry set for two hours
+		$expiry = $this->config->getConfig("HOLDINGS_CACHE_EXPIRY", false, 30 * 60); // expiry set for 30 mins
 		$expiry += time(); 
 		
 		$cache->set($this->getCacheId(), $this->holdings, $expiry);
