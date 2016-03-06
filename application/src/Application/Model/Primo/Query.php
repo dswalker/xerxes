@@ -107,10 +107,10 @@ class Query extends Search\Query
 		$id = urlencode($id);
 		
 		$url = $this->server . '/xservice/search/brief?' .
-			'institution=' . $this->institution .
-			'&onCampus=true' .
-			"rid,exact,$id" .
+			"&query=rid,exact,$id" .
 			'&indx=1&bulkSize=1';
+		
+		$url = $this->addLocationParams($url);
 			
 		return new Url($url);
 	}
@@ -118,7 +118,7 @@ class Query extends Search\Query
 	/**
 	 * Convert to Primo query syntax
 	 * 
-	 * @return string
+	 * @return Url
 	 */
 	
 	public function getQueryUrl()
@@ -139,7 +139,28 @@ class Query extends Search\Query
 				$value = implode(',', $limit->value);
 			}
 			
-			$query .= "&query_inc=facet_" . $limit->field . ",exact," . urlencode($value);
+			if ( $limit->field == "tlevel")
+			{
+				if ($value == "Online Resources")
+				{
+					$query .= "&query_inc=facet_tlevel,exact,online_resources_PC_TN";
+				}
+				elseif ($value == "Peer Reviewed")
+				{
+					$query .= "&query_inc=facet_tlevel,exact,peer_reviewed";
+				}
+			}
+			else
+			{
+				$type = 'query_inc';
+				
+				if ( $limit->boolean == "NOT" )
+				{
+					$type = 'query_exc';
+				}
+				
+				$query .= "&$type=facet_" . $limit->field . ",exact," . urlencode($value);
+			}
 		}
 		
 		// on campus as string
@@ -154,24 +175,12 @@ class Query extends Search\Query
 		// create the url
 		
 		$url = $this->server . '/xservice/search/brief?' .
-			'institution=' . $this->institution .
-			'&onCampus=' . $on_campus .
 			$query .
 			'&indx=' . $this->start .
 			'&bulkSize=' . $this->max;
 
 		
-		// $url .= '&pc_availability_ind=false';
-		
-		if ( $this->vid != "" )
-		{
-			$url .= "&vid=" . $this->vid;	
-		}
-		
-		foreach ( $this->loc as $loc )
-		{
-			$url .= "&loc=" . $loc;
-		}
+		$url = $this->addLocationParams($url);
 			
 		if ( $this->sort != "" )
 		{
@@ -181,5 +190,31 @@ class Query extends Search\Query
 		// echo $url;
 		
 		return new Url($url);
+	}
+	
+	protected function addLocationParams($url)
+	{
+		$url .= '&institution=' . $this->institution;
+		
+		$on_campus = "true";
+		
+		if ( $this->on_campus == false )
+		{
+			$on_campus = "false";
+		}
+		
+		$url .= '&onCampus=' . $this->on_campus;
+		
+		if ( $this->vid != "" )
+		{
+			$url .= "&vid=" . $this->vid;
+		}
+		
+		foreach ( $this->loc as $loc )
+		{
+			$url .= "&loc=" . $loc;
+		}
+		
+		return $url;
 	}
 }

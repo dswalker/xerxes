@@ -12,6 +12,7 @@
 namespace Application\Model\Primo;
 
 use Xerxes;
+use Xerxes\Record\Link;
 use Xerxes\Utility\Parser;
 
 /**
@@ -36,11 +37,20 @@ class Record extends Xerxes\Record
 		
 		// print $this->document->saveXML();
 		
+		$control = $this->getElement($record, "control");
 		$display = $this->getElement($record, "display");
+		$links = $this->getElement($record, "links");
 		$search = $this->getElement($record, "search");
 		$sort = $this->getElement($record, "sort");
 		$addata = $this->getElement($record, "addata");
 		$facets = $this->getElement($record, "facets");
+		
+		$sourceid = "";
+		
+		if ( $control != null)
+		{
+			$sourceid = $this->getElementValue($control,"sourceid");
+		}
 		
 		if ( $display != null)
 		{
@@ -140,16 +150,6 @@ class Record extends Xerxes\Record
 			{
 				$this->abstract = strip_tags($abstract);
 			}
-
-			// gale madness
-			
-			if ( stristr($this->database_name, "gale") )
-			{
-				if ( strpos($this->abstract, 'the full-text of this article') !== false )
-				{
-					$this->abstract = Parser::removeLeft($this->abstract, 'Abstract:');
-				}
-			}
 		}
 		
 		// subjects
@@ -176,24 +176,45 @@ class Record extends Xerxes\Record
 			$this->title = $this->getElementValue($sort,"title");
 		}
 		
+		// direct link
+		
+		$backlink = $this->getElementValue($links,"backlink");
+			
+		if ( $backlink != "" )
+		{
+			$backlink = Parser::removeLeft($backlink, '$$U');
+			$url = Parser::removeRight($backlink, '$$E');
+			$message = Parser::removeLeft($backlink, '$$E');
+			
+			$link = new Link($url);
+			$link->setType(Link::ONLINE);
+	
+			$this->links[] = $link;
+		}		
+		
+		
 		// Gale title clean-up, because for some reason unknown to man they put weird 
 		// notes and junk at the end of the title. so remove them here and add them to notes.		
 		
-		// @todo factor this out somehow? since this is very similar to Gale MetalibRecord code
-		
-		if ( stristr($this->database_name, "gale") || stristr($this->database_name, "muse"))
+		if ( stristr($sourceid, "gale") || stristr($sourceid, "muse"))
 		{
-			$strGaleRegExp = '/\(([^)]*)\)/';
-			$arrMatches = array();
+			$gale_regex = '/\(([^)]*)\)/';
+			$matches = array();
 	
-			if (preg_match_all ( $strGaleRegExp, $this->title, $arrMatches ) != 0)
+			if ( preg_match_all( $gale_regex, $this->title, $matches ) != 0)
 			{
-				$this->title = preg_replace ( $strGaleRegExp, "", $this->title );
+				$this->title = preg_replace ( $gale_regex, "", $this->title );
 				
-				foreach ( $arrMatches[1] as $strMatch )
+				foreach ( $matches[1] as $match )
 				{
-					array_push($this->notes, $strMatch);
+					array_push($this->notes, $match);
 				}
+			}
+			
+			
+			if ( strpos($this->abstract, 'the full-text of this article') !== false )
+			{
+				$this->abstract = Parser::removeLeft($this->abstract, 'Abstract:');
 			}
 		}
 	}

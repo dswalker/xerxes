@@ -81,6 +81,8 @@ class Engine extends Search\Engine
 		
 		$xml = Parser::convertToDOMDocument($response);
 		
+		// header("Content-type:text/xml"); echo $xml->saveXML(); exit;
+		
 		// check for errors
 		
 		$error = $xml->getElementsByTagName("ERROR")->item(0);
@@ -159,9 +161,25 @@ class Engine extends Search\Engine
 	{
 		$facets = new Search\Facets();
 		
-		// echo $dom->saveXML();
+		$id = $this->query->getHash();
 		
-		$groups = $dom->getElementsByTagName("FACET");
+		// header("Content-type: text/plain");	print_r($this->query->getLimits());
+		
+		// see if this is in the cache
+		
+		$xml = $this->cache->get($id);
+		
+		if ( $xml == "" )
+		{
+			$this->cache->set($id, $dom->saveXML());
+		}
+		else
+		{
+			$dom = new \DOMDocument();
+			$dom->loadXML($xml);
+		}
+		
+		$groups = $dom->getElementsByTagName("FACET"); // otherwise, grab the response
 		
 		if ( $groups->length > 0 )
 		{
@@ -228,7 +246,7 @@ class Engine extends Search\Engine
 					$decade_display = $date_arrays["display"];
 					$facet_array = $date_arrays["decades"];		
 				}
-				else 
+				elseif ( $group->name != "tlevel") // except for tlevel 
 				{	
 					// not a date, sort by hit count
 					
@@ -240,8 +258,24 @@ class Engine extends Search\Engine
 				foreach ( $facet_array as $key => $value )
 				{					
 					$facet = new Search\Facet();
-					$facet->name = $key;
 					$facet->count = $value;
+					$facet->name = $key;
+					
+					if ( $group->name == "tlevel" || $group->name == "pfilter")
+					{
+						$facet->name = str_replace('_', ' ', $facet->name);
+						$facet->name = ucwords($facet->name);
+					}
+					
+					// is this an excluded facet?
+					
+					foreach ( $this->query->getLimits() as $limit )
+					{
+						if ( $limit->field == $group->name && $limit->value == $key && $limit->boolean == "NOT" )
+						{
+							$facet->is_excluded = 1;
+						}
+					}
 					
 					// dates are different
 					
