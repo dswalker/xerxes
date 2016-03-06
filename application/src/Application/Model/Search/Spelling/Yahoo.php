@@ -31,6 +31,8 @@ class Yahoo
 	
 	public function checkSpelling(array $query_terms)
 	{
+		return null;
+		
 		$registry = Registry::getInstance();
 		$suggestion = new Suggestion();
 		
