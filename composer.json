@@ -12,7 +12,8 @@
 	"require": {
 	        "doctrine/orm": "2.3.0",
 		"guzzle/guzzle": "3.1.*",
-		"pear-pear.php.net/File_MARC": "1.1.*",
+		"pear/pear_exception": "1.*",
+		"pear/file_marc": "1.1.*",
 	        "symfony/console": "2.*",
 		"symfony/http-foundation": "2.1.*",
 		"symfony/stopwatch": "2.3.*@dev",
