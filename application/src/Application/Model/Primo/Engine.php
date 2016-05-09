@@ -14,6 +14,7 @@ namespace Application\Model\Primo;
 use Application\Model\Search;
 use Xerxes\Mvc\Request;
 use Xerxes\Utility\Parser;
+use Application\Model\Search\Facets;
 
 /**
  * Primo Search Engine
@@ -43,7 +44,10 @@ class Engine extends Search\Engine
 		
 		// enhance
 		
-		$results->markFullText(); // sfx data
+		if ( $this->config->getConfig('mark_fulltext_using_export', false, false ) )
+		{
+			$results->markFullText(); // sfx data
+		}
 		
 		return $results;
 	}	
@@ -62,8 +66,11 @@ class Engine extends Search\Engine
 		// enhance
 		
 		$results->getRecord(0)->addRecommendations(); // bx
-		$results->markFullText(); // sfx data
-		$results->markRefereed(); // refereed
+
+		if ( $this->config->getConfig('mark_fulltext_using_export', false, false ) )
+		{
+			$results->markFullText(); // sfx data
+		}		
 		
 		return $results;
 	}
@@ -81,7 +88,10 @@ class Engine extends Search\Engine
 		
 		$xml = Parser::convertToDOMDocument($response);
 		
-		// header("Content-type:text/xml"); echo $xml->saveXML(); exit;
+		if ( $this->query->getRequest()->getParam('XML') != "" )
+		{
+			header("Content-type:text/xml"); echo $xml->saveXML(); exit;
+		}
 		
 		// check for errors
 		
@@ -89,7 +99,7 @@ class Engine extends Search\Engine
 		
 		if ( $error != "" )
 		{
-			throw new \Exception($error->getAttribute("MESSAGE"));
+			// throw new \Exception($error->getAttribute("MESSAGE"));
 		}
 		
 		// set-up the result set
@@ -159,26 +169,14 @@ class Engine extends Search\Engine
 		
 	protected function extractFacets(\DOMDocument $dom)
 	{
+		// header("Content-type: text/plain");	print_r($this->query->getLimits()); exit;
+		
+		// print_r($this->query->getLimits());
+		
+		// parse the facets
+		
 		$facets = new Search\Facets();
-		
-		$id = $this->query->getHash();
-		
-		// header("Content-type: text/plain");	print_r($this->query->getLimits());
-		
-		// see if this is in the cache
-		
-		$xml = $this->cache->get($id);
-		
-		if ( $xml == "" )
-		{
-			$this->cache->set($id, $dom->saveXML());
-		}
-		else
-		{
-			$dom = new \DOMDocument();
-			$dom->loadXML($xml);
-		}
-		
+
 		$groups = $dom->getElementsByTagName("FACET"); // otherwise, grab the response
 		
 		if ( $groups->length > 0 )
@@ -293,7 +291,46 @@ class Engine extends Search\Engine
 			}
 		}
 		
-		return $facets;
+
+		// compare it to what we have cached
+		
+		$query_id = 'facet:' . $this->query->getHash(); // identify this set of facets
+		$page_id = 'facet:' . $this->query->getUrlHash(); // identify the specific page we are on
+		
+		$limit_track = array();
+		
+		foreach ($this->query->getLimits() as $limit)
+		{
+			if ( ! in_array($limit->field, $limit_track) )
+			{
+				$limit_track[] = $limit->field;
+			}
+		}
+		
+		$count = count($limit_track); // total groups with selected facets
+		
+		$final_facets = new Facets();
+				
+		foreach ( $facets->groups as $group )
+		{
+			if ( in_array($group->name, $limit_track) )
+			{
+				$group_cache = $this->cache->get($query_id);
+				
+				if ( $group_cache != "" )
+				{
+					$group = $group_cache;
+				}
+			}
+
+			$final_facets->addGroup($group);
+		}
+		
+		// cache 'em before returning them
+		
+		// $this->cache->set($id, $facets);
+		
+		return $final_facets;
 	}
 
 	/**

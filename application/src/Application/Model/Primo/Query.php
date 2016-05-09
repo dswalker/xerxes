@@ -111,7 +111,9 @@ class Query extends Search\Query
 			'&indx=1&bulkSize=1';
 		
 		$url = $this->addLocationParams($url);
-			
+		
+		// echo $url;		
+		
 		return new Url($url);
 	}
 	
@@ -124,12 +126,20 @@ class Query extends Search\Query
 	public function getQueryUrl()
 	{
 		$query = ""; // query
+		$start_date = ""; // pub start date
+		$end_date = ""; // pub end date
 		
 		foreach ( $this->getQueryTerms() as $term )
 		{
 			$query .= "&query=" . $term->field_internal . ",contains," . urlencode($term->phrase);
 		}
-			
+		
+		// query expansion
+		
+		$this->query_expansion = (bool) $this->config->getConfig('QUERY_EXPANSION', false, false);
+		
+		// limits
+		
 		foreach ( $this->getLimits() as $limit )
 		{
 			$value = $limit->value;
@@ -139,15 +149,36 @@ class Query extends Search\Query
 				$value = implode(',', $limit->value);
 			}
 			
-			if ( $limit->field == "tlevel")
+			// query expansion overriden by user
+			
+			if ( $limit->field == 'IsFullText' )
 			{
-				if ($value == "Online Resources")
+				if ( $limit->value == 'false' )
 				{
-					$query .= "&query_inc=facet_tlevel,exact,online_resources_PC_TN";
+					$this->query_expansion = true;
 				}
-				elseif ($value == "Peer Reviewed")
+				elseif ( $limit->value == 'true' )
+				{
+					$this->query_expansion = false;
+				}
+			}
+			
+			if ( $limit->field == "IsPeerReviewed")
+			{
+				if ($value == "true")
 				{
 					$query .= "&query_inc=facet_tlevel,exact,peer_reviewed";
+				}
+			}
+			elseif ($limit->field == 'creationdate')
+			{
+				if ( $limit->value == 'start')
+				{
+					$start_date = $limit->display;
+				}
+				elseif ( $limit->value == 'end')
+				{
+					$end_date = $limit->display;
 				}
 			}
 			else
@@ -162,6 +193,23 @@ class Query extends Search\Query
 				$query .= "&$type=facet_" . $limit->field . ",exact," . urlencode($value);
 			}
 		}
+		
+		if ( $start_date != "" || $end_date != "" )
+		{
+			/*
+			if ( $start_date == "" )
+			{
+				$start_date == '0000';
+			}
+			if ( $end_date == "" )
+			{
+				$end_date == '9999';
+			}
+			*/
+			
+			$query .= '&query_inc=facet_searchcreationdate,exact,' . "[$start_date TO $end_date]";
+		}
+		
 		
 		// on campus as string
 		
@@ -178,7 +226,12 @@ class Query extends Search\Query
 			$query .
 			'&indx=' . $this->start .
 			'&bulkSize=' . $this->max;
-
+		
+		
+		if ($this->query_expansion == true)
+		{
+			$url .= "&pcAvailability=true"; // this seems backwards but is correct
+		}
 		
 		$url = $this->addLocationParams($url);
 			

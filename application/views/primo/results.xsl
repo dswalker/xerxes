@@ -49,5 +49,113 @@
 	<xsl:template name="main">
 		<xsl:call-template name="search_page" />
 	</xsl:template>
+
+
+	<xsl:template name="facet_narrow_results">
+
+		<h3>Refine your search</h3>
+	
+		<xsl:variable name="peer">
+			<xsl:if test="//request/*[@original_key = 'facet.IsPeerReviewed']">
+				<xsl:text>true</xsl:text>
+			</xsl:if>		
+		</xsl:variable>
+	
+		<xsl:variable name="fulltext">
+			<xsl:if test="//request/*[@original_key = 'facet.IsFullText']">
+				<xsl:text>false</xsl:text>
+			</xsl:if>
+		</xsl:variable>
+	
+		<xsl:variable name="newspapers">
+			<xsl:value-of select="//request/*[@original_key = 'facet.newspapers']" />
+		</xsl:variable>
+			
+		<form id="form-facet-0" action="{//request/controller}/search" method="get">
+			<input name="lang" type="hidden" value="{//request/lang}" />
+			<xsl:call-template name="hidden_search_inputs">
+				<xsl:with-param name="exclude_limit">facet.IsPeerReviewed,facet.IsFullText,facet.holdings,facet.newspapers</xsl:with-param>
+			</xsl:call-template>
+			
+			<ul>			
+		
+				<li class="facet-selection">
+				
+					<input type="checkbox" id="facet-0-2" class="facet-selection-option facet-0" name="facet.IsPeerReviewed" value="true">
+						<xsl:if test="$peer = 'true'">
+							<xsl:attribute name="checked">checked</xsl:attribute>
+						</xsl:if>
+					</input>
+					<xsl:text> </xsl:text>
+					<label for="facet-0-2"><xsl:copy-of select="$text_summon_facets_scholarly" /></label>
+				
+				</li>
+				
+				<li class="facet-selection">
+				
+					<input type="checkbox" id="facet-0-3" class="facet-selection-option facet-0" name="facet.IsFullText" value="false">
+						<xsl:if test="$fulltext = 'false'">
+							<xsl:attribute name="checked">checked</xsl:attribute>
+						</xsl:if>
+					</input>
+					<xsl:text> </xsl:text>
+					<label for="facet-0-3"><xsl:copy-of select="$text_summon_facets_beyond_holdings" /></label>
+				
+				</li>
+	
+				<xsl:if test="//config/newspapers_optional = 'true'">
+		
+					<li class="facet-selection">
+					
+						<input type="checkbox" id="facet-0-4" class="facet-selection-option facet-0" name="facet.newspapers" value="true">
+							<xsl:if test="$newspapers = 'true'">
+								<xsl:attribute name="checked">checked</xsl:attribute>
+							</xsl:if>
+						</input>
+						<xsl:text> </xsl:text>
+						<label for="facet-0-4"><xsl:copy-of select="$text_summon_facets_newspaper_add" /></label>
+					
+					</li>
+					
+				</xsl:if>
+	
+				<xsl:if test="//config/newspapers_optional = 'exclude'">
+		
+					<li class="facet-selection">
+					
+						<input type="checkbox" id="facet-0-5" class="facet-selection-option facet-0" name="facet.newspapers" value="false">
+							<xsl:if test="$newspapers = 'false'">
+								<xsl:attribute name="checked">checked</xsl:attribute>
+							</xsl:if>
+						</input>
+						<xsl:text> </xsl:text>
+						<label for="facet-0-5"><xsl:copy-of select="$text_summon_facets_newspaper_exclude" /></label>
+					
+					</li>
+					
+				</xsl:if>
+		
+				<xsl:if test="//config/limit_to_holdings = 'true'">
+		
+					<li class="facet-selection">
+					
+						<input type="checkbox" id="facet-0-6" class="facet-selection-option facet-0" name="facet.holdings" value="false">
+							<xsl:if test="$holdings = 'true'">
+								<xsl:attribute name="checked">checked</xsl:attribute>
+							</xsl:if>
+						</input>
+						<xsl:text> </xsl:text>
+						<label for="facet-0-6"><xsl:copy-of select="$text_summon_facets_beyond_holdings" /></label>
+					
+					</li>
+					
+				</xsl:if>
+			</ul>
+			
+			<xsl:call-template name="facet_noscript_submit" />
+		
+		</form>
+	
+	</xsl:template>
 		
 </xsl:stylesheet>

@@ -419,6 +419,20 @@ class Query
 		
 		return md5($this->request->getRequestUri());
 	}
+
+	/**
+	 * Return an md5 hash of both the search and limit parameters, bascially to identify the search + facets selected
+	 */
+	
+	public function getQueryAndLimitsHash()
+	{
+		// give me the hash!
+	
+		$normalized = $this->getNormalizedQuery();
+		$normalized .= $this->getNormalizedLimits();
+		
+		return md5($normalized);
+	}	
 	
 	/**
 	 * Return an md5 hash of the main search parameters, bascially to identify the search
@@ -432,7 +446,47 @@ class Query
 	}
 	
 	/**
+	 * Get the limit parameters in a normalized form
+	 *
+	 * @return string
+	 */
+	
+	protected function getNormalizedLimits()
+	{
+		// get the limit params
+		
+		$params = $this->extractLimitParams();
+		
+		// and sort them alphabetically
+		
+		ksort($params);
+		
+		$limit_normalized = "";
+
+		// now put them back together in a normalized form
+		
+		foreach ( $params as $key => $value )
+		{
+			if ( is_array($value) )
+			{
+				foreach ($value as $part)
+				{
+					$limit_normalized .= "&amp;$key=" . urlencode($part);
+				}
+			}
+			else
+			{
+				$limit_normalized .= "&amp;$key=" . urlencode($value);
+			}
+		}
+		
+		return $limit_normalized;		
+	}
+	
+	/**
 	 * Get the search query parameters in a normalized form
+	 * 
+	 * @return string
 	 */
 	
 	protected function getNormalizedQuery()

@@ -12,6 +12,7 @@
 namespace Application\Model\Primo;
 
 use Xerxes;
+use Xerxes\Record\Format;
 use Xerxes\Record\Link;
 use Xerxes\Utility\Parser;
 
@@ -24,6 +25,29 @@ use Xerxes\Utility\Parser;
 class Record extends Xerxes\Record
 {
 	protected $source = "primo";
+	protected $open_url; // pc-generated openurl
+	
+	/**
+	 * Get an OpenURL 1.0 formatted URL
+	 *
+	 * @param string $strResolver	base url of the link resolver
+	 * @param string $strReferer	referrer (unique identifier)
+	 * @return string
+	 */
+	
+	public function getOpenURL($resolver, $referer = null, $para_delimiter = '&')
+	{
+		$open_url = $resolver . '?' . $this->open_url; // use pc supplied openurl
+	
+		// special cooking for sfx
+	
+		if ( $this->format->getNormalizedFormat() == Format::Journal )
+		{
+			$open_url .= '&sfx.ignore_date_threshold=1';
+		}
+	
+		return $open_url;
+	}
 	
 	public function map()
 	{
@@ -35,15 +59,19 @@ class Record extends Xerxes\Record
 		
 		$record = $this->document->documentElement->getElementsByTagName("record")->item(0);
 		
-		// print $this->document->saveXML();
+		// header('Content-type:text/xml'); echo $this->document->saveXML(); exit;
 		
 		$control = $this->getElement($record, "control");
 		$display = $this->getElement($record, "display");
-		$links = $this->getElement($record, "links");
 		$search = $this->getElement($record, "search");
 		$sort = $this->getElement($record, "sort");
+		$delivery = $this->getElement($record, "delivery");
 		$addata = $this->getElement($record, "addata");
 		$facets = $this->getElement($record, "facets");
+		
+		// document data
+		
+		$doc_links = $this->getElement($this->document->documentElement, "LINKS");
 		
 		$sourceid = "";
 		
@@ -66,12 +94,18 @@ class Record extends Xerxes\Record
 			// snippet
 			
 			$this->snippet = $this->getElementValue($display,"snippet"); 
-			$this->snippet = strip_tags($this->snippet);
+			$this->snippet = trim(strip_tags($this->snippet));
 			
 			// description
 			
 			$this->abstract = $this->getElementValue($display,"description");
-			$this->abstract = strip_tags($this->abstract);
+			
+			if ( substr($this->abstract, 0, 6) == '&nbsp;')
+			{
+				$this->abstract =  substr($this->abstract, 6); 
+			}
+			
+			$this->abstract = trim(strip_tags($this->abstract));
 			
 			// language
 
@@ -96,6 +130,7 @@ class Record extends Xerxes\Record
 			// year
 			
 			$this->year = $this->getElementValue($search,"creationdate");
+			$this->year = substr($this->year, 0, 4);
 			
 			// issn
 			
@@ -176,22 +211,45 @@ class Record extends Xerxes\Record
 			$this->title = $this->getElementValue($sort,"title");
 		}
 		
-		// direct link
+		// links
 		
-		$backlink = $this->getElementValue($links,"backlink");
-			
-		if ( $backlink != "" )
+		if ($doc_links != null )
 		{
-			$backlink = Parser::removeLeft($backlink, '$$U');
-			$url = Parser::removeRight($backlink, '$$E');
-			$message = Parser::removeLeft($backlink, '$$E');
+			// openurl
+			// @todo: figure out openurlfulltext
 			
-			$link = new Link($url);
-			$link->setType(Link::ONLINE);
-	
-			$this->links[] = $link;
-		}		
-		
+			$openurl = $this->getElementValue($doc_links,"openurl");
+			
+			if ( $openurl != null )
+			{
+				$this->open_url = Parser::removeLeft($openurl, '?');
+			}
+			
+			// direct link
+			
+			$link_to_source = $this->getElementValue($doc_links,"linktorsrc");
+			
+			$delivery_type = "";
+				
+			if ( $delivery != null )
+			{
+				$delivery_type = $this->getElementValue($delivery,"fulltext");
+			}
+			
+			$open_access = "";
+			
+			if ( $addata != null )
+			{
+				$open_access = $this->getElementValue($addata,"oa");
+			}
+			
+			if ( $link_to_source != "" && $delivery_type == 'fulltext_linktorsrc' && $open_access == 'free_for_read')
+			{
+				$link = new Link($link_to_source);
+				$link->setType(Link::ONLINE);
+				$this->links[] = $link;
+			}
+		}
 		
 		// Gale title clean-up, because for some reason unknown to man they put weird 
 		// notes and junk at the end of the title. so remove them here and add them to notes.		
@@ -210,7 +268,6 @@ class Record extends Xerxes\Record
 					array_push($this->notes, $match);
 				}
 			}
-			
 			
 			if ( strpos($this->abstract, 'the full-text of this article') !== false )
 			{
@@ -235,7 +292,7 @@ class Record extends Xerxes\Record
 		return $format_display;
 	}
 	
-	protected function getElement($node, $name)
+	protected function getElement(\DOMNode $node, $name)
 	{
 		$elements = $node->getElementsByTagName($name);
 		
@@ -249,7 +306,7 @@ class Record extends Xerxes\Record
 		}
 	}
 	
-	protected function getElementValue($node, $name)
+	protected function getElementValue(\DOMNode $node, $name)
 	{
 		$element = $this->getElement($node, $name);
 		
@@ -263,7 +320,7 @@ class Record extends Xerxes\Record
 		}
 	}
 	
-	protected function getElementValues($node, $name)
+	protected function getElementValues(\DOMNode $node, $name)
 	{
 		$values = array();
 		
