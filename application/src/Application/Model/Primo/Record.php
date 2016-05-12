@@ -12,7 +12,7 @@
 namespace Application\Model\Primo;
 
 use Xerxes;
-use Xerxes\Record\Format;
+use Xerxes\Record\Format as RecordFormat;
 use Xerxes\Record\Link;
 use Xerxes\Utility\Parser;
 
@@ -41,7 +41,7 @@ class Record extends Xerxes\Record
 	
 		// special cooking for sfx
 	
-		if ( $this->format->getNormalizedFormat() == Format::Journal )
+		if ( $this->format->getNormalizedFormat() == RecordFormat::Journal )
 		{
 			$open_url .= '&sfx.ignore_date_threshold=1';
 		}
@@ -274,6 +274,17 @@ class Record extends Xerxes\Record
 				$this->abstract = Parser::removeLeft($this->abstract, 'Abstract:');
 			}
 		}
+		
+		// abstract clean-up
+		
+		$this->abstract = str_replace('&nbsp;', ' ', $this->abstract);
+		
+		while ( ord(substr($this->abstract, 0, 1)) == 194 )
+		{
+			$this->abstract = substr($this->abstract, 2);
+		}
+		
+		$this->abstract = trim($this->abstract);
 	}
 	
 	public static function createReadableLabel($format)

@@ -15,6 +15,8 @@ use Application\Model\Search;
 use Xerxes\Mvc\Request;
 use Xerxes\Utility\Parser;
 use Application\Model\Search\Facets;
+use Application\Model\Search\FacetGroup;
+use Application\Model\Search\Facet;
 
 /**
  * Primo Search Engine
@@ -24,6 +26,18 @@ use Application\Model\Search\Facets;
 
 class Engine extends Search\Engine 
 {
+	/**
+	 * Flag for facet assembly process
+	 * @var bool
+	 */
+	private $facet_assembly = false;
+	
+	/**
+	 * Total hits
+	 * @var int
+	 */
+	private $total = 0;
+	
 	/**
 	 * Search and return results
 	 * 
@@ -115,9 +129,9 @@ class Engine extends Search\Engine
 			throw new \Exception("Could not determine total number of records");
 		}
 		
-		$total = $docset->getAttribute("TOTALHITS");
+		$this->total = $docset->getAttribute("TOTALHITS");
 		
-		$result_set->total = $total;
+		$result_set->total = $this->total;
 
 		// extract records
 		
@@ -170,8 +184,8 @@ class Engine extends Search\Engine
 	protected function extractFacets(\DOMDocument $dom)
 	{
 		// header("Content-type: text/plain");	print_r($this->query->getLimits()); exit;
-		
 		// print_r($this->query->getLimits());
+
 		
 		// parse the facets
 		
@@ -211,6 +225,24 @@ class Engine extends Search\Engine
 				
 				if ( ! array_key_exists($group_internal_name, $facet_group_array) )
 				{
+					// but it was selected, so that means it's a sole value facet group
+					// manually put it back in
+					
+					$missing_limit = $this->query->getLimit($group_internal_name);
+					
+					if ( $missing_limit->value != "" )
+					{
+						$missing_facet = new Facet();
+						$missing_facet->name = $missing_limit->value;
+						$missing_facet->count = $this->total;
+							
+						$missing_group = new FacetGroup();
+						$missing_group->name = $group_internal_name;
+						$missing_group->addFacet($missing_facet);
+							
+						$facets->addGroup($missing_group);
+					}
+					
 					continue;
 				}
 				
@@ -247,7 +279,6 @@ class Engine extends Search\Engine
 				elseif ( $group->name != "tlevel") // except for tlevel 
 				{	
 					// not a date, sort by hit count
-					
 					arsort($facet_array);
 				}
 				
@@ -261,8 +292,9 @@ class Engine extends Search\Engine
 					
 					if ( $group->name == "tlevel" || $group->name == "pfilter")
 					{
-						$facet->name = str_replace('_', ' ', $facet->name);
-						$facet->name = ucwords($facet->name);
+						// public display
+						
+						$facet->name = Format::toDisplay($facet->name);
 					}
 					
 					// is this an excluded facet?
@@ -291,14 +323,17 @@ class Engine extends Search\Engine
 			}
 		}
 		
-
-		// compare it to what we have cached
+		// return quickly when in facet assembly mode as we are using this data internally
 		
-		$query_id = 'facet:' . $this->query->getHash(); // identify this set of facets
-		$page_id = 'facet:' . $this->query->getUrlHash(); // identify the specific page we are on
+		if ( $this->facet_assembly == true )
+		{
+			return $facets;
+		}
+		
+		// facets that have been selected
 		
 		$limit_track = array();
-		
+			
 		foreach ($this->query->getLimits() as $limit)
 		{
 			if ( ! in_array($limit->field, $limit_track) )
@@ -306,33 +341,174 @@ class Engine extends Search\Engine
 				$limit_track[] = $limit->field;
 			}
 		}
+			
+		// cache id's
 		
-		$count = count($limit_track); // total groups with selected facets
+		$facetset_id = 'facet:' . $this->query->getQueryAndLimitsHash(); // identify this set of facets
+		$query_id = 'facet:' . $this->query->getHash(); // use the query itself as the facet id
 		
-		$final_facets = new Facets();
-				
-		foreach ( $facets->groups as $group )
+		$limit_count = count($limit_track);
+		
+		// in the event the user performs a query (with no facets) and then selects a facet
+		// we'll grab the cached set from the previous query, just to speed things up 
+		
+		// if no limits selected, use the query id
+		
+		if ( $limit_count == 0 ) 
 		{
-			if ( in_array($group->name, $limit_track) )
-			{
-				$group_cache = $this->cache->get($query_id);
-				
-				if ( $group_cache != "" )
-				{
-					$group = $group_cache;
-				}
-			}
-
-			$final_facets->addGroup($group);
+			$facetset_id = $query_id;
 		}
 		
-		// cache 'em before returning them
+		// already cached?
 		
-		// $this->cache->set($id, $facets);
+		$final_facets = $this->cache->get($facetset_id);
 		
-		return $final_facets;
-	}
+		if  ($final_facets != "" ) // yup
+		{
+			return  $final_facets; 
+		}
+		
+		// facet selected
 
+		if ( $limit_count >= 1 ) 
+		{
+			$frozen_groups = array();
+			
+			$this->facet_assembly = true;
+				
+			// clone the query 
+			
+			$query = clone $this->query;
+			$query->start = 0;
+			$query->max = 0;
+			
+			// keep the limits from the original query
+			
+			$original_limits = array();
+			
+			foreach ( $query->getLimits() as $this_limit )
+			{
+				$original_limits[] = $this_limit;
+			}
+			
+			foreach ( $original_limits as $this_limit )
+			{
+				$query->limits = array(); // blank 'em for this search
+				
+				// grab all other limits
+				
+				$other_limits = array();
+				
+				foreach ( $original_limits as $limit_available )
+				{
+					if ( $limit_available->field != $this_limit->field )
+					{
+						$other_limits[] = $limit_available;
+					}
+				}
+				
+				$query->limits = $other_limits;
+				
+				$results = $this->doSearch($query);
+				
+				// echo  $query->getQueryUrl()->url;
+				
+				foreach ( $results->getFacets()->getGroups() as $this_group )
+				{
+					if ( $this_group->name == $this_limit->field )
+					{
+						$frozen_groups[$this_limit->field] = $this_group;
+					}
+				}
+			}
+			
+			$this->facet_assembly = false;
+			
+			$final_facets = new Facets();
+			
+			// interpose our frozen groups
+			
+			foreach ( array_keys($this->config->getFacets()) as $group_internal_name ) // take order from config
+			{
+				// it's frozen
+				
+				if ( array_key_exists($group_internal_name, $frozen_groups) )
+				{
+					$final_facets->addGroup($frozen_groups[$group_internal_name]);
+				}
+				else
+				{
+					// is it in the facets returned from PCI?
+					
+					$found = false;
+					
+					foreach ( $facets->getGroups() as $group )
+					{
+						if ( $group->name == $group_internal_name )
+						{
+							$final_facets->addGroup($group);
+							$found = true;
+						}
+					}
+				}
+			}
+			
+			$facets = $final_facets;
+		}
+		
+		// excluded facets
+
+		foreach ( $facets->getGroups() as $group ) // for each facet group
+		{
+			foreach( $this->query->getLimits() as $limit ) // check the limits selected
+			{
+				if ( $limit->field == $group->name && $limit->boolean == 'NOT' ) // an excluded facet
+				{
+					$value = $limit->value;
+					
+					if ( ! is_array($limit->value) )
+					{
+						$value = array($limit->value);
+					}
+					
+					foreach ( $value as $limit_value )
+					{
+						$found = false;
+						
+						// check the facets to see if our excluded one is in the group
+						
+						foreach ( $group->getFacets() as $facet )
+						{
+							if ( $facet->name == $limit_value ) // yup
+							{
+								$facet->is_excluded = true;
+								$found = true;
+							}
+						}
+						
+						// nope, so add the excluded facet
+						
+						if ( $found == false )
+						{
+							$facet_negative = new Facet();
+							$facet_negative->name = $limit_value;
+							$facet_negative->is_excluded = true;
+					
+							$group->addFacet($facet_negative);
+						}
+					}
+				}
+			}
+		}
+		
+		
+		// cache it for later
+		
+		$this->cache->set($facetset_id, $facets);
+		
+		return $facets;
+	}
+	
 	/**
 	 * @return Config
 	 */

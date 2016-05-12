@@ -1220,7 +1220,7 @@
 			<xsl:for-each select="facets/facet">
 				<tr>
 					<td class="facet-multi-selector">
-						<input type="checkbox" id="multi-{input_id}" class="facet-multi-option-include" name="{../../param_name}" value="{name}">
+						<input type="checkbox" id="multi-{input_id}" class="facet-multi-option-include" name="{param_name}" value="{name}">
 							<xsl:if test="selected and ( not(is_excluded) or is_excluded != '1')">
 								<xsl:attribute name="checked">checked</xsl:attribute>
 							</xsl:if>

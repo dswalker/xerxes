@@ -149,6 +149,11 @@ class Query extends Search\Query
 				$value = implode(',', $limit->value);
 			}
 			
+			if ( $limit->field == 'pfilter' )
+			{
+				$value = Format::fromDisplay($value);
+			}
+			
 			// query expansion overriden by user
 			
 			if ( $limit->field == 'IsFullText' )
@@ -196,20 +201,8 @@ class Query extends Search\Query
 		
 		if ( $start_date != "" || $end_date != "" )
 		{
-			/*
-			if ( $start_date == "" )
-			{
-				$start_date == '0000';
-			}
-			if ( $end_date == "" )
-			{
-				$end_date == '9999';
-			}
-			*/
-			
 			$query .= '&query_inc=facet_searchcreationdate,exact,' . "[$start_date TO $end_date]";
 		}
-		
 		
 		// on campus as string
 		
@@ -240,7 +233,7 @@ class Query extends Search\Query
 			$url .= '&sortField=' . $this->sort;
 		}
 		
-		// echo $url;
+		// echo $url . "<br>\n";
 		
 		return new Url($url);
 	}
