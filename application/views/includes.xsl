@@ -186,6 +186,8 @@
 
 		<body class="controller-{//request/controller} action-{//request/action}">
 		
+		<xsl:call-template name="surround_tip_top" />
+		
 		<xsl:if test="$is_mobile = 0">
 			
 			<div class="ada">
@@ -721,6 +723,7 @@
 		Defined here in case they are not, so as not to stop the proceedings
 	-->
 	
+	<xsl:template name="surround_tip_top" />
 	<xsl:template name="surround_top" />
 	<xsl:template name="header_div" />
 	<xsl:template name="footer_div" />
