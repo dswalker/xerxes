@@ -17,6 +17,7 @@ use Xerxes\Utility\Parser;
 use Application\Model\Search\Facets;
 use Application\Model\Search\FacetGroup;
 use Application\Model\Search\Facet;
+use Application\Model\Search\LimitTerm;
 
 /**
  * Primo Search Engine
@@ -278,11 +279,12 @@ class Engine extends Search\Engine
 				}
 				elseif ( $group->name != "tlevel") // except for tlevel 
 				{	
-					// not a date, sort by hit count
-					arsort($facet_array);
+					arsort($facet_array); // not a date, sort by hit count
 				}
 				
 				// now make them into group facet objects
+				
+				$topics_found = array();
 				
 				foreach ( $facet_array as $key => $value )
 				{					
@@ -290,11 +292,41 @@ class Engine extends Search\Engine
 					$facet->count = $value;
 					$facet->name = $key;
 					
+					// the top level and format facets needs display names added
+					
 					if ( $group->name == "tlevel" || $group->name == "pfilter")
 					{
-						// public display
-						
-						$facet->name = Format::toDisplay($facet->name);
+						$facet->name = Format::toDisplay($facet->name); // public display
+					}
+					
+					// with our multi-select option, we are querying back to PCI with all other facets selected
+					// to 'freeze' the current facets; this can produce a list of topics that doesn't include
+					// the selected topic, and so we have to add any selected topics back into the mix
+					
+					elseif ( $group->name == 'topic' )
+					{
+						foreach ( $this->query->getLimits() as $limit )
+						{
+							if ( $limit->field == $group->name  )
+							{
+								$values = $limit->value;
+								
+								if ( ! is_array($values) )
+								{
+									$values = array($values);
+								}
+								
+								foreach ( $values as $value )
+								{
+									if ( $facet->name == $value )
+									{
+										$found_limit = clone $limit;
+										$found_limit->value = $value;
+										$topics_found[] = $found_limit;
+									}
+								}
+							}
+						}
 					}
 					
 					// is this an excluded facet?
@@ -317,6 +349,45 @@ class Engine extends Search\Engine
 					}					
 					
 					$group->addFacet($facet);
+				}
+				
+				// for any limit that was selected but is not in the topic facet response (see above)
+				// make it the top facet, as this is our selected one
+				
+				if ( $group->name == 'topic' )
+				{
+					foreach ( $this->query->getLimits() as $limit )
+					{
+						if ( $limit->field == 'topic')
+						{
+							$values  = $limit->value;
+							
+							if ( ! is_array($values) )
+							{
+								$values = array($values);
+							}
+							
+							foreach ( $values as $value )
+							{
+								$topic_in_facets = false;
+								
+								foreach ( $topics_found as $found_limit )
+								{
+									if ( $value == $found_limit->value )
+									{
+										$topic_in_facets = true;
+									}
+								}
+							
+								if ( $topic_in_facets == false )
+								{
+									$facet = new Facet();
+									$facet->name = $value;
+									$group->prependFacet($facet);
+								}
+							}
+						}
+					}
 				}
 				
 				$facets->addGroup($group);
@@ -385,11 +456,15 @@ class Engine extends Search\Engine
 			// keep the limits from the original query
 			
 			$original_limits = array();
+			$original_groups = array();
 			
 			foreach ( $query->getLimits() as $this_limit )
 			{
 				$original_limits[] = $this_limit;
+				$original_groups[] = $this_limit->field;
 			}
+			
+			$original_groups = array_unique($original_groups);
 			
 			foreach ( $original_limits as $this_limit )
 			{
