@@ -40,6 +40,19 @@ class FacetGroup
 	}
 	
 	/**
+	 * Add a facet to the top of the group
+	 *
+	 * @param Facet $facets
+	 */
+	
+	public function prependFacet(Facet $facet)
+	{
+		$facet->count_display = Parser::number_format($facet->count);
+	
+		array_unshift($this->facets, $facet);
+	}	
+	
+	/**
 	 * Get the facets
 	 * 
 	 * @return Facet[]
