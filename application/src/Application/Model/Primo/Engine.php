@@ -267,15 +267,11 @@ class Engine extends Search\Engine
 				
 				// date
 
-				$decade_display = array();
-				
 				$is_date = $this->config->isDateType($group_internal_name);
 				
 				if ( $is_date == true )
 				{
-					$date_arrays = $group->luceneDateToDecade($facet_array);
-					$decade_display = $date_arrays["display"];
-					$facet_array = $date_arrays["decades"];		
+					ksort($facet_array); // year is in the date key
 				}
 				elseif ( $group->name != "tlevel") // except for tlevel 
 				{	
@@ -343,9 +339,9 @@ class Engine extends Search\Engine
 					
 					if ( $is_date == true )  
 					{
-						$facet->name = $decade_display[$key];
 						$facet->is_date = true;
 						$facet->key = $key;
+						$facet->timestamp = strtotime("1/1/" . $facet->name) * 1000;
 					}					
 					
 					$group->addFacet($facet);
