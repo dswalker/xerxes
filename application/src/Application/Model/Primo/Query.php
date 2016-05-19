@@ -201,6 +201,16 @@ class Query extends Search\Query
 		
 		if ( $start_date != "" || $end_date != "" )
 		{
+			if ( $start_date == "" )
+			{
+				$start_date = '1000';
+			}
+			
+			if ( $end_date == "" )
+			{
+				$end_date = '9999';	
+			}
+			
 			$query .= '&query_inc=facet_searchcreationdate,exact,' . "[$start_date TO $end_date]";
 		}
 		
