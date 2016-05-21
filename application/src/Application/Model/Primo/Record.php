@@ -109,7 +109,15 @@ class Record extends Xerxes\Record
 			
 			// language
 
-			$this->language = $this->getElementValue($display,"language");
+			$language = $this->getElementValue($display,"language");
+			$languages = array();
+			
+			foreach ( explode(';', $language) as $lang )
+			{
+				$languages[] = Language::getLanguageLabel(trim($lang));
+			}
+			
+			$this->language = implode(', ', $languages);
 			
 			// peer reviewed
 			

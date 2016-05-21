@@ -17,7 +17,6 @@ use Xerxes\Utility\Parser;
 use Application\Model\Search\Facets;
 use Application\Model\Search\FacetGroup;
 use Application\Model\Search\Facet;
-use Application\Model\Search\LimitTerm;
 
 /**
  * Primo Search Engine
@@ -288,11 +287,19 @@ class Engine extends Search\Engine
 					$facet->count = $value;
 					$facet->name = $key;
 					
-					// the top level and format facets needs display names added
+					// format
 					
-					if ( $group->name == "tlevel" || $group->name == "pfilter")
+					if ( $group->name == "pfilter")
 					{
 						$facet->name = Format::toDisplay($facet->name); // public display
+					}
+					
+					// language
+					
+					else if ( $group->name == "lang")
+					{
+						$facet->key = $facet->name;
+						$facet->name = Language::getLanguageLabel($facet->name); // public display
 					}
 					
 					// with our multi-select option, we are querying back to PCI with all other facets selected
