@@ -91,18 +91,39 @@
 				
 				</li>
 				
-				<li class="facet-selection">
-				
-					<input type="checkbox" id="facet-0-3" class="facet-selection-option facet-0" name="facet.IsFullText" value="false">
-						<xsl:if test="$fulltext = 'false'">
-							<xsl:attribute name="checked">checked</xsl:attribute>
-						</xsl:if>
-					</input>
-					<xsl:text> </xsl:text>
-					<label for="facet-0-3"><xsl:copy-of select="$text_summon_facets_beyond_holdings" /></label>
-				
-				</li>
-	
+				<xsl:choose>
+					<xsl:when test="//config/limit_to_holdings = 'false'">
+			
+						<li class="facet-selection">
+						
+							<input type="checkbox" id="facet-0-3" class="facet-selection-option facet-0" name="facet.IsFullText" value="true">
+								<xsl:if test="$fulltext = 'false'">
+									<xsl:attribute name="checked">checked</xsl:attribute>
+								</xsl:if>
+							</input>
+							<xsl:text> </xsl:text>
+							<label for="facet-0-3"><xsl:copy-of select="$text_summon_facets_fulltext" /></label>
+						
+						</li>
+						
+					</xsl:when>
+					<xsl:otherwise>
+					
+						<li class="facet-selection">
+						
+							<input type="checkbox" id="facet-0-3" class="facet-selection-option facet-0" name="facet.holdings" value="false">
+								<xsl:if test="$fulltext = 'true'">
+									<xsl:attribute name="checked">checked</xsl:attribute>
+								</xsl:if>
+							</input>
+							<xsl:text> </xsl:text>
+							<label for="facet-0-3"><xsl:copy-of select="$text_summon_facets_beyond_holdings" /></label>
+						
+						</li>
+					
+					</xsl:otherwise>
+				</xsl:choose>			
+
 				<xsl:if test="//config/newspapers_optional = 'true'">
 		
 					<li class="facet-selection">
@@ -134,22 +155,7 @@
 					</li>
 					
 				</xsl:if>
-		
-				<xsl:if test="//config/limit_to_holdings = 'true'">
-		
-					<li class="facet-selection">
-					
-						<input type="checkbox" id="facet-0-6" class="facet-selection-option facet-0" name="facet.holdings" value="false">
-							<xsl:if test="$holdings = 'true'">
-								<xsl:attribute name="checked">checked</xsl:attribute>
-							</xsl:if>
-						</input>
-						<xsl:text> </xsl:text>
-						<label for="facet-0-6"><xsl:copy-of select="$text_summon_facets_beyond_holdings" /></label>
-					
-					</li>
-					
-				</xsl:if>
+
 			</ul>
 			
 			<xsl:call-template name="facet_noscript_submit" />

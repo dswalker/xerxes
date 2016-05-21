@@ -134,15 +134,17 @@ class Query extends Search\Query
 			$query .= "&query=" . $term->field_internal . ",contains," . urlencode($term->phrase);
 		}
 		
-		// query expansion
+		// limit to local holdings unless told otherwise
 		
-		$this->query_expansion = (bool) $this->config->getConfig('QUERY_EXPANSION', false, false);
+		$this->holdings_only = $this->config->getConfig('LIMIT_TO_HOLDINGS', false, true);
 		
 		// limits
 		
 		foreach ( $this->getLimits() as $limit )
 		{
 			$value = $limit->value;
+			
+			$field = $limit->field;
 			
 			if ( is_array($limit->value) )
 			{
@@ -154,21 +156,20 @@ class Query extends Search\Query
 				$value = Format::fromDisplay($value);
 			}
 			
-			// query expansion overriden by user
+			// full-text only
 			
-			if ( $limit->field == 'IsFullText' )
+			if ( $limit->field == 'IsFullText')
 			{
 				if ( $limit->value == 'false' )
 				{
-					$this->query_expansion = true;
+					$this->holdings_only = false;
 				}
 				elseif ( $limit->value == 'true' )
 				{
-					$this->query_expansion = false;
+					$this->holdings_only = true;
 				}
 			}
-			
-			if ( $limit->field == "IsPeerReviewed")
+			elseif ( $limit->field == "IsPeerReviewed" || $limit->field == 'IsScholarly')
 			{
 				if ($value == "true")
 				{
@@ -229,12 +230,15 @@ class Query extends Search\Query
 			$query .
 			'&indx=' . $this->start .
 			'&bulkSize=' . $this->max;
+
+		// full-text
 		
-		
-		if ($this->query_expansion == true)
+		if ($this->holdings_only == false)
 		{
 			$url .= "&pcAvailability=true"; // this seems backwards but is correct
 		}
+		
+		// institutional params
 		
 		$url = $this->addLocationParams($url);
 			
