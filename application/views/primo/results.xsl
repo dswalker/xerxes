@@ -62,8 +62,11 @@
 		</xsl:variable>
 	
 		<xsl:variable name="fulltext">
-			<xsl:if test="//request/*[@original_key = 'facet.IsFullText']">
+			<xsl:if test="//request/*[@original_key = 'facet.IsFullText'] = 'false'">
 				<xsl:text>false</xsl:text>
+			</xsl:if>
+			<xsl:if test="//request/*[@original_key = 'facet.IsFullText'] = 'true'">
+				<xsl:text>true</xsl:text>
 			</xsl:if>
 		</xsl:variable>
 	
@@ -97,7 +100,7 @@
 						<li class="facet-selection">
 						
 							<input type="checkbox" id="facet-0-3" class="facet-selection-option facet-0" name="facet.IsFullText" value="true">
-								<xsl:if test="$fulltext = 'false'">
+								<xsl:if test="$fulltext = 'true'">
 									<xsl:attribute name="checked">checked</xsl:attribute>
 								</xsl:if>
 							</input>
@@ -111,8 +114,8 @@
 					
 						<li class="facet-selection">
 						
-							<input type="checkbox" id="facet-0-3" class="facet-selection-option facet-0" name="facet.holdings" value="false">
-								<xsl:if test="$fulltext = 'true'">
+							<input type="checkbox" id="facet-0-3" class="facet-selection-option facet-0" name="facet.IsFullText" value="false">
+								<xsl:if test="$fulltext = 'false'">
 									<xsl:attribute name="checked">checked</xsl:attribute>
 								</xsl:if>
 							</input>
