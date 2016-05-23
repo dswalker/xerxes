@@ -144,17 +144,18 @@ class Query extends Search\Query
 		{
 			$value = $limit->value;
 			
-			$field = $limit->field;
-			
-			if ( is_array($limit->value) )
+			if ( is_array($value) )
 			{
-				$value = implode(',', $limit->value);
+				$value = implode('|', $value);
 			}
 			
 			if ( $limit->field == 'pfilter' )
 			{
 				$value = Format::fromDisplay($value);
 			}
+			
+			$value = str_replace(',', ' ', $value);
+			$value = str_replace('|', ',', $value);
 			
 			// full-text only
 			
