@@ -298,8 +298,7 @@ class Engine extends Search\Engine
 					
 					else if ( $group->name == "lang")
 					{
-						$facet->key = $facet->name;
-						$facet->name = Language::getLanguageLabel($facet->name); // public display
+						$facet->name = Language::toDisplay($facet->name); // public display
 					}
 					
 					// with our multi-select option, we are querying back to PCI with all other facets selected

@@ -114,7 +114,7 @@ class Record extends Xerxes\Record
 			
 			foreach ( explode(';', $language) as $lang )
 			{
-				$languages[] = Language::getLanguageLabel(trim($lang));
+				$languages[] = Language::toDisplay(trim($lang));
 			}
 			
 			$this->language = implode(', ', $languages);

@@ -12,22 +12,50 @@
 namespace Application\Model\Primo;
 
 /**
- * Primo Format
+ * Primo Language
  * 
  * @author David Walker <dwalker@calstate.edu>
  */
 
 class Language
 {
+	public static function toDisplay($name)
+	{
+		$map = self::map();
+	
+		if ( array_key_exists($name, $map) )
+		{
+			return $map[$name];
+		}
+		else
+		{
+			return $name;
+		}
+	}
+	
+	public static function fromDisplay($name)
+	{
+		$map = array_flip(self::map());
+		
+		if ( array_key_exists($name, $map) )
+		{
+			return $map[$name];
+		}
+		else
+		{
+			return $name;
+		}
+	}
+	
 	/**
 	 * Human readable language name for code
 	 * @param unknown $code
 	 * @return string
 	 */
 	
-	public static function getLanguageLabel($code)
+	private function map()
 	{
-		$lanuages = array(
+		return array(
 				'abk' => 'Abkhazian',
 				'ace' => 'Achinese',
 				'ach' => 'Acoli',
@@ -153,14 +181,5 @@ class Language
 				'zul' => 'Zulu',
 				'und' => 'Undefined',
 		);
-	
-		if ( array_key_exists($code, $lanuages) )
-		{
-			return $lanuages[$code];
-		}
-		else
-		{
-			return $code;
-		}
 	}
 }
