@@ -107,8 +107,8 @@ class Query extends Search\Query
 		$id = urlencode($id);
 		
 		$url = $this->server . '/xservice/search/brief?' .
-			"&query=rid,exact,$id" .
-			'&indx=1&bulkSize=1';
+			"&query=rid,contains,$id" .
+			'&indx=1&bulkSize=1&pcAvailability=true';
 		
 		$url = $this->addLocationParams($url);
 		
@@ -126,6 +126,7 @@ class Query extends Search\Query
 	public function getQueryUrl()
 	{
 		$query = ""; // query
+		$discipline = ""; // disciplines
 		$start_date = ""; // pub start date
 		$end_date = ""; // pub end date
 		
@@ -144,20 +145,60 @@ class Query extends Search\Query
 		{
 			$value = $limit->value;
 			
-			if ( is_array($value) )
+			// make all values in array for simplicity of handling
+			
+			if ( ! is_array($value) )
 			{
-				$value = implode('|', $value);
+				$value = array($value);
 			}
+			
+			// these fields need to be translated back into internal values
+			// we do it this way, as opposed to keys, to support legacy url's
 			
 			if ( $limit->field == 'pfilter' )
 			{
-				$value = Format::fromDisplay($value);
+				for ( $x = 0; $x < count($value); $x++)
+				{
+					$value[$x] = Format::fromDisplay($value[$x]);
+				}
 			}
 			
-			$value = str_replace(',', ' ', $value);
-			$value = str_replace('|', ',', $value);
+			if ( $limit->field == 'lang' )
+			{
+				for ( $x = 0; $x < count($value); $x++)
+				{
+					$value[$x] = Language::fromDisplay($value[$x]);
+				}
+			}
 			
-			// full-text only
+			// legacy support for summon disciplines
+				
+			if ( $limit->field == 'Discipline')
+			{
+				// only grab the summon disciplines that can be mapped to those in primo 
+				
+				$value = Discipline::convertToPrimoDisciplines($value);
+				$value = implode(';', $value);
+				
+				if ( count($value) > 0 )
+				{
+					$discipline = "&pyrCategories=" . urlencode($value);
+				}
+				
+				continue;
+			}
+			
+			// combined multiple values into a single line
+			// we use a pipe here so we can nix commas from the values themselves below
+				
+			$value = implode('|', $value);
+			
+			// now separate the actual values by comma
+			
+			$value = str_replace(',', ' ', $value);
+			$value = str_replace('|', ',', $value); 
+			
+			// full-text
 			
 			if ( $limit->field == 'IsFullText')
 			{
@@ -170,6 +211,9 @@ class Query extends Search\Query
 					$this->holdings_only = true;
 				}
 			}
+			
+			// scholarly
+			
 			elseif ( $limit->field == "IsPeerReviewed" || $limit->field == 'IsScholarly')
 			{
 				if ($value == "true")
@@ -177,6 +221,9 @@ class Query extends Search\Query
 					$query .= "&query_inc=facet_tlevel,exact,peer_reviewed";
 				}
 			}
+			
+			// dates
+			
 			elseif ($limit->field == 'creationdate')
 			{
 				if ( $limit->value == 'start')
@@ -188,7 +235,7 @@ class Query extends Search\Query
 					$end_date = $limit->display;
 				}
 			}
-			else
+			else // regular field
 			{
 				$type = 'query_inc';
 				
@@ -228,7 +275,8 @@ class Query extends Search\Query
 		// create the url
 		
 		$url = $this->server . '/xservice/search/brief?' .
-			$query .
+			$query . 
+			$discipline . 
 			'&indx=' . $this->start .
 			'&bulkSize=' . $this->max;
 
