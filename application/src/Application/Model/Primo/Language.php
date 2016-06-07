@@ -156,7 +156,7 @@ class Language
 				'slv' => 'Slovenian',
 				'smo' => 'Samoan',
 				'som' => 'Somali',
-				'spa' => 'Castilian',
+				'spa' => 'Spanish',
 				'sqi' => 'Albanian',
 				'srp' => 'Serbian',
 				'sun' => 'Sundanese',
