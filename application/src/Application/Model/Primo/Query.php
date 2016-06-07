@@ -130,10 +130,44 @@ class Query extends Search\Query
 		$start_date = ""; // pub start date
 		$end_date = ""; // pub end date
 		
+		/*
 		foreach ( $this->getQueryTerms() as $term )
 		{
-			$query .= "&query=" . $term->field_internal . ",contains," . urlencode($term->phrase);
+			$bool = "";
+			
+			if ( $term->boolean == 'NOT' || $term->boolean == 'OR')
+			{
+				$bool = $term->boolean . " ";
+			}
+			
+			$query .= "&query=" . $term->field_internal . ",contains," . urlencode($bool . $term->phrase);
 		}
+		*/
+		
+		$search_terms = "";
+		$x = 1;
+		
+		foreach ( $this->getQueryTerms() as $term )
+		{
+			$bool = "";
+		
+			if ( $x == 2)
+			{
+				if ( $term->boolean == "" )
+				{
+					$term->boolean = "AND";
+				}
+				
+				$bool = " " . $term->boolean . " ";
+			}
+				
+			$search_terms .= $bool . $term->field_internal . ",contains," . $term->phrase;
+				
+			$x++;
+		}		
+		
+		$query .= "&query=" . urlencode($search_terms);
+		
 		
 		// limit to local holdings unless told otherwise
 		
@@ -303,7 +337,7 @@ class Query extends Search\Query
 	
 	protected function addLocationParams($url)
 	{
-		$url .= '&institution=' . $this->institution;
+		$url .= '&lang=eng&institution=' . $this->institution;
 		
 		$on_campus = "true";
 		
