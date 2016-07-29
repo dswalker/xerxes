@@ -99,15 +99,16 @@ class Query extends Search\Query
 	 * Convert to Primo individual record syntax
 	 *
 	 * @param string $id
+	 * @param string $type  'exact' or 'contains'
 	 * @return Url
 	 */
 	
-	public function getRecordUrl($id)
+	public function getRecordUrl($id, $type = 'exact')
 	{
 		$id = urlencode($id);
 		
 		$url = $this->server . '/xservice/search/brief?' .
-			"&query=rid,contains,$id" .
+			"&query=rid,$type,$id" .
 			'&indx=1&bulkSize=1&pcAvailability=true';
 		
 		$url = $this->addLocationParams($url);
@@ -129,20 +130,6 @@ class Query extends Search\Query
 		$discipline = ""; // disciplines
 		$start_date = ""; // pub start date
 		$end_date = ""; // pub end date
-		
-		/*
-		foreach ( $this->getQueryTerms() as $term )
-		{
-			$bool = "";
-			
-			if ( $term->boolean == 'NOT' || $term->boolean == 'OR')
-			{
-				$bool = $term->boolean . " ";
-			}
-			
-			$query .= "&query=" . $term->field_internal . ",contains," . urlencode($bool . $term->phrase);
-		}
-		*/
 		
 		$search_terms = "";
 		$x = 1;
@@ -173,7 +160,20 @@ class Query extends Search\Query
 		
 		$this->holdings_only = $this->config->getConfig('LIMIT_TO_HOLDINGS', false, true);
 		
-		// limits
+		
+		#### limits
+		
+		// always exclude these
+		
+		$formats = $this->config->getConfig("EXCLUDE_FORMATS");
+		
+		if ( $formats != "" )
+		{
+			foreach ( explode(',', $formats) as $format )
+			{
+				$query .= "&query_exc=facet_pfilter,exact," . urlencode($format);
+			}
+		}
 		
 		foreach ( $this->getLimits() as $limit )
 		{

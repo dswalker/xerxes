@@ -13,6 +13,7 @@ namespace Application\Model\Primo;
 
 use Application\Model\Search;
 use Xerxes\Mvc\Request;
+use Xerxes\Utility\Factory;
 use Xerxes\Utility\Parser;
 use Application\Model\Search\Facets;
 use Application\Model\Search\FacetGroup;
@@ -85,6 +86,38 @@ class Engine extends Search\Engine
 		{
 			$results->markFullText(); // sfx data
 		}		
+		
+		return $results;
+	}
+	
+	/**
+	 * Do the actual fetch of an individual record
+	 *
+	 * @param string	record identifier
+	 * @return ResultSet
+	 */
+	
+	protected function doGetRecord($id)
+	{
+		$query = $this->getQuery();
+		$request = $query->getRecordUrl($id);
+	
+		$client = Factory::getHttpClient();
+		$response = $client->getUrl($request->url, null, $request->headers);
+	
+		$results = $this->parseResponse($response);
+		
+		// didn't find it in an exact look-up, so go fuzzy
+		
+		if ( $results->total == 0 )
+		{
+			$request = $query->getRecordUrl($id, 'contains');
+			
+			$client = Factory::getHttpClient();
+			$response = $client->getUrl($request->url, null, $request->headers);
+			
+			$results =  $this->parseResponse($response);
+		}
 		
 		return $results;
 	}
