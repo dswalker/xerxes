@@ -1349,7 +1349,15 @@
 									</xsl:call-template>
 								</a>
 							</div> 
-							<xsl:value-of select="$text_folder_tags_limit" /><xsl:text> </xsl:text><xsl:value-of select="value" /> 
+							<xsl:value-of select="$text_folder_tags_limit" /><xsl:text> </xsl:text>
+							<xsl:choose>
+								<xsl:when test="display">
+									<xsl:value-of select="display" /> 
+								</xsl:when>
+								<xsl:choose>
+									<xsl:value-of select="value" /> 
+								</xsl:choose>
+							</xsl:choose>
 						</li>
 					</xsl:for-each>
 				</ul>
