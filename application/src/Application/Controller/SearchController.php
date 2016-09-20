@@ -186,7 +186,10 @@ abstract class SearchController extends ActionController
 		
 		// and tell the browser too
 		
-		$this->response->setVariable('hits', $total);
+		if ( $total != null )
+		{
+			$this->response->setVariable('hits', $total);
+		}
 		
 		// view template
 		
