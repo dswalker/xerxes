@@ -139,12 +139,20 @@ class Record extends Xerxes\Record
 			
 			$this->year = $this->getElementValue($search,"creationdate");
 			$this->year = substr($this->year, 0, 4);
+
+			// isbn
+				
+			foreach ( $this->getElementValues($search,"isbn") as $isbn )
+			{
+				array_push($this->isbns, $isbn);
+			}
 			
 			// issn
 			
-			$issn = $this->getElementValue($search,"issn");
-			$issn = preg_replace('/\D/', "", $issn);
-			array_push($this->issns, $issn);
+			foreach ( $this->getElementValues($search,"issn") as $issn )
+			{
+				array_push($this->issns, $issn);
+			}
 			
 			// authors
 			
