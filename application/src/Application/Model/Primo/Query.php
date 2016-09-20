@@ -136,25 +136,8 @@ class Query extends Search\Query
 		
 		foreach ( $this->getQueryTerms() as $term )
 		{
-			$bool = "";
-		
-			if ( $x == 2)
-			{
-				if ( $term->boolean == "" )
-				{
-					$term->boolean = "AND";
-				}
-				
-				$bool = " " . $term->boolean . " ";
-			}
-				
-			$search_terms .= $bool . $term->field_internal . ",contains," . $term->phrase;
-				
-			$x++;
-		}		
-		
-		$query .= "&query=" . urlencode($search_terms);
-		
+			$query .= "&query=" . $term->field_internal . ",contains," . urlencode($term->phrase);
+		}
 		
 		// limit to local holdings unless told otherwise
 		
@@ -320,6 +303,10 @@ class Query extends Search\Query
 		{
 			$url .= "&pcAvailability=true"; // this seems backwards but is correct
 		}
+		else
+		{
+			$url .= "&pcAvailability=false"; // this seems backwards but is correct
+		}
 		
 		// institutional params
 		
@@ -330,7 +317,7 @@ class Query extends Search\Query
 			$url .= '&sortField=' . $this->sort;
 		}
 		
-		// echo $url . "<br>\n";
+		echo $url . "<br>\n";
 		
 		return new Url($url);
 	}
