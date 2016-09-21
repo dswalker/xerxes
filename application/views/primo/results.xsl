@@ -166,5 +166,22 @@
 		</form>
 	
 	</xsl:template>
+	
+	<xsl:template name="boolean_select">
+		<xsl:param name="position" />
+		<xsl:param name="boolean" />
+	
+		<label class="ada" for="boolean{$position}"><xsl:value-of select="$text_searchbox_ada_boolean" /></label>
+	
+		<select id="boolean{$position}" name="boolean{$position}" class="advanced-boolean">
+			<option value="">
+				<xsl:if test="$boolean = 'AND'">
+					<xsl:attribute name="selected">selected</xsl:attribute>
+				</xsl:if>
+				<xsl:copy-of select="$text_searchbox_boolean_and" />
+			</option>
+		</select>
+	
+	</xsl:template>
 		
 </xsl:stylesheet>
