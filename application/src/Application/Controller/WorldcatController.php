@@ -32,4 +32,19 @@ class WorldcatController extends SearchController
 		
 		return new Engine($role, $source);
 	}
+	
+	/**
+	 * Search home page
+	 */
+	
+	public function indexAction()
+	{
+		$this->response = parent::indexAction();
+	
+		// set view template
+	
+		$this->response->setView('worldcat/index.xsl');
+	
+		return $this->response;
+	}
 }
