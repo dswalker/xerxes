@@ -137,7 +137,10 @@ class Engine extends Search\Engine
 		
 		if ( $this->query->getRequest()->getParam('XML') != "" )
 		{
-			header("Content-type:text/xml"); echo $xml->saveXML(); exit;
+			header("Content-type:text/xml");
+			echo $xml->saveXML(); 
+			echo "<!-- " . $this->query->getQueryUrl()->url . " -->";
+			exit;
 		}
 		
 		// check for errors
@@ -442,6 +445,11 @@ class Engine extends Search\Engine
 			
 		foreach ($this->query->getLimits() as $limit)
 		{
+			if ( $limit->field == 'IsFullText')
+			{
+				continue;
+			}
+			
 			if ( ! in_array($limit->field, $limit_track) )
 			{
 				$limit_track[] = $limit->field;

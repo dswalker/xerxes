@@ -305,7 +305,7 @@ class Query extends Search\Query
 		}
 		else
 		{
-			$url .= "&pcAvailability=false"; // this seems backwards but is correct
+			$url .= "&pcAvailability=false";
 		}
 		
 		// institutional params
@@ -317,7 +317,7 @@ class Query extends Search\Query
 			$url .= '&sortField=' . $this->sort;
 		}
 		
-		echo $url . "<br>\n";
+		// echo $url . "<br>\n";
 		
 		return new Url($url);
 	}
