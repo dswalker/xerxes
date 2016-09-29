@@ -21,4 +21,11 @@ class PrimoController extends SearchController
 	{
 		return new Engine();
 	}
+	
+	public function advancedAction()
+	{
+		$this->response = parent::advancedAction();
+		$this->response->setView('primo/advanced.xsl');
+		return $this->response;
+	}
 }
