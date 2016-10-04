@@ -166,5 +166,15 @@
 		</form>
 	
 	</xsl:template>
+	
+	<xsl:template name="spell_suggest">
+	
+		<xsl:if test="results/message = 'search.message.ui.expansion.pc'">
+			<div class="alert alert-info" role="alert" style="display: inline-table; margin-bottom: 35px">
+				Your initial search resulted in few or no results. The results below were found by expanding your search.
+			</div>
+		</xsl:if>
+	
+	</xsl:template>
 		
 </xsl:stylesheet>

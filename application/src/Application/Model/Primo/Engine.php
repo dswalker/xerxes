@@ -143,18 +143,21 @@ class Engine extends Search\Engine
 			exit;
 		}
 		
+		// set-up the result set
+		
+		$result_set = new Search\ResultSet($this->config);
+		
 		// check for errors
 		
 		$error = $xml->getElementsByTagName("ERROR")->item(0);
 		
-		if ( $error != "" )
+		if ( $error != null )
 		{
-			// throw new \Exception($error->getAttribute("MESSAGE"));
+			if ($error->getAttribute("CODE") == "search.message.ui.expansion.pc")
+			{
+				$result_set->message = "search.message.ui.expansion.pc";
+			}
 		}
-		
-		// set-up the result set
-		
-		$result_set = new Search\ResultSet($this->config);		
 		
 		// total
 		

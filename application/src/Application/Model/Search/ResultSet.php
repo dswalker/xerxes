@@ -31,6 +31,12 @@ class ResultSet
 	 */
 	
 	public $total = 0;
+
+	/**
+	 * Message to user
+	 * @var string
+	 */
+	public $message;	
 	
 	/**
 	 * @var Result[]
@@ -43,7 +49,7 @@ class ResultSet
 	 */
 	
 	public $facets; 
-	
+
 	/**
 	 * @var Config
 	 */
